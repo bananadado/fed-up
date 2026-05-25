@@ -1,4 +1,5 @@
 stages:
+  - dependencies
   - validate
   - test
   - build
@@ -25,16 +26,33 @@ include:
 
 .bun_job:
   image: node:24-bookworm
+  dependencies:
+    - install_dependencies
+  before_script:
+    - export PATH="$CI_PROJECT_DIR/node_modules/.bin:$PATH"
+    - bun --version
+
+install_dependencies:
+  image: node:24-bookworm
+  stage: dependencies
   cache:
     key:
       files:
+        - package.json
         - bun.lock
     paths:
       - .bun/install/cache/
       - node_modules/
   before_script:
     - npm install --global "bun@$BUN_VERSION" --silent
+  script:
     - bun install --frozen-lockfile
+    - ./node_modules/.bin/bun --version
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - node_modules/
+      - .bun/install/cache/
 
 lint:
   extends: .bun_job
