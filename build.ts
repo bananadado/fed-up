@@ -33,9 +33,13 @@ Example:
   process.exit(0);
 }
 
-const toCamelCase = (str: string): string => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
+type BuildConfigOverrides = Partial<Bun.BuildConfig> & Record<string, unknown>;
+type NestedBuildConfig = Record<string, unknown>;
 
-const parseValue = (value: string): any => {
+const toCamelCase = (str: string): string =>
+  str.replace(/-([a-z])/g, (_match, letter: string) => letter.toUpperCase());
+
+const parseValue = (value: string): boolean | number | string | string[] => {
   if (value === "true") return true;
   if (value === "false") return false;
 
@@ -48,7 +52,7 @@ const parseValue = (value: string): any => {
 };
 
 function parseArgs(): Partial<Bun.BuildConfig> {
-  const config: Partial<Bun.BuildConfig> = {};
+  const config: BuildConfigOverrides = {};
   const args = process.argv.slice(2);
 
   for (let i = 0; i < args.length; i++) {
@@ -72,7 +76,10 @@ function parseArgs(): Partial<Bun.BuildConfig> {
     let value: string;
 
     if (arg.includes("=")) {
-      [key, value] = arg.slice(2).split("=", 2) as [string, string];
+      const option = arg.slice(2);
+      const separatorIndex = option.indexOf("=");
+      key = option.slice(0, separatorIndex);
+      value = option.slice(separatorIndex + 1);
     } else {
       key = arg.slice(2);
       value = args[++i] ?? "";
@@ -81,9 +88,18 @@ function parseArgs(): Partial<Bun.BuildConfig> {
     key = toCamelCase(key);
 
     if (key.includes(".")) {
-      const [parentKey, childKey] = key.split(".");
-      config[parentKey] = config[parentKey] || {};
-      config[parentKey][childKey] = parseValue(value);
+      const [parentKey, childKey] = key.split(".", 2);
+
+      if (parentKey === undefined || childKey === undefined) continue;
+
+      const existingParent = config[parentKey];
+      const parentConfig: NestedBuildConfig =
+        existingParent !== null && typeof existingParent === "object" && !Array.isArray(existingParent)
+          ? (existingParent as NestedBuildConfig)
+          : {};
+
+      parentConfig[childKey] = parseValue(value);
+      config[parentKey] = parentConfig;
     } else {
       config[key] = parseValue(value);
     }

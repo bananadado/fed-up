@@ -8,6 +8,11 @@ declare module "*.svg" {
   export = path;
 }
 
+declare module "*.css" {
+  const path: `${string}.css`;
+  export = path;
+}
+
 declare module "*.module.css" {
   /**
    * A record of class names to their corresponding CSS module classes

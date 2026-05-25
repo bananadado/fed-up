@@ -5,10 +5,13 @@ node_modules
 out
 dist
 *.tgz
+.vercel
 
 # code coverage
 coverage
 *.lcov
+playwright-report
+test-results
 
 # logs
 logs
