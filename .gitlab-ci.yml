@@ -1,13 +1,170 @@
-# You can override the included template(s) by including variable overrides
-# SAST customization: https://docs.gitlab.com/user/application_security/sast/#available-cicd-variables
-# Secret Detection customization: https://docs.gitlab.com/user/application_security/secret_detection/pipeline/configure/
-# Dependency Scanning customization: https://docs.gitlab.com/user/application_security/dependency_scanning/dependency_scanning_sbom/#customizing-analyzer-behavior
-# Container Scanning customization: https://docs.gitlab.com/user/application_security/container_scanning/#customizing-analyzer-behavior
-# Note that environment variables can be set in several places
-# See https://docs.gitlab.com/ci/variables/#cicd-variable-precedence
 stages:
-- test
-sast:
-  stage: test
+  - dependencies
+  - validate
+  - test
+  - build
+  - security
+  - deploy
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: "$CI_COMMIT_BRANCH"
+
+variables:
+  AST_ENABLE_MR_PIPELINES: "true"
+  BUN_VERSION: "1.3.2"
+  BUN_INSTALL_CACHE_DIR: "$CI_PROJECT_DIR/.bun/install/cache"
+  NPM_CONFIG_UPDATE_NOTIFIER: "false"
+  PLAYWRIGHT_BROWSERS_PATH: "$CI_PROJECT_DIR/.cache/ms-playwright"
+  VERCEL_TELEMETRY_DISABLED: "1"
+
 include:
-- template: Security/SAST.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+
+.bun_job:
+  image: node:24-bookworm
+  dependencies:
+    - install_dependencies
+  before_script:
+    - export PATH="$CI_PROJECT_DIR/node_modules/.bin:$PATH"
+    - bun --version
+
+install_dependencies:
+  image: node:24-bookworm
+  stage: dependencies
+  cache:
+    key:
+      files:
+        - package.json
+        - bun.lock
+    paths:
+      - .bun/install/cache/
+      - node_modules/
+  before_script:
+    - npm install --global "bun@$BUN_VERSION" --silent
+  script:
+    - bun install --frozen-lockfile
+    - ./node_modules/.bin/bun --version
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - node_modules/
+      - .bun/install/cache/
+
+lint:
+  extends: .bun_job
+  stage: validate
+  script:
+    - bun run lint
+
+typecheck:
+  extends: .bun_job
+  stage: validate
+  script:
+    - bun run typecheck
+
+unit_tests:
+  extends: .bun_job
+  stage: test
+  script:
+    - bun run test:unit
+
+e2e_tests:
+  extends: .bun_job
+  stage: test
+  script:
+    - bun run test:e2e
+  artifacts:
+    when: always
+    paths:
+      - playwright-report/
+      - test-results/
+    reports:
+      junit: test-results/playwright-junit.xml
+
+build:
+  extends: .bun_job
+  stage: build
+  script:
+    - bun run build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - dist/
+
+audit:
+  extends: .bun_job
+  stage: security
+  script:
+    - bun run audit
+
+sast:
+  stage: security
+  allow_failure: false
+
+.sast-analyzer:
+  stage: security
+  allow_failure: false
+
+secret_detection:
+  stage: security
+  allow_failure: false
+
+.secret-analyzer:
+  stage: security
+  allow_failure: false
+
+.ds-analyzer:
+  stage: security
+  allow_failure: false
+
+.deploy_vercel:
+  extends: .bun_job
+  stage: deploy
+  script:
+    - test -n "$VERCEL_TOKEN"
+    - test -n "$VERCEL_ORG_ID"
+    - test -n "$VERCEL_PROJECT_ID"
+    - ./node_modules/.bin/vercel pull --yes --environment="$VERCEL_ENVIRONMENT" --token="$VERCEL_TOKEN"
+    - ./node_modules/.bin/vercel build $VERCEL_BUILD_FLAGS --token="$VERCEL_TOKEN"
+    - DEPLOYMENT_URL="$(./node_modules/.bin/vercel deploy --prebuilt $VERCEL_DEPLOY_FLAGS --token="$VERCEL_TOKEN")"
+    - 'echo "Vercel deployment URL: $DEPLOYMENT_URL"'
+
+deploy_staging:
+  extends: .deploy_vercel
+  variables:
+    VERCEL_ENVIRONMENT: preview
+    VERCEL_BUILD_FLAGS: ""
+    VERCEL_DEPLOY_FLAGS: ""
+  environment:
+    name: staging
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "staging"'
+    - when: never
+  script:
+    - test -n "$VERCEL_TOKEN"
+    - test -n "$VERCEL_ORG_ID"
+    - test -n "$VERCEL_PROJECT_ID"
+    - ./node_modules/.bin/vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
+    - ./node_modules/.bin/vercel build --token="$VERCEL_TOKEN"
+    - DEPLOYMENT_URL="$(./node_modules/.bin/vercel deploy --prebuilt --token="$VERCEL_TOKEN")"
+    - 'echo "Vercel staging deployment URL: $DEPLOYMENT_URL"'
+    - |
+      if [ -n "$VERCEL_STAGING_ALIAS" ]; then
+        ./node_modules/.bin/vercel alias set "$DEPLOYMENT_URL" "$VERCEL_STAGING_ALIAS" --token="$VERCEL_TOKEN"
+      fi
+
+deploy_production:
+  extends: .deploy_vercel
+  variables:
+    VERCEL_ENVIRONMENT: production
+    VERCEL_BUILD_FLAGS: "--prod"
+    VERCEL_DEPLOY_FLAGS: "--prod"
+  environment:
+    name: production
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"'
+    - when: never
