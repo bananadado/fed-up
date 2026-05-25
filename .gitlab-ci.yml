@@ -110,7 +110,7 @@ secret_detection:
     - ./node_modules/.bin/vercel pull --yes --environment="$VERCEL_ENVIRONMENT" --token="$VERCEL_TOKEN"
     - ./node_modules/.bin/vercel build $VERCEL_BUILD_FLAGS --token="$VERCEL_TOKEN"
     - DEPLOYMENT_URL="$(./node_modules/.bin/vercel deploy --prebuilt $VERCEL_DEPLOY_FLAGS --token="$VERCEL_TOKEN")"
-    - echo "Vercel deployment URL: $DEPLOYMENT_URL"
+    - 'echo "Vercel deployment URL: $DEPLOYMENT_URL"'
 
 deploy_staging:
   extends: .deploy_vercel
@@ -130,7 +130,7 @@ deploy_staging:
     - ./node_modules/.bin/vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
     - ./node_modules/.bin/vercel build --token="$VERCEL_TOKEN"
     - DEPLOYMENT_URL="$(./node_modules/.bin/vercel deploy --prebuilt --token="$VERCEL_TOKEN")"
-    - echo "Vercel staging deployment URL: $DEPLOYMENT_URL"
+    - 'echo "Vercel staging deployment URL: $DEPLOYMENT_URL"'
     - |
       if [ -n "$VERCEL_STAGING_ALIAS" ]; then
         ./node_modules/.bin/vercel alias set "$DEPLOYMENT_URL" "$VERCEL_STAGING_ALIAS" --token="$VERCEL_TOKEN"
