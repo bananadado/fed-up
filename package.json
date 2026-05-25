@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun --hot src/index.ts",
     "start": "NODE_ENV=production bun src/index.ts",
-    "lint": "eslint .",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" build.ts bun-env.d.ts eslint.config.js playwright.config.ts",
     "typecheck": "tsc --noEmit",
     "test:unit": "bun test --pass-with-no-tests",
     "test:e2e": "playwright test --pass-with-no-tests",

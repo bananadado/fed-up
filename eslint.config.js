@@ -8,6 +8,8 @@ export default tseslint.config(
   {
     ignores: [
       ".vercel",
+      ".bun",
+      ".bun/**",
       "coverage",
       "dist",
       "node_modules",
