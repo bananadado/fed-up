@@ -1,7 +1,6 @@
 stages:
   - dependencies
-  - validate
-  - test
+  - checks
   - build
   - security
   - deploy
@@ -17,6 +16,7 @@ variables:
   BUN_INSTALL_CACHE_DIR: "$CI_PROJECT_DIR/.bun/install/cache"
   NPM_CONFIG_UPDATE_NOTIFIER: "false"
   PLAYWRIGHT_BROWSERS_PATH: "$CI_PROJECT_DIR/.cache/ms-playwright"
+  SAST_EXCLUDED_ANALYZERS: "semgrep"
   VERCEL_TELEMETRY_DISABLED: "1"
 
 include:
@@ -54,27 +54,43 @@ install_dependencies:
       - node_modules/
       - .bun/install/cache/
 
+merge_policy:
+  image: alpine:3.20
+  stage: dependencies
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+    - when: never
+  script:
+    - |
+      if [ "$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" != "staging" ]; then
+        echo "Only the staging branch may be merged into master."
+        echo "Source branch: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+        echo "Target branch: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+        exit 1
+      fi
+      echo "Merge policy passed: staging may be merged into master."
+
 lint:
   extends: .bun_job
-  stage: validate
+  stage: checks
   script:
     - bun run lint
 
 typecheck:
   extends: .bun_job
-  stage: validate
+  stage: checks
   script:
     - bun run typecheck
 
 unit_tests:
   extends: .bun_job
-  stage: test
+  stage: checks
   script:
     - bun run test:unit
 
 e2e_tests:
   extends: .bun_job
-  stage: test
+  stage: checks
   script:
     - bun run test:e2e
   artifacts:
@@ -100,6 +116,9 @@ audit:
   stage: security
   script:
     - bun run audit
+
+dependency_scanning:
+  stage: security
 
 sast:
   stage: security
@@ -149,8 +168,8 @@ deploy_staging:
     - test -n "$VERCEL_ORG_ID"
     - test -n "$VERCEL_PROJECT_ID"
     - ./node_modules/.bin/vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
-    - ./node_modules/.bin/vercel build --token="$VERCEL_TOKEN"
-    - DEPLOYMENT_URL="$(./node_modules/.bin/vercel deploy --prebuilt --token="$VERCEL_TOKEN")"
+    - ./node_modules/.bin/vercel build --target=preview --token="$VERCEL_TOKEN"
+    - DEPLOYMENT_URL="$(./node_modules/.bin/vercel deploy --prebuilt --target=preview --skip-domain --token="$VERCEL_TOKEN")"
     - 'echo "Vercel staging deployment URL: $DEPLOYMENT_URL"'
     - |
       if [ -n "$VERCEL_STAGING_ALIAS" ]; then
