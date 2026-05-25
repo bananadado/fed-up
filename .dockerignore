@@ -1,0 +1,9 @@
+.bun
+.cache
+.git
+.vercel
+coverage
+dist
+node_modules
+playwright-report
+test-results
