@@ -11,6 +11,8 @@ workflow:
     - if: "$CI_COMMIT_BRANCH"
 
 variables:
+  APP_CI_IMAGE: "kolesniiii/drp-ci:latest"
+  APP_DEPS_DIR: "/opt/drp03"
   AST_ENABLE_MR_PIPELINES: "true"
   BUN_VERSION: "1.3.2"
   BUN_INSTALL_CACHE_DIR: "$CI_PROJECT_DIR/.bun/install/cache"
@@ -25,16 +27,7 @@ include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
 
 .bun_job:
-  image: node:24-bookworm
-  dependencies:
-    - install_dependencies
-  before_script:
-    - export PATH="$CI_PROJECT_DIR/node_modules/.bin:$PATH"
-    - bun --version
-
-install_dependencies:
-  image: node:24-bookworm
-  stage: dependencies
+  image: "$APP_CI_IMAGE"
   cache:
     key:
       files:
@@ -42,17 +35,44 @@ install_dependencies:
         - bun.lock
     paths:
       - .bun/install/cache/
-      - node_modules/
   before_script:
-    - npm install --global "bun@$BUN_VERSION" --silent
+    - |
+      if ! command -v bun >/dev/null 2>&1; then
+        npm install --global "bun@$BUN_VERSION" --silent
+      fi
+
+      if [ ! -e node_modules ]; then
+        if [ -d "$APP_DEPS_DIR/node_modules" ] &&
+          [ -f "$APP_DEPS_DIR/package.json" ] &&
+          [ -f "$APP_DEPS_DIR/bun.lock" ] &&
+          cmp -s "$APP_DEPS_DIR/package.json" package.json &&
+          cmp -s "$APP_DEPS_DIR/bun.lock" bun.lock; then
+          ln -s "$APP_DEPS_DIR/node_modules" node_modules
+          echo "Using dependencies baked into $APP_CI_IMAGE"
+        else
+          echo "Baked dependencies missing or stale; running bun install"
+          bun install --frozen-lockfile --omit peer
+        fi
+      fi
+
+      export PATH="$CI_PROJECT_DIR/node_modules/.bin:$PATH"
+      bun --version
+
+merge_policy:
+  image: alpine:3.20
+  stage: dependencies
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+    - when: never
   script:
-    - bun install --frozen-lockfile
-    - ./node_modules/.bin/bun --version
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - node_modules/
-      - .bun/install/cache/
+    - |
+      if [ "$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" != "staging" ]; then
+        echo "Only the staging branch may be merged into master."
+        echo "Source branch: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+        echo "Target branch: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+        exit 1
+      fi
+      echo "Merge policy passed: staging may be merged into master."
 
 merge_policy:
   image: alpine:3.20
@@ -169,7 +189,7 @@ deploy_staging:
     - test -n "$VERCEL_PROJECT_ID"
     - ./node_modules/.bin/vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
     - ./node_modules/.bin/vercel build --target=preview --token="$VERCEL_TOKEN"
-    - DEPLOYMENT_URL="$(./node_modules/.bin/vercel deploy --prebuilt --target=preview --skip-domain --token="$VERCEL_TOKEN")"
+    - DEPLOYMENT_URL="$(./node_modules/.bin/vercel deploy --prebuilt --target=preview --token="$VERCEL_TOKEN")"
     - 'echo "Vercel staging deployment URL: $DEPLOYMENT_URL"'
     - |
       if [ -n "$VERCEL_STAGING_ALIAS" ]; then
