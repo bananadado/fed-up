@@ -1,8 +1,8 @@
-import { AppRouter } from "@/app/router";
+import { DeadlineFoodPrototype } from "@/prototype/DeadlineFoodPrototype";
 import "./index.css";
 
 export function App() {
-  return <AppRouter />;
+  return <DeadlineFoodPrototype />;
 }
 
 export default App;
