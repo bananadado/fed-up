@@ -13,7 +13,10 @@ export function BudgetCard({
   customRecipes: Meal[];
   budget: number;
 }) {
-  const total = plan.reduce((sum, entry) => sum + getMealById(entry.mealId, customRecipes).price, 0);
+  const total = plan.reduce(
+    (sum, entry) => sum + entry.meals.reduce((daySum, meal) => daySum + getMealById(meal.mealId, customRecipes).price, 0),
+    0,
+  );
   const remaining = budget - total;
   const percent = Math.min(100, Math.round((total / Math.max(budget, 1)) * 100));
 

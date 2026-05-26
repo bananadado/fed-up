@@ -11,14 +11,24 @@ export function Dashboard({
   plan,
   customRecipes,
   setScreen,
+  onSelectMeal,
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
   customRecipes: Meal[];
   setScreen: (screen: Screen) => void;
+  onSelectMeal?: (mealId: string) => void;
 }) {
   const nextCook = plan
-    .map((entry) => ({ ...entry, meal: getMealById(entry.mealId, customRecipes) }))
+    .flatMap((entry) =>
+      entry.meals.map((planMeal) => ({
+        day: entry.day,
+        context: entry.context,
+        slot: planMeal.slot,
+        mealId: planMeal.mealId,
+        meal: getMealById(planMeal.mealId, customRecipes),
+      })),
+    )
     .find((entry) => entry.meal.type === "cook");
 
   return (
@@ -48,7 +58,7 @@ export function Dashboard({
                   {nextCook.meal.image} {nextCook.meal.name}
                 </p>
                 <p className="mt-2 text-sm text-stone-500">
-                  {nextCook.day} - {nextCook.context}
+                  {nextCook.day} {nextCook.slot} - {nextCook.context}
                 </p>
                 <div className="mt-4 flex gap-2">
                   <Badge tone="green">
@@ -71,20 +81,34 @@ export function Dashboard({
           </div>
           <div className="space-y-3">
             {plan.slice(0, 4).map((entry) => {
-              const meal = getMealById(entry.mealId, customRecipes);
-
               return (
                 <div key={entry.day} className="flex gap-3 rounded-lg bg-stone-50 p-4">
                   <div className="mt-1 h-10 w-1 rounded-full bg-emerald-500" />
                   <div className="min-w-0 flex-1">
                     <div className="flex justify-between gap-3">
                       <p className="text-sm font-semibold">{entry.day}</p>
-                      <p className="text-sm text-stone-500">{meal.time} min</p>
+                      <p className="text-sm text-stone-500">{entry.meals.length} meals</p>
                     </div>
-                    <p className="mt-1 truncate font-medium">
-                      {meal.image} {meal.name}
-                    </p>
                     <p className="mt-1 truncate text-xs text-stone-500">{entry.context}</p>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                      {entry.meals.map((planMeal) => {
+                        const meal = getMealById(planMeal.mealId, customRecipes);
+
+                        return (
+                          <button
+                            key={planMeal.slot}
+                            type="button"
+                            onClick={() => onSelectMeal?.(planMeal.mealId)}
+                            className="min-w-0 rounded-lg bg-white px-3 py-2 text-left transition hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                          >
+                            <p className="text-[11px] font-semibold uppercase text-stone-500">{planMeal.slot}</p>
+                            <p className="mt-1 truncate text-sm font-medium">
+                              {meal.image} {meal.name}
+                            </p>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               );

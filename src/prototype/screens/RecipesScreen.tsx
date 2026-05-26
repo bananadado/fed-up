@@ -6,7 +6,15 @@ import type { Meal } from "../types";
 import { AppButton, Field } from "../components/primitives";
 import { money } from "../utils";
 
-export function RecipesScreen({ customRecipes, setCustomRecipes }: { customRecipes: Meal[]; setCustomRecipes: (recipes: Meal[]) => void }) {
+export function RecipesScreen({
+  customRecipes,
+  setCustomRecipes,
+  onSelectMeal,
+}: {
+  customRecipes: Meal[];
+  setCustomRecipes: (recipes: Meal[]) => void;
+  onSelectMeal?: (mealId: string) => void;
+}) {
   const [form, setForm] = useState({ name: "", minutes: 10, price: 2.5, ingredients: "", tags: "" });
 
   function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -21,6 +29,7 @@ export function RecipesScreen({ customRecipes, setCustomRecipes }: { customRecip
         id: `custom-${Date.now()}`,
         name: form.name,
         type: "cook",
+        mealSlots: ["lunch", "dinner"],
         time: +form.minutes,
         price: +form.price,
         ingredients: form.ingredients
@@ -31,6 +40,11 @@ export function RecipesScreen({ customRecipes, setCustomRecipes }: { customRecip
           .split(",")
           .map((value) => value.trim())
           .filter(Boolean),
+        allergens: [],
+        nutrition: { calories: 500, protein: 20, carbs: 60, fat: 15 },
+        rating: 0,
+        reviews: [],
+        instructions: ["Prepare the ingredients.", "Cook or assemble the meal.", "Taste and adjust seasoning."],
         source: "My recipes",
         note: "Added by you",
         image: "🍽️",
@@ -74,7 +88,7 @@ export function RecipesScreen({ customRecipes, setCustomRecipes }: { customRecip
               </div>
             ) : (
               customRecipes.map((recipe) => (
-                <div key={recipe.id} className="rounded-lg bg-stone-50 p-4">
+                <button key={recipe.id} type="button" onClick={() => onSelectMeal?.(recipe.id)} className="w-full rounded-lg bg-stone-50 p-4 text-left transition hover:bg-emerald-50">
                   <div className="flex justify-between gap-3">
                     <p className="font-semibold">
                       {recipe.image} {recipe.name}
@@ -84,7 +98,7 @@ export function RecipesScreen({ customRecipes, setCustomRecipes }: { customRecip
                   <p className="mt-2 text-sm text-stone-500">
                     {recipe.time} minutes - {recipe.ingredients.join(", ")}
                   </p>
-                </div>
+                </button>
               ))
             )}
           </div>

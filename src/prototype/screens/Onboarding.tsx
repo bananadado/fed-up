@@ -4,9 +4,10 @@ import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } fr
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, dietary, dislikes, sourceOptions } from "../data";
+import { allergens, dietary, dislikes, likes, sourceOptions, universities } from "../data";
 import type { Deadline, Preferences, Screen } from "../types";
-import { AppButton, Badge, ChoiceGroup, SelectField } from "../components/primitives";
+import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { formatCookingLimit } from "../utils";
 
 function Progress({ step }: { step: number }) {
   const labels = ["Calendar", "Preferences", "Recipe sources"];
@@ -95,6 +96,16 @@ export function Onboarding({
     update(values.includes(value) ? values.filter((item) => item !== value) : [...values, value]);
   }
 
+  function addSelection(values: string[], value: string, update: (next: string[]) => void) {
+    const normalizedValue = value.trim();
+
+    if (!normalizedValue || values.some((item) => item.toLowerCase() === normalizedValue.toLowerCase())) {
+      return;
+    }
+
+    update([...values, normalizedValue]);
+  }
+
   function finish() {
     setOnboarded(true);
     setScreen("dashboard");
@@ -168,9 +179,27 @@ export function Onboarding({
               <label className="block">
                 <span className="text-sm font-semibold">Maximum cooking time</span>
                 <div className="mt-2 rounded-lg border border-stone-200 p-3">
-                  <input type="range" min="0" max="45" step="5" value={prefs.maxTime} onChange={(event) => setPrefs({ ...prefs, maxTime: +event.target.value })} className="w-full accent-emerald-700" />
-                  <p className="mt-1 text-sm text-stone-600">
-                    Up to <strong>{prefs.maxTime} minutes</strong>
+                  <input
+                    type="range"
+                    min="0"
+                    max="180"
+                    step="15"
+                    value={prefs.maxTime ?? 180}
+                    disabled={prefs.maxTime === null}
+                    onChange={(event) => setPrefs({ ...prefs, maxTime: +event.target.value })}
+                    className="w-full accent-emerald-700 disabled:opacity-40"
+                  />
+                  <div className="mt-2 flex items-center justify-between gap-3">
+                    <p className="text-sm text-stone-600">
+                      Up to <strong>{formatCookingLimit(prefs.maxTime)}</strong>
+                    </p>
+                    <label className="flex items-center gap-2 text-sm font-medium text-stone-700">
+                      <input type="checkbox" checked={prefs.maxTime === null} onChange={(event) => setPrefs({ ...prefs, maxTime: event.target.checked ? null : 180 })} />
+                      Unlimited
+                    </label>
+                  </div>
+                  <p className="mt-1 text-xs text-stone-500">
+                    Choose 0 to 3 hours, or remove the limit.
                   </p>
                 </div>
               </label>
@@ -192,19 +221,39 @@ export function Onboarding({
                 ]}
               />
               <SelectField
-                label="Nearby shops location"
-                value={prefs.location}
-                onChange={(location) => setPrefs({ ...prefs, location })}
-                options={[
-                  { value: "library", label: "Library / campus" },
-                  { value: "halls", label: "Halls" },
-                  { value: "southkensington", label: "South Kensington" },
-                ]}
+                label="Your university"
+                value={prefs.university}
+                onChange={(university) => setPrefs({ ...prefs, university })}
+                options={universities.map((university) => ({ value: university, label: university }))}
               />
+              <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} placeholder="e.g. SW7 2AZ" />
             </div>
             <div className="mt-7 space-y-5">
-              <ChoiceGroup title="Dietary requirements" options={dietary} selected={prefs.dietary} onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))} />
-              <ChoiceGroup title="Allergic to / cannot eat" options={allergens} selected={prefs.allergens} onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))} danger />
+              <ChoiceGroup
+                title="Dietary requirements"
+                options={dietary}
+                selected={prefs.dietary}
+                onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                addPlaceholder="Add a dietary requirement"
+              />
+              <ChoiceGroup
+                title="Allergic to / cannot eat"
+                options={allergens}
+                selected={prefs.allergens}
+                onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                addPlaceholder="Add an allergy or avoided ingredient"
+                danger
+              />
+              <ChoiceGroup
+                title="Foods and meals I like"
+                options={likes}
+                selected={prefs.likes}
+                onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                addPlaceholder="Add anything else you like"
+              />
               <ChoiceGroup title="Ingredients I dislike" options={dislikes} selected={prefs.dislikes} onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))} />
             </div>
             <div className="mt-8 flex justify-between">
