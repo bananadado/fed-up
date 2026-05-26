@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 
 import { Button as ShadcnButton } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -55,19 +55,38 @@ export function ChoiceGroup({
   options,
   selected,
   onToggle,
+  onAdd,
+  addPlaceholder,
   danger,
 }: {
   title: string;
   options: string[];
   selected: string[];
   onToggle: (value: string) => void;
+  onAdd?: (value: string) => void;
+  addPlaceholder?: string;
   danger?: boolean;
 }) {
+  const [customValue, setCustomValue] = useState("");
+  const visibleOptions = [...options, ...selected.filter((value) => !options.includes(value))];
+
+  function addCustom(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const value = customValue.trim();
+
+    if (!value) {
+      return;
+    }
+
+    onAdd?.(value);
+    setCustomValue("");
+  }
+
   return (
     <div>
       <p className="mb-2 text-sm font-semibold">{title}</p>
       <div className="flex flex-wrap gap-2">
-        {options.map((option) => (
+        {visibleOptions.map((option) => (
           <button
             key={option}
             type="button"
@@ -85,6 +104,19 @@ export function ChoiceGroup({
           </button>
         ))}
       </div>
+      {onAdd && (
+        <form className="mt-3 flex gap-2" onSubmit={addCustom}>
+          <Input
+            value={customValue}
+            onChange={(event) => setCustomValue(event.target.value)}
+            placeholder={addPlaceholder ?? "Add anything missed"}
+            className="h-auto rounded-lg border-stone-200 bg-white px-3 py-2 text-sm focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20"
+          />
+          <AppButton type="submit" variant="secondary" className="shrink-0">
+            Add
+          </AppButton>
+        </form>
+      )}
     </div>
   );
 }

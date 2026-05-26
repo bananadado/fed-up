@@ -5,20 +5,22 @@ import { Card } from "@/components/ui/card";
 import { seedMeals } from "../data";
 import type { Meal, PlanEntry, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
-import { money } from "../utils";
+import { formatCookingLimit, money } from "../utils";
 
 export function DiscoverScreen({
   prefs,
   customRecipes,
   setPlan,
   plan,
+  onSelectMeal,
 }: {
   prefs: Preferences;
   customRecipes: Meal[];
   setPlan: (plan: PlanEntry[]) => void;
   plan: PlanEntry[];
+  onSelectMeal: (mealId: string) => void;
 }) {
-  const initialQueue = [...seedMeals, ...customRecipes];
+  const initialQueue = [...customRecipes, ...seedMeals.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))];
   const [queue, setQueue] = useState(initialQueue);
   const [saved, setSaved] = useState<Meal[]>([]);
   const current = queue[0];
@@ -32,14 +34,25 @@ export function DiscoverScreen({
   }
 
   function addToPlan(meal: Meal) {
-    setPlan(plan.map((entry, index) => (index === 1 ? { ...entry, mealId: meal.id } : entry)));
+    const targetSlot = meal.mealSlots.includes("dinner") ? "dinner" : (meal.mealSlots[0] ?? "dinner");
+
+    setPlan(
+      plan.map((entry, index) =>
+        index === 1
+          ? {
+              ...entry,
+              meals: entry.meals.map((planMeal) => (planMeal.slot === targetSlot ? { ...planMeal, mealId: meal.id } : planMeal)),
+            }
+          : entry,
+      ),
+    );
   }
 
   return (
     <div>
       <div className="mb-7">
         <h1 className="text-3xl font-bold">Discover recipes</h1>
-        <p className="mt-2 text-stone-600">Swipe quickly; every option respects your {prefs.maxTime}-minute cooking limit or is a ready fallback.</p>
+        <p className="mt-2 text-stone-600">Swipe quickly; every option respects your {formatCookingLimit(prefs.maxTime).toLowerCase()} cooking limit or is a ready fallback.</p>
       </div>
       <div className="grid gap-8 lg:grid-cols-[420px_1fr]">
         <div>
@@ -69,6 +82,9 @@ export function DiscoverScreen({
                     <ThumbsUp />
                   </button>
                 </div>
+                <AppButton variant="secondary" className="mt-3 w-full justify-center" onClick={() => onSelectMeal(current.id)}>
+                  View recipe
+                </AppButton>
               </div>
             </Card>
           ) : (
@@ -100,6 +116,9 @@ export function DiscoverScreen({
                   </div>
                   <AppButton variant="secondary" onClick={() => addToPlan(meal)}>
                     Use
+                  </AppButton>
+                  <AppButton variant="ghost" onClick={() => onSelectMeal(meal.id)}>
+                    View
                   </AppButton>
                 </div>
               ))
