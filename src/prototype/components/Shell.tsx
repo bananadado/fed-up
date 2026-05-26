@@ -1,0 +1,88 @@
+import { CalendarDays, CookingPot, Heart, Leaf, Plus, Settings2, Sparkles } from "lucide-react";
+import type { ReactNode } from "react";
+
+import { cn } from "@/lib/utils";
+import type { Screen } from "../types";
+
+export function Shell({
+  children,
+  screen,
+  setScreen,
+  onboarded,
+}: {
+  children: ReactNode;
+  screen: Screen;
+  setScreen: (screen: Screen) => void;
+  onboarded: boolean;
+}) {
+  const nav = [
+    { id: "dashboard" as const, label: "Today", icon: Sparkles },
+    { id: "calendar" as const, label: "Calendar", icon: CalendarDays },
+    { id: "plan" as const, label: "Meals", icon: CookingPot },
+    { id: "discover" as const, label: "Discover", icon: Heart },
+    { id: "recipes" as const, label: "Recipes", icon: Plus },
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#faf9f5] text-stone-900">
+      {onboarded && (
+        <header className="sticky top-0 z-20 border-b border-stone-200/80 bg-[#faf9f5]/90 backdrop-blur">
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+            <button type="button" className="flex items-center gap-2" onClick={() => setScreen("dashboard")}>
+              <div className="rounded-lg bg-emerald-700 p-2 text-white">
+                <Leaf size={18} />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-bold">Deadline Food</p>
+                <p className="text-xs text-stone-500">Autopilot</p>
+              </div>
+            </button>
+            <nav className="hidden gap-1 md:flex">
+              {nav.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setScreen(id)}
+                  className={cn(
+                    "flex items-center gap-2 rounded-lg px-4 py-2 text-sm",
+                    screen === id ? "bg-emerald-100 font-semibold text-emerald-800" : "text-stone-600 hover:bg-stone-100",
+                  )}
+                >
+                  <Icon size={16} />
+                  {label}
+                </button>
+              ))}
+            </nav>
+            <button
+              type="button"
+              onClick={() => setScreen("settings")}
+              aria-label="Open settings"
+              className={cn(
+                "rounded-lg p-2",
+                screen === "settings" ? "bg-emerald-100 text-emerald-800" : "text-stone-600 hover:bg-stone-100",
+              )}
+            >
+              <Settings2 size={20} />
+            </button>
+          </div>
+        </header>
+      )}
+      <main className={cn("mx-auto max-w-6xl", onboarded ? "px-4 pb-28 pt-7 sm:px-6 md:pb-10" : "")}>{children}</main>
+      {onboarded && (
+        <nav className="fixed bottom-0 left-0 right-0 z-20 grid grid-cols-5 border-t border-stone-200 bg-white px-1 pb-2 pt-2 md:hidden">
+          {nav.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setScreen(id)}
+              className={cn("flex flex-col items-center gap-1 rounded-lg py-1.5 text-[11px]", screen === id ? "text-emerald-700" : "text-stone-500")}
+            >
+              <Icon size={20} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
+    </div>
+  );
+}
