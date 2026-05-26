@@ -8,7 +8,8 @@
     "start": "NODE_ENV=production bun src/index.ts",
     "lint": "eslint \"src/**/*.{ts,tsx}\" build.ts bun-env.d.ts eslint.config.js playwright.config.ts",
     "typecheck": "tsc --noEmit",
-    "test:unit": "bun test --pass-with-no-tests",
+    "test:domain": "bun test src/domain --pass-with-no-tests",
+    "test:unit": "bun test src --pass-with-no-tests",
     "test:e2e": "playwright test --pass-with-no-tests",
     "audit": "sh scripts/audit.sh",
     "build": "bun run build.ts"
