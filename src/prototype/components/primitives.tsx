@@ -1,0 +1,150 @@
+import type { ReactNode } from "react";
+
+import { Button as ShadcnButton } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+
+type Tone = "neutral" | "green" | "amber" | "rose" | "blue";
+
+const badgeTones: Record<Tone, string> = {
+  neutral: "bg-stone-100 text-stone-600",
+  green: "bg-emerald-100 text-emerald-700",
+  amber: "bg-amber-100 text-amber-700",
+  rose: "bg-rose-100 text-rose-700",
+  blue: "bg-blue-100 text-blue-700",
+};
+
+type AppButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+
+const appButtonClasses: Record<AppButtonVariant, string> = {
+  primary: "bg-emerald-700 text-white hover:bg-emerald-800 shadow-sm",
+  secondary: "border border-stone-200 bg-white text-stone-800 hover:bg-stone-50",
+  ghost: "text-stone-600 hover:bg-stone-100",
+  danger: "border border-rose-100 bg-rose-50 text-rose-700 hover:bg-rose-100",
+};
+
+export function Badge({ children, tone = "neutral", className = "" }: { children: ReactNode; tone?: Tone; className?: string }) {
+  return (
+    <span className={cn("inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium", badgeTones[tone], className)}>
+      {children}
+    </span>
+  );
+}
+
+export function AppButton({
+  children,
+  variant = "primary",
+  className = "",
+  ...props
+}: Omit<React.ComponentProps<typeof ShadcnButton>, "variant"> & { variant?: AppButtonVariant }) {
+  return (
+    <ShadcnButton
+      {...props}
+      variant="ghost"
+      className={cn("h-auto rounded-lg px-4 py-2.5 text-sm font-semibold transition", appButtonClasses[variant], className)}
+    >
+      {children}
+    </ShadcnButton>
+  );
+}
+
+export function ChoiceGroup({
+  title,
+  options,
+  selected,
+  onToggle,
+  danger,
+}: {
+  title: string;
+  options: string[];
+  selected: string[];
+  onToggle: (value: string) => void;
+  danger?: boolean;
+}) {
+  return (
+    <div>
+      <p className="mb-2 text-sm font-semibold">{title}</p>
+      <div className="flex flex-wrap gap-2">
+        {options.map((option) => (
+          <button
+            key={option}
+            type="button"
+            onClick={() => onToggle(option)}
+            className={cn(
+              "rounded-full border px-3 py-2 text-sm transition",
+              selected.includes(option)
+                ? danger
+                  ? "border-rose-300 bg-rose-50 text-rose-700"
+                  : "border-emerald-600 bg-emerald-50 text-emerald-800"
+                : "border-stone-200 bg-white text-stone-600",
+            )}
+          >
+            {option}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function Field({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  step,
+}: {
+  label: string;
+  value: string | number;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  type?: string;
+  step?: string;
+}) {
+  return (
+    <Label className="block">
+      <span className="text-sm font-semibold">{label}</span>
+      <Input
+        type={type}
+        step={step}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3 focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20"
+      />
+    </Label>
+  );
+}
+
+export function SelectField({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: { label: string; value: string }[];
+  onChange: (value: string) => void;
+}) {
+  return (
+    <Label className="block">
+      <span className="text-sm font-semibold">{label}</span>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="mt-2 h-auto w-full rounded-lg border-stone-200 bg-white p-3">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </Label>
+  );
+}

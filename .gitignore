@@ -18,6 +18,9 @@ test-results
 logs
 _.log
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
 
 # dotenv environment variable files
 .env

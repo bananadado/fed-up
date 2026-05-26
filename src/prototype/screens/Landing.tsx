@@ -1,0 +1,59 @@
+import { ArrowRight, Leaf } from "lucide-react";
+
+import { Card } from "@/components/ui/card";
+import { defaultDeadlines } from "../data";
+import { AppButton, Badge } from "../components/primitives";
+
+export function Landing({ onStart }: { onStart: () => void }) {
+  return (
+    <div className="min-h-screen overflow-hidden bg-[#faf9f5]">
+      <div className="mx-auto grid min-h-screen max-w-6xl items-center gap-12 px-6 py-10 lg:grid-cols-[1.05fr_.95fr]">
+        <div>
+          <div className="mb-8 flex items-center gap-2 text-sm font-semibold text-emerald-800">
+            <Leaf size={20} />
+            Deadline Food Autopilot
+          </div>
+          <Badge tone="amber">3 deadline-heavy days detected next week</Badge>
+          <h1 className="mt-5 max-w-xl text-5xl font-bold leading-[1.04] sm:text-6xl">Eat well, even when your schedule collapses.</h1>
+          <p className="mt-6 max-w-lg text-lg leading-8 text-stone-600">
+            Connect your deadlines, choose your limits, and get a realistic meal plan that instantly adapts when cooking is no longer possible.
+          </p>
+          <div className="mt-9 flex flex-wrap gap-3">
+            <AppButton onClick={onStart} className="px-6 py-3">
+              Set up Deadline Mode <ArrowRight size={17} />
+            </AppButton>
+            <AppButton variant="secondary" onClick={onStart} className="px-6 py-3">
+              Explore demo
+            </AppButton>
+          </div>
+          <p className="mt-7 text-sm text-stone-500">No judgement. No calorie targets. Just food choices that fit the week you actually have.</p>
+        </div>
+        <Card className="relative gap-0 rounded-lg border-stone-200 bg-white p-5 shadow-xl shadow-stone-200/60">
+          <div className="flex items-center justify-between pb-4">
+            <p className="font-semibold">Next week</p>
+            <Badge tone="rose">Deadline mode</Badge>
+          </div>
+          <div className="space-y-3">
+            {defaultDeadlines.map((deadline, index) => (
+              <div key={deadline.id} className={index === 0 ? "rounded-lg border border-rose-100 bg-rose-50 p-4" : "rounded-lg border border-stone-100 bg-stone-50 p-4"}>
+                <div className="flex justify-between gap-4">
+                  <p className="font-medium">{deadline.title}</p>
+                  <span className="text-xs text-stone-500">{deadline.time}</span>
+                </div>
+                <p className="mt-1 text-sm text-stone-500">{deadline.date}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 rounded-lg bg-emerald-700 p-4 text-white">
+            <p className="text-sm text-emerald-100">Suggested next cook</p>
+            <p className="mt-1 font-semibold">Roast veg & chickpea traybake</p>
+            <div className="mt-3 flex gap-3 text-sm">
+              <span>20 mins</span>
+              <span>£2.85 / portion</span>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}
