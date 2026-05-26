@@ -144,8 +144,19 @@ const result = await Bun.build({
   plugins: [plugin],
   minify: true,
   target: "browser",
-  sourcemap: "linked",
+  sourcemap: "none",
   define: {
+    "__APP_NODE_ENV__": JSON.stringify(process.env.NODE_ENV ?? "production"),
+    "__BUN_PUBLIC_DEADLINE_FOOD_API_BACKEND__": JSON.stringify(
+      process.env.BUN_PUBLIC_DEADLINE_FOOD_API_BACKEND ?? "",
+    ),
+    "__BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL__": JSON.stringify(
+      process.env.BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL ?? "",
+    ),
+    "__BUN_PUBLIC_FIREBASE_PROJECT_ID__": JSON.stringify(process.env.BUN_PUBLIC_FIREBASE_PROJECT_ID ?? ""),
+    "__BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__": JSON.stringify(
+      process.env.BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION ?? "",
+    ),
     "process.env.NODE_ENV": JSON.stringify("production"),
   },
   ...cliConfig,
