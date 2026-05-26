@@ -67,7 +67,7 @@ export function Shell({
           </div>
         </header>
       )}
-      <main className={cn("mx-auto max-w-6xl", onboarded ? "px-4 pb-28 pt-7 sm:px-6 md:pb-10" : "")}>{children}</main>
+      <main className={cn("mx-auto max-w-7xl", onboarded ? "px-4 pb-28 pt-7 sm:px-6 md:pb-10" : "")}>{children}</main>
       {onboarded && (
         <nav className="fixed bottom-0 left-0 right-0 z-20 grid grid-cols-5 border-t border-stone-200 bg-white px-1 pb-2 pt-2 md:hidden">
           {nav.map(({ id, label, icon: Icon }) => (
