@@ -22,6 +22,7 @@ variables:
   PLAYWRIGHT_BROWSERS_PATH: "$CI_PROJECT_DIR/.cache/ms-playwright"
   SAST_EXCLUDED_ANALYZERS: "semgrep"
   VERCEL_TELEMETRY_DISABLED: "1"
+  FIREBASE_FUNCTIONS_ARTIFACT_RETENTION_DAYS: "7"
 
 include:
   - template: Security/SAST.gitlab-ci.yml
@@ -227,6 +228,7 @@ secret_detection:
       fi
     - echo "$FIREBASE_SERVICE_ACCOUNT_KEY_B64" | base64 -d > "$CI_PROJECT_DIR/firebase-service-account.json"
     - export GOOGLE_APPLICATION_CREDENTIALS="$CI_PROJECT_DIR/firebase-service-account.json"
+    - ./node_modules/.bin/firebase functions:artifacts:setpolicy --project "$FIREBASE_PROJECT_ID" --location europe-west2 --days "$FIREBASE_FUNCTIONS_ARTIFACT_RETENTION_DAYS" --force --non-interactive
     - ./node_modules/.bin/firebase deploy --project "$FIREBASE_PROJECT_ID" --only functions,firestore:rules,firestore:indexes --non-interactive
   after_script:
     - rm -f "$CI_PROJECT_DIR/firebase-service-account.json"

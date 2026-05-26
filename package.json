@@ -11,6 +11,8 @@
     "test:domain": "bun test src/domain --pass-with-no-tests",
     "test:unit": "bun test src --pass-with-no-tests",
     "test:e2e": "playwright test --pass-with-no-tests",
+    "test:all": "sh scripts/verify-local.sh",
+    "verify": "sh scripts/verify-local.sh",
     "audit": "sh scripts/audit.sh",
     "build": "bun run build.ts",
     "firebase:data": "bun run scripts/export-firebase-prototype-data.ts",
@@ -18,7 +20,8 @@
     "firebase:functions:lint": "bun run firebase:data && cd functions && bun run lint",
     "firebase:emulators": "bun run firebase:data && cd functions && bun run build && cd .. && firebase emulators:start --only functions,firestore",
     "firebase:dev": "sh scripts/firebase-local-dev.sh",
-    "firebase:deploy": "bun run firebase:data && firebase deploy --only functions,firestore:rules,firestore:indexes"
+    "firebase:artifacts:setpolicy": "firebase functions:artifacts:setpolicy --location europe-west2 --days 7 --force",
+    "firebase:deploy": "bun run firebase:data && bun run firebase:artifacts:setpolicy && firebase deploy --only functions,firestore:rules,firestore:indexes"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.7",
