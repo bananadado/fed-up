@@ -132,12 +132,20 @@ firebase_functions:
 
 e2e_tests:
   extends: .bun_job
-  image: mcr.microsoft.com/playwright:v1.60.0-noble
   stage: prototype
   needs: []
-  variables:
-    PLAYWRIGHT_BROWSERS_PATH: "/ms-playwright"
   script:
+    - |
+      for attempt in 1 2 3; do
+        if playwright install --with-deps chromium; then
+          break
+        fi
+        if [ "$attempt" = "3" ]; then
+          exit 1
+        fi
+        echo "Playwright browser install failed; retrying in 10s..."
+        sleep 10
+      done
     - bun run test:e2e
   artifacts:
     when: always
