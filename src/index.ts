@@ -1,10 +1,31 @@
 import { serve } from "bun";
 import index from "./index.html";
+import { deadlineBootstrap } from "./data/seededScenario";
+import { seededMeals } from "./data/seededMeals";
 
 const server = serve({
+  port: Number(process.env.PORT ?? 3000),
   routes: {
     // Serve index.html for all unmatched routes.
     "/*": index,
+
+    "/api/deadline-food/bootstrap": {
+      async GET() {
+        return Response.json(deadlineBootstrap);
+      },
+    },
+
+    "/api/deadline-food/meals": {
+      async GET() {
+        return Response.json(seededMeals);
+      },
+    },
+
+    "/api/deadline-food/scenario": {
+      async GET() {
+        return Response.json(deadlineBootstrap.canonicalConstraints);
+      },
+    },
 
     "/api/hello": {
       async GET() {
