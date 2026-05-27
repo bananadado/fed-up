@@ -21,6 +21,7 @@ const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
 const prototypeSessionSettingsVersion = 1;
+const publicHttpOptions = {cors: true, invoker: "public"} as const;
 
 type PrototypeData = typeof deadlineBootstrap;
 type UnknownRecord = Record<string, unknown>;
@@ -289,7 +290,7 @@ function sendSessionJson(
   });
 }
 
-export const deadlineFoodBootstrap = onRequest({cors: true}, async (request, response) => {
+export const deadlineFoodBootstrap = onRequest(publicHttpOptions, async (request, response) => {
   if (rejectUnsupportedMethod(request, response)) return;
 
   try {
@@ -299,7 +300,7 @@ export const deadlineFoodBootstrap = onRequest({cors: true}, async (request, res
   }
 });
 
-export const deadlineFoodMeals = onRequest({cors: true}, async (request, response) => {
+export const deadlineFoodMeals = onRequest(publicHttpOptions, async (request, response) => {
   if (rejectUnsupportedMethod(request, response)) return;
 
   try {
@@ -310,7 +311,7 @@ export const deadlineFoodMeals = onRequest({cors: true}, async (request, respons
   }
 });
 
-export const deadlineFoodScenario = onRequest({cors: true}, async (request, response) => {
+export const deadlineFoodScenario = onRequest(publicHttpOptions, async (request, response) => {
   if (rejectUnsupportedMethod(request, response)) return;
 
   try {
@@ -321,7 +322,7 @@ export const deadlineFoodScenario = onRequest({cors: true}, async (request, resp
   }
 });
 
-export const deadlineFoodSession = onRequest({cors: true}, async (request, response) => {
+export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, response) => {
   if (rejectUnsupportedSessionMethod(request, response)) return;
 
   try {
