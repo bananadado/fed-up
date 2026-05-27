@@ -3,8 +3,9 @@ import { ArrowRight, Leaf } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { defaultDeadlines } from "../data";
 import { AppButton, Badge } from "../components/primitives";
+import type { TrackPrototypeEvent } from "../analytics";
 
-export function Landing({ onStart }: { onStart: () => void }) {
+export function Landing({ onStart, track }: { onStart: () => void; track: TrackPrototypeEvent }) {
   return (
     <div className="min-h-screen overflow-hidden bg-[#faf9f5]">
       <div className="mx-auto grid min-h-screen max-w-6xl items-center gap-12 px-6 py-10 lg:grid-cols-[1.05fr_.95fr]">
@@ -19,10 +20,10 @@ export function Landing({ onStart }: { onStart: () => void }) {
             Connect your deadlines, choose your limits, and get a realistic meal plan that instantly adapts when cooking is no longer possible.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <AppButton onClick={onStart} className="px-6 py-3">
+            <AppButton onClick={() => { track("deadline_mode_started", { entry_point: "setup_cta" }); onStart(); }} className="px-6 py-3">
               Set up Deadline Mode <ArrowRight size={17} />
             </AppButton>
-            <AppButton variant="secondary" onClick={onStart} className="px-6 py-3">
+            <AppButton variant="secondary" onClick={() => { track("deadline_mode_started", { entry_point: "explore_demo" }); onStart(); }} className="px-6 py-3">
               Explore demo
             </AppButton>
           </div>

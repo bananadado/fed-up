@@ -5,15 +5,18 @@ import { Card } from "@/components/ui/card";
 import type { Meal } from "../types";
 import { AppButton, Field } from "../components/primitives";
 import { money } from "../utils";
+import type { TrackPrototypeEvent } from "../analytics";
 
 export function RecipesScreen({
   customRecipes,
   setCustomRecipes,
   onSelectMeal,
+  track,
 }: {
   customRecipes: Meal[];
   setCustomRecipes: (recipes: Meal[]) => void;
   onSelectMeal: (mealId: string) => void;
+  track: TrackPrototypeEvent;
 }) {
   const [form, setForm] = useState({ name: "", minutes: 10, price: 2.5, ingredients: "", tags: "" });
 
@@ -24,9 +27,8 @@ export function RecipesScreen({
       return;
     }
 
-    setCustomRecipes([
-      {
-        id: `custom-${Date.now()}`,
+    const nextRecipe = {
+      id: `custom-${Date.now()}`,
         name: form.name,
         type: "cook",
         mealSlots: ["lunch", "dinner"],
@@ -48,9 +50,16 @@ export function RecipesScreen({
         source: "My recipes",
         note: "Added by you",
         image: "🍽️",
-      },
-      ...customRecipes,
-    ]);
+      } satisfies Meal;
+
+    setCustomRecipes([nextRecipe, ...customRecipes]);
+    track("custom_recipe_added", {
+      meal_id: nextRecipe.id,
+      minutes: nextRecipe.time,
+      price: nextRecipe.price,
+      ingredient_count: nextRecipe.ingredients.length,
+      tag_count: nextRecipe.tags.length,
+    });
     setForm({ name: "", minutes: 10, price: 2.5, ingredients: "", tags: "" });
   }
 

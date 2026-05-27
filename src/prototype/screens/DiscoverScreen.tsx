@@ -6,6 +6,7 @@ import { seedMeals } from "../data";
 import type { Meal, PlanEntry, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, money } from "../utils";
+import type { TrackPrototypeEvent } from "../analytics";
 
 export function DiscoverScreen({
   prefs,
@@ -13,12 +14,14 @@ export function DiscoverScreen({
   setPlan,
   plan,
   onSelectMeal,
+  track,
 }: {
   prefs: Preferences;
   customRecipes: Meal[];
   setPlan: (plan: PlanEntry[]) => void;
   plan: PlanEntry[];
   onSelectMeal: (mealId: string) => void;
+  track: TrackPrototypeEvent;
 }) {
   const initialQueue = [...customRecipes, ...seedMeals.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))];
   const [queue, setQueue] = useState(initialQueue);
@@ -26,6 +29,10 @@ export function DiscoverScreen({
   const current = queue[0];
 
   function swipe(like: boolean) {
+    if (current) {
+      track("discover_recipe_swiped", { meal_id: current.id, liked: like });
+    }
+
     if (current && like) {
       setSaved([...saved, current]);
     }
@@ -46,6 +53,7 @@ export function DiscoverScreen({
           : entry,
       ),
     );
+    track("discover_recipe_added_to_plan", { meal_id: meal.id, target_day_index: 1, meal_slot: targetSlot });
   }
 
   return (
@@ -91,7 +99,7 @@ export function DiscoverScreen({
             <Card className="gap-0 rounded-lg border-stone-200 bg-white p-10 text-center">
               <Sparkles className="mx-auto text-emerald-700" />
               <p className="mt-4 font-semibold">You have reviewed today's suggestions.</p>
-              <AppButton variant="secondary" className="mt-4" onClick={() => setQueue(initialQueue)}>
+              <AppButton variant="secondary" className="mt-4" onClick={() => { track("discover_queue_restarted", { queue_size: initialQueue.length }); setQueue(initialQueue); }}>
                 Restart
               </AppButton>
             </Card>

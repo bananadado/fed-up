@@ -5,6 +5,7 @@ import type { Meal, PlanEntry, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
 import { getMealById, money } from "../utils";
+import type { TrackPrototypeEvent } from "../analytics";
 
 export function Dashboard({
   prefs,
@@ -12,12 +13,14 @@ export function Dashboard({
   customRecipes,
   setScreen,
   onSelectMeal,
+  track,
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
   customRecipes: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
+  track: TrackPrototypeEvent;
 }) {
   const nextCook = plan
     .flatMap((entry) =>
@@ -41,7 +44,7 @@ export function Dashboard({
           <h1 className="mt-3 text-3xl font-bold">Your week is covered.</h1>
           <p className="mt-2 text-stone-600">Mixed Mode: quick preparation plus realistic campus fallbacks.</p>
         </div>
-        <AppButton variant="secondary" onClick={() => setScreen("plan")}>
+        <AppButton variant="secondary" onClick={() => { track("dashboard_full_plan_clicked"); setScreen("plan"); }}>
           View full plan <ChevronRight size={16} />
         </AppButton>
       </div>
@@ -75,7 +78,7 @@ export function Dashboard({
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-5 sm:p-6">
           <div className="mb-5 flex items-center justify-between">
             <h2 className="text-lg font-bold">Upcoming deadlines & meals</h2>
-            <button type="button" onClick={() => setScreen("calendar")} className="text-sm font-semibold text-emerald-700">
+            <button type="button" onClick={() => { track("dashboard_calendar_clicked"); setScreen("calendar"); }} className="text-sm font-semibold text-emerald-700">
               Calendar
             </button>
           </div>

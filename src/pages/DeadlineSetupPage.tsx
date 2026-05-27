@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
+import { usePostHog } from "@posthog/react";
 
 import { MealTag } from "@/components/deadline-food/MealTag";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ function toggleValue(values: string[], value: string): string[] {
 export function DeadlineSetupPage() {
   const { state, commands } = useDeadlineMode();
   const navigate = useNavigate();
+  const posthog = usePostHog();
   const initialConstraints = state.constraints ?? state.canonicalConstraints;
   const [budgetPounds, setBudgetPounds] = useState(() =>
     initialConstraints === null ? "24" : (initialConstraints.budgetPence / 100).toFixed(0),
@@ -50,6 +52,16 @@ export function DeadlineSetupPage() {
     };
 
     if (commands.submitConstraints(constraints)) {
+      posthog?.capture("constraints_submitted", {
+        budget_pounds: Number(budgetPounds),
+        max_prep_minutes: maxPrepMinutes,
+        kitchen_access: kitchenAccess,
+        dietary_tag: dietaryTag,
+        deadline_days_count: deadlineDays.length,
+        late_campus_days_count: lateCampusDays.length,
+        meal_slots: selectedMealSlots,
+        preferred_location: preferredLocation,
+      });
       commands.viewStrategies();
       navigate("/deadline-mode/strategies");
     }

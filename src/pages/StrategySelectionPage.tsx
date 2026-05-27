@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router";
+import { usePostHog } from "@posthog/react";
 
 import { StrategyCard } from "@/components/deadline-food/StrategyCard";
 import { Button } from "@/components/ui/button";
@@ -8,8 +9,10 @@ import { useDeadlineMode } from "@/state/DeadlineModeProvider";
 export function StrategySelectionPage() {
   const { state, commands } = useDeadlineMode();
   const navigate = useNavigate();
+  const posthog = usePostHog();
 
   function selectStrategy(strategy: PlanStrategy) {
+    posthog?.capture("strategy_selected", { strategy });
     commands.selectStrategy(strategy);
     navigate("/deadline-mode/plan");
   }
