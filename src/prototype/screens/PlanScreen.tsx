@@ -6,6 +6,8 @@ import { mealSlots, seedMeals } from "../data";
 import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
+import { ShoppingListCard } from "../components/ShoppingListCard";
+import { ingredientsFromPlan } from "../shopping";
 import { getMealById, money } from "../utils";
 
 type RescueChoice = {
@@ -50,6 +52,7 @@ export function PlanScreen({
     0,
   );
   const newTotal = originalMeal && replacement ? total - originalMeal.price + replacement.price : total;
+  const shoppingItems = ingredientsFromPlan(plan, customRecipes);
 
   function confirmSwap() {
     if (!rescueChoice || !replacement) {
@@ -173,6 +176,11 @@ export function PlanScreen({
         </div>
         <div className="space-y-4">
           <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />
+          <ShoppingListCard
+            title="Plan shopping basket"
+            description="Ingredients from every planned meal, ready to search at Tesco."
+            items={shoppingItems}
+          />
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4">
             <p className="font-semibold">Prototype data</p>
             <p className="mt-2 text-sm text-stone-500">Provider prices and availability are illustrative. Swaps are filtered using your saved restrictions.</p>

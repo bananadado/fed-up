@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { seedMeals } from "../data";
 import type { Meal, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
+import { ShoppingListCard } from "../components/ShoppingListCard";
+import { aggregateIngredients } from "../shopping";
 import { mealById, money } from "../utils";
 
 type RecipeForm = {
@@ -88,6 +90,7 @@ export function RecipeDetailScreen({
   }
 
   const selectedMeal = meal;
+  const shoppingItems = aggregateIngredients(selectedMeal.ingredients);
 
   function saveMeal(nextMeal: Meal) {
     setCustomRecipes([nextMeal, ...customRecipes.filter((recipe) => recipe.id !== nextMeal.id)]);
@@ -317,27 +320,35 @@ export function RecipeDetailScreen({
           </div>
         </Card>
 
-        <Card className="h-fit gap-0 rounded-lg border-stone-200 bg-white p-5">
-          <h2 className="font-bold">Quick info</h2>
-          <dl className="mt-4 space-y-3 text-sm">
-            <div className="flex justify-between gap-3">
-              <dt className="text-stone-500">Source</dt>
-              <dd className="font-semibold text-right">{meal.source}</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-stone-500">Cost</dt>
-              <dd className="font-semibold">{money(meal.price)}</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-stone-500">Time</dt>
-              <dd className="font-semibold">{meal.time} min</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-stone-500">Rating</dt>
-              <dd className="font-semibold">{ratingLabel(computedRating)}</dd>
-            </div>
-          </dl>
-        </Card>
+        <div className="space-y-4">
+          <ShoppingListCard
+            title="Recipe shopping basket"
+            description="Ingredients for this recipe, ready to search at Tesco."
+            items={shoppingItems}
+            compact
+          />
+          <Card className="h-fit gap-0 rounded-lg border-stone-200 bg-white p-5">
+            <h2 className="font-bold">Quick info</h2>
+            <dl className="mt-4 space-y-3 text-sm">
+              <div className="flex justify-between gap-3">
+                <dt className="text-stone-500">Source</dt>
+                <dd className="font-semibold text-right">{meal.source}</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-stone-500">Cost</dt>
+                <dd className="font-semibold">{money(meal.price)}</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-stone-500">Time</dt>
+                <dd className="font-semibold">{meal.time} min</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-stone-500">Rating</dt>
+                <dd className="font-semibold">{ratingLabel(computedRating)}</dd>
+              </div>
+            </dl>
+          </Card>
+        </div>
       </div>
     </div>
   );
