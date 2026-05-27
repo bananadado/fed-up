@@ -1,6 +1,20 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const chromiumExecutablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
+const chromiumLaunchOptions = {
+  ...(chromiumExecutablePath ? { executablePath: chromiumExecutablePath } : {}),
+  ...(process.env.CI
+    ? {
+        args: [
+          "--disable-gpu",
+          "--disable-gpu-compositing",
+          "--disable-software-rasterizer",
+          "--disable-accelerated-2d-canvas",
+          "--use-gl=disabled",
+        ],
+      }
+    : {}),
+};
 
 export default defineConfig({
   testDir: "./e2e",
@@ -25,7 +39,7 @@ export default defineConfig({
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
-        ...(chromiumExecutablePath ? { launchOptions: { executablePath: chromiumExecutablePath } } : {}),
+        launchOptions: chromiumLaunchOptions,
       },
     },
   ],
