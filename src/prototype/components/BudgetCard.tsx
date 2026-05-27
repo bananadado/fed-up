@@ -19,6 +19,14 @@ export function BudgetCard({
   );
   const remaining = budget - total;
   const percent = Math.min(100, Math.round((total / Math.max(budget, 1)) * 100));
+  const batchGroups = plan
+    .flatMap((entry) => entry.meals)
+    .filter((meal) => meal.batchGroup)
+    .reduce<Record<string, number>>((groups, meal) => {
+      groups[meal.batchGroup ?? "batch"] = (groups[meal.batchGroup ?? "batch"] ?? 0) + 1;
+      return groups;
+    }, {});
+  const repeatedPortions = Object.values(batchGroups).filter((count) => count > 1).reduce((sum, count) => sum + count, 0);
 
   return (
     <div className="rounded-lg bg-emerald-800 p-5 text-white">
@@ -35,6 +43,11 @@ export function BudgetCard({
       <p className="mt-3 text-sm text-emerald-100">
         {remaining >= 0 ? `${money(remaining)} remaining from your £${budget.toFixed(0)} budget` : `${money(Math.abs(remaining))} over budget - see cheaper swaps`}
       </p>
+      {repeatedPortions > 0 && (
+        <p className="mt-2 text-sm text-emerald-100">
+          Includes {repeatedPortions} planned portions from batch-prepped or repeated meals.
+        </p>
+      )}
     </div>
   );
 }

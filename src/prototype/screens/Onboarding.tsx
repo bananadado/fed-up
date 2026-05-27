@@ -242,6 +242,15 @@ export function Onboarding({
                   { value: "none", label: "No kitchen access" },
                 ]}
               />
+              <label className="rounded-lg border border-stone-200 p-3 text-sm font-medium text-stone-700">
+                <input
+                  type="checkbox"
+                  checked={prefs.allowRepeats}
+                  onChange={(event) => { track("onboarding_preference_changed", { field: "allow_repeats", value: event.target.checked }); setPrefs({ ...prefs, allowRepeats: event.target.checked }); }}
+                  className="mr-2"
+                />
+                Repeated meals and batch prep are okay
+              </label>
               <SelectField
                 label="Your university"
                 value={prefs.university}
