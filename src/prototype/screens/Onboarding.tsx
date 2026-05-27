@@ -8,6 +8,7 @@ import { allergens, dietary, dislikes, likes, sourceOptions, universities } from
 import type { Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
+import type { TrackPrototypeEvent } from "../analytics";
 
 function Progress({ step }: { step: number }) {
   const labels = ["Calendar", "Preferences", "Recipe sources"];
@@ -41,6 +42,7 @@ export function Onboarding({
   setDeadlines,
   selectedSources,
   setSelectedSources,
+  track,
 }: {
   setOnboarded: (onboarded: boolean) => void;
   setScreen: (screen: Screen) => void;
@@ -50,6 +52,7 @@ export function Onboarding({
   setDeadlines: (deadlines: Deadline[]) => void;
   selectedSources: string[];
   setSelectedSources: (sources: string[]) => void;
+  track: TrackPrototypeEvent;
 }) {
   const [step, setStep] = useState(0);
   const [calendarChoice, setCalendarChoice] = useState("google");
@@ -85,15 +88,19 @@ export function Onboarding({
       if (parsed) {
         setDeadlines(parsed);
         setImportMessage(`${parsed.length} calendar events imported.`);
+        track("ics_calendar_imported", { event_count: parsed.length });
       } else {
         setImportMessage("No events found. Showing the example deadline week instead.");
+        track("ics_calendar_imported", { event_count: 0 });
       }
     };
     reader.readAsText(file);
   }
 
   function toggle(values: string[], value: string, update: (next: string[]) => void) {
-    update(values.includes(value) ? values.filter((item) => item !== value) : [...values, value]);
+    const selected = !values.includes(value);
+    track("onboarding_choice_toggled", { step, value, selected });
+    update(selected ? [...values, value] : values.filter((item) => item !== value));
   }
 
   function addSelection(values: string[], value: string, update: (next: string[]) => void) {
@@ -103,10 +110,17 @@ export function Onboarding({
       return;
     }
 
+    track("onboarding_custom_choice_added", { step, value: normalizedValue });
     update([...values, normalizedValue]);
   }
 
   function finish() {
+    track("onboarding_completed", {
+      recipe_sources: selectedSources,
+      dietary_requirements: prefs.dietary,
+      kitchen_access: prefs.kitchen,
+      budget_pounds: prefs.budget,
+    });
     setOnboarded(true);
     setScreen("dashboard");
   }
@@ -127,7 +141,10 @@ export function Onboarding({
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
               <button
                 type="button"
-                onClick={() => setCalendarChoice("google")}
+                onClick={() => {
+                  track("calendar_source_selected", { source: "google" });
+                  setCalendarChoice("google");
+                }}
                 className={cn("rounded-lg border p-5 text-left transition", calendarChoice === "google" ? "border-emerald-600 bg-emerald-50" : "border-stone-200 hover:border-stone-300")}
               >
                 <CalendarDays className="mb-3 text-emerald-700" />
@@ -136,7 +153,10 @@ export function Onboarding({
               </button>
               <button
                 type="button"
-                onClick={() => fileRef.current?.click()}
+                onClick={() => {
+                  track("calendar_source_selected", { source: "ics" });
+                  fileRef.current?.click();
+                }}
                 className={cn("rounded-lg border p-5 text-left transition", calendarChoice === "ics" ? "border-emerald-600 bg-emerald-50" : "border-stone-200 hover:border-stone-300")}
               >
                 <Import className="mb-3 text-emerald-700" />
@@ -164,7 +184,7 @@ export function Onboarding({
               </div>
             </div>
             <div className="mt-7 flex justify-end">
-              <AppButton onClick={() => setStep(1)}>
+              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarChoice }); setStep(1); }}>
                 Continue <ArrowRight size={16} />
               </AppButton>
             </div>
@@ -187,6 +207,8 @@ export function Onboarding({
                     value={prefs.maxTime ?? 180}
                     disabled={prefs.maxTime === null}
                     onChange={(event) => setPrefs({ ...prefs, maxTime: +event.target.value })}
+                    onMouseUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
+                    onKeyUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
                     className="w-full accent-emerald-700 disabled:opacity-40"
                   />
                   <div className="mt-2 flex items-center justify-between gap-3">
@@ -194,7 +216,7 @@ export function Onboarding({
                       Up to <strong>{formatCookingLimit(prefs.maxTime)}</strong>
                     </p>
                     <label className="flex items-center gap-2 text-sm font-medium text-stone-700">
-                      <input type="checkbox" checked={prefs.maxTime === null} onChange={(event) => setPrefs({ ...prefs, maxTime: event.target.checked ? null : 180 })} />
+                      <input type="checkbox" checked={prefs.maxTime === null} onChange={(event) => { track("onboarding_preference_changed", { field: "max_time_unlimited", value: event.target.checked }); setPrefs({ ...prefs, maxTime: event.target.checked ? null : 180 }); }} />
                       Unlimited
                     </label>
                   </div>
@@ -207,13 +229,13 @@ export function Onboarding({
                 <span className="text-sm font-semibold">Weekly food budget</span>
                 <div className="mt-2 flex items-center rounded-lg border border-stone-200 px-3">
                   <span className="text-stone-500">£</span>
-                  <Input value={prefs.budget} onChange={(event) => setPrefs({ ...prefs, budget: +event.target.value || 0 })} type="number" min="1" className="h-auto border-0 p-3 shadow-none focus-visible:ring-0" />
+                  <Input value={prefs.budget} onChange={(event) => setPrefs({ ...prefs, budget: +event.target.value || 0 })} onBlur={() => track("onboarding_preference_changed", { field: "budget", value: prefs.budget })} type="number" min="1" className="h-auto border-0 p-3 shadow-none focus-visible:ring-0" />
                 </div>
               </label>
               <SelectField
                 label="Kitchen access"
                 value={prefs.kitchen}
-                onChange={(kitchen) => setPrefs({ ...prefs, kitchen })}
+                onChange={(kitchen) => { track("onboarding_preference_changed", { field: "kitchen", value: kitchen }); setPrefs({ ...prefs, kitchen }); }}
                 options={[
                   { value: "full", label: "Full kitchen" },
                   { value: "limited", label: "Microwave / kettle only" },
@@ -223,10 +245,10 @@ export function Onboarding({
               <SelectField
                 label="Your university"
                 value={prefs.university}
-                onChange={(university) => setPrefs({ ...prefs, university })}
+                onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
                 options={universities.map((university) => ({ value: university, label: university }))}
               />
-              <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} placeholder="e.g. SW7 2AZ" />
+              <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
             </div>
             <div className="mt-7 space-y-5">
               <ChoiceGroup
@@ -264,10 +286,10 @@ export function Onboarding({
               />
             </div>
             <div className="mt-8 flex justify-between">
-              <AppButton variant="ghost" onClick={() => setStep(0)}>
+              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); setStep(0); }}>
                 <ArrowLeft size={16} /> Back
               </AppButton>
-              <AppButton onClick={() => setStep(2)}>
+              <AppButton onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); setStep(2); }}>
                 Continue <ArrowRight size={16} />
               </AppButton>
             </div>
@@ -286,7 +308,10 @@ export function Onboarding({
                   <button
                     key={source.id}
                     type="button"
-                    onClick={() => setSelectedSources(active ? selectedSources.filter((value) => value !== source.id) : [...selectedSources, source.id])}
+                    onClick={() => {
+                      track("recipe_source_toggled", { source: source.id, selected: !active });
+                      setSelectedSources(active ? selectedSources.filter((value) => value !== source.id) : [...selectedSources, source.id]);
+                    }}
                     className={cn("flex w-full items-center justify-between rounded-lg border p-4 text-left", active ? "border-emerald-600 bg-emerald-50" : "border-stone-200")}
                   >
                     <div>
@@ -300,7 +325,7 @@ export function Onboarding({
             </div>
             <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
             <div className="mt-8 flex justify-between">
-              <AppButton variant="ghost" onClick={() => setStep(1)}>
+              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); setStep(1); }}>
                 <ArrowLeft size={16} /> Back
               </AppButton>
               <AppButton onClick={finish}>

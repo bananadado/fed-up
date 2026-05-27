@@ -7,6 +7,7 @@ import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
 import { getMealById, money } from "../utils";
+import type { TrackPrototypeEvent } from "../analytics";
 
 type RescueChoice = {
   day: string;
@@ -26,6 +27,7 @@ export function PlanScreen({
   customRecipes,
   setScreen,
   onSelectMeal,
+  track,
 }: {
   plan: PlanEntry[];
   setPlan: (plan: PlanEntry[]) => void;
@@ -33,6 +35,7 @@ export function PlanScreen({
   customRecipes: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
+  track: TrackPrototypeEvent;
 }) {
   const [rescueChoice, setRescueChoice] = useState<RescueChoice>(null);
   const originalDay = rescueChoice ? plan.find((entry) => entry.day === rescueChoice.day) : null;
@@ -66,6 +69,13 @@ export function PlanScreen({
           : entry,
       ),
     );
+    track("meal_swap_confirmed", {
+      day: rescueChoice.day,
+      meal_slot: rescueChoice.slot,
+      original_meal_id: originalPlanMeal?.mealId,
+      replacement_meal_id: replacement.id,
+      minutes_saved: originalMeal ? Math.max(0, originalMeal.time - replacement.time) : undefined,
+    });
     setRescueChoice(null);
   }
 
@@ -76,7 +86,7 @@ export function PlanScreen({
           <h1 className="text-3xl font-bold">Planned meals</h1>
           <p className="mt-2 text-stone-600">A practical plan for your deadline-heavy week.</p>
         </div>
-        <AppButton variant="secondary" onClick={() => setScreen("discover")}>
+        <AppButton variant="secondary" onClick={() => { track("find_alternatives_clicked", { source_screen: "plan" }); setScreen("discover"); }}>
           <Heart size={16} /> Find alternatives
         </AppButton>
       </div>
@@ -126,7 +136,7 @@ export function PlanScreen({
                           </div>
                           <p className="mt-2 line-clamp-2 text-sm text-stone-500">{meal.source}</p>
                         </button>
-                        <AppButton variant="danger" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => setRescueChoice({ day: entry.day, slot })}>
+                        <AppButton variant="danger" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
                           <RefreshCcw size={15} /> Choose a different option
                         </AppButton>
                       </div>
@@ -160,7 +170,7 @@ export function PlanScreen({
                             {meal.time} mins - {money(meal.price)}
                           </p>
                         </button>
-                        <AppButton variant="danger" className="mt-3 w-full justify-center px-3 py-2 text-xs" onClick={() => setRescueChoice({ day: entry.day, slot })}>
+                        <AppButton variant="danger" className="mt-3 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
                           <RefreshCcw size={15} /> Choose a different option
                         </AppButton>
                       </div>
@@ -187,7 +197,7 @@ export function PlanScreen({
                 <Badge tone="amber">{slotLabels[rescueChoice.slot]}</Badge>
                 <h2 className="mt-3 text-2xl font-bold">Choose a different option</h2>
               </div>
-              <button type="button" aria-label="Close option chooser" onClick={() => setRescueChoice(null)} className="h-fit rounded-lg p-2 hover:bg-stone-100">
+              <button type="button" aria-label="Close option chooser" onClick={() => { track("meal_swap_cancelled", { action: "close", day: rescueChoice.day, meal_slot: rescueChoice.slot }); setRescueChoice(null); }} className="h-fit rounded-lg p-2 hover:bg-stone-100">
                 <X size={18} />
               </button>
             </div>
@@ -224,7 +234,7 @@ export function PlanScreen({
               <p className="mt-1 text-stone-300">{prefs.budget - newTotal >= 0 ? `Still ${money(prefs.budget - newTotal)} within budget.` : `${money(newTotal - prefs.budget)} over budget.`}</p>
             </div>
             <div className="mt-5 flex gap-3">
-              <AppButton variant="secondary" className="flex-1" onClick={() => setRescueChoice(null)}>
+              <AppButton variant="secondary" className="flex-1" onClick={() => { track("meal_swap_cancelled", { action: "keep_original", day: rescueChoice.day, meal_slot: rescueChoice.slot }); setRescueChoice(null); }}>
                 Keep original
               </AppButton>
               <AppButton className="flex-1" onClick={confirmSwap}>

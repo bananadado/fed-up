@@ -7,13 +7,22 @@
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { PostHogErrorBoundary, PostHogProvider } from "@posthog/react";
 import { App } from "./App";
+import { posthog, registerPostHogSession } from "./lib/posthog";
+import { getOrCreateAnonymousSessionId } from "./prototype/anonymousSessionApi";
 
 const elem = document.getElementById("root")!;
+registerPostHogSession(posthog, getOrCreateAnonymousSessionId());
+
 const app = (
-  <StrictMode>
-    <App />
-  </StrictMode>
+  <PostHogProvider client={posthog}>
+    <PostHogErrorBoundary>
+      <StrictMode>
+        <App />
+      </StrictMode>
+    </PostHogErrorBoundary>
+  </PostHogProvider>
 );
 
 if (import.meta.hot) {

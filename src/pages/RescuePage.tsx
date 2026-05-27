@@ -1,6 +1,7 @@
 import { ArrowLeft, CheckCircle2, Clock, Wallet } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import { usePostHog } from "@posthog/react";
 
 import { FallbackMealCard } from "@/components/deadline-food/FallbackMealCard";
 import { formatPence } from "@/components/deadline-food/format";
@@ -26,6 +27,7 @@ export function RescuePage() {
   const { dayId } = useParams();
   const { state, commands } = useDeadlineMode();
   const navigate = useNavigate();
+  const posthog = usePostHog();
 
   useEffect(() => {
     if (dayId !== undefined && state.activePlan !== null && state.currentRescueDayId !== dayId) {
@@ -49,6 +51,13 @@ export function RescuePage() {
   const bestProposal = proposals[0];
 
   function confirm(proposal: RescueProposal) {
+    posthog?.capture("rescue_confirmed", {
+      day_id: dayId,
+      original_meal_id: proposal.originalMeal.id,
+      replacement_meal_id: proposal.replacement.id,
+      time_saved_minutes: proposal.timeSavedMinutes,
+      within_budget: proposal.newBudgetDifferencePence >= 0,
+    });
     commands.confirmRescue(proposal);
     navigate("/deadline-mode/plan");
   }
