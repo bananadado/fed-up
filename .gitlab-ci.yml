@@ -136,6 +136,10 @@ e2e_tests:
   needs: []
   script:
     - |
+      if command -v apt-get >/dev/null 2>&1 && [ -w /etc/apt/apt.conf.d ]; then
+        printf 'Acquire::Max-FutureTime "7200";\n' > /etc/apt/apt.conf.d/99-ci-max-future-time
+      fi
+
       for attempt in 1 2 3; do
         if playwright install --with-deps chromium; then
           break

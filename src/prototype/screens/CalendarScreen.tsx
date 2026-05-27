@@ -2,8 +2,9 @@ import type { Deadline, Screen } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { days } from "../data";
 import { cn } from "@/lib/utils";
+import type { TrackPrototypeEvent } from "../analytics";
 
-export function CalendarScreen({ deadlines, setScreen }: { deadlines: Deadline[]; setScreen: (screen: Screen) => void }) {
+export function CalendarScreen({ deadlines, setScreen, track }: { deadlines: Deadline[]; setScreen: (screen: Screen) => void; track: TrackPrototypeEvent }) {
   return (
     <div>
       <div className="mb-7 flex items-end justify-between gap-4">
@@ -11,7 +12,7 @@ export function CalendarScreen({ deadlines, setScreen }: { deadlines: Deadline[]
           <h1 className="text-3xl font-bold">Deadline calendar</h1>
           <p className="mt-2 text-stone-600">Autopilot uses workload intensity to reduce cooking effort.</p>
         </div>
-        <AppButton variant="secondary" onClick={() => setScreen("settings")}>
+        <AppButton variant="secondary" onClick={() => { track("calendar_manage_import_clicked", { deadline_count: deadlines.length }); setScreen("settings"); }}>
           Manage import
         </AppButton>
       </div>

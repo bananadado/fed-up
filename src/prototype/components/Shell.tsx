@@ -2,6 +2,7 @@ import { CalendarDays, CookingPot, Heart, Leaf, Plus, Settings2, Sparkles } from
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
+import type { TrackPrototypeEvent } from "../analytics";
 import type { Screen } from "../types";
 
 export function Shell({
@@ -9,11 +10,13 @@ export function Shell({
   screen,
   setScreen,
   onboarded,
+  track,
 }: {
   children: ReactNode;
   screen: Screen;
   setScreen: (screen: Screen) => void;
   onboarded: boolean;
+  track: TrackPrototypeEvent;
 }) {
   const nav = [
     { id: "dashboard" as const, label: "Today", icon: Sparkles },
@@ -28,7 +31,14 @@ export function Shell({
       {onboarded && (
         <header className="sticky top-0 z-20 border-b border-stone-200/80 bg-[#faf9f5]/90 backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-            <button type="button" className="flex items-center gap-2" onClick={() => setScreen("dashboard")}>
+            <button
+              type="button"
+              className="flex items-center gap-2"
+              onClick={() => {
+                track("navigation_clicked", { target_screen: "dashboard", source_screen: screen, location: "header_brand" });
+                setScreen("dashboard");
+              }}
+            >
               <div className="rounded-lg bg-emerald-700 p-2 text-white">
                 <Leaf size={18} />
               </div>
@@ -42,7 +52,10 @@ export function Shell({
                 <button
                   key={id}
                   type="button"
-                  onClick={() => setScreen(id)}
+                  onClick={() => {
+                    track("navigation_clicked", { target_screen: id, source_screen: screen, location: "desktop_nav" });
+                    setScreen(id);
+                  }}
                   className={cn(
                     "flex items-center gap-2 rounded-lg px-4 py-2 text-sm",
                     screen === id ? "bg-emerald-100 font-semibold text-emerald-800" : "text-stone-600 hover:bg-stone-100",
@@ -55,7 +68,10 @@ export function Shell({
             </nav>
             <button
               type="button"
-              onClick={() => setScreen("settings")}
+              onClick={() => {
+                track("navigation_clicked", { target_screen: "settings", source_screen: screen, location: "settings_button" });
+                setScreen("settings");
+              }}
               aria-label="Open settings"
               className={cn(
                 "rounded-lg p-2",
@@ -74,7 +90,10 @@ export function Shell({
             <button
               key={id}
               type="button"
-              onClick={() => setScreen(id)}
+              onClick={() => {
+                track("navigation_clicked", { target_screen: id, source_screen: screen, location: "mobile_nav" });
+                setScreen(id);
+              }}
               className={cn("flex flex-col items-center gap-1 rounded-lg py-1.5 text-[11px]", screen === id ? "text-emerald-700" : "text-stone-500")}
             >
               <Icon size={20} />

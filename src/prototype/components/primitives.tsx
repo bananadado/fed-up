@@ -128,6 +128,7 @@ export function Field({
   placeholder,
   type = "text",
   step,
+  onBlur,
 }: {
   label: string;
   value: string | number;
@@ -135,6 +136,7 @@ export function Field({
   placeholder?: string;
   type?: string;
   step?: string;
+  onBlur?: () => void;
 }) {
   return (
     <Label className="block">
@@ -144,6 +146,7 @@ export function Field({
         step={step}
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        onBlur={onBlur}
         placeholder={placeholder}
         className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3 focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20"
       />

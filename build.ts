@@ -157,6 +157,8 @@ const result = await Bun.build({
     "__BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__": JSON.stringify(
       process.env.BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION ?? "",
     ),
+    "__BUN_PUBLIC_POSTHOG_PROJECT_TOKEN__": JSON.stringify(process.env.BUN_PUBLIC_POSTHOG_PROJECT_TOKEN ?? ""),
+    "__BUN_PUBLIC_POSTHOG_HOST__": JSON.stringify(process.env.BUN_PUBLIC_POSTHOG_HOST ?? ""),
     "process.env.NODE_ENV": JSON.stringify("production"),
   },
   ...cliConfig,

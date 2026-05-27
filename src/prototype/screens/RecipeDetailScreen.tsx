@@ -7,6 +7,7 @@ import { seedMeals } from "../data";
 import type { Meal, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
 import { mealById, money } from "../utils";
+import type { TrackPrototypeEvent } from "../analytics";
 
 type RecipeForm = {
   name: string;
@@ -56,11 +57,13 @@ export function RecipeDetailScreen({
   customRecipes,
   setCustomRecipes,
   setScreen,
+  track,
 }: {
   mealId: string;
   customRecipes: Meal[];
   setCustomRecipes: (recipes: Meal[]) => void;
   setScreen: (screen: Screen) => void;
+  track: TrackPrototypeEvent;
 }) {
   const meal = mealById(mealId, customRecipes);
   const fallbackMeal = (seedMeals[0] ?? customRecipes[0]) as Meal;
@@ -116,10 +119,18 @@ export function RecipeDetailScreen({
         .filter(Boolean),
       note: form.note.trim(),
     });
+    track("recipe_saved", {
+      meal_id: selectedMeal.id,
+      minutes: Number(form.time) || 0,
+      price: Number(form.price) || 0,
+      ingredient_count: splitList(form.ingredients).length,
+      tag_count: splitList(form.tags).length,
+    });
     setIsEditing(false);
   }
 
   function cancelEdit() {
+    track("recipe_edit_cancelled", { meal_id: selectedMeal.id });
     setForm(mealToForm(selectedMeal));
     setIsEditing(false);
   }
@@ -145,17 +156,18 @@ export function RecipeDetailScreen({
     const nextRating = nextReviews.reduce((sum, item) => sum + item.rating, 0) / nextReviews.length;
 
     saveMeal({ ...selectedMeal, reviews: nextReviews, rating: nextRating });
+    track("recipe_review_submitted", { meal_id: selectedMeal.id, rating: nextReviews[0]?.rating ?? 0 });
     setReview({ author: "You", rating: 5, comment: "" });
   }
 
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <AppButton variant="ghost" className="px-0" onClick={() => setScreen("plan")}>
+        <AppButton variant="ghost" className="px-0" onClick={() => { track("recipe_back_to_plan_clicked", { meal_id: selectedMeal.id }); setScreen("plan"); }}>
           <ArrowLeft size={16} /> Back to plan
         </AppButton>
         {!isEditing && (
-          <AppButton variant="secondary" onClick={() => setIsEditing(true)}>
+          <AppButton variant="secondary" onClick={() => { track("recipe_edit_started", { meal_id: selectedMeal.id }); setIsEditing(true); }}>
             <Pencil size={16} /> Edit recipe
           </AppButton>
         )}
