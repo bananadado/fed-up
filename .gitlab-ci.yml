@@ -116,14 +116,14 @@ firebase_functions:
       if [ ! -e functions/node_modules ]; then
         if [ -d "$APP_DEPS_DIR/functions/node_modules" ] &&
           [ -f "$APP_DEPS_DIR/functions/package.json" ] &&
-          [ -f "$APP_DEPS_DIR/functions/package-lock.json" ] &&
+          [ -f "$APP_DEPS_DIR/functions/bun.lock" ] &&
           cmp -s "$APP_DEPS_DIR/functions/package.json" functions/package.json &&
-          cmp -s "$APP_DEPS_DIR/functions/package-lock.json" functions/package-lock.json; then
+          cmp -s "$APP_DEPS_DIR/functions/bun.lock" functions/bun.lock; then
           ln -s "$APP_DEPS_DIR/functions/node_modules" functions/node_modules
           echo "Using Firebase function dependencies baked into $APP_CI_IMAGE"
         else
-          echo "Baked Firebase function dependencies missing or stale; running npm ci"
-          npm --prefix functions ci
+          echo "Baked Firebase function dependencies missing or stale; running bun install"
+          (cd functions && bun install --frozen-lockfile --omit peer)
         fi
       fi
     - bun run firebase:data
@@ -224,14 +224,14 @@ secret_detection:
       if [ ! -e functions/node_modules ]; then
         if [ -d "$APP_DEPS_DIR/functions/node_modules" ] &&
           [ -f "$APP_DEPS_DIR/functions/package.json" ] &&
-          [ -f "$APP_DEPS_DIR/functions/package-lock.json" ] &&
+          [ -f "$APP_DEPS_DIR/functions/bun.lock" ] &&
           cmp -s "$APP_DEPS_DIR/functions/package.json" functions/package.json &&
-          cmp -s "$APP_DEPS_DIR/functions/package-lock.json" functions/package-lock.json; then
+          cmp -s "$APP_DEPS_DIR/functions/bun.lock" functions/bun.lock; then
           ln -s "$APP_DEPS_DIR/functions/node_modules" functions/node_modules
           echo "Using Firebase function dependencies baked into $APP_CI_IMAGE"
         else
-          echo "Baked Firebase function dependencies missing or stale; running npm ci"
-          npm --prefix functions ci
+          echo "Baked Firebase function dependencies missing or stale; running bun install"
+          (cd functions && bun install --frozen-lockfile --omit peer)
         fi
       fi
     - echo "$FIREBASE_SERVICE_ACCOUNT_KEY_B64" | base64 -d > "$CI_PROJECT_DIR/firebase-service-account.json"

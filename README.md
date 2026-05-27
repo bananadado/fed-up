@@ -26,6 +26,17 @@ bun run verify
 
 This runs root lint/typecheck/unit/domain tests, Firebase data generation, functions lint/build, app build, audit, and Playwright e2e tests. If the e2e step reports a missing browser executable, run `bunx playwright install chromium` once and rerun `bun run verify`.
 
+## Anonymous session storage
+
+The prototype persists user settings with anonymous no-sign-in sessions. The
+browser stores only an opaque session ID; settings are saved through the backend
+to Firestore in `anonymousSessions/{sessionId}`. Stale anonymous records are
+handled with a 90-day `expiresAt` field that should be managed by Firestore TTL.
+
+See [docs/anonymous-session-storage.md](docs/anonymous-session-storage.md) for
+the data model, API contract, retention policy, local emulator flow, and
+migration path.
+
 ## Firebase CI deploy setup
 
 GitLab deploys Firebase with these CI/CD variables:

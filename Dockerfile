@@ -8,14 +8,16 @@ ENV NPM_CONFIG_UPDATE_NOTIFIER=false
 WORKDIR ${APP_DEPS_DIR}
 
 COPY package.json bun.lock ./
-COPY functions/package.json functions/package-lock.json ./functions/
+COPY functions/package.json functions/bun.lock ./functions/
 
 RUN npm install --global "bun@${BUN_VERSION}" --silent \
   && node --version \
   && npm --version \
   && bun --version \
   && bun install --frozen-lockfile --omit peer \
-  && npm --prefix functions ci \
+  && cd functions \
+  && bun install --frozen-lockfile --omit peer \
+  && cd .. \
   && rm -rf /root/.npm /root/.bun/install/cache /tmp/*
 
 WORKDIR /workspace
