@@ -3,7 +3,6 @@ import {FieldValue, getFirestore, Timestamp} from "firebase-admin/firestore";
 import {onRequest} from "firebase-functions/v2/https";
 import {setGlobalOptions} from "firebase-functions/v2/options";
 import * as logger from "firebase-functions/logger";
-import type {Request, Response} from "express";
 import {randomUUID} from "crypto";
 import {
   canonicalConstraints,
@@ -24,9 +23,20 @@ const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
 const prototypeSessionSettingsVersion = 1;
 
 type PrototypeData = typeof deadlineBootstrap;
-type HttpRequest = Request;
-type HttpResponse = Response;
 type UnknownRecord = Record<string, unknown>;
+
+type HttpRequest = {
+  method: string;
+  query: Record<string, unknown>;
+  body: unknown;
+};
+
+type HttpResponse = {
+  set(name: string, value: string): HttpResponse;
+  status(code: number): HttpResponse;
+  json(body: unknown): void;
+  send(body: string): void;
+};
 
 type PrototypeSessionSettings = {
   settingsVersion: typeof prototypeSessionSettingsVersion;
