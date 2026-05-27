@@ -9,18 +9,20 @@ declare const __BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__: string | undefined;
 const DEFAULT_FIREBASE_PROJECT_ID = "drp03-50059";
 const DEFAULT_FIREBASE_FUNCTIONS_REGION = "europe-west2";
 
-type DeadlineEndpoint = "bootstrap" | "meals" | "scenario";
+export type DeadlineEndpoint = "bootstrap" | "meals" | "scenario" | "session";
 
 const firebaseFunctionNames: Record<DeadlineEndpoint, string> = {
   bootstrap: "deadlineFoodBootstrap",
   meals: "deadlineFoodMeals",
   scenario: "deadlineFoodScenario",
+  session: "deadlineFoodSession",
 };
 
 const localApiPaths: Record<DeadlineEndpoint, string> = {
   bootstrap: "/api/deadline-food/bootstrap",
   meals: "/api/deadline-food/meals",
   scenario: "/api/deadline-food/scenario",
+  session: "/api/deadline-food/session",
 };
 
 function readRuntimeEnv(key: string): string | undefined {
@@ -102,7 +104,7 @@ function firebaseFunctionsBaseUrl(): string {
   return `https://${region}-${projectId}.cloudfunctions.net`;
 }
 
-function endpointUrl(endpoint: DeadlineEndpoint): string {
+export function deadlineFoodEndpointUrl(endpoint: DeadlineEndpoint): string {
   if (!shouldUseFirebaseBackend()) {
     return localApiPaths[endpoint];
   }
@@ -125,19 +127,19 @@ async function readJson<T>(response: Response, label: string): Promise<T> {
 }
 
 export async function fetchDeadlineBootstrap(): Promise<DeadlineBootstrap> {
-  const response = await fetch(endpointUrl("bootstrap"));
+  const response = await fetch(deadlineFoodEndpointUrl("bootstrap"));
 
   return readJson<DeadlineBootstrap>(response, "Bootstrap");
 }
 
 export async function fetchSeededMeals(): Promise<MealOption[]> {
-  const response = await fetch(endpointUrl("meals"));
+  const response = await fetch(deadlineFoodEndpointUrl("meals"));
 
   return readJson<MealOption[]>(response, "Meal catalogue");
 }
 
 export async function fetchCanonicalScenario(): Promise<PlanningConstraints> {
-  const response = await fetch(endpointUrl("scenario"));
+  const response = await fetch(deadlineFoodEndpointUrl("scenario"));
 
   return readJson<PlanningConstraints>(response, "Scenario");
 }
