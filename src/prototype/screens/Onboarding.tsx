@@ -250,6 +250,15 @@ export function Onboarding({
               />
               <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
             </div>
+            <div className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">
+              <p className="font-semibold">Why we ask for university and area</p>
+              <p className="mt-1">
+                University helps suggest campus fallback meals. Postcode is used as a general area signal for nearby shops and can be replaced with a broad campus postcode.
+              </p>
+              <button type="button" onClick={() => track("privacy_policy_opened", { source: "onboarding_location" })} className="mt-2 font-semibold underline underline-offset-4">
+                View privacy summary
+              </button>
+            </div>
             <div className="mt-7 space-y-5">
               <ChoiceGroup
                 title="Dietary requirements"
