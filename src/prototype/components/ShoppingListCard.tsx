@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { AppButton, SelectField } from "./primitives";
 import type { GroceryVendor, ShoppingItem } from "../shopping";
-import { formatShoppingList, shoppingItemKey } from "../shopping";
+import { formatShoppingList, shoppingItemKey, shoppingItemLabel } from "../shopping";
 
 async function writeClipboardText(value: string) {
   if (navigator.clipboard) {
@@ -24,7 +24,7 @@ async function writeClipboardText(value: string) {
 }
 
 function currentItemKeys(items: ShoppingItem[]) {
-  return new Set(items.map((item) => shoppingItemKey(item.name)));
+  return new Set(items.map((item) => shoppingItemKey(item)));
 }
 
 function readStoredCheckedItems(storageKey: string | undefined, items: ShoppingItem[]) {
@@ -98,7 +98,7 @@ export function ShoppingListCard({
 }) {
   const [copied, setCopied] = useState(false);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => readStoredCheckedItems(storageKey, items));
-  const outstandingItems = useMemo(() => items.filter((item) => !checkedItems[shoppingItemKey(item.name)]), [checkedItems, items]);
+  const outstandingItems = useMemo(() => items.filter((item) => !checkedItems[shoppingItemKey(item)]), [checkedItems, items]);
   const listText = useMemo(() => formatShoppingList(outstandingItems), [outstandingItems]);
   const checkedCount = items.length - outstandingItems.length;
 
@@ -117,9 +117,9 @@ export function ShoppingListCard({
     setCheckedItems((current) => {
       const nextCheckedItems = {
         ...current,
-        [shoppingItemKey(item.name)]: checked,
+        [shoppingItemKey(item)]: checked,
       };
-      const nextCheckedCount = items.filter((shoppingItem) => nextCheckedItems[shoppingItemKey(shoppingItem.name)]).length;
+      const nextCheckedCount = items.filter((shoppingItem) => nextCheckedItems[shoppingItemKey(shoppingItem)]).length;
 
       writeStoredCheckedItems(storageKey, nextCheckedItems, items);
       onToggleItem?.(item.name, checked, nextCheckedCount, items.length);
@@ -163,13 +163,12 @@ export function ShoppingListCard({
             <label className="flex min-w-0 items-center gap-2">
               <input
                 type="checkbox"
-                checked={Boolean(checkedItems[shoppingItemKey(item.name)])}
+                checked={Boolean(checkedItems[shoppingItemKey(item)])}
                 onChange={(event) => toggleItem(item, event.target.checked)}
                 className="size-4 rounded border-stone-300 text-emerald-700 accent-emerald-700"
               />
-              <span className={checkedItems[shoppingItemKey(item.name)] ? "min-w-0 text-sm text-stone-400 line-through" : "min-w-0 text-sm text-stone-700"}>
-                {item.name}
-                {item.count > 1 && <span className="ml-1 text-xs font-semibold text-stone-500">x{item.count}</span>}
+              <span className={checkedItems[shoppingItemKey(item)] ? "min-w-0 text-sm text-stone-400 line-through" : "min-w-0 text-sm text-stone-700"}>
+                {shoppingItemLabel(item)}
               </span>
             </label>
             <AppButton
@@ -177,7 +176,7 @@ export function ShoppingListCard({
               variant="secondary"
               className="shrink-0 px-3 py-1.5 text-xs"
               onClick={() => onOpenIngredient(item.name)}
-              disabled={Boolean(checkedItems[shoppingItemKey(item.name)])}
+              disabled={Boolean(checkedItems[shoppingItemKey(item)])}
               aria-label={`Search ${item.name} at ${selectedVendor.label}`}
             >
               <ExternalLink size={14} /> Search
