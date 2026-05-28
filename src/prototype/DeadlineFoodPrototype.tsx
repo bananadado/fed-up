@@ -163,7 +163,12 @@ export function DeadlineFoodPrototype() {
 
         if (snapshot.settings !== null) {
           setPrefs(snapshot.settings.preferences);
-          setDeadlines(snapshot.settings.deadlines);
+          setDeadlines(snapshot.settings.deadlines.map((d): Deadline => ({
+            ...d,
+            eventType: d.eventType ?? "general",
+            effortHours: d.effortHours ?? 3,
+            urgency: d.urgency ?? "medium",
+          })));
           setSelectedSources(snapshot.settings.selectedSources);
           setOnboarded(snapshot.settings.onboarded);
         }
@@ -233,7 +238,7 @@ export function DeadlineFoodPrototype() {
   return (
     <Shell screen={screen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
       {screen === "dashboard" && <Dashboard prefs={prefs} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {screen === "calendar" && <CalendarScreen deadlines={deadlines} setScreen={navigateScreen} track={track} />}
+      {screen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} setScreen={navigateScreen} track={track} />}
       {screen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
       {screen === "discover" && <DiscoverScreen prefs={prefs} customRecipes={customRecipes} plan={plan} setPlan={setPlan} saved={discoverSaved} setSaved={setDiscoverSaved} rejected={discoverRejected} setRejected={setDiscoverRejected} onSelectMeal={openRecipe} track={track} />}
       {screen === "recipes" && <RecipesScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} onSelectMeal={openRecipe} track={track} />}

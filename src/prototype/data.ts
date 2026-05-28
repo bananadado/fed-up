@@ -21,9 +21,9 @@ const sampleReviews = (rating: number, comment: string): RecipeReview[] => [
 ];
 
 export const defaultDeadlines: Deadline[] = [
-  { id: "d1", title: "Algorithms coursework", date: "Wed 3 Jun", time: "16:00", intensity: "High" },
-  { id: "d2", title: "Design review", date: "Thu 4 Jun", time: "10:00", intensity: "Medium" },
-  { id: "d3", title: "Databases quiz", date: "Fri 5 Jun", time: "09:00", intensity: "High" },
+  { id: "d1", title: "Algorithms coursework", date: "Wed 3 Jun", time: "16:00", intensity: "High", eventType: "academic", effortHours: 8, urgency: "high", confirmed: true },
+  { id: "d2", title: "Design review", date: "Thu 4 Jun", time: "10:00", intensity: "Medium", eventType: "academic", effortHours: 4, urgency: "medium", confirmed: true },
+  { id: "d3", title: "Databases quiz", date: "Fri 5 Jun", time: "09:00", intensity: "High", eventType: "academic", effortHours: 5, urgency: "high", confirmed: true },
 ];
 
 export const seedMeals: Meal[] = [
