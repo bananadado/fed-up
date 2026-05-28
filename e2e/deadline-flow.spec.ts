@@ -45,6 +45,12 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.getByRole("button", { name: /recipes/i }).click();
   await expect(page.getByRole("heading", { name: /my recipes/i })).toBeVisible();
   await page.getByLabel("Recipe name").fill("Microwave bean burrito");
+  await page.getByLabel("Servings").fill("3");
+  await page.getByLabel("Total recipe cost (£)").fill("4.50");
+  await expect(page.getByText("Estimated cost per portion: £1.50")).toBeVisible();
+  await page.getByLabel("Ingredients").fill("beans, wrap, tomato");
+  await page.getByLabel("Steps").fill("Warm the beans.\nFill the wrap.");
   await page.getByRole("button", { name: /add recipe/i }).click();
   await expect(page.getByText("Microwave bean burrito")).toBeVisible();
+  await expect(page.getByText("10 minutes - beans, wrap, tomato")).toBeVisible();
 });
