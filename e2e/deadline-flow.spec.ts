@@ -3,8 +3,9 @@ import { expect, test } from "@playwright/test";
 test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: /eat well, even when your schedule collapses/i })).toBeVisible();
-  await page.getByRole("button", { name: /set up deadline mode/i }).click();
+  await expect(page.getByRole("heading", { name: /healthy meals that fit around coursework/i })).toBeVisible();
+  await expect(page.getByText(/meal planning for busy study weeks/i)).toBeVisible();
+  await page.getByRole("button", { name: /build my meal plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /link google calendar/i })).toBeVisible();

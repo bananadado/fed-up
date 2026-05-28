@@ -77,7 +77,7 @@ export function Dashboard({
         </div>
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-5 sm:p-6">
           <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-lg font-bold">Upcoming deadlines & meals</h2>
+            <h2 className="text-lg font-bold">Upcoming meals</h2>
             <button type="button" onClick={() => { track("dashboard_calendar_clicked"); setScreen("calendar"); }} className="text-sm font-semibold text-emerald-700">
               Calendar
             </button>
