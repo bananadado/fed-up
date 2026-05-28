@@ -8,6 +8,53 @@
   body {
     @apply min-w-[320px] min-h-screen relative m-0 bg-slate-50 text-foreground;
   }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 9999px;
+    background: #a7f3d0; /* emerald-200 */
+    cursor: pointer;
+    outline: none;
+  }
+
+  input[type="range"]:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2.5px solid #15803d; /* emerald-700 */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    transition: box-shadow 0.15s ease;
+  }
+
+  input[type="range"]:not(:disabled)::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 5px rgba(21, 128, 61, 0.12), 0 1px 4px rgba(0, 0, 0, 0.18);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2.5px solid #15803d;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: #a7f3d0;
+  }
 }
 
 @media (prefers-reduced-motion) {
