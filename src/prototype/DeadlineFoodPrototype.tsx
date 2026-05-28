@@ -56,6 +56,8 @@ export function DeadlineFoodPrototype() {
   const [selectedSources, setSelectedSources] = useState(["budget", "bbc", "own", "campus"]);
   const [plan, setPlan] = useState<PlanEntry[]>(initialPlan);
   const [customRecipes, setCustomRecipes] = useState<Meal[]>([]);
+  const [discoverSaved, setDiscoverSaved] = useState<Meal[]>([]);
+  const [discoverRejected, setDiscoverRejected] = useState<Meal[]>([]);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
   const navigateScreen = useCallback((nextScreen: Screen) => {
     if (screen === nextScreen) return;
@@ -182,11 +184,11 @@ export function DeadlineFoodPrototype() {
   }
 
   return (
-    <Shell screen={screen} setScreen={navigateScreen} onboarded={onboarded} track={track}>
-      {screen === "dashboard" && <Dashboard prefs={prefs} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {screen === "calendar" && <CalendarScreen deadlines={deadlines} setScreen={navigateScreen} track={track} />}
-      {screen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {screen === "discover" && <DiscoverScreen prefs={prefs} customRecipes={customRecipes} plan={plan} setPlan={setPlan} onSelectMeal={openRecipe} track={track} />}
+    <Shell screen={screen} setScreen={setScreen} onboarded={onboarded} track={track}>
+      {screen === "dashboard" && <Dashboard prefs={prefs} plan={plan} customRecipes={customRecipes} setScreen={setScreen} onSelectMeal={openRecipe} track={track} />}
+      {screen === "calendar" && <CalendarScreen deadlines={deadlines} setScreen={setScreen} track={track} />}
+      {screen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={setScreen} onSelectMeal={openRecipe} track={track} />}
+      {screen === "discover" && <DiscoverScreen prefs={prefs} customRecipes={customRecipes} plan={plan} setPlan={setPlan} saved={discoverSaved} setSaved={setDiscoverSaved} rejected={discoverRejected} setRejected={setDiscoverRejected} onSelectMeal={openRecipe} track={track} />}
       {screen === "recipes" && <RecipesScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} onSelectMeal={openRecipe} track={track} />}
       {screen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} track={track} />}
       {screen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} track={track} />}
