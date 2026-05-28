@@ -133,6 +133,8 @@ firebase_functions:
 e2e_tests:
   extends: .bun_job
   stage: prototype
+  tags:
+    - gpu
   needs: []
   script:
     - |
