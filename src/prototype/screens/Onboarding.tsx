@@ -252,7 +252,7 @@ export function Onboarding({
             </div>
             <div className="mt-7 space-y-5">
               <ChoiceGroup
-                title="Dietary requirements (optional)"
+                title="Dietary requirements (leave blank if none)"
                 options={dietary}
                 selected={prefs.dietary}
                 onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
@@ -269,12 +269,12 @@ export function Onboarding({
                 danger
               />
               <ChoiceGroup
-                title="Foods and meals I like"
+                title="Optional inspiration foods"
                 options={likes}
                 selected={prefs.likes}
                 onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
                 onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                addPlaceholder="Add anything else you like"
+                addPlaceholder="Add a meal you often choose"
               />
               <ChoiceGroup
                 title="Ingredients I dislike"
@@ -298,8 +298,8 @@ export function Onboarding({
         {step === 2 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 3 of 3</Badge>
-            <h2 className="mt-4 text-3xl font-bold">Choose your recipe sources</h2>
-            <p className="mt-2 text-stone-600">Pick where Autopilot may recommend meals from. You can change this later.</p>
+            <h2 className="mt-4 text-3xl font-bold">Choose recommendation priorities</h2>
+            <p className="mt-2 text-stone-600">Pick what Autopilot should optimise for. You can change this later.</p>
             <div className="mt-7 space-y-3">
               {sourceOptions.map((source) => {
                 const active = selectedSources.includes(source.id);

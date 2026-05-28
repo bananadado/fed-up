@@ -16,7 +16,8 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await expect(page.getByRole("button", { name: "Aubergine" })).toBeVisible();
   await page.getByRole("button", { name: /continue/i }).click();
 
-  await expect(page.getByRole("heading", { name: /choose your recipe sources/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /choose recommendation priorities/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /keep costs low/i })).toBeVisible();
   await page.getByRole("button", { name: /create my plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
