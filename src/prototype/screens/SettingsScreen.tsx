@@ -81,7 +81,7 @@ export function SettingsScreen({
         </div>
         <div className="mt-6 space-y-5">
           <ChoiceGroup
-            title="Dietary requirements (optional)"
+            title="Dietary requirements (leave blank if none)"
             options={dietary}
             selected={prefs.dietary}
             onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
@@ -98,12 +98,12 @@ export function SettingsScreen({
             danger
           />
           <ChoiceGroup
-            title="Foods and meals I like"
+            title="Optional inspiration foods"
             options={likes}
             selected={prefs.likes}
             onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
             onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-            addPlaceholder="Add anything else you like"
+            addPlaceholder="Add a meal you often choose"
           />
           <ChoiceGroup
             title="Ingredients I dislike"
