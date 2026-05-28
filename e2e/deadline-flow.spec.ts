@@ -52,7 +52,7 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.getByRole("button", { name: /change meal/i }).first().click();
   await expect(page.getByRole("heading", { name: /change this meal/i })).toBeVisible();
   await expect(page.getByText(/suggested suitable option/i)).toBeVisible();
-  await expect(page.getByText(/plan total after this change/i)).toBeVisible();
+  await expect(page.getByText(/after best fit/i)).toBeVisible();
   await page.getByRole("button", { name: /use suggested meal/i }).click();
   await expect(page.getByText("Rescued")).toBeVisible();
 
