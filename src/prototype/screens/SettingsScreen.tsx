@@ -79,6 +79,15 @@ export function SettingsScreen({
             options={universities.map((university) => ({ value: university, label: university }))}
           />
         </div>
+        <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4 text-sm leading-6 text-stone-600">
+          <p className="font-semibold text-stone-900">Location and privacy</p>
+          <p className="mt-1">
+            University is used for campus meal context. Postcode can be a broad area or campus postcode; it helps estimate nearby shop and fallback options.
+          </p>
+          <button type="button" onClick={() => track("privacy_policy_opened", { source: "settings_location" })} className="mt-2 font-semibold text-emerald-700 underline underline-offset-4">
+            View privacy summary
+          </button>
+        </div>
         <div className="mt-6 space-y-5">
           <ChoiceGroup
             title="Dietary requirements (leave blank if none)"
