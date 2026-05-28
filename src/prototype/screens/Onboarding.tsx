@@ -252,7 +252,7 @@ export function Onboarding({
             </div>
             <div className="mt-7 space-y-5">
               <ChoiceGroup
-                title="Dietary requirements"
+                title="Dietary requirements (optional)"
                 options={dietary}
                 selected={prefs.dietary}
                 onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}

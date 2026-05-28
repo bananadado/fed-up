@@ -81,7 +81,7 @@ export function SettingsScreen({
         </div>
         <div className="mt-6 space-y-5">
           <ChoiceGroup
-            title="Dietary requirements"
+            title="Dietary requirements (optional)"
             options={dietary}
             selected={prefs.dietary}
             onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
