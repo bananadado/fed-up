@@ -165,10 +165,10 @@ export function DeadlineFoodPrototype() {
   }
 
   if (screen === "landing") {
-    return <Landing onStart={() => navigateScreen(onboarded ? "dashboard" : "onboarding")} track={track} />;
+    return <Landing onStart={() => navigateScreen("onboarding")} track={track} />;
   }
 
-  if (!onboarded && screen === "onboarding") {
+  if (screen === "onboarding") {
     return (
       <Onboarding
         setOnboarded={setOnboarded}
