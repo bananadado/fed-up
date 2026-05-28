@@ -104,7 +104,11 @@ export function DiscoverScreen({
               <div className="flex h-48 items-center justify-center bg-emerald-50 text-7xl">{current.image}</div>
               <div className="p-6">
                 <div className="flex justify-between gap-3">
-                  <h2 className="text-xl font-bold">{current.name}</h2>
+                  <h2 className="text-xl font-bold">
+                    <button type="button" onClick={() => onSelectMeal(current.id)} className="text-left hover:text-emerald-700 hover:underline">
+                      {current.name}
+                    </button>
+                  </h2>
                   <span className="whitespace-nowrap font-semibold text-emerald-700">{money(current.price)}</span>
                 </div>
                 <p className="mt-2 text-sm text-stone-500">
@@ -159,7 +163,9 @@ export function DiscoverScreen({
                 {rejected.map((meal) => (
                   <div key={meal.id} className="grid gap-3 rounded-lg bg-rose-50 p-3 sm:grid-cols-[1fr_auto_auto] sm:items-center">
                     <div className="min-w-0">
-                      <p className="font-semibold text-stone-800">{meal.image} {meal.name}</p>
+                      <button type="button" onClick={() => onSelectMeal(meal.id)} className="text-left font-semibold text-stone-800 hover:text-emerald-700 hover:underline">
+                        {meal.image} {meal.name}
+                      </button>
                       <p className="text-sm text-stone-500">{meal.time} min · {money(meal.price)}</p>
                     </div>
                     <AppButton variant="secondary" onClick={() => undo(meal)}>Undo</AppButton>
@@ -174,9 +180,9 @@ export function DiscoverScreen({
               saved.map((meal) => (
                 <div key={meal.id} className="grid gap-3 rounded-lg bg-stone-50 p-4 sm:grid-cols-[1fr_auto_auto] sm:items-center">
                   <div className="min-w-0">
-                    <p className="font-semibold">
+                    <button type="button" onClick={() => onSelectMeal(meal.id)} className="text-left font-semibold hover:text-emerald-700 hover:underline">
                       {meal.image} {meal.name}
-                    </p>
+                    </button>
                     <p className="text-sm text-stone-500">
                       {meal.time} min - {money(meal.price)}
                     </p>

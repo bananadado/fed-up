@@ -243,7 +243,7 @@ export function DeadlineFoodPrototype() {
       {screen === "discover" && <DiscoverScreen prefs={prefs} customRecipes={customRecipes} plan={plan} setPlan={setPlan} saved={discoverSaved} setSaved={setDiscoverSaved} rejected={discoverRejected} setRejected={setDiscoverRejected} onSelectMeal={openRecipe} track={track} />}
       {screen === "recipes" && <RecipesScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} onSelectMeal={openRecipe} track={track} />}
       {screen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} track={track} />}
-      {screen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} track={track} />}
+      {screen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} backTo={previousScreen} track={track} />}
     </Shell>
   );
 }
