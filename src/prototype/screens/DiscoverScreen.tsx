@@ -83,7 +83,7 @@ export function DiscoverScreen({
     <div>
       <div className="mb-7">
         <h1 className="text-3xl font-bold">Discover recipes</h1>
-        <p className="mt-2 text-stone-600">Swipe quickly; every option respects your {formatCookingLimit(prefs.maxTime).toLowerCase()} cooking limit or is a ready fallback.</p>
+        <p className="mt-2 text-stone-600">Every option respects your {formatCookingLimit(prefs.maxTime).toLowerCase()} cooking limit or is a ready fallback.</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {(["priority", "time", "price", "health"] as const).map((option) => (
             <button
@@ -169,7 +169,7 @@ export function DiscoverScreen({
               </div>
             )}
             {saved.length === 0 ? (
-              <p className="rounded-lg bg-stone-50 p-4 text-sm text-stone-500">Swipe right on a suitable recipe to save it here.</p>
+              <p className="rounded-lg bg-stone-50 p-4 text-sm text-stone-500">Like a suitable recipe to save it here.</p>
             ) : (
               saved.map((meal) => (
                 <div key={meal.id} className="grid gap-3 rounded-lg bg-stone-50 p-4 sm:grid-cols-[1fr_auto_auto] sm:items-center">
