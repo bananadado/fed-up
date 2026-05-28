@@ -1,4 +1,4 @@
-import { ArrowLeft, MessageSquare, Pencil, Save, ShoppingCart, X } from "lucide-react";
+import { ArrowLeft, MessageSquare, Pencil, Save, X } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { seedMeals } from "../data";
 import type { Meal, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
+import { ShoppingListCard } from "../components/ShoppingListCard";
+import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import { mealById, money } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -52,11 +54,6 @@ function ratingLabel(rating: number) {
   return rating > 0 ? `${rating.toFixed(1)} / 5` : "No ratings yet";
 }
 
-function vendorBasketUrl(meal: Meal) {
-  const query = meal.ingredients.join(" ");
-  return `https://www.tesco.com/groceries/en-GB/search?query=${encodeURIComponent(query)}`;
-}
-
 export function RecipeDetailScreen({
   mealId,
   customRecipes,
@@ -75,6 +72,7 @@ export function RecipeDetailScreen({
   const [form, setForm] = useState<RecipeForm>(() => mealToForm(meal ?? fallbackMeal));
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
 
   const computedRating = useMemo(() => {
     if (!meal || meal.reviews.length === 0) {
@@ -96,6 +94,8 @@ export function RecipeDetailScreen({
   }
 
   const selectedMeal = meal;
+  const selectedVendor = groceryVendorById(selectedVendorId);
+  const shoppingItems = aggregateIngredients(selectedMeal.ingredients);
 
   function saveMeal(nextMeal: Meal) {
     setCustomRecipes([nextMeal, ...customRecipes.filter((recipe) => recipe.id !== nextMeal.id)]);
@@ -165,9 +165,38 @@ export function RecipeDetailScreen({
     setReview({ author: "You", rating: 5, comment: "" });
   }
 
-  function openVendorBasket() {
-    track("vendor_basket_opened", { meal_id: selectedMeal.id, ingredient_count: selectedMeal.ingredients.length, vendor: "tesco" });
-    window.open(vendorBasketUrl(selectedMeal), "_blank", "noopener,noreferrer");
+  function selectVendor(vendorId: string) {
+    setSelectedVendorId(vendorId);
+    track("vendor_selected", { meal_id: selectedMeal.id, vendor: vendorId });
+  }
+
+  function openIngredientSearch(ingredient: string) {
+    track("vendor_ingredient_search_opened", {
+      meal_id: selectedMeal.id,
+      ingredient,
+      ingredient_count: selectedMeal.ingredients.length,
+      vendor: selectedVendor.id,
+    });
+    window.open(selectedVendor.searchUrl(ingredient), "_blank", "noopener,noreferrer");
+  }
+
+  function copyShoppingList() {
+    track("vendor_shopping_list_copied", {
+      meal_id: selectedMeal.id,
+      ingredient_count: selectedMeal.ingredients.length,
+      vendor: selectedVendor.id,
+    });
+  }
+
+  function toggleShoppingItem(ingredient: string, checked: boolean, checkedCount: number, itemCount: number) {
+    track("vendor_shopping_item_toggled", {
+      meal_id: selectedMeal.id,
+      ingredient,
+      checked,
+      checked_count: checkedCount,
+      ingredient_count: itemCount,
+      vendor: selectedVendor.id,
+    });
   }
 
   return (
@@ -178,9 +207,6 @@ export function RecipeDetailScreen({
         </AppButton>
         {!isEditing && (
           <div className="flex flex-wrap gap-3">
-            <AppButton variant="secondary" onClick={openVendorBasket}>
-              <ShoppingCart size={16} /> Add ingredients to basket
-            </AppButton>
             <AppButton variant="secondary" onClick={() => { track("recipe_edit_started", { meal_id: selectedMeal.id }); setIsEditing(true); }}>
               <Pencil size={16} /> Edit recipe
             </AppButton>
@@ -344,27 +370,42 @@ export function RecipeDetailScreen({
           </div>
         </Card>
 
-        <Card className="h-fit gap-0 rounded-lg border-stone-200 bg-white p-5">
-          <h2 className="font-bold">Quick info</h2>
-          <dl className="mt-4 space-y-3 text-sm">
-            <div className="flex justify-between gap-3">
-              <dt className="text-stone-500">Source</dt>
-              <dd className="font-semibold text-right">{meal.source}</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-stone-500">Cost</dt>
-              <dd className="font-semibold">{money(meal.price)}</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-stone-500">Time</dt>
-              <dd className="font-semibold">{meal.time} min</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-stone-500">Rating</dt>
-              <dd className="font-semibold">{ratingLabel(computedRating)}</dd>
-            </div>
-          </dl>
-        </Card>
+        <div className="order-first space-y-4 lg:order-none">
+          <ShoppingListCard
+            title="Recipe shopping list"
+            description="Search ingredients one at a time, or copy the list for any supermarket app."
+            items={shoppingItems}
+            selectedVendor={selectedVendor}
+            vendors={groceryVendors}
+            onSelectVendor={selectVendor}
+            onOpenIngredient={openIngredientSearch}
+            onCopy={copyShoppingList}
+            onToggleItem={toggleShoppingItem}
+            storageKey={`deadline-food:recipe-shopping-list:${selectedMeal.id}`}
+            compact
+          />
+          <Card className="h-fit gap-0 rounded-lg border-stone-200 bg-white p-5">
+            <h2 className="font-bold">Quick info</h2>
+            <dl className="mt-4 space-y-3 text-sm">
+              <div className="flex justify-between gap-3">
+                <dt className="text-stone-500">Source</dt>
+                <dd className="font-semibold text-right">{meal.source}</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-stone-500">Cost</dt>
+                <dd className="font-semibold">{money(meal.price)}</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-stone-500">Time</dt>
+                <dd className="font-semibold">{meal.time} min</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-stone-500">Rating</dt>
+                <dd className="font-semibold">{ratingLabel(computedRating)}</dd>
+              </div>
+            </dl>
+          </Card>
+        </div>
       </div>
     </div>
   );
