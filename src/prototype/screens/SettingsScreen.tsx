@@ -1,24 +1,53 @@
-import { Import } from "lucide-react";
+import { useRef, useState } from "react";
+import { Import, RotateCcw } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { allergens, dietary, dislikes, likes, universities } from "../data";
-import type { Preferences, Screen } from "../types";
+import { cn } from "@/lib/utils";
+import { allergens, calendarProviders, dietary, dislikes, likes, universities } from "../data";
+import type { CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
-import { formatCookingLimit } from "../utils";
+import { formatCookingLimit, parseICS } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
 export function SettingsScreen({
   prefs,
   setPrefs,
   setScreen,
+  calendarProvider,
+  setCalendarProvider,
+  setDeadlines,
   track,
 }: {
   prefs: Preferences;
   setPrefs: (prefs: Preferences) => void;
   setScreen: (screen: Screen) => void;
+  calendarProvider: CalendarProvider;
+  setCalendarProvider: (provider: CalendarProvider) => void;
+  setDeadlines: (deadlines: Deadline[]) => void;
   track: TrackPrototypeEvent;
 }) {
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const [importMessage, setImportMessage] = useState("");
+
+  function handleICSImport(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const parsed = parseICS(String(reader.result));
+      if (parsed) {
+        setDeadlines(parsed);
+        setImportMessage(`${parsed.length} calendar events imported.`);
+        track("ics_calendar_imported", { event_count: parsed.length });
+      } else {
+        setImportMessage("No events found in file.");
+        track("ics_calendar_imported", { event_count: 0 });
+      }
+    };
+    reader.readAsText(file);
+  }
+
   function toggle(values: string[], value: string, update: (next: string[]) => void) {
     const selected = !values.includes(value);
     track("settings_choice_toggled", { value, selected });
@@ -125,10 +154,40 @@ export function SettingsScreen({
         </div>
         <div className="mt-6 rounded-lg bg-stone-50 p-4">
           <p className="font-semibold">Calendar connection</p>
-          <p className="mt-1 text-sm text-stone-500">Google Calendar - Sample connection enabled</p>
-          <AppButton variant="secondary" className="mt-4" onClick={() => track("settings_reimport_clicked")}>
-            <Import size={15} /> Re-import .ics
-          </AppButton>
+          <p className="mt-1 text-sm text-stone-500">Calendar titles and times are used only to adapt meal effort around busy study days.</p>
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {calendarProviders.map((provider) => (
+              <button
+                key={provider.id}
+                type="button"
+                onClick={() => { track("settings_calendar_provider_changed", { provider: provider.id }); setCalendarProvider(provider.id); }}
+                className={cn(
+                  "rounded-md border px-3 py-2 text-left text-sm transition",
+                  calendarProvider === provider.id ? "border-emerald-600 bg-emerald-50 font-semibold text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300",
+                )}
+              >
+                {provider.name}
+              </button>
+            ))}
+          </div>
+          <div className="mt-4 flex flex-wrap gap-3">
+            {calendarProvider !== "manual" ? (
+              <>
+                <AppButton variant="secondary" onClick={() => track("settings_calendar_reconnect_clicked", { provider: calendarProvider })}>
+                  <RotateCcw size={15} /> Reconnect {calendarProviders.find((p) => p.id === calendarProvider)?.name}
+                </AppButton>
+                <AppButton variant="ghost" onClick={() => fileRef.current?.click()}>
+                  <Import size={15} /> Import one-time .ics
+                </AppButton>
+              </>
+            ) : (
+              <AppButton variant="secondary" onClick={() => fileRef.current?.click()}>
+                <Import size={15} /> Import .ics file
+              </AppButton>
+            )}
+          </div>
+          <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={handleICSImport} />
+          {importMessage && <p className="mt-3 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
         </div>
         <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <AppButton variant="secondary" onClick={() => setScreen("dashboard")}>Back to dashboard</AppButton>

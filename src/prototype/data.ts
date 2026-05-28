@@ -1,4 +1,11 @@
-import type { Deadline, Meal, MealSlot, PlanEntry, Preferences, RecipeReview } from "./types";
+import type { CalendarProvider, Deadline, Meal, MealSlot, PlanEntry, Preferences, RecipeReview } from "./types";
+
+export const calendarProviders: { id: CalendarProvider; name: string; hint: string; recommended: boolean }[] = [
+  { id: "google", name: "Google Calendar", hint: "Link with your Google account", recommended: true },
+  { id: "outlook", name: "Outlook Calendar", hint: "Link with your Microsoft account", recommended: false },
+  { id: "apple", name: "Apple Calendar", hint: "Link with your Apple ID", recommended: false },
+  { id: "manual", name: "Manual (.ics)", hint: "One-time file import", recommended: false },
+];
 
 export const days = ["Mon 1 Jun", "Tue 2 Jun", "Wed 3 Jun", "Thu 4 Jun", "Fri 5 Jun"];
 export const mealSlots: MealSlot[] = ["breakfast", "lunch", "dinner"];
