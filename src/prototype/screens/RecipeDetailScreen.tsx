@@ -1,4 +1,4 @@
-import { ArrowLeft, MessageSquare, Pencil, Save, X } from "lucide-react";
+import { ArrowLeft, MessageSquare, Pencil, Save, ShoppingCart, X } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -50,6 +50,11 @@ function splitList(value: string) {
 
 function ratingLabel(rating: number) {
   return rating > 0 ? `${rating.toFixed(1)} / 5` : "No ratings yet";
+}
+
+function vendorBasketUrl(meal: Meal) {
+  const query = meal.ingredients.join(" ");
+  return `https://www.tesco.com/groceries/en-GB/search?query=${encodeURIComponent(query)}`;
 }
 
 export function RecipeDetailScreen({
@@ -160,6 +165,11 @@ export function RecipeDetailScreen({
     setReview({ author: "You", rating: 5, comment: "" });
   }
 
+  function openVendorBasket() {
+    track("vendor_basket_opened", { meal_id: selectedMeal.id, ingredient_count: selectedMeal.ingredients.length, vendor: "tesco" });
+    window.open(vendorBasketUrl(selectedMeal), "_blank", "noopener,noreferrer");
+  }
+
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
@@ -167,9 +177,14 @@ export function RecipeDetailScreen({
           <ArrowLeft size={16} /> Back to plan
         </AppButton>
         {!isEditing && (
-          <AppButton variant="secondary" onClick={() => { track("recipe_edit_started", { meal_id: selectedMeal.id }); setIsEditing(true); }}>
-            <Pencil size={16} /> Edit recipe
-          </AppButton>
+          <div className="flex flex-wrap gap-3">
+            <AppButton variant="secondary" onClick={openVendorBasket}>
+              <ShoppingCart size={16} /> Add ingredients to basket
+            </AppButton>
+            <AppButton variant="secondary" onClick={() => { track("recipe_edit_started", { meal_id: selectedMeal.id }); setIsEditing(true); }}>
+              <Pencil size={16} /> Edit recipe
+            </AppButton>
+          </div>
         )}
       </div>
 
