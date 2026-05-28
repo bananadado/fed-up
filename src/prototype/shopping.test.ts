@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { aggregateIngredients, formatShoppingList, groceryVendorById, shoppingItemKey } from "./shopping";
+import { aggregateIngredients, formatShoppingList, groceryVendorById, shoppingItemKey, shoppingItemLabel } from "./shopping";
 
 describe("shopping helpers", () => {
   test("aggregates duplicate ingredients case-insensitively", () => {
@@ -17,8 +17,26 @@ describe("shopping helpers", () => {
     ])).toBe("berries\noats x2");
   });
 
+  test("aggregates structured ingredients by canonical name and unit", () => {
+    const items = aggregateIngredients([
+      { name: "tomato", quantity: 100, unit: "g", preparation: "chopped" },
+      { name: "tomato", quantity: 50, unit: "g", preparation: "sliced" },
+      { name: "tomato", quantity: 1, unit: "serving" },
+      { name: "pepper", quantity: 0.5, unit: "cup", preparation: "frozen" },
+    ]);
+
+    expect(items).toEqual([
+      { name: "pepper", count: 1, quantity: 0.5, unit: "cup", preparations: ["frozen"] },
+      { name: "tomato", count: 2, quantity: 150, unit: "g", preparations: ["chopped", "sliced"] },
+      { name: "tomato", count: 1, quantity: 1, unit: "serving", preparations: undefined },
+    ]);
+    expect(items.map(shoppingItemLabel)).toEqual(["0.5 cups pepper", "150g tomato", "tomato"]);
+    expect(formatShoppingList(items)).toBe("0.5 cups pepper\n150g tomato\ntomato");
+  });
+
   test("normalises shopping item keys for checklist state", () => {
     expect(shoppingItemKey("  Oat Milk ")).toBe("oat milk");
+    expect(shoppingItemKey({ name: "Tomato", count: 1, quantity: 100, unit: "g" })).toBe("tomato:g");
   });
 
   test("builds selected vendor search URLs for one ingredient at a time", () => {

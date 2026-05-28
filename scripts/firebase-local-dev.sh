@@ -6,6 +6,8 @@ REGION="${FIREBASE_FUNCTIONS_REGION:-europe-west2}"
 FUNCTIONS_HOST="${FIREBASE_FUNCTIONS_HOST:-127.0.0.1}"
 FUNCTIONS_PORT="${FIREBASE_FUNCTIONS_PORT:-5001}"
 FUNCTIONS_BASE_URL="http://${FUNCTIONS_HOST}:${FUNCTIONS_PORT}/${PROJECT_ID}/${REGION}"
+OPENFOODFACTS_BASE_URL="${OPENFOODFACTS_BASE_URL:-https://world.openfoodfacts.net}"
+export OPENFOODFACTS_BASE_URL
 
 cleanup() {
   if [ -n "${EMULATOR_PID:-}" ]; then
@@ -40,7 +42,12 @@ done
 
 echo "Firebase emulator is ready."
 echo "Emulator UI: http://127.0.0.1:4000"
+echo "OpenFoodFacts API: ${OPENFOODFACTS_BASE_URL}"
 echo "Starting app on http://localhost:3000"
-echo "Open: http://localhost:3000/?deadlineFoodApiBackend=firebase&firebaseFunctionsBaseUrl=${FUNCTIONS_BASE_URL}"
+echo "Open: http://localhost:3000/"
 
+BUN_PUBLIC_DEADLINE_FOOD_API_BACKEND=firebase \
+BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL="${FUNCTIONS_BASE_URL}" \
+BUN_PUBLIC_FIREBASE_PROJECT_ID="${PROJECT_ID}" \
+BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION="${REGION}" \
 bun run dev

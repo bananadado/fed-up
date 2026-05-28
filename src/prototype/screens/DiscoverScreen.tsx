@@ -6,6 +6,7 @@ import { seedMeals } from "../data";
 import type { Meal, PlanEntry, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, money } from "../utils";
+import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
 export function DiscoverScreen({
@@ -117,6 +118,11 @@ export function DiscoverScreen({
                   {current.tags.slice(0, 3).map((tag) => (
                     <Badge key={tag} tone="green">
                       {tag}
+                    </Badge>
+                  ))}
+                  {mealHealthSignals(current).map((signal) => (
+                    <Badge key={signal} tone="blue">
+                      {signal}
                     </Badge>
                   ))}
                 </div>

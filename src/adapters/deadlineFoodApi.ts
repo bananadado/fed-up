@@ -9,13 +9,14 @@ declare const __BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__: string | undefined;
 const DEFAULT_FIREBASE_PROJECT_ID = "drp03-50059";
 const DEFAULT_FIREBASE_FUNCTIONS_REGION = "europe-west2";
 
-export type DeadlineEndpoint = "bootstrap" | "meals" | "scenario" | "session";
+export type DeadlineEndpoint = "bootstrap" | "meals" | "scenario" | "session" | "nutrition";
 
 const firebaseFunctionNames: Record<DeadlineEndpoint, string> = {
   bootstrap: "deadlineFoodBootstrap",
   meals: "deadlineFoodMeals",
   scenario: "deadlineFoodScenario",
   session: "deadlineFoodSession",
+  nutrition: "deadlineFoodNutrition",
 };
 
 const localApiPaths: Record<DeadlineEndpoint, string> = {
@@ -23,6 +24,7 @@ const localApiPaths: Record<DeadlineEndpoint, string> = {
   meals: "/api/deadline-food/meals",
   scenario: "/api/deadline-food/scenario",
   session: "/api/deadline-food/session",
+  nutrition: "/api/deadline-food/nutrition/openfoodfacts",
 };
 
 function readRuntimeEnv(key: string): string | undefined {
@@ -55,25 +57,48 @@ function readBrowserOverride(key: string): string | undefined {
   return value ?? undefined;
 }
 
-function shouldUseFirebaseBackend(): boolean {
-  const backend =
+function configuredBackend(): string | undefined {
+  return (
     readBrowserOverride("deadlineFoodApiBackend") ??
     readPublicEnv(
       typeof __BUN_PUBLIC_DEADLINE_FOOD_API_BACKEND__ === "undefined"
         ? undefined
         : __BUN_PUBLIC_DEADLINE_FOOD_API_BACKEND__,
       "BUN_PUBLIC_DEADLINE_FOOD_API_BACKEND",
-    );
+    )
+  );
+}
+
+function appNodeEnv(): string | undefined {
+  return readPublicEnv(
+    typeof __APP_NODE_ENV__ === "undefined" ? undefined : __APP_NODE_ENV__,
+    "NODE_ENV",
+  );
+}
+
+function shouldUseFirebaseBackend(): boolean {
+  const backend = configuredBackend();
 
   if (backend === "local") return false;
   if (backend === "firebase") return true;
 
-  const nodeEnv = readPublicEnv(
-    typeof __APP_NODE_ENV__ === "undefined" ? undefined : __APP_NODE_ENV__,
-    "NODE_ENV",
-  );
+  return appNodeEnv() === "production";
+}
 
-  return nodeEnv === "production";
+function firebaseProjectId(): string {
+  return readPublicEnv(
+    typeof __BUN_PUBLIC_FIREBASE_PROJECT_ID__ === "undefined" ? undefined : __BUN_PUBLIC_FIREBASE_PROJECT_ID__,
+    "BUN_PUBLIC_FIREBASE_PROJECT_ID",
+  ) ?? DEFAULT_FIREBASE_PROJECT_ID;
+}
+
+function firebaseFunctionsRegion(): string {
+  return readPublicEnv(
+    typeof __BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__ === "undefined"
+      ? undefined
+      : __BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__,
+    "BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION",
+  ) ?? DEFAULT_FIREBASE_FUNCTIONS_REGION;
 }
 
 function firebaseFunctionsBaseUrl(): string {
@@ -88,18 +113,8 @@ function firebaseFunctionsBaseUrl(): string {
 
   if (explicitBaseUrl) return explicitBaseUrl.replace(/\/$/, "");
 
-  const projectId =
-    readPublicEnv(
-      typeof __BUN_PUBLIC_FIREBASE_PROJECT_ID__ === "undefined" ? undefined : __BUN_PUBLIC_FIREBASE_PROJECT_ID__,
-      "BUN_PUBLIC_FIREBASE_PROJECT_ID",
-    ) ?? DEFAULT_FIREBASE_PROJECT_ID;
-  const region =
-    readPublicEnv(
-      typeof __BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__ === "undefined"
-        ? undefined
-        : __BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__,
-      "BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION",
-    ) ?? DEFAULT_FIREBASE_FUNCTIONS_REGION;
+  const projectId = firebaseProjectId();
+  const region = firebaseFunctionsRegion();
 
   return `https://${region}-${projectId}.cloudfunctions.net`;
 }

@@ -6,7 +6,9 @@ import { mealSlots, seedMeals } from "../data";
 import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
+import { ingredientName } from "../ingredients";
 import { getMealById, money } from "../utils";
+import { mealHealthSignals, weeklyBalanceSummary } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
 type RescueChoice = {
@@ -46,14 +48,14 @@ export function PlanScreen({
   const replacement = seedMeals
     .filter((meal) => rescueChoice && meal.mealSlots.includes(rescueChoice.slot))
     .filter((meal) => meal.id !== originalPlanMeal?.mealId)
-    .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredient.toLowerCase())))
+    .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
     .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
     .sort((a, b) => a.time - b.time || a.price - b.price)[0];
   const browseOptions = rescueChoice
     ? [...customRecipes, ...seedMeals.filter((m) => !customRecipes.some((c) => c.id === m.id))]
         .filter((meal) => meal.mealSlots.includes(rescueChoice.slot))
         .filter((meal) => meal.id !== originalPlanMeal?.mealId)
-        .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredient.toLowerCase())))
+        .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
         .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
         .sort((a, b) => {
           const aScore = a.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
@@ -156,6 +158,13 @@ export function PlanScreen({
                             </span>
                             <span>{money(meal.price)}</span>
                           </div>
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {mealHealthSignals(meal).map((signal) => (
+                              <Badge key={signal} tone="blue">
+                                {signal}
+                              </Badge>
+                            ))}
+                          </div>
                           <p className="mt-2 line-clamp-2 text-sm text-stone-500">{meal.source}</p>
                         </button>
                         <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
@@ -206,8 +215,8 @@ export function PlanScreen({
         <div className="space-y-4">
           <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4">
-            <p className="font-semibold">Prototype data</p>
-            <p className="mt-2 text-sm text-stone-500">Provider prices and availability are illustrative. Swaps are filtered using your saved restrictions.</p>
+            <p className="font-semibold">Weekly balance</p>
+            <p className="mt-2 text-sm text-stone-500">{weeklyBalanceSummary(plan, customRecipes)} Signals are broad checks, not calorie targets.</p>
           </Card>
         </div>
       </div>
