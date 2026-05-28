@@ -1,4 +1,11 @@
-import type { Deadline, Meal, MealSlot, PlanEntry, Preferences, RecipeReview } from "./types";
+import type { CalendarProvider, Deadline, Meal, MealSlot, PlanEntry, Preferences, RecipeReview } from "./types";
+
+export const calendarProviders: { id: CalendarProvider; name: string; hint: string; recommended: boolean }[] = [
+  { id: "google", name: "Google Calendar", hint: "Link with your Google account", recommended: true },
+  { id: "outlook", name: "Outlook Calendar", hint: "Link with your Microsoft account", recommended: false },
+  { id: "apple", name: "Apple Calendar", hint: "Link with your Apple ID", recommended: false },
+  { id: "manual", name: "Manual (.ics)", hint: "One-time file import", recommended: false },
+];
 
 export const days = ["Mon 1 Jun", "Tue 2 Jun", "Wed 3 Jun", "Thu 4 Jun", "Fri 5 Jun"];
 export const mealSlots: MealSlot[] = ["breakfast", "lunch", "dinner"];
@@ -14,9 +21,9 @@ const sampleReviews = (rating: number, comment: string): RecipeReview[] => [
 ];
 
 export const defaultDeadlines: Deadline[] = [
-  { id: "d1", title: "Algorithms coursework", date: "Wed 3 Jun", time: "16:00", intensity: "High" },
-  { id: "d2", title: "Design review", date: "Thu 4 Jun", time: "10:00", intensity: "Medium" },
-  { id: "d3", title: "Databases quiz", date: "Fri 5 Jun", time: "09:00", intensity: "High" },
+  { id: "d1", title: "Algorithms coursework", date: "Wed 3 Jun", time: "16:00", intensity: "High", eventType: "academic", effortHours: 8, urgency: "high", confirmed: true },
+  { id: "d2", title: "Design review", date: "Thu 4 Jun", time: "10:00", intensity: "Medium", eventType: "academic", effortHours: 4, urgency: "medium", confirmed: true },
+  { id: "d3", title: "Databases quiz", date: "Fri 5 Jun", time: "09:00", intensity: "High", eventType: "academic", effortHours: 5, urgency: "high", confirmed: true },
 ];
 
 export const seedMeals: Meal[] = [
@@ -28,7 +35,12 @@ export const seedMeals: Meal[] = [
     time: 20,
     price: 2.85,
     tags: ["vegetarian", "vegan", "batch-friendly"],
-    ingredients: ["chickpeas", "peppers", "courgette", "couscous"],
+    ingredients: [
+      { name: "chickpeas", quantity: 120, unit: "g" },
+      { name: "peppers", quantity: 100, unit: "g" },
+      { name: "courgette", quantity: 100, unit: "g" },
+      { name: "couscous", quantity: 75, unit: "g" },
+    ],
     allergens: ["gluten"],
     nutrition: { calories: 510, protein: 19, carbs: 74, fat: 14 },
     rating: 4.6,
@@ -46,7 +58,12 @@ export const seedMeals: Meal[] = [
     time: 4,
     price: 1.95,
     tags: ["vegetarian", "vegan", "quick"],
-    ingredients: ["chickpeas", "wrap", "hummus", "salad"],
+    ingredients: [
+      { name: "chickpeas", quantity: 80, unit: "g" },
+      { name: "wrap", quantity: 1, unit: "wrap" },
+      { name: "hummus", quantity: 40, unit: "g" },
+      { name: "salad", quantity: 50, unit: "g" },
+    ],
     allergens: ["gluten", "sesame"],
     nutrition: { calories: 430, protein: 15, carbs: 58, fat: 15 },
     rating: 4.4,
@@ -64,7 +81,12 @@ export const seedMeals: Meal[] = [
     time: 14,
     price: 3.2,
     tags: ["vegetarian", "vegan", "high protein"],
-    ingredients: ["tofu", "noodles", "soy", "broccoli"],
+    ingredients: [
+      { name: "tofu", quantity: 150, unit: "g" },
+      { name: "noodles", quantity: 100, unit: "g" },
+      { name: "soy sauce", quantity: 15, unit: "ml" },
+      { name: "broccoli", quantity: 100, unit: "g" },
+    ],
     allergens: ["soy", "gluten"],
     nutrition: { calories: 560, protein: 27, carbs: 68, fat: 18 },
     rating: 4.5,
@@ -82,7 +104,12 @@ export const seedMeals: Meal[] = [
     time: 12,
     price: 2.65,
     tags: ["vegetarian", "high protein"],
-    ingredients: ["lentils", "pasta", "pesto", "spinach"],
+    ingredients: [
+      { name: "lentils", quantity: 120, unit: "g" },
+      { name: "pasta", quantity: 90, unit: "g" },
+      { name: "pesto", quantity: 30, unit: "g" },
+      { name: "spinach", quantity: 50, unit: "g" },
+    ],
     allergens: ["gluten", "milk", "tree nuts"],
     nutrition: { calories: 590, protein: 24, carbs: 79, fat: 17 },
     rating: 4.3,
@@ -100,7 +127,11 @@ export const seedMeals: Meal[] = [
     time: 2,
     price: 4.1,
     tags: ["vegetarian", "vegan", "near library", "no cooking"],
-    ingredients: ["beans", "salad", "wrap"],
+    ingredients: [
+      { name: "beans", quantity: 120, unit: "g" },
+      { name: "salad", quantity: 50, unit: "g" },
+      { name: "wrap", quantity: 1, unit: "wrap" },
+    ],
     allergens: ["gluten"],
     nutrition: { calories: 455, protein: 16, carbs: 62, fat: 13 },
     rating: 4.1,
@@ -118,7 +149,11 @@ export const seedMeals: Meal[] = [
     time: 4,
     price: 4.55,
     tags: ["vegetarian", "vegan", "near campus", "no cooking"],
-    ingredients: ["falafel", "grains", "salad"],
+    ingredients: [
+      { name: "falafel", quantity: 120, unit: "g" },
+      { name: "grains", quantity: 150, unit: "g" },
+      { name: "salad", quantity: 60, unit: "g" },
+    ],
     allergens: ["sesame", "gluten"],
     nutrition: { calories: 620, protein: 20, carbs: 78, fat: 22 },
     rating: 4.2,
@@ -136,7 +171,11 @@ export const seedMeals: Meal[] = [
     time: 4,
     price: 4.7,
     tags: ["high protein", "near campus", "no cooking"],
-    ingredients: ["chicken", "rice", "vegetables"],
+    ingredients: [
+      { name: "chicken", quantity: 140, unit: "g" },
+      { name: "rice", quantity: 180, unit: "g" },
+      { name: "vegetables", quantity: 100, unit: "g" },
+    ],
     allergens: ["soy"],
     nutrition: { calories: 640, protein: 38, carbs: 70, fat: 18 },
     rating: 4.3,
@@ -154,7 +193,10 @@ export const seedMeals: Meal[] = [
     time: 3,
     price: 3.25,
     tags: ["vegetarian", "vegan", "near halls", "no cooking"],
-    ingredients: ["lentils", "rice"],
+    ingredients: [
+      { name: "lentils", quantity: 180, unit: "g" },
+      { name: "rice", quantity: 180, unit: "g" },
+    ],
     allergens: [],
     nutrition: { calories: 520, protein: 21, carbs: 84, fat: 9 },
     rating: 4.4,
@@ -172,7 +214,12 @@ export const seedMeals: Meal[] = [
     time: 5,
     price: 1.15,
     tags: ["vegetarian", "vegan", "breakfast", "no cooking"],
-    ingredients: ["oats", "oat milk", "berries", "chia seeds"],
+    ingredients: [
+      { name: "oats", quantity: 50, unit: "g" },
+      { name: "oat milk", quantity: 150, unit: "ml" },
+      { name: "berries", quantity: 80, unit: "g" },
+      { name: "chia seeds", quantity: 10, unit: "g" },
+    ],
     allergens: ["gluten"],
     nutrition: { calories: 390, protein: 13, carbs: 58, fat: 11 },
     rating: 4.7,
@@ -190,7 +237,11 @@ export const seedMeals: Meal[] = [
     time: 8,
     price: 1.35,
     tags: ["vegetarian", "breakfast", "hot meal"],
-    ingredients: ["eggs", "bread", "spinach"],
+    ingredients: [
+      { name: "egg", quantity: 2, unit: "egg" },
+      { name: "bread", quantity: 2, unit: "slice" },
+      { name: "spinach", quantity: 40, unit: "g" },
+    ],
     allergens: ["eggs", "gluten"],
     nutrition: { calories: 420, protein: 22, carbs: 38, fat: 18 },
     rating: 4.2,
@@ -208,7 +259,11 @@ export const seedMeals: Meal[] = [
     time: 2,
     price: 2.25,
     tags: ["vegetarian", "vegan", "breakfast", "near campus", "no cooking"],
-    ingredients: ["oats", "banana", "seeds"],
+    ingredients: [
+      { name: "oats", quantity: 45, unit: "g" },
+      { name: "banana", quantity: 1, unit: "serving" },
+      { name: "seeds", quantity: 15, unit: "g" },
+    ],
     allergens: ["gluten"],
     nutrition: { calories: 360, protein: 10, carbs: 64, fat: 8 },
     rating: 4,
@@ -226,7 +281,11 @@ export const seedMeals: Meal[] = [
     time: 2,
     price: 2.4,
     tags: ["vegetarian", "breakfast", "near library", "no cooking"],
-    ingredients: ["yoghurt", "berries", "granola"],
+    ingredients: [
+      { name: "yoghurt", quantity: 150, unit: "g" },
+      { name: "berries", quantity: 70, unit: "g" },
+      { name: "granola", quantity: 40, unit: "g" },
+    ],
     allergens: ["milk", "gluten"],
     nutrition: { calories: 340, protein: 15, carbs: 49, fat: 9 },
     rating: 4.1,
@@ -287,11 +346,11 @@ export const initialPlan: PlanEntry[] = [
 ];
 
 export const sourceOptions = [
-  { id: "budget", name: "Budget Bytes", desc: "Low-cost recipes" },
-  { id: "bbc", name: "BBC Good Food", desc: "Reliable quick meals" },
-  { id: "student", name: "Student Eats", desc: "Student-focused cooking" },
-  { id: "own", name: "My own recipes", desc: "Recipes you add" },
-  { id: "campus", name: "Campus fallback options", desc: "Illustrative nearby picks" },
+  { id: "budget", name: "Keep costs low", desc: "Prefer low-cost recipes and cheaper swaps" },
+  { id: "bbc", name: "Reliable familiar meals", desc: "Prefer straightforward recipes from trusted sources" },
+  { id: "student", name: "Student-focused cooking", desc: "Prefer minimal equipment and realistic prep" },
+  { id: "own", name: "Use my own recipes", desc: "Include recipes you add yourself" },
+  { id: "campus", name: "Allow campus fallbacks", desc: "Use nearby ready options when cooking is not realistic" },
 ];
 
 export const allergens = ["Peanuts", "Tree nuts", "Milk", "Eggs", "Gluten", "Soy", "Sesame", "Shellfish"];

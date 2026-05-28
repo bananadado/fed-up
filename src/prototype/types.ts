@@ -6,6 +6,28 @@ export type Nutrition = {
   protein: number;
   carbs: number;
   fat: number;
+  source?: NutritionSource;
+};
+
+export type NutritionSource = {
+  provider: "manual" | "OpenFoodFacts";
+  label: string;
+  fetchedAt?: string;
+  matchedIngredients?: NutritionMatch[];
+  missingIngredients?: string[];
+};
+
+export type NutritionMatch = {
+  ingredient: string;
+  productName: string;
+  grams: number;
+};
+
+export type RecipeIngredient = {
+  name: string;
+  quantity: number;
+  unit: string;
+  preparation?: string;
 };
 
 export type RecipeReview = {
@@ -24,7 +46,7 @@ export type Meal = {
   time: number;
   price: number;
   tags: string[];
-  ingredients: string[];
+  ingredients: RecipeIngredient[];
   allergens: string[];
   nutrition: Nutrition;
   rating: number;
@@ -53,6 +75,10 @@ export type Deadline = {
   date: string;
   time: string;
   intensity: string;
+  eventType: "academic" | "general";
+  effortHours: number;
+  urgency: "low" | "medium" | "high";
+  confirmed?: boolean;
 };
 
 export type Preferences = {
@@ -68,3 +94,5 @@ export type Preferences = {
 };
 
 export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "discover" | "recipes" | "settings" | "recipe-detail";
+
+export type CalendarProvider = "google" | "outlook" | "apple" | "manual";

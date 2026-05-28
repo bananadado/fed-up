@@ -6,6 +6,7 @@ import { seededMeals } from "./data/seededMeals";
 const sessionRetentionDays = 90;
 const anonymousSessions = new Map<string, { settings: unknown; updatedAt: string; expiresAt: string }>();
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
+const firebaseFunctionsBaseUrl = process.env.BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL?.replace(/\/$/, "");
 
 function sessionResponse(sessionId: string, settings: unknown | null, expiresAt: string | null) {
   return Response.json({
@@ -18,6 +19,31 @@ function sessionResponse(sessionId: string, settings: unknown | null, expiresAt:
 
 function expiresAtFromNow() {
   return new Date(Date.now() + sessionRetentionDays * 24 * 60 * 60 * 1000).toISOString();
+}
+
+async function proxyToFirebaseFunction(functionName: string, req: Request): Promise<Response> {
+  if (!firebaseFunctionsBaseUrl) {
+    return Response.json(
+      { error: "Firebase Functions emulator is not configured. Run bun run firebase:dev for local function calls." },
+      { status: 503 },
+    );
+  }
+
+  const response = await fetch(`${firebaseFunctionsBaseUrl}/${functionName}`, {
+    method: req.method,
+    headers: req.headers,
+    body: req.body,
+  }).catch(() => null);
+
+  if (response === null) {
+    return Response.json({ error: "Firebase Functions emulator could not be reached." }, { status: 502 });
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: response.headers,
+  });
 }
 
 const server = serve({
@@ -41,6 +67,12 @@ const server = serve({
     "/api/deadline-food/scenario": {
       async GET() {
         return Response.json(deadlineBootstrap.canonicalConstraints);
+      },
+    },
+
+    "/api/deadline-food/nutrition/openfoodfacts": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodNutrition", req);
       },
     },
 

@@ -4,9 +4,10 @@ import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } fr
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, dietary, dislikes, likes, sourceOptions, universities } from "../data";
-import type { Deadline, Preferences, Screen } from "../types";
+import { allergens, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
+import type { CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { classifyImportedEvent } from "../workloadModel";
 import { formatCookingLimit } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -42,6 +43,8 @@ export function Onboarding({
   setDeadlines,
   selectedSources,
   setSelectedSources,
+  calendarProvider,
+  setCalendarProvider,
   track,
 }: {
   setOnboarded: (onboarded: boolean) => void;
@@ -52,10 +55,11 @@ export function Onboarding({
   setDeadlines: (deadlines: Deadline[]) => void;
   selectedSources: string[];
   setSelectedSources: (sources: string[]) => void;
+  calendarProvider: CalendarProvider;
+  setCalendarProvider: (provider: CalendarProvider) => void;
   track: TrackPrototypeEvent;
 }) {
   const [step, setStep] = useState(0);
-  const [calendarChoice, setCalendarChoice] = useState("google");
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [importMessage, setImportMessage] = useState("");
 
@@ -68,7 +72,19 @@ export function Onboarding({
       const label = date ? date.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : "Upcoming";
       const time = raw[2] ? `${raw[2].slice(0, 2)}:${raw[2].slice(2, 4)}` : "All day";
 
-      return { id: `ics-${index}`, title, date: label, time, intensity: "Imported" };
+      const eventType = classifyImportedEvent(title);
+
+      return {
+        id: `ics-${index}`,
+        title,
+        date: label,
+        time,
+        intensity: eventType === "academic" ? "Medium" : "Low",
+        eventType,
+        effortHours: eventType === "academic" ? 3 : 0,
+        urgency: eventType === "academic" ? "medium" : "low",
+        confirmed: false,
+      } satisfies Deadline;
     });
 
     return parsed.length ? parsed.slice(0, 5) : null;
@@ -136,39 +152,52 @@ export function Onboarding({
         {step === 0 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 1 of 3</Badge>
-            <h2 className="mt-4 text-3xl font-bold">Bring in your deadlines</h2>
-            <p className="mt-2 text-stone-600">We only need workload signals to plan around your difficult days.</p>
-            <div className="mt-7 grid gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => {
-                  track("calendar_source_selected", { source: "google" });
-                  setCalendarChoice("google");
-                }}
-                className={cn("rounded-lg border p-5 text-left transition", calendarChoice === "google" ? "border-emerald-600 bg-emerald-50" : "border-stone-200 hover:border-stone-300")}
-              >
-                <CalendarDays className="mb-3 text-emerald-700" />
-                <p className="font-semibold">Link Google Calendar</p>
-                <p className="mt-1 text-sm text-stone-500">Prototype connection using sample deadlines</p>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  track("calendar_source_selected", { source: "ics" });
-                  fileRef.current?.click();
-                }}
-                className={cn("rounded-lg border p-5 text-left transition", calendarChoice === "ics" ? "border-emerald-600 bg-emerald-50" : "border-stone-200 hover:border-stone-300")}
-              >
-                <Import className="mb-3 text-emerald-700" />
-                <p className="font-semibold">Import .ics file</p>
-                <p className="mt-1 text-sm text-stone-500">Upload calendar export</p>
-                <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={(event) => { setCalendarChoice("ics"); loadICS(event); }} />
-              </button>
+            <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
+            <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days and lower cooking effort around them.</p>
+            <div className="mt-7 grid grid-cols-2 gap-3">
+              {calendarProviders.map((provider) => (
+                <button
+                  key={provider.id}
+                  type="button"
+                  onClick={() => {
+                    track("calendar_source_selected", { source: provider.id });
+                    setCalendarProvider(provider.id);
+                  }}
+                  className={cn("rounded-lg border p-4 text-left transition", calendarProvider === provider.id ? "border-emerald-600 bg-emerald-50" : "border-stone-200 hover:border-stone-300")}
+                >
+                  <CalendarDays size={18} className={cn("mb-2", calendarProvider === provider.id ? "text-emerald-700" : "text-stone-400")} />
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <p className="text-sm font-semibold">{provider.name}</p>
+                    {provider.recommended && <Badge tone="green">Recommended</Badge>}
+                  </div>
+                  <p className="mt-1 text-xs text-stone-500">{provider.hint}</p>
+                </button>
+              ))}
+            </div>
+            <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4">
+              {calendarProvider !== "manual" ? (
+                <>
+                  <AppButton type="button" onClick={() => track("calendar_provider_connect_clicked", { provider: calendarProvider })}>
+                    <CalendarDays size={15} /> Link {calendarProviders.find((p) => p.id === calendarProvider)?.name}
+                  </AppButton>
+                  <p className="mt-2 text-xs text-stone-500">You can reconnect or switch provider later in settings.</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-stone-500">Upload a .ics file from your calendar app. This is a one-off import, not a live connection.</p>
+                  <div className="mt-3">
+                    <AppButton type="button" variant="secondary" onClick={() => fileRef.current?.click()}>
+                      <Import size={15} /> Import .ics file
+                    </AppButton>
+                  </div>
+                  <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
+                </>
+              )}
             </div>
             {importMessage && <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
             <div className="mt-7 rounded-lg bg-stone-50 p-4">
               <div className="mb-3 flex items-center justify-between">
-                <p className="text-sm font-semibold">Detected high-pressure events</p>
+                <p className="text-sm font-semibold">Detected study-load signals</p>
                 <Badge tone="amber">{deadlines.length} found</Badge>
               </div>
               <div className="space-y-2">
@@ -184,7 +213,7 @@ export function Onboarding({
               </div>
             </div>
             <div className="mt-7 flex justify-end">
-              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarChoice }); setStep(1); }}>
+              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); setStep(1); }}>
                 Continue <ArrowRight size={16} />
               </AppButton>
             </div>
@@ -250,9 +279,18 @@ export function Onboarding({
               />
               <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
             </div>
+            <div className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">
+              <p className="font-semibold">Why we ask for university and area</p>
+              <p className="mt-1">
+                University helps suggest campus fallback meals. Postcode is used as a general area signal for nearby shops and can be replaced with a broad campus postcode.
+              </p>
+              <button type="button" onClick={() => track("privacy_policy_opened", { source: "onboarding_location" })} className="mt-2 font-semibold underline underline-offset-4">
+                View privacy summary
+              </button>
+            </div>
             <div className="mt-7 space-y-5">
               <ChoiceGroup
-                title="Dietary requirements"
+                title="Dietary requirements (leave blank if none)"
                 options={dietary}
                 selected={prefs.dietary}
                 onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
@@ -269,12 +307,12 @@ export function Onboarding({
                 danger
               />
               <ChoiceGroup
-                title="Foods and meals I like"
+                title="Optional inspiration foods"
                 options={likes}
                 selected={prefs.likes}
                 onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
                 onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                addPlaceholder="Add anything else you like"
+                addPlaceholder="Add a meal you often choose"
               />
               <ChoiceGroup
                 title="Ingredients I dislike"
@@ -298,8 +336,8 @@ export function Onboarding({
         {step === 2 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 3 of 3</Badge>
-            <h2 className="mt-4 text-3xl font-bold">Choose your recipe sources</h2>
-            <p className="mt-2 text-stone-600">Pick where Autopilot may recommend meals from. You can change this later.</p>
+            <h2 className="mt-4 text-3xl font-bold">Choose recommendation priorities</h2>
+            <p className="mt-2 text-stone-600">Pick what Autopilot should optimise for. You can change this later.</p>
             <div className="mt-7 space-y-3">
               {sourceOptions.map((source) => {
                 const active = selectedSources.includes(source.id);

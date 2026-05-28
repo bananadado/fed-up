@@ -5,6 +5,7 @@ import type { Meal, PlanEntry, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
 import { getMealById, money } from "../utils";
+import { mealHealthSignals, weeklyBalanceSummary } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
 export function Dashboard({
@@ -68,6 +69,11 @@ export function Dashboard({
                     <Clock3 size={12} className="mr-1" /> {nextCook.meal.time} min
                   </Badge>
                   <Badge>{money(nextCook.meal.price)}</Badge>
+                  {mealHealthSignals(nextCook.meal).map((signal) => (
+                    <Badge key={signal} tone="blue">
+                      {signal}
+                    </Badge>
+                  ))}
                 </div>
               </>
             ) : (
@@ -77,7 +83,7 @@ export function Dashboard({
         </div>
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-5 sm:p-6">
           <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-lg font-bold">Upcoming deadlines & meals</h2>
+            <h2 className="text-lg font-bold">Upcoming meals</h2>
             <button type="button" onClick={() => { track("dashboard_calendar_clicked"); setScreen("calendar"); }} className="text-sm font-semibold text-emerald-700">
               Calendar
             </button>
@@ -117,6 +123,7 @@ export function Dashboard({
               );
             })}
           </div>
+          <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{weeklyBalanceSummary(plan, customRecipes)}</p>
         </Card>
       </div>
     </div>

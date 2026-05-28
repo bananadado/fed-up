@@ -1,7 +1,9 @@
 <wizard-report>
 # PostHog setup report
 
-PostHog is initialized in `src/lib/posthog.ts` using `BUN_PUBLIC_POSTHOG_PROJECT_TOKEN` and `BUN_PUBLIC_POSTHOG_HOST`, with production build-time define injection in `build.ts`. The React entry point wraps the app in `PostHogProvider` and `PostHogErrorBoundary`.
+PostHog is initialized in `src/lib/posthog.ts` using `BUN_PUBLIC_POSTHOG_PROJECT_TOKEN` and `BUN_PUBLIC_POSTHOG_HOST`, with production build-time define injection in `build.ts`. The default ingestion host is `https://us.i.posthog.com` when no host is configured. The React entry point wraps the app in `PostHogProvider` and `PostHogErrorBoundary`.
+
+The app imports PostHog's session replay recorder so it is bundled with the app instead of being loaded as a separate runtime dependency. Session recording starts from the SDK `loaded` hook with ingestion controls overridden.
 
 The app registers the existing anonymous prototype session ID with PostHog at startup. The same ID is also registered as the `anonymous_session_id` super property, so manual captures include it on every event.
 
@@ -9,7 +11,7 @@ The app registers the existing anonymous prototype session ID with PostHog at st
 
 | Feature | Configuration |
 |---|---|
-| Session replay | Enabled with `disable_session_recording: false` and `startSessionRecording(true)`. |
+| Session replay | Enabled with `disable_session_recording: false`; the replay recorder is bundled locally and `startSessionRecording(true)` runs after the SDK loads. |
 | Replay privacy | All inputs are masked, text can be masked with `[data-ph-mask]`, full nodes can be blocked with `[data-ph-block]`, and request/response headers and bodies are removed from replay network captures. |
 | Autocapture | Explicitly enabled for click, change, and submit events on links, buttons, forms, inputs, selects, textareas, and labels. |
 | Rage clicks | Enabled with three clicks within 1000ms and a 30px threshold. |
