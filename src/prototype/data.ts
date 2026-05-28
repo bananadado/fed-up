@@ -360,13 +360,13 @@ export const dietary = ["Vegetarian", "Vegan", "Halal", "Gluten-free", "Dairy-fr
 export const universities = ["Imperial College London", "University College London", "King's College London", "University of Manchester", "University of Edinburgh", "Other university"];
 
 export const initialPreferences: Preferences = {
-  maxTime: 20,
+  maxTime: 180,
   budget: 48,
-  kitchen: "full",
-  postcode: "SW7 2AZ",
-  university: "Imperial College London",
-  dietary: ["Vegetarian"],
+  kitchen: "",
+  postcode: "",
+  university: "",
+  dietary: [],
   allergens: [],
   dislikes: [],
-  likes: ["Rice bowls"],
+  likes: [],
 };

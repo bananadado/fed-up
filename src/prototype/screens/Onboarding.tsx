@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
@@ -31,6 +31,28 @@ function Progress({ step }: { step: number }) {
         </div>
       ))}
     </div>
+  );
+}
+
+function PreferenceSection({
+  title,
+  description,
+  children,
+  className = "",
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={cn("py-4", className)}>
+      <div className="mb-4">
+        <h3 className="text-base font-bold text-stone-950">{title}</h3>
+        <p className="mt-1 text-sm leading-6 text-stone-600">{description}</p>
+      </div>
+      {children}
+    </section>
   );
 }
 
@@ -224,62 +246,85 @@ export function Onboarding({
             <Badge tone="green">Step 2 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
-            <div className="mt-7 grid gap-5 sm:grid-cols-2">
-              <label className="block">
-                <span className="text-sm font-semibold">Maximum cooking time</span>
-                <div className="mt-2 rounded-lg border border-stone-200 p-3">
-                  <input
-                    type="range"
-                    min="0"
-                    max="180"
-                    step="15"
-                    value={prefs.maxTime ?? 180}
-                    disabled={prefs.maxTime === null}
-                    onChange={(event) => setPrefs({ ...prefs, maxTime: +event.target.value })}
-                    onMouseUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
-                    onKeyUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
-                    className="w-full accent-emerald-700 disabled:opacity-40"
-                  />
-                  <div className="mt-2 flex items-center justify-between gap-3">
-                    <p className="text-sm text-stone-600">
-                      Up to <strong>{formatCookingLimit(prefs.maxTime)}</strong>
+            <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
+              <PreferenceSection
+                title="Cooking time"
+                description="Set the maximum effort for a normal deadline-week meal. This is the control Autopilot uses before suggesting anything."
+              >
+                <label className="block">
+                  <span className="text-sm font-semibold">Maximum cooking time</span>
+                  <div className="mt-2 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+                    <input
+                      type="range"
+                      min="0"
+                      max="180"
+                      step="15"
+                      value={prefs.maxTime ?? 180}
+                      disabled={prefs.maxTime === null}
+                      onChange={(event) => setPrefs({ ...prefs, maxTime: +event.target.value })}
+                      onMouseUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
+                      onKeyUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
+                      className="w-full"
+                    />
+                    <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <p className="text-sm text-emerald-950">
+                        Current limit: <strong>{formatCookingLimit(prefs.maxTime)}</strong>
+                      </p>
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={prefs.maxTime === null}
+                        onClick={() => { const next = prefs.maxTime === null; track("onboarding_preference_changed", { field: "max_time_unlimited", value: next }); setPrefs({ ...prefs, maxTime: next ? 180 : null }); }}
+                        className="flex items-center gap-2 text-sm font-medium text-stone-700"
+                      >
+                        <span className={cn("relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200", prefs.maxTime === null ? "bg-emerald-600" : "bg-stone-200")}>
+                          <span className={cn("inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out", prefs.maxTime === null ? "translate-x-4" : "translate-x-0")} />
+                        </span>
+                        Unlimited
+                      </button>
+                    </div>
+                    <p className="mt-2 text-xs text-emerald-900">
+                      Choose 0 to 3 hours, or remove the limit.
                     </p>
-                    <label className="flex items-center gap-2 text-sm font-medium text-stone-700">
-                      <input type="checkbox" checked={prefs.maxTime === null} onChange={(event) => { track("onboarding_preference_changed", { field: "max_time_unlimited", value: event.target.checked }); setPrefs({ ...prefs, maxTime: event.target.checked ? null : 180 }); }} />
-                      Unlimited
-                    </label>
                   </div>
-                  <p className="mt-1 text-xs text-stone-500">
-                    Choose 0 to 3 hours, or remove the limit.
-                  </p>
+                </label>
+              </PreferenceSection>
+
+              <PreferenceSection
+                title="Budget and access"
+                description="These fields keep the plan realistic for shared kitchens, campus fallback meals and nearby shopping."
+              >
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="text-sm font-semibold">Weekly food budget</span>
+                    <div className="mt-2 flex items-center rounded-lg border border-stone-200 px-3">
+                      <span className="text-stone-500">£</span>
+                      <Input value={prefs.budget} onChange={(event) => setPrefs({ ...prefs, budget: +event.target.value || 0 })} onBlur={() => track("onboarding_preference_changed", { field: "budget", value: prefs.budget })} type="number" min="1" className="h-auto border-0 p-3 shadow-none focus-visible:ring-0" />
+                    </div>
+                  </label>
+                  <SelectField
+                    label="Kitchen access"
+                    value={prefs.kitchen}
+                    onChange={(kitchen) => { track("onboarding_preference_changed", { field: "kitchen", value: kitchen }); setPrefs({ ...prefs, kitchen }); }}
+                    options={[
+                      { value: "full", label: "Full kitchen" },
+                      { value: "limited", label: "Microwave / kettle only" },
+                      { value: "none", label: "No kitchen access" },
+                    ]}
+                    required
+                  />
+                  <SelectField
+                    label="Your university"
+                    value={prefs.university}
+                    onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
+                    options={universities.map((university) => ({ value: university, label: university }))}
+                    required
+                  />
+                  <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
                 </div>
-              </label>
-              <label className="block">
-                <span className="text-sm font-semibold">Weekly food budget</span>
-                <div className="mt-2 flex items-center rounded-lg border border-stone-200 px-3">
-                  <span className="text-stone-500">£</span>
-                  <Input value={prefs.budget} onChange={(event) => setPrefs({ ...prefs, budget: +event.target.value || 0 })} onBlur={() => track("onboarding_preference_changed", { field: "budget", value: prefs.budget })} type="number" min="1" className="h-auto border-0 p-3 shadow-none focus-visible:ring-0" />
-                </div>
-              </label>
-              <SelectField
-                label="Kitchen access"
-                value={prefs.kitchen}
-                onChange={(kitchen) => { track("onboarding_preference_changed", { field: "kitchen", value: kitchen }); setPrefs({ ...prefs, kitchen }); }}
-                options={[
-                  { value: "full", label: "Full kitchen" },
-                  { value: "limited", label: "Microwave / kettle only" },
-                  { value: "none", label: "No kitchen access" },
-                ]}
-              />
-              <SelectField
-                label="Your university"
-                value={prefs.university}
-                onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
-                options={universities.map((university) => ({ value: university, label: university }))}
-              />
-              <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
+              </PreferenceSection>
             </div>
-            <div className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">
+            <div className="mt-3 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">
               <p className="font-semibold">Why we ask for university and area</p>
               <p className="mt-1">
                 University helps suggest campus fallback meals. Postcode is used as a general area signal for nearby shops and can be replaced with a broad campus postcode.
@@ -288,48 +333,60 @@ export function Onboarding({
                 View privacy summary
               </button>
             </div>
-            <div className="mt-7 space-y-5">
-              <ChoiceGroup
-                title="Dietary requirements (leave blank if none)"
-                options={dietary}
-                selected={prefs.dietary}
-                onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                addPlaceholder="Add a dietary requirement"
-              />
-              <ChoiceGroup
-                title="Allergic to / cannot eat"
-                options={allergens}
-                selected={prefs.allergens}
-                onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                addPlaceholder="Add an allergy or avoided ingredient"
-                danger
-              />
-              <ChoiceGroup
-                title="Optional inspiration foods"
-                options={likes}
-                selected={prefs.likes}
-                onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                addPlaceholder="Add a meal you often choose"
-              />
-              <ChoiceGroup
-                title="Ingredients I dislike"
-                options={dislikes}
-                selected={prefs.dislikes}
-                onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
-                onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
-                addPlaceholder="Add an ingredient you dislike"
-              />
+            <div className="mt-4 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
+              <PreferenceSection title="Dietary safety" description="Restrictions and allergens are treated as hard filters before recipes are suggested.">
+                <div className="grid gap-5">
+                  <ChoiceGroup
+                    title="Dietary requirements (leave blank if none)"
+                    options={dietary}
+                    selected={prefs.dietary}
+                    onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    addPlaceholder="Add a dietary requirement"
+                  />
+                  <ChoiceGroup
+                    title="Allergic to / cannot eat"
+                    options={allergens}
+                    selected={prefs.allergens}
+                    onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    addPlaceholder="Add an allergy or avoided ingredient"
+                    danger
+                  />
+                </div>
+              </PreferenceSection>
+
+              <PreferenceSection title="Taste preferences" description="Use these to avoid low-confidence suggestions without needing to write a full food profile.">
+                <div className="grid gap-5">
+                  <ChoiceGroup
+                    title="Optional inspiration foods"
+                    options={likes}
+                    selected={prefs.likes}
+                    onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                    onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                    addPlaceholder="Add a meal you often choose"
+                  />
+                  <ChoiceGroup
+                    title="Ingredients I dislike"
+                    options={dislikes}
+                    selected={prefs.dislikes}
+                    onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
+                    onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
+                    addPlaceholder="Add an ingredient you dislike"
+                  />
+                </div>
+              </PreferenceSection>
             </div>
-            <div className="mt-8 flex justify-between">
-              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); setStep(0); }}>
-                <ArrowLeft size={16} /> Back
-              </AppButton>
-              <AppButton onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); setStep(2); }}>
-                Continue <ArrowRight size={16} />
-              </AppButton>
+            <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
+              <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Continue to choose what the plan should optimise for.</p>
+              <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
+                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); setStep(0); }}>
+                  <ArrowLeft size={16} /> Back
+                </AppButton>
+                <AppButton className="justify-center py-3" disabled={!prefs.kitchen || !prefs.university} onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); setStep(2); }}>
+                  Continue <ArrowRight size={16} />
+                </AppButton>
+              </div>
             </div>
           </Card>
         )}
