@@ -1,4 +1,9 @@
 import { expect, test } from "@playwright/test";
+import { defaultDeadlines, initialPreferences } from "../src/prototype/data";
+import {
+  ANONYMOUS_SESSION_STORAGE_KEY,
+  createPrototypeSessionSettings,
+} from "../src/prototype/sessionPersistence";
 
 test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe", async ({ page }) => {
   await page.goto("/");
@@ -58,4 +63,43 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.getByRole("button", { name: /add recipe/i }).click();
   await expect(page.getByText("Microwave bean burrito")).toBeVisible();
   await expect(page.getByText("10 minutes - beans, wrap, tomato")).toBeVisible();
+});
+
+test("landing CTA reopens constraint setup for returning users", async ({ page }) => {
+  const sessionId = "returning-session-39";
+
+  await page.request.put("/api/deadline-food/session", {
+    data: {
+      sessionId,
+      settings: createPrototypeSessionSettings({
+        preferences: initialPreferences,
+        deadlines: defaultDeadlines,
+        selectedSources: ["budget", "bbc", "own", "campus"],
+        onboarded: true,
+      }),
+    },
+  });
+
+  await page.addInitScript(
+    ({ key, value }) => {
+      window.localStorage.setItem(key, value);
+    },
+    { key: ANONYMOUS_SESSION_STORAGE_KEY, value: sessionId },
+  );
+
+  const sessionLoaded = page.waitForResponse(
+    response =>
+      response.url().includes("/api/deadline-food/session") &&
+      response.request().method() === "GET" &&
+      response.status() === 200,
+  );
+
+  await page.goto("/");
+  await sessionLoaded;
+  await expect(page.getByRole("button", { name: /explore demo/i })).toHaveCount(0);
+
+  await page.getByRole("button", { name: /build my meal plan/i }).click();
+
+  await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /your week is covered/i })).toHaveCount(0);
 });
