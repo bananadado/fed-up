@@ -4,10 +4,10 @@ import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } fr
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, dietary, dislikes, likes, sourceOptions, universities } from "../data";
-import type { Deadline, Preferences, Screen } from "../types";
+import { allergens, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
+import type { CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
-import { formatCookingLimit } from "../utils";
+import { formatCookingLimit, parseICS } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
 function Progress({ step }: { step: number }) {
@@ -42,6 +42,8 @@ export function Onboarding({
   setDeadlines,
   selectedSources,
   setSelectedSources,
+  calendarProvider,
+  setCalendarProvider,
   track,
 }: {
   setOnboarded: (onboarded: boolean) => void;
@@ -52,27 +54,13 @@ export function Onboarding({
   setDeadlines: (deadlines: Deadline[]) => void;
   selectedSources: string[];
   setSelectedSources: (sources: string[]) => void;
+  calendarProvider: CalendarProvider;
+  setCalendarProvider: (provider: CalendarProvider) => void;
   track: TrackPrototypeEvent;
 }) {
   const [step, setStep] = useState(0);
-  const [calendarChoice, setCalendarChoice] = useState("google");
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [importMessage, setImportMessage] = useState("");
-
-  function parseICS(text: string) {
-    const blocks = text.split("BEGIN:VEVENT").slice(1);
-    const parsed = blocks.map((block, index) => {
-      const title = (block.match(/SUMMARY:(.+)/)?.[1] || `Imported event ${index + 1}`).trim();
-      const raw = block.match(/DTSTART(?:;[^:]*)?:(\d{8})(?:T(\d{4}))?/) || [];
-      const date = raw[1] ? new Date(`${raw[1].slice(0, 4)}-${raw[1].slice(4, 6)}-${raw[1].slice(6, 8)}T12:00:00`) : null;
-      const label = date ? date.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : "Upcoming";
-      const time = raw[2] ? `${raw[2].slice(0, 2)}:${raw[2].slice(2, 4)}` : "All day";
-
-      return { id: `ics-${index}`, title, date: label, time, intensity: "Imported" };
-    });
-
-    return parsed.length ? parsed.slice(0, 5) : null;
-  }
 
   function loadICS(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -136,34 +124,47 @@ export function Onboarding({
         {step === 0 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 1 of 3</Badge>
-            <h2 className="mt-4 text-3xl font-bold">Bring in your deadlines</h2>
-            <p className="mt-2 text-stone-600">We only need workload signals to plan around your difficult days.</p>
-            <div className="mt-7 grid gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => {
-                  track("calendar_source_selected", { source: "google" });
-                  setCalendarChoice("google");
-                }}
-                className={cn("rounded-lg border p-5 text-left transition", calendarChoice === "google" ? "border-emerald-600 bg-emerald-50" : "border-stone-200 hover:border-stone-300")}
-              >
-                <CalendarDays className="mb-3 text-emerald-700" />
-                <p className="font-semibold">Link Google Calendar</p>
-                <p className="mt-1 text-sm text-stone-500">Prototype connection using sample deadlines</p>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  track("calendar_source_selected", { source: "ics" });
-                  fileRef.current?.click();
-                }}
-                className={cn("rounded-lg border p-5 text-left transition", calendarChoice === "ics" ? "border-emerald-600 bg-emerald-50" : "border-stone-200 hover:border-stone-300")}
-              >
-                <Import className="mb-3 text-emerald-700" />
-                <p className="font-semibold">Import .ics file</p>
-                <p className="mt-1 text-sm text-stone-500">Upload calendar export</p>
-                <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={(event) => { setCalendarChoice("ics"); loadICS(event); }} />
-              </button>
+            <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
+            <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days and lower cooking effort around them.</p>
+            <div className="mt-7 grid grid-cols-2 gap-3">
+              {calendarProviders.map((provider) => (
+                <button
+                  key={provider.id}
+                  type="button"
+                  onClick={() => {
+                    track("calendar_source_selected", { source: provider.id });
+                    setCalendarProvider(provider.id);
+                  }}
+                  className={cn("rounded-lg border p-4 text-left transition", calendarProvider === provider.id ? "border-emerald-600 bg-emerald-50" : "border-stone-200 hover:border-stone-300")}
+                >
+                  <CalendarDays size={18} className={cn("mb-2", calendarProvider === provider.id ? "text-emerald-700" : "text-stone-400")} />
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <p className="text-sm font-semibold">{provider.name}</p>
+                    {provider.recommended && <Badge tone="green">Recommended</Badge>}
+                  </div>
+                  <p className="mt-1 text-xs text-stone-500">{provider.hint}</p>
+                </button>
+              ))}
+            </div>
+            <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4">
+              {calendarProvider !== "manual" ? (
+                <>
+                  <AppButton type="button" onClick={() => track("calendar_provider_connect_clicked", { provider: calendarProvider })}>
+                    <CalendarDays size={15} /> Link {calendarProviders.find((p) => p.id === calendarProvider)?.name}
+                  </AppButton>
+                  <p className="mt-2 text-xs text-stone-500">You can reconnect or switch provider later in settings.</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-stone-500">Upload a .ics file from your calendar app. This is a one-off import, not a live connection.</p>
+                  <div className="mt-3">
+                    <AppButton type="button" variant="secondary" onClick={() => fileRef.current?.click()}>
+                      <Import size={15} /> Import .ics file
+                    </AppButton>
+                  </div>
+                  <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
+                </>
+              )}
             </div>
             {importMessage && <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
             <div className="mt-7 rounded-lg bg-stone-50 p-4">
@@ -184,7 +185,7 @@ export function Onboarding({
               </div>
             </div>
             <div className="mt-7 flex justify-end">
-              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarChoice }); setStep(1); }}>
+              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); setStep(1); }}>
                 Continue <ArrowRight size={16} />
               </AppButton>
             </div>

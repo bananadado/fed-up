@@ -68,3 +68,5 @@ export type Preferences = {
 };
 
 export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "discover" | "recipes" | "settings" | "recipe-detail";
+
+export type CalendarProvider = "google" | "outlook" | "apple" | "manual";

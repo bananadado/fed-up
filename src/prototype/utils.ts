@@ -1,5 +1,18 @@
 import { seedMeals } from "./data";
-import type { Meal } from "./types";
+import type { Deadline, Meal } from "./types";
+
+export function parseICS(text: string): Deadline[] | null {
+  const blocks = text.split("BEGIN:VEVENT").slice(1);
+  const parsed = blocks.map((block, index) => {
+    const title = (block.match(/SUMMARY:(.+)/)?.[1] || `Imported event ${index + 1}`).trim();
+    const raw = block.match(/DTSTART(?:;[^:]*)?:(\d{8})(?:T(\d{4}))?/) || [];
+    const date = raw[1] ? new Date(`${raw[1].slice(0, 4)}-${raw[1].slice(4, 6)}-${raw[1].slice(6, 8)}T12:00:00`) : null;
+    const label = date ? date.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : "Upcoming";
+    const time = raw[2] ? `${raw[2].slice(0, 2)}:${raw[2].slice(2, 4)}` : "All day";
+    return { id: `ics-${index}`, title, date: label, time, intensity: "Imported" };
+  });
+  return parsed.length ? parsed.slice(0, 5) : null;
+}
 
 export function money(n: number) {
   return `£${n.toFixed(2)}`;
