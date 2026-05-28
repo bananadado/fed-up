@@ -250,16 +250,16 @@ export const initialPlan: PlanEntry[] = [
     day: days[0] ?? "Mon 1 Jun",
     context: "Prep window before deadline week",
     meals: [
-      { slot: "breakfast", mealId: "m9" },
+      { slot: "breakfast", mealId: "m9", batchGroup: "oat-jars", batchPortions: 3 },
       { slot: "lunch", mealId: "m2" },
-      { slot: "dinner", mealId: "m1" },
+      { slot: "dinner", mealId: "m1", batchGroup: "traybake", batchPortions: 2 },
     ],
   },
   {
     day: days[1] ?? "Tue 2 Jun",
     context: "Low pressure day",
     meals: [
-      { slot: "breakfast", mealId: "m10" },
+      { slot: "breakfast", mealId: "m9", batchGroup: "oat-jars" },
       { slot: "lunch", mealId: "m6" },
       { slot: "dinner", mealId: "m4" },
     ],
@@ -268,7 +268,7 @@ export const initialPlan: PlanEntry[] = [
     day: days[2] ?? "Wed 3 Jun",
     context: "Late library - Algorithms due",
     meals: [
-      { slot: "breakfast", mealId: "m11" },
+      { slot: "breakfast", mealId: "m9", batchGroup: "oat-jars" },
       { slot: "lunch", mealId: "m5" },
       { slot: "dinner", mealId: "m8" },
     ],
@@ -317,4 +317,5 @@ export const initialPreferences: Preferences = {
   allergens: [],
   dislikes: [],
   likes: ["Rice bowls"],
+  allowRepeats: true,
 };

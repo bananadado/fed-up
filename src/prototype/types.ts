@@ -39,6 +39,8 @@ export type PlanMeal = {
   slot: MealSlot;
   mealId: string;
   rescued?: boolean;
+  batchGroup?: string;
+  batchPortions?: number;
 };
 
 export type PlanEntry = {
@@ -69,6 +71,7 @@ export type Preferences = {
   allergens: string[];
   dislikes: string[];
   likes: string[];
+  allowRepeats: boolean;
 };
 
 export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "discover" | "recipes" | "settings" | "recipe-detail";

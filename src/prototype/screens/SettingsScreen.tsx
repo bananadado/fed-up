@@ -107,6 +107,15 @@ export function SettingsScreen({
             onChange={(university) => { track("settings_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
             options={universities.map((university) => ({ value: university, label: university }))}
           />
+          <label className="rounded-lg border border-stone-200 p-3 text-sm font-medium text-stone-700">
+            <input
+              type="checkbox"
+              checked={prefs.allowRepeats}
+              onChange={(event) => { track("settings_preference_changed", { field: "allow_repeats", value: event.target.checked }); setPrefs({ ...prefs, allowRepeats: event.target.checked }); }}
+              className="mr-2"
+            />
+            Repeated meals and batch prep are okay
+          </label>
         </div>
         <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4 text-sm leading-6 text-stone-600">
           <p className="font-semibold text-stone-900">Location and privacy</p>
