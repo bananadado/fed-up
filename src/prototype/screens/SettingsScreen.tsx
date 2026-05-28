@@ -37,9 +37,9 @@ export function SettingsScreen({
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="text-3xl font-bold">Preferences</h1>
-      <p className="mt-2 text-stone-600">Your saved limits shape every plan and replacement.</p>
+      <div className="mx-auto max-w-2xl">
+        <h1 className="text-3xl font-bold">Preferences</h1>
+      <p className="mt-2 text-stone-600">Update the limits used for future plans and meal replacements.</p>
       <Card className="mt-7 gap-0 rounded-lg border-stone-200 bg-white p-6">
         <div className="grid gap-5 sm:grid-cols-2">
           <label>
@@ -121,7 +121,8 @@ export function SettingsScreen({
             <Import size={15} /> Re-import .ics
           </AppButton>
         </div>
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <AppButton variant="secondary" onClick={() => setScreen("dashboard")}>Back to dashboard</AppButton>
           <AppButton onClick={() => { track("settings_saved", { dietary_count: prefs.dietary.length, allergen_count: prefs.allergens.length, likes_count: prefs.likes.length, dislikes_count: prefs.dislikes.length }); setScreen("dashboard"); }}>Save preferences</AppButton>
         </div>
       </Card>
