@@ -43,7 +43,7 @@ export function DiscoverScreen({
   });
   const current = sortedQueue[0];
 
-  function swipe(like: boolean) {
+  function decideCurrentRecipe(like: boolean) {
     if (current) {
       track("discover_recipe_swiped", { meal_id: current.id, liked: like });
     }
@@ -83,7 +83,9 @@ export function DiscoverScreen({
     <div>
       <div className="mb-7">
         <h1 className="text-3xl font-bold">Discover recipes</h1>
-        <p className="mt-2 text-stone-600">Every option respects your {formatCookingLimit(prefs.maxTime).toLowerCase()} cooking limit or is a ready fallback.</p>
+        <p className="mt-2 text-stone-600">
+          Save or pass on each option. Every suggestion respects your {formatCookingLimit(prefs.maxTime).toLowerCase()} cooking limit or is a nearby campus fallback.
+        </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {(["priority", "time", "price", "health"] as const).map((option) => (
             <button
@@ -101,14 +103,23 @@ export function DiscoverScreen({
         <div>
           {current ? (
             <Card className="gap-0 overflow-hidden rounded-lg border-stone-200 bg-white shadow-sm">
-              <div className="flex h-48 items-center justify-center bg-emerald-50 text-7xl">{current.image}</div>
+              <button
+                type="button"
+                onClick={() => onSelectMeal(current.id)}
+                className="flex h-48 w-full items-center justify-center bg-emerald-50 text-7xl transition hover:bg-emerald-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                aria-label={`View details for ${current.name}`}
+              >
+                {current.image}
+              </button>
               <div className="p-6">
                 <div className="flex justify-between gap-3">
-                  <h2 className="text-xl font-bold">
-                    <button type="button" onClick={() => onSelectMeal(current.id)} className="text-left hover:text-emerald-700 hover:underline">
-                      {current.name}
-                    </button>
-                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => onSelectMeal(current.id)}
+                    className="text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                  >
+                    {current.name}
+                  </button>
                   <span className="whitespace-nowrap font-semibold text-emerald-700">{money(current.price)}</span>
                 </div>
                 <p className="mt-2 text-sm text-stone-500">
@@ -130,13 +141,13 @@ export function DiscoverScreen({
                     </Badge>
                   ))}
                 </div>
-                <div className="mt-6 flex gap-3">
-                  <button type="button" aria-label="Reject recipe" onClick={() => swipe(false)} className="flex h-14 flex-1 items-center justify-center rounded-lg border border-stone-200 text-stone-500 hover:bg-stone-50">
-                    <ThumbsDown />
-                  </button>
-                  <button type="button" aria-label="Like recipe" onClick={() => swipe(true)} className="flex h-14 flex-1 items-center justify-center rounded-lg bg-emerald-700 text-white hover:bg-emerald-800">
-                    <ThumbsUp />
-                  </button>
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  <AppButton type="button" variant="secondary" className="h-14 justify-center text-stone-600" onClick={() => decideCurrentRecipe(false)}>
+                    <ThumbsDown size={18} /> Pass
+                  </AppButton>
+                  <AppButton type="button" className="h-14 justify-center" onClick={() => decideCurrentRecipe(true)}>
+                    <ThumbsUp size={18} /> Save
+                  </AppButton>
                 </div>
                 <AppButton variant="secondary" className="mt-3 w-full justify-center" onClick={() => onSelectMeal(current.id)}>
                   View recipe
@@ -175,7 +186,7 @@ export function DiscoverScreen({
               </div>
             )}
             {saved.length === 0 ? (
-              <p className="rounded-lg bg-stone-50 p-4 text-sm text-stone-500">Like a suitable recipe to save it here.</p>
+              <p className="rounded-lg bg-stone-50 p-4 text-sm text-stone-500">Use Save on a recipe card to keep suitable options here.</p>
             ) : (
               saved.map((meal) => (
                 <div key={meal.id} className="grid gap-3 rounded-lg bg-stone-50 p-4 sm:grid-cols-[1fr_auto_auto] sm:items-center">
