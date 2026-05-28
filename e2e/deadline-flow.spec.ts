@@ -35,6 +35,10 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
   await page.getByRole("button", { name: /overnight oat jar/i }).first().click();
   await expect(page.getByRole("heading", { name: /overnight oat jar/i })).toBeVisible();
+  await page.getByRole("button", { name: /go back to plan/i }).click();
+  await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
+  await page.getByRole("button", { name: /overnight oat jar/i }).first().click();
+  await expect(page.getByRole("heading", { name: /overnight oat jar/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /ingredients/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /method/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /nutrition/i })).toBeVisible();
@@ -43,7 +47,7 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await expect(page.getByRole("heading", { name: /edit recipe/i })).toBeVisible();
   await page.getByRole("button", { name: /save recipe/i }).click();
   await expect(page.getByRole("heading", { name: /ingredients/i })).toBeVisible();
-  await page.getByRole("button", { name: /back to plan/i }).click();
+  await page.getByRole("button", { name: "Back to plan", exact: true }).click();
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
   await page.getByRole("button", { name: /change meal/i }).first().click();
   await expect(page.getByRole("heading", { name: /change this meal/i })).toBeVisible();

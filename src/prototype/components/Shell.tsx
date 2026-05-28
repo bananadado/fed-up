@@ -1,4 +1,4 @@
-import { CalendarDays, CookingPot, Heart, Leaf, Plus, Settings2, Sparkles } from "lucide-react";
+import { ArrowLeft, CalendarDays, CookingPot, Heart, Leaf, Plus, Settings2, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
@@ -9,12 +9,16 @@ export function Shell({
   children,
   screen,
   setScreen,
+  previousScreen,
+  onBack,
   onboarded,
   track,
 }: {
   children: ReactNode;
   screen: Screen;
   setScreen: (screen: Screen) => void;
+  previousScreen: Screen | null;
+  onBack: () => void;
   onboarded: boolean;
   track: TrackPrototypeEvent;
 }) {
@@ -25,28 +29,46 @@ export function Shell({
     { id: "discover" as const, label: "Discover", icon: Heart },
     { id: "recipes" as const, label: "Recipes", icon: Plus },
   ];
+  const backTarget = previousScreen ?? "dashboard";
+  const showBackButton = previousScreen !== null || screen !== "dashboard";
 
   return (
     <div className="min-h-screen bg-[#faf9f5] text-stone-900">
       {onboarded && (
         <header className="sticky top-0 z-20 border-b border-stone-200/80 bg-[#faf9f5]/90 backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-            <button
-              type="button"
-              className="flex items-center gap-2"
-              onClick={() => {
-                track("navigation_clicked", { target_screen: "dashboard", source_screen: screen, location: "header_brand" });
-                setScreen("dashboard");
-              }}
-            >
-              <div className="rounded-lg bg-emerald-700 p-2 text-white">
-                <Leaf size={18} />
-              </div>
-              <div className="text-left">
-                <p className="text-sm font-bold">Deadline Food</p>
-                <p className="text-xs text-stone-500">Autopilot</p>
-              </div>
-            </button>
+            <div className="flex items-center gap-2">
+              {showBackButton && (
+                <button
+                  type="button"
+                  aria-label={`Go back to ${backTarget}`}
+                  title={`Back to ${backTarget}`}
+                  onClick={() => {
+                    track("navigation_back_clicked", { target_screen: backTarget, source_screen: screen, location: "header_back" });
+                    onBack();
+                  }}
+                  className="rounded-lg p-2 text-stone-600 hover:bg-stone-100"
+                >
+                  <ArrowLeft size={19} />
+                </button>
+              )}
+              <button
+                type="button"
+                className="flex items-center gap-2"
+                onClick={() => {
+                  track("navigation_clicked", { target_screen: "dashboard", source_screen: screen, location: "header_brand" });
+                  setScreen("dashboard");
+                }}
+              >
+                <div className="rounded-lg bg-emerald-700 p-2 text-white">
+                  <Leaf size={18} />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-bold">Deadline Food</p>
+                  <p className="text-xs text-stone-500">Autopilot</p>
+                </div>
+              </button>
+            </div>
             <nav className="hidden gap-1 md:flex">
               {nav.map(({ id, label, icon: Icon }) => (
                 <button
