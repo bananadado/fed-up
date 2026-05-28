@@ -53,6 +53,10 @@ export type Deadline = {
   date: string;
   time: string;
   intensity: string;
+  eventType: "academic" | "general";
+  effortHours: number;
+  urgency: "low" | "medium" | "high";
+  confirmed?: boolean;
 };
 
 export type Preferences = {
