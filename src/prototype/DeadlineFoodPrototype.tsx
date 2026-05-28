@@ -57,7 +57,7 @@ export function DeadlineFoodPrototype() {
   const [calendarProvider, setCalendarProvider] = useState<CalendarProvider>("google");
   const [deadlines, setDeadlines] = useState<Deadline[]>(defaultDeadlines);
   const [prefs, setPrefs] = useState<Preferences>(initialPreferences);
-  const [selectedSources, setSelectedSources] = useState(["budget", "bbc", "own", "campus"]);
+  const [selectedSources, setSelectedSources] = useState<string[]>([]);
   const [plan, setPlan] = useState<PlanEntry[]>(initialPlan);
   const [customRecipes, setCustomRecipes] = useState<Meal[]>([]);
   const [discoverSaved, setDiscoverSaved] = useState<Meal[]>([]);

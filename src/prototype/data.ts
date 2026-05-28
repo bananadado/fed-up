@@ -365,8 +365,8 @@ export const initialPreferences: Preferences = {
   kitchen: "full",
   postcode: "SW7 2AZ",
   university: "Imperial College London",
-  dietary: ["Vegetarian"],
+  dietary: [],
   allergens: [],
   dislikes: [],
-  likes: ["Rice bowls"],
+  likes: [],
 };
