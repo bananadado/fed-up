@@ -129,6 +129,8 @@ export function Field({
   type = "text",
   step,
   onBlur,
+  error,
+  errorMessage,
 }: {
   label: string;
   value: string | number;
@@ -137,10 +139,12 @@ export function Field({
   type?: string;
   step?: string;
   onBlur?: () => void;
+  error?: boolean;
+  errorMessage?: string;
 }) {
   return (
     <Label className="block">
-      <span className="text-sm font-semibold">{label}</span>
+      <span className={cn("text-sm font-semibold", error && "text-red-600")}>{label}</span>
       <Input
         type={type}
         step={step}
@@ -148,8 +152,12 @@ export function Field({
         onChange={(event) => onChange(event.target.value)}
         onBlur={onBlur}
         placeholder={placeholder}
-        className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3 focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20"
+        className={cn(
+          "mt-2 h-auto rounded-lg border-stone-200 bg-white p-3 focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20",
+          error && "border-red-400 bg-red-50 ring-1 ring-red-400 focus-visible:border-red-400 focus-visible:ring-red-400/20",
+        )}
       />
+      {error && errorMessage && <p className="mt-1 text-xs font-medium text-red-600">{errorMessage}</p>}
     </Label>
   );
 }
