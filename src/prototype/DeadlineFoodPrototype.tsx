@@ -215,10 +215,13 @@ export function DeadlineFoodPrototype() {
     };
   }, [sessionId]);
 
+  const saveSettingsDebounceRef = useRef<number | null>(null);
+  const saveSettingsCooldownRef = useRef(false);
+
   useEffect(() => {
     if (!sessionLoaded || !canPersistSession) return;
 
-    const timeout = window.setTimeout(() => {
+    const doSave = () => {
       saveAnonymousSessionSettings(
         sessionId,
         createPrototypeSessionSettings({
@@ -234,9 +237,31 @@ export function DeadlineFoodPrototype() {
       ).catch(error => {
         console.warn("Anonymous session settings could not be saved.", error);
       });
-    }, 600);
+    };
 
-    return () => window.clearTimeout(timeout);
+    if (!saveSettingsCooldownRef.current) {
+      doSave();
+      saveSettingsCooldownRef.current = true;
+      saveSettingsDebounceRef.current = window.setTimeout(() => {
+        saveSettingsCooldownRef.current = false;
+        saveSettingsDebounceRef.current = null;
+      }, 600);
+    } else {
+      if (saveSettingsDebounceRef.current !== null) {
+        window.clearTimeout(saveSettingsDebounceRef.current);
+      }
+      saveSettingsDebounceRef.current = window.setTimeout(() => {
+        doSave();
+        saveSettingsCooldownRef.current = false;
+        saveSettingsDebounceRef.current = null;
+      }, 600);
+    }
+
+    return () => {
+      if (saveSettingsDebounceRef.current !== null) {
+        window.clearTimeout(saveSettingsDebounceRef.current);
+      }
+    };
   }, [canPersistSession, customRecipes, deadlines, discoverRejected, discoverSaved, onboarded, plan, prefs, selectedSources, sessionId, sessionLoaded]);
 
   useEffect(() => {
