@@ -5,6 +5,7 @@ import { formatPence, mealTypeLabel } from "@/components/deadline-food/format";
 import { MealTag } from "@/components/deadline-food/MealTag";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatIngredient, ingredientKey } from "@/domain/ingredients";
 import { useDeadlineMode } from "@/state/DeadlineModeProvider";
 
 export function RecipePage() {
@@ -46,9 +47,9 @@ export function RecipePage() {
             </CardHeader>
             <CardContent>
               <ul className="grid gap-2 text-slate-700">
-                {meal.recipe.ingredients.map(ingredient => (
-                  <li key={ingredient} className="rounded-md bg-slate-50 px-3 py-2">
-                    {ingredient}
+                {meal.recipe.ingredients.map((ingredient, index) => (
+                  <li key={ingredientKey(ingredient, index)} className="rounded-md bg-slate-50 px-3 py-2">
+                    {formatIngredient(ingredient)}
                   </li>
                 ))}
               </ul>

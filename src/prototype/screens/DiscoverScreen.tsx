@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { seedMeals } from "../data";
 import type { Meal, PlanEntry, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
-import { formatCookingLimit, money } from "../utils";
+import { formatCookingLimit, money, ingredientNames } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -116,7 +116,7 @@ export function DiscoverScreen({
                 </p>
                 <div className="mt-4 rounded-lg bg-stone-50 p-3">
                   <p className="text-xs font-semibold uppercase text-stone-500">Key ingredients</p>
-                  <p className="mt-1 text-sm text-stone-700">{current.ingredients.slice(0, 5).join(", ")}</p>
+                  <p className="mt-1 text-sm text-stone-700">{ingredientNames(current.ingredients, 5)}</p>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {current.tags.slice(0, 3).map((tag) => (
@@ -186,7 +186,7 @@ export function DiscoverScreen({
                     <p className="text-sm text-stone-500">
                       {meal.time} min - {money(meal.price)}
                     </p>
-                    <p className="mt-1 truncate text-xs text-stone-500">{meal.ingredients.slice(0, 4).join(", ")}</p>
+                    <p className="mt-1 truncate text-xs text-stone-500">{ingredientNames(meal.ingredients, 4)}</p>
                   </div>
                   <AppButton variant="secondary" onClick={() => addToPlan(meal)}>
                     Use

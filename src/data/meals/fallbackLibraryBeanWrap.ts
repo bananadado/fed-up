@@ -1,3 +1,4 @@
+import { recipeIngredients } from "@/domain/ingredients";
 import type { MealOption } from "@/domain/types";
 
 export const fallbackLibraryBeanWrap: MealOption = {
@@ -14,7 +15,7 @@ export const fallbackLibraryBeanWrap: MealOption = {
   illustrativeOnly: true,
   recipe: {
     summary: "A prototype cafe wrap with beans, salad and a soft tortilla.",
-    ingredients: ["bean filling", "salad leaves", "tortilla wrap", "tomato salsa"],
+    ingredients: recipeIngredients(["bean filling", "salad leaves", "tortilla wrap", "tomato salsa"]),
     steps: ["Collect from the Library Cafe counter.", "Eat cold or ask for it warmed if available."],
     prepNotes: "Prototype option: availability and pricing are illustrative.",
     whyItFits: "It is the fastest compatible fallback near the library.",
