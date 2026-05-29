@@ -12,7 +12,7 @@ import { formatCookingLimit } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
 function Progress({ step }: { step: number }) {
-  const labels = ["Calendar", "Preferences", "Recipe sources"];
+  const labels = ["Calendar", "About you", "Preferences", "Recipe sources"];
 
   return (
     <div className="mb-8 flex gap-2">
@@ -173,7 +173,7 @@ export function Onboarding({
         <Progress step={step} />
         {step === 0 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 1 of 3</Badge>
+            <Badge tone="green">Step 1 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
             <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days and lower cooking effort around them.</p>
             <div className="mt-7 grid grid-cols-2 gap-3">
@@ -243,7 +243,53 @@ export function Onboarding({
         )}
         {step === 1 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 2 of 3</Badge>
+            <Badge tone="green">Step 2 of 4</Badge>
+            <h2 className="mt-4 text-3xl font-bold">About you</h2>
+            <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
+            <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
+              <PreferenceSection
+                title="What do you usually eat?"
+                description="Pick the meals you reach for most. This helps us suggest things you'll actually make — not recipes that require skills you don't need."
+              >
+                <ChoiceGroup
+                  title=""
+                  options={likes}
+                  selected={prefs.likes}
+                  onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                  onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                  addPlaceholder="Add a meal you often eat"
+                />
+              </PreferenceSection>
+              <PreferenceSection
+                title="Anything you'd rather avoid?"
+                description="Ingredients or foods you dislike. These are soft filters — we'll still show them if there's no better option."
+              >
+                <ChoiceGroup
+                  title=""
+                  options={dislikes}
+                  selected={prefs.dislikes}
+                  onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
+                  onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
+                  addPlaceholder="Add an ingredient you dislike"
+                />
+              </PreferenceSection>
+            </div>
+            <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
+              <p className="mb-3 text-sm text-stone-600 sm:mb-0">You can update these any time in settings.</p>
+              <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
+                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); setStep(0); }}>
+                  <ArrowLeft size={16} /> Back
+                </AppButton>
+                <AppButton className="justify-center py-3" onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); setStep(2); }}>
+                  Continue <ArrowRight size={16} />
+                </AppButton>
+              </div>
+            </div>
+          </Card>
+        )}
+        {step === 2 && (
+          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+            <Badge tone="green">Step 3 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -362,44 +408,23 @@ export function Onboarding({
                   />
                 </div>
               </PreferenceSection>
-
-              <PreferenceSection title="Taste preferences" description="Use these to avoid low-confidence suggestions without needing to write a full food profile.">
-                <div className="grid gap-5">
-                  <ChoiceGroup
-                    title="Optional inspiration foods"
-                    options={likes}
-                    selected={prefs.likes}
-                    onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                    onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                    addPlaceholder="Add a meal you often choose"
-                  />
-                  <ChoiceGroup
-                    title="Ingredients I dislike"
-                    options={dislikes}
-                    selected={prefs.dislikes}
-                    onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
-                    onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
-                    addPlaceholder="Add an ingredient you dislike"
-                  />
-                </div>
-              </PreferenceSection>
             </div>
             <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
               <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Continue to choose what the plan should optimise for.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
-                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); setStep(0); }}>
+                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); setStep(1); }}>
                   <ArrowLeft size={16} /> Back
                 </AppButton>
-                <AppButton className="justify-center py-3" disabled={!prefs.kitchen || !prefs.university} onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); setStep(2); }}>
+                <AppButton className="justify-center py-3" disabled={!prefs.kitchen || !prefs.university} onClick={() => { track("onboarding_step_completed", { step: 2, next_step: 3 }); setStep(3); }}>
                   Continue <ArrowRight size={16} />
                 </AppButton>
               </div>
             </div>
           </Card>
         )}
-        {step === 2 && (
+        {step === 3 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 3 of 3</Badge>
+            <Badge tone="green">Step 4 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">Choose recommendation priorities</h2>
             <p className="mt-2 text-stone-600">Pick what Autopilot should optimise for. You can change this later.</p>
             <div className="mt-7 space-y-3">
@@ -427,7 +452,7 @@ export function Onboarding({
             </div>
             <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
             <div className="mt-8 flex justify-between">
-              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); setStep(1); }}>
+              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 3, next_step: 2 }); setStep(2); }}>
                 <ArrowLeft size={16} /> Back
               </AppButton>
               <AppButton onClick={finish}>
