@@ -43,7 +43,11 @@ export function AppButton({
     <ShadcnButton
       {...props}
       variant="ghost"
-      className={cn("h-auto rounded-lg px-4 py-2.5 text-sm font-semibold transition", appButtonClasses[variant], className)}
+      className={cn(
+        "h-auto rounded-lg px-4 py-2.5 text-sm font-semibold transition active:translate-y-px disabled:pointer-events-none disabled:opacity-60",
+        appButtonClasses[variant],
+        className,
+      )}
     >
       {children}
     </ShadcnButton>
@@ -130,6 +134,8 @@ export function Field({
   placeholder,
   type = "text",
   step,
+  min,
+  max,
   onBlur,
   error,
   errorMessage,
@@ -140,6 +146,8 @@ export function Field({
   placeholder?: string;
   type?: string;
   step?: string;
+  min?: string;
+  max?: string;
   onBlur?: () => void;
   error?: boolean;
   errorMessage?: string;
@@ -150,7 +158,9 @@ export function Field({
       <Input
         type={type}
         step={step}
-        value={value}
+        min={min}
+        max={max}
+        value={type === "number" && value === 0 ? "" : value}
         onChange={(event) => onChange(event.target.value)}
         onBlur={onBlur}
         placeholder={placeholder}
@@ -169,18 +179,25 @@ export function SelectField({
   value,
   options,
   onChange,
+  placeholder = "Please select…",
+  required,
 }: {
   label: string;
   value: string;
   options: { label: string; value: string }[];
   onChange: (value: string) => void;
+  placeholder?: string;
+  required?: boolean;
 }) {
   return (
     <Label className="block">
-      <span className="text-sm font-semibold">{label}</span>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="mt-2 h-auto w-full rounded-lg border-stone-200 bg-white p-3">
-          <SelectValue />
+      <span className="text-sm font-semibold">
+        {label}
+        {required && <span className="ml-1 text-red-500">*</span>}
+      </span>
+      <Select value={value || ""} onValueChange={onChange}>
+        <SelectTrigger className={cn("mt-2 h-auto w-full rounded-lg border-stone-200 bg-white p-3", !value && "text-stone-400")}>
+          <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           {options.map((option) => (

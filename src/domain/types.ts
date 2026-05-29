@@ -17,9 +17,16 @@ export type PlanningConstraints = {
   preferredLocation?: string;
 };
 
+export type RecipeIngredient = {
+  name: string;
+  quantity: number;
+  unit: string;
+  preparation?: string;
+};
+
 export type RecipeDetails = {
   summary: string;
-  ingredients: string[];
+  ingredients: RecipeIngredient[];
   steps: string[];
   prepNotes?: string;
   storage?: string;

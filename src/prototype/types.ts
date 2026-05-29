@@ -1,6 +1,10 @@
 export type MealType = "cook" | "remix" | "fallback";
 export type MealSlot = "breakfast" | "lunch" | "dinner";
 
+import type { RecipeIngredient } from "@/domain/types";
+
+export type { RecipeIngredient };
+
 export type Nutrition = {
   calories: number;
   protein: number;
@@ -21,13 +25,6 @@ export type NutritionMatch = {
   ingredient: string;
   productName: string;
   grams: number;
-};
-
-export type RecipeIngredient = {
-  name: string;
-  quantity: number;
-  unit: string;
-  preparation?: string;
 };
 
 export type RecipeReview = {
@@ -93,6 +90,6 @@ export type Preferences = {
   likes: string[];
 };
 
-export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "discover" | "recipes" | "settings" | "recipe-detail";
+export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "recipes" | "settings" | "recipe-detail";
 
 export type CalendarProvider = "google" | "outlook" | "apple" | "manual";

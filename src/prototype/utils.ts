@@ -1,5 +1,6 @@
 import { seedMeals } from "./data";
-import type { Deadline, Meal, NutritionSource } from "./types";
+import type { Deadline, Meal, NutritionSource, RecipeIngredient } from "./types";
+import { formatIngredient, ingredientName } from "./ingredients";
 
 export function parseICS(text: string): Deadline[] | null {
   const blocks = text.split("BEGIN:VEVENT").slice(1);
@@ -58,4 +59,18 @@ export function nutritionSourceSummary(source: NutritionSource | undefined) {
   return missing.length > 0
     ? `${source.label} · couldn't find: ${missing.join(", ")}`
     : `${source.label} · all matched`;
+}
+
+export { ingredientName };
+
+export const ingredientLabel = formatIngredient;
+
+export function ingredientNames(
+  ingredients: RecipeIngredient[],
+  limit?: number
+): string {
+  return ingredients
+    .slice(0, limit)
+    .map(ingredientName)
+    .join(", ");
 }

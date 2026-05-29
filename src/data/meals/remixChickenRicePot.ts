@@ -1,3 +1,4 @@
+import { recipeIngredients } from "@/domain/ingredients";
 import type { MealOption } from "@/domain/types";
 
 export const remixChickenRicePot: MealOption = {
@@ -12,7 +13,7 @@ export const remixChickenRicePot: MealOption = {
   derivesFromPrepBaseId: "prep-chicken-rice-base",
   recipe: {
     summary: "A microwaveable chicken rice pot from the prepared base.",
-    ingredients: ["lemon chicken rice base", "spinach", "yoghurt dressing", "black pepper"],
+    ingredients: recipeIngredients(["lemon chicken rice base", "spinach", "yoghurt dressing", "black pepper"]),
     steps: ["Microwave the chicken rice base until hot.", "Fold through spinach.", "Top with dressing after heating."],
     prepNotes: "Keep dressing separate until serving.",
     storage: "Keep chilled and reheat until steaming.",

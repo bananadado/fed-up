@@ -65,17 +65,24 @@ function ratingLabel(rating: number) {
 }
 
 
+function backLabel(backTo: Screen | null): string {
+  if (backTo === "recipes") return "Back to recipes";
+  return "Back to plan";
+}
+
 export function RecipeDetailScreen({
   mealId,
   customRecipes,
   setCustomRecipes,
   setScreen,
+  backTo,
   track,
 }: {
   mealId: string;
   customRecipes: Meal[];
   setCustomRecipes: (recipes: Meal[]) => void;
   setScreen: (screen: Screen) => void;
+  backTo?: Screen | null;
   track: TrackPrototypeEvent;
 }) {
   const meal = mealById(mealId, customRecipes);
@@ -253,8 +260,8 @@ export function RecipeDetailScreen({
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <AppButton variant="ghost" className="px-0" onClick={() => { track("recipe_back_to_plan_clicked", { meal_id: selectedMeal.id }); setScreen("plan"); }}>
-          <ArrowLeft size={16} /> Back to plan
+        <AppButton variant="ghost" className="px-0" onClick={() => { track("recipe_back_clicked", { meal_id: selectedMeal.id, back_to: backTo ?? "plan" }); setScreen(backTo ?? "plan"); }}>
+          <ArrowLeft size={16} /> {backLabel(backTo ?? null)}
         </AppButton>
         {!isEditing && (
           <div className="flex flex-wrap gap-3">

@@ -1,3 +1,4 @@
+import { recipeIngredients } from "@/domain/ingredients";
 import type { MealOption } from "@/domain/types";
 
 export const remixBeanRiceBowl: MealOption = {
@@ -12,7 +13,7 @@ export const remixBeanRiceBowl: MealOption = {
   derivesFromPrepBaseId: "prep-smoky-bean-base",
   recipe: {
     summary: "A reheated bean base served over rice with a quick crunchy salad.",
-    ingredients: ["smoky bean base", "rice portion", "lettuce", "cucumber", "lime or vinegar"],
+    ingredients: recipeIngredients(["smoky bean base", "rice portion", "lettuce", "cucumber", "lime or vinegar"]),
     steps: ["Reheat the bean base.", "Warm or microwave the rice.", "Add chopped salad and finish with lime."],
     prepNotes: "Pack salad separately if taking it for lunch.",
     storage: "Use a chilled prepared base within three days.",

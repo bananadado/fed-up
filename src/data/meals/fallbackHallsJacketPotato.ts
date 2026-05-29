@@ -1,3 +1,4 @@
+import { recipeIngredients } from "@/domain/ingredients";
 import type { MealOption } from "@/domain/types";
 
 export const fallbackHallsJacketPotato: MealOption = {
@@ -14,7 +15,7 @@ export const fallbackHallsJacketPotato: MealOption = {
   illustrativeOnly: true,
   recipe: {
     summary: "A filling potato and beans option near halls.",
-    ingredients: ["jacket potato", "baked beans", "side salad"],
+    ingredients: recipeIngredients(["jacket potato", "baked beans", "side salad"]),
     steps: ["Collect from the Halls Shop hot counter.", "Add side salad if available."],
     prepNotes: "Prototype option: availability and pricing are illustrative.",
     whyItFits: "It is the cheapest seeded fallback and useful when the budget is tight.",
