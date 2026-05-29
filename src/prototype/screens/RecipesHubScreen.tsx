@@ -183,6 +183,7 @@ export function RecipesHubScreen({
       source: "My recipes",
       note: form.note.trim() || `${nextServings} portions from about ${money(nextTotalCost)} total`,
       image: "🍽️",
+      isUserCreated: true,
     } satisfies Meal;
 
     setCustomRecipes([nextRecipe, ...customRecipes]);
@@ -252,7 +253,7 @@ export function RecipesHubScreen({
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {allSaved.map((recipe) => {
-                const isOwn = customRecipes.some((c) => c.id === recipe.id);
+                const isOwn = recipe.isUserCreated === true;
                 return (
                   <button
                     key={recipe.id}

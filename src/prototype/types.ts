@@ -52,6 +52,7 @@ export type Meal = {
   source: string;
   note: string;
   image: string;
+  isUserCreated?: boolean;
 };
 
 export type PlanMeal = {
