@@ -89,6 +89,7 @@ export type Preferences = {
   allergens: string[];
   dislikes: string[];
   likes: string[];
+  pantryIngredients: RecipeIngredient[];
 };
 
 export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "recipes" | "settings" | "recipe-detail";

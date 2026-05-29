@@ -1,4 +1,5 @@
-import type { CalendarProvider, Deadline, Meal, MealSlot, PlanEntry, Preferences, RecipeReview } from "./types";
+import type { CalendarProvider, Deadline, Meal, MealSlot, PlanEntry, Preferences, RecipeIngredient, RecipeReview } from "./types";
+import { normaliseIngredientName } from "./ingredients";
 
 export const calendarProviders: { id: CalendarProvider; name: string; hint: string; recommended: boolean }[] = [
   { id: "google", name: "Google Calendar", hint: "Link with your Google account", recommended: true },
@@ -369,4 +370,38 @@ export const initialPreferences: Preferences = {
   allergens: [],
   dislikes: [],
   likes: [],
+  pantryIngredients: [],
 };
+
+export function buildPantryAwarePlan(pantryIngredients: RecipeIngredient[]): PlanEntry[] {
+  if (!pantryIngredients.length) return initialPlan;
+
+  const pantryNames = new Set(pantryIngredients.map(i => normaliseIngredientName(i.name)));
+  const scoreMeal = (mealId: string) => {
+    const meal = seedMeals.find(m => m.id === mealId);
+    return meal ? meal.ingredients.filter(i => pantryNames.has(normaliseIngredientName(i.name))).length : 0;
+  };
+
+  // For each slot type, collect all meal IDs across the week then sort by pantry score desc.
+  // This moves pantry-matching meals to the earliest days for each slot.
+  const slotMeals: Record<string, string[]> = {};
+  for (const entry of initialPlan) {
+    for (const planMeal of entry.meals) {
+      (slotMeals[planMeal.slot] ??= []).push(planMeal.mealId);
+    }
+  }
+  const sortedSlotMeals: Record<string, string[]> = {};
+  for (const [slot, ids] of Object.entries(slotMeals)) {
+    sortedSlotMeals[slot] = [...ids].sort((a, b) => scoreMeal(b) - scoreMeal(a));
+  }
+
+  const slotCounters: Record<string, number> = {};
+  return initialPlan.map(entry => ({
+    ...entry,
+    meals: entry.meals.map(planMeal => {
+      const idx = slotCounters[planMeal.slot] ?? 0;
+      slotCounters[planMeal.slot] = idx + 1;
+      return { ...planMeal, mealId: sortedSlotMeals[planMeal.slot]?.[idx] ?? planMeal.mealId };
+    }),
+  }));
+}

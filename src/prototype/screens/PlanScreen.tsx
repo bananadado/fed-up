@@ -7,7 +7,7 @@ import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { AppButton, Badge } from "../components/primitives";
-import { ingredientName } from "../ingredients";
+import { ingredientName, normaliseIngredientName } from "../ingredients";
 import { groceryVendorById, groceryVendors, ingredientsFromPlan } from "../shopping";
 import { getMealById, money } from "../utils";
 import { mealHealthSignals, weeklyBalanceSummary } from "../healthSignals";
@@ -58,6 +58,9 @@ export function PlanScreen({
   const originalPlanMeal = originalDay && rescueChoice ? originalDay.meals.find((meal) => meal.slot === rescueChoice.slot) : null;
   const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
+  const pantryNames = new Set((prefs.pantryIngredients ?? []).map(i => normaliseIngredientName(i.name)));
+  const mealPantryScore = (meal: Meal) =>
+    pantryNames.size === 0 ? 0 : meal.ingredients.filter(i => pantryNames.has(normaliseIngredientName(i.name))).length;
   const browseOptions = rescueChoice
     ? [...customRecipes, ...seedMeals.filter((m) => !customRecipes.some((c) => c.id === m.id))]
         .filter((meal) => meal.mealSlots.includes(rescueChoice.slot))
@@ -65,6 +68,8 @@ export function PlanScreen({
         .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
         .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
         .sort((a, b) => {
+          const pantryDiff = mealPantryScore(b) - mealPantryScore(a);
+          if (pantryDiff !== 0) return pantryDiff;
           const aScore = a.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
           const bScore = b.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
           return bScore - aScore || a.time - b.time || a.price - b.price;
@@ -161,6 +166,7 @@ export function PlanScreen({
                             <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
                               {meal.type === "fallback" ? "Fallback" : meal.type === "cook" ? "Cook" : "Remix"}
                             </Badge>
+                            {mealPantryScore(meal) > 0 && <Badge tone="blue">Uses pantry</Badge>}
                           </div>
                           <p className="mt-3 text-sm font-semibold leading-5">
                             {meal.image} {meal.name}
@@ -213,6 +219,7 @@ export function PlanScreen({
                           <p className="mt-1 text-sm text-stone-500">
                             {meal.time} mins - {money(meal.price)}
                           </p>
+                          {mealPantryScore(meal) > 0 && <Badge tone="blue" className="mt-2">Uses pantry</Badge>}
                         </button>
                         <AppButton variant="secondary" className="mt-3 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
                           <RefreshCcw size={15} /> Change meal
@@ -306,7 +313,10 @@ export function PlanScreen({
                       <div key={meal.id} className="rounded-lg border border-stone-200 bg-stone-50 p-4">
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
-                            <p className="font-semibold">{meal.image} {meal.name}</p>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="font-semibold">{meal.image} {meal.name}</p>
+                              {mealPantryScore(meal) > 0 && <Badge tone="blue">Uses pantry</Badge>}
+                            </div>
                             <p className="mt-1 text-sm text-stone-500">{meal.source} · {meal.time} min · {money(meal.price)} · {priceDiff(meal.price, originalMeal?.price ?? 0).label}</p>
                           </div>
                           <AppButton className="shrink-0" onClick={() => { track("meal_swap_browse_option_selected", { day: rescueChoice.day, meal_slot: rescueChoice.slot, meal_id: meal.id }); confirmSwapWith(meal, "browse"); }}>

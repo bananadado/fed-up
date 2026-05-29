@@ -1,18 +1,20 @@
 import { useRef, useState, type ReactNode } from "react";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, ShoppingBasket, Sparkles } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
-import type { CalendarProvider, Deadline, Preferences, Screen } from "../types";
+import { allergens, buildPantryAwarePlan, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
+import type { CalendarProvider, Deadline, PlanEntry, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { IngredientEditor } from "../components/IngredientEditor";
+import { createIngredientDraft, ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import { classifyImportedEvent } from "../workloadModel";
 import { formatCookingLimit } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
 function Progress({ step }: { step: number }) {
-  const labels = ["Calendar", "About you", "Preferences", "Recipe sources"];
+  const labels = ["Calendar", "About you", "Preferences", "Pantry", "Recipe sources"];
 
   return (
     <div className="mb-8 flex gap-2">
@@ -61,6 +63,7 @@ export function Onboarding({
   setScreen,
   prefs,
   setPrefs,
+  setPlan,
   deadlines,
   setDeadlines,
   selectedSources,
@@ -73,6 +76,7 @@ export function Onboarding({
   setScreen: (screen: Screen) => void;
   prefs: Preferences;
   setPrefs: (prefs: Preferences) => void;
+  setPlan: (plan: PlanEntry[]) => void;
   deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
   selectedSources: string[];
@@ -84,6 +88,9 @@ export function Onboarding({
   const [step, setStep] = useState(0);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [importMessage, setImportMessage] = useState("");
+  const [pantryDrafts, setPantryDrafts] = useState<IngredientDraft[]>(() =>
+    prefs.pantryIngredients.length ? ingredientDraftsFromIngredients(prefs.pantryIngredients) : [createIngredientDraft()],
+  );
 
   function parseICS(text: string) {
     const blocks = text.split("BEGIN:VEVENT").slice(1);
@@ -153,12 +160,17 @@ export function Onboarding({
   }
 
   function finish() {
+    const pantryIngredients = sanitiseIngredientDrafts(pantryDrafts);
+    const finalPrefs = { ...prefs, pantryIngredients };
     track("onboarding_completed", {
       recipe_sources: selectedSources,
       dietary_requirements: prefs.dietary,
       kitchen_access: prefs.kitchen,
       budget_pounds: prefs.budget,
+      pantry_ingredient_count: pantryIngredients.length,
     });
+    setPrefs(finalPrefs);
+    setPlan(buildPantryAwarePlan(pantryIngredients));
     setOnboarded(true);
     setScreen("dashboard");
   }
@@ -173,7 +185,7 @@ export function Onboarding({
         <Progress step={step} />
         {step === 0 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 1 of 4</Badge>
+            <Badge tone="green">Step 1 of 5</Badge>
             <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
             <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days and lower cooking effort around them.</p>
             <div className="mt-7 grid grid-cols-2 gap-3">
@@ -243,7 +255,7 @@ export function Onboarding({
         )}
         {step === 1 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 2 of 4</Badge>
+            <Badge tone="green">Step 2 of 5</Badge>
             <h2 className="mt-4 text-3xl font-bold">About you</h2>
             <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -289,7 +301,7 @@ export function Onboarding({
         )}
         {step === 2 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 3 of 4</Badge>
+            <Badge tone="green">Step 3 of 5</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -424,7 +436,32 @@ export function Onboarding({
         )}
         {step === 3 && (
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 4 of 4</Badge>
+            <Badge tone="green">Step 4 of 5</Badge>
+            <h2 className="mt-4 text-3xl font-bold">What have you got in?</h2>
+            <p className="mt-2 text-stone-600">Add ingredients you already have at home. We'll prioritise meals that use up your existing stock first.</p>
+            <div className="mt-7 rounded-lg border border-stone-200 p-4 sm:p-5">
+              <IngredientEditor ingredients={pantryDrafts} onChange={setPantryDrafts} />
+            </div>
+            <div className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">
+              <p className="font-semibold flex items-center gap-2"><ShoppingBasket size={15} /> Why this matters</p>
+              <p className="mt-1">Entering your pantry stock lets Autopilot front-load meals that use it up, so nothing goes to waste and your first few days cost less.</p>
+            </div>
+            <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
+              <p className="mb-3 text-sm text-stone-600 sm:mb-0">Skip this step if your cupboards are bare.</p>
+              <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
+                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 3, next_step: 2 }); setStep(2); }}>
+                  <ArrowLeft size={16} /> Back
+                </AppButton>
+                <AppButton className="justify-center py-3" onClick={() => { track("onboarding_step_completed", { step: 3, next_step: 4, pantry_count: sanitiseIngredientDrafts(pantryDrafts).length }); setStep(4); }}>
+                  Continue <ArrowRight size={16} />
+                </AppButton>
+              </div>
+            </div>
+          </Card>
+        )}
+        {step === 4 && (
+          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+            <Badge tone="green">Step 5 of 5</Badge>
             <h2 className="mt-4 text-3xl font-bold">Choose recommendation priorities</h2>
             <p className="mt-2 text-stone-600">Pick what Autopilot should optimise for. You can change this later.</p>
             <div className="mt-7 space-y-3">
@@ -452,7 +489,7 @@ export function Onboarding({
             </div>
             <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
             <div className="mt-8 flex justify-between">
-              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 3, next_step: 2 }); setStep(2); }}>
+              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 4, next_step: 3 }); setStep(3); }}>
                 <ArrowLeft size={16} /> Back
               </AppButton>
               <AppButton onClick={finish}>

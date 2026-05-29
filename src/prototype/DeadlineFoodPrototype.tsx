@@ -185,7 +185,10 @@ export function DeadlineFoodPrototype() {
         if (cancelled) return;
 
         if (snapshot.settings !== null) {
-          setPrefs(snapshot.settings.preferences);
+          setPrefs({
+            ...snapshot.settings.preferences,
+            pantryIngredients: snapshot.settings.preferences.pantryIngredients ?? [],
+          });
           setDeadlines(snapshot.settings.deadlines.map((d): Deadline => ({
             ...d,
             eventType: d.eventType ?? "general",
@@ -325,6 +328,7 @@ export function DeadlineFoodPrototype() {
         setScreen={navigateScreen}
         prefs={prefs}
         setPrefs={setPrefs}
+        setPlan={setPlan}
         deadlines={deadlines}
         setDeadlines={setDeadlines}
         selectedSources={selectedSources}
