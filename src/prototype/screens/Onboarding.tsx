@@ -299,7 +299,14 @@ export function Onboarding({
                     <span className="text-sm font-semibold">Weekly food budget</span>
                     <div className="mt-2 flex items-center rounded-lg border border-stone-200 px-3">
                       <span className="text-stone-500">£</span>
-                      <Input value={prefs.budget} onChange={(event) => setPrefs({ ...prefs, budget: +event.target.value || 0 })} onBlur={() => track("onboarding_preference_changed", { field: "budget", value: prefs.budget })} type="number" min="1" className="h-auto border-0 p-3 shadow-none focus-visible:ring-0" />
+                      <Input
+                        value={prefs.budget === 0 ? "" : prefs.budget}
+                        onChange={(event) => setPrefs({ ...prefs, budget: event.target.value === "" ? 0 : Number(event.target.value) })}
+                        onBlur={() => track("onboarding_preference_changed", { field: "budget", value: prefs.budget })}
+                        type="number"
+                        min="1"
+                        className="h-auto border-0 p-3 shadow-none focus-visible:ring-0"
+                      />
                     </div>
                   </label>
                   <SelectField

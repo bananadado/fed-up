@@ -97,7 +97,13 @@ export function SettingsScreen({
             <span className="text-sm font-semibold">Weekly budget</span>
             <div className="mt-2 flex rounded-lg border border-stone-200 px-3">
               <span className="py-3 text-stone-400">£</span>
-              <Input type="number" value={prefs.budget} onChange={(event) => setPrefs({ ...prefs, budget: +event.target.value })} onBlur={() => track("settings_preference_changed", { field: "budget", value: prefs.budget })} className="h-auto border-0 p-3 shadow-none focus-visible:ring-0" />
+              <Input
+                type="number"
+                value={prefs.budget === 0 ? "" : prefs.budget}
+                onChange={(event) => setPrefs({ ...prefs, budget: event.target.value === "" ? 0 : Number(event.target.value) })}
+                onBlur={() => track("settings_preference_changed", { field: "budget", value: prefs.budget })}
+                className="h-auto border-0 p-3 shadow-none focus-visible:ring-0"
+              />
             </div>
           </label>
           <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("settings_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
