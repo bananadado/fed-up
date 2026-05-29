@@ -25,7 +25,7 @@ export function DeadlineSetupPage() {
   const [budgetPounds, setBudgetPounds] = useState(() =>
     initialConstraints === null ? "24" : (initialConstraints.budgetPence / 100).toFixed(0),
   );
-  const [maxPrepMinutes, setMaxPrepMinutes] = useState(() => initialConstraints?.maxPrepMinutes ?? 20);
+  const [maxPrepMinutes, setMaxPrepMinutes] = useState(() => String(initialConstraints?.maxPrepMinutes ?? 20));
   const [deadlineDays, setDeadlineDays] = useState<string[]>(() =>
     initialConstraints?.deadlineDays ?? ["monday", "wednesday", "thursday"],
   );
@@ -40,11 +40,12 @@ export function DeadlineSetupPage() {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    const parsedMaxPrepMinutes = Number(maxPrepMinutes) || 0;
     const constraints: PlanningConstraints = {
       budgetPence: Math.round(Number(budgetPounds) * 100),
       deadlineDays,
       lateCampusDays,
-      maxPrepMinutes,
+      maxPrepMinutes: parsedMaxPrepMinutes,
       kitchenAccess,
       dietaryTags: dietaryTag === "none" ? [] : [dietaryTag],
       mealSlots: selectedMealSlots,
@@ -54,7 +55,7 @@ export function DeadlineSetupPage() {
     if (commands.submitConstraints(constraints)) {
       posthog?.capture("constraints_submitted", {
         budget_pounds: Number(budgetPounds),
-        max_prep_minutes: maxPrepMinutes,
+        max_prep_minutes: parsedMaxPrepMinutes,
         kitchen_access: kitchenAccess,
         dietary_tag: dietaryTag,
         deadline_days_count: deadlineDays.length,
@@ -104,7 +105,7 @@ export function DeadlineSetupPage() {
                   min="0"
                   type="number"
                   value={maxPrepMinutes}
-                  onChange={event => setMaxPrepMinutes(Number(event.target.value))}
+                  onChange={event => setMaxPrepMinutes(event.target.value)}
                 />
                 <p className="text-sm text-slate-500">Minutes for the most effortful meal.</p>
               </div>
