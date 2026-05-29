@@ -125,20 +125,19 @@ export function DiscoverScreen({
                 {current.image}
               </button>
               <div className="p-6">
-                <div className="flex justify-between gap-3">
-                  <button
-                    type="button"
-                    onClick={() => onSelectMeal(current.id)}
-                    className="break-words text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
-                  >
-                    {current.name}
-                  </button>
+                <button
+                  type="button"
+                  onClick={() => onSelectMeal(current.id)}
+                  className="text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                >
+                  {current.name}
+                </button>
+                <div className="mt-2 flex flex-wrap items-center gap-4">
+                  <span className="whitespace-nowrap font-semibold text-stone-700">{current.time} min</span>
                   <span className="whitespace-nowrap font-semibold text-emerald-700">{money(current.price)}</span>
-                </div>
-                <div className="mt-2 flex flex-wrap items-center gap-3">
-                  <p className="text-sm text-stone-500">{current.source} · {current.time} min</p>
                   <StarRating rating={current.rating} reviews={current.reviews.length} />
                 </div>
+                <p className="mt-1 text-sm text-stone-400">{current.source}</p>
                 <div className="mt-4 rounded-lg bg-stone-50 p-3">
                   <p className="text-xs font-semibold uppercase text-stone-500">Key ingredients</p>
                   <p className="mt-1 text-sm text-stone-700">{ingredientNames(current.ingredients, 5)}</p>
