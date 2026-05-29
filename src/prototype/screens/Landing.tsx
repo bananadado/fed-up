@@ -12,7 +12,7 @@ export function Landing({ onStart, track }: { onStart: () => void; track: TrackP
         <div>
           <div className="mb-8 flex items-center gap-2 text-sm font-semibold text-emerald-800">
             <Leaf size={20} />
-            Deadline Food Autopilot
+            Deadline Food Autopilot BOB
           </div>
           <Badge tone="green">Meal planning for busy study weeks</Badge>
           <h1 className="mt-5 max-w-xl text-5xl font-bold leading-[1.04] sm:text-6xl">Healthy meals that fit around coursework.</h1>
