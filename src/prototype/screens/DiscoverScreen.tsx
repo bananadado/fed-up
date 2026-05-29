@@ -1,4 +1,4 @@
-import { Sparkles, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -8,6 +8,19 @@ import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, money, ingredientNames } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
+
+function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
+  if (rating === 0) return null;
+  return (
+    <span className="flex items-center gap-1">
+      {Array.from({ length: 5 }, (_, i) => (
+        <Star key={i} size={13} className={i < Math.round(rating) ? "fill-amber-400 text-amber-400" : "fill-stone-200 text-stone-200"} />
+      ))}
+      <span className="ml-0.5 text-sm font-medium text-stone-700">{rating.toFixed(1)}</span>
+      {reviews > 0 && <span className="text-xs text-stone-400">({reviews})</span>}
+    </span>
+  );
+}
 
 export function DiscoverScreen({
   prefs,
@@ -122,9 +135,10 @@ export function DiscoverScreen({
                   </button>
                   <span className="whitespace-nowrap font-semibold text-emerald-700">{money(current.price)}</span>
                 </div>
-                <p className="mt-2 text-sm text-stone-500">
-                  {current.source} - {current.time} minutes
-                </p>
+                <div className="mt-2 flex flex-wrap items-center gap-3">
+                  <p className="text-sm text-stone-500">{current.source} · {current.time} min</p>
+                  <StarRating rating={current.rating} reviews={current.reviews.length} />
+                </div>
                 <div className="mt-4 rounded-lg bg-stone-50 p-3">
                   <p className="text-xs font-semibold uppercase text-stone-500">Key ingredients</p>
                   <p className="mt-1 text-sm text-stone-700">{ingredientNames(current.ingredients, 5)}</p>
@@ -178,6 +192,7 @@ export function DiscoverScreen({
                         {meal.image} {meal.name}
                       </button>
                       <p className="text-sm text-stone-500">{meal.time} min · {money(meal.price)}</p>
+                      <StarRating rating={meal.rating} reviews={meal.reviews.length} />
                     </div>
                     <AppButton variant="secondary" onClick={() => undo(meal)}>Undo</AppButton>
                     <AppButton variant="ghost" onClick={() => onSelectMeal(meal.id)}>View</AppButton>
@@ -197,6 +212,7 @@ export function DiscoverScreen({
                     <p className="text-sm text-stone-500">
                       {meal.time} min - {money(meal.price)}
                     </p>
+                    <StarRating rating={meal.rating} reviews={meal.reviews.length} />
                     <p className="mt-1 truncate text-xs text-stone-500">{ingredientNames(meal.ingredients, 4)}</p>
                   </div>
                   <AppButton variant="secondary" onClick={() => addToPlan(meal)}>
