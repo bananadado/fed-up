@@ -154,7 +154,7 @@ export function Field({
       <Input
         type={type}
         step={step}
-        value={value}
+        value={type === "number" && value === 0 ? "" : value}
         onChange={(event) => onChange(event.target.value)}
         onBlur={onBlur}
         placeholder={placeholder}
