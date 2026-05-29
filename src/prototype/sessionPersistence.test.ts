@@ -1,10 +1,12 @@
 import { describe, expect, test } from "bun:test";
 
 import { initialPreferences } from "./data";
+import type { PlanEntry } from "./types";
 import {
   createPrototypeSessionSettings,
   isAnonymousSessionId,
   PROTOTYPE_SESSION_SETTINGS_VERSION,
+  restorePrototypePlan,
 } from "./sessionPersistence";
 
 describe("anonymous prototype session persistence", () => {
@@ -26,5 +28,37 @@ describe("anonymous prototype session persistence", () => {
     expect(settings.preferences).toEqual(initialPreferences);
     expect(settings.selectedSources).toEqual(["budget", "campus"]);
     expect(settings.onboarded).toBe(true);
+  });
+
+  test("falls back when persisted plan data is empty or malformed", () => {
+    const fallbackPlan = [
+      {
+        day: "Mon",
+        context: "Fallback day",
+        meals: [{ slot: "breakfast" as const, mealId: "m9" }],
+      },
+    ];
+
+    expect(restorePrototypePlan([], fallbackPlan)).toEqual(fallbackPlan);
+    expect(restorePrototypePlan([{ day: "Broken", context: "Missing meals" }], fallbackPlan)).toEqual(fallbackPlan);
+  });
+
+  test("restores structurally valid persisted plan data", () => {
+    const fallbackPlan = [
+      {
+        day: "Mon",
+        context: "Fallback day",
+        meals: [{ slot: "breakfast" as const, mealId: "m9" }],
+      },
+    ];
+    const persistedPlan: PlanEntry[] = [
+      {
+        day: "Tue",
+        context: "Saved day",
+        meals: [{ slot: "dinner", mealId: "m1", rescued: true }],
+      },
+    ];
+
+    expect(restorePrototypePlan(persistedPlan, fallbackPlan)).toEqual(persistedPlan);
   });
 });
