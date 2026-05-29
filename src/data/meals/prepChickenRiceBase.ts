@@ -1,3 +1,4 @@
+import { recipeIngredients } from "@/domain/ingredients";
 import type { MealOption } from "@/domain/types";
 
 export const prepChickenRiceBase: MealOption = {
@@ -11,7 +12,7 @@ export const prepChickenRiceBase: MealOption = {
   suitabilityTags: ["batch prep", "high-protein", "reheats quickly"],
   recipe: {
     summary: "A lemon chicken and rice base for quick pots or salad boxes through the week.",
-    ingredients: ["halal chicken pieces", "rice", "lemon juice", "peas", "spinach", "yoghurt dressing"],
+    ingredients: recipeIngredients(["halal chicken pieces", "rice", "lemon juice", "peas", "spinach", "yoghurt dressing"]),
     steps: ["Cook the rice and chicken together.", "Fold through peas and spinach.", "Portion into boxes with dressing separate."],
     prepNotes: "Cook once, then use cold for lunch or hot for dinner.",
     storage: "Keep chilled and reheat until steaming if serving hot.",

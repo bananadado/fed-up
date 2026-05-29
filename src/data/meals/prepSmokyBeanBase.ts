@@ -1,3 +1,4 @@
+import { recipeIngredients } from "@/domain/ingredients";
 import type { MealOption } from "@/domain/types";
 
 export const prepSmokyBeanBase: MealOption = {
@@ -11,7 +12,7 @@ export const prepSmokyBeanBase: MealOption = {
   suitabilityTags: ["batch prep", "contains vegetables", "budget steady"],
   recipe: {
     summary: "A tray of beans, peppers and tomatoes that becomes wraps, bowls or jacket potato topping later.",
-    ingredients: ["mixed beans", "chopped tomatoes", "frozen peppers", "rice", "smoked paprika", "tortilla wraps"],
+    ingredients: recipeIngredients(["mixed beans", "chopped tomatoes", "frozen peppers", "rice", "smoked paprika", "tortilla wraps"]),
     steps: ["Bake the bean mix until thick.", "Cook rice while the tray is in the oven.", "Cool and portion the base for later meals."],
     prepNotes: "Use the same base for two or three remixes so the week has fewer decisions.",
     storage: "Keep refrigerated in sealed portions for up to three days.",

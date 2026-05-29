@@ -1,3 +1,4 @@
+import { recipeIngredients } from "@/domain/ingredients";
 import type { MealOption } from "@/domain/types";
 
 export const fallbackCampusSushiSnack: MealOption = {
@@ -14,7 +15,7 @@ export const fallbackCampusSushiSnack: MealOption = {
   illustrativeOnly: true,
   recipe: {
     summary: "A portable vegetarian sushi-style snack box.",
-    ingredients: ["vegetable sushi pieces", "soy sauce", "edamame side"],
+    ingredients: recipeIngredients(["vegetable sushi pieces", "soy sauce", "edamame side"]),
     steps: ["Collect from Campus Express.", "Eat cold without preparation."],
     prepNotes: "Prototype option: availability and pricing are illustrative.",
     whyItFits: "It is quick to collect for lunch when queues are short.",

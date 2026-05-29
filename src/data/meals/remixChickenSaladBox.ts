@@ -1,3 +1,4 @@
+import { recipeIngredients } from "@/domain/ingredients";
 import type { MealOption } from "@/domain/types";
 
 export const remixChickenSaladBox: MealOption = {
@@ -12,7 +13,7 @@ export const remixChickenSaladBox: MealOption = {
   derivesFromPrepBaseId: "prep-chicken-rice-base",
   recipe: {
     summary: "A cold lunch box built from the chicken base with salad leaves and dressing.",
-    ingredients: ["lemon chicken rice base", "salad leaves", "cucumber", "yoghurt dressing", "flatbread"],
+    ingredients: recipeIngredients(["lemon chicken rice base", "salad leaves", "cucumber", "yoghurt dressing", "flatbread"]),
     steps: ["Add salad leaves to a lunch box.", "Top with chilled chicken rice.", "Pack dressing and flatbread separately."],
     prepNotes: "Build in the morning so it is ready before campus.",
     storage: "Keep chilled until lunch.",

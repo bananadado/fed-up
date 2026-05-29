@@ -1,3 +1,4 @@
+import { recipeIngredients } from "@/domain/ingredients";
 import type { MealOption } from "@/domain/types";
 
 export const fallbackCampusHummusBox: MealOption = {
@@ -14,7 +15,7 @@ export const fallbackCampusHummusBox: MealOption = {
   illustrativeOnly: true,
   recipe: {
     summary: "A chilled mezze-style fallback with hummus, grains and vegetables.",
-    ingredients: ["hummus", "grain salad", "carrot sticks", "flatbread"],
+    ingredients: recipeIngredients(["hummus", "grain salad", "carrot sticks", "flatbread"]),
     steps: ["Collect the box from Campus Food Hall.", "Eat cold between classes or study blocks."],
     prepNotes: "Prototype option: availability and pricing are illustrative.",
     whyItFits: "It covers several dietary constraints without requiring cooking.",
