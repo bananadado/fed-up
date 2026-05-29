@@ -24,6 +24,14 @@ const slotLabels: Record<MealSlot, string> = {
   dinner: "Dinner",
 };
 
+function priceDiff(newPrice: number, oldPrice: number) {
+  const diff = newPrice - oldPrice;
+  if (Math.abs(diff) < 0.005) return { label: "same price", sign: "neutral" as const };
+  return diff < 0
+    ? { label: `saves ${money(Math.abs(diff))}`, sign: "saving" as const }
+    : { label: `costs ${money(diff)} more`, sign: "extra" as const };
+}
+
 export function PlanScreen({
   plan,
   setPlan,
@@ -299,7 +307,7 @@ export function PlanScreen({
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <p className="font-semibold">{meal.image} {meal.name}</p>
-                            <p className="mt-1 text-sm text-stone-500">{meal.source} · {meal.time} min · {money(meal.price)}</p>
+                            <p className="mt-1 text-sm text-stone-500">{meal.source} · {meal.time} min · {money(meal.price)} · {priceDiff(meal.price, originalMeal?.price ?? 0).label}</p>
                           </div>
                           <AppButton className="shrink-0" onClick={() => { track("meal_swap_browse_option_selected", { day: rescueChoice.day, meal_slot: rescueChoice.slot, meal_id: meal.id }); confirmSwapWith(meal, "browse"); }}>
                             Use
@@ -362,7 +370,7 @@ export function PlanScreen({
                                   </div>
                                   <p className="mt-1 text-sm text-stone-600">{meal.source}</p>
                                   <p className="mt-1 text-xs text-stone-500">
-                                    {meal.time} min - {money(meal.price)} · total {money(optionTotal)} · {optionRemaining >= 0 ? `${money(optionRemaining)} left` : `${money(Math.abs(optionRemaining))} over`}
+                                    {meal.time} min - {money(meal.price)} · {priceDiff(meal.price, originalMeal.price).label} · total {money(optionTotal)} · {optionRemaining >= 0 ? `${money(optionRemaining)} left` : `${money(Math.abs(optionRemaining))} over`}
                                   </p>
                                 </div>
                                 <AppButton className="shrink-0" onClick={() => confirmSwapWith(meal, "suggested")}>
@@ -400,6 +408,17 @@ export function PlanScreen({
                       ) : (
                         <>Best fit takes the same time as the original.</>
                       )}
+                      {" "}
+                      {(() => {
+                        const diff = priceDiff(replacement.price, originalMeal.price);
+                        return diff.sign === "saving" ? (
+                          <>You've <strong className="text-white">saved {money(Math.abs(replacement.price - originalMeal.price))}</strong> on this meal.</>
+                        ) : diff.sign === "extra" ? (
+                          <>You've <strong className="text-white">spent {money(replacement.price - originalMeal.price)} more</strong> on this meal.</>
+                        ) : (
+                          <>This meal costs the same.</>
+                        );
+                      })()}
                     </p>
                   </div>
                 )}
