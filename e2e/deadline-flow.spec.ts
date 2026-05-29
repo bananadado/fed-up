@@ -60,8 +60,9 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.getByRole("button", { name: /use suggested meal/i }).click();
   await expect(page.getByText("Rescued")).toBeVisible();
 
-  await page.getByRole("button", { name: /recipes/i }).click();
-  await expect(page.getByRole("heading", { name: /my recipes/i })).toBeVisible();
+  await page.getByRole("button", { name: "Recipes", exact: true }).click();
+  await page.getByRole("button", { name: "Add Recipe", exact: true }).click();
+  await expect(page.getByRole("heading", { name: /new recipe/i })).toBeVisible();
   await page.getByLabel("Recipe name").fill("Microwave bean burrito");
   await page.getByLabel("Servings").fill("3");
   await page.getByLabel("Total recipe cost (£)").fill("4.50");
@@ -78,9 +79,9 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.getByLabel("Amount").nth(2).fill("50");
   await page.getByLabel("Unit").nth(2).selectOption("g");
   await page.getByLabel("Method").fill("Warm the beans.\nFill the wrap.");
-  await page.getByRole("button", { name: /add recipe/i }).click();
+  await page.getByRole("button", { name: "Add recipe", exact: true }).click();
   await expect(page.getByText("Microwave bean burrito")).toBeVisible();
-  await expect(page.getByText("10 minutes · 100g mixed beans, 1 wrap tortilla wrap, 50g tomato")).toBeVisible();
+  await expect(page.getByText("10 min · 100g mixed beans, 1 wrap tortilla wrap, 50g tomato")).toBeVisible();
 });
 
 test("landing CTA reopens constraint setup for returning users", async ({ page }) => {

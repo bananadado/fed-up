@@ -1,4 +1,4 @@
-import type { Deadline, Preferences } from "./types";
+import type { Deadline, Meal, PlanEntry, Preferences } from "./types";
 
 export const ANONYMOUS_SESSION_STORAGE_KEY = "deadlineFoodAnonymousSessionId";
 export const PROTOTYPE_SESSION_SETTINGS_VERSION = 1;
@@ -10,6 +10,10 @@ export type PrototypeSessionSettings = {
   deadlines: Deadline[];
   selectedSources: string[];
   onboarded: boolean;
+  customRecipes?: Meal[];
+  discoverSaved?: Meal[];
+  discoverRejected?: Meal[];
+  plan?: PlanEntry[];
 };
 
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
@@ -31,6 +35,10 @@ export function createPrototypeSessionSettings(input: {
   deadlines: Deadline[];
   selectedSources: string[];
   onboarded: boolean;
+  customRecipes?: Meal[];
+  discoverSaved?: Meal[];
+  discoverRejected?: Meal[];
+  plan?: PlanEntry[];
 }): PrototypeSessionSettings {
   return {
     settingsVersion: PROTOTYPE_SESSION_SETTINGS_VERSION,
@@ -38,5 +46,9 @@ export function createPrototypeSessionSettings(input: {
     deadlines: input.deadlines,
     selectedSources: input.selectedSources,
     onboarded: input.onboarded,
+    customRecipes: input.customRecipes,
+    discoverSaved: input.discoverSaved,
+    discoverRejected: input.discoverRejected,
+    plan: input.plan,
   };
 }

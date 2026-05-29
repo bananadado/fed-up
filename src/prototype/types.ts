@@ -90,6 +90,6 @@ export type Preferences = {
   likes: string[];
 };
 
-export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "discover" | "recipes" | "settings" | "recipe-detail";
+export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "recipes" | "settings" | "recipe-detail";
 
 export type CalendarProvider = "google" | "outlook" | "apple" | "manual";

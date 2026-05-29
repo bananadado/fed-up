@@ -123,7 +123,7 @@ export function PlanScreen({
           <h1 className="text-3xl font-bold">Planned meals</h1>
           <p className="mt-2 text-stone-600">A practical plan for your deadline-heavy week.</p>
         </div>
-        <AppButton variant="secondary" onClick={() => { track("find_alternatives_clicked", { source_screen: "plan" }); setScreen("discover"); }}>
+        <AppButton variant="secondary" onClick={() => { track("find_alternatives_clicked", { source_screen: "plan" }); setScreen("recipes"); }}>
           <Heart size={16} /> Find alternatives
         </AppButton>
       </div>
@@ -323,8 +323,8 @@ export function PlanScreen({
                   <AppButton variant="secondary" className="flex-1" onClick={() => setBrowseMode(false)}>
                     <ArrowLeft size={15} /> Back
                   </AppButton>
-                  <AppButton variant="secondary" className="flex-1" onClick={() => { track("meal_swap_discover_clicked", { day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeModal(); setScreen("discover"); }}>
-                    Find more on Discover
+                  <AppButton variant="secondary" className="flex-1" onClick={() => { track("meal_swap_discover_clicked", { day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeModal(); setScreen("recipes"); }}>
+                    Find more on Recipes
                   </AppButton>
                 </div>
               </>
