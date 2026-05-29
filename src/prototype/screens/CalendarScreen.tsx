@@ -5,12 +5,12 @@ import { AppButton, Badge } from "../components/primitives";
 import { Input } from "@/components/ui/input";
 import { days } from "../data";
 import { cn } from "@/lib/utils";
+import { clockTimeInputPattern } from "@/lib/timeInput";
 import { cookingEffortReason, workloadLabel } from "../workloadModel";
 import type { TrackPrototypeEvent } from "../analytics";
 
 const urgencyLevels: Deadline["urgency"][] = ["low", "medium", "high"];
 const urgencyLabel: Record<Deadline["urgency"], string> = { low: "Low", medium: "Medium", high: "High" };
-const timePattern = /^([01]?\d|2[0-3]):[0-5]\d$/;
 
 type WorkloadDraft = {
   day: string;
@@ -178,8 +178,8 @@ export function CalendarScreen({
     }
     if (!draft.time.trim()) {
       errors.time = "Time is required.";
-    } else if (!timePattern.test(draft.time.trim())) {
-      errors.time = "Enter a time in HH:MM format, e.g. 14:30.";
+    } else if (!clockTimeInputPattern.test(draft.time.trim())) {
+      errors.time = "Choose a valid time.";
     }
     if (!draft.urgency) {
       errors.urgency = "Select an urgency level.";
@@ -336,9 +336,11 @@ export function CalendarScreen({
               <label className="block">
                 <span className="text-sm font-semibold text-stone-700">Time <span className="text-rose-500">*</span></span>
                 <Input
+                  type="time"
+                  step="60"
                   value={draft.time}
                   onChange={(e) => { setDraft({ ...draft, time: e.target.value }); setFormErrors((err) => ({ ...err, time: undefined })); }}
-                  placeholder="14:30"
+                  required
                   className={cn("mt-2 h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
                 />
               </label>
