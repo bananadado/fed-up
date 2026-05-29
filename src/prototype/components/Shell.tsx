@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, CookingPot, Heart, Leaf, Plus, Settings2, Sparkles } from "lucide-react";
+import { ArrowLeft, BookOpen, CalendarDays, CookingPot, Leaf, Settings2, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
@@ -26,8 +26,7 @@ export function Shell({
     { id: "dashboard" as const, label: "Today", icon: Sparkles },
     { id: "calendar" as const, label: "Calendar", icon: CalendarDays },
     { id: "plan" as const, label: "Meals", icon: CookingPot },
-    { id: "discover" as const, label: "Discover", icon: Heart },
-    { id: "recipes" as const, label: "Recipes", icon: Plus },
+    { id: "recipes" as const, label: "Recipes", icon: BookOpen },
   ];
   const backTarget = previousScreen ?? "dashboard";
   const showBackButton = previousScreen !== null || screen !== "dashboard";
@@ -107,7 +106,7 @@ export function Shell({
       )}
       <main className={cn("mx-auto max-w-7xl", onboarded ? "px-4 pb-28 pt-7 sm:px-6 md:pb-10" : "")}>{children}</main>
       {onboarded && (
-        <nav className="fixed bottom-0 left-0 right-0 z-20 grid grid-cols-5 border-t border-stone-200 bg-white px-1 pb-2 pt-2 md:hidden">
+        <nav className="fixed bottom-0 left-0 right-0 z-20 grid grid-cols-4 border-t border-stone-200 bg-white px-1 pb-2 pt-2 md:hidden">
           {nav.map(({ id, label, icon: Icon }) => (
             <button
               key={id}

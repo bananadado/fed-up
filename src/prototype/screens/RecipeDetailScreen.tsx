@@ -66,7 +66,6 @@ function ratingLabel(rating: number) {
 
 
 function backLabel(backTo: Screen | null): string {
-  if (backTo === "discover") return "Back to discover";
   if (backTo === "recipes") return "Back to recipes";
   return "Back to plan";
 }

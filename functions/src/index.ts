@@ -134,6 +134,10 @@ type PrototypeSessionSettings = {
   }[];
   selectedSources: string[];
   onboarded: boolean;
+  customRecipes: UnknownRecord[];
+  discoverSaved: UnknownRecord[];
+  discoverRejected: UnknownRecord[];
+  plan: UnknownRecord[];
 };
 
 const servingGrams: Record<string, number> = {
@@ -289,6 +293,11 @@ function boundedStringList(
     .slice(0, maxItems);
 }
 
+function normalizeRecipeList(value: unknown, maxItems = 100): UnknownRecord[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is UnknownRecord => asRecord(item) !== null).slice(0, maxItems);
+}
+
 function normalizeDeadline(value: unknown): PrototypeSessionSettings["deadlines"][number] | null {
   const deadline = asRecord(value);
 
@@ -346,6 +355,10 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
       [],
     selectedSources: boundedStringList(settings.selectedSources),
     onboarded: settings.onboarded === true,
+    customRecipes: normalizeRecipeList(settings.customRecipes),
+    discoverSaved: normalizeRecipeList(settings.discoverSaved),
+    discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
+    plan: normalizeRecipeList(settings.plan, 30),
   };
 }
 
