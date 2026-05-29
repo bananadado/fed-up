@@ -16,7 +16,7 @@ test-results
 
 # logs
 logs
-_.log
+*.log
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 firebase-debug.log
 firebase-debug.*.log
@@ -39,3 +39,13 @@ firestore-debug.log
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# graphify local artifacts
+graphify-out/**/manifest.json
+graphify-out/**/cost.json
+graphify-out/manifest.json
+graphify-out/cost.json
+graphify-out/.graphify_root
+.codex
+.claude
+# graphify-out/cache/         # optional: commit for speed, skip to keep repo small

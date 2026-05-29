@@ -1,0 +1,3408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>drp03 — Complete Call Flow &amp; Architecture Documentation</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --border: #334155;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
+  --warn: #fbbf24; --err: #f87171; --ok: #34d399;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+h1 { font-size: 2.4rem; margin-bottom: 8px; background: linear-gradient(135deg, var(--accent), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+h2 { font-size: 1.7rem; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+h3 { font-size: 1.25rem; margin: 32px 0 12px; color: var(--accent); }
+h4 { font-size: 1.05rem; margin: 20px 0 8px; color: var(--warn); }
+p { margin: 8px 0; color: var(--muted); }
+.subtitle { color: var(--muted); font-size: 1.1rem; margin-bottom: 32px; }
+.mermaid { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 20px 0; overflow-x: auto; position: relative; }
+.mermaid.is-enhanced { padding: 0; overflow: hidden; min-height: 260px; }
+.mermaid-viewport { padding: 54px 24px 24px; overflow: hidden; cursor: grab; touch-action: none; min-height: 260px; }
+.mermaid-viewport.is-dragging { cursor: grabbing; }
+.mermaid-viewport svg { max-width: none !important; height: auto; transform-origin: 0 0; transition: transform 120ms ease; }
+.mermaid-toolbar { position: absolute; top: 10px; right: 10px; z-index: 3; display: flex; align-items: center; gap: 6px; padding: 6px; background: rgba(15,23,42,0.92); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+.mermaid-toolbar button, .mermaid-toolbar .zoom-level { height: 28px; min-width: 32px; border: 1px solid var(--border); border-radius: 6px; background: #1e293b; color: var(--text); font: 600 0.78rem system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; }
+.mermaid-toolbar button { cursor: pointer; }
+.mermaid-toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+.mermaid-toolbar .zoom-level { min-width: 52px; color: var(--muted); background: transparent; }
+.call-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; }
+.call-table th { background: #1a2744; color: var(--accent); text-align: left; padding: 10px 14px; border: 1px solid var(--border); }
+.call-table td { padding: 8px 14px; border: 1px solid var(--border); vertical-align: top; }
+.call-table tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.tag-async { background: #7c3aed33; color: #a78bfa; }
+.tag-class { background: #05966933; color: var(--ok); }
+.tag-func { background: #2563eb33; color: var(--accent); }
+.tag-cmd { background: #d9770633; color: var(--warn); }
+.tag-endpoint { background: #dc262633; color: var(--err); }
+.tag-hook { background: #db277733; color: #f472b6; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 16px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin: 16px 0; }
+.arrow-chain { font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--accent); padding: 10px; background: rgba(56,189,248,0.06); border-radius: 6px; }
+code { font-family: 'Fira Code', 'Cascadia Code', monospace; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 3px; font-size: 0.88em; }
+ul, ol { margin: 8px 0 8px 24px; color: var(--muted); }
+li { margin: 4px 0; }
+a { color: var(--accent); }
+hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+.nav { position: sticky; top: 0; background: var(--bg); z-index: 10; padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem; }
+.nav a { text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+@media (max-width: 768px) { .container { padding: 16px; } h1 { font-size: 1.8rem; } }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
+<p class="subtitle">Generated from graphify knowledge graph: 764 nodes, 1703 edges, 36 communities. Commit: ea04a15</p>
+
+<div class="nav">
+    <a href="#overview">Architecture Overview</a>
+    <a href="#build-graph">Graph Build</a>
+    <a href="#outputs-docs">Outputs &amp; Docs</a>
+    <a href="#serve-api">Serving API</a>
+    <a href="#tests-fixtures">Tests &amp; Fixtures</a>
+    <a href="#firebase-functions">Firebase Functions</a>
+    <a href="#compiled-session-backend">Compiled Session Backend</a>
+    <a href="#openfoodfacts-cache">OpenFoodFacts Cache</a>
+    <a href="#backend-normalizers">Backend Normalizers</a>
+    <a href="#anonymous-session-storage">Anonymous Session Storage</a>
+    <a href="#generated-prototype-data">Generated Prototype Data</a>
+    <a href="#ingredient-taxonomy">Ingredient Taxonomy</a>
+    <a href="#firebase-local-dev">Firebase Local Dev</a>
+    <a href="#playwright-config">Playwright Config</a>
+    <a href="#audit-script">Audit Script</a>
+    <a href="#other">Other</a>
+</div>
+
+<!-- ====== Architecture Overview ====== -->
+<h2 id="overview">1. Architecture Overview</h2>
+
+<div class="mermaid">
+
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    BUILD_GRAPH_321CBB04("Graph Build<br/><small>189 nodes</small>")
+    class BUILD_GRAPH_321CBB04 module;
+    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>91 nodes</small>")
+    class OUTPUTS_DOCS_ED82387C module;
+    SERVE_API_35EC8E86("Serving API<br/><small>82 nodes</small>")
+    class SERVE_API_35EC8E86 module;
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>283 nodes</small>")
+    class TESTS_FIXTURES_B84B1DCC module;
+    FIREBASE_FUNCTIONS_650C665A("Firebase Functions<br/><small>37 nodes</small>")
+    class FIREBASE_FUNCTIONS_650C665A module;
+    COMPILED_SESSION_BACKEND_52DD869B("Compiled Session Backend<br/><small>34 nodes</small>")
+    class COMPILED_SESSION_BACKEND_52DD869B module;
+    OPENFOODFACTS_CACHE_E52CCB81("OpenFoodFacts Cache<br/><small>11 nodes</small>")
+    class OPENFOODFACTS_CACHE_E52CCB81 module;
+    BACKEND_NORMALIZERS_2785BCDF("Backend Normalizers<br/><small>8 nodes</small>")
+    class BACKEND_NORMALIZERS_2785BCDF module;
+    ANONYMOUS_SESSION_STORAGE_B1FC6E96("Anonymous Session Storage<br/><small>7 nodes</small>")
+    class ANONYMOUS_SESSION_STORAGE_B1FC6E96 module;
+    GENERATED_PROTOTYPE_DATA_6C2E6457("Generated Prototype Data<br/><small>5 nodes</small>")
+    class GENERATED_PROTOTYPE_DATA_6C2E6457 module;
+    INGREDIENT_TAXONOMY_0E3A5110("Ingredient Taxonomy<br/><small>4 nodes</small>")
+    class INGREDIENT_TAXONOMY_0E3A5110 module;
+    FIREBASE_LOCAL_DEV_BD8F109B("Firebase Local Dev<br/><small>3 nodes</small>")
+    class FIREBASE_LOCAL_DEV_BD8F109B module;
+    PLAYWRIGHT_CONFIG_7B1217DD("Playwright Config<br/><small>2 nodes</small>")
+    class PLAYWRIGHT_CONFIG_7B1217DD module;
+    AUDIT_SCRIPT_8927A184("Audit Script<br/><small>2 nodes</small>")
+    class AUDIT_SCRIPT_8927A184 module;
+    OTHER_D0941E68("Other<br/><small>6 nodes</small>")
+    class OTHER_D0941E68 module;
+    TESTS_FIXTURES_B84B1DCC -->|imports x55| SERVE_API_35EC8E86
+    SERVE_API_35EC8E86 -->|imports x38| TESTS_FIXTURES_B84B1DCC
+    OUTPUTS_DOCS_ED82387C -->|imports x27| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x15| OUTPUTS_DOCS_ED82387C
+    FIREBASE_FUNCTIONS_650C665A -->|contains x11| OPENFOODFACTS_CACHE_E52CCB81
+    OUTPUTS_DOCS_ED82387C -->|imports x10| SERVE_API_35EC8E86
+    FIREBASE_FUNCTIONS_650C665A -->|contains x8| BACKEND_NORMALIZERS_2785BCDF
+    SERVE_API_35EC8E86 -->|imports x7| OUTPUTS_DOCS_ED82387C
+    FIREBASE_FUNCTIONS_650C665A -->|imports x5| GENERATED_PROTOTYPE_DATA_6C2E6457
+    FIREBASE_FUNCTIONS_650C665A -->|contains x4| INGREDIENT_TAXONOMY_0E3A5110
+    FIREBASE_FUNCTIONS_650C665A -->|contains x2| ANONYMOUS_SESSION_STORAGE_B1FC6E96
+    FIREBASE_FUNCTIONS_650C665A -->|contains x2| OTHER_D0941E68
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h4>Architecture Layers</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
+      <tr><td>Graph Build</td><td>189</td><td><code>7, 10, 11, 12, 13, 14, 15, 16, 19, 20, 23, 26, 29</code></td></tr><tr><td>Outputs &amp; Docs</td><td>91</td><td><code>3, 9</code></td></tr><tr><td>Serving API</td><td>82</td><td><code>1</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>283</td><td><code>0, 2, 4, 5, 17</code></td></tr><tr><td>Firebase Functions</td><td>37</td><td><code>6</code></td></tr><tr><td>Compiled Session Backend</td><td>34</td><td><code>8</code></td></tr><tr><td>OpenFoodFacts Cache</td><td>11</td><td><code>18</code></td></tr><tr><td>Backend Normalizers</td><td>8</td><td><code>21</code></td></tr><tr><td>Anonymous Session Storage</td><td>7</td><td><code>22</code></td></tr><tr><td>Generated Prototype Data</td><td>5</td><td><code>24</code></td></tr><tr><td>Ingredient Taxonomy</td><td>4</td><td><code>25</code></td></tr><tr><td>Firebase Local Dev</td><td>3</td><td><code>27</code></td></tr><tr><td>Playwright Config</td><td>2</td><td><code>28</code></td></tr><tr><td>Audit Script</td><td>2</td><td><code>30</code></td></tr><tr><td>Other</td><td>6</td><td><code>31, 32, 33, 34, 35</code></td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Core Flow</h4>
+    <div class="arrow-chain">Graph Build -&gt; Outputs &amp; Docs -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Firebase Functions -&gt; OpenFoodFacts Cache -&gt; Compiled Session Backend</div>
+  </div>
+</div>
+<div class="grid">
+  <div class="card">
+    <h4>Graph Report Highlights</h4>
+    <ul>
+      <li>764 nodes · 1703 edges · 36 communities (29 shown, 7 thin omitted)</li>
+      <li>Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 30 edges (avg confidence: 0.89)</li>
+      <li>Token cost: 0 input · 0 output</li>
+      <li>1. `cn()` - 46 edges</li>
+      <li>2. `MealOption` - 24 edges</li>
+      <li>3. `compilerOptions` - 20 edges</li>
+    </ul>
+  </div>
+</div>
+<hr>
+<!-- ====== 2. Graph Build ====== -->
+<h2 id="build-graph">2. Graph Build</h2>
+<p>Graph Build groups implementation around packagejson, functions, tsconfigjson, componentsjson, mostly in package.json, functions/package.json, tsconfig.json. This section covers 189 nodes and 187 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Graph Build (189 nodes, 187 edges)
+    subgraph build_graph_build_ts_9cbd066e["build.ts"]
+        drp03_build_parsevalue_9c00c0b1("parseValue()<br/><small>build.ts</small>")
+        drp03_build_tocamelcase_8046a2e7("toCamelCase()<br/><small>build.ts</small>")
+        drp03_build_parseargs_4814a38b("parseArgs()<br/><small>build.ts</small>")
+        drp03_build_buildconfigoverrides_bd7ddce7("BuildConfigOverrides<br/><small>build.ts</small>")
+        drp03_build_nestedbuildconfig_509cd544("NestedBuildConfig<br/><small>build.ts</small>")
+        build_ts_574ccc89("build.ts")
+        drp03_build_buildtime_d76fa7d8("buildTime<br/><small>build.ts</small>")
+        drp03_build_cliconfig_a8545ab1("cliConfig<br/><small>build.ts</small>")
+        drp03_build_end_da511248("end<br/><small>build.ts</small>")
+        drp03_build_entrypoints_f1c4ad4e("entrypoints<br/><small>build.ts</small>")
+    end
+    subgraph build_graph_gitlab_ci_yml_4a935db2[".gitlab-ci.yml"]
+        gitlab_ci_pipeline_quality_gate_cfe4c18e("GitLab Pipeline Quality Gate<br/><small>.gitlab-ci.yml</small>")
+        gitlab_ci_staging_production_deploy_b7a174b1("Staging And Production Deploy<br/><small>.gitlab-ci.yml</small>")
+    end
+    subgraph build_graph_README_md_df5bf028["README.md"]
+        readme_bun_verification_workflow_4bf9008e("Bun Verification Workflow<br/><small>README.md</small>")
+        readme_firebase_ci_deploy_setup_10da9ba9("Firebase CI Deploy Setup<br/><small>README.md</small>")
+    end
+    subgraph build_graph_scripts_verify_local_sh_0464435c["scripts/verify-local.sh"]
+        home_dorian_documents_drp03_scripts_verify_local_74412a1d("verify-local.sh script<br/><small>scripts/verify-local.sh</small>")
+        scripts_verify_local_run_c273c628("run()<br/><small>scripts/verify-local.sh</small>")
+    end
+    claude_bun_first_tooling_28f280bb("Bun First Tooling<br/><small>CLAUDE.md</small>")
+    deadline_food_autopilot_spec_react_bun_firebase_d7621234("React Bun Firebase Stack<br/><small>DEADLINE_FOOD_AUTOPILOT_SPEC.md</small>")
+    drp03_build_tocamelcase_8046a2e7 -->|calls| drp03_build_parseargs_4814a38b
+    drp03_build_parsevalue_9c00c0b1 -->|calls| drp03_build_parseargs_4814a38b
+    home_dorian_documents_drp03_scripts_verify_local_74412a1d -->|calls| scripts_verify_local_run_c273c628
+    %% Omitted for readability: 171 nodes, 0 edges
+    class drp03_build_parsevalue_9c00c0b1 function;
+    class drp03_build_tocamelcase_8046a2e7 function;
+    class drp03_build_parseargs_4814a38b function;
+    class drp03_build_buildconfigoverrides_bd7ddce7 klass;
+    class drp03_build_nestedbuildconfig_509cd544 klass;
+    class build_ts_574ccc89 module;
+    class drp03_build_buildtime_d76fa7d8 function;
+    class drp03_build_cliconfig_a8545ab1 entry;
+    class drp03_build_end_da511248 function;
+    class drp03_build_entrypoints_f1c4ad4e function;
+    class gitlab_ci_pipeline_quality_gate_cfe4c18e klass;
+    class gitlab_ci_staging_production_deploy_b7a174b1 klass;
+    class readme_bun_verification_workflow_4bf9008e klass;
+    class readme_firebase_ci_deploy_setup_10da9ba9 klass;
+    class home_dorian_documents_drp03_scripts_verify_local_74412a1d function;
+    class scripts_verify_local_run_c273c628 function;
+    class claude_bun_first_tooling_28f280bb klass;
+    class deadline_food_autopilot_spec_react_bun_firebase_d7621234 test;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>scripts</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>scripts node in package.json.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>dev</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>dev node in package.json.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>start</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>start node in package.json.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>lint</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>lint node in package.json.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>typecheck</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>typecheck node in package.json.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>test:domain</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>test:unit</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>test:e2e</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>test:all</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>verify</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>verify node in package.json.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>audit</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>audit node in package.json.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>build</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>build node in package.json.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>firebase:data</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebase:data node in package.json.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>firebase:functions:build</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebase:functions:build node in package.json.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>firebase:functions:lint</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebase:functions:lint node in package.json.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>firebase:emulators</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebase:emulators node in package.json.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>firebase:dev</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebase:dev node in package.json.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>firebase:artifacts:setpolicy</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebase:artifacts:setpolicy node in package.json.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>firebase:deploy</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebase:deploy node in package.json.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>vercel.json</code><br><small style="color:var(--muted)">vercel.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>vercel.json node in vercel.json.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>$schema</code><br><small style="color:var(--muted)">vercel.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>$schema node in vercel.json.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>buildCommand</code><br><small style="color:var(--muted)">vercel.json</small></td>
+  <td><span class="tag tag-cmd">Entry</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>buildCommand node in vercel.json.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>installCommand</code><br><small style="color:var(--muted)">vercel.json</small></td>
+  <td><span class="tag tag-cmd">Entry</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>installCommand node in vercel.json.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>outputDirectory</code><br><small style="color:var(--muted)">vercel.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>outputDirectory node in vercel.json.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>git</code><br><small style="color:var(--muted)">vercel.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Turns a local path or remote repository into analysis context.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>deploymentEnabled</code><br><small style="color:var(--muted)">vercel.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>deploymentEnabled node in vercel.json.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>rewrites</code><br><small style="color:var(--muted)">vercel.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>rewrites node in vercel.json.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>verify-local.sh</code><br><small style="color:var(--muted)">scripts/verify-local.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>verify-local.sh node in scripts/verify-local.sh.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>verify-local.sh script</code><br><small style="color:var(--muted)">scripts/verify-local.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>run()</code><br><small style="color:var(--muted)">scripts/verify-local.sh</small></td>
+  <td>verify-local.sh script node in scripts/verify-local.sh.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>run()</code><br><small style="color:var(--muted)">scripts/verify-local.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>verify-local.sh script</code><br><small style="color:var(--muted)">scripts/verify-local.sh</small></td>
+  <td>No direct outbound edge</td>
+  <td>run() node in scripts/verify-local.sh.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>package.json</code></td><td>55 nodes</td></tr>
+<tr><td><code>functions/package.json</code></td><td>27 nodes</td></tr>
+<tr><td><code>tsconfig.json</code></td><td>23 nodes</td></tr>
+<tr><td><code>components.json</code></td><td>18 nodes</td></tr>
+<tr><td><code>firebase.json</code></td><td>16 nodes</td></tr>
+<tr><td><code>functions/tsconfig.json</code></td><td>15 nodes</td></tr>
+<tr><td><code>build.ts</code></td><td>13 nodes</td></tr>
+<tr><td><code>vercel.json</code></td><td>8 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x171, references x10, calls x3, defines x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 3. Outputs & Docs ====== -->
+<h2 id="outputs-docs">3. Outputs &amp; Docs</h2>
+<p>Outputs &amp; Docs groups implementation around data, meals, domain, posthogts, mostly in src/lib/posthog.ts, src/domain/types.ts, src/index.ts. This section covers 91 nodes and 183 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Outputs &amp; Docs (91 nodes, 183 edges)
+    subgraph outputs_docs_src_data_seededScenario_ts_17e19a0c["src/data/seededScenario.ts"]
+        data_seededscenario_canonicalconstraints_6c4bda76("canonicalConstraints<br/><small>src/data/seededScenario.ts</small>")
+        data_seededscenario_deadlinebootstrap_6cc3e858("deadlineBootstrap<br/><small>src/data/seededScenario.ts</small>")
+        data_seededscenario_prototypemeta_a55d89f8("prototypeMeta<br/><small>src/data/seededScenario.ts</small>")
+        src_data_seededscenario_ts_6e2580a5("seededScenario.ts")
+    end
+    subgraph outputs_docs_src_lib_posthog_ts_b5794367["src/lib/posthog.ts"]
+        lib_posthog_compactproperties_472c4d3d("compactProperties()<br/><small>src/lib/posthog.ts</small>")
+        lib_posthog_captureposthogevent_c6f2b4d4("capturePostHogEvent()<br/><small>src/lib/posthog.ts</small>")
+        lib_posthog_registerposthogcontext_3a2e9754("registerPostHogContext()<br/><small>src/lib/posthog.ts</small>")
+    end
+    subgraph outputs_docs_src_App_tsx_50672f8c["src/App.tsx"]
+        src_app_tsx_7809c3b0("App.tsx")
+        src_app_app_f316b20d("App()<br/><small>src/App.tsx</small>")
+    end
+    subgraph outputs_docs_src_data_seededMeals_ts_b6f8f5ae["src/data/seededMeals.ts"]
+        src_data_seededmeals_ts_204303a7("seededMeals.ts")
+        data_seededmeals_seededmeals_455a52c1("seededMeals<br/><small>src/data/seededMeals.ts</small>")
+    end
+    src_data_meals_fallbackcampushummusbox_ts_04d9b7db("fallbackCampusHummusBox.ts")
+    src_data_meals_fallbackcampusricebowl_ts_bbb1ebd1("fallbackCampusRiceBowl.ts")
+    src_data_meals_fallbackcampussushisnack_ts_ad3a7dba("fallbackCampusSushiSnack.ts")
+    scripts_export_firebase_prototype_data_ts_097aaba7("export-firebase-prototype-data.ts")
+    src_frontend_tsx_befdbdc9("frontend.tsx")
+    src_index_ts_75473e42("index.ts")
+    prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4("DeadlineFoodPrototype()<br/><small>src/prototype/DeadlineFoodPrototype.tsx</small>")
+    lib_posthog_compactproperties_472c4d3d -->|calls| lib_posthog_captureposthogevent_c6f2b4d4
+    lib_posthog_compactproperties_472c4d3d -->|calls| lib_posthog_registerposthogcontext_3a2e9754
+    scripts_export_firebase_prototype_data_ts_097aaba7 -->|imports| data_seededmeals_seededmeals_455a52c1
+    scripts_export_firebase_prototype_data_ts_097aaba7 -->|imports| data_seededscenario_canonicalconstraints_6c4bda76
+    scripts_export_firebase_prototype_data_ts_097aaba7 -->|imports| data_seededscenario_deadlinebootstrap_6cc3e858
+    scripts_export_firebase_prototype_data_ts_097aaba7 -->|imports| data_seededscenario_prototypemeta_a55d89f8
+    scripts_export_firebase_prototype_data_ts_097aaba7 -->|imports| src_data_seededmeals_ts_204303a7
+    scripts_export_firebase_prototype_data_ts_097aaba7 -->|imports| src_data_seededscenario_ts_6e2580a5
+    src_app_tsx_7809c3b0 -->|imports| prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4
+    src_app_tsx_7809c3b0 -->|imports| src_frontend_tsx_befdbdc9
+    src_app_app_f316b20d -->|imports| src_frontend_tsx_befdbdc9
+    src_index_ts_75473e42 -->|imports| data_seededmeals_seededmeals_455a52c1
+    src_index_ts_75473e42 -->|imports| data_seededscenario_deadlinebootstrap_6cc3e858
+    src_index_ts_75473e42 -->|imports| src_data_seededmeals_ts_204303a7
+    src_index_ts_75473e42 -->|imports| src_data_seededscenario_ts_6e2580a5
+    src_data_seededmeals_ts_204303a7 -->|imports| src_data_meals_fallbackcampushummusbox_ts_04d9b7db
+    src_data_seededmeals_ts_204303a7 -->|imports| src_data_meals_fallbackcampusricebowl_ts_bbb1ebd1
+    src_data_seededmeals_ts_204303a7 -->|imports| src_data_meals_fallbackcampussushisnack_ts_ad3a7dba
+    src_data_seededmeals_ts_204303a7 -->|imports| src_data_seededscenario_ts_6e2580a5
+    data_seededmeals_seededmeals_455a52c1 -->|imports| src_data_seededscenario_ts_6e2580a5
+    %% Omitted for readability: 73 nodes, 0 edges
+    class data_seededscenario_canonicalconstraints_6c4bda76 function;
+    class data_seededscenario_deadlinebootstrap_6cc3e858 function;
+    class data_seededscenario_prototypemeta_a55d89f8 function;
+    class src_data_seededscenario_ts_6e2580a5 module;
+    class lib_posthog_compactproperties_472c4d3d function;
+    class lib_posthog_captureposthogevent_c6f2b4d4 function;
+    class lib_posthog_registerposthogcontext_3a2e9754 function;
+    class src_app_tsx_7809c3b0 ui;
+    class src_app_app_f316b20d ui;
+    class src_data_seededmeals_ts_204303a7 module;
+    class data_seededmeals_seededmeals_455a52c1 function;
+    class src_data_meals_fallbackcampushummusbox_ts_04d9b7db module;
+    class src_data_meals_fallbackcampusricebowl_ts_bbb1ebd1 module;
+    class src_data_meals_fallbackcampussushisnack_ts_ad3a7dba module;
+    class scripts_export_firebase_prototype_data_ts_097aaba7 module;
+    class src_frontend_tsx_befdbdc9 ui;
+    class src_index_ts_75473e42 module;
+    class prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4 ui;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>deadlineFoodSession</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>deadlineFoodSession node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>export-firebase-prototype-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-prototype-data.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>canonicalConstraints</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small><br><code>deadlineBootstrap</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small><br><code>prototypeMeta</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small><br>+3 more</td>
+  <td>Module file in scripts/export-firebase-prototype-data.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>outdir</code><br><small style="color:var(--muted)">scripts/export-firebase-prototype-data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>outdir node in scripts/export-firebase-prototype-data.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>outfile</code><br><small style="color:var(--muted)">scripts/export-firebase-prototype-data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>outfile node in scripts/export-firebase-prototype-data.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>index.ts</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>deadlineBootstrap</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small><br><code>seededMeals</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small><br><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small><br>+1 more</td>
+  <td>Module file in src/index.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>anonymousSessions</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>anonymousSessions node in src/index.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>firebaseFunctionsBaseUrl</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebaseFunctionsBaseUrl node in src/index.ts.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>sessionResponse()</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sessionResponse() node in src/index.ts.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>expiresAtFromNow()</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>expiresAtFromNow() node in src/index.ts.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>proxyToFirebaseFunction()</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>proxyToFirebaseFunction() node in src/index.ts.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>server</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>server node in src/index.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>export-firebase-prototype-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-prototype-data.ts</small><br><code>index.ts</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td><code>fallbackCampusHummusBox</code><br><small style="color:var(--muted)">data/meals/fallbackCampusHummusBox.ts</small><br><code>fallbackCampusHummusBox.ts</code><br><small style="color:var(--muted)">data/meals/fallbackCampusHummusBox.ts</small><br><code>fallbackCampusRiceBowl</code><br><small style="color:var(--muted)">data/meals/fallbackCampusRiceBowl.ts</small><br>+28 more</td>
+  <td>Module file in src/data/seededMeals.ts.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>seededMeals</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>export-firebase-prototype-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-prototype-data.ts</small><br><code>index.ts</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td><code>seededScenario.ts</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
+  <td>seededMeals node in src/data/seededMeals.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>seededScenario.ts</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>export-firebase-prototype-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-prototype-data.ts</small><br><code>index.ts</code><br><small style="color:var(--muted)">src/index.ts</small><br><code>seededMeals</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small><br>+1 more</td>
+  <td><code>PrototypeMeta</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
+  <td>Module file in src/data/seededScenario.ts.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>canonicalConstraints</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>export-firebase-prototype-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-prototype-data.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>canonicalConstraints node in src/data/seededScenario.ts.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>prototypeMeta</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>export-firebase-prototype-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-prototype-data.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>prototypeMeta node in src/data/seededScenario.ts.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>deadlineBootstrap</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>export-firebase-prototype-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-prototype-data.ts</small><br><code>index.ts</code><br><small style="color:var(--muted)">src/index.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>deadlineBootstrap node in src/data/seededScenario.ts.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>quickPeanutNoodles.ts</code><br><small style="color:var(--muted)">data/meals/quickPeanutNoodles.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td><code>ingredients.ts</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br><code>MealOption</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>recipeIngredients()</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br>+1 more</td>
+  <td>Module file in data/meals/quickPeanutNoodles.ts.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>quickPeanutNoodles</code><br><small style="color:var(--muted)">data/meals/quickPeanutNoodles.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>quickPeanutNoodles node in data/meals/quickPeanutNoodles.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>fallbackHallsJacketPotato.ts</code><br><small style="color:var(--muted)">data/meals/fallbackHallsJacketPotato.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td><code>ingredients.ts</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br><code>MealOption</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>recipeIngredients()</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br>+1 more</td>
+  <td>Module file in data/meals/fallbackHallsJacketPotato.ts.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>fallbackHallsJacketPotato</code><br><small style="color:var(--muted)">data/meals/fallbackHallsJacketPotato.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>fallbackHallsJacketPotato node in data/meals/fallbackHallsJacketPotato.ts.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>remixBeanWrap.ts</code><br><small style="color:var(--muted)">data/meals/remixBeanWrap.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td><code>ingredients.ts</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br><code>MealOption</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>recipeIngredients()</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br>+1 more</td>
+  <td>Module file in data/meals/remixBeanWrap.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>remixBeanWrap</code><br><small style="color:var(--muted)">data/meals/remixBeanWrap.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>remixBeanWrap node in data/meals/remixBeanWrap.ts.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>remixChickenRicePot.ts</code><br><small style="color:var(--muted)">data/meals/remixChickenRicePot.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td><code>ingredients.ts</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br><code>MealOption</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>recipeIngredients()</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br>+1 more</td>
+  <td>Module file in data/meals/remixChickenRicePot.ts.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>remixChickenRicePot</code><br><small style="color:var(--muted)">data/meals/remixChickenRicePot.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>remixChickenRicePot node in data/meals/remixChickenRicePot.ts.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>fallbackCampusRiceBowl.ts</code><br><small style="color:var(--muted)">data/meals/fallbackCampusRiceBowl.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td><code>ingredients.ts</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br><code>MealOption</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>recipeIngredients()</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br>+1 more</td>
+  <td>Module file in data/meals/fallbackCampusRiceBowl.ts.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>fallbackCampusRiceBowl</code><br><small style="color:var(--muted)">data/meals/fallbackCampusRiceBowl.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>fallbackCampusRiceBowl node in data/meals/fallbackCampusRiceBowl.ts.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>fallbackLibraryBeanWrap.ts</code><br><small style="color:var(--muted)">data/meals/fallbackLibraryBeanWrap.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td><code>ingredients.ts</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br><code>MealOption</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>recipeIngredients()</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br>+1 more</td>
+  <td>Module file in data/meals/fallbackLibraryBeanWrap.ts.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>fallbackLibraryBeanWrap</code><br><small style="color:var(--muted)">data/meals/fallbackLibraryBeanWrap.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>fallbackLibraryBeanWrap node in data/meals/fallbackLibraryBeanWrap.ts.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>prepSmokyBeanBase.ts</code><br><small style="color:var(--muted)">data/meals/prepSmokyBeanBase.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>seededMeals.ts</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
+  <td><code>ingredients.ts</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br><code>MealOption</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>recipeIngredients()</code><br><small style="color:var(--muted)">src/domain/ingredients.ts</small><br>+1 more</td>
+  <td>Module file in data/meals/prepSmokyBeanBase.ts.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/lib/posthog.ts</code></td><td>10 nodes</td></tr>
+<tr><td><code>src/domain/types.ts</code></td><td>8 nodes</td></tr>
+<tr><td><code>src/index.ts</code></td><td>7 nodes</td></tr>
+<tr><td><code>src/domain/ingredients.ts</code></td><td>6 nodes</td></tr>
+<tr><td><code>src/lib/posthogConfig.test.ts</code></td><td>5 nodes</td></tr>
+<tr><td><code>src/data/seededScenario.ts</code></td><td>4 nodes</td></tr>
+<tr><td><code>posthog-setup-report.md</code></td><td>3 nodes</td></tr>
+<tr><td><code>scripts/export-firebase-prototype-data.ts</code></td><td>3 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x59, imports x56, contains x54, references x10. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 4. Serving API ====== -->
+<h2 id="serve-api">4. Serving API</h2>
+<p>Serving API groups implementation around components, deadline, food, pages, mostly in components/ui/select.tsx, components/ui/card.tsx, prototype/components/primitives.tsx. This section covers 82 nodes and 286 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Serving API (82 nodes, 286 edges)
+    subgraph serve_api_components_deadline_food_format_ts_84065df9["components/deadline-food/format.ts"]
+        deadline_food_format_strategyname_421e9aa7("strategyName()<br/><small>components/deadline-food/format.ts</small>")
+        deadline_food_format_formatpence_1be05546("formatPence()<br/><small>components/deadline-food/format.ts</small>")
+        deadline_food_format_mealtypelabel_48067464("mealTypeLabel()<br/><small>components/deadline-food/format.ts</small>")
+    end
+    subgraph serve_api_src_pages_RescuePage_tsx_5ad69df9["src/pages/RescuePage.tsx"]
+        src_pages_rescuepage_tsx_934ae23d("RescuePage.tsx")
+        pages_rescuepage_budgetresult_bc714821("BudgetResult()<br/><small>src/pages/RescuePage.tsx</small>")
+        pages_rescuepage_rescuepage_9638915d("RescuePage()<br/><small>src/pages/RescuePage.tsx</small>")
+    end
+    subgraph serve_api_src_pages_DeadlineSetupPage_tsx_e11dc506["src/pages/DeadlineSetupPage.tsx"]
+        src_pages_deadlinesetuppage_tsx_e932c009("DeadlineSetupPage.tsx")
+        pages_deadlinesetuppage_deadlinesetuppage_676154a6("DeadlineSetupPage()<br/><small>src/pages/DeadlineSetupPage.tsx</small>")
+    end
+    subgraph serve_api_src_pages_PlanDashboardPage_tsx_33c64764["src/pages/PlanDashboardPage.tsx"]
+        src_pages_plandashboardpage_tsx_89a95277("PlanDashboardPage.tsx")
+        pages_plandashboardpage_plandashboardpage_cf652e43("PlanDashboardPage()<br/><small>src/pages/PlanDashboardPage.tsx</small>")
+    end
+    subgraph serve_api_src_pages_RecipePage_tsx_10ff44d8["src/pages/RecipePage.tsx"]
+        src_pages_recipepage_tsx_a5da0078("RecipePage.tsx")
+        pages_recipepage_recipepage_e2524082("RecipePage()<br/><small>src/pages/RecipePage.tsx</small>")
+    end
+    src_apitester_tsx_e67681e5("APITester.tsx")
+    lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
+    pages_fallbackbrowsepage_fallbackbrowsepage_aaf7613d("FallbackBrowsePage()<br/><small>src/pages/FallbackBrowsePage.tsx</small>")
+    pages_landingpage_landingpage_e178a4ae("LandingPage()<br/><small>src/pages/LandingPage.tsx</small>")
+    pages_strategyselectionpage_strategyselectionpag_569fe954("StrategySelectionPage()<br/><small>src/pages/StrategySelectionPage.tsx</small>")
+    state_deadlinemodeprovider_usedeadlinemode_c42b3d13("useDeadlineMode()<br/><small>src/state/DeadlineModeProvider.tsx</small>")
+    pages_landingpage_landingpage_e178a4ae -->|calls| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    pages_plandashboardpage_plandashboardpage_cf652e43 -->|calls| deadline_food_format_strategyname_421e9aa7
+    pages_plandashboardpage_plandashboardpage_cf652e43 -->|calls| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    pages_rescuepage_budgetresult_bc714821 -->|calls| deadline_food_format_formatpence_1be05546
+    pages_rescuepage_rescuepage_9638915d -->|calls| deadline_food_format_formatpence_1be05546
+    pages_rescuepage_rescuepage_9638915d -->|calls| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    pages_deadlinesetuppage_deadlinesetuppage_676154a6 -->|calls| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    pages_recipepage_recipepage_e2524082 -->|calls| deadline_food_format_formatpence_1be05546
+    pages_recipepage_recipepage_e2524082 -->|calls| deadline_food_format_mealtypelabel_48067464
+    pages_recipepage_recipepage_e2524082 -->|calls| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    pages_strategyselectionpage_strategyselectionpag_569fe954 -->|calls| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    pages_fallbackbrowsepage_fallbackbrowsepage_aaf7613d -->|calls| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    src_pages_plandashboardpage_tsx_89a95277 -->|imports| deadline_food_format_strategyname_421e9aa7
+    src_pages_plandashboardpage_tsx_89a95277 -->|imports| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    src_pages_rescuepage_tsx_934ae23d -->|imports| deadline_food_format_formatpence_1be05546
+    src_pages_rescuepage_tsx_934ae23d -->|imports| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    src_pages_deadlinesetuppage_tsx_e932c009 -->|imports| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    src_pages_recipepage_tsx_a5da0078 -->|imports| deadline_food_format_formatpence_1be05546
+    src_pages_recipepage_tsx_a5da0078 -->|imports| deadline_food_format_mealtypelabel_48067464
+    src_pages_recipepage_tsx_a5da0078 -->|imports| state_deadlinemodeprovider_usedeadlinemode_c42b3d13
+    %% Omitted for readability: 64 nodes, 0 edges
+    class deadline_food_format_strategyname_421e9aa7 function;
+    class deadline_food_format_formatpence_1be05546 function;
+    class deadline_food_format_mealtypelabel_48067464 function;
+    class src_pages_rescuepage_tsx_934ae23d ui;
+    class pages_rescuepage_budgetresult_bc714821 ui;
+    class pages_rescuepage_rescuepage_9638915d ui;
+    class src_pages_deadlinesetuppage_tsx_e932c009 ui;
+    class pages_deadlinesetuppage_deadlinesetuppage_676154a6 ui;
+    class src_pages_plandashboardpage_tsx_89a95277 ui;
+    class pages_plandashboardpage_plandashboardpage_cf652e43 ui;
+    class src_pages_recipepage_tsx_a5da0078 ui;
+    class pages_recipepage_recipepage_e2524082 ui;
+    class src_apitester_tsx_e67681e5 test;
+    class lib_utils_cn_b8743bb6 function;
+    class pages_fallbackbrowsepage_fallbackbrowsepage_aaf7613d ui;
+    class pages_landingpage_landingpage_e178a4ae ui;
+    class pages_strategyselectionpage_strategyselectionpag_569fe954 ui;
+    class state_deadlinemodeprovider_usedeadlinemode_c42b3d13 ui;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br>+11 more</td>
+  <td>Module file in src/APITester.tsx.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>APITester()</code><br><small style="color:var(--muted)">src/APITester.tsx</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>LandingPage.tsx</code><br><small style="color:var(--muted)">src/pages/LandingPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+6 more</td>
+  <td>Module file in src/pages/LandingPage.tsx.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>LandingPage()</code><br><small style="color:var(--muted)">src/pages/LandingPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small><br><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>PlanDashboardPage.tsx</code><br><small style="color:var(--muted)">src/pages/PlanDashboardPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>BudgetSummary()</code><br><small style="color:var(--muted)">components/deadline-food/BudgetSummary.tsx</small><br><code>BudgetSummary.tsx</code><br><small style="color:var(--muted)">components/deadline-food/BudgetSummary.tsx</small><br><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br>+11 more</td>
+  <td>Module file in src/pages/PlanDashboardPage.tsx.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>PlanDashboardPage()</code><br><small style="color:var(--muted)">src/pages/PlanDashboardPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small><br><code>strategyName()</code><br><small style="color:var(--muted)">components/deadline-food/format.ts</small><br><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>RescuePage.tsx</code><br><small style="color:var(--muted)">src/pages/RescuePage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+12 more</td>
+  <td>Module file in src/pages/RescuePage.tsx.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>BudgetResult()</code><br><small style="color:var(--muted)">src/pages/RescuePage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>formatPence()</code><br><small style="color:var(--muted)">components/deadline-food/format.ts</small></td>
+  <td>BudgetResult() node in src/pages/RescuePage.tsx.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>RescuePage()</code><br><small style="color:var(--muted)">src/pages/RescuePage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>formatPence()</code><br><small style="color:var(--muted)">components/deadline-food/format.ts</small><br><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small><br><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+18 more</td>
+  <td>Module file in src/pages/DeadlineSetupPage.tsx.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>toggleValue()</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>toggleValue() node in src/pages/DeadlineSetupPage.tsx.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>DeadlineSetupPage()</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small><br><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>RecipePage.tsx</code><br><small style="color:var(--muted)">src/pages/RecipePage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+11 more</td>
+  <td>Module file in src/pages/RecipePage.tsx.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>RecipePage()</code><br><small style="color:var(--muted)">src/pages/RecipePage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>formatPence()</code><br><small style="color:var(--muted)">components/deadline-food/format.ts</small><br><code>mealTypeLabel()</code><br><small style="color:var(--muted)">components/deadline-food/format.ts</small><br><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small><br>+1 more</td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>StrategySelectionPage.tsx</code><br><small style="color:var(--muted)">src/pages/StrategySelectionPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>PlanStrategy</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br>+4 more</td>
+  <td>Module file in src/pages/StrategySelectionPage.tsx.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>StrategySelectionPage()</code><br><small style="color:var(--muted)">src/pages/StrategySelectionPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small><br><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>FallbackBrowsePage.tsx</code><br><small style="color:var(--muted)">src/pages/FallbackBrowsePage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>FallbackMealCard()</code><br><small style="color:var(--muted)">components/deadline-food/FallbackMealCard.tsx</small><br>+5 more</td>
+  <td>Module file in src/pages/FallbackBrowsePage.tsx.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>FallbackBrowsePage()</code><br><small style="color:var(--muted)">src/pages/FallbackBrowsePage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small><br><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>DeadlineModeProvider()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small></td>
+  <td>DeadlineModeProvider() node in src/state/DeadlineModeProvider.tsx.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>DeadlineSetupPage()</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br><code>FallbackBrowsePage()</code><br><small style="color:var(--muted)">src/pages/FallbackBrowsePage.tsx</small><br>+11 more</td>
+  <td><code>BootstrapBoundary()</code><br><small style="color:var(--muted)">src/app/router.tsx</small><br><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small></td>
+  <td>useDeadlineMode() node in src/state/DeadlineModeProvider.tsx.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>BudgetSummary.tsx</code><br><small style="color:var(--muted)">components/deadline-food/BudgetSummary.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+7 more</td>
+  <td>Module file in src/lib/utils.ts.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>BudgetSummary()</code><br><small style="color:var(--muted)">components/deadline-food/BudgetSummary.tsx</small><br><code>BudgetSummary.tsx</code><br><small style="color:var(--muted)">components/deadline-food/BudgetSummary.tsx</small><br><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br>+30 more</td>
+  <td>cn() node in src/lib/utils.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>PlanStrategy</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>StrategySelectionPage.tsx</code><br><small style="color:var(--muted)">src/pages/StrategySelectionPage.tsx</small></td>
+  <td><code>format.ts</code><br><small style="color:var(--muted)">components/deadline-food/format.ts</small></td>
+  <td>PlanStrategy node in src/domain/types.ts.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>PreferenceSection() node in prototype/screens/Onboarding.tsx.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br>+9 more</td>
+  <td>Module file in prototype/components/primitives.tsx.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>Tone</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Tone node in prototype/components/primitives.tsx.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>badgeTones</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>badgeTones node in prototype/components/primitives.tsx.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>AppButtonVariant</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>AppButtonVariant node in prototype/components/primitives.tsx.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>appButtonClasses</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>appButtonClasses node in prototype/components/primitives.tsx.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>SelectField()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>SelectField() node in prototype/components/primitives.tsx.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>components/ui/select.tsx</code></td><td>11 nodes</td></tr>
+<tr><td><code>components/ui/card.tsx</code></td><td>8 nodes</td></tr>
+<tr><td><code>prototype/components/primitives.tsx</code></td><td>6 nodes</td></tr>
+<tr><td><code>components/deadline-food/format.ts</code></td><td>5 nodes</td></tr>
+<tr><td><code>src/app/router.tsx</code></td><td>4 nodes</td></tr>
+<tr><td><code>DEADLINE_FOOD_AUTOPILOT_SPEC.md</code></td><td>3 nodes</td></tr>
+<tr><td><code>components/ui/button.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>src/pages/DeadlineSetupPage.tsx</code></td><td>3 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x118, imports x68, contains x51, calls x43. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 5. Tests & Fixtures ====== -->
+<h2 id="tests-fixtures">5. Tests &amp; Fixtures</h2>
+<p>Tests &amp; Fixtures groups implementation around prototype, domain, screens, ingredientsts, mostly in src/prototype/ingredients.ts, src/adapters/deadlineFoodApi.ts, src/domain/constraints.ts. This section covers 283 nodes and 735 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Tests &amp; Fixtures (283 nodes, 735 edges)
+    subgraph tests_fixtures_src_adapters_deadlineFoodApi_ts_b9b20208["src/adapters/deadlineFoodApi.ts"]
+        adapters_deadlinefoodapi_readruntimeenv_ec472788("readRuntimeEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_readpublicenv_69f47266("readPublicEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_appnodeenv_bee3fb4c("appNodeEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_configuredbackend_0b76ddbe("configuredBackend()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc("firebaseFunctionsBaseUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_firebasefunctionsregion_5834e133("firebaseFunctionsRegion()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_firebaseprojectid_c6c6f171("firebaseProjectId()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_readbrowseroverride_cce3c953("readBrowserOverride()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79("shouldUseFirebaseBackend()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0("deadlineFoodEndpointUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f("fetchCanonicalScenario()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099("fetchDeadlineBootstrap()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+    end
+    src_prototype_deadlinefoodprototype_tsx_f5893eb1("DeadlineFoodPrototype.tsx")
+    prototype_analytics_trackprototypeevent_c3567b75("TrackPrototypeEvent<br/><small>src/prototype/analytics.ts</small>")
+    src_prototype_data_ts_961d4457("data.ts")
+    src_prototype_healthsignals_ts_9973a2cc("healthSignals.ts")
+    src_prototype_shopping_ts_71c14882("shopping.ts")
+    prototype_utils_money_e5ae07fe("money()<br/><small>src/prototype/utils.ts</small>")
+    adapters_deadlinefoodapi_readruntimeenv_ec472788 -->|calls| adapters_deadlinefoodapi_readpublicenv_69f47266
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_appnodeenv_bee3fb4c
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_configuredbackend_0b76ddbe
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebasefunctionsregion_5834e133
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebaseprojectid_c6c6f171
+    adapters_deadlinefoodapi_readbrowseroverride_cce3c953 -->|calls| adapters_deadlinefoodapi_configuredbackend_0b76ddbe
+    adapters_deadlinefoodapi_readbrowseroverride_cce3c953 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_configuredbackend_0b76ddbe -->|calls| adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79
+    adapters_deadlinefoodapi_appnodeenv_bee3fb4c -->|calls| adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79
+    adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 -->|calls| adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0
+    adapters_deadlinefoodapi_firebaseprojectid_c6c6f171 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_firebasefunctionsregion_5834e133 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc -->|calls| adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0
+    adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 -->|calls| adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f
+    adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 -->|calls| adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099
+    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| src_prototype_data_ts_961d4457
+    %% Omitted for readability: 265 nodes, 0 edges
+    class adapters_deadlinefoodapi_readruntimeenv_ec472788 function;
+    class adapters_deadlinefoodapi_readpublicenv_69f47266 function;
+    class adapters_deadlinefoodapi_appnodeenv_bee3fb4c function;
+    class adapters_deadlinefoodapi_configuredbackend_0b76ddbe function;
+    class adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc function;
+    class adapters_deadlinefoodapi_firebasefunctionsregion_5834e133 function;
+    class adapters_deadlinefoodapi_firebaseprojectid_c6c6f171 function;
+    class adapters_deadlinefoodapi_readbrowseroverride_cce3c953 function;
+    class adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 function;
+    class adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 api;
+    class adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f function;
+    class adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099 function;
+    class src_prototype_deadlinefoodprototype_tsx_f5893eb1 ui;
+    class prototype_analytics_trackprototypeevent_c3567b75 klass;
+    class src_prototype_data_ts_961d4457 module;
+    class src_prototype_healthsignals_ts_9973a2cc module;
+    class src_prototype_shopping_ts_71c14882 module;
+    class prototype_utils_money_e5ae07fe function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small><br><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>Orchestrates analysis and returns structured documentation data.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>RecipeIngredient</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>ingredients.ts</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small><br><code>nutrition.ts</code><br><small style="color:var(--muted)">src/prototype/nutrition.ts</small><br><code>nutritionApi.ts</code><br><small style="color:var(--muted)">src/prototype/nutritionApi.ts</small><br>+3 more</td>
+  <td>RecipeIngredient node in src/domain/types.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>workloadModel.ts</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/CalendarScreen.tsx</small><br><code>Deadline</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br>+1 more</td>
+  <td>Module file in src/prototype/workloadModel.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>classifyImportedEvent()</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td>classifyImportedEvent() node in src/prototype/workloadModel.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>workloadScore()</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>workloadLabel()</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
+  <td>workloadScore() node in src/prototype/workloadModel.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>workloadLabel()</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>workloadScore()</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
+  <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/CalendarScreen.tsx</small><br><code>cookingEffortReason()</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
+  <td>workloadLabel() node in src/prototype/workloadModel.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>cookingEffortReason()</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>workloadLabel()</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
+  <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/CalendarScreen.tsx</small><br><code>DeadlineEditPanel()</code><br><small style="color:var(--muted)">prototype/screens/CalendarScreen.tsx</small></td>
+  <td>cookingEffortReason() node in src/prototype/workloadModel.ts.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br>+7 more</td>
+  <td>Module file in src/prototype/healthSignals.ts.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>vegetableWords</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>vegetableWords node in src/prototype/healthSignals.ts.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>mealHealthSignals()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Dashboard()</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen()</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br>+2 more</td>
+  <td>mealHealthSignals() node in src/prototype/healthSignals.ts.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>weeklyBalanceSummary()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Dashboard()</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>PlanScreen()</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small><br>+1 more</td>
+  <td>weeklyBalanceSummary() node in src/prototype/healthSignals.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/CalendarScreen.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br>+7 more</td>
+  <td>Module file in src/prototype/analytics.ts.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>TrackPrototypeEvent</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/CalendarScreen.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br>+7 more</td>
+  <td>TrackPrototypeEvent node in src/prototype/analytics.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><code>anonymousSessionApi.ts</code><br><small style="color:var(--muted)">src/prototype/anonymousSessionApi.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>CalendarScreen()</code><br><small style="color:var(--muted)">prototype/screens/CalendarScreen.tsx</small><br>+34 more</td>
+  <td>Module file in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>screens</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>screens node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>screenFromHash()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>budgetBand()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>budgetBand() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>maxTimeBucket()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>maxTimeBucket() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>shopping.ts</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>RecipeIngredient</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
+  <td><code>formatIngredient()</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>ingredients.ts</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small><br>+8 more</td>
+  <td>Module file in src/prototype/shopping.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>GroceryVendor</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>ShoppingListCard.tsx</code><br><small style="color:var(--muted)">prototype/components/ShoppingListCard.tsx</small></td>
+  <td>GroceryVendor node in src/prototype/shopping.ts.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>ShoppingItem</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>ShoppingListCard.tsx</code><br><small style="color:var(--muted)">prototype/components/ShoppingListCard.tsx</small></td>
+  <td>Turns a local path or remote repository into analysis context.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>groceryVendors</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/RecipeDetailScreen.tsx</small></td>
+  <td>groceryVendors node in src/prototype/shopping.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>ShoppingIngredient</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>ShoppingIngredient node in src/prototype/shopping.ts.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>normaliseIngredient()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>shoppingIngredientKey()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small><br><code>shoppingItemKey()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td>normaliseIngredient() node in src/prototype/shopping.ts.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>shoppingIngredientName()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>shoppingIngredientName() node in src/prototype/shopping.ts.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>shoppingIngredientKey()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normaliseIngredient()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>shoppingIngredientKey() node in src/prototype/shopping.ts.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>addPreparation()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>addPreparation() node in src/prototype/shopping.ts.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>shoppingItemLabel()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>shopping.test.ts</code><br><small style="color:var(--muted)">src/prototype/shopping.test.ts</small><br><code>ShoppingListCard.tsx</code><br><small style="color:var(--muted)">prototype/components/ShoppingListCard.tsx</small></td>
+  <td>Turns a local path or remote repository into analysis context.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>groceryVendorById()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>PlanScreen()</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small><br><code>RecipeDetailScreen()</code><br><small style="color:var(--muted)">prototype/screens/RecipeDetailScreen.tsx</small><br>+2 more</td>
+  <td>groceryVendorById() node in src/prototype/shopping.ts.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>formatShoppingList()</code><br><small style="color:var(--muted)">src/prototype/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>shopping.test.ts</code><br><small style="color:var(--muted)">src/prototype/shopping.test.ts</small><br><code>ShoppingListCard.tsx</code><br><small style="color:var(--muted)">prototype/components/ShoppingListCard.tsx</small></td>
+  <td>formatShoppingList() node in src/prototype/shopping.ts.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/prototype/ingredients.ts</code></td><td>28 nodes</td></tr>
+<tr><td><code>src/adapters/deadlineFoodApi.ts</code></td><td>18 nodes</td></tr>
+<tr><td><code>src/domain/constraints.ts</code></td><td>16 nodes</td></tr>
+<tr><td><code>src/prototype/data.ts</code></td><td>15 nodes</td></tr>
+<tr><td><code>src/prototype/shopping.ts</code></td><td>15 nodes</td></tr>
+<tr><td><code>src/domain/planGenerator.ts</code></td><td>14 nodes</td></tr>
+<tr><td><code>src/prototype/types.ts</code></td><td>14 nodes</td></tr>
+<tr><td><code>DEADLINE_FOOD_AUTOPILOT_SPEC.md</code></td><td>11 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x273, contains x218, calls x122, imports x107. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 6. Firebase Functions ====== -->
+<h2 id="firebase-functions">6. Firebase Functions</h2>
+<p>Firebase Functions groups implementation around indexts, functions, firestore, prototyperef, mostly in functions/src/index.ts. This section covers 37 nodes and 39 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Firebase Functions (37 nodes, 39 edges)
+    src_index_roundmacro_25a7e576("roundMacro()<br/><small>functions/src/index.ts</small>")
+    src_index_seedprototypedata_97c4a157("seedPrototypeData()<br/><small>functions/src/index.ts</small>")
+    src_index_timestamptoiso_ac040a87("timestampToIso()<br/><small>functions/src/index.ts</small>")
+    src_index_getprototypedata_46a57640("getPrototypeData()<br/><small>functions/src/index.ts</small>")
+    src_index_sendsessionjson_80f1474f("sendSessionJson()<br/><small>functions/src/index.ts</small>")
+    src_index_totalnutritionfromestimates_3e2a4e02("totalNutritionFromEstimates()<br/><small>functions/src/index.ts</small>")
+    src_index_httprequest_afd6e4c1("HttpRequest<br/><small>functions/src/index.ts</small>")
+    src_index_httpresponse_cc4f1909("HttpResponse<br/><small>functions/src/index.ts</small>")
+    src_index_ingredientnutritionestimate_c983bfde("IngredientNutritionEstimate<br/><small>functions/src/index.ts</small>")
+    src_index_nutrition_0608d432("Nutrition<br/><small>functions/src/index.ts</small>")
+    src_index_openfoodfactsproduct_8ae2ec32("OpenFoodFactsProduct<br/><small>functions/src/index.ts</small>")
+    src_index_openfoodfactssearchresponse_eea11131("OpenFoodFactsSearchResponse<br/><small>functions/src/index.ts</small>")
+    src_index_prototypedata_6c8ae7c5("PrototypeData<br/><small>functions/src/index.ts</small>")
+    src_index_prototypesessionsettings_745df14b("PrototypeSessionSettings<br/><small>functions/src/index.ts</small>")
+    src_index_recipeingredient_c93a9fd0("RecipeIngredient<br/><small>functions/src/index.ts</small>")
+    src_index_unknownrecord_8f628066("UnknownRecord<br/><small>functions/src/index.ts</small>")
+    src_index_cookingadjectives_cada67c4("cookingAdjectives<br/><small>functions/src/index.ts</small>")
+    src_index_deadlinefoodbootstrap_9f837f75("deadlineFoodBootstrap<br/><small>functions/src/index.ts</small>")
+    src_index_seedprototypedata_97c4a157 -->|calls| src_index_getprototypedata_46a57640
+    src_index_timestamptoiso_ac040a87 -->|calls| src_index_sendsessionjson_80f1474f
+    src_index_roundmacro_25a7e576 -->|calls| src_index_totalnutritionfromestimates_3e2a4e02
+    %% Omitted for readability: 19 nodes, 0 edges
+    class src_index_roundmacro_25a7e576 function;
+    class src_index_seedprototypedata_97c4a157 function;
+    class src_index_timestamptoiso_ac040a87 function;
+    class src_index_getprototypedata_46a57640 function;
+    class src_index_sendsessionjson_80f1474f function;
+    class src_index_totalnutritionfromestimates_3e2a4e02 function;
+    class src_index_httprequest_afd6e4c1 klass;
+    class src_index_httpresponse_cc4f1909 klass;
+    class src_index_ingredientnutritionestimate_c983bfde klass;
+    class src_index_nutrition_0608d432 klass;
+    class src_index_openfoodfactsproduct_8ae2ec32 klass;
+    class src_index_openfoodfactssearchresponse_eea11131 async;
+    class src_index_prototypedata_6c8ae7c5 klass;
+    class src_index_prototypesessionsettings_745df14b klass;
+    class src_index_recipeingredient_c93a9fd0 klass;
+    class src_index_unknownrecord_8f628066 klass;
+    class src_index_cookingadjectives_cada67c4 function;
+    class src_index_deadlinefoodbootstrap_9f837f75 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>index.ts</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>firestore</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firestore node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>prototypeRef</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-cmd">Entry</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>prototypeRef node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>openFoodFactsCacheRef</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>openFoodFactsRateLimitRef</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>openFoodFactsRateLimitRef node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>publicHttpOptions</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>publicHttpOptions node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>nutritionHttpOptions</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>nutritionHttpOptions node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>openFoodFactsBaseUrl</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>openFoodFactsBaseUrl node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>PrototypeData</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>PrototypeData node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>UnknownRecord</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>UnknownRecord node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>RecipeIngredient</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>RecipeIngredient node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>Nutrition</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Nutrition node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>OpenFoodFactsProduct</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>OpenFoodFactsProduct node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>IngredientNutritionEstimate</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>IngredientNutritionEstimate node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>OpenFoodFactsSearchResponse</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>OpenFoodFactsSearchResponse node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>HttpRequest</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>HttpRequest node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>HttpResponse</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>HttpResponse node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>PrototypeSessionSettings</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>PrototypeSessionSettings node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>servingGrams</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>servingGrams node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>cookingAdjectives</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>cookingAdjectives node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>irregularCategoryTerms</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>irregularCategoryTerms node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>seedPrototypeData()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>getPrototypeData()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>seedPrototypeData() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>getPrototypeData()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>seedPrototypeData()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>getPrototypeData() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>rejectUnsupportedMethod()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>rejectUnsupportedMethod() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>rejectUnsupportedSessionMethod()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>rejectUnsupportedSessionMethod() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>sendJson()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sendJson() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>sendError()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sendError() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>timestampToIso()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>sendSessionJson()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>timestampToIso() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>rejectUnsupportedNutritionMethod()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>rejectUnsupportedNutritionMethod() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>isRecipeIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>isRecipeIngredient() node in functions/src/index.ts.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>functions/src/index.ts</code></td><td>37 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x36, calls x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 7. Compiled Session Backend ====== -->
+<h2 id="compiled-session-backend">7. Compiled Session Backend</h2>
+<p>Compiled Session Backend groups implementation around indexjs, functions, firestore, prototypedatajs, mostly in functions/lib/index.js, lib/generated/prototypeData.js. This section covers 34 nodes and 43 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Compiled Session Backend (34 nodes, 43 edges)
+    subgraph compiled_session_backend_functions_lib_index_js_657134eb["functions/lib/index.js"]
+        lib_index_asrecord_ee234b0f("asRecord()<br/><small>functions/lib/index.js</small>")
+        lib_index_boundedstring_8bbbb209("boundedString()<br/><small>functions/lib/index.js</small>")
+        functions_lib_index_js_2dc2d2f7("index.js")
+        lib_index_boundednumber_fb360176("boundedNumber()<br/><small>functions/lib/index.js</small>")
+        lib_index_boundedstringlist_3082678e("boundedStringList()<br/><small>functions/lib/index.js</small>")
+        lib_index_seedprototypedata_fbaee7ab("seedPrototypeData()<br/><small>functions/lib/index.js</small>")
+        lib_index_getprototypedata_63e5c586("getPrototypeData()<br/><small>functions/lib/index.js</small>")
+        lib_index_data_1fd1ff03("data<br/><small>functions/lib/index.js</small>")
+        lib_index_normalizedeadline_59a9c77d("normalizeDeadline()<br/><small>functions/lib/index.js</small>")
+        lib_index_normalizeprototypesessionsettings_6a69e5f6("normalizePrototypeSessionSettings()<br/><small>functions/lib/index.js</small>")
+        lib_index_readrequestbody_eb03d8a2("readRequestBody()<br/><small>functions/lib/index.js</small>")
+        lib_index_timestamptoiso_aef72067("timestampToIso()<br/><small>functions/lib/index.js</small>")
+        lib_index_sendsessionjson_ce775b52("sendSessionJson()<br/><small>functions/lib/index.js</small>")
+        lib_index_anonymoussessionsref_ea12e8cc("anonymousSessionsRef<br/><small>functions/lib/index.js</small>")
+        lib_index_app_1_fe67899b("app_1<br/><small>functions/lib/index.js</small>")
+        lib_index_body_ad65fdd9("body<br/><small>functions/lib/index.js</small>")
+        lib_index_crypto_1_0e82c0f7("crypto_1<br/><small>functions/lib/index.js</small>")
+    end
+    functions_lib_generated_prototypedata_js_5183b1e7("prototypeData.js")
+    lib_index_seedprototypedata_fbaee7ab -->|calls| lib_index_getprototypedata_63e5c586
+    lib_index_getprototypedata_63e5c586 -->|calls| lib_index_data_1fd1ff03
+    lib_index_asrecord_ee234b0f -->|calls| lib_index_normalizedeadline_59a9c77d
+    lib_index_asrecord_ee234b0f -->|calls| lib_index_normalizeprototypesessionsettings_6a69e5f6
+    lib_index_asrecord_ee234b0f -->|calls| lib_index_readrequestbody_eb03d8a2
+    lib_index_boundedstring_8bbbb209 -->|calls| lib_index_normalizedeadline_59a9c77d
+    lib_index_boundedstring_8bbbb209 -->|calls| lib_index_normalizeprototypesessionsettings_6a69e5f6
+    lib_index_boundednumber_fb360176 -->|calls| lib_index_normalizeprototypesessionsettings_6a69e5f6
+    lib_index_boundedstringlist_3082678e -->|calls| lib_index_normalizeprototypesessionsettings_6a69e5f6
+    lib_index_timestamptoiso_aef72067 -->|calls| lib_index_sendsessionjson_ce775b52
+    functions_lib_index_js_2dc2d2f7 -->|imports| functions_lib_generated_prototypedata_js_5183b1e7
+    %% Omitted for readability: 16 nodes, 0 edges
+    class lib_index_asrecord_ee234b0f function;
+    class lib_index_boundedstring_8bbbb209 function;
+    class functions_lib_index_js_2dc2d2f7 module;
+    class lib_index_boundednumber_fb360176 function;
+    class lib_index_boundedstringlist_3082678e function;
+    class lib_index_seedprototypedata_fbaee7ab function;
+    class lib_index_getprototypedata_63e5c586 function;
+    class lib_index_data_1fd1ff03 function;
+    class lib_index_normalizedeadline_59a9c77d function;
+    class lib_index_normalizeprototypesessionsettings_6a69e5f6 function;
+    class lib_index_readrequestbody_eb03d8a2 function;
+    class lib_index_timestamptoiso_aef72067 function;
+    class lib_index_sendsessionjson_ce775b52 function;
+    class lib_index_anonymoussessionsref_ea12e8cc async;
+    class lib_index_app_1_fe67899b function;
+    class lib_index_body_ad65fdd9 function;
+    class lib_index_crypto_1_0e82c0f7 function;
+    class functions_lib_generated_prototypedata_js_5183b1e7 module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>index.js</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>prototypeData.js</code><br><small style="color:var(--muted)">lib/generated/prototypeData.js</small></td>
+  <td>index.js node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>app_1</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>app_1 node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>firestore_1</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firestore_1 node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>https_1</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>https_1 node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>options_1</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>options_1 node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>logger</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>logger node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>crypto_1</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>crypto_1 node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>prototypeData_1</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>prototypeData_1 node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>firestore</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firestore node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>prototypeRef</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-cmd">Entry</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>prototypeRef node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>anonymousSessionsRef</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>anonymousSessionsRef node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>publicHttpOptions</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>publicHttpOptions node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>seedPrototypeData()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>getPrototypeData()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>seedPrototypeData() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>getPrototypeData()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>seedPrototypeData()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><code>data</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>getPrototypeData() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>rejectUnsupportedMethod()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>rejectUnsupportedMethod() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>rejectUnsupportedSessionMethod()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>rejectUnsupportedSessionMethod() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>sendJson()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sendJson() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>sendError()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sendError() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>normalizeDeadline()</code><br><small style="color:var(--muted)">functions/lib/index.js</small><br><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/lib/index.js</small><br><code>readRequestBody()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>asRecord() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>boundedString()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>normalizeDeadline()</code><br><small style="color:var(--muted)">functions/lib/index.js</small><br><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>boundedString() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>boundedNumber() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>boundedStringList()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>boundedStringList() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>normalizeDeadline()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/lib/index.js</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>normalizeDeadline() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/lib/index.js</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/lib/index.js</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/lib/index.js</small><br>+1 more</td>
+  <td>No direct outbound edge</td>
+  <td>normalizePrototypeSessionSettings() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>sessionExpiryTimestamp()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sessionExpiryTimestamp() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>timestampToIso()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>sendSessionJson()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>timestampToIso() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>readRequestBody()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>readRequestBody() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>sendSessionJson()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>timestampToIso()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>sendSessionJson() node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>sessionRef</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sessionRef node in functions/lib/index.js.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>data</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>getPrototypeData()</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>data node in functions/lib/index.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>functions/lib/index.js</code></td><td>33 nodes</td></tr>
+<tr><td><code>lib/generated/prototypeData.js</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x32, calls x10, imports x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 8. OpenFoodFacts Cache ====== -->
+<h2 id="openfoodfacts-cache">8. OpenFoodFacts Cache</h2>
+<p>OpenFoodFacts Cache groups implementation around functions, indexts, openfoodfactscachedocid, timestampmillis, mostly in functions/src/index.ts. This section covers 11 nodes and 14 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: OpenFoodFacts Cache (11 nodes, 14 edges)
+    src_index_openfoodfactscachedocid_28a03323("openFoodFactsCacheDocId()<br/><small>functions/src/index.ts</small>")
+    src_index_sleep_25cba29b("sleep()<br/><small>functions/src/index.ts</small>")
+    src_index_compactopenfoodfactsproduct_c9028c79("compactOpenFoodFactsProduct()<br/><small>functions/src/index.ts</small>")
+    src_index_timestampmillis_b66e56d1("timestampMillis()<br/><small>functions/src/index.ts</small>")
+    src_index_cacheopenfoodfactsproduct_02193852("cacheOpenFoodFactsProduct()<br/><small>functions/src/index.ts</small>")
+    src_index_fetchopenfoodfactsproducts_c723c563("fetchOpenFoodFactsProducts()<br/><small>functions/src/index.ts</small>")
+    src_index_findopenfoodfactsproductforingredient_b4e6a434("findOpenFoodFactsProductForIngredient()<br/><small>functions/src/index.ts</small>")
+    src_index_readopenfoodfactscachedproduct_bfca19a8("readOpenFoodFactsCachedProduct()<br/><small>functions/src/index.ts</small>")
+    src_index_tryacquireopenfoodfactscachelock_221bed77("tryAcquireOpenFoodFactsCacheLock()<br/><small>functions/src/index.ts</small>")
+    src_index_fetchopenfoodfactsproductforingredient_b801d76b("fetchOpenFoodFactsProductForIngredient()<br/><small>functions/src/index.ts</small>")
+    src_index_waitforopenfoodfactsturn_082b7cde("waitForOpenFoodFactsTurn()<br/><small>functions/src/index.ts</small>")
+    src_index_openfoodfactscachedocid_28a03323 -->|calls| src_index_cacheopenfoodfactsproduct_02193852
+    src_index_openfoodfactscachedocid_28a03323 -->|calls| src_index_findopenfoodfactsproductforingredient_b4e6a434
+    src_index_openfoodfactscachedocid_28a03323 -->|calls| src_index_readopenfoodfactscachedproduct_bfca19a8
+    src_index_openfoodfactscachedocid_28a03323 -->|calls| src_index_tryacquireopenfoodfactscachelock_221bed77
+    src_index_timestampmillis_b66e56d1 -->|calls| src_index_readopenfoodfactscachedproduct_bfca19a8
+    src_index_compactopenfoodfactsproduct_c9028c79 -->|calls| src_index_fetchopenfoodfactsproductforingredient_b801d76b
+    src_index_sleep_25cba29b -->|calls| src_index_findopenfoodfactsproductforingredient_b4e6a434
+    src_index_sleep_25cba29b -->|calls| src_index_waitforopenfoodfactsturn_082b7cde
+    src_index_waitforopenfoodfactsturn_082b7cde -->|calls| src_index_fetchopenfoodfactsproducts_c723c563
+    src_index_fetchopenfoodfactsproducts_c723c563 -->|calls| src_index_fetchopenfoodfactsproductforingredient_b801d76b
+    src_index_fetchopenfoodfactsproductforingredient_b801d76b -->|calls| src_index_findopenfoodfactsproductforingredient_b4e6a434
+    src_index_tryacquireopenfoodfactscachelock_221bed77 -->|calls| src_index_findopenfoodfactsproductforingredient_b4e6a434
+    src_index_readopenfoodfactscachedproduct_bfca19a8 -->|calls| src_index_findopenfoodfactsproductforingredient_b4e6a434
+    src_index_cacheopenfoodfactsproduct_02193852 -->|calls| src_index_findopenfoodfactsproductforingredient_b4e6a434
+    class src_index_openfoodfactscachedocid_28a03323 function;
+    class src_index_sleep_25cba29b function;
+    class src_index_compactopenfoodfactsproduct_c9028c79 function;
+    class src_index_timestampmillis_b66e56d1 function;
+    class src_index_cacheopenfoodfactsproduct_02193852 function;
+    class src_index_fetchopenfoodfactsproducts_c723c563 function;
+    class src_index_findopenfoodfactsproductforingredient_b4e6a434 function;
+    class src_index_readopenfoodfactscachedproduct_bfca19a8 function;
+    class src_index_tryacquireopenfoodfactscachelock_221bed77 function;
+    class src_index_fetchopenfoodfactsproductforingredient_b801d76b function;
+    class src_index_waitforopenfoodfactsturn_082b7cde function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>openFoodFactsCacheDocId()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>cacheOpenFoodFactsProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>findOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>readOpenFoodFactsCachedProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+1 more</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>timestampMillis()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>readOpenFoodFactsCachedProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>timestampMillis() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>compactOpenFoodFactsProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>fetchOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>compactOpenFoodFactsProduct() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>sleep()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>findOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>waitForOpenFoodFactsTurn()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>sleep() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>waitForOpenFoodFactsTurn()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>sleep()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><code>fetchOpenFoodFactsProducts()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>waitForOpenFoodFactsTurn() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>fetchOpenFoodFactsProducts()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>waitForOpenFoodFactsTurn()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><code>fetchOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>fetchOpenFoodFactsProducts() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>fetchOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>compactOpenFoodFactsProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>fetchOpenFoodFactsProducts()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><code>findOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>fetchOpenFoodFactsProductForIngredient() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>tryAcquireOpenFoodFactsCacheLock()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>openFoodFactsCacheDocId()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><code>findOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>readOpenFoodFactsCachedProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>openFoodFactsCacheDocId()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>timestampMillis()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><code>findOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>cacheOpenFoodFactsProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>openFoodFactsCacheDocId()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><code>findOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>findOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>cacheOpenFoodFactsProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>fetchOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>openFoodFactsCacheDocId()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+3 more</td>
+  <td>No direct outbound edge</td>
+  <td>findOpenFoodFactsProductForIngredient() node in functions/src/index.ts.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>functions/src/index.ts</code></td><td>11 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x14. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 9. Backend Normalizers ====== -->
+<h2 id="backend-normalizers">9. Backend Normalizers</h2>
+<p>Backend Normalizers groups implementation around functions, indexts, asrecord, boundedstring, mostly in functions/src/index.ts. This section covers 8 nodes and 8 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Backend Normalizers (8 nodes, 8 edges)
+    src_index_asrecord_128d572b("asRecord()<br/><small>functions/src/index.ts</small>")
+    src_index_boundedstring_dceb72f0("boundedString()<br/><small>functions/src/index.ts</small>")
+    src_index_boundednumber_9827874f("boundedNumber()<br/><small>functions/src/index.ts</small>")
+    src_index_boundedstringlist_1c924648("boundedStringList()<br/><small>functions/src/index.ts</small>")
+    src_index_normalizedeadline_e85b975a("normalizeDeadline()<br/><small>functions/src/index.ts</small>")
+    src_index_normalizeprototypesessionsettings_f18d497b("normalizePrototypeSessionSettings()<br/><small>functions/src/index.ts</small>")
+    src_index_parsecachedproduct_3de4130b("parseCachedProduct()<br/><small>functions/src/index.ts</small>")
+    src_index_readrequestbody_32d41160("readRequestBody()<br/><small>functions/src/index.ts</small>")
+    src_index_asrecord_128d572b -->|calls| src_index_normalizedeadline_e85b975a
+    src_index_asrecord_128d572b -->|calls| src_index_normalizeprototypesessionsettings_f18d497b
+    src_index_asrecord_128d572b -->|calls| src_index_parsecachedproduct_3de4130b
+    src_index_asrecord_128d572b -->|calls| src_index_readrequestbody_32d41160
+    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizedeadline_e85b975a
+    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizeprototypesessionsettings_f18d497b
+    src_index_boundednumber_9827874f -->|calls| src_index_normalizeprototypesessionsettings_f18d497b
+    src_index_boundedstringlist_1c924648 -->|calls| src_index_normalizeprototypesessionsettings_f18d497b
+    class src_index_asrecord_128d572b function;
+    class src_index_boundedstring_dceb72f0 function;
+    class src_index_boundednumber_9827874f function;
+    class src_index_boundedstringlist_1c924648 function;
+    class src_index_normalizedeadline_e85b975a function;
+    class src_index_normalizeprototypesessionsettings_f18d497b function;
+    class src_index_parsecachedproduct_3de4130b function;
+    class src_index_readrequestbody_32d41160 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>normalizeDeadline()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>parseCachedProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+1 more</td>
+  <td>asRecord() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>normalizeDeadline()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>boundedString() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>boundedNumber() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>boundedStringList()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>boundedStringList() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>normalizeDeadline()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>normalizeDeadline() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+1 more</td>
+  <td>No direct outbound edge</td>
+  <td>normalizePrototypeSessionSettings() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>readRequestBody()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>readRequestBody() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>parseCachedProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>functions/src/index.ts</code></td><td>8 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x8. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 10. Anonymous Session Storage ====== -->
+<h2 id="anonymous-session-storage">10. Anonymous Session Storage</h2>
+<p>Anonymous Session Storage groups implementation around session, anonymous, docs, storagemd, mostly in docs/anonymous-session-storage.md, functions/src/index.ts. This section covers 7 nodes and 6 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Anonymous Session Storage (7 nodes, 6 edges)
+    subgraph anonymous_session_storage_docs_anonymous_session_56519a2f["docs/anonymous-session-storage.md"]
+        anonymous_session_storage_anonymous_session_stor_4cabd837("Anonymous Session Storage<br/><small>docs/anonymous-session-storage.md</small>")
+        anonymous_session_storage_account_migration_52a4ccbd("Account Migration Path<br/><small>docs/anonymous-session-storage.md</small>")
+        anonymous_session_storage_firestore_record_b978f52a("Firestore Anonymous Session Record<br/><small>docs/anonymous-session-storage.md</small>")
+        anonymous_session_storage_opaque_session_id_4914c1fb("Opaque Session ID<br/><small>docs/anonymous-session-storage.md</small>")
+        anonymous_session_storage_rolling_ttl_2c529764("Rolling 90 Day TTL<br/><small>docs/anonymous-session-storage.md</small>")
+    end
+    subgraph anonymous_session_storage_functions_src_index_ts_648157c8["functions/src/index.ts"]
+        src_index_anonymoussessionsref_19ec1dd9("anonymousSessionsRef<br/><small>functions/src/index.ts</small>")
+        src_index_sessionexpirytimestamp_a2648188("sessionExpiryTimestamp()<br/><small>functions/src/index.ts</small>")
+    end
+    anonymous_session_storage_anonymous_session_stor_4cabd837 -->|relates| anonymous_session_storage_account_migration_52a4ccbd
+    anonymous_session_storage_anonymous_session_stor_4cabd837 -->|references| anonymous_session_storage_firestore_record_b978f52a
+    anonymous_session_storage_anonymous_session_stor_4cabd837 -->|references| anonymous_session_storage_opaque_session_id_4914c1fb
+    anonymous_session_storage_anonymous_session_stor_4cabd837 -->|references| anonymous_session_storage_rolling_ttl_2c529764
+    src_index_anonymoussessionsref_19ec1dd9 -->|references| anonymous_session_storage_firestore_record_b978f52a
+    src_index_sessionexpirytimestamp_a2648188 -->|references| anonymous_session_storage_rolling_ttl_2c529764
+    class anonymous_session_storage_anonymous_session_stor_4cabd837 klass;
+    class anonymous_session_storage_account_migration_52a4ccbd klass;
+    class anonymous_session_storage_firestore_record_b978f52a ui;
+    class anonymous_session_storage_opaque_session_id_4914c1fb klass;
+    class anonymous_session_storage_rolling_ttl_2c529764 klass;
+    class src_index_anonymoussessionsref_19ec1dd9 async;
+    class src_index_sessionexpirytimestamp_a2648188 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>anonymousSessionsRef</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>anonymousSessionsRef node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>sessionExpiryTimestamp()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sessionExpiryTimestamp() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Anonymous Session Storage</code><br><small style="color:var(--muted)">docs/anonymous-session-storage.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Opaque Session ID</code><br><small style="color:var(--muted)">docs/anonymous-session-storage.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Opaque Session ID node in docs/anonymous-session-storage.md.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Firestore Anonymous Session Record</code><br><small style="color:var(--muted)">docs/anonymous-session-storage.md</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Firestore Anonymous Session Record node in docs/anonymous-session-storage.md.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Rolling 90 Day TTL</code><br><small style="color:var(--muted)">docs/anonymous-session-storage.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Rolling 90 Day TTL node in docs/anonymous-session-storage.md.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Account Migration Path</code><br><small style="color:var(--muted)">docs/anonymous-session-storage.md</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Account Migration Path node in docs/anonymous-session-storage.md.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>docs/anonymous-session-storage.md</code></td><td>5 nodes</td></tr>
+<tr><td><code>functions/src/index.ts</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: references x5, relates x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 11. Generated Prototype Data ====== -->
+<h2 id="generated-prototype-data">11. Generated Prototype Data</h2>
+<p>Generated Prototype Data groups implementation around prototypedatats, functions, generated, seededmeals, mostly in src/generated/prototypeData.ts. This section covers 5 nodes and 4 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Generated Prototype Data (5 nodes, 4 edges)
+    functions_src_generated_prototypedata_ts_97d124cc("prototypeData.ts")
+    generated_prototypedata_canonicalconstraints_e78ecaa7("canonicalConstraints<br/><small>src/generated/prototypeData.ts</small>")
+    generated_prototypedata_deadlinebootstrap_0a3e06f9("deadlineBootstrap<br/><small>src/generated/prototypeData.ts</small>")
+    generated_prototypedata_prototypemeta_846473e1("prototypeMeta<br/><small>src/generated/prototypeData.ts</small>")
+    generated_prototypedata_seededmeals_68572a6b("seededMeals<br/><small>src/generated/prototypeData.ts</small>")
+    functions_src_generated_prototypedata_ts_97d124cc -->|contains| generated_prototypedata_canonicalconstraints_e78ecaa7
+    functions_src_generated_prototypedata_ts_97d124cc -->|contains| generated_prototypedata_deadlinebootstrap_0a3e06f9
+    functions_src_generated_prototypedata_ts_97d124cc -->|contains| generated_prototypedata_prototypemeta_846473e1
+    functions_src_generated_prototypedata_ts_97d124cc -->|contains| generated_prototypedata_seededmeals_68572a6b
+    class functions_src_generated_prototypedata_ts_97d124cc module;
+    class generated_prototypedata_canonicalconstraints_e78ecaa7 function;
+    class generated_prototypedata_deadlinebootstrap_0a3e06f9 function;
+    class generated_prototypedata_prototypemeta_846473e1 function;
+    class generated_prototypedata_seededmeals_68572a6b function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>prototypeData.ts</code><br><small style="color:var(--muted)">src/generated/prototypeData.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/generated/prototypeData.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>seededMeals</code><br><small style="color:var(--muted)">src/generated/prototypeData.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>seededMeals node in src/generated/prototypeData.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>canonicalConstraints</code><br><small style="color:var(--muted)">src/generated/prototypeData.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>canonicalConstraints node in src/generated/prototypeData.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>prototypeMeta</code><br><small style="color:var(--muted)">src/generated/prototypeData.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>prototypeMeta node in src/generated/prototypeData.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>deadlineBootstrap</code><br><small style="color:var(--muted)">src/generated/prototypeData.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>deadlineBootstrap node in src/generated/prototypeData.ts.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/generated/prototypeData.ts</code></td><td>5 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 12. Ingredient Taxonomy ====== -->
+<h2 id="ingredient-taxonomy">12. Ingredient Taxonomy</h2>
+<p>Ingredient Taxonomy groups implementation around functions, indexts, normalizeingredientkey, tocategorytag, mostly in functions/src/index.ts. This section covers 4 nodes and 3 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Ingredient Taxonomy (4 nodes, 3 edges)
+    src_index_normalizeingredientkey_cbfb3607("normalizeIngredientKey()<br/><small>functions/src/index.ts</small>")
+    src_index_uniqueterms_e956f4ad("uniqueTerms()<br/><small>functions/src/index.ts</small>")
+    src_index_openfoodfactscategoryterms_475d80d3("openFoodFactsCategoryTerms()<br/><small>functions/src/index.ts</small>")
+    src_index_tocategorytag_13672988("toCategoryTag()<br/><small>functions/src/index.ts</small>")
+    src_index_normalizeingredientkey_cbfb3607 -->|calls| src_index_openfoodfactscategoryterms_475d80d3
+    src_index_normalizeingredientkey_cbfb3607 -->|calls| src_index_tocategorytag_13672988
+    src_index_uniqueterms_e956f4ad -->|calls| src_index_openfoodfactscategoryterms_475d80d3
+    class src_index_normalizeingredientkey_cbfb3607 function;
+    class src_index_uniqueterms_e956f4ad function;
+    class src_index_openfoodfactscategoryterms_475d80d3 function;
+    class src_index_tocategorytag_13672988 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>normalizeIngredientKey()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>openFoodFactsCategoryTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>toCategoryTag()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>normalizeIngredientKey() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>toCategoryTag()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalizeIngredientKey()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>toCategoryTag() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>uniqueTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>openFoodFactsCategoryTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>uniqueTerms() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>openFoodFactsCategoryTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalizeIngredientKey()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>uniqueTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>openFoodFactsCategoryTerms() node in functions/src/index.ts.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>functions/src/index.ts</code></td><td>4 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 13. Firebase Local Dev ====== -->
+<h2 id="firebase-local-dev">13. Firebase Local Dev</h2>
+<p>Firebase Local Dev groups implementation around firebase, local, devsh, scripts, mostly in scripts/firebase-local-dev.sh. This section covers 3 nodes and 2 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Firebase Local Dev (3 nodes, 2 edges)
+    scripts_firebase_local_dev_sh_55dfdcb3("firebase-local-dev.sh")
+    scripts_firebase_local_dev_cleanup_6a7928f2("cleanup()<br/><small>scripts/firebase-local-dev.sh</small>")
+    home_dorian_documents_drp03_scripts_firebase_loc_145b77d8("firebase-local-dev.sh script<br/><small>scripts/firebase-local-dev.sh</small>")
+    scripts_firebase_local_dev_sh_55dfdcb3 -->|defines| scripts_firebase_local_dev_cleanup_6a7928f2
+    scripts_firebase_local_dev_sh_55dfdcb3 -->|contains| home_dorian_documents_drp03_scripts_firebase_loc_145b77d8
+    class scripts_firebase_local_dev_sh_55dfdcb3 function;
+    class scripts_firebase_local_dev_cleanup_6a7928f2 function;
+    class home_dorian_documents_drp03_scripts_firebase_loc_145b77d8 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>firebase-local-dev.sh</code><br><small style="color:var(--muted)">scripts/firebase-local-dev.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebase-local-dev.sh node in scripts/firebase-local-dev.sh.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>firebase-local-dev.sh script</code><br><small style="color:var(--muted)">scripts/firebase-local-dev.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>firebase-local-dev.sh script node in scripts/firebase-local-dev.sh.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>cleanup()</code><br><small style="color:var(--muted)">scripts/firebase-local-dev.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>cleanup() node in scripts/firebase-local-dev.sh.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>scripts/firebase-local-dev.sh</code></td><td>3 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1, defines x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 14. Playwright Config ====== -->
+<h2 id="playwright-config">14. Playwright Config</h2>
+<p>Playwright Config groups implementation around playwrightconfigts, chromiumlaunchoptions, mostly in playwright.config.ts. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Playwright Config (2 nodes, 1 edges)
+    playwright_config_ts_e7cb87fd("playwright.config.ts")
+    drp03_playwright_config_chromiumlaunchoptions_e6a582a9("chromiumLaunchOptions<br/><small>playwright.config.ts</small>")
+    playwright_config_ts_e7cb87fd -->|contains| drp03_playwright_config_chromiumlaunchoptions_e6a582a9
+    class playwright_config_ts_e7cb87fd module;
+    class drp03_playwright_config_chromiumlaunchoptions_e6a582a9 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>playwright.config.ts</code><br><small style="color:var(--muted)">playwright.config.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in playwright.config.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>chromiumLaunchOptions</code><br><small style="color:var(--muted)">playwright.config.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>chromiumLaunchOptions node in playwright.config.ts.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>playwright.config.ts</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 15. Audit Script ====== -->
+<h2 id="audit-script">15. Audit Script</h2>
+<p>Audit Script groups implementation around auditsh, scripts, script, mostly in scripts/audit.sh. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Audit Script (2 nodes, 1 edges)
+    scripts_audit_sh_b81db69b("audit.sh")
+    home_dorian_documents_drp03_scripts_audit_sh_ent_cdb5f1a5("audit.sh script<br/><small>scripts/audit.sh</small>")
+    scripts_audit_sh_b81db69b -->|contains| home_dorian_documents_drp03_scripts_audit_sh_ent_cdb5f1a5
+    class scripts_audit_sh_b81db69b function;
+    class home_dorian_documents_drp03_scripts_audit_sh_ent_cdb5f1a5 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>audit.sh</code><br><small style="color:var(--muted)">scripts/audit.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>audit.sh node in scripts/audit.sh.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>audit.sh script</code><br><small style="color:var(--muted)">scripts/audit.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>audit.sh script node in scripts/audit.sh.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>scripts/audit.sh</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 16. Other ====== -->
+<h2 id="other">16. Other</h2>
+<p>Other groups implementation around functions, indexts, bun, envdts, mostly in functions/src/index.ts, bun-env.d.ts, eslint.config.js. This section covers 6 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Other (6 nodes, 1 edges)
+    subgraph other_functions_src_index_ts_f2396a12["functions/src/index.ts"]
+        src_index_gramsforingredient_19362058("gramsForIngredient()<br/><small>functions/src/index.ts</small>")
+        src_index_estimateingredientnutrition_3cf20bcc("estimateIngredientNutrition()<br/><small>functions/src/index.ts</small>")
+    end
+    bun_env_d_ts_48c0ce13("bun-env.d.ts")
+    eslint_config_js_54404e2f("eslint.config.js")
+    functions_eslintrc_js_942332d7(".eslintrc.js")
+    prototype_utils_ingredientlabel_48670189("ingredientLabel<br/><small>src/prototype/utils.ts</small>")
+    src_index_gramsforingredient_19362058 -->|calls| src_index_estimateingredientnutrition_3cf20bcc
+    class src_index_gramsforingredient_19362058 function;
+    class src_index_estimateingredientnutrition_3cf20bcc function;
+    class bun_env_d_ts_48c0ce13 module;
+    class eslint_config_js_54404e2f module;
+    class functions_eslintrc_js_942332d7 module;
+    class prototype_utils_ingredientlabel_48670189 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>gramsForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>estimateIngredientNutrition()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>gramsForIngredient() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>estimateIngredientNutrition()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>gramsForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>estimateIngredientNutrition() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>bun-env.d.ts</code><br><small style="color:var(--muted)">bun-env.d.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in bun-env.d.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>eslint.config.js</code><br><small style="color:var(--muted)">eslint.config.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>.eslintrc.js</code><br><small style="color:var(--muted)">functions/.eslintrc.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>.eslintrc.js node in functions/.eslintrc.js.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>ingredientLabel</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>ingredientLabel node in src/prototype/utils.ts.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>functions/src/index.ts</code></td><td>2 nodes</td></tr>
+<tr><td><code>bun-env.d.ts</code></td><td>1 nodes</td></tr>
+<tr><td><code>eslint.config.js</code></td><td>1 nodes</td></tr>
+<tr><td><code>functions/.eslintrc.js</code></td><td>1 nodes</td></tr>
+<tr><td><code>src/prototype/utils.ts</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<h2 id="hyperedges">Group Relationships (Hyperedges)</h2>
+<div class="grid">
+
+  <div class="card">
+    <h4>Deadline Food Strategy Flow</h4>
+    <p><code>participate_in</code> — 5 participants</p>
+    <ul>
+      <li><code>deadline_food_autopilot_spec_prep_once</code></li>
+      <li><code>deadline_food_autopilot_spec_mixed_mode</code></li>
+      <li><code>deadline_food_autopilot_spec_no_cook_rescue</code></li>
+      <li><code>domain_plangenerator_generateplan</code></li>
+      <li><code>pages_strategyselectionpage_strategyselectionpage</code></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Anonymous Session Persistence Loop</h4>
+    <p><code>participate_in</code> — 5 participants</p>
+    <ul>
+      <li><code>anonymous_session_storage_opaque_session_id</code></li>
+      <li><code>anonymous_session_storage_deadline_food_session_api</code></li>
+      <li><code>anonymous_session_storage_firestore_record</code></li>
+      <li><code>prototype_anonymoussessionapi_saveanonymoussessionsettings</code></li>
+      <li><code>src_index_deadlinefoodsession</code></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Release Quality Gate</h4>
+    <p><code>participate_in</code> — 5 participants</p>
+    <ul>
+      <li><code>gitlab_ci_pipeline_quality_gate</code></li>
+      <li><code>readme_bun_verification_workflow</code></li>
+      <li><code>drp03_package_scripts_verify</code></li>
+      <li><code>drp03_package_scripts_build</code></li>
+      <li><code>gitlab_ci_staging_production_deploy</code></li>
+    </ul>
+  </div>
+</div>
+<hr>
+<h2 id="stats">Project Statistics</h2>
+
+<div class="grid">
+  <div class="card">
+    <h4>Graph</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>Nodes</td><td>764</td></tr>
+      <tr><td>Edges</td><td>1703</td></tr>
+      <tr><td>Hyperedges</td><td>3</td></tr>
+      <tr><td>Communities</td><td>36</td></tr>
+      <tr><td>Documented Sections</td><td>15</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Edge Confidence</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>EXTRACTED</td><td>1672</td></tr>
+      <tr><td>INFERRED</td><td>30</td></tr>
+      <tr><td>AMBIGUOUS</td><td>1</td></tr>
+    </table>
+  </div>
+</div>
+
+<div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
+  <p>drp03 — Architecture Documentation</p>
+  <p>Generated: 2026-05-29 11:13 UTC · graphify callflow-html</p>
+</div>
+
+</div><!-- .container -->
+
+<script>
+(function () {
+  const mermaidConfig = {
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    flowchart: { htmlLabels: true, useMaxWidth: true },
+    themeVariables: {
+      primaryColor: '#1e293b',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#38bdf8',
+      secondaryColor: '#0f172a',
+      tertiaryColor: '#334155',
+      lineColor: '#64748b',
+      textColor: '#e2e8f0',
+    }
+  };
+
+  mermaid.initialize(mermaidConfig);
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function enhanceMermaidDiagrams() {
+    document.querySelectorAll('.mermaid').forEach((container) => {
+      if (container.dataset.zoomReady === 'true') return;
+      const svg = container.querySelector('svg');
+      if (!svg) return;
+
+      container.dataset.zoomReady = 'true';
+      container.classList.add('is-enhanced');
+
+      const viewport = document.createElement('div');
+      viewport.className = 'mermaid-viewport';
+      svg.parentNode.insertBefore(viewport, svg);
+      viewport.appendChild(svg);
+
+      const toolbar = document.createElement('div');
+      toolbar.className = 'mermaid-toolbar';
+      toolbar.innerHTML = [
+        '<button type="button" data-action="zoom-out" title="Zoom out">-</button>',
+        '<span class="zoom-level" data-role="level">100%</span>',
+        '<button type="button" data-action="zoom-in" title="Zoom in">+</button>',
+        '<button type="button" data-action="fit" title="Fit width">Fit</button>',
+        '<button type="button" data-action="reset" title="Reset view">Reset</button>'
+      ].join('');
+      container.insertBefore(toolbar, viewport);
+
+      const state = { scale: 1, x: 0, y: 0, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0 };
+      const level = toolbar.querySelector('[data-role="level"]');
+
+      function applyTransform() {
+        svg.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+        level.textContent = `${Math.round(state.scale * 100)}%`;
+      }
+
+      function zoomBy(delta) {
+        state.scale = clamp(state.scale + delta, 0.25, 3);
+        applyTransform();
+      }
+
+      function reset() {
+        state.scale = 1;
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      function fitWidth() {
+        const rawWidth = svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width
+          ? svg.viewBox.baseVal.width
+          : svg.getBoundingClientRect().width / state.scale;
+        if (!rawWidth) {
+          reset();
+          return;
+        }
+        state.scale = clamp((viewport.clientWidth - 48) / rawWidth, 0.25, 1.4);
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      toolbar.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-action]');
+        if (!button) return;
+        const action = button.dataset.action;
+        if (action === 'zoom-in') zoomBy(0.15);
+        if (action === 'zoom-out') zoomBy(-0.15);
+        if (action === 'fit') fitWidth();
+        if (action === 'reset') reset();
+      });
+
+      viewport.addEventListener('wheel', (event) => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        zoomBy(event.deltaY < 0 ? 0.1 : -0.1);
+      }, { passive: false });
+
+      viewport.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        state.dragging = true;
+        state.startX = event.clientX;
+        state.startY = event.clientY;
+        state.originX = state.x;
+        state.originY = state.y;
+        viewport.classList.add('is-dragging');
+        viewport.setPointerCapture(event.pointerId);
+      });
+
+      viewport.addEventListener('pointermove', (event) => {
+        if (!state.dragging) return;
+        state.x = state.originX + event.clientX - state.startX;
+        state.y = state.originY + event.clientY - state.startY;
+        applyTransform();
+      });
+
+      function endDrag(event) {
+        if (!state.dragging) return;
+        state.dragging = false;
+        viewport.classList.remove('is-dragging');
+        if (viewport.hasPointerCapture(event.pointerId)) {
+          viewport.releasePointerCapture(event.pointerId);
+        }
+      }
+
+      viewport.addEventListener('pointerup', endDrag);
+      viewport.addEventListener('pointercancel', endDrag);
+      applyTransform();
+    });
+  }
+
+  function renderMermaid() {
+    const result = mermaid.run
+      ? mermaid.run({ querySelector: '.mermaid' })
+      : Promise.resolve();
+    Promise.resolve(result)
+      .then(enhanceMermaidDiagrams)
+      .catch((error) => {
+        console.error('Mermaid render failed:', error);
+        enhanceMermaidDiagrams();
+      });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderMermaid);
+  } else {
+    renderMermaid();
+  }
+})();
+</script>
+
+</body>
+</html>
