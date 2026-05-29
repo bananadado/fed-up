@@ -87,7 +87,7 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await expect(page.getByText("10 min · 100g mixed beans, 1 wrap tortilla wrap, 50g tomato")).toBeVisible();
 });
 
-test("landing CTA reopens constraint setup for returning users", async ({ page }) => {
+test("returning users land on dashboard, not the landing or onboarding page", async ({ page }) => {
   const sessionId = "returning-session-39";
 
   await page.request.put("/api/deadline-food/session", {
@@ -118,10 +118,13 @@ test("landing CTA reopens constraint setup for returning users", async ({ page }
 
   await page.goto("/");
   await sessionLoaded;
-  await expect(page.getByRole("button", { name: /explore demo/i })).toHaveCount(0);
 
-  await page.getByRole("button", { name: /build my meal plan/i }).click();
+  // Onboarded users should go straight to the dashboard
+  await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /build my meal plan/i })).toHaveCount(0);
 
-  await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /your week is covered/i })).toHaveCount(0);
+  // Browser back to onboarding should also redirect to dashboard
+  await page.goto("/#/onboarding");
+  await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /connect your calendar/i })).toHaveCount(0);
 });
