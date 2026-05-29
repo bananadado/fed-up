@@ -52,3 +52,37 @@ export function createPrototypeSessionSettings(input: {
     plan: input.plan,
   };
 }
+
+const mealSlots = new Set(["breakfast", "lunch", "dinner"]);
+
+function isPlanEntry(value: unknown): value is PlanEntry {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return false;
+  }
+
+  const entry = value as Record<string, unknown>;
+
+  if (typeof entry.day !== "string" || typeof entry.context !== "string" || !Array.isArray(entry.meals)) {
+    return false;
+  }
+
+  return entry.meals.every((meal) => {
+    if (typeof meal !== "object" || meal === null || Array.isArray(meal)) {
+      return false;
+    }
+
+    const planMeal = meal as Record<string, unknown>;
+
+    return mealSlots.has(String(planMeal.slot)) && typeof planMeal.mealId === "string" && planMeal.mealId.length > 0;
+  });
+}
+
+export function restorePrototypePlan(value: unknown, fallback: PlanEntry[]): PlanEntry[] {
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+
+  const restoredPlan = value.filter(isPlanEntry);
+
+  return restoredPlan.length > 0 ? restoredPlan : fallback;
+}
