@@ -48,12 +48,14 @@ export function DiscoverScreen({
   const initialQueue = [...customRecipes, ...seedMeals.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))];
   const [sortBy, setSortBy] = useState<"priority" | "time" | "price" | "health">("priority");
   const [queue, setQueue] = useState(() => initialQueue.filter((meal) => !saved.some((s) => s.id === meal.id) && !rejected.some((r) => r.id === meal.id)));
-  const sortedQueue = [...queue].sort((a, b) => {
+  function sortComparator(a: Meal, b: Meal): number {
     if (sortBy === "time") return a.time - b.time;
     if (sortBy === "price") return a.price - b.price;
     if (sortBy === "health") return b.nutrition.protein - a.nutrition.protein || a.price - b.price;
     return Number(b.tags.includes("high protein")) - Number(a.tags.includes("high protein")) || a.time - b.time;
-  });
+  }
+  const sortedQueue = [...queue].sort(sortComparator);
+  const sortedSaved = [...saved].sort(sortComparator);
   const current = sortedQueue[0];
 
   function decideCurrentRecipe(like: boolean) {
@@ -99,15 +101,16 @@ export function DiscoverScreen({
         <p className="mt-2 text-stone-600">
           Save or pass on each option. Every suggestion respects your {formatCookingLimit(prefs.maxTime).toLowerCase()} cooking limit or is a nearby campus fallback.
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="text-sm text-stone-500">Sort by</span>
           {(["priority", "time", "price", "health"] as const).map((option) => (
             <button
               key={option}
               type="button"
               onClick={() => { track("discover_sort_changed", { sort_by: option }); setSortBy(option); }}
-              className={`rounded-full border px-3 py-2 text-sm font-medium ${sortBy === option ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600"}`}
+              className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize ${sortBy === option ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600"}`}
             >
-              Sort by {option}
+              {option}
             </button>
           ))}
         </div>
@@ -178,8 +181,10 @@ export function DiscoverScreen({
           )}
         </div>
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-5">
-          <h2 className="font-bold">Liked recipes</h2>
-          <p className="mt-1 text-sm text-stone-500">Add one directly into Tuesday's plan.</p>
+          <div className="flex items-baseline gap-2">
+            <h2 className="font-bold">Saved recipes</h2>
+            {saved.length > 0 && <span className="text-sm text-stone-400">{saved.length}</span>}
+          </div>
           <div className="mt-4 space-y-3">
             {rejected.length > 0 && (
               <div className="space-y-2">
@@ -202,17 +207,14 @@ export function DiscoverScreen({
             {saved.length === 0 ? (
               <p className="rounded-lg bg-stone-50 p-4 text-sm text-stone-500">Use Save on a recipe card to keep suitable options here.</p>
             ) : (
-              saved.map((meal) => (
-                <div key={meal.id} className="grid gap-3 rounded-lg bg-stone-50 p-4 sm:grid-cols-[1fr_auto_auto] sm:items-center">
+              sortedSaved.map((meal) => (
+                <div key={meal.id} className="grid gap-3 rounded-lg bg-stone-50 p-3 sm:grid-cols-[1fr_auto_auto] sm:items-center">
                   <div className="min-w-0">
                     <button type="button" onClick={() => onSelectMeal(meal.id)} className="text-left font-semibold hover:text-emerald-700 hover:underline">
                       {meal.image} {meal.name}
                     </button>
-                    <p className="text-sm text-stone-500">
-                      {meal.time} min - {money(meal.price)}
-                    </p>
+                    <p className="text-sm text-stone-500">{meal.time} min · {money(meal.price)}</p>
                     <StarRating rating={meal.rating} reviews={meal.reviews.length} />
-                    <p className="mt-1 truncate text-xs text-stone-500">{ingredientNames(meal.ingredients, 4)}</p>
                   </div>
                   <AppButton variant="secondary" onClick={() => addToPlan(meal)}>
                     Use
