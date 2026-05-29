@@ -134,6 +134,8 @@ export function Field({
   placeholder,
   type = "text",
   step,
+  min,
+  max,
   onBlur,
   error,
   errorMessage,
@@ -144,6 +146,8 @@ export function Field({
   placeholder?: string;
   type?: string;
   step?: string;
+  min?: string;
+  max?: string;
   onBlur?: () => void;
   error?: boolean;
   errorMessage?: string;
@@ -154,6 +158,8 @@ export function Field({
       <Input
         type={type}
         step={step}
+        min={min}
+        max={max}
         value={type === "number" && value === 0 ? "" : value}
         onChange={(event) => onChange(event.target.value)}
         onBlur={onBlur}
