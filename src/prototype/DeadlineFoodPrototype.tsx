@@ -77,7 +77,10 @@ export function DeadlineFoodPrototype() {
 
   const navigateBack = useCallback(() => {
     const fallbackScreen: Screen = "dashboard";
-    const nextScreen = routeHistory.current.pop() ?? fallbackScreen;
+    let nextScreen = routeHistory.current.pop() ?? fallbackScreen;
+    while (onboarded && (nextScreen === "onboarding" || nextScreen === "landing")) {
+      nextScreen = routeHistory.current.pop() ?? fallbackScreen;
+    }
 
     syncPreviousScreen();
 
@@ -88,7 +91,7 @@ export function DeadlineFoodPrototype() {
     pendingHashScreen.current = nextScreen;
     window.location.hash = `/${nextScreen}`;
     setScreen(nextScreen);
-  }, [screen, syncPreviousScreen]);
+  }, [screen, syncPreviousScreen, onboarded]);
 
   const track = useCallback(
     (eventName: string, properties: AnalyticsProperties = {}) => {
@@ -214,17 +217,32 @@ export function DeadlineFoodPrototype() {
     return () => window.clearTimeout(timeout);
   }, [customRecipes, deadlines, discoverRejected, discoverSaved, onboarded, plan, prefs, selectedSources, sessionId, sessionLoaded]);
 
+  useEffect(() => {
+    if (onboarded && (screen === "onboarding" || screen === "landing")) {
+      routeHistory.current = routeHistory.current.filter(
+        s => s !== "onboarding" && s !== "landing"
+      );
+      syncPreviousScreen();
+      pendingHashScreen.current = "dashboard";
+      window.location.hash = "/dashboard";
+      // onHashChange will call setScreen("dashboard") once the hashchange event fires
+    }
+  }, [onboarded, screen, syncPreviousScreen]);
+
+  // Derive the screen to render: if onboarded, pre-onboarding screens resolve to dashboard immediately
+  const activeScreen: Screen = (onboarded && (screen === "onboarding" || screen === "landing")) ? "dashboard" : screen;
+
   function openRecipe(mealId: string) {
-    track("recipe_viewed", { meal_id: mealId, source_screen: screen });
+    track("recipe_viewed", { meal_id: mealId, source_screen: activeScreen });
     setSelectedMealId(mealId);
     navigateScreen("recipe-detail");
   }
 
-  if (screen === "landing") {
+  if (activeScreen === "landing") {
     return <Landing onStart={() => navigateScreen("onboarding")} track={track} />;
   }
 
-  if (screen === "onboarding") {
+  if (activeScreen === "onboarding") {
     return (
       <Onboarding
         setOnboarded={setOnboarded}
@@ -243,13 +261,13 @@ export function DeadlineFoodPrototype() {
   }
 
   return (
-    <Shell screen={screen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
-      {screen === "dashboard" && <Dashboard prefs={prefs} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {screen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} setScreen={navigateScreen} track={track} />}
-      {screen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {screen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} plan={plan} setPlan={setPlan} prefs={prefs} onSelectMeal={openRecipe} track={track} />}
-      {screen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} track={track} />}
-      {screen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} backTo={previousScreen} track={track} />}
+    <Shell screen={activeScreen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
+      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
+      {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} setScreen={navigateScreen} track={track} />}
+      {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
+      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} plan={plan} setPlan={setPlan} prefs={prefs} onSelectMeal={openRecipe} track={track} />}
+      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} track={track} />}
+      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} backTo={previousScreen} track={track} />}
     </Shell>
   );
 }
