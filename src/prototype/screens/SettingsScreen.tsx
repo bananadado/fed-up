@@ -142,12 +142,12 @@ export function SettingsScreen({
             danger
           />
           <ChoiceGroup
-            title="Optional inspiration foods"
+            title="What do you usually eat?"
             options={likes}
             selected={prefs.likes}
             onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
             onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-            addPlaceholder="Add a meal you often choose"
+            addPlaceholder="Add a meal you often eat"
           />
           <ChoiceGroup
             title="Ingredients I dislike"
