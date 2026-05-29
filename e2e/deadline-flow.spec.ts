@@ -31,6 +31,9 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.getByRole("option", { name: "Imperial College London" }).click();
   await page.getByRole("button", { name: /continue/i }).click();
 
+  await expect(page.getByRole("heading", { name: /what have you got in\?/i })).toBeVisible();
+  await page.getByRole("button", { name: /continue/i }).click();
+
   await expect(page.getByRole("heading", { name: /choose recommendation priorities/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /keep costs low/i })).toBeVisible();
   await page.getByRole("button", { name: /create my plan/i }).click();
