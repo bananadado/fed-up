@@ -1,7 +1,7 @@
-# Graph Report - drp03  (2026-05-31)
+# Graph Report - drp03  (2026-05-29)
 
 ## Corpus Check
-- 130 files · ~73,609 words
+- 130 files · ~73,490 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5c5350d2`
+- Built from commit: `56f53a32`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -442,7 +442,7 @@ Nodes (3): data, getPrototypeData(), seedPrototypeData()
   src/logo.svg · relation: references
 
 ## Knowledge Gaps
-- **597 isolated node(s):** `MealType`, `PlanMeal`, `sessionLoaded`, `screens`, `onboardingScreens` (+592 more)
+- **597 isolated node(s):** `sessionLoaded`, `screens`, `onboardingScreens`, `deploymentEnabled`, `BuildConfigOverrides` (+592 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -454,10 +454,10 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `Deadline Food Session API` connect `Deadline Mode State` to `Anonymous Session Storage`?**
   _High betweenness centrality (0.027) - this node is a cross-community bridge._
 - **Why does `deadlineFoodSession` connect `Deadline Mode State` to `Firebase Functions`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+  _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **Why does `getOrCreateAnonymousSessionId()` connect `API Adapter` to `PostHog Analytics`, `Community 51`, `Anonymous Session Storage`?**
   _High betweenness centrality (0.024) - this node is a cross-community bridge._
-- **What connects `MealType`, `PlanMeal`, `sessionLoaded` to the rest of the system?**
+- **What connects `sessionLoaded`, `screens`, `onboardingScreens` to the rest of the system?**
   _600 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Router And Pages` be split into smaller, more focused modules?**
   _Cohesion score 0.05287556135013762 - nodes in this community are weakly interconnected._

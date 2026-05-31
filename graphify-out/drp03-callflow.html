@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1348 nodes, 2341 edges, 89 communities. Commit: 56f53a3</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1348 nodes, 2341 edges, 89 communities. Commit: 5c5350d</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -119,17 +119,17 @@ flowchart LR
     OTHER_D0941E68("Other<br/><small>216 nodes</small>")
     class OTHER_D0941E68 module;
     TESTS_FIXTURES_B84B1DCC -->|imports x67| SERVE_API_35EC8E86
+    COMMUNITY_44_474CF115 -->|imports x39| TESTS_FIXTURES_B84B1DCC
     PROTOTYPE_UI_SHELL_9606558B -->|imports x36| TESTS_FIXTURES_B84B1DCC
-    COMMUNITY_44_474CF115 -->|imports x33| TESTS_FIXTURES_B84B1DCC
     FIREBASE_FUNCTIONS_650C665A -->|contains x31| OTHER_D0941E68
     COMPILED_SESSION_BACKEND_52DD869B -->|contains x31| OTHER_D0941E68
-    COMMUNITY_44_474CF115 -->|imports x27| PROTOTYPE_UI_SHELL_9606558B
+    COMMUNITY_44_474CF115 -->|imports x29| PROTOTYPE_UI_SHELL_9606558B
     COMMUNITY_51_1B89DE6B -->|imports x26| TESTS_FIXTURES_B84B1DCC
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
     SERVE_API_35EC8E86 -->|contains x23| TESTS_FIXTURES_B84B1DCC
     TESTS_FIXTURES_B84B1DCC -->|imports x23| PROTOTYPE_UI_SHELL_9606558B
-    COMMUNITY_51_1B89DE6B -->|imports x19| PROTOTYPE_UI_SHELL_9606558B
-    TESTS_FIXTURES_B84B1DCC -->|imports x10| COMMUNITY_44_474CF115
+    COMMUNITY_44_474CF115 -->|imports x16| COMMUNITY_51_1B89DE6B
+    COMMUNITY_51_1B89DE6B -->|imports x16| PROTOTYPE_UI_SHELL_9606558B
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -151,7 +151,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Core Flow</h4>
-    <div class="arrow-chain">Graph Build -&gt; Other -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Community 44 -&gt; Prototype UI Shell -&gt; Outputs &amp; Docs</div>
+    <div class="arrow-chain">Graph Build -&gt; Other -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Outputs &amp; Docs -&gt; Community 51 -&gt; Prototype UI Shell</div>
   </div>
 </div>
 <div class="grid">
@@ -2910,7 +2910,7 @@ flowchart LR
 
 <!-- ====== 10. Prototype UI Shell ====== -->
 <h2 id="prototype-ui-shell">10. Prototype UI Shell</h2>
-<p>Prototype UI Shell groups implementation around prototype, screens, utilsts, planscreentsx, mostly in src/prototype/utils.ts, prototype/screens/PlanScreen.tsx, src/prototype/healthSignals.ts. This section covers 28 nodes and 75 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Prototype UI Shell groups implementation around prototype, screens, utilsts, planscreentsx, mostly in src/prototype/utils.ts, prototype/screens/PlanScreen.tsx, src/prototype/types.ts. This section covers 28 nodes and 75 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
@@ -2922,31 +2922,29 @@ flowchart LR
         src_prototype_screens_planscreen_tsx_e1c00613("PlanScreen.tsx")
     end
     subgraph prototype_ui_shell_src_prototype_healthSignals_t_4ead8b10["src/prototype/healthSignals.ts"]
-        src_prototype_healthsignals_ts_9973a2cc("healthSignals.ts")
         prototype_healthsignals_mealhealthsignals_3c9bea53("mealHealthSignals()<br/><small>src/prototype/healthSignals.ts</small>")
         prototype_healthsignals_weeklybalancesummary_e809c792("weeklyBalanceSummary()<br/><small>src/prototype/healthSignals.ts</small>")
+        src_prototype_healthsignals_ts_9973a2cc("healthSignals.ts")
+    end
+    subgraph prototype_ui_shell_src_prototype_types_ts_d80bf8c7["src/prototype/types.ts"]
+        prototype_types_meal_69e1b6d5("Meal<br/><small>src/prototype/types.ts</small>")
+        prototype_types_planentry_ad9bab6d("PlanEntry<br/><small>src/prototype/types.ts</small>")
+        prototype_types_nutritionsource_fe3b1fa6("NutritionSource<br/><small>src/prototype/types.ts</small>")
     end
     subgraph prototype_ui_shell_src_prototype_utils_ts_e2926885["src/prototype/utils.ts"]
         prototype_utils_money_e5ae07fe("money()<br/><small>src/prototype/utils.ts</small>")
-        src_prototype_utils_ts_ab166376("utils.ts")
         prototype_utils_getmealbyid_0a8b6bcc("getMealById()<br/><small>src/prototype/utils.ts</small>")
+        src_prototype_utils_ts_ab166376("utils.ts")
     end
     subgraph prototype_ui_shell_prototype_components_BudgetCa_5c050cbc["prototype/components/BudgetCard.tsx"]
         components_budgetcard_budgetcard_941d8857("BudgetCard()<br/><small>prototype/components/BudgetCard.tsx</small>")
         src_prototype_components_budgetcard_tsx_b5639711("BudgetCard.tsx")
     end
-    subgraph prototype_ui_shell_prototype_screens_Dashboard_t_0b6d034a["prototype/screens/Dashboard.tsx"]
-        screens_dashboard_dashboard_0262bc7c("Dashboard()<br/><small>prototype/screens/Dashboard.tsx</small>")
-        src_prototype_screens_dashboard_tsx_f2b78264("Dashboard.tsx")
-    end
     subgraph prototype_ui_shell_prototype_screens_DiscoverScr_92c64bb5["prototype/screens/DiscoverScreen.tsx"]
         screens_discoverscreen_discoverscreen_435ffea0("DiscoverScreen()<br/><small>prototype/screens/DiscoverScreen.tsx</small>")
         src_prototype_screens_discoverscreen_tsx_e3c281b5("DiscoverScreen.tsx")
     end
-    subgraph prototype_ui_shell_src_prototype_types_ts_d80bf8c7["src/prototype/types.ts"]
-        prototype_types_planentry_ad9bab6d("PlanEntry<br/><small>src/prototype/types.ts</small>")
-        prototype_types_meal_69e1b6d5("Meal<br/><small>src/prototype/types.ts</small>")
-    end
+    screens_dashboard_dashboard_0262bc7c("Dashboard()<br/><small>prototype/screens/Dashboard.tsx</small>")
     prototype_data_seedmeals_42cb64e0("seedMeals<br/><small>src/prototype/data.ts</small>")
     prototype_healthsignals_mealhealthsignals_3c9bea53 -->|calls| screens_dashboard_dashboard_0262bc7c
     prototype_healthsignals_mealhealthsignals_3c9bea53 -->|calls| screens_discoverscreen_discoverscreen_435ffea0
@@ -2961,35 +2959,35 @@ flowchart LR
     prototype_data_seedmeals_42cb64e0 -->|imports| src_prototype_screens_discoverscreen_tsx_e3c281b5
     prototype_data_seedmeals_42cb64e0 -->|imports| src_prototype_screens_planscreen_tsx_e1c00613
     prototype_data_seedmeals_42cb64e0 -->|imports| src_prototype_utils_ts_ab166376
-    src_prototype_healthsignals_ts_9973a2cc -->|imports| prototype_types_meal_69e1b6d5
-    src_prototype_healthsignals_ts_9973a2cc -->|imports| prototype_types_planentry_ad9bab6d
+    prototype_types_nutritionsource_fe3b1fa6 -->|imports| src_prototype_utils_ts_ab166376
+    prototype_types_meal_69e1b6d5 -->|imports| src_prototype_components_budgetcard_tsx_b5639711
+    prototype_types_meal_69e1b6d5 -->|imports| src_prototype_healthsignals_ts_9973a2cc
+    prototype_types_meal_69e1b6d5 -->|imports| src_prototype_screens_discoverscreen_tsx_e3c281b5
+    prototype_types_meal_69e1b6d5 -->|imports| src_prototype_screens_planscreen_tsx_e1c00613
+    prototype_types_meal_69e1b6d5 -->|imports| src_prototype_utils_ts_ab166376
+    prototype_types_planentry_ad9bab6d -->|imports| src_prototype_components_budgetcard_tsx_b5639711
+    prototype_types_planentry_ad9bab6d -->|imports| src_prototype_healthsignals_ts_9973a2cc
+    prototype_types_planentry_ad9bab6d -->|imports| src_prototype_screens_discoverscreen_tsx_e3c281b5
+    prototype_types_planentry_ad9bab6d -->|imports| src_prototype_screens_planscreen_tsx_e1c00613
     src_prototype_healthsignals_ts_9973a2cc -->|imports| prototype_utils_getmealbyid_0a8b6bcc
-    src_prototype_healthsignals_ts_9973a2cc -->|imports| src_prototype_utils_ts_ab166376
-    src_prototype_healthsignals_ts_9973a2cc -->|imports| src_prototype_screens_dashboard_tsx_f2b78264
-    src_prototype_healthsignals_ts_9973a2cc -->|imports| src_prototype_screens_discoverscreen_tsx_e3c281b5
-    src_prototype_healthsignals_ts_9973a2cc -->|imports| src_prototype_screens_planscreen_tsx_e1c00613
-    prototype_healthsignals_mealhealthsignals_3c9bea53 -->|imports| src_prototype_screens_dashboard_tsx_f2b78264
-    prototype_healthsignals_mealhealthsignals_3c9bea53 -->|imports| src_prototype_screens_discoverscreen_tsx_e3c281b5
-    prototype_healthsignals_mealhealthsignals_3c9bea53 -->|imports| src_prototype_screens_planscreen_tsx_e1c00613
-    prototype_healthsignals_weeklybalancesummary_e809c792 -->|imports| src_prototype_screens_dashboard_tsx_f2b78264
-    %% Omitted for readability: 10 nodes, 25 edges
+    %% Omitted for readability: 10 nodes, 16 edges
     class screens_planscreen_planscreen_84e89dc0 ui;
     class screens_planscreen_pricediff_de80a370 ui;
     class src_prototype_screens_planscreen_tsx_e1c00613 ui;
-    class src_prototype_healthsignals_ts_9973a2cc module;
     class prototype_healthsignals_mealhealthsignals_3c9bea53 function;
     class prototype_healthsignals_weeklybalancesummary_e809c792 function;
+    class src_prototype_healthsignals_ts_9973a2cc module;
+    class prototype_types_meal_69e1b6d5 klass;
+    class prototype_types_planentry_ad9bab6d klass;
+    class prototype_types_nutritionsource_fe3b1fa6 klass;
     class prototype_utils_money_e5ae07fe function;
-    class src_prototype_utils_ts_ab166376 module;
     class prototype_utils_getmealbyid_0a8b6bcc function;
+    class src_prototype_utils_ts_ab166376 module;
     class components_budgetcard_budgetcard_941d8857 ui;
     class src_prototype_components_budgetcard_tsx_b5639711 ui;
-    class screens_dashboard_dashboard_0262bc7c ui;
-    class src_prototype_screens_dashboard_tsx_f2b78264 ui;
     class screens_discoverscreen_discoverscreen_435ffea0 ui;
     class src_prototype_screens_discoverscreen_tsx_e3c281b5 ui;
-    class prototype_types_planentry_ad9bab6d klass;
-    class prototype_types_meal_69e1b6d5 klass;
+    class screens_dashboard_dashboard_0262bc7c ui;
     class prototype_data_seedmeals_42cb64e0 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
@@ -3022,14 +3020,46 @@ flowchart LR
 </tr>
 <tr>
   <td>2</td>
-  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
+  <td><code>NutritionSource</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br>+4 more</td>
-  <td>Module file in src/prototype/healthSignals.ts.</td>
+  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>NutritionSource node in src/prototype/types.ts.</td>
 </tr>
 <tr>
   <td>3</td>
+  <td><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br>+3 more</td>
+  <td>Meal node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>PlanEntry</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br>+2 more</td>
+  <td>PlanEntry node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Preferences</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
+  <td>Preferences node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>PlanEntry</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br>+2 more</td>
+  <td>Module file in src/prototype/healthSignals.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
   <td><code>vegetableWords</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3037,7 +3067,7 @@ flowchart LR
   <td>vegetableWords node in src/prototype/healthSignals.ts.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>8</td>
   <td><code>mealHealthSignals()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3045,7 +3075,7 @@ flowchart LR
   <td>mealHealthSignals() node in src/prototype/healthSignals.ts.</td>
 </tr>
 <tr>
-  <td>5</td>
+  <td>9</td>
   <td><code>weeklyBalanceSummary()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3053,15 +3083,15 @@ flowchart LR
   <td>weeklyBalanceSummary() node in src/prototype/healthSignals.ts.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>10</td>
   <td><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
-  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>seedMeals</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br>+3 more</td>
+  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>NutritionSource</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+1 more</td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br>+1 more</td>
   <td>Module file in src/prototype/utils.ts.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>11</td>
   <td><code>parseICS()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3069,7 +3099,7 @@ flowchart LR
   <td>parseICS() node in src/prototype/utils.ts.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>12</td>
   <td><code>money()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3077,7 +3107,7 @@ flowchart LR
   <td>money() node in src/prototype/utils.ts.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>13</td>
   <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
@@ -3085,44 +3115,12 @@ flowchart LR
   <td>getMealById() node in src/prototype/utils.ts.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>14</td>
   <td><code>ingredientNames()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small></td>
   <td>ingredientNames() node in src/prototype/utils.ts.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>NutritionSource</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>NutritionSource node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br>+1 more</td>
-  <td>Meal node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>PlanEntry</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
-  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br>+1 more</td>
-  <td>PlanEntry node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>Preferences</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/DiscoverScreen.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
-  <td>Preferences node in src/prototype/types.ts.</td>
 </tr>
 <tr>
   <td>15</td>
@@ -3804,38 +3802,14 @@ flowchart LR
 </tr>
 <tr>
   <td>16</td>
-  <td><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>calendarProviders</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br>+4 more</td>
-  <td><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>ChoiceGroup()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br><code>Deadline</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+3 more</td>
-  <td>Module file in prototype/screens/SettingsScreen.tsx.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>SettingsScreen()</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>formatCookingLimit()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td>SettingsScreen() node in prototype/screens/SettingsScreen.tsx.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>formatCookingLimit()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>Onboarding()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen()</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small><br>+1 more</td>
-  <td>No direct outbound edge</td>
-  <td>formatCookingLimit() node in src/prototype/utils.ts.</td>
-</tr>
-<tr>
-  <td>19</td>
   <td><code>types.ts</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>No direct outbound edge</td>
+  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
   <td>Module file in src/prototype/types.ts.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>17</td>
   <td><code>MealType</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -3843,7 +3817,7 @@ flowchart LR
   <td>MealType node in src/prototype/types.ts.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>18</td>
   <td><code>MealSlot</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
@@ -3851,7 +3825,7 @@ flowchart LR
   <td>MealSlot node in src/prototype/types.ts.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>19</td>
   <td><code>RecipeReview</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
@@ -3859,7 +3833,7 @@ flowchart LR
   <td>RecipeReview node in src/prototype/types.ts.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>20</td>
   <td><code>PlanMeal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -3867,20 +3841,44 @@ flowchart LR
   <td>PlanMeal node in src/prototype/types.ts.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>21</td>
   <td><code>Deadline</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>No direct outbound edge</td>
+  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
   <td>Deadline node in src/prototype/types.ts.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>22</td>
   <td><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>No direct outbound edge</td>
+  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
   <td>CalendarProvider node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>calendarProviders</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br>+7 more</td>
+  <td><code>ChoiceGroup()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br><code>Field()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br><code>formatCookingLimit()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>Module file in prototype/screens/SettingsScreen.tsx.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>SettingsScreen()</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>formatCookingLimit()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>SettingsScreen() node in prototype/screens/SettingsScreen.tsx.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>formatCookingLimit()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>Onboarding()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen()</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small><br>+1 more</td>
+  <td>No direct outbound edge</td>
+  <td>formatCookingLimit() node in src/prototype/utils.ts.</td>
 </tr>
 <tr>
   <td>26</td>
@@ -3938,12 +3936,12 @@ flowchart LR
         prototype_deadlinefoodprototype_screens_b892aa62("screens<br/><small>src/prototype/DeadlineFoodPrototype.tsx</small>")
     end
     subgraph community_51_prototype_components_Shell_tsx_950044f2["prototype/components/Shell.tsx"]
-        components_shell_shell_90a82b12("Shell()<br/><small>prototype/components/Shell.tsx</small>")
         src_prototype_components_shell_tsx_d614f256("Shell.tsx")
+        components_shell_shell_90a82b12("Shell()<br/><small>prototype/components/Shell.tsx</small>")
     end
     subgraph community_51_prototype_screens_Landing_tsx_31e67e0c["prototype/screens/Landing.tsx"]
-        screens_landing_landing_3c505c27("Landing()<br/><small>prototype/screens/Landing.tsx</small>")
         src_prototype_screens_landing_tsx_20713129("Landing.tsx")
+        screens_landing_landing_3c505c27("Landing()<br/><small>prototype/screens/Landing.tsx</small>")
     end
     subgraph community_51_src_prototype_analytics_ts_a44d6b73["src/prototype/analytics.ts"]
         src_prototype_analytics_ts_6f8af2df("analytics.ts")
@@ -3953,20 +3951,20 @@ flowchart LR
     lib_posthog_analyticsproperties_afe56a65("AnalyticsProperties<br/><small>src/lib/posthog.ts</small>")
     prototype_data_defaultdeadlines_4cc572ca("defaultDeadlines<br/><small>src/prototype/data.ts</small>")
     prototype_types_screen_f980f89e("Screen<br/><small>src/prototype/types.ts</small>")
+    prototype_data_defaultdeadlines_4cc572ca -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
+    prototype_data_defaultdeadlines_4cc572ca -->|imports| src_prototype_screens_landing_tsx_20713129
+    prototype_types_screen_f980f89e -->|imports| src_prototype_components_shell_tsx_d614f256
+    prototype_types_screen_f980f89e -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
     src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| components_shell_shell_90a82b12
     src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| lib_posthog_analyticsproperties_afe56a65
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| prototype_data_defaultdeadlines_4cc572ca
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| prototype_types_screen_f980f89e
     src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| screens_landing_landing_3c505c27
     src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| src_prototype_components_shell_tsx_d614f256
     src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| src_prototype_screens_landing_tsx_20713129
-    prototype_data_defaultdeadlines_4cc572ca -->|imports| src_prototype_screens_landing_tsx_20713129
     src_prototype_analytics_ts_6f8af2df -->|imports| lib_posthog_analyticsproperties_afe56a65
     src_prototype_analytics_ts_6f8af2df -->|imports| src_prototype_components_shell_tsx_d614f256
     src_prototype_analytics_ts_6f8af2df -->|imports| src_prototype_screens_landing_tsx_20713129
     prototype_analytics_trackprototypeevent_c3567b75 -->|imports| src_prototype_components_shell_tsx_d614f256
     prototype_analytics_trackprototypeevent_c3567b75 -->|imports| src_prototype_screens_landing_tsx_20713129
-    prototype_types_screen_f980f89e -->|imports| src_prototype_components_shell_tsx_d614f256
     class src_prototype_deadlinefoodprototype_tsx_f5893eb1 ui;
     class prototype_deadlinefoodprototype_loadingscreen_007ea53b ui;
     class prototype_deadlinefoodprototype_budgetband_56b2bd79 ui;
@@ -3974,10 +3972,10 @@ flowchart LR
     class prototype_deadlinefoodprototype_onboardingscreen_a54e076c ui;
     class prototype_deadlinefoodprototype_screenfromhash_5aa63e39 ui;
     class prototype_deadlinefoodprototype_screens_b892aa62 ui;
-    class components_shell_shell_90a82b12 ui;
     class src_prototype_components_shell_tsx_d614f256 ui;
-    class screens_landing_landing_3c505c27 ui;
+    class components_shell_shell_90a82b12 ui;
     class src_prototype_screens_landing_tsx_20713129 ui;
+    class screens_landing_landing_3c505c27 ui;
     class src_prototype_analytics_ts_6f8af2df module;
     class prototype_analytics_trackprototypeevent_c3567b75 klass;
     class posthog_setup_report_instrumented_events_0d0353dd klass;
@@ -4007,14 +4005,30 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>defaultDeadlines</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>defaultDeadlines</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>Landing()</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small><br>+4 more</td>
-  <td>Module file in src/prototype/DeadlineFoodPrototype.tsx.</td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small><br><code>Landing.tsx</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small></td>
+  <td>defaultDeadlines node in src/prototype/data.ts.</td>
 </tr>
 <tr>
   <td>2</td>
+  <td><code>Screen</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small><br><code>Shell.tsx</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
+  <td>Screen node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>defaultDeadlines</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>Screen</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>Landing()</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small><br><code>Landing.tsx</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small><br>+2 more</td>
+  <td>Module file in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>4</td>
   <td><code>screens</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4022,7 +4036,7 @@ flowchart LR
   <td>screens node in src/prototype/DeadlineFoodPrototype.tsx.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>5</td>
   <td><code>onboardingScreens</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4030,7 +4044,7 @@ flowchart LR
   <td>onboardingScreens node in src/prototype/DeadlineFoodPrototype.tsx.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>6</td>
   <td><code>screenFromHash()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4038,7 +4052,7 @@ flowchart LR
   <td>Caches analysis results or computes cache keys.</td>
 </tr>
 <tr>
-  <td>5</td>
+  <td>7</td>
   <td><code>LoadingScreen()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4046,7 +4060,7 @@ flowchart LR
   <td>LoadingScreen() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>8</td>
   <td><code>budgetBand()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4054,7 +4068,7 @@ flowchart LR
   <td>budgetBand() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>9</td>
   <td><code>maxTimeBucket()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4062,15 +4076,7 @@ flowchart LR
   <td>maxTimeBucket() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
 </tr>
 <tr>
-  <td>8</td>
-  <td><code>defaultDeadlines</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><code>Landing.tsx</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small></td>
-  <td>defaultDeadlines node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>9</td>
+  <td>10</td>
   <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -4078,20 +4084,12 @@ flowchart LR
   <td>Module file in src/prototype/analytics.ts.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>11</td>
   <td><code>TrackPrototypeEvent</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
   <td><code>Landing.tsx</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small><br><code>Shell.tsx</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
   <td>TrackPrototypeEvent node in src/prototype/analytics.ts.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>Screen</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><code>Shell.tsx</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
-  <td>Screen node in src/prototype/types.ts.</td>
 </tr>
 <tr>
   <td>12</td>
@@ -5008,7 +5006,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-05-29 15:23 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-05-31 14:14 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
