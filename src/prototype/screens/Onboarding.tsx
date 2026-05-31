@@ -90,7 +90,8 @@ export function Onboarding({
     const parsed = blocks.map((block, index) => {
       const title = (block.match(/SUMMARY:(.+)/)?.[1] || `Imported event ${index + 1}`).trim();
       const raw = block.match(/DTSTART(?:;[^:]*)?:(\d{8})(?:T(\d{4}))?/) || [];
-      const date = raw[1] ? new Date(`${raw[1].slice(0, 4)}-${raw[1].slice(4, 6)}-${raw[1].slice(6, 8)}T12:00:00`) : null;
+      const isoDate = raw[1] ? `${raw[1].slice(0, 4)}-${raw[1].slice(4, 6)}-${raw[1].slice(6, 8)}` : null;
+      const date = isoDate ? new Date(`${isoDate}T12:00:00`) : null;
       const label = date ? date.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : "Upcoming";
       const time = raw[2] ? `${raw[2].slice(0, 2)}:${raw[2].slice(2, 4)}` : "All day";
 
@@ -106,10 +107,11 @@ export function Onboarding({
         effortHours: eventType === "academic" ? 3 : 0,
         urgency: eventType === "academic" ? "medium" : "low",
         confirmed: false,
+        rawDate: isoDate ?? undefined,
       } satisfies Deadline;
     });
 
-    return parsed.length ? parsed.slice(0, 5) : null;
+    return parsed.length ? parsed : null;
   }
 
   function loadICS(event: React.ChangeEvent<HTMLInputElement>) {
@@ -218,21 +220,32 @@ export function Onboarding({
             </div>
             {importMessage && <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
             <div className="mt-7 rounded-lg bg-stone-50 p-4">
-              <div className="mb-3 flex items-center justify-between">
-                <p className="text-sm font-semibold">Detected study-load signals</p>
-                <Badge tone="amber">{deadlines.length} found</Badge>
-              </div>
-              <div className="space-y-2">
-                {deadlines.map((deadline) => (
-                  <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
-                    <div>
-                      <p className="font-medium">{deadline.title}</p>
-                      <p className="text-stone-500">{deadline.date}</p>
+              {(() => {
+                const today = new Date().toISOString().slice(0, 10);
+                const upcoming = deadlines
+                  .filter((d) => d.rawDate ? d.rawDate >= today : true)
+                  .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""))
+                  .slice(0, 5);
+                return (
+                  <>
+                    <div className="mb-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold">Detected study-load signals</p>
+                      <Badge tone="amber">{upcoming.length} found</Badge>
                     </div>
-                    <span className="text-stone-500">{deadline.time}</span>
-                  </div>
-                ))}
-              </div>
+                    <div className="space-y-2">
+                      {upcoming.map((deadline) => (
+                        <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
+                          <div>
+                            <p className="font-medium">{deadline.title}</p>
+                            <p className="text-stone-500">{deadline.date}</p>
+                          </div>
+                          <span className="text-stone-500">{deadline.time}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                );
+              })()}
             </div>
             <div className="mt-7 flex justify-end">
               <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); setStep(1); }}>
