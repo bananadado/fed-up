@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-05-31)
 
 ## Corpus Check
-- 136 files · ~75,852 words
+- 136 files · ~75,826 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f362eb3b`
+- Built from commit: `8a2346fe`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -141,7 +141,7 @@ Nodes (16): BudgetCard(), seedMeals, mealHealthSignals(), vegetableWords, weekly
 
 ### Community 1 - "Router And Pages"
 Cohesion: 0.07
-Nodes (64): BootstrapBoundary(), createEventBus(), EventBus, appButtonClasses, AppButtonVariant, badgeTones, Tone, Campus Fallback Catalogue (+56 more)
+Nodes (67): BootstrapBoundary(), createEventBus(), EventBus, appButtonClasses, AppButtonVariant, badgeTones, Field(), SelectField() (+59 more)
 
 ### Community 2 - "Deadline Mode State"
 Cohesion: 0.06
@@ -276,8 +276,8 @@ Cohesion: 0.08
 Nodes (24): Active Surface: Prototype, Architectural Risk Areas, Architecture, Backend Surfaces, Browser Entry, Build Architecture, code:sh (bun --hot src/index.ts), code:html (<script type="module" src="./frontend.tsx" async></script>) (+16 more)
 
 ### Community 44 - "Community 44"
-Cohesion: 0.06
-Nodes (56): icsSubscriptionHints, importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), fetchEvents(), GoogleEvent, importGoogleCalendar(), isGoogleConfigured() (+48 more)
+Cohesion: 0.07
+Nodes (53): icsSubscriptionHints, importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), fetchEvents(), GoogleEvent, importGoogleCalendar(), isGoogleConfigured() (+45 more)
 
 ### Community 45 - "Community 45"
 Cohesion: 0.08
@@ -452,7 +452,7 @@ Nodes (3): data, getPrototypeData(), seedPrototypeData()
   src/logo.svg · relation: references
 
 ## Knowledge Gaps
-- **600 isolated node(s):** `sessionLoaded`, `Window`, `GoogleEvent`, `OutlookEvent`, `BuildConfigOverrides` (+595 more)
+- **600 isolated node(s):** `BuildConfigOverrides`, `NestedBuildConfig`, `cliConfig`, `start`, `entrypoints` (+595 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -462,14 +462,14 @@ _Questions this graph is uniquely positioned to answer:_
 - **What is the exact relationship between `App.tsx` and `Empty Logo Asset`?**
   _Edge tagged AMBIGUOUS (relation: references) - confidence is low._
 - **Why does `getOrCreateAnonymousSessionId()` connect `API Adapter` to `PostHog Analytics`, `Community 51`, `Anonymous Session Storage`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
-- **Why does `Opaque Session ID` connect `Anonymous Session Storage` to `API Adapter`?**
   _High betweenness centrality (0.023) - this node is a cross-community bridge._
 - **Why does `Anonymous Session Storage` connect `Anonymous Session Storage` to `Community 3`?**
   _High betweenness centrality (0.023) - this node is a cross-community bridge._
-- **What connects `sessionLoaded`, `Window`, `GoogleEvent` to the rest of the system?**
+- **Why does `Opaque Session ID` connect `Anonymous Session Storage` to `API Adapter`?**
+  _High betweenness centrality (0.023) - this node is a cross-community bridge._
+- **What connects `BuildConfigOverrides`, `NestedBuildConfig`, `cliConfig` to the rest of the system?**
   _603 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Router And Pages` be split into smaller, more focused modules?**
-  _Cohesion score 0.07192982456140351 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0686456400742115 - nodes in this community are weakly interconnected._
 - **Should `Deadline Mode State` be split into smaller, more focused modules?**
   _Cohesion score 0.05879917184265011 - nodes in this community are weakly interconnected._
