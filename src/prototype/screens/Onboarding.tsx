@@ -264,18 +264,21 @@ export function Onboarding({
             <div className="mt-7 rounded-lg bg-stone-50 p-4">
               {(() => {
                 const today = new Date().toISOString().slice(0, 10);
-                const upcoming = deadlines
+                const futureEvents = deadlines
                   .filter((d) => d.rawDate ? d.rawDate >= today : true)
-                  .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""))
-                  .slice(0, 5);
+                  .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""));
+                const shown = futureEvents.slice(0, 5);
                 return (
                   <>
                     <div className="mb-3 flex items-center justify-between">
                       <p className="text-sm font-semibold">Detected study-load signals</p>
-                      <Badge tone="amber">{upcoming.length} found</Badge>
+                      <Badge tone="amber">{futureEvents.length} found</Badge>
                     </div>
+                    {futureEvents.length > 5 && (
+                      <p className="mb-2 text-xs text-stone-500">Showing the next 5 closest events</p>
+                    )}
                     <div className="space-y-2">
-                      {upcoming.map((deadline) => (
+                      {shown.map((deadline) => (
                         <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
                           <div>
                             <p className="font-medium">{deadline.title}</p>
