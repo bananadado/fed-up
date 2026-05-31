@@ -1,5 +1,7 @@
 import type { CalendarEvent } from "./types";
 
+declare const __BUN_PUBLIC_GOOGLE_CLIENT_ID__: string | undefined;
+
 declare global {
   interface Window {
     google?: {
@@ -17,7 +19,10 @@ declare global {
   }
 }
 
-const clientId: string = process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID ?? "";
+const clientId: string =
+  (typeof __BUN_PUBLIC_GOOGLE_CLIENT_ID__ !== "undefined" ? __BUN_PUBLIC_GOOGLE_CLIENT_ID__ : undefined) ??
+  (typeof process !== "undefined" ? process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID : undefined) ??
+  "";
 
 const SCOPE = "https://www.googleapis.com/auth/calendar.events.readonly";
 const API_URL = "https://www.googleapis.com/calendar/v3/calendars/primary/events";

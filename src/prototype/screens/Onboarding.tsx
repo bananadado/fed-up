@@ -14,8 +14,6 @@ import {
   importFromSubscriptionUrl,
   importGoogleCalendar,
   importOutlookCalendar,
-  isGoogleConfigured,
-  isOutlookConfigured,
   isSubscriptionUrl,
   parseICSText,
 } from "../calendarImport";
@@ -225,7 +223,7 @@ export function Onboarding({
               ))}
             </div>
             <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4">
-              {(calendarProvider === "google" || calendarProvider === "outlook") && (calendarProvider === "google" ? isGoogleConfigured() : isOutlookConfigured()) && (
+              {(calendarProvider === "google" || calendarProvider === "outlook") && (
                 <>
                   <AppButton type="button" onClick={connectOAuth} disabled={importing} className="w-full justify-center py-3 text-base">
                     <CalendarDays size={18} /> {importing ? "Connecting…" : `Sign in with ${calendarProvider === "google" ? "Google" : "Microsoft"}`}

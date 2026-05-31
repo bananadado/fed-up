@@ -14,8 +14,6 @@ import {
   importFromSubscriptionUrl,
   importGoogleCalendar,
   importOutlookCalendar,
-  isGoogleConfigured,
-  isOutlookConfigured,
   isSubscriptionUrl,
   parseICSText,
 } from "../calendarImport";
@@ -242,7 +240,7 @@ export function SettingsScreen({
             <p className="mt-3 text-sm text-stone-500">{calendarEvents.length} event{calendarEvents.length === 1 ? "" : "s"} currently imported.</p>
           )}
           <div className="mt-4 space-y-3">
-            {(calendarProvider === "google" || calendarProvider === "outlook") && (calendarProvider === "google" ? isGoogleConfigured() : isOutlookConfigured()) && (
+            {(calendarProvider === "google" || calendarProvider === "outlook") && (
               <>
                 <AppButton variant="primary" onClick={connectOAuth} disabled={importing} className="w-full justify-center py-3">
                   <RotateCcw size={15} /> {importing ? "Connecting…" : `Sign in with ${calendarProvider === "google" ? "Google" : "Microsoft"}`}
