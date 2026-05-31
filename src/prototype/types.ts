@@ -93,4 +93,6 @@ export type Preferences = {
 
 export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "recipes" | "settings" | "recipe-detail";
 
-export type CalendarProvider = "google" | "outlook" | "apple" | "manual";
+export type CalendarProvider = "google" | "outlook" | "apple" | "other";
+
+export type { CalendarEvent } from "./calendarImport/types";

@@ -159,6 +159,8 @@ const result = await Bun.build({
     ),
     "__BUN_PUBLIC_POSTHOG_PROJECT_TOKEN__": JSON.stringify(process.env.BUN_PUBLIC_POSTHOG_PROJECT_TOKEN ?? ""),
     "__BUN_PUBLIC_POSTHOG_HOST__": JSON.stringify(process.env.BUN_PUBLIC_POSTHOG_HOST ?? ""),
+    "process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID": JSON.stringify(process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID ?? ""),
+    "process.env.BUN_PUBLIC_MICROSOFT_CLIENT_ID": JSON.stringify(process.env.BUN_PUBLIC_MICROSOFT_CLIENT_ID ?? ""),
     "process.env.NODE_ENV": JSON.stringify("production"),
   },
   ...cliConfig,

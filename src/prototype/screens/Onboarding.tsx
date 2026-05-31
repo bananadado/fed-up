@@ -5,10 +5,20 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { allergens, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
-import type { CalendarProvider, Deadline, Preferences, Screen } from "../types";
+import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
-import { classifyImportedEvent } from "../workloadModel";
 import { formatCookingLimit } from "../utils";
+import {
+  calendarEventsToDeadlines,
+  icsSubscriptionHints,
+  importFromSubscriptionUrl,
+  importGoogleCalendar,
+  importOutlookCalendar,
+  isGoogleConfigured,
+  isOutlookConfigured,
+  isSubscriptionUrl,
+  parseICSText,
+} from "../calendarImport";
 import type { TrackPrototypeEvent } from "../analytics";
 
 function Progress({ step }: { step: number }) {
@@ -63,6 +73,7 @@ export function Onboarding({
   setPrefs,
   deadlines,
   setDeadlines,
+  setCalendarEvents,
   selectedSources,
   setSelectedSources,
   calendarProvider,
@@ -75,6 +86,7 @@ export function Onboarding({
   setPrefs: (prefs: Preferences) => void;
   deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
+  setCalendarEvents: (events: CalendarEvent[]) => void;
   selectedSources: string[];
   setSelectedSources: (sources: string[]) => void;
   calendarProvider: CalendarProvider;
@@ -84,55 +96,71 @@ export function Onboarding({
   const [step, setStep] = useState(0);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [importMessage, setImportMessage] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [subscriptionUrl, setSubscriptionUrl] = useState("");
 
-  function parseICS(text: string) {
-    const blocks = text.split("BEGIN:VEVENT").slice(1);
-    const parsed = blocks.map((block, index) => {
-      const title = (block.match(/SUMMARY:(.+)/)?.[1] || `Imported event ${index + 1}`).trim();
-      const raw = block.match(/DTSTART(?:;[^:]*)?:(\d{8})(?:T(\d{4}))?/) || [];
-      const date = raw[1] ? new Date(`${raw[1].slice(0, 4)}-${raw[1].slice(4, 6)}-${raw[1].slice(6, 8)}T12:00:00`) : null;
-      const label = date ? date.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : "Upcoming";
-      const time = raw[2] ? `${raw[2].slice(0, 2)}:${raw[2].slice(2, 4)}` : "All day";
-
-      const eventType = classifyImportedEvent(title);
-
-      return {
-        id: `ics-${index}`,
-        title,
-        date: label,
-        time,
-        intensity: eventType === "academic" ? "Medium" : "Low",
-        eventType,
-        effortHours: eventType === "academic" ? 3 : 0,
-        urgency: eventType === "academic" ? "medium" : "low",
-        confirmed: false,
-      } satisfies Deadline;
-    });
-
-    return parsed.length ? parsed.slice(0, 5) : null;
+  function handleImportedEvents(events: CalendarEvent[], source: string) {
+    setCalendarEvents(events);
+    const asDeadlines = calendarEventsToDeadlines(events);
+    if (asDeadlines.length > 0) {
+      setDeadlines(asDeadlines);
+      setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
+    } else {
+      setImportMessage("No events found. Showing the example deadline week instead.");
+    }
+    track("calendar_imported", { source, event_count: events.length });
   }
 
   function loadICS(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = () => {
-      const parsed = parseICS(String(reader.result));
-
-      if (parsed) {
-        setDeadlines(parsed);
-        setImportMessage(`${parsed.length} calendar events imported.`);
-        track("ics_calendar_imported", { event_count: parsed.length });
-      } else {
-        setImportMessage("No events found. Showing the example deadline week instead.");
-        track("ics_calendar_imported", { event_count: 0 });
-      }
+      const events = parseICSText(String(reader.result));
+      handleImportedEvents(events, "ics");
     };
     reader.readAsText(file);
+  }
+
+  async function connectOAuth() {
+    setImporting(true);
+    setImportMessage("");
+    track("calendar_provider_connect_clicked", { provider: calendarProvider });
+
+    try {
+      const events = calendarProvider === "google"
+        ? await importGoogleCalendar()
+        : await importOutlookCalendar();
+      handleImportedEvents(events, calendarProvider);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Import failed";
+      setImportMessage(message);
+      track("calendar_import_error", { provider: calendarProvider, error: message });
+    } finally {
+      setImporting(false);
+    }
+  }
+
+  async function connectSubscriptionUrl() {
+    if (!isSubscriptionUrl(subscriptionUrl)) {
+      setImportMessage("Enter a valid webcal:// or https:// calendar URL.");
+      return;
+    }
+    setImporting(true);
+    setImportMessage("");
+    track("calendar_subscription_url_imported", { provider: calendarProvider });
+
+    try {
+      const events = await importFromSubscriptionUrl(subscriptionUrl, calendarProvider);
+      handleImportedEvents(events, calendarProvider);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Import failed";
+      setImportMessage(message);
+      track("calendar_import_error", { provider: calendarProvider, error: message });
+    } finally {
+      setImporting(false);
+    }
   }
 
   function toggle(values: string[], value: string, update: (next: string[]) => void) {
@@ -197,24 +225,42 @@ export function Onboarding({
               ))}
             </div>
             <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4">
-              {calendarProvider !== "manual" ? (
+              {(calendarProvider === "google" || calendarProvider === "outlook") && (calendarProvider === "google" ? isGoogleConfigured() : isOutlookConfigured()) && (
                 <>
-                  <AppButton type="button" onClick={() => track("calendar_provider_connect_clicked", { provider: calendarProvider })}>
-                    <CalendarDays size={15} /> Link {calendarProviders.find((p) => p.id === calendarProvider)?.name}
+                  <AppButton type="button" onClick={connectOAuth} disabled={importing} className="w-full justify-center py-3 text-base">
+                    <CalendarDays size={18} /> {importing ? "Connecting…" : `Sign in with ${calendarProvider === "google" ? "Google" : "Microsoft"}`}
                   </AppButton>
-                  <p className="mt-2 text-xs text-stone-500">You can reconnect or switch provider later in settings.</p>
-                </>
-              ) : (
-                <>
-                  <p className="text-sm text-stone-500">Upload a .ics file from your calendar app. This is a one-off import, not a live connection.</p>
-                  <div className="mt-3">
-                    <AppButton type="button" variant="secondary" onClick={() => fileRef.current?.click()}>
-                      <Import size={15} /> Import .ics file
-                    </AppButton>
+                  {calendarProvider === "outlook" && (
+                    <p className="mt-2 text-xs font-medium text-amber-700">University and organisation accounts may block sign-in — use a subscription link below instead.</p>
+                  )}
+                  <div className="my-4 flex items-center gap-3">
+                    <div className="h-px flex-1 bg-stone-200" />
+                    <span className="text-xs font-medium text-stone-400">or use a subscription link</span>
+                    <div className="h-px flex-1 bg-stone-200" />
                   </div>
-                  <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
                 </>
               )}
+              <div className="flex gap-2">
+                <Input
+                  value={subscriptionUrl}
+                  onChange={(e) => setSubscriptionUrl(e.target.value)}
+                  placeholder="webcal://… or https://…"
+                  className="h-auto flex-1 rounded-lg border-stone-200 bg-white p-3 text-sm"
+                />
+                <AppButton type="button" variant="secondary" onClick={connectSubscriptionUrl} disabled={importing || !subscriptionUrl.trim()}>
+                  {importing ? "Fetching…" : "Import"}
+                </AppButton>
+              </div>
+              <p className="mt-2 text-xs text-stone-400">{icsSubscriptionHints[calendarProvider]}</p>
+              <div className="mt-3 flex items-center gap-3">
+                <div className="h-px flex-1 bg-stone-200" />
+                <span className="text-xs font-medium text-stone-400">or upload a file</span>
+                <div className="h-px flex-1 bg-stone-200" />
+              </div>
+              <AppButton type="button" variant="secondary" onClick={() => fileRef.current?.click()} className="w-full justify-center py-3 text-base">
+                <Import size={18} /> Upload .ics file
+              </AppButton>
+              <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
             </div>
             {importMessage && <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
             <div className="mt-7 rounded-lg bg-stone-50 p-4">
