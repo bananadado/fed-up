@@ -1,16 +1,16 @@
-# Graph Report - drp03  (2026-05-29)
+# Graph Report - drp03  (2026-05-31)
 
 ## Corpus Check
-- 130 files · ~73,490 words
+- 136 files · ~75,826 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1348 nodes · 2341 edges · 89 communities (79 shown, 10 thin omitted)
+- 1380 nodes · 2441 edges · 91 communities (81 shown, 10 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 30 edges (avg confidence: 0.89)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `56f53a32`
+- Built from commit: `8a2346fe`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -18,6 +18,7 @@
 - [[_COMMUNITY_Prototype UI Shell|Prototype UI Shell]]
 - [[_COMMUNITY_Router And Pages|Router And Pages]]
 - [[_COMMUNITY_Deadline Mode State|Deadline Mode State]]
+- [[_COMMUNITY_Community 3|Community 3]]
 - [[_COMMUNITY_Ingredient Editing|Ingredient Editing]]
 - [[_COMMUNITY_API Adapter|API Adapter]]
 - [[_COMMUNITY_Firebase Functions|Firebase Functions]]
@@ -53,15 +54,16 @@
 - [[_COMMUNITY_Community 39|Community 39]]
 - [[_COMMUNITY_Community 40|Community 40]]
 - [[_COMMUNITY_Community 41|Community 41]]
+- [[_COMMUNITY_Community 42|Community 42]]
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
 - [[_COMMUNITY_Community 45|Community 45]]
+- [[_COMMUNITY_Community 46|Community 46]]
 - [[_COMMUNITY_Community 48|Community 48]]
 - [[_COMMUNITY_Community 49|Community 49]]
 - [[_COMMUNITY_Community 51|Community 51]]
 - [[_COMMUNITY_Community 52|Community 52]]
 - [[_COMMUNITY_Community 53|Community 53]]
-- [[_COMMUNITY_Community 54|Community 54]]
 - [[_COMMUNITY_Community 55|Community 55]]
 - [[_COMMUNITY_Community 56|Community 56]]
 - [[_COMMUNITY_Community 58|Community 58]]
@@ -131,23 +133,27 @@
 - **Anonymous Session Persistence Loop** — anonymous_session_storage_opaque_session_id, anonymous_session_storage_deadline_food_session_api, anonymous_session_storage_firestore_record, prototype_anonymoussessionapi_saveanonymoussessionsettings, src_index_deadlinefoodsession [INFERRED 0.85]
 - **Release Quality Gate** — gitlab_ci_pipeline_quality_gate, readme_bun_verification_workflow, drp03_package_scripts_verify, drp03_package_scripts_build, gitlab_ci_staging_production_deploy [INFERRED 0.75]
 
-## Communities (89 total, 10 thin omitted)
+## Communities (91 total, 10 thin omitted)
 
 ### Community 0 - "Prototype UI Shell"
-Cohesion: 0.20
-Nodes (21): BudgetCard(), AppButton(), Badge(), seedMeals, mealHealthSignals(), vegetableWords, weeklyBalanceSummary(), Meal (+13 more)
+Cohesion: 0.25
+Nodes (16): BudgetCard(), seedMeals, mealHealthSignals(), vegetableWords, weeklyBalanceSummary(), Meal, PlanEntry, getMealById() (+8 more)
 
 ### Community 1 - "Router And Pages"
-Cohesion: 0.05
-Nodes (73): BootstrapBoundary(), createDeadlineModeCommands(), DeadlineModeAction, DeadlineModeCommands, DeadlineModeInternalAction, deadlineModeReducer(), DeadlineModeState, initialDeadlineModeState (+65 more)
+Cohesion: 0.07
+Nodes (67): BootstrapBoundary(), createEventBus(), EventBus, appButtonClasses, AppButtonVariant, badgeTones, Field(), SelectField() (+59 more)
 
 ### Community 2 - "Deadline Mode State"
-Cohesion: 0.05
-Nodes (65): Deadline Food Session API, seededMeals, canonicalConstraints, deadlineBootstrap, prototypeMeta, Constraint Aware Planning, Deadline Food Autopilot, Pure Domain Logic Requirements (+57 more)
+Cohesion: 0.06
+Nodes (61): createDeadlineModeCommands(), DeadlineModeAction, DeadlineModeCommands, DeadlineModeInternalAction, deadlineModeReducer(), DeadlineModeState, initialDeadlineModeState, withEvent() (+53 more)
+
+### Community 3 - "Community 3"
+Cohesion: 0.08
+Nodes (34): Deadline Food Session API, seededMeals, canonicalConstraints, deadlineBootstrap, prototypeMeta, Canonical Seed Scenario, formatIngredient(), ingredientKey() (+26 more)
 
 ### Community 4 - "Ingredient Editing"
-Cohesion: 0.09
-Nodes (31): IngredientEditor(), RecipeIngredient, clamp(), countableUnits, createIngredientDraft(), formatIngredient(), formatQuantityForInput(), ingredientAliases (+23 more)
+Cohesion: 0.12
+Nodes (26): IngredientEditor(), clamp(), countableUnits, createIngredientDraft(), formatIngredient(), formatQuantityForInput(), ingredientAliases, IngredientDraft (+18 more)
 
 ### Community 5 - "API Adapter"
 Cohesion: 0.10
@@ -254,24 +260,32 @@ Cohesion: 0.06
 Nodes (30): AI Agent Playbook, Choosing The Correct Frontend Surface, code:sh (bun run lint), code:sh (bun run lint), code:sh (bun run lint), code:sh (bun run test:domain), code:sh (bun run firebase:data), code:sh (bun run verify) (+22 more)
 
 ### Community 40 - "Community 40"
-Cohesion: 0.11
-Nodes (26): SelectField(), currentItemKeys(), readStoredCheckedItems(), ShoppingListCard(), writeStoredCheckedItems(), ingredientDraftsFromIngredients(), aggregateIngredients(), formatShoppingList() (+18 more)
+Cohesion: 0.16
+Nodes (16): currentItemKeys(), readStoredCheckedItems(), ShoppingListCard(), writeStoredCheckedItems(), aggregateIngredients(), formatShoppingList(), GroceryVendor, groceryVendors (+8 more)
 
 ### Community 41 - "Community 41"
 Cohesion: 0.07
 Nodes (27): Active Components, Active Frontend, Active Prototype Data Model, Active Prototype Helpers, Active Prototype Navigation, Active Prototype Screens, Active Prototype State, Analytics (+19 more)
+
+### Community 42 - "Community 42"
+Cohesion: 0.18
+Nodes (13): RecipeIngredient, sanitiseIngredientDrafts(), fetchOpenFoodFactsNutrition(), MealSlot, MealType, Nutrition, NutritionSource, PlanMeal (+5 more)
 
 ### Community 43 - "Community 43"
 Cohesion: 0.08
 Nodes (24): Active Surface: Prototype, Architectural Risk Areas, Architecture, Backend Surfaces, Browser Entry, Build Architecture, code:sh (bun --hot src/index.ts), code:html (<script type="module" src="./frontend.tsx" async></script>) (+16 more)
 
 ### Community 44 - "Community 44"
-Cohesion: 0.15
-Nodes (21): ChoiceGroup(), Field(), allergens, calendarProviders, dietary, dislikes, initialPlan, likes (+13 more)
+Cohesion: 0.07
+Nodes (53): icsSubscriptionHints, importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), fetchEvents(), GoogleEvent, importGoogleCalendar(), isGoogleConfigured() (+45 more)
 
 ### Community 45 - "Community 45"
 Cohesion: 0.08
 Nodes (23): Active Prototype Model, Active Prototype Nutrition Logic, Active Prototype Plan Logic, Active Prototype Seed Data, Active Prototype Workload Logic, Anonymous Session Schema, code:ts (type MealType = "cook" | "remix" | "fallback";), code:ts (type MealType = "prep_base" | "remix" | "quick_cook" | "fall) (+15 more)
+
+### Community 46 - "Community 46"
+Cohesion: 0.29
+Nodes (9): ingredientDraftsFromIngredients(), groceryVendorById(), mealById(), nutritionSourceSummary(), backLabel(), mealToForm(), ratingLabel(), RecipeDetailScreen() (+1 more)
 
 ### Community 48 - "Community 48"
 Cohesion: 0.11
@@ -282,8 +296,8 @@ Cohesion: 0.11
 Nodes (18): Anonymous Session Storage, API, code:text (anonymousSessions/{sessionId}), code:ts ({), code:http (GET /api/deadline-food/session?sessionId=<anonymous-session-), code:json ({), code:http (PUT /api/deadline-food/session), code:bash (gcloud firestore fields ttls update expiresAt \) (+10 more)
 
 ### Community 51 - "Community 51"
-Cohesion: 0.18
-Nodes (9): Shell(), AnalyticsProperties, Instrumented Events, TrackPrototypeEvent, defaultDeadlines, onboardingScreens, screens, Screen (+1 more)
+Cohesion: 0.15
+Nodes (11): AppButton(), Badge(), Shell(), AnalyticsProperties, Instrumented Events, TrackPrototypeEvent, defaultDeadlines, onboardingScreens (+3 more)
 
 ### Community 52 - "Community 52"
 Cohesion: 0.12
@@ -292,10 +306,6 @@ Nodes (15): Active Prototype, Active Prototype Screen Summary, Backend Summary, 
 ### Community 53 - "Community 53"
 Cohesion: 0.13
 Nodes (14): code:sh (bun install), code:sh (bun run firebase:dev), code:sh (bun run firebase:deploy), Critical Implementation Reality, Current Active User Flow, Current Backend Summary, Known Gaps And Cautions, One Sentence (+6 more)
-
-### Community 54 - "Community 54"
-Cohesion: 0.08
-Nodes (37): appButtonClasses, AppButtonVariant, badgeTones, Tone, KitchenAccess, minutesToTimeInputValue(), timeInputValueToMinutes(), cn() (+29 more)
 
 ### Community 55 - "Community 55"
 Cohesion: 0.15
@@ -442,7 +452,7 @@ Nodes (3): data, getPrototypeData(), seedPrototypeData()
   src/logo.svg · relation: references
 
 ## Knowledge Gaps
-- **597 isolated node(s):** `sessionLoaded`, `screens`, `onboardingScreens`, `deploymentEnabled`, `BuildConfigOverrides` (+592 more)
+- **600 isolated node(s):** `BuildConfigOverrides`, `NestedBuildConfig`, `cliConfig`, `start`, `entrypoints` (+595 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -451,15 +461,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `App.tsx` and `Empty Logo Asset`?**
   _Edge tagged AMBIGUOUS (relation: references) - confidence is low._
-- **Why does `Deadline Food Session API` connect `Deadline Mode State` to `Anonymous Session Storage`?**
-  _High betweenness centrality (0.027) - this node is a cross-community bridge._
-- **Why does `deadlineFoodSession` connect `Deadline Mode State` to `Firebase Functions`?**
-  _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **Why does `getOrCreateAnonymousSessionId()` connect `API Adapter` to `PostHog Analytics`, `Community 51`, `Anonymous Session Storage`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
-- **What connects `sessionLoaded`, `screens`, `onboardingScreens` to the rest of the system?**
-  _600 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.023) - this node is a cross-community bridge._
+- **Why does `Anonymous Session Storage` connect `Anonymous Session Storage` to `Community 3`?**
+  _High betweenness centrality (0.023) - this node is a cross-community bridge._
+- **Why does `Opaque Session ID` connect `Anonymous Session Storage` to `API Adapter`?**
+  _High betweenness centrality (0.023) - this node is a cross-community bridge._
+- **What connects `BuildConfigOverrides`, `NestedBuildConfig`, `cliConfig` to the rest of the system?**
+  _603 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Router And Pages` be split into smaller, more focused modules?**
-  _Cohesion score 0.05287556135013762 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0686456400742115 - nodes in this community are weakly interconnected._
 - **Should `Deadline Mode State` be split into smaller, more focused modules?**
-  _Cohesion score 0.05289193302891933 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05879917184265011 - nodes in this community are weakly interconnected._

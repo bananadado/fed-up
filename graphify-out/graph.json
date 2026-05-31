@@ -52,310 +52,22 @@
   },
   "nodes": [
     {
-      "label": "build.ts",
+      "label": "deadline-flow.spec.ts",
       "file_type": "code",
-      "source_file": "build.ts",
+      "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L1",
-      "id": "build_ts",
-      "community": 16,
-      "norm_label": "build.ts"
+      "id": "e2e_deadline_flow_spec_ts",
+      "community": 5,
+      "norm_label": "deadline-flow.spec.ts"
     },
     {
-      "label": "BuildConfigOverrides",
+      "label": "sessionLoaded",
       "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L36",
-      "id": "drp03_build_buildconfigoverrides",
-      "community": 16,
-      "norm_label": "buildconfigoverrides"
-    },
-    {
-      "label": "NestedBuildConfig",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L37",
-      "id": "drp03_build_nestedbuildconfig",
-      "community": 16,
-      "norm_label": "nestedbuildconfig"
-    },
-    {
-      "label": "toCamelCase()",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L39",
-      "id": "drp03_build_tocamelcase",
-      "community": 16,
-      "norm_label": "tocamelcase()"
-    },
-    {
-      "label": "parseValue()",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L42",
-      "id": "drp03_build_parsevalue",
-      "community": 16,
-      "norm_label": "parsevalue()"
-    },
-    {
-      "label": "parseArgs()",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L54",
-      "id": "drp03_build_parseargs",
-      "community": 16,
-      "norm_label": "parseargs()"
-    },
-    {
-      "label": "formatFileSize()",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L111",
-      "id": "drp03_build_formatfilesize",
-      "community": 16,
-      "norm_label": "formatfilesize()"
-    },
-    {
-      "label": "cliConfig",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L126",
-      "id": "drp03_build_cliconfig",
-      "community": 16,
-      "norm_label": "cliconfig"
-    },
-    {
-      "label": "start",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L134",
-      "id": "drp03_build_start",
-      "community": 16,
-      "norm_label": "start"
-    },
-    {
-      "label": "entrypoints",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L136",
-      "id": "drp03_build_entrypoints",
-      "community": 16,
-      "norm_label": "entrypoints"
-    },
-    {
-      "label": "end",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L169",
-      "id": "drp03_build_end",
-      "community": 16,
-      "norm_label": "end"
-    },
-    {
-      "label": "outputTable",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L171",
-      "id": "drp03_build_outputtable",
-      "community": 16,
-      "norm_label": "outputtable"
-    },
-    {
-      "label": "buildTime",
-      "file_type": "code",
-      "source_file": "build.ts",
-      "source_location": "L178",
-      "id": "drp03_build_buildtime",
-      "community": 16,
-      "norm_label": "buildtime"
-    },
-    {
-      "label": "index.ts",
-      "file_type": "code",
-      "source_file": "src/index.ts",
-      "source_location": "L1",
-      "id": "src_index_ts",
-      "community": 3,
-      "norm_label": "index.ts"
-    },
-    {
-      "label": "anonymousSessions",
-      "file_type": "code",
-      "source_file": "src/index.ts",
-      "source_location": "L7",
-      "id": "src_index_anonymoussessions",
-      "community": 3,
-      "norm_label": "anonymoussessions"
-    },
-    {
-      "label": "firebaseFunctionsBaseUrl",
-      "file_type": "code",
-      "source_file": "src/index.ts",
-      "source_location": "L9",
-      "id": "src_index_firebasefunctionsbaseurl",
-      "community": 3,
-      "norm_label": "firebasefunctionsbaseurl"
-    },
-    {
-      "label": "sessionResponse()",
-      "file_type": "code",
-      "source_file": "src/index.ts",
-      "source_location": "L11",
-      "id": "src_index_sessionresponse",
-      "community": 3,
-      "norm_label": "sessionresponse()"
-    },
-    {
-      "label": "expiresAtFromNow()",
-      "file_type": "code",
-      "source_file": "src/index.ts",
-      "source_location": "L20",
-      "id": "src_index_expiresatfromnow",
-      "community": 3,
-      "norm_label": "expiresatfromnow()"
-    },
-    {
-      "label": "proxyToFirebaseFunction()",
-      "file_type": "code",
-      "source_file": "src/index.ts",
-      "source_location": "L24",
-      "id": "src_index_proxytofirebasefunction",
-      "community": 3,
-      "norm_label": "proxytofirebasefunction()"
-    },
-    {
-      "label": "server",
-      "file_type": "code",
-      "source_file": "src/index.ts",
-      "source_location": "L49",
-      "id": "src_index_server",
-      "community": 3,
-      "norm_label": "server"
-    },
-    {
-      "label": "DeadlineFoodPrototype.tsx",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L1",
-      "id": "src_prototype_deadlinefoodprototype_tsx",
-      "community": 51,
-      "norm_label": "deadlinefoodprototype.tsx"
-    },
-    {
-      "label": "screens",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L23",
-      "id": "prototype_deadlinefoodprototype_screens",
-      "community": 51,
-      "norm_label": "screens"
-    },
-    {
-      "label": "onboardingScreens",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L24",
-      "id": "prototype_deadlinefoodprototype_onboardingscreens",
-      "community": 51,
-      "norm_label": "onboardingscreens"
-    },
-    {
-      "label": "screenFromHash()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L26",
-      "id": "prototype_deadlinefoodprototype_screenfromhash",
-      "community": 51,
-      "norm_label": "screenfromhash()"
-    },
-    {
-      "label": "isAppScreen()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L33",
-      "id": "prototype_deadlinefoodprototype_isappscreen",
-      "community": 9,
-      "norm_label": "isappscreen()"
-    },
-    {
-      "label": "LoadingScreen()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L37",
-      "id": "prototype_deadlinefoodprototype_loadingscreen",
-      "community": 51,
-      "norm_label": "loadingscreen()"
-    },
-    {
-      "label": "budgetBand()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L47",
-      "id": "prototype_deadlinefoodprototype_budgetband",
-      "community": 51,
-      "norm_label": "budgetband()"
-    },
-    {
-      "label": "maxTimeBucket()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L54",
-      "id": "prototype_deadlinefoodprototype_maxtimebucket",
-      "community": 51,
-      "norm_label": "maxtimebucket()"
-    },
-    {
-      "label": "DeadlineFoodPrototype()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L62",
-      "id": "prototype_deadlinefoodprototype_deadlinefoodprototype",
-      "community": 9,
-      "norm_label": "deadlinefoodprototype()"
-    },
-    {
-      "label": "appleCalendar.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
-      "source_location": "L1",
-      "id": "src_prototype_calendarimport_applecalendar_ts",
-      "community": 44,
-      "norm_label": "applecalendar.ts"
-    },
-    {
-      "label": "normalizeWebcalUrl()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
-      "source_location": "L5",
-      "id": "calendarimport_applecalendar_normalizewebcalurl",
-      "community": 44,
-      "norm_label": "normalizewebcalurl()"
-    },
-    {
-      "label": "isSubscriptionUrl()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
-      "source_location": "L13",
-      "id": "calendarimport_applecalendar_issubscriptionurl",
-      "community": 44,
-      "norm_label": "issubscriptionurl()"
-    },
-    {
-      "label": "importFromSubscriptionUrl()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
-      "source_location": "L23",
-      "id": "calendarimport_applecalendar_importfromsubscriptionurl",
-      "community": 44,
-      "norm_label": "importfromsubscriptionurl()"
-    },
-    {
-      "label": "icsSubscriptionHints",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
-      "source_location": "L50",
-      "id": "calendarimport_applecalendar_icssubscriptionhints",
-      "community": 44,
-      "norm_label": "icssubscriptionhints"
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L112",
+      "id": "e2e_deadline_flow_spec_sessionloaded",
+      "community": 5,
+      "norm_label": "sessionloaded"
     },
     {
       "label": "googleCalendar.ts",
@@ -370,7 +82,7 @@
       "label": "Window",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L4",
+      "source_location": "L6",
       "id": "calendarimport_googlecalendar_window",
       "community": 44,
       "norm_label": "window"
@@ -379,7 +91,7 @@
       "label": "loadGIS()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L27",
+      "source_location": "L32",
       "id": "calendarimport_googlecalendar_loadgis",
       "community": 44,
       "norm_label": "loadgis()"
@@ -388,7 +100,7 @@
       "label": "requestToken()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L46",
+      "source_location": "L51",
       "id": "calendarimport_googlecalendar_requesttoken",
       "community": 44,
       "norm_label": "requesttoken()"
@@ -397,7 +109,7 @@
       "label": "GoogleEvent",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L68",
+      "source_location": "L73",
       "id": "calendarimport_googlecalendar_googleevent",
       "community": 44,
       "norm_label": "googleevent"
@@ -406,7 +118,7 @@
       "label": "fetchEvents()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L79",
+      "source_location": "L84",
       "id": "calendarimport_googlecalendar_fetchevents",
       "community": 44,
       "norm_label": "fetchevents()"
@@ -415,7 +127,7 @@
       "label": "isGoogleConfigured()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L119",
+      "source_location": "L124",
       "id": "calendarimport_googlecalendar_isgoogleconfigured",
       "community": 44,
       "norm_label": "isgoogleconfigured()"
@@ -424,82 +136,10 @@
       "label": "importGoogleCalendar()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L123",
+      "source_location": "L128",
       "id": "calendarimport_googlecalendar_importgooglecalendar",
       "community": 44,
       "norm_label": "importgooglecalendar()"
-    },
-    {
-      "label": "icsParser.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/icsParser.ts",
-      "source_location": "L1",
-      "id": "src_prototype_calendarimport_icsparser_ts",
-      "community": 44,
-      "norm_label": "icsparser.ts"
-    },
-    {
-      "label": "unfoldLines()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/icsParser.ts",
-      "source_location": "L4",
-      "id": "calendarimport_icsparser_unfoldlines",
-      "community": 44,
-      "norm_label": "unfoldlines()"
-    },
-    {
-      "label": "extractField()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/icsParser.ts",
-      "source_location": "L8",
-      "id": "calendarimport_icsparser_extractfield",
-      "community": 44,
-      "norm_label": "extractfield()"
-    },
-    {
-      "label": "parseICSDateTime()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/icsParser.ts",
-      "source_location": "L13",
-      "id": "calendarimport_icsparser_parseicsdatetime",
-      "community": 44,
-      "norm_label": "parseicsdatetime()"
-    },
-    {
-      "label": "unescapeICSValue()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/icsParser.ts",
-      "source_location": "L30",
-      "id": "calendarimport_icsparser_unescapeicsvalue",
-      "community": 44,
-      "norm_label": "unescapeicsvalue()"
-    },
-    {
-      "label": "parseICSText()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/icsParser.ts",
-      "source_location": "L38",
-      "id": "calendarimport_icsparser_parseicstext",
-      "community": 44,
-      "norm_label": "parseicstext()"
-    },
-    {
-      "label": "index.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L1",
-      "id": "src_prototype_calendarimport_index_ts",
-      "community": 44,
-      "norm_label": "index.ts"
-    },
-    {
-      "label": "calendarEventsToDeadlines()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L11",
-      "id": "calendarimport_index_calendareventstodeadlines",
-      "community": 44,
-      "norm_label": "calendareventstodeadlines()"
     },
     {
       "label": "outlookCalendar.ts",
@@ -514,7 +154,7 @@
       "label": "base64UrlEncode()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L10",
+      "source_location": "L15",
       "id": "calendarimport_outlookcalendar_base64urlencode",
       "community": 44,
       "norm_label": "base64urlencode()"
@@ -523,7 +163,7 @@
       "label": "generatePKCE()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L18",
+      "source_location": "L23",
       "id": "calendarimport_outlookcalendar_generatepkce",
       "community": 44,
       "norm_label": "generatepkce()"
@@ -532,7 +172,7 @@
       "label": "waitForPopupRedirect()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L27",
+      "source_location": "L32",
       "id": "calendarimport_outlookcalendar_waitforpopupredirect",
       "community": 44,
       "norm_label": "waitforpopupredirect()"
@@ -541,7 +181,7 @@
       "label": "exchangeCodeForToken()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L62",
+      "source_location": "L67",
       "id": "calendarimport_outlookcalendar_exchangecodefortoken",
       "community": 44,
       "norm_label": "exchangecodefortoken()"
@@ -550,7 +190,7 @@
       "label": "OutlookEvent",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L91",
+      "source_location": "L96",
       "id": "calendarimport_outlookcalendar_outlookevent",
       "community": 44,
       "norm_label": "outlookevent"
@@ -559,7 +199,7 @@
       "label": "fetchEvents()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L102",
+      "source_location": "L107",
       "id": "calendarimport_outlookcalendar_fetchevents",
       "community": 44,
       "norm_label": "fetchevents()"
@@ -568,7 +208,7 @@
       "label": "isOutlookConfigured()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L140",
+      "source_location": "L145",
       "id": "calendarimport_outlookcalendar_isoutlookconfigured",
       "community": 44,
       "norm_label": "isoutlookconfigured()"
@@ -577,163 +217,10 @@
       "label": "importOutlookCalendar()",
       "file_type": "code",
       "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L144",
+      "source_location": "L149",
       "id": "calendarimport_outlookcalendar_importoutlookcalendar",
       "community": 44,
       "norm_label": "importoutlookcalendar()"
-    },
-    {
-      "label": "types.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/types.ts",
-      "source_location": "L1",
-      "id": "src_prototype_calendarimport_types_ts",
-      "community": 44,
-      "norm_label": "types.ts"
-    },
-    {
-      "label": "CalendarEvent",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/types.ts",
-      "source_location": "L3",
-      "id": "calendarimport_types_calendarevent",
-      "community": 44,
-      "norm_label": "calendarevent"
-    },
-    {
-      "label": "data.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L1",
-      "id": "src_prototype_data_ts",
-      "community": 44,
-      "norm_label": "data.ts"
-    },
-    {
-      "label": "calendarProviders",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L3",
-      "id": "prototype_data_calendarproviders",
-      "community": 44,
-      "norm_label": "calendarproviders"
-    },
-    {
-      "label": "days",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L10",
-      "id": "prototype_data_days",
-      "community": 44,
-      "norm_label": "days"
-    },
-    {
-      "label": "mealSlots",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L11",
-      "id": "prototype_data_mealslots",
-      "community": 44,
-      "norm_label": "mealslots"
-    },
-    {
-      "label": "sampleReviews()",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L13",
-      "id": "prototype_data_samplereviews",
-      "community": 44,
-      "norm_label": "samplereviews()"
-    },
-    {
-      "label": "defaultDeadlines",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L23",
-      "id": "prototype_data_defaultdeadlines",
-      "community": 51,
-      "norm_label": "defaultdeadlines"
-    },
-    {
-      "label": "seedMeals",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L29",
-      "id": "prototype_data_seedmeals",
-      "community": 0,
-      "norm_label": "seedmeals"
-    },
-    {
-      "label": "initialPlan",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L300",
-      "id": "prototype_data_initialplan",
-      "community": 44,
-      "norm_label": "initialplan"
-    },
-    {
-      "label": "sourceOptions",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L348",
-      "id": "prototype_data_sourceoptions",
-      "community": 44,
-      "norm_label": "sourceoptions"
-    },
-    {
-      "label": "allergens",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L356",
-      "id": "prototype_data_allergens",
-      "community": 44,
-      "norm_label": "allergens"
-    },
-    {
-      "label": "dislikes",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L357",
-      "id": "prototype_data_dislikes",
-      "community": 44,
-      "norm_label": "dislikes"
-    },
-    {
-      "label": "likes",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L358",
-      "id": "prototype_data_likes",
-      "community": 44,
-      "norm_label": "likes"
-    },
-    {
-      "label": "dietary",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L359",
-      "id": "prototype_data_dietary",
-      "community": 44,
-      "norm_label": "dietary"
-    },
-    {
-      "label": "universities",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L360",
-      "id": "prototype_data_universities",
-      "community": 44,
-      "norm_label": "universities"
-    },
-    {
-      "label": "initialPreferences",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L362",
-      "id": "prototype_data_initialpreferences",
-      "community": 5,
-      "norm_label": "initialpreferences"
     },
     {
       "label": "Onboarding.tsx",
@@ -748,7 +235,7 @@
       "label": "Progress()",
       "file_type": "code",
       "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L24",
+      "source_location": "L22",
       "id": "screens_onboarding_progress",
       "community": 44,
       "norm_label": "progress()"
@@ -757,16 +244,16 @@
       "label": "PreferenceSection()",
       "file_type": "code",
       "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L47",
+      "source_location": "L45",
       "id": "screens_onboarding_preferencesection",
-      "community": 1,
+      "community": 44,
       "norm_label": "preferencesection()"
     },
     {
       "label": "Onboarding()",
       "file_type": "code",
       "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L69",
+      "source_location": "L67",
       "id": "screens_onboarding_onboarding",
       "community": 44,
       "norm_label": "onboarding()"
@@ -784,226 +271,739 @@
       "label": "SettingsScreen()",
       "file_type": "code",
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L24",
+      "source_location": "L22",
       "id": "screens_settingsscreen_settingsscreen",
       "community": 44,
       "norm_label": "settingsscreen()"
+    },
+    {
+      "label": "build.ts",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L1",
+      "community": 16,
+      "norm_label": "build.ts",
+      "id": "build_ts"
+    },
+    {
+      "label": "BuildConfigOverrides",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L36",
+      "community": 16,
+      "norm_label": "buildconfigoverrides",
+      "id": "drp03_build_buildconfigoverrides"
+    },
+    {
+      "label": "NestedBuildConfig",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L37",
+      "community": 16,
+      "norm_label": "nestedbuildconfig",
+      "id": "drp03_build_nestedbuildconfig"
+    },
+    {
+      "label": "toCamelCase()",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L39",
+      "community": 16,
+      "norm_label": "tocamelcase()",
+      "id": "drp03_build_tocamelcase"
+    },
+    {
+      "label": "parseValue()",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L42",
+      "community": 16,
+      "norm_label": "parsevalue()",
+      "id": "drp03_build_parsevalue"
+    },
+    {
+      "label": "parseArgs()",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L54",
+      "community": 16,
+      "norm_label": "parseargs()",
+      "id": "drp03_build_parseargs"
+    },
+    {
+      "label": "formatFileSize()",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L111",
+      "community": 16,
+      "norm_label": "formatfilesize()",
+      "id": "drp03_build_formatfilesize"
+    },
+    {
+      "label": "cliConfig",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L126",
+      "community": 16,
+      "norm_label": "cliconfig",
+      "id": "drp03_build_cliconfig"
+    },
+    {
+      "label": "start",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L134",
+      "community": 16,
+      "norm_label": "start",
+      "id": "drp03_build_start"
+    },
+    {
+      "label": "entrypoints",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L136",
+      "community": 16,
+      "norm_label": "entrypoints",
+      "id": "drp03_build_entrypoints"
+    },
+    {
+      "label": "end",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L169",
+      "community": 16,
+      "norm_label": "end",
+      "id": "drp03_build_end"
+    },
+    {
+      "label": "outputTable",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L171",
+      "community": 16,
+      "norm_label": "outputtable",
+      "id": "drp03_build_outputtable"
+    },
+    {
+      "label": "buildTime",
+      "file_type": "code",
+      "source_file": "build.ts",
+      "source_location": "L178",
+      "community": 16,
+      "norm_label": "buildtime",
+      "id": "drp03_build_buildtime"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1",
+      "community": 3,
+      "norm_label": "index.ts",
+      "id": "src_index_ts"
+    },
+    {
+      "label": "anonymousSessions",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L7",
+      "community": 3,
+      "norm_label": "anonymoussessions",
+      "id": "src_index_anonymoussessions"
+    },
+    {
+      "label": "firebaseFunctionsBaseUrl",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L9",
+      "community": 3,
+      "norm_label": "firebasefunctionsbaseurl",
+      "id": "src_index_firebasefunctionsbaseurl"
+    },
+    {
+      "label": "sessionResponse()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L11",
+      "community": 3,
+      "norm_label": "sessionresponse()",
+      "id": "src_index_sessionresponse"
+    },
+    {
+      "label": "expiresAtFromNow()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L20",
+      "community": 3,
+      "norm_label": "expiresatfromnow()",
+      "id": "src_index_expiresatfromnow"
+    },
+    {
+      "label": "proxyToFirebaseFunction()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L24",
+      "community": 3,
+      "norm_label": "proxytofirebasefunction()",
+      "id": "src_index_proxytofirebasefunction"
+    },
+    {
+      "label": "server",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L49",
+      "community": 3,
+      "norm_label": "server",
+      "id": "src_index_server"
+    },
+    {
+      "label": "DeadlineFoodPrototype.tsx",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L1",
+      "community": 51,
+      "norm_label": "deadlinefoodprototype.tsx",
+      "id": "src_prototype_deadlinefoodprototype_tsx"
+    },
+    {
+      "label": "screens",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L23",
+      "community": 51,
+      "norm_label": "screens",
+      "id": "prototype_deadlinefoodprototype_screens"
+    },
+    {
+      "label": "onboardingScreens",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L24",
+      "community": 51,
+      "norm_label": "onboardingscreens",
+      "id": "prototype_deadlinefoodprototype_onboardingscreens"
+    },
+    {
+      "label": "screenFromHash()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L26",
+      "community": 51,
+      "norm_label": "screenfromhash()",
+      "id": "prototype_deadlinefoodprototype_screenfromhash"
+    },
+    {
+      "label": "isAppScreen()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L33",
+      "community": 9,
+      "norm_label": "isappscreen()",
+      "id": "prototype_deadlinefoodprototype_isappscreen"
+    },
+    {
+      "label": "LoadingScreen()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L37",
+      "community": 51,
+      "norm_label": "loadingscreen()",
+      "id": "prototype_deadlinefoodprototype_loadingscreen"
+    },
+    {
+      "label": "budgetBand()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L47",
+      "community": 51,
+      "norm_label": "budgetband()",
+      "id": "prototype_deadlinefoodprototype_budgetband"
+    },
+    {
+      "label": "maxTimeBucket()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L54",
+      "community": 51,
+      "norm_label": "maxtimebucket()",
+      "id": "prototype_deadlinefoodprototype_maxtimebucket"
+    },
+    {
+      "label": "DeadlineFoodPrototype()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L62",
+      "community": 9,
+      "norm_label": "deadlinefoodprototype()",
+      "id": "prototype_deadlinefoodprototype_deadlinefoodprototype"
+    },
+    {
+      "label": "appleCalendar.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
+      "source_location": "L1",
+      "community": 44,
+      "norm_label": "applecalendar.ts",
+      "id": "src_prototype_calendarimport_applecalendar_ts"
+    },
+    {
+      "label": "normalizeWebcalUrl()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
+      "source_location": "L5",
+      "community": 44,
+      "norm_label": "normalizewebcalurl()",
+      "id": "calendarimport_applecalendar_normalizewebcalurl"
+    },
+    {
+      "label": "isSubscriptionUrl()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
+      "source_location": "L13",
+      "community": 44,
+      "norm_label": "issubscriptionurl()",
+      "id": "calendarimport_applecalendar_issubscriptionurl"
+    },
+    {
+      "label": "importFromSubscriptionUrl()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
+      "source_location": "L23",
+      "community": 44,
+      "norm_label": "importfromsubscriptionurl()",
+      "id": "calendarimport_applecalendar_importfromsubscriptionurl"
+    },
+    {
+      "label": "icsSubscriptionHints",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/appleCalendar.ts",
+      "source_location": "L50",
+      "community": 44,
+      "norm_label": "icssubscriptionhints",
+      "id": "calendarimport_applecalendar_icssubscriptionhints"
+    },
+    {
+      "label": "icsParser.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/icsParser.ts",
+      "source_location": "L1",
+      "community": 44,
+      "norm_label": "icsparser.ts",
+      "id": "src_prototype_calendarimport_icsparser_ts"
+    },
+    {
+      "label": "unfoldLines()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/icsParser.ts",
+      "source_location": "L4",
+      "community": 44,
+      "norm_label": "unfoldlines()",
+      "id": "calendarimport_icsparser_unfoldlines"
+    },
+    {
+      "label": "extractField()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/icsParser.ts",
+      "source_location": "L8",
+      "community": 44,
+      "norm_label": "extractfield()",
+      "id": "calendarimport_icsparser_extractfield"
+    },
+    {
+      "label": "parseICSDateTime()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/icsParser.ts",
+      "source_location": "L13",
+      "community": 44,
+      "norm_label": "parseicsdatetime()",
+      "id": "calendarimport_icsparser_parseicsdatetime"
+    },
+    {
+      "label": "unescapeICSValue()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/icsParser.ts",
+      "source_location": "L30",
+      "community": 44,
+      "norm_label": "unescapeicsvalue()",
+      "id": "calendarimport_icsparser_unescapeicsvalue"
+    },
+    {
+      "label": "parseICSText()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/icsParser.ts",
+      "source_location": "L38",
+      "community": 44,
+      "norm_label": "parseicstext()",
+      "id": "calendarimport_icsparser_parseicstext"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L1",
+      "community": 44,
+      "norm_label": "index.ts",
+      "id": "src_prototype_calendarimport_index_ts"
+    },
+    {
+      "label": "calendarEventsToDeadlines()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L11",
+      "community": 44,
+      "norm_label": "calendareventstodeadlines()",
+      "id": "calendarimport_index_calendareventstodeadlines"
+    },
+    {
+      "label": "types.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/types.ts",
+      "source_location": "L1",
+      "community": 44,
+      "norm_label": "types.ts",
+      "id": "src_prototype_calendarimport_types_ts"
+    },
+    {
+      "label": "CalendarEvent",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/types.ts",
+      "source_location": "L3",
+      "community": 44,
+      "norm_label": "calendarevent",
+      "id": "calendarimport_types_calendarevent"
+    },
+    {
+      "label": "data.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L1",
+      "community": 44,
+      "norm_label": "data.ts",
+      "id": "src_prototype_data_ts"
+    },
+    {
+      "label": "calendarProviders",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L3",
+      "community": 44,
+      "norm_label": "calendarproviders",
+      "id": "prototype_data_calendarproviders"
+    },
+    {
+      "label": "days",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L10",
+      "community": 44,
+      "norm_label": "days",
+      "id": "prototype_data_days"
+    },
+    {
+      "label": "mealSlots",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L11",
+      "community": 44,
+      "norm_label": "mealslots",
+      "id": "prototype_data_mealslots"
+    },
+    {
+      "label": "sampleReviews()",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L13",
+      "community": 44,
+      "norm_label": "samplereviews()",
+      "id": "prototype_data_samplereviews"
+    },
+    {
+      "label": "defaultDeadlines",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L23",
+      "community": 51,
+      "norm_label": "defaultdeadlines",
+      "id": "prototype_data_defaultdeadlines"
+    },
+    {
+      "label": "seedMeals",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L29",
+      "community": 0,
+      "norm_label": "seedmeals",
+      "id": "prototype_data_seedmeals"
+    },
+    {
+      "label": "initialPlan",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L300",
+      "community": 44,
+      "norm_label": "initialplan",
+      "id": "prototype_data_initialplan"
+    },
+    {
+      "label": "sourceOptions",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L348",
+      "community": 44,
+      "norm_label": "sourceoptions",
+      "id": "prototype_data_sourceoptions"
+    },
+    {
+      "label": "allergens",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L356",
+      "community": 44,
+      "norm_label": "allergens",
+      "id": "prototype_data_allergens"
+    },
+    {
+      "label": "dislikes",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L357",
+      "community": 44,
+      "norm_label": "dislikes",
+      "id": "prototype_data_dislikes"
+    },
+    {
+      "label": "likes",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L358",
+      "community": 44,
+      "norm_label": "likes",
+      "id": "prototype_data_likes"
+    },
+    {
+      "label": "dietary",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L359",
+      "community": 44,
+      "norm_label": "dietary",
+      "id": "prototype_data_dietary"
+    },
+    {
+      "label": "universities",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L360",
+      "community": 44,
+      "norm_label": "universities",
+      "id": "prototype_data_universities"
+    },
+    {
+      "label": "initialPreferences",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L362",
+      "community": 5,
+      "norm_label": "initialpreferences",
+      "id": "prototype_data_initialpreferences"
     },
     {
       "label": "sessionPersistence.ts",
       "file_type": "code",
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L1",
-      "id": "src_prototype_sessionpersistence_ts",
       "community": 5,
-      "norm_label": "sessionpersistence.ts"
+      "norm_label": "sessionpersistence.ts",
+      "id": "src_prototype_sessionpersistence_ts"
     },
     {
       "label": "PrototypeSessionSettings",
       "file_type": "code",
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L7",
-      "id": "prototype_sessionpersistence_prototypesessionsettings",
       "community": 5,
-      "norm_label": "prototypesessionsettings"
+      "norm_label": "prototypesessionsettings",
+      "id": "prototype_sessionpersistence_prototypesessionsettings"
     },
     {
       "label": "isAnonymousSessionId()",
       "file_type": "code",
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L22",
-      "id": "prototype_sessionpersistence_isanonymoussessionid",
       "community": 5,
-      "norm_label": "isanonymoussessionid()"
+      "norm_label": "isanonymoussessionid()",
+      "id": "prototype_sessionpersistence_isanonymoussessionid"
     },
     {
       "label": "createAnonymousSessionId()",
       "file_type": "code",
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L26",
-      "id": "prototype_sessionpersistence_createanonymoussessionid",
       "community": 5,
-      "norm_label": "createanonymoussessionid()"
+      "norm_label": "createanonymoussessionid()",
+      "id": "prototype_sessionpersistence_createanonymoussessionid"
     },
     {
       "label": "createPrototypeSessionSettings()",
       "file_type": "code",
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L34",
-      "id": "prototype_sessionpersistence_createprototypesessionsettings",
       "community": 5,
-      "norm_label": "createprototypesessionsettings()"
+      "norm_label": "createprototypesessionsettings()",
+      "id": "prototype_sessionpersistence_createprototypesessionsettings"
     },
     {
       "label": "mealSlots",
       "file_type": "code",
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L59",
-      "id": "prototype_sessionpersistence_mealslots",
       "community": 5,
-      "norm_label": "mealslots"
+      "norm_label": "mealslots",
+      "id": "prototype_sessionpersistence_mealslots"
     },
     {
       "label": "isPlanEntry()",
       "file_type": "code",
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L61",
-      "id": "prototype_sessionpersistence_isplanentry",
       "community": 5,
-      "norm_label": "isplanentry()"
+      "norm_label": "isplanentry()",
+      "id": "prototype_sessionpersistence_isplanentry"
     },
     {
       "label": "restorePrototypePlan()",
       "file_type": "code",
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L83",
-      "id": "prototype_sessionpersistence_restoreprototypeplan",
       "community": 5,
-      "norm_label": "restoreprototypeplan()"
+      "norm_label": "restoreprototypeplan()",
+      "id": "prototype_sessionpersistence_restoreprototypeplan"
     },
     {
       "label": "types.ts",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L1",
-      "id": "src_prototype_types_ts",
       "community": 42,
-      "norm_label": "types.ts"
+      "norm_label": "types.ts",
+      "id": "src_prototype_types_ts"
     },
     {
       "label": "MealType",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L1",
-      "id": "prototype_types_mealtype",
       "community": 42,
-      "norm_label": "mealtype"
+      "norm_label": "mealtype",
+      "id": "prototype_types_mealtype"
     },
     {
       "label": "MealSlot",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L2",
-      "id": "prototype_types_mealslot",
       "community": 42,
-      "norm_label": "mealslot"
+      "norm_label": "mealslot",
+      "id": "prototype_types_mealslot"
     },
     {
       "label": "Nutrition",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L8",
-      "id": "prototype_types_nutrition",
       "community": 42,
-      "norm_label": "nutrition"
+      "norm_label": "nutrition",
+      "id": "prototype_types_nutrition"
     },
     {
       "label": "NutritionSource",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L16",
-      "id": "prototype_types_nutritionsource",
       "community": 42,
-      "norm_label": "nutritionsource"
+      "norm_label": "nutritionsource",
+      "id": "prototype_types_nutritionsource"
     },
     {
       "label": "NutritionMatch",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L24",
-      "id": "prototype_types_nutritionmatch",
       "community": 17,
-      "norm_label": "nutritionmatch"
+      "norm_label": "nutritionmatch",
+      "id": "prototype_types_nutritionmatch"
     },
     {
       "label": "RecipeReview",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L30",
-      "id": "prototype_types_recipereview",
       "community": 44,
-      "norm_label": "recipereview"
+      "norm_label": "recipereview",
+      "id": "prototype_types_recipereview"
     },
     {
       "label": "Meal",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L38",
-      "id": "prototype_types_meal",
       "community": 0,
-      "norm_label": "meal"
+      "norm_label": "meal",
+      "id": "prototype_types_meal"
     },
     {
       "label": "PlanMeal",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L58",
-      "id": "prototype_types_planmeal",
       "community": 42,
-      "norm_label": "planmeal"
+      "norm_label": "planmeal",
+      "id": "prototype_types_planmeal"
     },
     {
       "label": "PlanEntry",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L64",
-      "id": "prototype_types_planentry",
       "community": 0,
-      "norm_label": "planentry"
+      "norm_label": "planentry",
+      "id": "prototype_types_planentry"
     },
     {
       "label": "Deadline",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L70",
-      "id": "prototype_types_deadline",
       "community": 44,
-      "norm_label": "deadline"
+      "norm_label": "deadline",
+      "id": "prototype_types_deadline"
     },
     {
       "label": "Preferences",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L82",
-      "id": "prototype_types_preferences",
       "community": 42,
-      "norm_label": "preferences"
+      "norm_label": "preferences",
+      "id": "prototype_types_preferences"
     },
     {
       "label": "Screen",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L94",
-      "id": "prototype_types_screen",
       "community": 51,
-      "norm_label": "screen"
+      "norm_label": "screen",
+      "id": "prototype_types_screen"
     },
     {
       "label": "CalendarProvider",
       "file_type": "code",
       "source_file": "src/prototype/types.ts",
       "source_location": "L96",
-      "id": "prototype_types_calendarprovider",
       "community": 44,
-      "norm_label": "calendarprovider"
-    },
-    {
-      "label": "deadline-flow.spec.ts",
-      "file_type": "code",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L1",
-      "community": 5,
-      "norm_label": "deadline-flow.spec.ts",
-      "id": "e2e_deadline_flow_spec_ts"
-    },
-    {
-      "label": "sessionLoaded",
-      "file_type": "code",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L112",
-      "community": 5,
-      "norm_label": "sessionloaded",
-      "id": "e2e_deadline_flow_spec_sessionloaded"
+      "norm_label": "calendarprovider",
+      "id": "prototype_types_calendarprovider"
     },
     {
       "label": "vercel.json",
@@ -4691,7 +4691,7 @@
       "file_type": "code",
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L130",
-      "community": 1,
+      "community": 44,
       "norm_label": "field()",
       "id": "components_primitives_field"
     },
@@ -4700,7 +4700,7 @@
       "file_type": "code",
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L177",
-      "community": 1,
+      "community": 44,
       "norm_label": "selectfield()",
       "id": "components_primitives_selectfield"
     },
@@ -12656,6 +12656,1482 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L108",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "e2e_deadline_flow_spec_ts",
+      "target": "e2e_deadline_flow_spec_sessionloaded"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "e2e_deadline_flow_spec_ts",
+      "target": "prototype_data_defaultdeadlines"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "e2e_deadline_flow_spec_ts",
+      "target": "prototype_data_initialpreferences"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "e2e_deadline_flow_spec_ts",
+      "target": "prototype_sessionpersistence_createprototypesessionsettings"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "e2e_deadline_flow_spec_ts",
+      "target": "src_prototype_data_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "e2e_deadline_flow_spec_ts",
+      "target": "src_prototype_sessionpersistence_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_fetchevents"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_googleevent"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L123",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_importgooglecalendar"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L119",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_isgoogleconfigured"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_loadgis"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_requesttoken"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_window"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_types_calendarevent"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "src_prototype_calendarimport_types_ts"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "src_prototype_calendarimport_googlecalendar_ts"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_googlecalendar_importgooglecalendar",
+      "target": "calendarimport_googlecalendar_loadgis"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L129",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_googlecalendar_importgooglecalendar",
+      "target": "calendarimport_googlecalendar_requesttoken"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L130",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_googlecalendar_importgooglecalendar",
+      "target": "calendarimport_googlecalendar_fetchevents"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L228",
+      "weight": 1.0,
+      "source": "screens_onboarding_onboarding",
+      "target": "calendarimport_googlecalendar_isgoogleconfigured"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L245",
+      "weight": 1.0,
+      "source": "screens_settingsscreen_settingsscreen",
+      "target": "calendarimport_googlecalendar_isgoogleconfigured"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "calendarimport_googlecalendar_isgoogleconfigured"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_googlecalendar_isgoogleconfigured"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_googlecalendar_isgoogleconfigured"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "calendarimport_googlecalendar_importgooglecalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_googlecalendar_importgooglecalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_googlecalendar_importgooglecalendar"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "src_prototype_calendarimport_outlookcalendar_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_base64urlencode"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_exchangecodefortoken"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L102",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_fetchevents"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_generatepkce"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L144",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L140",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L91",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_outlookevent"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_waitforpopupredirect"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_types_calendarevent"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "src_prototype_calendarimport_types_ts"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_generatepkce",
+      "target": "calendarimport_outlookcalendar_base64urlencode"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L150",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
+      "target": "calendarimport_outlookcalendar_generatepkce"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L164",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
+      "target": "calendarimport_outlookcalendar_waitforpopupredirect"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L165",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
+      "target": "calendarimport_outlookcalendar_exchangecodefortoken"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L166",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
+      "target": "calendarimport_outlookcalendar_fetchevents"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L228",
+      "weight": 1.0,
+      "source": "screens_onboarding_onboarding",
+      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L245",
+      "weight": 1.0,
+      "source": "screens_settingsscreen_settingsscreen",
+      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_onboarding_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_applecalendar_icssubscriptionhints"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_applecalendar_importfromsubscriptionurl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_applecalendar_issubscriptionurl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_icsparser_parseicstext"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_index_calendareventstodeadlines"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_types_calendarevent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_appbutton"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_badge"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_choicegroup"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_field"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_selectfield"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_analytics_trackprototypeevent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_allergens"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_calendarproviders"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_dietary"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_dislikes"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_likes"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_sourceoptions"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_universities"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_types_calendarprovider"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_types_deadline"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_types_preferences"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_types_screen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_utils_formatcookinglimit"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_workloadmodel_classifyimportedevent"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L59",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "screens_onboarding_onboarding"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "screens_onboarding_preferencesection"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "screens_onboarding_progress"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_components_ui_card_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_components_ui_input_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_lib_utils_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_analytics_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_calendarimport_index_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_components_primitives_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_data_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_types_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_utils_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_workloadmodel_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "ui_card_card"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "ui_input_input"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "screens_onboarding_preferencesection",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L280",
+      "weight": 1.0,
+      "source": "screens_onboarding_onboarding",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L271",
+      "weight": 1.0,
+      "source": "screens_onboarding_onboarding",
+      "target": "prototype_utils_formatcookinglimit"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_onboarding_onboarding"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_settingsscreen_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_applecalendar_icssubscriptionhints"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_applecalendar_importfromsubscriptionurl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_applecalendar_issubscriptionurl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_icsparser_parseicstext"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_index_calendareventstodeadlines"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_types_calendarevent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "components_primitives_appbutton"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "components_primitives_choicegroup"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "components_primitives_field"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "components_primitives_selectfield"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_analytics_trackprototypeevent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_data_allergens"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_data_calendarproviders"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_data_dietary"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_data_dislikes"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_data_likes"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_data_universities"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_types_calendarprovider"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_types_deadline"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_types_preferences"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_types_screen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_utils_formatcookinglimit"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_utils_parseics"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "screens_settingsscreen_settingsscreen"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_components_ui_card_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_components_ui_input_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_lib_utils_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_prototype_analytics_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_prototype_calendarimport_index_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_prototype_components_primitives_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_prototype_data_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_prototype_types_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_prototype_utils_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "ui_card_card"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "ui_input_input"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "screens_settingsscreen_settingsscreen",
+      "target": "prototype_utils_formatcookinglimit"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_settingsscreen_settingsscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "build.ts",
       "source_location": "L36",
       "weight": 1.0,
@@ -12937,9 +14413,9 @@
       "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
+      "target": "calendarimport_types_calendarevent"
     },
     {
       "relation": "imports",
@@ -13279,17 +14755,6 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L18",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_onboarding_onboarding"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
       "source_location": "L19",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -13317,17 +14782,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_deadlinefoodprototype_tsx",
       "target": "screens_recipeshubscreen_recipeshubscreen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L22",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_settingsscreen_settingsscreen"
     },
     {
       "relation": "imports_from",
@@ -13422,17 +14876,6 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L18",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_onboarding_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
       "source_location": "L19",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -13460,17 +14903,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_deadlinefoodprototype_tsx",
       "target": "src_prototype_screens_recipeshubscreen_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L22",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_settingsscreen_tsx"
     },
     {
       "relation": "imports_from",
@@ -13532,9 +14964,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "calendarimport_applecalendar_icssubscriptionhints",
-      "confidence_score": 1.0
+      "target": "calendarimport_applecalendar_icssubscriptionhints"
     },
     {
       "relation": "contains",
@@ -13542,9 +14974,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "calendarimport_applecalendar_importfromsubscriptionurl",
-      "confidence_score": 1.0
+      "target": "calendarimport_applecalendar_importfromsubscriptionurl"
     },
     {
       "relation": "contains",
@@ -13552,9 +14984,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "calendarimport_applecalendar_issubscriptionurl",
-      "confidence_score": 1.0
+      "target": "calendarimport_applecalendar_issubscriptionurl"
     },
     {
       "relation": "contains",
@@ -13562,9 +14994,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "calendarimport_applecalendar_normalizewebcalurl",
-      "confidence_score": 1.0
+      "target": "calendarimport_applecalendar_normalizewebcalurl"
     },
     {
       "relation": "imports",
@@ -13573,9 +15005,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "calendarimport_icsparser_parseicstext",
-      "confidence_score": 1.0
+      "target": "calendarimport_icsparser_parseicstext"
     },
     {
       "relation": "imports",
@@ -13584,9 +15016,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
+      "target": "calendarimport_types_calendarevent"
     },
     {
       "relation": "imports",
@@ -13595,9 +15027,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "prototype_types_calendarprovider",
-      "confidence_score": 1.0
+      "target": "prototype_types_calendarprovider"
     },
     {
       "relation": "imports_from",
@@ -13606,9 +15038,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "src_prototype_calendarimport_icsparser_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_calendarimport_icsparser_ts"
     },
     {
       "relation": "imports_from",
@@ -13617,9 +15049,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "src_prototype_calendarimport_types_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_calendarimport_types_ts"
     },
     {
       "relation": "imports_from",
@@ -13628,9 +15060,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
-      "target": "src_prototype_types_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_types_ts"
     },
     {
       "relation": "re_exports",
@@ -13639,9 +15071,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "src_prototype_calendarimport_applecalendar_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_calendarimport_applecalendar_ts"
     },
     {
       "relation": "calls",
@@ -13650,9 +15082,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "calendarimport_applecalendar_importfromsubscriptionurl",
-      "target": "calendarimport_applecalendar_normalizewebcalurl",
-      "confidence_score": 1.0
+      "target": "calendarimport_applecalendar_normalizewebcalurl"
     },
     {
       "relation": "calls",
@@ -13661,9 +15093,9 @@
       "source_file": "src/prototype/calendarImport/appleCalendar.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "calendarimport_applecalendar_issubscriptionurl",
-      "target": "calendarimport_applecalendar_normalizewebcalurl",
-      "confidence_score": 1.0
+      "target": "calendarimport_applecalendar_normalizewebcalurl"
     },
     {
       "relation": "re_exports",
@@ -13672,31 +15104,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_applecalendar_issubscriptionurl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_applecalendar_issubscriptionurl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_applecalendar_issubscriptionurl",
-      "confidence_score": 1.0
+      "target": "calendarimport_applecalendar_issubscriptionurl"
     },
     {
       "relation": "calls",
@@ -13716,31 +15126,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_applecalendar_importfromsubscriptionurl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_applecalendar_importfromsubscriptionurl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_applecalendar_importfromsubscriptionurl",
-      "confidence_score": 1.0
+      "target": "calendarimport_applecalendar_importfromsubscriptionurl"
     },
     {
       "relation": "re_exports",
@@ -13749,255 +15137,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L5",
       "weight": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_applecalendar_icssubscriptionhints",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_applecalendar_icssubscriptionhints",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_applecalendar_icssubscriptionhints",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L79",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_fetchevents",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L68",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_googleevent",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L123",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_importgooglecalendar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L119",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_isgoogleconfigured",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L27",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_loadgis",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L46",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_requesttoken",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_window",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "src_prototype_calendarimport_types_ts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "re_exports",
-      "context": "export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "src_prototype_calendarimport_googlecalendar_ts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L128",
-      "weight": 1.0,
-      "source": "calendarimport_googlecalendar_importgooglecalendar",
-      "target": "calendarimport_googlecalendar_loadgis",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L129",
-      "weight": 1.0,
-      "source": "calendarimport_googlecalendar_importgooglecalendar",
-      "target": "calendarimport_googlecalendar_requesttoken",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L130",
-      "weight": 1.0,
-      "source": "calendarimport_googlecalendar_importgooglecalendar",
-      "target": "calendarimport_googlecalendar_fetchevents",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L228",
-      "weight": 1.0,
-      "source": "screens_onboarding_onboarding",
-      "target": "calendarimport_googlecalendar_isgoogleconfigured"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L245",
-      "weight": 1.0,
-      "source": "screens_settingsscreen_settingsscreen",
-      "target": "calendarimport_googlecalendar_isgoogleconfigured"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_googlecalendar_isgoogleconfigured",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_googlecalendar_isgoogleconfigured",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_googlecalendar_isgoogleconfigured",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_googlecalendar_importgooglecalendar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_googlecalendar_importgooglecalendar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_googlecalendar_importgooglecalendar",
-      "confidence_score": 1.0
+      "target": "calendarimport_applecalendar_icssubscriptionhints"
     },
     {
       "relation": "contains",
@@ -14005,9 +15147,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_icsparser_ts",
-      "target": "calendarimport_icsparser_extractfield",
-      "confidence_score": 1.0
+      "target": "calendarimport_icsparser_extractfield"
     },
     {
       "relation": "contains",
@@ -14015,9 +15157,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_icsparser_ts",
-      "target": "calendarimport_icsparser_parseicsdatetime",
-      "confidence_score": 1.0
+      "target": "calendarimport_icsparser_parseicsdatetime"
     },
     {
       "relation": "contains",
@@ -14025,9 +15167,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_icsparser_ts",
-      "target": "calendarimport_icsparser_parseicstext",
-      "confidence_score": 1.0
+      "target": "calendarimport_icsparser_parseicstext"
     },
     {
       "relation": "contains",
@@ -14035,9 +15177,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_icsparser_ts",
-      "target": "calendarimport_icsparser_unescapeicsvalue",
-      "confidence_score": 1.0
+      "target": "calendarimport_icsparser_unescapeicsvalue"
     },
     {
       "relation": "contains",
@@ -14045,9 +15187,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_icsparser_ts",
-      "target": "calendarimport_icsparser_unfoldlines",
-      "confidence_score": 1.0
+      "target": "calendarimport_icsparser_unfoldlines"
     },
     {
       "relation": "imports",
@@ -14056,9 +15198,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_icsparser_ts",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
+      "target": "calendarimport_types_calendarevent"
     },
     {
       "relation": "imports",
@@ -14067,9 +15209,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_icsparser_ts",
-      "target": "prototype_types_calendarprovider",
-      "confidence_score": 1.0
+      "target": "prototype_types_calendarprovider"
     },
     {
       "relation": "imports_from",
@@ -14078,9 +15220,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_icsparser_ts",
-      "target": "src_prototype_calendarimport_types_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_calendarimport_types_ts"
     },
     {
       "relation": "imports_from",
@@ -14089,9 +15231,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_icsparser_ts",
-      "target": "src_prototype_types_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_types_ts"
     },
     {
       "relation": "re_exports",
@@ -14100,9 +15242,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "src_prototype_calendarimport_icsparser_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_calendarimport_icsparser_ts"
     },
     {
       "relation": "calls",
@@ -14111,9 +15253,9 @@
       "source_file": "src/prototype/calendarImport/icsParser.ts",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "calendarimport_icsparser_parseicstext",
-      "target": "calendarimport_icsparser_unfoldlines",
-      "confidence_score": 1.0
+      "target": "calendarimport_icsparser_unfoldlines"
     },
     {
       "relation": "re_exports",
@@ -14122,31 +15264,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_icsparser_parseicstext",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_icsparser_parseicstext",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_icsparser_parseicstext",
-      "confidence_score": 1.0
+      "target": "calendarimport_icsparser_parseicstext"
     },
     {
       "relation": "contains",
@@ -14154,31 +15274,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_index_calendareventstodeadlines",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_outlookcalendar_isoutlookconfigured",
-      "confidence_score": 1.0
+      "target": "calendarimport_index_calendareventstodeadlines"
     },
     {
       "relation": "re_exports",
@@ -14187,9 +15285,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
+      "target": "calendarimport_types_calendarevent"
     },
     {
       "relation": "imports",
@@ -14198,9 +15296,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "prototype_types_deadline",
-      "confidence_score": 1.0
+      "target": "prototype_types_deadline"
     },
     {
       "relation": "imports",
@@ -14209,20 +15307,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "prototype_workloadmodel_classifyimportedevent",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "re_exports",
-      "context": "export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "src_prototype_calendarimport_outlookcalendar_ts",
-      "confidence_score": 1.0
+      "target": "prototype_workloadmodel_classifyimportedevent"
     },
     {
       "relation": "re_exports",
@@ -14231,9 +15318,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "src_prototype_calendarimport_types_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_calendarimport_types_ts"
     },
     {
       "relation": "imports_from",
@@ -14242,276 +15329,9 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
-      "target": "src_prototype_types_ts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_calendarimport_index_ts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_prototype_calendarimport_index_ts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_index_calendareventstodeadlines",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_index_calendareventstodeadlines",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L10",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_base64urlencode",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L62",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_exchangecodefortoken",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L102",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_fetchevents",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L18",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_generatepkce",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L144",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L140",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_isoutlookconfigured",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L91",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_outlookevent",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L27",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_waitforpopupredirect",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "src_prototype_calendarimport_types_ts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L21",
-      "weight": 1.0,
-      "source": "calendarimport_outlookcalendar_generatepkce",
-      "target": "calendarimport_outlookcalendar_base64urlencode",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L150",
-      "weight": 1.0,
-      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "target": "calendarimport_outlookcalendar_generatepkce",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L164",
-      "weight": 1.0,
-      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "target": "calendarimport_outlookcalendar_waitforpopupredirect",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L165",
-      "weight": 1.0,
-      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "target": "calendarimport_outlookcalendar_exchangecodefortoken",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L166",
-      "weight": 1.0,
-      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "target": "calendarimport_outlookcalendar_fetchevents",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L228",
-      "weight": 1.0,
-      "source": "screens_onboarding_onboarding",
-      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L245",
-      "weight": 1.0,
-      "source": "screens_settingsscreen_settingsscreen",
-      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_outlookcalendar_isoutlookconfigured",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_outlookcalendar_isoutlookconfigured",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "confidence_score": 1.0
+      "target": "src_prototype_types_ts"
     },
     {
       "relation": "contains",
@@ -14519,9 +15339,9 @@
       "source_file": "src/prototype/calendarImport/types.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_types_ts",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
+      "target": "calendarimport_types_calendarevent"
     },
     {
       "relation": "imports",
@@ -14530,9 +15350,9 @@
       "source_file": "src/prototype/calendarImport/types.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_types_ts",
-      "target": "prototype_types_calendarprovider",
-      "confidence_score": 1.0
+      "target": "prototype_types_calendarprovider"
     },
     {
       "relation": "re_exports",
@@ -14541,31 +15361,9 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L98",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_types_ts",
-      "target": "src_prototype_calendarimport_types_ts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
+      "target": "src_prototype_calendarimport_types_ts"
     },
     {
       "relation": "imports",
@@ -14574,9 +15372,9 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_sessionpersistence_ts",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
+      "target": "calendarimport_types_calendarevent"
     },
     {
       "relation": "re_exports",
@@ -14585,20 +15383,9 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L98",
       "weight": 1.0,
-      "source": "src_prototype_types_ts",
-      "target": "calendarimport_types_calendarevent",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L2",
-      "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "e2e_deadline_flow_spec_ts",
-      "target": "src_prototype_data_ts"
+      "source": "src_prototype_types_ts",
+      "target": "calendarimport_types_calendarevent"
     },
     {
       "relation": "contains",
@@ -14865,17 +15652,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_data_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/PlanScreen.tsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -14892,17 +15668,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_recipedetailscreen_tsx",
-      "target": "src_prototype_data_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
       "target": "src_prototype_data_ts"
     },
     {
@@ -14931,28 +15696,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_calendarproviders"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_data_calendarproviders"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L6",
       "weight": 1.0,
@@ -14970,17 +15713,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_planscreen_tsx",
       "target": "prototype_data_mealslots"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "e2e_deadline_flow_spec_ts",
-      "target": "prototype_data_defaultdeadlines"
     },
     {
       "relation": "imports",
@@ -15041,723 +15773,12 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_sourceoptions"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_allergens"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_data_allergens"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_dislikes"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_data_dislikes"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_likes"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_data_likes"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_dietary"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_data_dietary"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_universities"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_data_universities"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "e2e_deadline_flow_spec_ts",
-      "target": "prototype_data_initialpreferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/sessionPersistence.test.ts",
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_sessionpersistence_test_ts",
       "target": "prototype_data_initialpreferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_appbutton"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_badge"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_choicegroup"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_field"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_selectfield"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "lib_utils_cn"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_analytics_trackprototypeevent"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_types_calendarprovider"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_types_deadline"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_types_preferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_types_screen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_utils_formatcookinglimit"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_workloadmodel_classifyimportedevent"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L59",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "screens_onboarding_onboarding"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L37",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "screens_onboarding_preferencesection"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "screens_onboarding_progress"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_components_ui_card_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_components_ui_input_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_lib_utils_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_analytics_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_components_primitives_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_types_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_utils_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_workloadmodel_ts"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "ui_card_card"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "ui_input_input"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L49",
-      "weight": 1.0,
-      "source": "screens_onboarding_preferencesection",
-      "target": "lib_utils_cn"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L280",
-      "weight": 1.0,
-      "source": "screens_onboarding_onboarding",
-      "target": "lib_utils_cn"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L271",
-      "weight": 1.0,
-      "source": "screens_onboarding_onboarding",
-      "target": "prototype_utils_formatcookinglimit"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "components_primitives_appbutton"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "components_primitives_choicegroup"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "components_primitives_field"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "components_primitives_selectfield"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "lib_utils_cn"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_analytics_trackprototypeevent"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_types_calendarprovider"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_types_deadline"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_types_preferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_types_screen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_utils_formatcookinglimit"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_utils_parseics"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "screens_settingsscreen_settingsscreen"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_components_ui_card_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_components_ui_input_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_lib_utils_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_prototype_analytics_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_prototype_components_primitives_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_prototype_types_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_prototype_utils_ts"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "ui_card_card"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "ui_input_input"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L89",
-      "weight": 1.0,
-      "source": "screens_settingsscreen_settingsscreen",
-      "target": "prototype_utils_formatcookinglimit"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "e2e_deadline_flow_spec_ts",
-      "target": "src_prototype_sessionpersistence_ts"
     },
     {
       "relation": "imports_from",
@@ -15993,17 +16014,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_anonymoussessionapi_ts",
       "target": "prototype_sessionpersistence_createanonymoussessionid"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "e2e_deadline_flow_spec_ts",
-      "target": "prototype_sessionpersistence_createprototypesessionsettings"
     },
     {
       "relation": "imports",
@@ -16750,16 +16760,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_recipedetailscreen_tsx",
       "target": "prototype_types_screen"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L108",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "e2e_deadline_flow_spec_ts",
-      "target": "e2e_deadline_flow_spec_sessionloaded"
     },
     {
       "relation": "contains",
@@ -38260,5 +38260,5 @@
       "source_file": ".gitlab-ci.yml"
     }
   ],
-  "built_at_commit": "8a2346fee5c7f06d0f370f309f3528cad6fee549"
+  "built_at_commit": "f362eb3be442176db1507ded3ef7c1df0d88fef9"
 }

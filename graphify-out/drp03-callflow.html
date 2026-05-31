@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1380 nodes, 2441 edges, 91 communities. Commit: 8a2346f</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1380 nodes, 2441 edges, 91 communities. Commit: f362eb3</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -94,11 +94,11 @@ flowchart LR
     class OUTPUTS_DOCS_ED82387C module;
     CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>137 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
-    SERVE_API_35EC8E86("Serving API<br/><small>184 nodes</small>")
+    SERVE_API_35EC8E86("Serving API<br/><small>181 nodes</small>")
     class SERVE_API_35EC8E86 module;
     SECURITY_GLOBAL_5B9C6A04("Security &amp; Global Graph<br/><small>37 nodes</small>")
     class SECURITY_GLOBAL_5B9C6A04 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>319 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>322 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
     FIREBASE_FUNCTIONS_650C665A("Firebase Functions<br/><small>39 nodes</small>")
     class FIREBASE_FUNCTIONS_650C665A module;
@@ -118,18 +118,18 @@ flowchart LR
     class COMMUNITY_53_42E523C6 module;
     OTHER_D0941E68("Other<br/><small>227 nodes</small>")
     class OTHER_D0941E68 module;
-    TESTS_FIXTURES_B84B1DCC -->|imports x52| SERVE_API_35EC8E86
+    TESTS_FIXTURES_B84B1DCC -->|imports x50| SERVE_API_35EC8E86
     FIREBASE_FUNCTIONS_650C665A -->|contains x31| OTHER_D0941E68
     COMPILED_SESSION_BACKEND_52DD869B -->|contains x31| OTHER_D0941E68
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
-    COMMUNITY_51_1B89DE6B -->|imports x24| TESTS_FIXTURES_B84B1DCC
     TESTS_FIXTURES_B84B1DCC -->|imports x22| COMMUNITY_42_BA46CB2A
     TESTS_FIXTURES_B84B1DCC -->|imports x22| PROTOTYPE_UI_SHELL_9606558B
     OUTPUTS_DOCS_ED82387C -->|imports x22| SERVE_API_35EC8E86
-    SERVE_API_35EC8E86 -->|imports x21| TESTS_FIXTURES_B84B1DCC
-    COMMUNITY_42_BA46CB2A -->|imports x18| TESTS_FIXTURES_B84B1DCC
+    SERVE_API_35EC8E86 -->|imports x22| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x19| COMMUNITY_51_1B89DE6B
+    COMMUNITY_51_1B89DE6B -->|imports x19| TESTS_FIXTURES_B84B1DCC
+    COMMUNITY_42_BA46CB2A -->|imports x19| TESTS_FIXTURES_B84B1DCC
     COMMUNITY_51_1B89DE6B -->|imports x16| PROTOTYPE_UI_SHELL_9606558B
-    COMMUNITY_42_BA46CB2A -->|imports x16| PROTOTYPE_UI_SHELL_9606558B
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,12 +146,12 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>192</td><td><code>10, 11, 12, 19, 7, 13, 15, 14, 16, 56, 23, 26, 29</code></td></tr><tr><td>Outputs &amp; Docs</td><td>91</td><td><code>3, 9, 76</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>137</td><td><code>31, 38, 39, 48, 59</code></td></tr><tr><td>Serving API</td><td>184</td><td><code>1, 36, 43, 49</code></td></tr><tr><td>Security &amp; Global Graph</td><td>37</td><td><code>37</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>319</td><td><code>44, 2, 20, 5, 4, 45, 40, 17, 78</code></td></tr><tr><td>Firebase Functions</td><td>39</td><td><code>6</code></td></tr><tr><td>Compiled Session Backend</td><td>36</td><td><code>8</code></td></tr><tr><td>Community 41</td><td>28</td><td><code>41</code></td></tr><tr><td>Prototype UI Shell</td><td>23</td><td><code>0</code></td></tr><tr><td>Community 51</td><td>19</td><td><code>51</code></td></tr><tr><td>Community 42</td><td>17</td><td><code>42</code></td></tr><tr><td>Community 52</td><td>16</td><td><code>52</code></td></tr><tr><td>Community 53</td><td>15</td><td><code>53</code></td></tr><tr><td>Other</td><td>227</td><td><code>55, 18, 46, 58, 21, 60, 61, 22, 63, 64, 65, 66, 67, 68, 24, 69, 70, 71, 72, 73, 74, 75, 25, 27, 77, 79, 80, 30, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 28, 93, 94, 95, 96, 32, 33, 34, 35</code></td></tr>
+      <tr><td>Graph Build</td><td>192</td><td><code>10, 11, 12, 19, 7, 13, 15, 14, 16, 56, 23, 26, 29</code></td></tr><tr><td>Outputs &amp; Docs</td><td>91</td><td><code>3, 9, 76</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>137</td><td><code>31, 38, 39, 48, 59</code></td></tr><tr><td>Serving API</td><td>181</td><td><code>1, 36, 43, 49</code></td></tr><tr><td>Security &amp; Global Graph</td><td>37</td><td><code>37</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>322</td><td><code>44, 2, 20, 5, 4, 45, 40, 17, 78</code></td></tr><tr><td>Firebase Functions</td><td>39</td><td><code>6</code></td></tr><tr><td>Compiled Session Backend</td><td>36</td><td><code>8</code></td></tr><tr><td>Community 41</td><td>28</td><td><code>41</code></td></tr><tr><td>Prototype UI Shell</td><td>23</td><td><code>0</code></td></tr><tr><td>Community 51</td><td>19</td><td><code>51</code></td></tr><tr><td>Community 42</td><td>17</td><td><code>42</code></td></tr><tr><td>Community 52</td><td>16</td><td><code>52</code></td></tr><tr><td>Community 53</td><td>15</td><td><code>53</code></td></tr><tr><td>Other</td><td>227</td><td><code>55, 18, 46, 58, 21, 60, 61, 22, 63, 64, 65, 66, 67, 68, 24, 69, 70, 71, 72, 73, 74, 75, 25, 27, 77, 79, 80, 30, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 28, 93, 94, 95, 96, 32, 33, 34, 35</code></td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Core Flow</h4>
-    <div class="arrow-chain">Graph Build -&gt; Other -&gt; Serving API -&gt; Tests &amp; Fixtures -&gt; Prototype UI Shell -&gt; Community 51 -&gt; Outputs &amp; Docs</div>
+    <div class="arrow-chain">Graph Build -&gt; Other -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Outputs &amp; Docs -&gt; Community 51 -&gt; Prototype UI Shell</div>
   </div>
 </div>
 <div class="grid">
@@ -1211,15 +1211,16 @@ flowchart LR
 
 <!-- ====== 5. Serving API ====== -->
 <h2 id="serve-api">5. Serving API</h2>
-<p>Serving API groups implementation around doc, api, components, contractsmd, mostly in doc/API_CONTRACTS.md, doc/ARCHITECTURE.md, docs/anonymous-session-storage.md. This section covers 184 nodes and 415 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Serving API groups implementation around doc, api, components, contractsmd, mostly in doc/API_CONTRACTS.md, doc/ARCHITECTURE.md, docs/anonymous-session-storage.md. This section covers 181 nodes and 410 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Serving API (184 nodes, 415 edges)
+    %% Section: Serving API (181 nodes, 410 edges)
     subgraph serve_api_components_deadline_food_format_ts_84065df9["components/deadline-food/format.ts"]
         deadline_food_format_formatpence_1be05546("formatPence()<br/><small>components/deadline-food/format.ts</small>")
         deadline_food_format_mealtypelabel_48067464("mealTypeLabel()<br/><small>components/deadline-food/format.ts</small>")
+        deadline_food_format_strategyname_421e9aa7("strategyName()<br/><small>components/deadline-food/format.ts</small>")
     end
     subgraph serve_api_src_pages_DeadlineSetupPage_tsx_e11dc506["src/pages/DeadlineSetupPage.tsx"]
         src_pages_deadlinesetuppage_tsx_e932c009("DeadlineSetupPage.tsx")
@@ -1234,7 +1235,6 @@ flowchart LR
         pages_rescuepage_budgetresult_bc714821("BudgetResult()<br/><small>src/pages/RescuePage.tsx</small>")
     end
     src_prototype_components_primitives_tsx_84931f01("primitives.tsx")
-    screens_onboarding_preferencesection_5c73c125("PreferenceSection()<br/><small>prototype/screens/Onboarding.tsx</small>")
     src_apitester_tsx_e67681e5("APITester.tsx")
     app_router_bootstrapboundary_65857a78("BootstrapBoundary()<br/><small>src/app/router.tsx</small>")
     lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
@@ -1243,7 +1243,6 @@ flowchart LR
     pages_recipepage_recipepage_e2524082("RecipePage()<br/><small>src/pages/RecipePage.tsx</small>")
     pages_strategyselectionpage_strategyselectionpag_569fe954("StrategySelectionPage()<br/><small>src/pages/StrategySelectionPage.tsx</small>")
     state_deadlinemodeprovider_usedeadlinemode_c42b3d13("useDeadlineMode()<br/><small>src/state/DeadlineModeProvider.tsx</small>")
-    screens_onboarding_preferencesection_5c73c125 -->|calls| lib_utils_cn_b8743bb6
     state_deadlinemodeprovider_usedeadlinemode_c42b3d13 -->|calls| app_router_bootstrapboundary_65857a78
     state_deadlinemodeprovider_usedeadlinemode_c42b3d13 -->|calls| pages_deadlinesetuppage_deadlinesetuppage_676154a6
     state_deadlinemodeprovider_usedeadlinemode_c42b3d13 -->|calls| pages_fallbackbrowsepage_fallbackbrowsepage_aaf7613d
@@ -1256,12 +1255,15 @@ flowchart LR
     pages_recipepage_recipepage_e2524082 -->|calls| deadline_food_format_mealtypelabel_48067464
     pages_rescuepage_budgetresult_bc714821 -->|calls| deadline_food_format_formatpence_1be05546
     pages_rescuepage_rescuepage_9638915d -->|calls| deadline_food_format_formatpence_1be05546
+    pages_plandashboardpage_plandashboardpage_cf652e43 -->|calls| deadline_food_format_strategyname_421e9aa7
     state_deadlinemodeprovider_usedeadlinemode_c42b3d13 -->|imports| src_pages_deadlinesetuppage_tsx_e932c009
     state_deadlinemodeprovider_usedeadlinemode_c42b3d13 -->|imports| src_pages_plandashboardpage_tsx_89a95277
+    src_pages_plandashboardpage_tsx_89a95277 -->|imports| deadline_food_format_strategyname_421e9aa7
     src_prototype_components_primitives_tsx_84931f01 -->|imports| lib_utils_cn_b8743bb6
-    %% Omitted for readability: 166 nodes, 0 edges
+    %% Omitted for readability: 163 nodes, 0 edges
     class deadline_food_format_formatpence_1be05546 function;
     class deadline_food_format_mealtypelabel_48067464 function;
+    class deadline_food_format_strategyname_421e9aa7 function;
     class src_pages_deadlinesetuppage_tsx_e932c009 ui;
     class pages_deadlinesetuppage_deadlinesetuppage_676154a6 ui;
     class src_pages_plandashboardpage_tsx_89a95277 ui;
@@ -1269,7 +1271,6 @@ flowchart LR
     class pages_rescuepage_rescuepage_9638915d ui;
     class pages_rescuepage_budgetresult_bc714821 ui;
     class src_prototype_components_primitives_tsx_84931f01 ui;
-    class screens_onboarding_preferencesection_5c73c125 ui;
     class src_apitester_tsx_e67681e5 test;
     class app_router_bootstrapboundary_65857a78 ui;
     class lib_utils_cn_b8743bb6 function;
@@ -1301,14 +1302,6 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>PreferenceSection() node in prototype/screens/Onboarding.tsx.</td>
-</tr>
-<tr>
-  <td>2</td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -1316,7 +1309,7 @@ flowchart LR
   <td>Module file in src/APITester.tsx.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>2</td>
   <td><code>APITester()</code><br><small style="color:var(--muted)">src/APITester.tsx</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -1324,7 +1317,7 @@ flowchart LR
   <td>Verifies imports, entry points, or version behavior.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>3</td>
   <td><code>types.ts</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -1332,7 +1325,7 @@ flowchart LR
   <td>Module file in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>5</td>
+  <td>4</td>
   <td><code>MealType</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1340,7 +1333,7 @@ flowchart LR
   <td>MealType node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>5</td>
   <td><code>MealSlot</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1348,7 +1341,7 @@ flowchart LR
   <td>MealSlot node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>6</td>
   <td><code>KitchenAccess</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1356,7 +1349,7 @@ flowchart LR
   <td>KitchenAccess node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>7</td>
   <td><code>PlanStrategy</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1364,7 +1357,7 @@ flowchart LR
   <td>PlanStrategy node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>8</td>
   <td><code>RecipeDetails</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1372,7 +1365,7 @@ flowchart LR
   <td>RecipeDetails node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>9</td>
   <td><code>PlannedMeal</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1380,7 +1373,7 @@ flowchart LR
   <td>PlannedMeal node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>10</td>
   <td><code>WeeklyPlan</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1388,7 +1381,7 @@ flowchart LR
   <td>WeeklyPlan node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>11</td>
   <td><code>RescueProposal</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1396,7 +1389,7 @@ flowchart LR
   <td>RescueProposal node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>12</td>
   <td><code>RankedStrategy</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1404,7 +1397,7 @@ flowchart LR
   <td>RankedStrategy node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>13</td>
   <td><code>PrototypeEvent</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1412,7 +1405,7 @@ flowchart LR
   <td>PrototypeEvent node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>14</td>
   <td><code>DeadlineModeProvider.tsx</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>PrototypeEvent</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
@@ -1420,7 +1413,7 @@ flowchart LR
   <td>Module file in src/state/DeadlineModeProvider.tsx.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>15</td>
   <td><code>DeadlineModeContextValue</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1428,7 +1421,7 @@ flowchart LR
   <td>DeadlineModeContextValue node in src/state/DeadlineModeProvider.tsx.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>16</td>
   <td><code>DeadlineModeContext</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1436,7 +1429,7 @@ flowchart LR
   <td>DeadlineModeContext node in src/state/DeadlineModeProvider.tsx.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>17</td>
   <td><code>DeadlineModeProvider()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1444,7 +1437,7 @@ flowchart LR
   <td>DeadlineModeProvider() node in src/state/DeadlineModeProvider.tsx.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>18</td>
   <td><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1452,7 +1445,7 @@ flowchart LR
   <td>useDeadlineMode() node in src/state/DeadlineModeProvider.tsx.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>19</td>
   <td><code>FallbackBrowsePage.tsx</code><br><small style="color:var(--muted)">src/pages/FallbackBrowsePage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>DeadlineModeProvider.tsx</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small><br><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
@@ -1460,7 +1453,7 @@ flowchart LR
   <td>Module file in src/pages/FallbackBrowsePage.tsx.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>20</td>
   <td><code>FallbackBrowsePage()</code><br><small style="color:var(--muted)">src/pages/FallbackBrowsePage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
@@ -1468,7 +1461,7 @@ flowchart LR
   <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>21</td>
   <td><code>RecipePage.tsx</code><br><small style="color:var(--muted)">src/pages/RecipePage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>DeadlineModeProvider.tsx</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small><br><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
@@ -1476,7 +1469,7 @@ flowchart LR
   <td>Module file in src/pages/RecipePage.tsx.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>22</td>
   <td><code>RecipePage()</code><br><small style="color:var(--muted)">src/pages/RecipePage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
@@ -1484,7 +1477,7 @@ flowchart LR
   <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>23</td>
   <td><code>RescuePage.tsx</code><br><small style="color:var(--muted)">src/pages/RescuePage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>DeadlineModeProvider.tsx</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small><br><code>RescueProposal</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br>+1 more</td>
@@ -1492,7 +1485,7 @@ flowchart LR
   <td>Module file in src/pages/RescuePage.tsx.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>24</td>
   <td><code>BudgetResult()</code><br><small style="color:var(--muted)">src/pages/RescuePage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1500,7 +1493,7 @@ flowchart LR
   <td>BudgetResult() node in src/pages/RescuePage.tsx.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>25</td>
   <td><code>RescuePage()</code><br><small style="color:var(--muted)">src/pages/RescuePage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
@@ -1508,7 +1501,7 @@ flowchart LR
   <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>26</td>
   <td><code>PlanDashboardPage.tsx</code><br><small style="color:var(--muted)">src/pages/PlanDashboardPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>DeadlineModeProvider.tsx</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small><br><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
@@ -1516,7 +1509,7 @@ flowchart LR
   <td>Module file in src/pages/PlanDashboardPage.tsx.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>27</td>
   <td><code>PlanDashboardPage()</code><br><small style="color:var(--muted)">src/pages/PlanDashboardPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
@@ -1524,7 +1517,7 @@ flowchart LR
   <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>28</td>
   <td><code>StrategySelectionPage.tsx</code><br><small style="color:var(--muted)">src/pages/StrategySelectionPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>DeadlineModeProvider.tsx</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small><br><code>PlanStrategy</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br>+1 more</td>
@@ -1532,12 +1525,20 @@ flowchart LR
   <td>Module file in src/pages/StrategySelectionPage.tsx.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>29</td>
   <td><code>StrategySelectionPage()</code><br><small style="color:var(--muted)">src/pages/StrategySelectionPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>useDeadlineMode()</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
   <td><code>router.tsx</code><br><small style="color:var(--muted)">src/app/router.tsx</small></td>
   <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>DeadlineModeProvider.tsx</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small><br><code>KitchenAccess</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>MealSlot</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br>+2 more</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+17 more</td>
+  <td>Module file in src/pages/DeadlineSetupPage.tsx.</td>
 </tr>
 </table>
 
@@ -1552,13 +1553,13 @@ flowchart LR
 <tr><td><code>components/ui/select.tsx</code></td><td>11 nodes</td></tr>
 <tr><td><code>src/domain/types.ts</code></td><td>11 nodes</td></tr>
 <tr><td><code>components/ui/card.tsx</code></td><td>8 nodes</td></tr>
-<tr><td><code>prototype/components/primitives.tsx</code></td><td>7 nodes</td></tr>
 <tr><td><code>components/deadline-food/format.ts</code></td><td>5 nodes</td></tr>
+<tr><td><code>prototype/components/primitives.tsx</code></td><td>5 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x150, imports x128, imports x87, calls x44. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x148, imports x128, imports x87, calls x41. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -1905,12 +1906,12 @@ flowchart LR
 
 <!-- ====== 7. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">7. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around prototype, doc, domain, development, mostly in doc/DEVELOPMENT_AND_TESTING.md, src/prototype/ingredients.ts, doc/DATA_AND_DOMAIN.md. This section covers 319 nodes and 568 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around prototype, doc, domain, development, mostly in doc/DEVELOPMENT_AND_TESTING.md, src/prototype/ingredients.ts, doc/DATA_AND_DOMAIN.md. This section covers 322 nodes and 574 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (319 nodes, 568 edges)
+    %% Section: Tests &amp; Fixtures (322 nodes, 574 edges)
     subgraph tests_fixtures_prototype_calendarImport_googleCa_395e20e4["prototype/calendarImport/googleCalendar.ts"]
         calendarimport_googlecalendar_loadgis_d2388831("loadGIS()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
         calendarimport_googlecalendar_importgooglecalend_1f63e428("importGoogleCalendar()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
@@ -1918,53 +1919,61 @@ flowchart LR
         calendarimport_googlecalendar_fetchevents_ae7cc7aa("fetchEvents()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
         calendarimport_googlecalendar_isgoogleconfigured_500bb6b2("isGoogleConfigured()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
     end
+    subgraph tests_fixtures_prototype_calendarImport_outlookC_1f2a873c["prototype/calendarImport/outlookCalendar.ts"]
+        calendarimport_outlookcalendar_base64urlencode_1d9b3a8b("base64UrlEncode()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+        calendarimport_outlookcalendar_generatepkce_a7deecff("generatePKCE()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+        calendarimport_outlookcalendar_importoutlookcale_3a7c989d("importOutlookCalendar()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+        calendarimport_outlookcalendar_waitforpopupredir_cdf384e3("waitForPopupRedirect()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+        calendarimport_outlookcalendar_exchangecodeforto_f8174bbd("exchangeCodeForToken()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+    end
     subgraph tests_fixtures_src_domain_planGenerator_ts_00543f85["src/domain/planGenerator.ts"]
         src_domain_plangenerator_ts_2aee0cb5("planGenerator.ts")
         domain_plangenerator_buildplanmeal_45c2b1f3("buildPlanMeal()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_compatiblemeals_5fca7da1("compatibleMeals()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_cheapest_71b6b1af("cheapest()<br/><small>src/domain/planGenerator.ts</small>")
-        domain_plangenerator_getplanitems_b3ab50e4("getPlanItems()<br/><small>src/domain/planGenerator.ts</small>")
     end
-    subgraph tests_fixtures_prototype_calendarImport_appleCal_9a06e6ce["prototype/calendarImport/appleCalendar.ts"]
-        calendarimport_applecalendar_normalizewebcalurl_48caddb9("normalizeWebcalUrl()<br/><small>prototype/calendarImport/appleCalendar.ts</small>")
-        calendarimport_applecalendar_importfromsubscript_a3a1f9c1("importFromSubscriptionUrl()<br/><small>prototype/calendarImport/appleCalendar.ts</small>")
-        calendarimport_applecalendar_issubscriptionurl_86b0f620("isSubscriptionUrl()<br/><small>prototype/calendarImport/appleCalendar.ts</small>")
+    subgraph tests_fixtures_prototype_screens_Onboarding_tsx_6825df16["prototype/screens/Onboarding.tsx"]
+        src_prototype_screens_onboarding_tsx_56a19b61("Onboarding.tsx")
+        screens_onboarding_onboarding_b7499c1e("Onboarding()<br/><small>prototype/screens/Onboarding.tsx</small>")
     end
-    subgraph tests_fixtures_prototype_calendarImport_icsParse_019c3ba4["prototype/calendarImport/icsParser.ts"]
-        calendarimport_icsparser_parseicstext_6892e1f0("parseICSText()<br/><small>prototype/calendarImport/icsParser.ts</small>")
-        calendarimport_icsparser_unfoldlines_134d1af9("unfoldLines()<br/><small>prototype/calendarImport/icsParser.ts</small>")
+    subgraph tests_fixtures_prototype_screens_SettingsScreen_cde12161["prototype/screens/SettingsScreen.tsx"]
+        src_prototype_screens_settingsscreen_tsx_2c59e92d("SettingsScreen.tsx")
+        screens_settingsscreen_settingsscreen_835e1102("SettingsScreen()<br/><small>prototype/screens/SettingsScreen.tsx</small>")
     end
-    screens_onboarding_onboarding_b7499c1e("Onboarding()<br/><small>prototype/screens/Onboarding.tsx</small>")
-    screens_settingsscreen_settingsscreen_835e1102("SettingsScreen()<br/><small>prototype/screens/SettingsScreen.tsx</small>")
-    src_prototype_data_ts_961d4457("data.ts")
-    calendarimport_applecalendar_normalizewebcalurl_48caddb9 -->|calls| calendarimport_applecalendar_importfromsubscript_a3a1f9c1
-    calendarimport_applecalendar_normalizewebcalurl_48caddb9 -->|calls| calendarimport_applecalendar_issubscriptionurl_86b0f620
-    calendarimport_applecalendar_importfromsubscript_a3a1f9c1 -->|calls| calendarimport_icsparser_parseicstext_6892e1f0
     calendarimport_googlecalendar_loadgis_d2388831 -->|calls| calendarimport_googlecalendar_importgooglecalend_1f63e428
     calendarimport_googlecalendar_requesttoken_bfc21632 -->|calls| calendarimport_googlecalendar_importgooglecalend_1f63e428
     calendarimport_googlecalendar_fetchevents_ae7cc7aa -->|calls| calendarimport_googlecalendar_importgooglecalend_1f63e428
     calendarimport_googlecalendar_isgoogleconfigured_500bb6b2 -->|calls| screens_onboarding_onboarding_b7499c1e
     calendarimport_googlecalendar_isgoogleconfigured_500bb6b2 -->|calls| screens_settingsscreen_settingsscreen_835e1102
-    calendarimport_icsparser_unfoldlines_134d1af9 -->|calls| calendarimport_icsparser_parseicstext_6892e1f0
-    %% Omitted for readability: 301 nodes, 0 edges
+    calendarimport_outlookcalendar_base64urlencode_1d9b3a8b -->|calls| calendarimport_outlookcalendar_generatepkce_a7deecff
+    calendarimport_outlookcalendar_generatepkce_a7deecff -->|calls| calendarimport_outlookcalendar_importoutlookcale_3a7c989d
+    calendarimport_outlookcalendar_waitforpopupredir_cdf384e3 -->|calls| calendarimport_outlookcalendar_importoutlookcale_3a7c989d
+    calendarimport_outlookcalendar_exchangecodeforto_f8174bbd -->|calls| calendarimport_outlookcalendar_importoutlookcale_3a7c989d
+    calendarimport_googlecalendar_isgoogleconfigured_500bb6b2 -->|imports| src_prototype_screens_onboarding_tsx_56a19b61
+    calendarimport_googlecalendar_isgoogleconfigured_500bb6b2 -->|imports| src_prototype_screens_settingsscreen_tsx_2c59e92d
+    calendarimport_googlecalendar_importgooglecalend_1f63e428 -->|imports| src_prototype_screens_onboarding_tsx_56a19b61
+    calendarimport_googlecalendar_importgooglecalend_1f63e428 -->|imports| src_prototype_screens_settingsscreen_tsx_2c59e92d
+    calendarimport_outlookcalendar_importoutlookcale_3a7c989d -->|imports| src_prototype_screens_onboarding_tsx_56a19b61
+    calendarimport_outlookcalendar_importoutlookcale_3a7c989d -->|imports| src_prototype_screens_settingsscreen_tsx_2c59e92d
+    %% Omitted for readability: 304 nodes, 0 edges
     class calendarimport_googlecalendar_loadgis_d2388831 function;
     class calendarimport_googlecalendar_importgooglecalend_1f63e428 function;
     class calendarimport_googlecalendar_requesttoken_bfc21632 function;
     class calendarimport_googlecalendar_fetchevents_ae7cc7aa function;
     class calendarimport_googlecalendar_isgoogleconfigured_500bb6b2 function;
+    class calendarimport_outlookcalendar_base64urlencode_1d9b3a8b function;
+    class calendarimport_outlookcalendar_generatepkce_a7deecff function;
+    class calendarimport_outlookcalendar_importoutlookcale_3a7c989d function;
+    class calendarimport_outlookcalendar_waitforpopupredir_cdf384e3 function;
+    class calendarimport_outlookcalendar_exchangecodeforto_f8174bbd function;
     class src_domain_plangenerator_ts_2aee0cb5 module;
     class domain_plangenerator_buildplanmeal_45c2b1f3 function;
     class domain_plangenerator_compatiblemeals_5fca7da1 function;
     class domain_plangenerator_cheapest_71b6b1af function;
-    class domain_plangenerator_getplanitems_b3ab50e4 function;
-    class calendarimport_applecalendar_normalizewebcalurl_48caddb9 function;
-    class calendarimport_applecalendar_importfromsubscript_a3a1f9c1 function;
-    class calendarimport_applecalendar_issubscriptionurl_86b0f620 function;
-    class calendarimport_icsparser_parseicstext_6892e1f0 function;
-    class calendarimport_icsparser_unfoldlines_134d1af9 function;
+    class src_prototype_screens_onboarding_tsx_56a19b61 ui;
     class screens_onboarding_onboarding_b7499c1e ui;
+    class src_prototype_screens_settingsscreen_tsx_2c59e92d ui;
     class screens_settingsscreen_settingsscreen_835e1102 ui;
-    class src_prototype_data_ts_961d4457 module;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -1988,46 +1997,6 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small><br>+2 more</td>
-  <td>Module file in prototype/calendarImport/appleCalendar.ts.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>normalizeWebcalUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>importFromSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>isSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
-  <td>normalizeWebcalUrl() node in prototype/calendarImport/appleCalendar.ts.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>isSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>normalizeWebcalUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>isSubscriptionUrl() node in prototype/calendarImport/appleCalendar.ts.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>importFromSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>normalizeWebcalUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>parseICSText()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>importFromSubscriptionUrl() node in prototype/calendarImport/appleCalendar.ts.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>icsSubscriptionHints</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>icsSubscriptionHints node in prototype/calendarImport/appleCalendar.ts.</td>
-</tr>
-<tr>
-  <td>6</td>
   <td><code>googleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -2035,7 +2004,7 @@ flowchart LR
   <td>Module file in prototype/calendarImport/googleCalendar.ts.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>2</td>
   <td><code>Window</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -2043,7 +2012,7 @@ flowchart LR
   <td>Window node in prototype/calendarImport/googleCalendar.ts.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>3</td>
   <td><code>loadGIS()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2051,7 +2020,7 @@ flowchart LR
   <td>loadGIS() node in prototype/calendarImport/googleCalendar.ts.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>4</td>
   <td><code>requestToken()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2059,7 +2028,7 @@ flowchart LR
   <td>requestToken() node in prototype/calendarImport/googleCalendar.ts.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>5</td>
   <td><code>GoogleEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -2067,7 +2036,7 @@ flowchart LR
   <td>GoogleEvent node in prototype/calendarImport/googleCalendar.ts.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>6</td>
   <td><code>fetchEvents()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2075,7 +2044,7 @@ flowchart LR
   <td>fetchEvents() node in prototype/calendarImport/googleCalendar.ts.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>7</td>
   <td><code>isGoogleConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2083,7 +2052,7 @@ flowchart LR
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>8</td>
   <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>fetchEvents()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>loadGIS()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>requestToken()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
@@ -2091,71 +2060,7 @@ flowchart LR
   <td>importGoogleCalendar() node in prototype/calendarImport/googleCalendar.ts.</td>
 </tr>
 <tr>
-  <td>14</td>
-  <td><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
-  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small></td>
-  <td>Module file in prototype/calendarImport/icsParser.ts.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>unfoldLines()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>parseICSText()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
-  <td>unfoldLines() node in prototype/calendarImport/icsParser.ts.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>extractField()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>extractField() node in prototype/calendarImport/icsParser.ts.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>parseICSDateTime()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>parseICSDateTime() node in prototype/calendarImport/icsParser.ts.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>unescapeICSValue()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>unescapeICSValue() node in prototype/calendarImport/icsParser.ts.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>parseICSText()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>importFromSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>unfoldLines()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>parseICSText() node in prototype/calendarImport/icsParser.ts.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>index.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>classifyImportedEvent()</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small><br><code>Deadline</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br>+1 more</td>
-  <td>Module file in prototype/calendarImport/index.ts.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>calendarEventsToDeadlines()</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>calendarEventsToDeadlines() node in prototype/calendarImport/index.ts.</td>
-</tr>
-<tr>
-  <td>22</td>
+  <td>9</td>
   <td><code>outlookCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -2163,7 +2068,7 @@ flowchart LR
   <td>Module file in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>10</td>
   <td><code>base64UrlEncode()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2171,7 +2076,7 @@ flowchart LR
   <td>base64UrlEncode() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>11</td>
   <td><code>generatePKCE()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>base64UrlEncode()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
@@ -2179,7 +2084,7 @@ flowchart LR
   <td>generatePKCE() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>12</td>
   <td><code>waitForPopupRedirect()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2187,7 +2092,7 @@ flowchart LR
   <td>waitForPopupRedirect() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>13</td>
   <td><code>exchangeCodeForToken()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2195,7 +2100,7 @@ flowchart LR
   <td>exchangeCodeForToken() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>14</td>
   <td><code>OutlookEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -2203,7 +2108,7 @@ flowchart LR
   <td>OutlookEvent node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>15</td>
   <td><code>fetchEvents()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2211,7 +2116,7 @@ flowchart LR
   <td>fetchEvents() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>16</td>
   <td><code>isOutlookConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2219,12 +2124,116 @@ flowchart LR
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>17</td>
   <td><code>importOutlookCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>exchangeCodeForToken()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>fetchEvents()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>generatePKCE()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br>+1 more</td>
   <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
   <td>importOutlookCalendar() node in prototype/calendarImport/outlookCalendar.ts.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>importOutlookCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>isGoogleConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br>+1 more</td>
+  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>calendarEventsToDeadlines()</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small><br>+20 more</td>
+  <td>Module file in prototype/screens/Onboarding.tsx.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>Progress()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Progress() node in prototype/screens/Onboarding.tsx.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>PreferenceSection() node in prototype/screens/Onboarding.tsx.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>Onboarding()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>isGoogleConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>isOutlookConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><code>formatCookingLimit()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>Onboarding() node in prototype/screens/Onboarding.tsx.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>importOutlookCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>isGoogleConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br>+1 more</td>
+  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>calendarEventsToDeadlines()</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small><br>+18 more</td>
+  <td>Module file in prototype/screens/SettingsScreen.tsx.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>SettingsScreen()</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>isGoogleConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>isOutlookConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><code>formatCookingLimit()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>SettingsScreen() node in prototype/screens/SettingsScreen.tsx.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small><br>+2 more</td>
+  <td>Module file in prototype/calendarImport/appleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>normalizeWebcalUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>importFromSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>isSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td>normalizeWebcalUrl() node in prototype/calendarImport/appleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>isSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalizeWebcalUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>isSubscriptionUrl() node in prototype/calendarImport/appleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>importFromSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalizeWebcalUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td><code>parseICSText()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td>importFromSubscriptionUrl() node in prototype/calendarImport/appleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>icsSubscriptionHints</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>icsSubscriptionHints node in prototype/calendarImport/appleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small></td>
+  <td>Module file in prototype/calendarImport/icsParser.ts.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>unfoldLines()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>parseICSText()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td>unfoldLines() node in prototype/calendarImport/icsParser.ts.</td>
 </tr>
 </table>
 
@@ -2245,7 +2254,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x262, imports x131, calls x111, imports x37. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x263, imports x136, calls x111, imports x37. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4889,7 +4898,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-05-31 13:04 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-05-31 13:57 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
