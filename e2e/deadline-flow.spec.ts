@@ -13,8 +13,8 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.getByRole("button", { name: /build my meal plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
-  await expect(page.getByRole("button", { name: /link google calendar/i })).toBeVisible();
-  await expect(page.getByRole("button", { name: /manual \(\.ics\)/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /sign in with google/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /upload \.ics file/i })).toBeVisible();
   await page.getByRole("button", { name: /continue/i }).click();
 
   await expect(page.getByRole("heading", { name: /about you/i })).toBeVisible();
