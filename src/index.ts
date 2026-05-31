@@ -116,6 +116,50 @@ const server = serve({
       },
     },
 
+    "/api/calendar/fetch-ics": {
+      async POST(req) {
+        const body = await req.json().catch(() => null) as { url?: string } | null;
+        const url = body?.url?.trim();
+
+        if (!url) {
+          return Response.json({ error: "A calendar URL is required." }, { status: 400 });
+        }
+
+        let parsed: URL;
+        try {
+          parsed = new URL(url);
+        } catch {
+          return Response.json({ error: "Invalid URL." }, { status: 400 });
+        }
+
+        if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+          return Response.json({ error: "Only https:// URLs are supported." }, { status: 400 });
+        }
+
+        const upstream = await fetch(url, {
+          headers: { Accept: "text/calendar, text/plain" },
+          signal: AbortSignal.timeout(15_000),
+        }).catch(() => null);
+
+        if (!upstream || !upstream.ok) {
+          return Response.json(
+            { error: `Calendar could not be fetched (${upstream?.status ?? "network error"}).` },
+            { status: 502 },
+          );
+        }
+
+        const text = await upstream.text();
+
+        if (!text.includes("BEGIN:VCALENDAR")) {
+          return Response.json({ error: "The URL did not return a valid iCalendar file." }, { status: 422 });
+        }
+
+        return new Response(text, {
+          headers: { "Content-Type": "text/calendar; charset=utf-8" },
+        });
+      },
+    },
+
     "/api/hello": {
       async GET() {
         return Response.json({
