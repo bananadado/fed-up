@@ -5,9 +5,18 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { allergens, calendarProviders, dietary, dislikes, likes, universities } from "../data";
-import type { CalendarProvider, Deadline, Preferences, Screen } from "../types";
+import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
-import { formatCookingLimit, parseICS } from "../utils";
+import { formatCookingLimit } from "../utils";
+import {
+  calendarEventsToDeadlines,
+  icsSubscriptionHints,
+  importFromSubscriptionUrl,
+  importGoogleCalendar,
+  importOutlookCalendar,
+  isSubscriptionUrl,
+  parseICSText,
+} from "../calendarImport";
 import type { TrackPrototypeEvent } from "../analytics";
 
 export function SettingsScreen({
@@ -17,6 +26,8 @@ export function SettingsScreen({
   calendarProvider,
   setCalendarProvider,
   setDeadlines,
+  calendarEvents,
+  setCalendarEvents,
   track,
 }: {
   prefs: Preferences;
@@ -25,27 +36,76 @@ export function SettingsScreen({
   calendarProvider: CalendarProvider;
   setCalendarProvider: (provider: CalendarProvider) => void;
   setDeadlines: (deadlines: Deadline[]) => void;
+  calendarEvents: CalendarEvent[];
+  setCalendarEvents: (events: CalendarEvent[]) => void;
   track: TrackPrototypeEvent;
 }) {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [importMessage, setImportMessage] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [subscriptionUrl, setSubscriptionUrl] = useState("");
+
+  function handleImportedEvents(events: CalendarEvent[], source: string) {
+    setCalendarEvents(events);
+    const asDeadlines = calendarEventsToDeadlines(events);
+    if (asDeadlines.length > 0) {
+      setDeadlines(asDeadlines);
+      setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
+    } else {
+      setImportMessage("No events found.");
+    }
+    track("calendar_imported", { source, event_count: events.length });
+  }
 
   function handleICSImport(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
-      const parsed = parseICS(String(reader.result));
-      if (parsed) {
-        setDeadlines(parsed);
-        setImportMessage(`${parsed.length} calendar events imported.`);
-        track("ics_calendar_imported", { event_count: parsed.length });
-      } else {
-        setImportMessage("No events found in file.");
-        track("ics_calendar_imported", { event_count: 0 });
-      }
+      const events = parseICSText(String(reader.result));
+      handleImportedEvents(events, "ics");
     };
     reader.readAsText(file);
+  }
+
+  async function connectOAuth() {
+    setImporting(true);
+    setImportMessage("");
+    track("calendar_provider_connect_clicked", { provider: calendarProvider });
+
+    try {
+      const events = calendarProvider === "google"
+        ? await importGoogleCalendar()
+        : await importOutlookCalendar();
+      handleImportedEvents(events, calendarProvider);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Import failed";
+      setImportMessage(message);
+      track("calendar_import_error", { provider: calendarProvider, error: message });
+    } finally {
+      setImporting(false);
+    }
+  }
+
+  async function connectSubscriptionUrl() {
+    if (!isSubscriptionUrl(subscriptionUrl)) {
+      setImportMessage("Enter a valid webcal:// or https:// calendar URL.");
+      return;
+    }
+    setImporting(true);
+    setImportMessage("");
+    track("calendar_subscription_url_imported", { provider: calendarProvider });
+
+    try {
+      const events = await importFromSubscriptionUrl(subscriptionUrl, calendarProvider);
+      handleImportedEvents(events, calendarProvider);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Import failed";
+      setImportMessage(message);
+      track("calendar_import_error", { provider: calendarProvider, error: message });
+    } finally {
+      setImporting(false);
+    }
   }
 
   function toggle(values: string[], value: string, update: (next: string[]) => void) {
@@ -176,21 +236,45 @@ export function SettingsScreen({
               </button>
             ))}
           </div>
-          <div className="mt-4 flex flex-wrap gap-3">
-            {calendarProvider !== "manual" ? (
+          {calendarEvents.length > 0 && (
+            <p className="mt-3 text-sm text-stone-500">{calendarEvents.length} event{calendarEvents.length === 1 ? "" : "s"} currently imported.</p>
+          )}
+          <div className="mt-4 space-y-3">
+            {(calendarProvider === "google" || calendarProvider === "outlook") && (
               <>
-                <AppButton variant="secondary" onClick={() => track("settings_calendar_reconnect_clicked", { provider: calendarProvider })}>
-                  <RotateCcw size={15} /> Reconnect {calendarProviders.find((p) => p.id === calendarProvider)?.name}
+                <AppButton variant="primary" onClick={connectOAuth} disabled={importing} className="w-full justify-center py-3">
+                  <RotateCcw size={15} /> {importing ? "Connecting…" : `Sign in with ${calendarProvider === "google" ? "Google" : "Microsoft"}`}
                 </AppButton>
-                <AppButton variant="ghost" onClick={() => fileRef.current?.click()}>
-                  <Import size={15} /> Import one-time .ics
-                </AppButton>
+                {calendarProvider === "outlook" && (
+                  <p className="text-xs font-medium text-amber-700">University and organisation accounts may block sign-in — use a subscription link below instead.</p>
+                )}
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-stone-200" />
+                  <span className="text-xs font-medium text-stone-400">or use a subscription link</span>
+                  <div className="h-px flex-1 bg-stone-200" />
+                </div>
               </>
-            ) : (
-              <AppButton variant="secondary" onClick={() => fileRef.current?.click()}>
-                <Import size={15} /> Import .ics file
-              </AppButton>
             )}
+            <div className="flex gap-2">
+              <Input
+                value={subscriptionUrl}
+                onChange={(e) => setSubscriptionUrl(e.target.value)}
+                placeholder="webcal://… or https://…"
+                className="h-auto flex-1 rounded-lg border-stone-200 bg-white p-3 text-sm"
+              />
+              <AppButton variant="secondary" onClick={connectSubscriptionUrl} disabled={importing || !subscriptionUrl.trim()}>
+                {importing ? "Fetching…" : "Import URL"}
+              </AppButton>
+            </div>
+            <p className="text-xs text-stone-400">{icsSubscriptionHints[calendarProvider]}</p>
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-stone-200" />
+              <span className="text-xs font-medium text-stone-400">or upload a file</span>
+              <div className="h-px flex-1 bg-stone-200" />
+            </div>
+            <AppButton variant="secondary" onClick={() => fileRef.current?.click()} className="w-full justify-center py-3">
+              <Import size={15} /> Upload .ics file
+            </AppButton>
           </div>
           <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={handleICSImport} />
           {importMessage && <p className="mt-3 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}

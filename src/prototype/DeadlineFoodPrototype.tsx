@@ -3,7 +3,7 @@ import { usePostHog } from "@posthog/react";
 
 import { capturePostHogEvent, registerPostHogContext, registerPostHogSession, type AnalyticsProperties } from "@/lib/posthog";
 import { defaultDeadlines, initialPlan, initialPreferences } from "./data";
-import type { CalendarProvider, Deadline, Meal, PlanEntry, Preferences, Screen } from "./types";
+import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences, Screen } from "./types";
 import {
   getOrCreateAnonymousSessionId,
   loadAnonymousSessionSettings,
@@ -75,6 +75,7 @@ export function DeadlineFoodPrototype() {
   const [selectedSources, setSelectedSources] = useState(["budget", "bbc", "own", "campus"]);
   const [plan, setPlan] = useState<PlanEntry[]>(initialPlan);
   const [customRecipes, setCustomRecipes] = useState<Meal[]>([]);
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
   const [discoverSaved, setDiscoverSaved] = useState<Meal[]>([]);
   const [discoverRejected, setDiscoverRejected] = useState<Meal[]>([]);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
@@ -198,6 +199,7 @@ export function DeadlineFoodPrototype() {
           if (snapshot.settings.customRecipes) setCustomRecipes(snapshot.settings.customRecipes as Meal[]);
           if (snapshot.settings.discoverSaved) setDiscoverSaved(snapshot.settings.discoverSaved as Meal[]);
           if (snapshot.settings.discoverRejected) setDiscoverRejected(snapshot.settings.discoverRejected as Meal[]);
+          if (snapshot.settings.calendarEvents) setCalendarEvents(snapshot.settings.calendarEvents as CalendarEvent[]);
           setPlan(restorePrototypePlan(snapshot.settings.plan, initialPlan));
         }
 
@@ -233,6 +235,7 @@ export function DeadlineFoodPrototype() {
           discoverSaved,
           discoverRejected,
           plan,
+          calendarEvents,
         }),
       ).catch(error => {
         console.warn("Anonymous session settings could not be saved.", error);
@@ -262,7 +265,7 @@ export function DeadlineFoodPrototype() {
         window.clearTimeout(saveSettingsDebounceRef.current);
       }
     };
-  }, [canPersistSession, customRecipes, deadlines, discoverRejected, discoverSaved, onboarded, plan, prefs, selectedSources, sessionId, sessionLoaded]);
+  }, [calendarEvents, canPersistSession, customRecipes, deadlines, discoverRejected, discoverSaved, onboarded, plan, prefs, selectedSources, sessionId, sessionLoaded]);
 
   useEffect(() => {
     if (!sessionLoaded) {
@@ -327,6 +330,7 @@ export function DeadlineFoodPrototype() {
         setPrefs={setPrefs}
         deadlines={deadlines}
         setDeadlines={setDeadlines}
+        setCalendarEvents={setCalendarEvents}
         selectedSources={selectedSources}
         setSelectedSources={setSelectedSources}
         calendarProvider={calendarProvider}
@@ -342,7 +346,7 @@ export function DeadlineFoodPrototype() {
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} plan={plan} setPlan={setPlan} prefs={prefs} onSelectMeal={openRecipe} track={track} />}
-      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} track={track} />}
+      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} backTo={previousScreen} track={track} />}
     </Shell>
   );
