@@ -7,7 +7,6 @@ export const calendarProviders: { id: CalendarProvider; name: string; hint: stri
   { id: "other", name: "Other calendar", hint: "Any app that publishes an .ics link", recommended: false },
 ];
 
-export const days = ["Mon 1 Jun", "Tue 2 Jun", "Wed 3 Jun", "Thu 4 Jun", "Fri 5 Jun"];
 export const mealSlots: MealSlot[] = ["breakfast", "lunch", "dinner"];
 
 const sampleReviews = (rating: number, comment: string): RecipeReview[] => [
@@ -299,7 +298,7 @@ export const seedMeals: Meal[] = [
 
 export const initialPlan: PlanEntry[] = [
   {
-    day: days[0] ?? "Mon 1 Jun",
+    day: "Mon 1 Jun",
     context: "Prep window before deadline week",
     meals: [
       { slot: "breakfast", mealId: "m9" },
@@ -308,7 +307,7 @@ export const initialPlan: PlanEntry[] = [
     ],
   },
   {
-    day: days[1] ?? "Tue 2 Jun",
+    day: "Tue 2 Jun",
     context: "Low pressure day",
     meals: [
       { slot: "breakfast", mealId: "m10" },
@@ -317,7 +316,7 @@ export const initialPlan: PlanEntry[] = [
     ],
   },
   {
-    day: days[2] ?? "Wed 3 Jun",
+    day: "Wed 3 Jun",
     context: "Late library - Algorithms due",
     meals: [
       { slot: "breakfast", mealId: "m11" },
@@ -326,7 +325,7 @@ export const initialPlan: PlanEntry[] = [
     ],
   },
   {
-    day: days[3] ?? "Thu 4 Jun",
+    day: "Thu 4 Jun",
     context: "Design review morning",
     meals: [
       { slot: "breakfast", mealId: "m12" },
@@ -335,7 +334,7 @@ export const initialPlan: PlanEntry[] = [
     ],
   },
   {
-    day: days[4] ?? "Fri 5 Jun",
+    day: "Fri 5 Jun",
     context: "Quiz morning - late campus",
     meals: [
       { slot: "breakfast", mealId: "m9" },
