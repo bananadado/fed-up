@@ -1,6 +1,7 @@
 import type { CalendarEvent } from "./types";
 import type { CalendarProvider } from "../types";
 import { parseICSText } from "./icsParser";
+import { calendarFetchIcsUrl } from "./calendarApi";
 
 function normalizeWebcalUrl(input: string): string {
   const trimmed = input.trim();
@@ -26,7 +27,7 @@ export async function importFromSubscriptionUrl(
 ): Promise<CalendarEvent[]> {
   const url = normalizeWebcalUrl(subscriptionUrl);
 
-  const response = await fetch("/api/calendar/fetch-ics", {
+  const response = await fetch(calendarFetchIcsUrl(), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ url }),
