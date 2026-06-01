@@ -162,6 +162,7 @@ export function Field({
         max={max}
         value={type === "number" && value === 0 ? "" : value}
         onChange={(event) => onChange(event.target.value)}
+        onKeyDown={type === "number" ? (event) => { if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault(); } : undefined}
         onBlur={onBlur}
         placeholder={placeholder}
         className={cn(
