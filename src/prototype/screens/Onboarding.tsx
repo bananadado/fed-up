@@ -473,6 +473,7 @@ export function Onboarding({
                       <Input
                         value={prefs.budget === 0 ? "" : prefs.budget}
                         onChange={(event) => setPrefs({ ...prefs, budget: event.target.value === "" ? 0 : Number(event.target.value) })}
+                        onKeyDown={(event) => { if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault(); }}
                         onBlur={() => track("onboarding_preference_changed", { field: "budget", value: prefs.budget })}
                         type="number"
                         min="1"
