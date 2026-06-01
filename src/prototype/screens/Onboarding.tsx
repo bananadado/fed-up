@@ -23,7 +23,7 @@ import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
 
 function Progress({ step }: { step: number }) {
-  const labels = ["Calendar", "About you", "Preferences", "Recipe sources"];
+  const labels = ["Calendar", "About you", "Preferences", "Planning priorities"];
 
   return (
     <div className="mb-8 flex gap-2">
