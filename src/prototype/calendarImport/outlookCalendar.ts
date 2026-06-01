@@ -2,9 +2,12 @@ import type { CalendarEvent } from "./types";
 
 declare const __BUN_PUBLIC_MICROSOFT_CLIENT_ID__: string | undefined;
 
+let _envMicrosoftClientId: string | undefined;
+try { _envMicrosoftClientId = process.env.BUN_PUBLIC_MICROSOFT_CLIENT_ID; } catch { /* bundled browser */ }
+
 const clientId: string =
   (typeof __BUN_PUBLIC_MICROSOFT_CLIENT_ID__ !== "undefined" ? __BUN_PUBLIC_MICROSOFT_CLIENT_ID__ : undefined) ??
-  (typeof process !== "undefined" ? process.env.BUN_PUBLIC_MICROSOFT_CLIENT_ID : undefined) ??
+  _envMicrosoftClientId ??
   "";
 
 const AUTH_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
