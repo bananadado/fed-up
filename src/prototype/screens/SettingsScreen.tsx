@@ -46,7 +46,7 @@ export function SettingsScreen({
   const [importMessage, setImportMessage] = useState("");
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
-  const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients));
+  const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
 
   function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -225,7 +225,12 @@ export function SettingsScreen({
             onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
             addPlaceholder="Add an ingredient you dislike"
           />
-          <IngredientEditor ingredients={availableIngredientDrafts} onChange={updateAvailableIngredients} />
+          <IngredientEditor
+            ingredients={availableIngredientDrafts}
+            onChange={updateAvailableIngredients}
+            allowEmpty
+            emptyMessage="No ingredients added yet."
+          />
         </div>
         <div className="mt-6 rounded-lg bg-stone-50 p-4">
           <p className="font-semibold">Calendar connection</p>
