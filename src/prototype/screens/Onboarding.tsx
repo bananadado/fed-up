@@ -4,10 +4,12 @@ import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } fr
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, availableIngredients, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
+import { allergens, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
+import { IngredientEditor } from "../components/IngredientEditor";
+import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
   calendarEventsToDeadlines,
   icsSubscriptionHints,
@@ -96,6 +98,7 @@ export function Onboarding({
   const [importMessage, setImportMessage] = useState("");
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients));
 
   function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -176,6 +179,11 @@ export function Onboarding({
 
     track("onboarding_custom_choice_added", { step, value: normalizedValue });
     update([...values, normalizedValue]);
+  }
+
+  function updateAvailableIngredients(nextDrafts: IngredientDraft[]) {
+    setAvailableIngredientDrafts(nextDrafts);
+    setPrefs({ ...prefs, availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
   }
 
   function finish() {
@@ -334,16 +342,9 @@ export function Onboarding({
               </PreferenceSection>
               <PreferenceSection
                 title="What ingredients do you already have?"
-                description="Pick staples in your kitchen so weekly shopping focuses on what you still need."
+                description="Add staples with the same ingredient controls used for recipes so shopping can focus on what you still need."
               >
-                <ChoiceGroup
-                  title=""
-                  options={availableIngredients}
-                  selected={prefs.availableIngredients}
-                  onToggle={(value) => toggle(prefs.availableIngredients, value, (next) => setPrefs({ ...prefs, availableIngredients: next }))}
-                  onAdd={(value) => addSelection(prefs.availableIngredients, value, (next) => setPrefs({ ...prefs, availableIngredients: next }))}
-                  addPlaceholder="Add an ingredient you already have"
-                />
+                <IngredientEditor ingredients={availableIngredientDrafts} onChange={updateAvailableIngredients} />
               </PreferenceSection>
             </div>
             <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">

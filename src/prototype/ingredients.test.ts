@@ -9,9 +9,11 @@ import {
 
 describe("recipe ingredient helpers", () => {
   test("parses quantities and units from recipe input", () => {
-    expect(parseIngredients("50g oats, 150ml oat milk, 1 wrap, chopped tomato")).toEqual([
+    expect(parseIngredients("50g oats, 150ml oat milk, 1 item banana, 1 can chickpeas, 1 wrap, chopped tomato")).toEqual([
       { name: "oats", quantity: 50, unit: "g" },
       { name: "oat milk", quantity: 150, unit: "ml" },
+      { name: "banana", quantity: 1, unit: "item" },
+      { name: "chickpeas", quantity: 1, unit: "can" },
       { name: "tortilla wrap", quantity: 1, unit: "wrap" },
       { name: "tomato", quantity: 1, unit: "serving", preparation: "chopped" },
     ]);
@@ -21,6 +23,8 @@ describe("recipe ingredient helpers", () => {
     expect(formatIngredient({ name: "oats", quantity: 50, unit: "g" })).toBe("50g oats");
     expect(formatIngredient({ name: "wrap", quantity: 1, unit: "wrap" })).toBe("1 wrap");
     expect(formatIngredient({ name: "bread", quantity: 2, unit: "slice" })).toBe("2 slices bread");
+    expect(formatIngredient({ name: "egg", quantity: 2, unit: "item" })).toBe("2 eggs");
+    expect(formatIngredient({ name: "chickpeas", quantity: 1, unit: "can" })).toBe("1 can chickpeas");
     expect(formatIngredient({ name: "tomato", quantity: 50, unit: "g", preparation: "chopped" })).toBe("50g chopped tomato");
   });
 

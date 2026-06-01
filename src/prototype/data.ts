@@ -238,7 +238,7 @@ export const seedMeals: Meal[] = [
     price: 1.35,
     tags: ["vegetarian", "breakfast", "hot meal"],
     ingredients: [
-      { name: "egg", quantity: 2, unit: "egg" },
+      { name: "egg", quantity: 2, unit: "item" },
       { name: "bread", quantity: 2, unit: "slice" },
       { name: "spinach", quantity: 40, unit: "g" },
     ],
@@ -356,7 +356,6 @@ export const sourceOptions = [
 export const allergens = ["Peanuts", "Tree nuts", "Milk", "Eggs", "Gluten", "Soy", "Sesame", "Shellfish"];
 export const dislikes = ["Mushrooms", "Tofu", "Fish", "Spicy food", "Beans", "Courgette"];
 export const likes = ["Pasta", "Rice and curry", "Stir fry", "Sandwiches", "Instant noodles", "Soup", "Omelettes", "Wraps", "Toast / cereal", "Salads", "Roasted meals", "High-protein meals"];
-export const availableIngredients = ["Rice", "Pasta", "Instant noodles", "Bread", "Eggs", "Oats", "Milk", "Cheese", "Tinned tomatoes", "Chickpeas", "Lentils", "Frozen vegetables", "Onion", "Garlic", "Olive oil", "Soy sauce"];
 export const dietary = ["Vegetarian", "Vegan", "Halal", "Gluten-free", "Dairy-free"];
 export const universities = ["Imperial College London", "University College London", "King's College London", "University of Manchester", "University of Edinburgh", "Other university"];
 

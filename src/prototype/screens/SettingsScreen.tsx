@@ -4,10 +4,12 @@ import { Import, RotateCcw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, availableIngredients, calendarProviders, dietary, dislikes, likes, universities } from "../data";
+import { allergens, calendarProviders, dietary, dislikes, likes, universities } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
+import { IngredientEditor } from "../components/IngredientEditor";
+import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
   calendarEventsToDeadlines,
   icsSubscriptionHints,
@@ -44,6 +46,7 @@ export function SettingsScreen({
   const [importMessage, setImportMessage] = useState("");
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients));
 
   function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -123,6 +126,11 @@ export function SettingsScreen({
 
     track("settings_custom_choice_added", { value: normalizedValue });
     update([...values, normalizedValue]);
+  }
+
+  function updateAvailableIngredients(nextDrafts: IngredientDraft[]) {
+    setAvailableIngredientDrafts(nextDrafts);
+    setPrefs({ ...prefs, availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
   }
 
   return (
@@ -217,14 +225,7 @@ export function SettingsScreen({
             onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
             addPlaceholder="Add an ingredient you dislike"
           />
-          <ChoiceGroup
-            title="Ingredients I already have"
-            options={availableIngredients}
-            selected={prefs.availableIngredients}
-            onToggle={(value) => toggle(prefs.availableIngredients, value, (next) => setPrefs({ ...prefs, availableIngredients: next }))}
-            onAdd={(value) => addSelection(prefs.availableIngredients, value, (next) => setPrefs({ ...prefs, availableIngredients: next }))}
-            addPlaceholder="Add an ingredient you already have"
-          />
+          <IngredientEditor ingredients={availableIngredientDrafts} onChange={updateAvailableIngredients} />
         </div>
         <div className="mt-6 rounded-lg bg-stone-50 p-4">
           <p className="font-semibold">Calendar connection</p>
