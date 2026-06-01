@@ -42,7 +42,7 @@ describe("shopping helpers", () => {
   test("omits ingredients the user already has from plan shopping lists", () => {
     const plan = [{ day: "Mon", context: "Study day", meals: [{ slot: "breakfast" as const, mealId: "m9" }] }];
 
-    expect(ingredientsFromPlan(plan, [], ["Oats"]).some((item) => item.name.toLowerCase() === "oats")).toBe(false);
+    expect(ingredientsFromPlan(plan, [], [{ name: "Oats", quantity: 50, unit: "g" }]).some((item) => item.name.toLowerCase() === "oats")).toBe(false);
   });
 
   test("builds selected vendor search URLs for one ingredient at a time", () => {

@@ -55,6 +55,8 @@ export function gramsForIngredient(ingredient: RecipeIngredient) {
       return ingredient.quantity * 15;
     case "cup":
       return ingredient.quantity * 240;
+    case "can":
+      return ingredient.quantity * 400;
     default:
       return ingredient.quantity * (servingGrams[ingredient.name.toLowerCase()] ?? 100);
   }

@@ -52,6 +52,7 @@ type RecipeIngredient = {
   name: string;
   quantity: number;
   unit: string;
+  preparation?: string;
 };
 
 type Nutrition = {
@@ -124,7 +125,7 @@ type PrototypeSessionSettings = {
     allergens: string[];
     dislikes: string[];
     likes: string[];
-    availableIngredients: string[];
+    availableIngredients: RecipeIngredient[];
   };
   deadlines: {
     id: string;
@@ -315,6 +316,45 @@ function normalizeDeadline(value: unknown): PrototypeSessionSettings["deadlines"
   };
 }
 
+function normalizeRecipeIngredient(value: unknown): RecipeIngredient | null {
+  if (typeof value === "string") {
+    const name = boundedString(value, "", 120);
+    return name ? {name, quantity: 1, unit: "serving"} : null;
+  }
+
+  const ingredient = asRecord(value);
+
+  if (ingredient === null) {
+    return null;
+  }
+
+  const name = boundedString(ingredient.name, "", 120);
+  const unit = boundedString(ingredient.unit, "serving", 40);
+  const preparation = boundedString(ingredient.preparation, "", 80);
+
+  if (!name || !unit) {
+    return null;
+  }
+
+  return {
+    name,
+    quantity: boundedNumber(ingredient.quantity, 1, 0.1, 5000),
+    unit,
+    ...(preparation ? {preparation} : {}),
+  };
+}
+
+function normalizeRecipeIngredientList(value: unknown, maxItems = 30): RecipeIngredient[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map(normalizeRecipeIngredient)
+    .filter((ingredient): ingredient is RecipeIngredient => ingredient !== null)
+    .slice(0, maxItems);
+}
+
 function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSettings {
   const settings = asRecord(value);
 
@@ -347,7 +387,7 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
       allergens: boundedStringList(preferences.allergens),
       dislikes: boundedStringList(preferences.dislikes),
       likes: boundedStringList(preferences.likes),
-      availableIngredients: boundedStringList(preferences.availableIngredients),
+      availableIngredients: normalizeRecipeIngredientList(preferences.availableIngredients),
     },
     deadlines: Array.isArray(settings.deadlines) ?
       settings.deadlines
@@ -476,6 +516,8 @@ function gramsForIngredient(ingredient: RecipeIngredient): number {
     return ingredient.quantity * 15;
   case "cup":
     return ingredient.quantity * 240;
+  case "can":
+    return ingredient.quantity * 400;
   default:
     return ingredient.quantity * (servingGrams[ingredient.name.toLowerCase()] ?? 100);
   }

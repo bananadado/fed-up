@@ -1948,10 +1948,28 @@
       "norm_label": "normalizedeadline()"
     },
     {
-      "label": "normalizePrototypeSessionSettings()",
+      "label": "normalizeRecipeIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
       "source_location": "L193",
+      "id": "lib_index_normalizerecipeingredient",
+      "community": 40,
+      "norm_label": "normalizerecipeingredient()"
+    },
+    {
+      "label": "normalizeRecipeIngredientList()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L210",
+      "id": "lib_index_normalizerecipeingredientlist",
+      "community": 40,
+      "norm_label": "normalizerecipeingredientlist()"
+    },
+    {
+      "label": "normalizePrototypeSessionSettings()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L219",
       "id": "lib_index_normalizeprototypesessionsettings",
       "community": 40,
       "norm_label": "normalizeprototypesessionsettings()"
@@ -1960,7 +1978,7 @@
       "label": "sessionExpiryTimestamp()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L235",
+      "source_location": "L261",
       "id": "lib_index_sessionexpirytimestamp",
       "community": 8,
       "norm_label": "sessionexpirytimestamp()"
@@ -1969,16 +1987,16 @@
       "label": "timestampToIso()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L238",
+      "source_location": "L264",
       "id": "lib_index_timestamptoiso",
-      "community": 88,
+      "community": 8,
       "norm_label": "timestamptoiso()"
     },
     {
       "label": "readRequestBody()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L247",
+      "source_location": "L273",
       "id": "lib_index_readrequestbody",
       "community": 40,
       "norm_label": "readrequestbody()"
@@ -1987,7 +2005,7 @@
       "label": "rejectUnsupportedNutritionMethod()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L258",
+      "source_location": "L284",
       "id": "lib_index_rejectunsupportednutritionmethod",
       "community": 8,
       "norm_label": "rejectunsupportednutritionmethod()"
@@ -1996,7 +2014,7 @@
       "label": "isRecipeIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L270",
+      "source_location": "L296",
       "id": "lib_index_isrecipeingredient",
       "community": 8,
       "norm_label": "isrecipeingredient()"
@@ -2005,7 +2023,7 @@
       "label": "normalizeIngredientKey()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L280",
+      "source_location": "L306",
       "id": "lib_index_normalizeingredientkey",
       "community": 41,
       "norm_label": "normalizeingredientkey()"
@@ -2014,7 +2032,7 @@
       "label": "openFoodFactsCacheDocId()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L283",
+      "source_location": "L309",
       "id": "lib_index_openfoodfactscachedocid",
       "community": 48,
       "norm_label": "openfoodfactscachedocid()"
@@ -2023,7 +2041,7 @@
       "label": "toCategoryTag()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L286",
+      "source_location": "L312",
       "id": "lib_index_tocategorytag",
       "community": 41,
       "norm_label": "tocategorytag()"
@@ -2032,7 +2050,7 @@
       "label": "uniqueTerms()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L292",
+      "source_location": "L318",
       "id": "lib_index_uniqueterms",
       "community": 41,
       "norm_label": "uniqueterms()"
@@ -2041,7 +2059,7 @@
       "label": "openFoodFactsCategoryTerms()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L295",
+      "source_location": "L321",
       "id": "lib_index_openfoodfactscategoryterms",
       "community": 41,
       "norm_label": "openfoodfactscategoryterms()"
@@ -2050,43 +2068,43 @@
       "label": "gramsForIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L309",
+      "source_location": "L335",
       "id": "lib_index_gramsforingredient",
-      "community": 8,
+      "community": 66,
       "norm_label": "gramsforingredient()"
     },
     {
       "label": "estimateIngredientNutrition()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L330",
+      "source_location": "L358",
       "id": "lib_index_estimateingredientnutrition",
-      "community": 8,
+      "community": 66,
       "norm_label": "estimateingredientnutrition()"
     },
     {
       "label": "roundMacro()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L356",
+      "source_location": "L384",
       "id": "lib_index_roundmacro",
-      "community": 19,
+      "community": 8,
       "norm_label": "roundmacro()"
     },
     {
       "label": "totalNutritionFromEstimates()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L359",
+      "source_location": "L387",
       "id": "lib_index_totalnutritionfromestimates",
-      "community": 19,
+      "community": 8,
       "norm_label": "totalnutritionfromestimates()"
     },
     {
       "label": "timestampMillis()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L378",
+      "source_location": "L406",
       "id": "lib_index_timestampmillis",
       "community": 48,
       "norm_label": "timestampmillis()"
@@ -2095,7 +2113,7 @@
       "label": "parseCachedProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L387",
+      "source_location": "L415",
       "id": "lib_index_parsecachedproduct",
       "community": 40,
       "norm_label": "parsecachedproduct()"
@@ -2104,7 +2122,7 @@
       "label": "compactOpenFoodFactsProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L413",
+      "source_location": "L441",
       "id": "lib_index_compactopenfoodfactsproduct",
       "community": 41,
       "norm_label": "compactopenfoodfactsproduct()"
@@ -2113,7 +2131,7 @@
       "label": "sleep()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L427",
+      "source_location": "L455",
       "id": "lib_index_sleep",
       "community": 41,
       "norm_label": "sleep()"
@@ -2122,7 +2140,7 @@
       "label": "waitForOpenFoodFactsTurn()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L430",
+      "source_location": "L458",
       "id": "lib_index_waitforopenfoodfactsturn",
       "community": 41,
       "norm_label": "waitforopenfoodfactsturn()"
@@ -2131,7 +2149,7 @@
       "label": "fetchOpenFoodFactsProducts()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L445",
+      "source_location": "L473",
       "id": "lib_index_fetchopenfoodfactsproducts",
       "community": 41,
       "norm_label": "fetchopenfoodfactsproducts()"
@@ -2140,7 +2158,7 @@
       "label": "fetchOpenFoodFactsProductForIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L468",
+      "source_location": "L496",
       "id": "lib_index_fetchopenfoodfactsproductforingredient",
       "community": 41,
       "norm_label": "fetchopenfoodfactsproductforingredient()"
@@ -2149,7 +2167,7 @@
       "label": "tryAcquireOpenFoodFactsCacheLock()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L478",
+      "source_location": "L506",
       "id": "lib_index_tryacquireopenfoodfactscachelock",
       "community": 48,
       "norm_label": "tryacquireopenfoodfactscachelock()"
@@ -2158,7 +2176,7 @@
       "label": "readOpenFoodFactsCachedProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L500",
+      "source_location": "L528",
       "id": "lib_index_readopenfoodfactscachedproduct",
       "community": 48,
       "norm_label": "readopenfoodfactscachedproduct()"
@@ -2167,7 +2185,7 @@
       "label": "cacheOpenFoodFactsProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L516",
+      "source_location": "L544",
       "id": "lib_index_cacheopenfoodfactsproduct",
       "community": 48,
       "norm_label": "cacheopenfoodfactsproduct()"
@@ -2176,7 +2194,7 @@
       "label": "findOpenFoodFactsProductForIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L526",
+      "source_location": "L554",
       "id": "lib_index_findopenfoodfactsproductforingredient",
       "community": 48,
       "norm_label": "findopenfoodfactsproductforingredient()"
@@ -2185,16 +2203,16 @@
       "label": "sendSessionJson()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L552",
+      "source_location": "L580",
       "id": "lib_index_sendsessionjson",
-      "community": 88,
+      "community": 8,
       "norm_label": "sendsessionjson()"
     },
     {
       "label": "body",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L596",
+      "source_location": "L624",
       "id": "lib_index_body",
       "community": 8,
       "norm_label": "body"
@@ -2203,7 +2221,7 @@
       "label": "ingredients",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L598",
+      "source_location": "L626",
       "id": "lib_index_ingredients",
       "community": 8,
       "norm_label": "ingredients"
@@ -2212,7 +2230,7 @@
       "label": "estimates",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L611",
+      "source_location": "L639",
       "id": "lib_index_estimates",
       "community": 8,
       "norm_label": "estimates"
@@ -2221,7 +2239,7 @@
       "label": "missingIngredients",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L612",
+      "source_location": "L640",
       "id": "lib_index_missingingredients",
       "community": 8,
       "norm_label": "missingingredients"
@@ -2230,7 +2248,7 @@
       "label": "sessionRef",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L640",
+      "source_location": "L668",
       "id": "lib_index_sessionref",
       "community": 8,
       "norm_label": "sessionref"
@@ -2239,7 +2257,7 @@
       "label": "data",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L646",
+      "source_location": "L674",
       "id": "lib_index_data",
       "community": 80,
       "norm_label": "data"
@@ -2248,7 +2266,7 @@
       "label": "settings",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L647",
+      "source_location": "L675",
       "id": "lib_index_settings",
       "community": 8,
       "norm_label": "settings"
@@ -2257,7 +2275,7 @@
       "label": "expiresAt",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L648",
+      "source_location": "L676",
       "id": "lib_index_expiresat",
       "community": 8,
       "norm_label": "expiresat"
@@ -2383,7 +2401,7 @@
       "label": "Nutrition",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L57",
+      "source_location": "L58",
       "id": "src_index_nutrition",
       "community": 9,
       "norm_label": "nutrition"
@@ -2392,7 +2410,7 @@
       "label": "OpenFoodFactsProduct",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L75",
+      "source_location": "L76",
       "id": "src_index_openfoodfactsproduct",
       "community": 9,
       "norm_label": "openfoodfactsproduct"
@@ -2401,7 +2419,7 @@
       "label": "IngredientNutritionEstimate",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L88",
+      "source_location": "L89",
       "id": "src_index_ingredientnutritionestimate",
       "community": 9,
       "norm_label": "ingredientnutritionestimate"
@@ -2410,7 +2428,7 @@
       "label": "OpenFoodFactsSearchResponse",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L98",
+      "source_location": "L99",
       "id": "src_index_openfoodfactssearchresponse",
       "community": 9,
       "norm_label": "openfoodfactssearchresponse"
@@ -2419,7 +2437,7 @@
       "label": "HttpRequest",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L102",
+      "source_location": "L103",
       "id": "src_index_httprequest",
       "community": 9,
       "norm_label": "httprequest"
@@ -2428,7 +2446,7 @@
       "label": "HttpResponse",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L108",
+      "source_location": "L109",
       "id": "src_index_httpresponse",
       "community": 9,
       "norm_label": "httpresponse"
@@ -2437,7 +2455,7 @@
       "label": "PrototypeSessionSettings",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L115",
+      "source_location": "L116",
       "id": "src_index_prototypesessionsettings",
       "community": 9,
       "norm_label": "prototypesessionsettings"
@@ -2446,7 +2464,7 @@
       "label": "servingGrams",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L144",
+      "source_location": "L145",
       "id": "src_index_servinggrams",
       "community": 9,
       "norm_label": "servinggrams"
@@ -2455,7 +2473,7 @@
       "label": "cookingAdjectives",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L157",
+      "source_location": "L158",
       "id": "src_index_cookingadjectives",
       "community": 9,
       "norm_label": "cookingadjectives"
@@ -2464,7 +2482,7 @@
       "label": "irregularCategoryTerms",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L162",
+      "source_location": "L163",
       "id": "src_index_irregularcategoryterms",
       "community": 9,
       "norm_label": "irregularcategoryterms"
@@ -2473,25 +2491,25 @@
       "label": "seedPrototypeData()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L172",
+      "source_location": "L173",
       "id": "src_index_seedprototypedata",
-      "community": 9,
+      "community": 68,
       "norm_label": "seedprototypedata()"
     },
     {
       "label": "getPrototypeData()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L184",
+      "source_location": "L185",
       "id": "src_index_getprototypedata",
-      "community": 9,
+      "community": 68,
       "norm_label": "getprototypedata()"
     },
     {
       "label": "rejectUnsupportedMethod()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L204",
+      "source_location": "L205",
       "id": "src_index_rejectunsupportedmethod",
       "community": 9,
       "norm_label": "rejectunsupportedmethod()"
@@ -2500,7 +2518,7 @@
       "label": "rejectUnsupportedSessionMethod()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L219",
+      "source_location": "L220",
       "id": "src_index_rejectunsupportedsessionmethod",
       "community": 9,
       "norm_label": "rejectunsupportedsessionmethod()"
@@ -2509,7 +2527,7 @@
       "label": "sendJson()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L242",
+      "source_location": "L243",
       "id": "src_index_sendjson",
       "community": 9,
       "norm_label": "sendjson()"
@@ -2518,7 +2536,7 @@
       "label": "sendError()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L247",
+      "source_location": "L248",
       "id": "src_index_senderror",
       "community": 9,
       "norm_label": "senderror()"
@@ -2527,7 +2545,7 @@
       "label": "asRecord()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L252",
+      "source_location": "L253",
       "id": "src_index_asrecord",
       "community": 42,
       "norm_label": "asrecord()"
@@ -2536,7 +2554,7 @@
       "label": "boundedString()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L260",
+      "source_location": "L261",
       "id": "src_index_boundedstring",
       "community": 42,
       "norm_label": "boundedstring()"
@@ -2545,7 +2563,7 @@
       "label": "boundedNumber()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L268",
+      "source_location": "L269",
       "id": "src_index_boundednumber",
       "community": 42,
       "norm_label": "boundednumber()"
@@ -2554,7 +2572,7 @@
       "label": "boundedStringList()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L281",
+      "source_location": "L282",
       "id": "src_index_boundedstringlist",
       "community": 42,
       "norm_label": "boundedstringlist()"
@@ -2563,7 +2581,7 @@
       "label": "normalizeRecipeList()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L297",
+      "source_location": "L298",
       "id": "src_index_normalizerecipelist",
       "community": 42,
       "norm_label": "normalizerecipelist()"
@@ -2572,16 +2590,34 @@
       "label": "normalizeDeadline()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L302",
+      "source_location": "L303",
       "id": "src_index_normalizedeadline",
       "community": 42,
       "norm_label": "normalizedeadline()"
     },
     {
+      "label": "normalizeRecipeIngredient()",
+      "file_type": "code",
+      "source_file": "functions/src/index.ts",
+      "source_location": "L319",
+      "id": "src_index_normalizerecipeingredient",
+      "community": 42,
+      "norm_label": "normalizerecipeingredient()"
+    },
+    {
+      "label": "normalizeRecipeIngredientList()",
+      "file_type": "code",
+      "source_file": "functions/src/index.ts",
+      "source_location": "L347",
+      "id": "src_index_normalizerecipeingredientlist",
+      "community": 42,
+      "norm_label": "normalizerecipeingredientlist()"
+    },
+    {
       "label": "normalizePrototypeSessionSettings()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L318",
+      "source_location": "L358",
       "id": "src_index_normalizeprototypesessionsettings",
       "community": 42,
       "norm_label": "normalizeprototypesessionsettings()"
@@ -2590,7 +2626,7 @@
       "label": "sessionExpiryTimestamp()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L367",
+      "source_location": "L407",
       "id": "src_index_sessionexpirytimestamp",
       "community": 9,
       "norm_label": "sessionexpirytimestamp()"
@@ -2599,16 +2635,16 @@
       "label": "timestampToIso()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L371",
+      "source_location": "L411",
       "id": "src_index_timestamptoiso",
-      "community": 91,
+      "community": 9,
       "norm_label": "timestamptoiso()"
     },
     {
       "label": "readRequestBody()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L383",
+      "source_location": "L423",
       "id": "src_index_readrequestbody",
       "community": 42,
       "norm_label": "readrequestbody()"
@@ -2617,7 +2653,7 @@
       "label": "rejectUnsupportedNutritionMethod()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L395",
+      "source_location": "L435",
       "id": "src_index_rejectunsupportednutritionmethod",
       "community": 9,
       "norm_label": "rejectunsupportednutritionmethod()"
@@ -2626,7 +2662,7 @@
       "label": "isRecipeIngredient()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L413",
+      "source_location": "L453",
       "id": "src_index_isrecipeingredient",
       "community": 9,
       "norm_label": "isrecipeingredient()"
@@ -2635,7 +2671,7 @@
       "label": "normalizeIngredientKey()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L427",
+      "source_location": "L467",
       "id": "src_index_normalizeingredientkey",
       "community": 64,
       "norm_label": "normalizeingredientkey()"
@@ -2644,7 +2680,7 @@
       "label": "openFoodFactsCacheDocId()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L431",
+      "source_location": "L471",
       "id": "src_index_openfoodfactscachedocid",
       "community": 37,
       "norm_label": "openfoodfactscachedocid()"
@@ -2653,7 +2689,7 @@
       "label": "toCategoryTag()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L435",
+      "source_location": "L475",
       "id": "src_index_tocategorytag",
       "community": 64,
       "norm_label": "tocategorytag()"
@@ -2662,7 +2698,7 @@
       "label": "uniqueTerms()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L442",
+      "source_location": "L482",
       "id": "src_index_uniqueterms",
       "community": 64,
       "norm_label": "uniqueterms()"
@@ -2671,7 +2707,7 @@
       "label": "openFoodFactsCategoryTerms()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L446",
+      "source_location": "L486",
       "id": "src_index_openfoodfactscategoryterms",
       "community": 64,
       "norm_label": "openfoodfactscategoryterms()"
@@ -2680,25 +2716,25 @@
       "label": "gramsForIngredient()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L463",
+      "source_location": "L503",
       "id": "src_index_gramsforingredient",
-      "community": 66,
+      "community": 9,
       "norm_label": "gramsforingredient()"
     },
     {
       "label": "estimateIngredientNutrition()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L484",
+      "source_location": "L526",
       "id": "src_index_estimateingredientnutrition",
-      "community": 66,
+      "community": 9,
       "norm_label": "estimateingredientnutrition()"
     },
     {
       "label": "roundMacro()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L519",
+      "source_location": "L561",
       "id": "src_index_roundmacro",
       "community": 67,
       "norm_label": "roundmacro()"
@@ -2707,7 +2743,7 @@
       "label": "totalNutritionFromEstimates()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L523",
+      "source_location": "L565",
       "id": "src_index_totalnutritionfromestimates",
       "community": 67,
       "norm_label": "totalnutritionfromestimates()"
@@ -2716,7 +2752,7 @@
       "label": "timestampMillis()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L546",
+      "source_location": "L588",
       "id": "src_index_timestampmillis",
       "community": 37,
       "norm_label": "timestampmillis()"
@@ -2725,61 +2761,61 @@
       "label": "parseCachedProduct()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L558",
+      "source_location": "L600",
       "id": "src_index_parsecachedproduct",
-      "community": 42,
+      "community": 37,
       "norm_label": "parsecachedproduct()"
     },
     {
       "label": "compactOpenFoodFactsProduct()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L592",
+      "source_location": "L634",
       "id": "src_index_compactopenfoodfactsproduct",
-      "community": 37,
+      "community": 64,
       "norm_label": "compactopenfoodfactsproduct()"
     },
     {
       "label": "sleep()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L617",
+      "source_location": "L659",
       "id": "src_index_sleep",
-      "community": 37,
+      "community": 64,
       "norm_label": "sleep()"
     },
     {
       "label": "waitForOpenFoodFactsTurn()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L621",
+      "source_location": "L663",
       "id": "src_index_waitforopenfoodfactsturn",
-      "community": 37,
+      "community": 64,
       "norm_label": "waitforopenfoodfactsturn()"
     },
     {
       "label": "fetchOpenFoodFactsProducts()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L643",
+      "source_location": "L685",
       "id": "src_index_fetchopenfoodfactsproducts",
-      "community": 37,
+      "community": 64,
       "norm_label": "fetchopenfoodfactsproducts()"
     },
     {
       "label": "fetchOpenFoodFactsProductForIngredient()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L670",
+      "source_location": "L712",
       "id": "src_index_fetchopenfoodfactsproductforingredient",
-      "community": 37,
+      "community": 64,
       "norm_label": "fetchopenfoodfactsproductforingredient()"
     },
     {
       "label": "tryAcquireOpenFoodFactsCacheLock()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L685",
+      "source_location": "L727",
       "id": "src_index_tryacquireopenfoodfactscachelock",
       "community": 37,
       "norm_label": "tryacquireopenfoodfactscachelock()"
@@ -2788,7 +2824,7 @@
       "label": "readOpenFoodFactsCachedProduct()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L719",
+      "source_location": "L761",
       "id": "src_index_readopenfoodfactscachedproduct",
       "community": 37,
       "norm_label": "readopenfoodfactscachedproduct()"
@@ -2797,7 +2833,7 @@
       "label": "cacheOpenFoodFactsProduct()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L745",
+      "source_location": "L787",
       "id": "src_index_cacheopenfoodfactsproduct",
       "community": 37,
       "norm_label": "cacheopenfoodfactsproduct()"
@@ -2806,7 +2842,7 @@
       "label": "findOpenFoodFactsProductForIngredient()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L763",
+      "source_location": "L805",
       "id": "src_index_findopenfoodfactsproductforingredient",
       "community": 37,
       "norm_label": "findopenfoodfactsproductforingredient()"
@@ -2815,16 +2851,16 @@
       "label": "sendSessionJson()",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L798",
+      "source_location": "L840",
       "id": "src_index_sendsessionjson",
-      "community": 91,
+      "community": 9,
       "norm_label": "sendsessionjson()"
     },
     {
       "label": "deadlineFoodBootstrap",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L812",
+      "source_location": "L854",
       "id": "src_index_deadlinefoodbootstrap",
       "community": 9,
       "norm_label": "deadlinefoodbootstrap"
@@ -2833,7 +2869,7 @@
       "label": "deadlineFoodMeals",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L822",
+      "source_location": "L864",
       "id": "src_index_deadlinefoodmeals",
       "community": 9,
       "norm_label": "deadlinefoodmeals"
@@ -2842,7 +2878,7 @@
       "label": "deadlineFoodScenario",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L833",
+      "source_location": "L875",
       "id": "src_index_deadlinefoodscenario",
       "community": 9,
       "norm_label": "deadlinefoodscenario"
@@ -2851,7 +2887,7 @@
       "label": "deadlineFoodNutrition",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L844",
+      "source_location": "L886",
       "id": "src_index_deadlinefoodnutrition",
       "community": 9,
       "norm_label": "deadlinefoodnutrition"
@@ -2860,7 +2896,7 @@
       "label": "deadlineFoodSession",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L888",
+      "source_location": "L930",
       "id": "src_index_deadlinefoodsession",
       "community": 9,
       "norm_label": "deadlinefoodsession"
@@ -2869,7 +2905,7 @@
       "label": "calendarFetchIcs",
       "file_type": "code",
       "source_file": "functions/src/index.ts",
-      "source_location": "L970",
+      "source_location": "L1012",
       "id": "src_index_calendarfetchics",
       "community": 9,
       "norm_label": "calendarfetchics"
@@ -3092,7 +3128,7 @@
       "source_file": "src/App.tsx",
       "source_location": "L1",
       "id": "src_app_tsx",
-      "community": 18,
+      "community": 19,
       "norm_label": "app.tsx"
     },
     {
@@ -3101,7 +3137,7 @@
       "source_file": "src/App.tsx",
       "source_location": "L4",
       "id": "src_app_app",
-      "community": 18,
+      "community": 19,
       "norm_label": "app()"
     },
     {
@@ -3110,7 +3146,7 @@
       "source_file": "src/frontend.tsx",
       "source_location": "L1",
       "id": "src_frontend_tsx",
-      "community": 18,
+      "community": 19,
       "norm_label": "frontend.tsx"
     },
     {
@@ -3866,7 +3902,7 @@
       "source_file": "src/lib/timeInput.test.ts",
       "source_location": "L1",
       "id": "src_lib_timeinput_test_ts",
-      "community": 1,
+      "community": 49,
       "norm_label": "timeinput.test.ts"
     },
     {
@@ -3875,7 +3911,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L1",
       "id": "src_lib_posthog_ts",
-      "community": 18,
+      "community": 19,
       "norm_label": "posthog.ts"
     },
     {
@@ -3884,7 +3920,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L8",
       "id": "lib_posthog_readbunpublicenv",
-      "community": 18,
+      "community": 19,
       "norm_label": "readbunpublicenv()"
     },
     {
@@ -3893,7 +3929,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L14",
       "id": "lib_posthog_token",
-      "community": 18,
+      "community": 19,
       "norm_label": "token"
     },
     {
@@ -3902,7 +3938,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L19",
       "id": "lib_posthog_host",
-      "community": 18,
+      "community": 19,
       "norm_label": "host"
     },
     {
@@ -3911,7 +3947,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L28",
       "id": "lib_posthog_analyticsproperty",
-      "community": 18,
+      "community": 19,
       "norm_label": "analyticsproperty"
     },
     {
@@ -3920,7 +3956,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L29",
       "id": "lib_posthog_analyticsproperties",
-      "community": 18,
+      "community": 19,
       "norm_label": "analyticsproperties"
     },
     {
@@ -3929,7 +3965,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L31",
       "id": "lib_posthog_compactproperties",
-      "community": 18,
+      "community": 19,
       "norm_label": "compactproperties()"
     },
     {
@@ -3938,7 +3974,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L37",
       "id": "lib_posthog_registerposthogsession",
-      "community": 18,
+      "community": 19,
       "norm_label": "registerposthogsession()"
     },
     {
@@ -3947,7 +3983,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L42",
       "id": "lib_posthog_registerposthogcontext",
-      "community": 18,
+      "community": 19,
       "norm_label": "registerposthogcontext()"
     },
     {
@@ -3956,7 +3992,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L46",
       "id": "lib_posthog_captureposthogevent",
-      "community": 18,
+      "community": 19,
       "norm_label": "captureposthogevent()"
     },
     {
@@ -3983,7 +4019,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L1",
       "id": "src_lib_posthogconfig_ts",
-      "community": 18,
+      "community": 19,
       "norm_label": "posthogconfig.ts"
     },
     {
@@ -3992,7 +4028,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L3",
       "id": "lib_posthogconfig_personaldataproperties",
-      "community": 18,
+      "community": 19,
       "norm_label": "personaldataproperties"
     },
     {
@@ -4001,7 +4037,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L14",
       "id": "lib_posthogconfig_createposthogconfig",
-      "community": 18,
+      "community": 19,
       "norm_label": "createposthogconfig()"
     },
     {
@@ -4010,7 +4046,7 @@
       "source_file": "src/lib/timeInput.ts",
       "source_location": "L1",
       "id": "src_lib_timeinput_ts",
-      "community": 1,
+      "community": 49,
       "norm_label": "timeinput.ts"
     },
     {
@@ -4019,7 +4055,7 @@
       "source_file": "src/lib/timeInput.ts",
       "source_location": "L5",
       "id": "lib_timeinput_minutestotimeinputvalue",
-      "community": 1,
+      "community": 49,
       "norm_label": "minutestotimeinputvalue()"
     },
     {
@@ -4028,7 +4064,7 @@
       "source_file": "src/lib/timeInput.ts",
       "source_location": "L17",
       "id": "lib_timeinput_timeinputvaluetominutes",
-      "community": 1,
+      "community": 49,
       "norm_label": "timeinputvaluetominutes()"
     },
     {
@@ -4037,7 +4073,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L1",
       "id": "src_lib_posthogconfig_test_ts",
-      "community": 18,
+      "community": 19,
       "norm_label": "posthogconfig.test.ts"
     },
     {
@@ -4046,7 +4082,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L7",
       "id": "lib_posthogconfig_test_startsessionrecordingcalls",
-      "community": 18,
+      "community": 19,
       "norm_label": "startsessionrecordingcalls"
     },
     {
@@ -4055,7 +4091,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L8",
       "id": "lib_posthogconfig_test_config",
-      "community": 18,
+      "community": 19,
       "norm_label": "config"
     },
     {
@@ -4064,7 +4100,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L10",
       "id": "lib_posthogconfig_test_loadedposthog",
-      "community": 18,
+      "community": 19,
       "norm_label": "loadedposthog"
     },
     {
@@ -4073,7 +4109,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L12",
       "id": "lib_posthogconfig_test_client",
-      "community": 18,
+      "community": 19,
       "norm_label": "client"
     },
     {
@@ -4550,7 +4586,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L1",
       "id": "src_domain_types_ts",
-      "community": 2,
+      "community": 6,
       "norm_label": "types.ts"
     },
     {
@@ -4559,7 +4595,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L1",
       "id": "domain_types_mealtype",
-      "community": 2,
+      "community": 6,
       "norm_label": "mealtype"
     },
     {
@@ -4577,7 +4613,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L5",
       "id": "domain_types_kitchenaccess",
-      "community": 2,
+      "community": 6,
       "norm_label": "kitchenaccess"
     },
     {
@@ -4604,7 +4640,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L20",
       "id": "domain_types_recipeingredient",
-      "community": 68,
+      "community": 65,
       "norm_label": "recipeingredient"
     },
     {
@@ -4613,7 +4649,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L27",
       "id": "domain_types_recipedetails",
-      "community": 2,
+      "community": 6,
       "norm_label": "recipedetails"
     },
     {
@@ -4631,7 +4667,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L52",
       "id": "domain_types_plannedmeal",
-      "community": 2,
+      "community": 6,
       "norm_label": "plannedmeal"
     },
     {
@@ -4667,7 +4703,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L89",
       "id": "domain_types_rankedstrategy",
-      "community": 2,
+      "community": 36,
       "norm_label": "rankedstrategy"
     },
     {
@@ -4703,7 +4739,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L1",
       "id": "src_prototype_workloadmodel_ts",
-      "community": 1,
+      "community": 49,
       "norm_label": "workloadmodel.ts"
     },
     {
@@ -4712,7 +4748,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L3",
       "id": "prototype_workloadmodel_classifyimportedevent",
-      "community": 1,
+      "community": 49,
       "norm_label": "classifyimportedevent()"
     },
     {
@@ -4721,7 +4757,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L7",
       "id": "prototype_workloadmodel_workloadscore",
-      "community": 1,
+      "community": 49,
       "norm_label": "workloadscore()"
     },
     {
@@ -4730,7 +4766,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L14",
       "id": "prototype_workloadmodel_workloadlabel",
-      "community": 1,
+      "community": 49,
       "norm_label": "workloadlabel()"
     },
     {
@@ -4739,7 +4775,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L23",
       "id": "prototype_workloadmodel_cookingeffortreason",
-      "community": 1,
+      "community": 49,
       "norm_label": "cookingeffortreason()"
     },
     {
@@ -4748,7 +4784,7 @@
       "source_file": "src/prototype/nutritionApi.ts",
       "source_location": "L1",
       "id": "src_prototype_nutritionapi_ts",
-      "community": 68,
+      "community": 65,
       "norm_label": "nutritionapi.ts"
     },
     {
@@ -4757,7 +4793,7 @@
       "source_file": "src/prototype/nutritionApi.ts",
       "source_location": "L4",
       "id": "prototype_nutritionapi_fetchopenfoodfactsnutrition",
-      "community": 68,
+      "community": 4,
       "norm_label": "fetchopenfoodfactsnutrition()"
     },
     {
@@ -4829,7 +4865,7 @@
       "source_file": "src/prototype/analytics.ts",
       "source_location": "L1",
       "id": "src_prototype_analytics_ts",
-      "community": 49,
+      "community": 35,
       "norm_label": "analytics.ts"
     },
     {
@@ -4838,7 +4874,7 @@
       "source_file": "src/prototype/analytics.ts",
       "source_location": "L3",
       "id": "prototype_analytics_trackprototypeevent",
-      "community": 49,
+      "community": 35,
       "norm_label": "trackprototypeevent"
     },
     {
@@ -4883,7 +4919,7 @@
       "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
       "source_location": "L33",
       "id": "prototype_deadlinefoodprototype_isappscreen",
-      "community": 18,
+      "community": 19,
       "norm_label": "isappscreen()"
     },
     {
@@ -4919,7 +4955,7 @@
       "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
       "source_location": "L62",
       "id": "prototype_deadlinefoodprototype_deadlinefoodprototype",
-      "community": 18,
+      "community": 19,
       "norm_label": "deadlinefoodprototype()"
     },
     {
@@ -5018,7 +5054,7 @@
       "source_file": "src/prototype/shopping.ts",
       "source_location": "L102",
       "id": "prototype_shopping_groceryvendorbyid",
-      "community": 49,
+      "community": 0,
       "norm_label": "groceryvendorbyid()"
     },
     {
@@ -5072,7 +5108,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L1",
       "id": "src_prototype_data_ts",
-      "community": 1,
+      "community": 18,
       "norm_label": "data.ts"
     },
     {
@@ -5081,7 +5117,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L3",
       "id": "prototype_data_calendarproviders",
-      "community": 1,
+      "community": 18,
       "norm_label": "calendarproviders"
     },
     {
@@ -5090,7 +5126,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L10",
       "id": "prototype_data_days",
-      "community": 1,
+      "community": 49,
       "norm_label": "days"
     },
     {
@@ -5099,7 +5135,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L11",
       "id": "prototype_data_mealslots",
-      "community": 1,
+      "community": 18,
       "norm_label": "mealslots"
     },
     {
@@ -5108,7 +5144,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L13",
       "id": "prototype_data_samplereviews",
-      "community": 1,
+      "community": 18,
       "norm_label": "samplereviews()"
     },
     {
@@ -5144,7 +5180,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L348",
       "id": "prototype_data_sourceoptions",
-      "community": 1,
+      "community": 18,
       "norm_label": "sourceoptions"
     },
     {
@@ -5153,7 +5189,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L356",
       "id": "prototype_data_allergens",
-      "community": 1,
+      "community": 18,
       "norm_label": "allergens"
     },
     {
@@ -5162,7 +5198,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L357",
       "id": "prototype_data_dislikes",
-      "community": 1,
+      "community": 18,
       "norm_label": "dislikes"
     },
     {
@@ -5171,41 +5207,32 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L358",
       "id": "prototype_data_likes",
-      "community": 1,
+      "community": 18,
       "norm_label": "likes"
-    },
-    {
-      "label": "availableIngredients",
-      "file_type": "code",
-      "source_file": "src/prototype/data.ts",
-      "source_location": "L359",
-      "id": "prototype_data_availableingredients",
-      "community": 1,
-      "norm_label": "availableingredients"
     },
     {
       "label": "dietary",
       "file_type": "code",
       "source_file": "src/prototype/data.ts",
-      "source_location": "L360",
+      "source_location": "L359",
       "id": "prototype_data_dietary",
-      "community": 1,
+      "community": 18,
       "norm_label": "dietary"
     },
     {
       "label": "universities",
       "file_type": "code",
       "source_file": "src/prototype/data.ts",
-      "source_location": "L361",
+      "source_location": "L360",
       "id": "prototype_data_universities",
-      "community": 1,
+      "community": 18,
       "norm_label": "universities"
     },
     {
       "label": "initialPreferences",
       "file_type": "code",
       "source_file": "src/prototype/data.ts",
-      "source_location": "L363",
+      "source_location": "L362",
       "id": "prototype_data_initialpreferences",
       "community": 18,
       "norm_label": "initialpreferences"
@@ -5243,7 +5270,7 @@
       "source_file": "src/prototype/utils.ts",
       "source_location": "L22",
       "id": "prototype_utils_formatcookinglimit",
-      "community": 35,
+      "community": 18,
       "norm_label": "formatcookinglimit()"
     },
     {
@@ -5252,7 +5279,7 @@
       "source_file": "src/prototype/utils.ts",
       "source_location": "L36",
       "id": "prototype_utils_mealbyid",
-      "community": 49,
+      "community": 0,
       "norm_label": "mealbyid()"
     },
     {
@@ -5270,7 +5297,7 @@
       "source_file": "src/prototype/utils.ts",
       "source_location": "L50",
       "id": "prototype_utils_nutritionsourcesummary",
-      "community": 49,
+      "community": 0,
       "norm_label": "nutritionsourcesummary()"
     },
     {
@@ -5315,7 +5342,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L1",
       "id": "src_prototype_anonymoussessionapi_ts",
-      "community": 18,
+      "community": 4,
       "norm_label": "anonymoussessionapi.ts"
     },
     {
@@ -5324,7 +5351,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L11",
       "id": "prototype_anonymoussessionapi_anonymoussessionresponse",
-      "community": 18,
+      "community": 4,
       "norm_label": "anonymoussessionresponse"
     },
     {
@@ -5333,7 +5360,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L18",
       "id": "prototype_anonymoussessionapi_readstoredsessionid",
-      "community": 18,
+      "community": 4,
       "norm_label": "readstoredsessionid()"
     },
     {
@@ -5342,7 +5369,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L36",
       "id": "prototype_anonymoussessionapi_storesessionid",
-      "community": 18,
+      "community": 4,
       "norm_label": "storesessionid()"
     },
     {
@@ -5351,7 +5378,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L44",
       "id": "prototype_anonymoussessionapi_getorcreateanonymoussessionid",
-      "community": 18,
+      "community": 4,
       "norm_label": "getorcreateanonymoussessionid()"
     },
     {
@@ -5360,7 +5387,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L56",
       "id": "prototype_anonymoussessionapi_readjson",
-      "community": 18,
+      "community": 4,
       "norm_label": "readjson()"
     },
     {
@@ -5369,7 +5396,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L64",
       "id": "prototype_anonymoussessionapi_loadanonymoussessionsettings",
-      "community": 18,
+      "community": 4,
       "norm_label": "loadanonymoussessionsettings()"
     },
     {
@@ -5378,7 +5405,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L80",
       "id": "prototype_anonymoussessionapi_saveanonymoussessionsettings",
-      "community": 18,
+      "community": 4,
       "norm_label": "saveanonymoussessionsettings()"
     },
     {
@@ -5403,7 +5430,7 @@
       "label": "ingredientPreparations",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L21",
+      "source_location": "L22",
       "id": "prototype_ingredients_ingredientpreparations",
       "community": 34,
       "norm_label": "ingredientpreparations"
@@ -5412,7 +5439,7 @@
       "label": "ingredientOptions",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L36",
+      "source_location": "L37",
       "id": "prototype_ingredients_ingredientoptions",
       "community": 34,
       "norm_label": "ingredientoptions"
@@ -5421,7 +5448,7 @@
       "label": "IngredientDraft",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L84",
+      "source_location": "L85",
       "id": "prototype_ingredients_ingredientdraft",
       "community": 34,
       "norm_label": "ingredientdraft"
@@ -5430,7 +5457,7 @@
       "label": "singularUnits",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L92",
+      "source_location": "L93",
       "id": "prototype_ingredients_singularunits",
       "community": 34,
       "norm_label": "singularunits"
@@ -5439,7 +5466,7 @@
       "label": "countableUnits",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L100",
+      "source_location": "L102",
       "id": "prototype_ingredients_countableunits",
       "community": 34,
       "norm_label": "countableunits"
@@ -5448,7 +5475,7 @@
       "label": "preparationLookup",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L101",
+      "source_location": "L103",
       "id": "prototype_ingredients_preparationlookup",
       "community": 34,
       "norm_label": "preparationlookup"
@@ -5457,7 +5484,7 @@
       "label": "preparationAliases",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L102",
+      "source_location": "L104",
       "id": "prototype_ingredients_preparationaliases",
       "community": 34,
       "norm_label": "preparationaliases"
@@ -5466,7 +5493,7 @@
       "label": "ingredientAliases",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L111",
+      "source_location": "L113",
       "id": "prototype_ingredients_ingredientaliases",
       "community": 34,
       "norm_label": "ingredientaliases"
@@ -5475,7 +5502,7 @@
       "label": "parseQuantity()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L130",
+      "source_location": "L132",
       "id": "prototype_ingredients_parsequantity",
       "community": 34,
       "norm_label": "parsequantity()"
@@ -5484,7 +5511,7 @@
       "label": "normaliseUnit()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L139",
+      "source_location": "L141",
       "id": "prototype_ingredients_normaliseunit",
       "community": 34,
       "norm_label": "normaliseunit()"
@@ -5493,7 +5520,7 @@
       "label": "clamp()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L144",
+      "source_location": "L146",
       "id": "prototype_ingredients_clamp",
       "community": 34,
       "norm_label": "clamp()"
@@ -5502,7 +5529,7 @@
       "label": "normalisePreparation()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L148",
+      "source_location": "L150",
       "id": "prototype_ingredients_normalisepreparation",
       "community": 34,
       "norm_label": "normalisepreparation()"
@@ -5511,7 +5538,7 @@
       "label": "splitPreparationFromName()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L156",
+      "source_location": "L158",
       "id": "prototype_ingredients_splitpreparationfromname",
       "community": 34,
       "norm_label": "splitpreparationfromname()"
@@ -5520,7 +5547,7 @@
       "label": "normaliseIngredientName()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L177",
+      "source_location": "L179",
       "id": "prototype_ingredients_normaliseingredientname",
       "community": 34,
       "norm_label": "normaliseingredientname()"
@@ -5529,7 +5556,7 @@
       "label": "sanitiseIngredientQuantity()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L189",
+      "source_location": "L191",
       "id": "prototype_ingredients_sanitiseingredientquantity",
       "community": 34,
       "norm_label": "sanitiseingredientquantity()"
@@ -5538,7 +5565,7 @@
       "label": "formatQuantityForInput()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L197",
+      "source_location": "L199",
       "id": "prototype_ingredients_formatquantityforinput",
       "community": 34,
       "norm_label": "formatquantityforinput()"
@@ -5547,7 +5574,7 @@
       "label": "createIngredientDraft()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L201",
+      "source_location": "L203",
       "id": "prototype_ingredients_createingredientdraft",
       "community": 34,
       "norm_label": "createingredientdraft()"
@@ -5556,7 +5583,7 @@
       "label": "ingredientToDraft()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L211",
+      "source_location": "L213",
       "id": "prototype_ingredients_ingredienttodraft",
       "community": 34,
       "norm_label": "ingredienttodraft()"
@@ -5565,16 +5592,16 @@
       "label": "ingredientDraftsFromIngredients()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L221",
+      "source_location": "L223",
       "id": "prototype_ingredients_ingredientdraftsfromingredients",
-      "community": 49,
+      "community": 0,
       "norm_label": "ingredientdraftsfromingredients()"
     },
     {
       "label": "sanitiseIngredientDraft()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L225",
+      "source_location": "L227",
       "id": "prototype_ingredients_sanitiseingredientdraft",
       "community": 34,
       "norm_label": "sanitiseingredientdraft()"
@@ -5583,16 +5610,16 @@
       "label": "sanitiseIngredientDrafts()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L244",
+      "source_location": "L246",
       "id": "prototype_ingredients_sanitiseingredientdrafts",
-      "community": 68,
+      "community": 34,
       "norm_label": "sanitiseingredientdrafts()"
     },
     {
       "label": "ingredientName()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L260",
+      "source_location": "L262",
       "id": "prototype_ingredients_ingredientname",
       "community": 35,
       "norm_label": "ingredientname()"
@@ -5601,25 +5628,34 @@
       "label": "ingredientSearchTerm()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L264",
+      "source_location": "L266",
       "id": "prototype_ingredients_ingredientsearchterm",
-      "community": 35,
+      "community": 34,
       "norm_label": "ingredientsearchterm()"
     },
     {
       "label": "formatIngredient()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L268",
+      "source_location": "L270",
       "id": "prototype_ingredients_formatingredient",
       "community": 34,
       "norm_label": "formatingredient()"
     },
     {
+      "label": "pluraliseIngredientName()",
+      "file_type": "code",
+      "source_file": "src/prototype/ingredients.ts",
+      "source_location": "L298",
+      "id": "prototype_ingredients_pluraliseingredientname",
+      "community": 34,
+      "norm_label": "pluraliseingredientname()"
+    },
+    {
       "label": "parseIngredients()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L291",
+      "source_location": "L304",
       "id": "prototype_ingredients_parseingredients",
       "community": 34,
       "norm_label": "parseingredients()"
@@ -5628,7 +5664,7 @@
       "label": "formatIngredientsForEditing()",
       "file_type": "code",
       "source_file": "src/prototype/ingredients.ts",
-      "source_location": "L331",
+      "source_location": "L344",
       "id": "prototype_ingredients_formatingredientsforediting",
       "community": 34,
       "norm_label": "formatingredientsforediting()"
@@ -5691,7 +5727,7 @@
       "label": "estimateIngredientNutrition()",
       "file_type": "code",
       "source_file": "src/prototype/nutrition.ts",
-      "source_location": "L63",
+      "source_location": "L65",
       "id": "prototype_nutrition_estimateingredientnutrition",
       "community": 65,
       "norm_label": "estimateingredientnutrition()"
@@ -5700,7 +5736,7 @@
       "label": "totalNutritionFromEstimates()",
       "file_type": "code",
       "source_file": "src/prototype/nutrition.ts",
-      "source_location": "L98",
+      "source_location": "L100",
       "id": "prototype_nutrition_totalnutritionfromestimates",
       "community": 65,
       "norm_label": "totalnutritionfromestimates()"
@@ -5747,7 +5783,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L1",
       "id": "src_prototype_types_ts",
-      "community": 68,
+      "community": 65,
       "norm_label": "types.ts"
     },
     {
@@ -5756,7 +5792,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L1",
       "id": "prototype_types_mealtype",
-      "community": 68,
+      "community": 65,
       "norm_label": "mealtype"
     },
     {
@@ -5765,7 +5801,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L2",
       "id": "prototype_types_mealslot",
-      "community": 68,
+      "community": 65,
       "norm_label": "mealslot"
     },
     {
@@ -5774,7 +5810,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L8",
       "id": "prototype_types_nutrition",
-      "community": 68,
+      "community": 65,
       "norm_label": "nutrition"
     },
     {
@@ -5783,7 +5819,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L16",
       "id": "prototype_types_nutritionsource",
-      "community": 68,
+      "community": 34,
       "norm_label": "nutritionsource"
     },
     {
@@ -5801,7 +5837,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L30",
       "id": "prototype_types_recipereview",
-      "community": 1,
+      "community": 18,
       "norm_label": "recipereview"
     },
     {
@@ -5819,7 +5855,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L58",
       "id": "prototype_types_planmeal",
-      "community": 68,
+      "community": 65,
       "norm_label": "planmeal"
     },
     {
@@ -5837,7 +5873,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L70",
       "id": "prototype_types_deadline",
-      "community": 1,
+      "community": 18,
       "norm_label": "deadline"
     },
     {
@@ -5846,7 +5882,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L83",
       "id": "prototype_types_preferences",
-      "community": 68,
+      "community": 18,
       "norm_label": "preferences"
     },
     {
@@ -5855,7 +5891,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L96",
       "id": "prototype_types_screen",
-      "community": 49,
+      "community": 65,
       "norm_label": "screen"
     },
     {
@@ -5891,7 +5927,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L22",
       "id": "prototype_sessionpersistence_isanonymoussessionid",
-      "community": 18,
+      "community": 4,
       "norm_label": "isanonymoussessionid()"
     },
     {
@@ -5900,7 +5936,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L26",
       "id": "prototype_sessionpersistence_createanonymoussessionid",
-      "community": 18,
+      "community": 4,
       "norm_label": "createanonymoussessionid()"
     },
     {
@@ -5990,7 +6026,7 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_recipeshubscreen_tsx",
-      "community": 68,
+      "community": 34,
       "norm_label": "recipeshubscreen.tsx"
     },
     {
@@ -5999,7 +6035,7 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L20",
       "id": "screens_recipeshubscreen_tab",
-      "community": 68,
+      "community": 34,
       "norm_label": "tab"
     },
     {
@@ -6008,7 +6044,7 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L22",
       "id": "screens_recipeshubscreen_createform",
-      "community": 68,
+      "community": 34,
       "norm_label": "createform"
     },
     {
@@ -6026,7 +6062,7 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L58",
       "id": "screens_recipeshubscreen_splitlist",
-      "community": 68,
+      "community": 34,
       "norm_label": "splitlist()"
     },
     {
@@ -6035,7 +6071,7 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L65",
       "id": "screens_recipeshubscreen_positivenumber",
-      "community": 68,
+      "community": 34,
       "norm_label": "positivenumber()"
     },
     {
@@ -6044,7 +6080,7 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L69",
       "id": "screens_recipeshubscreen_recipeshubscreen",
-      "community": 68,
+      "community": 34,
       "norm_label": "recipeshubscreen()"
     },
     {
@@ -6053,7 +6089,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_calendarscreen_tsx",
-      "community": 1,
+      "community": 49,
       "norm_label": "calendarscreen.tsx"
     },
     {
@@ -6062,7 +6098,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L12",
       "id": "screens_calendarscreen_urgencylevels",
-      "community": 1,
+      "community": 49,
       "norm_label": "urgencylevels"
     },
     {
@@ -6071,7 +6107,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L13",
       "id": "screens_calendarscreen_urgencylabel",
-      "community": 1,
+      "community": 49,
       "norm_label": "urgencylabel"
     },
     {
@@ -6080,7 +6116,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L15",
       "id": "screens_calendarscreen_workloaddraft",
-      "community": 1,
+      "community": 49,
       "norm_label": "workloaddraft"
     },
     {
@@ -6089,7 +6125,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L23",
       "id": "screens_calendarscreen_formerrors",
-      "community": 1,
+      "community": 49,
       "norm_label": "formerrors"
     },
     {
@@ -6098,7 +6134,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L29",
       "id": "screens_calendarscreen_deadlineeditpanel",
-      "community": 1,
+      "community": 49,
       "norm_label": "deadlineeditpanel()"
     },
     {
@@ -6107,7 +6143,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L137",
       "id": "screens_calendarscreen_calendarscreen",
-      "community": 1,
+      "community": 49,
       "norm_label": "calendarscreen()"
     },
     {
@@ -6116,7 +6152,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_recipedetailscreen_tsx",
-      "community": 49,
+      "community": 0,
       "norm_label": "recipedetailscreen.tsx"
     },
     {
@@ -6125,7 +6161,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L22",
       "id": "screens_recipedetailscreen_recipeform",
-      "community": 49,
+      "community": 0,
       "norm_label": "recipeform"
     },
     {
@@ -6134,7 +6170,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L38",
       "id": "screens_recipedetailscreen_mealtoform",
-      "community": 49,
+      "community": 0,
       "norm_label": "mealtoform()"
     },
     {
@@ -6143,7 +6179,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L56",
       "id": "screens_recipedetailscreen_splitlist",
-      "community": 49,
+      "community": 0,
       "norm_label": "splitlist()"
     },
     {
@@ -6152,7 +6188,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L63",
       "id": "screens_recipedetailscreen_ratinglabel",
-      "community": 49,
+      "community": 0,
       "norm_label": "ratinglabel()"
     },
     {
@@ -6161,7 +6197,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L68",
       "id": "screens_recipedetailscreen_backlabel",
-      "community": 49,
+      "community": 0,
       "norm_label": "backlabel()"
     },
     {
@@ -6170,7 +6206,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L73",
       "id": "screens_recipedetailscreen_recipedetailscreen",
-      "community": 49,
+      "community": 0,
       "norm_label": "recipedetailscreen()"
     },
     {
@@ -6179,7 +6215,7 @@
       "source_file": "src/prototype/screens/Landing.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_landing_tsx",
-      "community": 49,
+      "community": 35,
       "norm_label": "landing.tsx"
     },
     {
@@ -6188,7 +6224,7 @@
       "source_file": "src/prototype/screens/Landing.tsx",
       "source_location": "L8",
       "id": "screens_landing_landing",
-      "community": 18,
+      "community": 35,
       "norm_label": "landing()"
     },
     {
@@ -6197,14 +6233,14 @@
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_settingsscreen_tsx",
-      "community": 1,
+      "community": 18,
       "norm_label": "settingsscreen.tsx"
     },
     {
       "label": "SettingsScreen()",
       "file_type": "code",
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "id": "screens_settingsscreen_settingsscreen",
       "community": 18,
       "norm_label": "settingsscreen()"
@@ -6260,32 +6296,32 @@
       "source_file": "src/prototype/screens/Onboarding.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_onboarding_tsx",
-      "community": 1,
+      "community": 18,
       "norm_label": "onboarding.tsx"
     },
     {
       "label": "Progress()",
       "file_type": "code",
       "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "id": "screens_onboarding_progress",
-      "community": 1,
+      "community": 18,
       "norm_label": "progress()"
     },
     {
       "label": "PreferenceSection()",
       "file_type": "code",
       "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L45",
+      "source_location": "L47",
       "id": "screens_onboarding_preferencesection",
-      "community": 1,
+      "community": 18,
       "norm_label": "preferencesection()"
     },
     {
       "label": "Onboarding()",
       "file_type": "code",
       "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L67",
+      "source_location": "L69",
       "id": "screens_onboarding_onboarding",
       "community": 18,
       "norm_label": "onboarding()"
@@ -6377,7 +6413,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L28",
       "id": "components_primitives_badge",
-      "community": 49,
+      "community": 35,
       "norm_label": "badge()"
     },
     {
@@ -6386,7 +6422,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L36",
       "id": "components_primitives_appbutton",
-      "community": 49,
+      "community": 35,
       "norm_label": "appbutton()"
     },
     {
@@ -6395,7 +6431,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L57",
       "id": "components_primitives_choicegroup",
-      "community": 1,
+      "community": 18,
       "norm_label": "choicegroup()"
     },
     {
@@ -6404,7 +6440,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L130",
       "id": "components_primitives_field",
-      "community": 1,
+      "community": 34,
       "norm_label": "field()"
     },
     {
@@ -6413,7 +6449,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L177",
       "id": "components_primitives_selectfield",
-      "community": 1,
+      "community": 0,
       "norm_label": "selectfield()"
     },
     {
@@ -6476,7 +6512,7 @@
       "source_file": "src/prototype/components/Shell.tsx",
       "source_location": "L1",
       "id": "src_prototype_components_shell_tsx",
-      "community": 49,
+      "community": 2,
       "norm_label": "shell.tsx"
     },
     {
@@ -6485,7 +6521,7 @@
       "source_file": "src/prototype/components/Shell.tsx",
       "source_location": "L8",
       "id": "components_shell_shell",
-      "community": 18,
+      "community": 2,
       "norm_label": "shell()"
     },
     {
@@ -6701,7 +6737,7 @@
       "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L11",
       "id": "calendarimport_index_calendareventstodeadlines",
-      "community": 1,
+      "community": 18,
       "norm_label": "calendareventstodeadlines()"
     },
     {
@@ -12083,7 +12119,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L54",
       "id": "lib_posthog_posthog",
-      "community": 18,
+      "community": 19,
       "norm_label": "posthog"
     },
     {
@@ -12094,6 +12130,15 @@
       "id": "prototype_utils_ingredientlabel",
       "community": 98,
       "norm_label": "ingredientlabel"
+    },
+    {
+      "label": "availableIngredients",
+      "file_type": "code",
+      "source_file": "src/prototype/data.ts",
+      "source_location": "L359",
+      "community": 18,
+      "norm_label": "availableingredients",
+      "id": "prototype_data_availableingredients"
     },
     {
       "label": "vercel.json",
@@ -14807,6 +14852,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L193",
+      "weight": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_normalizerecipeingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L210",
+      "weight": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_normalizerecipeingredientlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L175",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -15192,6 +15257,17 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L198",
+      "weight": 1.0,
+      "source": "lib_index_normalizerecipeingredient",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L390",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -15236,11 +15312,33 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L195",
+      "weight": 1.0,
+      "source": "lib_index_normalizerecipeingredient",
+      "target": "lib_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L210",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "lib_index_normalizeprototypesessionsettings",
       "target": "lib_index_boundednumber"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L208",
+      "weight": 1.0,
+      "source": "lib_index_normalizerecipeingredient",
+      "target": "lib_index_boundednumber",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -15263,6 +15361,17 @@
       "confidence_score": 1.0,
       "source": "lib_index_normalizeprototypesessionsettings",
       "target": "lib_index_normalizerecipelist"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L245",
+      "weight": 1.0,
+      "source": "lib_index_normalizeprototypesessionsettings",
+      "target": "lib_index_normalizerecipeingredientlist",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -15877,6 +15986,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/src/index.ts",
+      "source_location": "L319",
+      "weight": 1.0,
+      "source": "functions_src_index_ts",
+      "target": "src_index_normalizerecipeingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/src/index.ts",
+      "source_location": "L347",
+      "weight": 1.0,
+      "source": "functions_src_index_ts",
+      "target": "src_index_normalizerecipeingredientlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/src/index.ts",
       "source_location": "L296",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -16281,6 +16410,17 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/src/index.ts",
+      "source_location": "L325",
+      "weight": 1.0,
+      "source": "src_index_normalizerecipeingredient",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/src/index.ts",
       "source_location": "L561",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -16325,11 +16465,33 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/src/index.ts",
+      "source_location": "L321",
+      "weight": 1.0,
+      "source": "src_index_normalizerecipeingredient",
+      "target": "src_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/src/index.ts",
       "source_location": "L340",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_index_normalizeprototypesessionsettings",
       "target": "src_index_boundednumber"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/src/index.ts",
+      "source_location": "L341",
+      "weight": 1.0,
+      "source": "src_index_normalizerecipeingredient",
+      "target": "src_index_boundednumber",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -16352,6 +16514,17 @@
       "confidence_score": 1.0,
       "source": "src_index_normalizeprototypesessionsettings",
       "target": "src_index_normalizerecipelist"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/src/index.ts",
+      "source_location": "L390",
+      "weight": 1.0,
+      "source": "src_index_normalizeprototypesessionsettings",
+      "target": "src_index_normalizerecipeingredientlist",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -25665,9 +25838,9 @@
       "source_file": "src/prototype/shopping.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_shopping_test_ts",
-      "target": "prototype_shopping_ingredientsfromplan",
-      "confidence_score": 1.0
+      "target": "prototype_shopping_ingredientsfromplan"
     },
     {
       "relation": "imports",
@@ -25740,9 +25913,9 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L359",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_data_ts",
-      "target": "prototype_data_availableingredients",
-      "confidence_score": 1.0
+      "target": "prototype_data_availableingredients"
     },
     {
       "relation": "contains",
@@ -26236,28 +26409,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
       "target": "prototype_data_likes"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_availableingredients",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_data_availableingredients",
-      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -26906,9 +27057,9 @@
       "source_file": "src/prototype/shopping.test.ts",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_shopping_test_ts",
-      "target": "prototype_shopping_test_plan",
-      "confidence_score": 1.0
+      "target": "prototype_shopping_test_plan"
     },
     {
       "relation": "contains",
@@ -27349,6 +27500,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/prototype/ingredients.ts",
+      "source_location": "L298",
+      "weight": 1.0,
+      "source": "src_prototype_ingredients_ts",
+      "target": "prototype_ingredients_pluraliseingredientname",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/ingredients.ts",
       "source_location": "L102",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -27430,6 +27591,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_ingredients_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/PlanScreen.tsx",
       "source_location": "L10",
       "weight": 1.0,
@@ -27458,6 +27630,17 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_recipeshubscreen_tsx",
       "target": "src_prototype_ingredients_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_prototype_ingredients_ts",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -27507,6 +27690,17 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_ingredients_ingredientdraft",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L11",
       "weight": 1.0,
@@ -27524,6 +27718,17 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_recipeshubscreen_tsx",
       "target": "prototype_ingredients_ingredientdraft"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_ingredients_ingredientdraft",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -27727,12 +27932,34 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_ingredients_ingredientdraftsfromingredients",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_recipedetailscreen_tsx",
       "target": "prototype_ingredients_ingredientdraftsfromingredients"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_ingredients_ingredientdraftsfromingredients",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -27744,6 +27971,17 @@
       "weight": 1.0,
       "source": "screens_recipeshubscreen_recipeshubscreen",
       "target": "prototype_ingredients_sanitiseingredientdrafts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_ingredients_sanitiseingredientdrafts",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -27768,6 +28006,17 @@
       "target": "prototype_ingredients_sanitiseingredientdrafts"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_ingredients_sanitiseingredientdrafts",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -27788,6 +28037,17 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_planscreen_tsx",
       "target": "prototype_ingredients_ingredientname"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/ingredients.ts",
+      "source_location": "L287",
+      "weight": 1.0,
+      "source": "prototype_ingredients_formatingredient",
+      "target": "prototype_ingredients_pluraliseingredientname",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -29711,6 +29971,17 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "components_ingredienteditor_ingredienteditor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L9",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -29749,6 +30020,17 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
       "target": "components_primitives_selectfield"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_data_availableingredients"
     },
     {
       "relation": "contains",
@@ -29792,6 +30074,17 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
       "target": "src_prototype_calendarimport_index_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_prototype_components_ingredienteditor_tsx",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -30058,6 +30351,17 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_ingredienteditor_ingredienteditor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
       "source_location": "L9",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -30107,6 +30411,17 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_onboarding_tsx",
       "target": "components_primitives_selectfield"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_availableingredients"
     },
     {
       "relation": "contains",
@@ -30170,6 +30485,17 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_onboarding_tsx",
       "target": "src_prototype_calendarimport_index_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_components_ingredienteditor_tsx",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -37630,5 +37956,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "ee3df1719d43d79aac7e8aa4cf657c6c836ef389"
+  "built_at_commit": "629da23cfec7c5860989f017920c684378e9a6b2"
 }

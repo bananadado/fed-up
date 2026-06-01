@@ -155,8 +155,8 @@ export function shoppingItemKey(value: ShoppingItem | string) {
   return value.unit ? `${normaliseIngredient(value.name)}:${value.unit}` : normaliseIngredient(value.name);
 }
 
-export function ingredientsFromPlan(plan: PlanEntry[], customRecipes: Meal[], availableIngredients: string[] = []) {
-  const available = new Set(availableIngredients.map(normaliseIngredient));
+export function ingredientsFromPlan(plan: PlanEntry[], customRecipes: Meal[], availableIngredients: RecipeIngredient[] = []) {
+  const available = new Set(availableIngredients.map((ingredient) => normaliseIngredient(ingredient.name)));
 
   return aggregateIngredients(
     plan.flatMap((entry) => entry.meals.flatMap((planMeal) => getMealById(planMeal.mealId, customRecipes).ingredients)),
