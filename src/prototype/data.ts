@@ -358,11 +358,18 @@ export const dislikes = ["Mushrooms", "Tofu", "Fish", "Spicy food", "Beans", "Co
 export const likes = ["Pasta", "Rice and curry", "Stir fry", "Sandwiches", "Instant noodles", "Soup", "Omelettes", "Wraps", "Toast / cereal", "Salads", "Roasted meals", "High-protein meals"];
 export const dietary = ["Vegetarian", "Vegan", "Halal", "Gluten-free", "Dairy-free"];
 export const universities = ["Imperial College London", "University College London", "King's College London", "University of Manchester", "University of Edinburgh", "Other university"];
+export const cookingAbilities = [
+  { id: "beginner", name: "Beginner", description: "Toast, sandwiches, microwave meals, boiling pasta" },
+  { id: "basic", name: "Basic", description: "Simple one-pot meals, stir-fries, eggs" },
+  { id: "intermediate", name: "Intermediate", description: "Follow most recipes, meal prep" },
+  { id: "advanced", name: "Advanced", description: "Comfortable adapting recipes and techniques" },
+];
 
 export const initialPreferences: Preferences = {
   maxTime: 180,
   budget: 48,
   kitchen: "",
+  cookingAbility: "",
   postcode: "",
   university: "",
   dietary: [],

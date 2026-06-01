@@ -4,7 +4,7 @@ import { Import, RotateCcw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, dietary, dislikes, likes, universities } from "../data";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, universities } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
@@ -204,6 +204,13 @@ export function SettingsScreen({
             onChange={(university) => { track("settings_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
             options={universities.map((university) => ({ value: university, label: university }))}
           />
+          <SelectField
+            label="Cooking ability"
+            value={prefs.cookingAbility}
+            onChange={(cookingAbility) => { track("settings_preference_changed", { field: "cooking_ability", value: cookingAbility }); setPrefs({ ...prefs, cookingAbility }); }}
+            options={cookingAbilities.map((ability) => ({ value: ability.id, label: `${ability.name} - ${ability.description}` }))}
+            placeholder="Select cooking ability"
+          />
         </div>
         <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4 text-sm leading-6 text-stone-600">
           <p className="font-semibold text-stone-900">Location and privacy</p>
@@ -318,7 +325,7 @@ export function SettingsScreen({
         </div>
         <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <AppButton variant="secondary" onClick={() => setScreen("dashboard")}>Back to dashboard</AppButton>
-          <AppButton onClick={() => { track("settings_saved", { dietary_count: prefs.dietary.length, allergen_count: prefs.allergens.length, likes_count: prefs.likes.length, dislikes_count: prefs.dislikes.length, available_ingredient_count: prefs.availableIngredients.length }); setScreen("dashboard"); }}>Save preferences</AppButton>
+          <AppButton onClick={() => { track("settings_saved", { dietary_count: prefs.dietary.length, allergen_count: prefs.allergens.length, likes_count: prefs.likes.length, dislikes_count: prefs.dislikes.length, available_ingredient_count: prefs.availableIngredients.length, cooking_ability: prefs.cookingAbility }); setScreen("dashboard"); }}>Save preferences</AppButton>
         </div>
       </Card>
     </div>

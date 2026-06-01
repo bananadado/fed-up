@@ -84,6 +84,7 @@ export type Preferences = {
   maxTime: number | null;
   budget: number;
   kitchen: string;
+  cookingAbility: string;
   postcode: string;
   university: string;
   dietary: string[];
