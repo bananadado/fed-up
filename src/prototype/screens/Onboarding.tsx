@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } fr
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions, universities } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
@@ -192,6 +192,7 @@ export function Onboarding({
       dietary_requirements: prefs.dietary,
       available_ingredient_count: prefs.availableIngredients.length,
       kitchen_access: prefs.kitchen,
+      cooking_ability: prefs.cookingAbility,
       budget_pounds: prefs.budget,
     });
     setOnboarded(true);
@@ -314,6 +315,18 @@ export function Onboarding({
             <h2 className="mt-4 text-3xl font-bold">About you</h2>
             <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
+              <PreferenceSection
+                title="Cooking ability"
+                description="Choose the closest level so recipe suggestions match the techniques you are comfortable with."
+              >
+                <SelectField
+                  label="Current cooking ability"
+                  value={prefs.cookingAbility}
+                  onChange={(cookingAbility) => { track("onboarding_preference_changed", { field: "cooking_ability", value: cookingAbility }); setPrefs({ ...prefs, cookingAbility }); }}
+                  options={cookingAbilities.map((ability) => ({ value: ability.id, label: `${ability.name} - ${ability.description}` }))}
+                  placeholder="Select cooking ability"
+                />
+              </PreferenceSection>
               <PreferenceSection
                 title="What do you usually eat?"
                 description="Pick the meals you reach for most. This helps us suggest things you'll actually make — not recipes that require skills you don't need."

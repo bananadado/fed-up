@@ -119,6 +119,7 @@ type PrototypeSessionSettings = {
     maxTime: number | null;
     budget: number;
     kitchen: string;
+    cookingAbility: string;
     postcode: string;
     university: string;
     dietary: string[];
@@ -381,6 +382,7 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
           boundedNumber(preferences.maxTime, 20, 1, 240),
       budget: boundedNumber(preferences.budget, 48, 0, 1000),
       kitchen: boundedString(preferences.kitchen, "full", 80),
+      cookingAbility: boundedString(preferences.cookingAbility, "", 40),
       postcode: boundedString(preferences.postcode, "", 24),
       university: boundedString(preferences.university, "", 160),
       dietary: boundedStringList(preferences.dietary),
