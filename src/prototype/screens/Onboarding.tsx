@@ -8,6 +8,8 @@ import { allergens, calendarProviders, dietary, dislikes, likes, sourceOptions, 
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
+import { IngredientEditor } from "../components/IngredientEditor";
+import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
   calendarEventsToDeadlines,
   icsSubscriptionHints,
@@ -96,6 +98,7 @@ export function Onboarding({
   const [importMessage, setImportMessage] = useState("");
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
 
   function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -178,10 +181,16 @@ export function Onboarding({
     update([...values, normalizedValue]);
   }
 
+  function updateAvailableIngredients(nextDrafts: IngredientDraft[]) {
+    setAvailableIngredientDrafts(nextDrafts);
+    setPrefs({ ...prefs, availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
+  }
+
   function finish() {
     track("onboarding_completed", {
       recipe_sources: selectedSources,
       dietary_requirements: prefs.dietary,
+      available_ingredient_count: prefs.availableIngredients.length,
       kitchen_access: prefs.kitchen,
       budget_pounds: prefs.budget,
     });
@@ -329,6 +338,17 @@ export function Onboarding({
                   onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
                   onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
                   addPlaceholder="Add an ingredient you dislike"
+                />
+              </PreferenceSection>
+              <PreferenceSection
+                title="What ingredients do you already have?"
+                description="Add staples with the same ingredient controls used for recipes so shopping can focus on what you still need."
+              >
+                <IngredientEditor
+                  ingredients={availableIngredientDrafts}
+                  onChange={updateAvailableIngredients}
+                  allowEmpty
+                  emptyMessage="No ingredients added yet."
                 />
               </PreferenceSection>
             </div>

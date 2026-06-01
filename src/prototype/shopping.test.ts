@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { aggregateIngredients, formatShoppingList, groceryVendorById, shoppingItemKey, shoppingItemLabel } from "./shopping";
+import { aggregateIngredients, formatShoppingList, groceryVendorById, ingredientsFromPlan, shoppingItemKey, shoppingItemLabel } from "./shopping";
 
 describe("shopping helpers", () => {
   test("aggregates duplicate ingredients case-insensitively", () => {
@@ -37,6 +37,12 @@ describe("shopping helpers", () => {
   test("normalises shopping item keys for checklist state", () => {
     expect(shoppingItemKey("  Oat Milk ")).toBe("oat milk");
     expect(shoppingItemKey({ name: "Tomato", count: 1, quantity: 100, unit: "g" })).toBe("tomato:g");
+  });
+
+  test("omits ingredients the user already has from plan shopping lists", () => {
+    const plan = [{ day: "Mon", context: "Study day", meals: [{ slot: "breakfast" as const, mealId: "m9" }] }];
+
+    expect(ingredientsFromPlan(plan, [], [{ name: "Oats", quantity: 50, unit: "g" }]).some((item) => item.name.toLowerCase() === "oats")).toBe(false);
   });
 
   test("builds selected vendor search URLs for one ingredient at a time", () => {

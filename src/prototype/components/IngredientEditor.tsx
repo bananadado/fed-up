@@ -17,9 +17,13 @@ import { AppButton } from "./primitives";
 export function IngredientEditor({
   ingredients,
   onChange,
+  allowEmpty = false,
+  emptyMessage = "No ingredients yet.",
 }: {
   ingredients: IngredientDraft[];
   onChange: (ingredients: IngredientDraft[]) => void;
+  allowEmpty?: boolean;
+  emptyMessage?: string;
 }) {
   const listId = useId();
 
@@ -30,7 +34,7 @@ export function IngredientEditor({
   function removeIngredient(id: string) {
     const nextIngredients = ingredients.filter((ingredient) => ingredient.id !== id);
 
-    onChange(nextIngredients.length > 0 ? nextIngredients : [createIngredientDraft()]);
+    onChange(nextIngredients.length > 0 || allowEmpty ? nextIngredients : [createIngredientDraft()]);
   }
 
   return (
@@ -47,6 +51,11 @@ export function IngredientEditor({
         ))}
       </datalist>
       <div className="mt-3 space-y-3">
+        {ingredients.length === 0 && (
+          <div className="rounded-lg border border-dashed border-stone-200 bg-stone-50 px-3 py-4 text-sm text-stone-500">
+            {emptyMessage}
+          </div>
+        )}
         {ingredients.map((ingredient) => (
           <div key={ingredient.id} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
             <div className="flex items-end gap-2">

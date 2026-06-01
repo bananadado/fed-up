@@ -8,6 +8,8 @@ import { allergens, calendarProviders, dietary, dislikes, likes, universities } 
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
+import { IngredientEditor } from "../components/IngredientEditor";
+import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
   calendarEventsToDeadlines,
   icsSubscriptionHints,
@@ -44,6 +46,7 @@ export function SettingsScreen({
   const [importMessage, setImportMessage] = useState("");
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
 
   function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -123,6 +126,11 @@ export function SettingsScreen({
 
     track("settings_custom_choice_added", { value: normalizedValue });
     update([...values, normalizedValue]);
+  }
+
+  function updateAvailableIngredients(nextDrafts: IngredientDraft[]) {
+    setAvailableIngredientDrafts(nextDrafts);
+    setPrefs({ ...prefs, availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
   }
 
   return (
@@ -217,6 +225,12 @@ export function SettingsScreen({
             onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
             addPlaceholder="Add an ingredient you dislike"
           />
+          <IngredientEditor
+            ingredients={availableIngredientDrafts}
+            onChange={updateAvailableIngredients}
+            allowEmpty
+            emptyMessage="No ingredients added yet."
+          />
         </div>
         <div className="mt-6 rounded-lg bg-stone-50 p-4">
           <p className="font-semibold">Calendar connection</p>
@@ -281,7 +295,7 @@ export function SettingsScreen({
         </div>
         <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <AppButton variant="secondary" onClick={() => setScreen("dashboard")}>Back to dashboard</AppButton>
-          <AppButton onClick={() => { track("settings_saved", { dietary_count: prefs.dietary.length, allergen_count: prefs.allergens.length, likes_count: prefs.likes.length, dislikes_count: prefs.dislikes.length }); setScreen("dashboard"); }}>Save preferences</AppButton>
+          <AppButton onClick={() => { track("settings_saved", { dietary_count: prefs.dietary.length, allergen_count: prefs.allergens.length, likes_count: prefs.likes.length, dislikes_count: prefs.dislikes.length, available_ingredient_count: prefs.availableIngredients.length }); setScreen("dashboard"); }}>Save preferences</AppButton>
         </div>
       </Card>
     </div>
