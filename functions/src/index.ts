@@ -202,6 +202,7 @@ type PrototypeSessionSettings = {
   customRecipes: UnknownRecord[];
   discoverSaved: UnknownRecord[];
   discoverRejected: UnknownRecord[];
+  discoverReviewedRecipeIds: string[];
   plan: UnknownRecord[];
   calendarEvents: CalendarEvent[];
   icsSubscriptions: IcsSubscription[];
@@ -535,6 +536,7 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     customRecipes: normalizeRecipeList(settings.customRecipes),
     discoverSaved: normalizeRecipeList(settings.discoverSaved),
     discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
+    discoverReviewedRecipeIds: boundedStringList(settings.discoverReviewedRecipeIds, 250, 120),
     plan: normalizeRecipeList(settings.plan, 30),
     calendarEvents: Array.isArray(settings.calendarEvents) ?
       settings.calendarEvents

@@ -22,12 +22,14 @@ describe("anonymous prototype session persistence", () => {
       deadlines: [],
       selectedSources: ["budget", "campus"],
       onboarded: true,
+      discoverReviewedRecipeIds: ["m1", "m2"],
     });
 
     expect(settings.settingsVersion).toBe(PROTOTYPE_SESSION_SETTINGS_VERSION);
     expect(settings.preferences).toEqual(initialPreferences);
     expect(settings.selectedSources).toEqual(["budget", "campus"]);
     expect(settings.onboarded).toBe(true);
+    expect(settings.discoverReviewedRecipeIds).toEqual(["m1", "m2"]);
   });
 
   test("falls back when persisted plan data is empty or malformed", () => {
