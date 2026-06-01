@@ -4,7 +4,7 @@ import { Import, RotateCcw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, dietary, dislikes, likes, universities } from "../data";
+import { allergens, availableIngredients, calendarProviders, dietary, dislikes, likes, universities } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
@@ -217,6 +217,14 @@ export function SettingsScreen({
             onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
             addPlaceholder="Add an ingredient you dislike"
           />
+          <ChoiceGroup
+            title="Ingredients I already have"
+            options={availableIngredients}
+            selected={prefs.availableIngredients}
+            onToggle={(value) => toggle(prefs.availableIngredients, value, (next) => setPrefs({ ...prefs, availableIngredients: next }))}
+            onAdd={(value) => addSelection(prefs.availableIngredients, value, (next) => setPrefs({ ...prefs, availableIngredients: next }))}
+            addPlaceholder="Add an ingredient you already have"
+          />
         </div>
         <div className="mt-6 rounded-lg bg-stone-50 p-4">
           <p className="font-semibold">Calendar connection</p>
@@ -281,7 +289,7 @@ export function SettingsScreen({
         </div>
         <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <AppButton variant="secondary" onClick={() => setScreen("dashboard")}>Back to dashboard</AppButton>
-          <AppButton onClick={() => { track("settings_saved", { dietary_count: prefs.dietary.length, allergen_count: prefs.allergens.length, likes_count: prefs.likes.length, dislikes_count: prefs.dislikes.length }); setScreen("dashboard"); }}>Save preferences</AppButton>
+          <AppButton onClick={() => { track("settings_saved", { dietary_count: prefs.dietary.length, allergen_count: prefs.allergens.length, likes_count: prefs.likes.length, dislikes_count: prefs.dislikes.length, available_ingredient_count: prefs.availableIngredients.length }); setScreen("dashboard"); }}>Save preferences</AppButton>
         </div>
       </Card>
     </div>

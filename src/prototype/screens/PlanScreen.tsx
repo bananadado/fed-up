@@ -53,7 +53,7 @@ export function PlanScreen({
   const [browseMode, setBrowseMode] = useState(false);
   const [shoppingOpen, setShoppingOpen] = useState(false);
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
-  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes), [plan, customRecipes]);
+  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
   const originalDay = rescueChoice ? plan.find((entry) => entry.day === rescueChoice.day) : null;
   const originalPlanMeal = originalDay && rescueChoice ? originalDay.meals.find((meal) => meal.slot === rescueChoice.slot) : null;
   const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
@@ -268,7 +268,7 @@ export function PlanScreen({
             <div className="flex-1 overflow-y-auto p-5">
               <ShoppingListCard
                 title="Shopping list"
-                description="All ingredients across your planned meals for the week."
+                description="Ingredients still needed across your planned meals for the week."
                 items={shoppingItems}
                 selectedVendor={groceryVendorById(shoppingVendorId)}
                 vendors={groceryVendors}

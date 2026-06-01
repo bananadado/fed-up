@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } fr
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
+import { allergens, availableIngredients, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
@@ -182,6 +182,7 @@ export function Onboarding({
     track("onboarding_completed", {
       recipe_sources: selectedSources,
       dietary_requirements: prefs.dietary,
+      available_ingredient_count: prefs.availableIngredients.length,
       kitchen_access: prefs.kitchen,
       budget_pounds: prefs.budget,
     });
@@ -329,6 +330,19 @@ export function Onboarding({
                   onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
                   onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
                   addPlaceholder="Add an ingredient you dislike"
+                />
+              </PreferenceSection>
+              <PreferenceSection
+                title="What ingredients do you already have?"
+                description="Pick staples in your kitchen so weekly shopping focuses on what you still need."
+              >
+                <ChoiceGroup
+                  title=""
+                  options={availableIngredients}
+                  selected={prefs.availableIngredients}
+                  onToggle={(value) => toggle(prefs.availableIngredients, value, (next) => setPrefs({ ...prefs, availableIngredients: next }))}
+                  onAdd={(value) => addSelection(prefs.availableIngredients, value, (next) => setPrefs({ ...prefs, availableIngredients: next }))}
+                  addPlaceholder="Add an ingredient you already have"
                 />
               </PreferenceSection>
             </div>

@@ -356,6 +356,7 @@ export const sourceOptions = [
 export const allergens = ["Peanuts", "Tree nuts", "Milk", "Eggs", "Gluten", "Soy", "Sesame", "Shellfish"];
 export const dislikes = ["Mushrooms", "Tofu", "Fish", "Spicy food", "Beans", "Courgette"];
 export const likes = ["Pasta", "Rice and curry", "Stir fry", "Sandwiches", "Instant noodles", "Soup", "Omelettes", "Wraps", "Toast / cereal", "Salads", "Roasted meals", "High-protein meals"];
+export const availableIngredients = ["Rice", "Pasta", "Instant noodles", "Bread", "Eggs", "Oats", "Milk", "Cheese", "Tinned tomatoes", "Chickpeas", "Lentils", "Frozen vegetables", "Onion", "Garlic", "Olive oil", "Soy sauce"];
 export const dietary = ["Vegetarian", "Vegan", "Halal", "Gluten-free", "Dairy-free"];
 export const universities = ["Imperial College London", "University College London", "King's College London", "University of Manchester", "University of Edinburgh", "Other university"];
 
@@ -369,4 +370,5 @@ export const initialPreferences: Preferences = {
   allergens: [],
   dislikes: [],
   likes: [],
+  availableIngredients: [],
 };

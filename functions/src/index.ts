@@ -124,6 +124,7 @@ type PrototypeSessionSettings = {
     allergens: string[];
     dislikes: string[];
     likes: string[];
+    availableIngredients: string[];
   };
   deadlines: {
     id: string;
@@ -346,6 +347,7 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
       allergens: boundedStringList(preferences.allergens),
       dislikes: boundedStringList(preferences.dislikes),
       likes: boundedStringList(preferences.likes),
+      availableIngredients: boundedStringList(preferences.availableIngredients),
     },
     deadlines: Array.isArray(settings.deadlines) ?
       settings.deadlines
