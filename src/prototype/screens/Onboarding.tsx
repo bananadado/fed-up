@@ -23,7 +23,7 @@ import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
 
 function Progress({ step }: { step: number }) {
-  const labels = ["Calendar", "About you", "Preferences", "Recipe sources"];
+  const labels = ["Calendar", "About you", "Preferences"];
 
   return (
     <div className="mb-8 flex gap-2">
@@ -242,7 +242,7 @@ export function Onboarding({
         <Progress step={step} />
         {step === 0 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 1 of 4</Badge>
+            <Badge tone="green">Step 1 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
             <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days and lower cooking effort around them.</p>
             <div className="mt-7 grid grid-cols-2 gap-3">
@@ -344,7 +344,7 @@ export function Onboarding({
         )}
         {step === 1 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 2 of 4</Badge>
+            <Badge tone="green">Step 2 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">About you</h2>
             <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -414,7 +414,7 @@ export function Onboarding({
         )}
         {step === 2 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 3 of 4</Badge>
+            <Badge tone="green">Step 3 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -533,56 +533,46 @@ export function Onboarding({
                   />
                 </div>
               </PreferenceSection>
+              <PreferenceSection
+                title="Planning Priorities"
+                description="What should we optimise for? You can change this later."
+              >
+                <div className="space-y-3">
+                  {sourceOptions.map((source) => {
+                    const active = selectedSources.includes(source.id);
+
+                    return (
+                      <button
+                        key={source.id}
+                        type="button"
+                        onClick={() => {
+                          track("recipe_source_toggled", { source: source.id, selected: !active });
+                          setSelectedSources(active ? selectedSources.filter((value) => value !== source.id) : [...selectedSources, source.id]);
+                        }}
+                        className={cn("flex w-full items-center justify-between gap-4 rounded-lg border p-4 text-left", active ? "border-emerald-600 bg-emerald-50" : "border-stone-200")}
+                      >
+                        <div>
+                          <p className="font-semibold">{source.name}</p>
+                          <p className="text-sm text-stone-500">{source.desc}</p>
+                        </div>
+                        <div className={cn("flex h-6 w-6 shrink-0 items-center justify-center rounded-md border", active ? "border-emerald-700 bg-emerald-700 text-white" : "border-stone-300")}>{active && <Check size={14} />}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </PreferenceSection>
             </div>
+            <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
             <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
-              <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Continue to choose what the plan should optimise for.</p>
+              <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Create your deadline-week plan when everything looks right.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
                 <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); goToStep(1); }}>
                   <ArrowLeft size={16} /> Back
                 </AppButton>
-                <AppButton className="justify-center py-3" disabled={!prefs.kitchen || !prefs.university} onClick={() => { track("onboarding_step_completed", { step: 2, next_step: 3 }); goToStep(3); }}>
-                  Continue <ArrowRight size={16} />
+                <AppButton className="justify-center py-3" disabled={!prefs.kitchen || !prefs.university} onClick={finish}>
+                  Create my plan <Sparkles size={16} />
                 </AppButton>
               </div>
-            </div>
-          </Card>
-        )}
-        {step === 3 && (
-          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 4 of 4</Badge>
-            <h2 className="mt-4 text-3xl font-bold">Choose recommendation priorities</h2>
-            <p className="mt-2 text-stone-600">Pick what Autopilot should optimise for. You can change this later.</p>
-            <div className="mt-7 space-y-3">
-              {sourceOptions.map((source) => {
-                const active = selectedSources.includes(source.id);
-
-                return (
-                  <button
-                    key={source.id}
-                    type="button"
-                    onClick={() => {
-                      track("recipe_source_toggled", { source: source.id, selected: !active });
-                      setSelectedSources(active ? selectedSources.filter((value) => value !== source.id) : [...selectedSources, source.id]);
-                    }}
-                    className={cn("flex w-full items-center justify-between rounded-lg border p-4 text-left", active ? "border-emerald-600 bg-emerald-50" : "border-stone-200")}
-                  >
-                    <div>
-                      <p className="font-semibold">{source.name}</p>
-                      <p className="text-sm text-stone-500">{source.desc}</p>
-                    </div>
-                    <div className={cn("flex h-6 w-6 items-center justify-center rounded-full border", active ? "border-emerald-700 bg-emerald-700 text-white" : "border-stone-300")}>{active && <Check size={14} />}</div>
-                  </button>
-                );
-              })}
-            </div>
-            <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
-            <div className="mt-8 flex justify-between">
-              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 3, next_step: 2 }); goToStep(2); }}>
-                <ArrowLeft size={16} /> Back
-              </AppButton>
-              <AppButton onClick={finish}>
-                Create my plan <Sparkles size={16} />
-              </AppButton>
             </div>
           </Card>
         )}
