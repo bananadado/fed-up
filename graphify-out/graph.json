@@ -4,202 +4,355 @@
   "graph": {},
   "nodes": [
     {
+      "label": "googleCalendar.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L1",
+      "id": "src_prototype_calendarimport_googlecalendar_ts",
+      "community": 66,
+      "norm_label": "googlecalendar.ts"
+    },
+    {
+      "label": "Window",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L6",
+      "id": "calendarimport_googlecalendar_window",
+      "community": 66,
+      "norm_label": "window"
+    },
+    {
+      "label": "loadGIS()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L35",
+      "id": "calendarimport_googlecalendar_loadgis",
+      "community": 66,
+      "norm_label": "loadgis()"
+    },
+    {
+      "label": "requestToken()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L54",
+      "id": "calendarimport_googlecalendar_requesttoken",
+      "community": 66,
+      "norm_label": "requesttoken()"
+    },
+    {
+      "label": "GoogleEvent",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L76",
+      "id": "calendarimport_googlecalendar_googleevent",
+      "community": 66,
+      "norm_label": "googleevent"
+    },
+    {
+      "label": "fetchEvents()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L87",
+      "id": "calendarimport_googlecalendar_fetchevents",
+      "community": 66,
+      "norm_label": "fetchevents()"
+    },
+    {
+      "label": "isGoogleConfigured()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L127",
+      "id": "calendarimport_googlecalendar_isgoogleconfigured",
+      "community": 66,
+      "norm_label": "isgoogleconfigured()"
+    },
+    {
+      "label": "importGoogleCalendar()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L131",
+      "id": "calendarimport_googlecalendar_importgooglecalendar",
+      "community": 66,
+      "norm_label": "importgooglecalendar()"
+    },
+    {
+      "label": "outlookCalendar.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L1",
+      "id": "src_prototype_calendarimport_outlookcalendar_ts",
+      "community": 1,
+      "norm_label": "outlookcalendar.ts"
+    },
+    {
+      "label": "base64UrlEncode()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L18",
+      "id": "calendarimport_outlookcalendar_base64urlencode",
+      "community": 1,
+      "norm_label": "base64urlencode()"
+    },
+    {
+      "label": "generatePKCE()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L26",
+      "id": "calendarimport_outlookcalendar_generatepkce",
+      "community": 1,
+      "norm_label": "generatepkce()"
+    },
+    {
+      "label": "waitForPopupRedirect()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L35",
+      "id": "calendarimport_outlookcalendar_waitforpopupredirect",
+      "community": 1,
+      "norm_label": "waitforpopupredirect()"
+    },
+    {
+      "label": "exchangeCodeForToken()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L70",
+      "id": "calendarimport_outlookcalendar_exchangecodefortoken",
+      "community": 1,
+      "norm_label": "exchangecodefortoken()"
+    },
+    {
+      "label": "OutlookEvent",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L99",
+      "id": "calendarimport_outlookcalendar_outlookevent",
+      "community": 1,
+      "norm_label": "outlookevent"
+    },
+    {
+      "label": "fetchEvents()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L110",
+      "id": "calendarimport_outlookcalendar_fetchevents",
+      "community": 1,
+      "norm_label": "fetchevents()"
+    },
+    {
+      "label": "isOutlookConfigured()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L148",
+      "id": "calendarimport_outlookcalendar_isoutlookconfigured",
+      "community": 1,
+      "norm_label": "isoutlookconfigured()"
+    },
+    {
+      "label": "importOutlookCalendar()",
+      "file_type": "code",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L152",
+      "id": "calendarimport_outlookcalendar_importoutlookcalendar",
+      "community": 1,
+      "norm_label": "importoutlookcalendar()"
+    },
+    {
       "label": "CLAUDE.md",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L1",
-      "id": "claude_md",
       "community": 39,
-      "norm_label": "claude.md"
+      "norm_label": "claude.md",
+      "id": "claude_md"
     },
     {
       "label": "Deadline Food Autopilot",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L2",
-      "id": "drp03_claude_deadline_food_autopilot",
       "community": 39,
-      "norm_label": "deadline food autopilot"
+      "norm_label": "deadline food autopilot",
+      "id": "drp03_claude_deadline_food_autopilot"
     },
     {
       "label": "Runtime",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L6",
-      "id": "drp03_claude_runtime",
       "community": 39,
-      "norm_label": "runtime"
+      "norm_label": "runtime",
+      "id": "drp03_claude_runtime"
     },
     {
       "label": "Stack",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L19",
-      "id": "drp03_claude_stack",
       "community": 39,
-      "norm_label": "stack"
+      "norm_label": "stack",
+      "id": "drp03_claude_stack"
     },
     {
       "label": "Two Frontend Surfaces (Critical)",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L29",
-      "id": "drp03_claude_two_frontend_surfaces_critical",
       "community": 39,
-      "norm_label": "two frontend surfaces (critical)"
+      "norm_label": "two frontend surfaces (critical)",
+      "id": "drp03_claude_two_frontend_surfaces_critical"
     },
     {
       "label": "1. Active Prototype (what users see)",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L33",
-      "id": "drp03_claude_1_active_prototype_what_users_see",
       "community": 39,
-      "norm_label": "1. active prototype (what users see)"
+      "norm_label": "1. active prototype (what users see)",
+      "id": "drp03_claude_1_active_prototype_what_users_see"
     },
     {
       "label": "2. Dormant React Router Slice (not mounted)",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L46",
-      "id": "drp03_claude_2_dormant_react_router_slice_not_mounted",
       "community": 39,
-      "norm_label": "2. dormant react router slice (not mounted)"
+      "norm_label": "2. dormant react router slice (not mounted)",
+      "id": "drp03_claude_2_dormant_react_router_slice_not_mounted"
     },
     {
       "label": "Development",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L58",
-      "id": "drp03_claude_development",
       "community": 39,
-      "norm_label": "development"
+      "norm_label": "development",
+      "id": "drp03_claude_development"
     },
     {
       "label": "code:sh (bun install                  # install dependencies)",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L60",
-      "id": "drp03_claude_codeblock_1",
       "community": 39,
-      "norm_label": "code:sh (bun install                  # install dependencies)"
+      "norm_label": "code:sh (bun install                  # install dependencies)",
+      "id": "drp03_claude_codeblock_1"
     },
     {
       "label": "Testing",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L67",
-      "id": "drp03_claude_testing",
       "community": 39,
-      "norm_label": "testing"
+      "norm_label": "testing",
+      "id": "drp03_claude_testing"
     },
     {
       "label": "code:sh (bun run lint                 # ESLint)",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L69",
-      "id": "drp03_claude_codeblock_2",
       "community": 39,
-      "norm_label": "code:sh (bun run lint                 # eslint)"
+      "norm_label": "code:sh (bun run lint                 # eslint)",
+      "id": "drp03_claude_codeblock_2"
     },
     {
       "label": "Backend",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L88",
-      "id": "drp03_claude_backend",
       "community": 39,
-      "norm_label": "backend"
+      "norm_label": "backend",
+      "id": "drp03_claude_backend"
     },
     {
       "label": "Firebase Commands",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L105",
-      "id": "drp03_claude_firebase_commands",
       "community": 39,
-      "norm_label": "firebase commands"
+      "norm_label": "firebase commands",
+      "id": "drp03_claude_firebase_commands"
     },
     {
       "label": "code:sh (bun run firebase:data        # generate functions/src/genera)",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L107",
-      "id": "drp03_claude_codeblock_3",
       "community": 39,
-      "norm_label": "code:sh (bun run firebase:data        # generate functions/src/genera)"
+      "norm_label": "code:sh (bun run firebase:data        # generate functions/src/genera)",
+      "id": "drp03_claude_codeblock_3"
     },
     {
       "label": "API Endpoints",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L115",
-      "id": "drp03_claude_api_endpoints",
       "community": 39,
-      "norm_label": "api endpoints"
+      "norm_label": "api endpoints",
+      "id": "drp03_claude_api_endpoints"
     },
     {
       "label": "Anonymous Session Persistence",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L127",
-      "id": "drp03_claude_anonymous_session_persistence",
       "community": 39,
-      "norm_label": "anonymous session persistence"
+      "norm_label": "anonymous session persistence",
+      "id": "drp03_claude_anonymous_session_persistence"
     },
     {
       "label": "Environment Variables",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L135",
-      "id": "drp03_claude_environment_variables",
       "community": 39,
-      "norm_label": "environment variables"
+      "norm_label": "environment variables",
+      "id": "drp03_claude_environment_variables"
     },
     {
       "label": "CI/Deployment",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L151",
-      "id": "drp03_claude_ci_deployment",
       "community": 39,
-      "norm_label": "ci/deployment"
+      "norm_label": "ci/deployment",
+      "id": "drp03_claude_ci_deployment"
     },
     {
       "label": "Implementation Rules",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L158",
-      "id": "drp03_claude_implementation_rules",
       "community": 39,
-      "norm_label": "implementation rules"
+      "norm_label": "implementation rules",
+      "id": "drp03_claude_implementation_rules"
     },
     {
       "label": "Product Language",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L172",
-      "id": "drp03_claude_product_language",
       "community": 39,
-      "norm_label": "product language"
+      "norm_label": "product language",
+      "id": "drp03_claude_product_language"
     },
     {
       "label": "Deeper Documentation",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L178",
-      "id": "drp03_claude_deeper_documentation",
       "community": 39,
-      "norm_label": "deeper documentation"
+      "norm_label": "deeper documentation",
+      "id": "drp03_claude_deeper_documentation"
     },
     {
       "label": "graphify",
       "file_type": "document",
       "source_file": "CLAUDE.md",
       "source_location": "L192",
-      "id": "drp03_claude_graphify",
       "community": 39,
-      "norm_label": "graphify"
+      "norm_label": "graphify",
+      "id": "drp03_claude_graphify"
     },
     {
       "label": "vercel.json",
@@ -4682,159 +4835,6 @@
       "community": 4,
       "norm_label": "calendarfetchicsurl()",
       "id": "calendarimport_calendarapi_calendarfetchicsurl"
-    },
-    {
-      "label": "outlookCalendar.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L1",
-      "community": 1,
-      "norm_label": "outlookcalendar.ts",
-      "id": "src_prototype_calendarimport_outlookcalendar_ts"
-    },
-    {
-      "label": "base64UrlEncode()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L15",
-      "community": 1,
-      "norm_label": "base64urlencode()",
-      "id": "calendarimport_outlookcalendar_base64urlencode"
-    },
-    {
-      "label": "generatePKCE()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L23",
-      "community": 1,
-      "norm_label": "generatepkce()",
-      "id": "calendarimport_outlookcalendar_generatepkce"
-    },
-    {
-      "label": "waitForPopupRedirect()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L32",
-      "community": 1,
-      "norm_label": "waitforpopupredirect()",
-      "id": "calendarimport_outlookcalendar_waitforpopupredirect"
-    },
-    {
-      "label": "exchangeCodeForToken()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L67",
-      "community": 1,
-      "norm_label": "exchangecodefortoken()",
-      "id": "calendarimport_outlookcalendar_exchangecodefortoken"
-    },
-    {
-      "label": "OutlookEvent",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L96",
-      "community": 1,
-      "norm_label": "outlookevent",
-      "id": "calendarimport_outlookcalendar_outlookevent"
-    },
-    {
-      "label": "fetchEvents()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L107",
-      "community": 1,
-      "norm_label": "fetchevents()",
-      "id": "calendarimport_outlookcalendar_fetchevents"
-    },
-    {
-      "label": "isOutlookConfigured()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L145",
-      "community": 1,
-      "norm_label": "isoutlookconfigured()",
-      "id": "calendarimport_outlookcalendar_isoutlookconfigured"
-    },
-    {
-      "label": "importOutlookCalendar()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L149",
-      "community": 1,
-      "norm_label": "importoutlookcalendar()",
-      "id": "calendarimport_outlookcalendar_importoutlookcalendar"
-    },
-    {
-      "label": "googleCalendar.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L1",
-      "community": 66,
-      "norm_label": "googlecalendar.ts",
-      "id": "src_prototype_calendarimport_googlecalendar_ts"
-    },
-    {
-      "label": "Window",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L6",
-      "community": 66,
-      "norm_label": "window",
-      "id": "calendarimport_googlecalendar_window"
-    },
-    {
-      "label": "loadGIS()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L32",
-      "community": 66,
-      "norm_label": "loadgis()",
-      "id": "calendarimport_googlecalendar_loadgis"
-    },
-    {
-      "label": "requestToken()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L51",
-      "community": 66,
-      "norm_label": "requesttoken()",
-      "id": "calendarimport_googlecalendar_requesttoken"
-    },
-    {
-      "label": "GoogleEvent",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L73",
-      "community": 66,
-      "norm_label": "googleevent",
-      "id": "calendarimport_googlecalendar_googleevent"
-    },
-    {
-      "label": "fetchEvents()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L84",
-      "community": 66,
-      "norm_label": "fetchevents()",
-      "id": "calendarimport_googlecalendar_fetchevents"
-    },
-    {
-      "label": "isGoogleConfigured()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L124",
-      "community": 66,
-      "norm_label": "isgoogleconfigured()",
-      "id": "calendarimport_googlecalendar_isgoogleconfigured"
-    },
-    {
-      "label": "importGoogleCalendar()",
-      "file_type": "code",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L128",
-      "community": 66,
-      "norm_label": "importgooglecalendar()",
-      "id": "calendarimport_googlecalendar_importgooglecalendar"
     },
     {
       "label": "appleCalendar.ts",
@@ -12199,12 +12199,404 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L84",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_fetchevents"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_googleevent"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_importgooglecalendar"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L124",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_isgoogleconfigured"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_loadgis"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L51",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_requesttoken"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_googlecalendar_window"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "calendarimport_types_calendarevent"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_googlecalendar_ts",
+      "target": "src_prototype_calendarimport_types_ts"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "src_prototype_calendarimport_googlecalendar_ts"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L133",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_googlecalendar_importgooglecalendar",
+      "target": "calendarimport_googlecalendar_loadgis"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L134",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_googlecalendar_importgooglecalendar",
+      "target": "calendarimport_googlecalendar_requesttoken"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
+      "source_location": "L135",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_googlecalendar_importgooglecalendar",
+      "target": "calendarimport_googlecalendar_fetchevents"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "calendarimport_googlecalendar_isgoogleconfigured"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "calendarimport_googlecalendar_importgooglecalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_googlecalendar_importgooglecalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_googlecalendar_importgooglecalendar"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "src_prototype_calendarimport_outlookcalendar_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_base64urlencode"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_exchangecodefortoken"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L107",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_fetchevents"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_generatepkce"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L149",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L145",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L96",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_outlookevent"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_outlookcalendar_waitforpopupredirect"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "calendarimport_types_calendarevent"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_outlookcalendar_ts",
+      "target": "src_prototype_calendarimport_types_ts"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_generatepkce",
+      "target": "calendarimport_outlookcalendar_base64urlencode"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L155",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
+      "target": "calendarimport_outlookcalendar_generatepkce"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L169",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
+      "target": "calendarimport_outlookcalendar_waitforpopupredirect"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L170",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
+      "target": "calendarimport_outlookcalendar_exchangecodefortoken"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
+      "source_location": "L171",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
+      "target": "calendarimport_outlookcalendar_fetchevents"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/calendarImport/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_calendarimport_index_ts",
+      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_md",
-      "target": "drp03_claude_deadline_food_autopilot",
-      "confidence_score": 1.0
+      "target": "drp03_claude_deadline_food_autopilot"
     },
     {
       "relation": "contains",
@@ -12232,9 +12624,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L127",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_anonymous_session_persistence",
-      "confidence_score": 1.0
+      "target": "drp03_claude_anonymous_session_persistence"
     },
     {
       "relation": "contains",
@@ -12242,9 +12634,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_api_endpoints",
-      "confidence_score": 1.0
+      "target": "drp03_claude_api_endpoints"
     },
     {
       "relation": "contains",
@@ -12252,9 +12644,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L88",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_backend",
-      "confidence_score": 1.0
+      "target": "drp03_claude_backend"
     },
     {
       "relation": "contains",
@@ -12262,9 +12654,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L151",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_ci_deployment",
-      "confidence_score": 1.0
+      "target": "drp03_claude_ci_deployment"
     },
     {
       "relation": "contains",
@@ -12272,9 +12664,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L178",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_deeper_documentation",
-      "confidence_score": 1.0
+      "target": "drp03_claude_deeper_documentation"
     },
     {
       "relation": "contains",
@@ -12282,9 +12674,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_development",
-      "confidence_score": 1.0
+      "target": "drp03_claude_development"
     },
     {
       "relation": "contains",
@@ -12292,9 +12684,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L135",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_environment_variables",
-      "confidence_score": 1.0
+      "target": "drp03_claude_environment_variables"
     },
     {
       "relation": "contains",
@@ -12302,9 +12694,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L192",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_graphify",
-      "confidence_score": 1.0
+      "target": "drp03_claude_graphify"
     },
     {
       "relation": "contains",
@@ -12312,9 +12704,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L158",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_implementation_rules",
-      "confidence_score": 1.0
+      "target": "drp03_claude_implementation_rules"
     },
     {
       "relation": "contains",
@@ -12322,9 +12714,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L172",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_product_language",
-      "confidence_score": 1.0
+      "target": "drp03_claude_product_language"
     },
     {
       "relation": "contains",
@@ -12332,9 +12724,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_runtime",
-      "confidence_score": 1.0
+      "target": "drp03_claude_runtime"
     },
     {
       "relation": "contains",
@@ -12342,9 +12734,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_stack",
-      "confidence_score": 1.0
+      "target": "drp03_claude_stack"
     },
     {
       "relation": "contains",
@@ -12352,9 +12744,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L67",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_testing",
-      "confidence_score": 1.0
+      "target": "drp03_claude_testing"
     },
     {
       "relation": "contains",
@@ -12362,9 +12754,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_deadline_food_autopilot",
-      "target": "drp03_claude_two_frontend_surfaces_critical",
-      "confidence_score": 1.0
+      "target": "drp03_claude_two_frontend_surfaces_critical"
     },
     {
       "relation": "contains",
@@ -12372,9 +12764,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_two_frontend_surfaces_critical",
-      "target": "drp03_claude_1_active_prototype_what_users_see",
-      "confidence_score": 1.0
+      "target": "drp03_claude_1_active_prototype_what_users_see"
     },
     {
       "relation": "contains",
@@ -12382,9 +12774,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_two_frontend_surfaces_critical",
-      "target": "drp03_claude_2_dormant_react_router_slice_not_mounted",
-      "confidence_score": 1.0
+      "target": "drp03_claude_2_dormant_react_router_slice_not_mounted"
     },
     {
       "relation": "contains",
@@ -12392,9 +12784,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_development",
-      "target": "drp03_claude_codeblock_1",
-      "confidence_score": 1.0
+      "target": "drp03_claude_codeblock_1"
     },
     {
       "relation": "contains",
@@ -12412,9 +12804,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_testing",
-      "target": "drp03_claude_codeblock_2",
-      "confidence_score": 1.0
+      "target": "drp03_claude_codeblock_2"
     },
     {
       "relation": "contains",
@@ -12422,9 +12814,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_backend",
-      "target": "drp03_claude_firebase_commands",
-      "confidence_score": 1.0
+      "target": "drp03_claude_firebase_commands"
     },
     {
       "relation": "contains",
@@ -12432,9 +12824,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L107",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "drp03_claude_firebase_commands",
-      "target": "drp03_claude_codeblock_3",
-      "confidence_score": 1.0
+      "target": "drp03_claude_codeblock_3"
     },
     {
       "relation": "contains",
@@ -25167,17 +25559,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_googlecalendar_importgooglecalendar"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
       "target": "calendarimport_icsparser_parseicstext"
     },
     {
@@ -25190,17 +25571,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
       "target": "calendarimport_index_calendareventstodeadlines"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
     },
     {
       "relation": "imports",
@@ -25954,17 +26324,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_googlecalendar_importgooglecalendar"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "calendarimport_icsparser_parseicstext"
     },
     {
@@ -25977,17 +26336,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_onboarding_tsx",
       "target": "calendarimport_index_calendareventstodeadlines"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
     },
     {
       "relation": "imports",
@@ -26897,28 +27245,6 @@
       "context": "re-export",
       "confidence": "EXTRACTED",
       "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_googlecalendar_importgooglecalendar"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_googlecalendar_isgoogleconfigured"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -26934,28 +27260,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
       "target": "calendarimport_index_calendareventstodeadlines"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
-    },
-    {
-      "relation": "re_exports",
-      "context": "re-export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
     },
     {
       "relation": "re_exports",
@@ -26984,33 +27288,11 @@
       "context": "export",
       "confidence": "EXTRACTED",
       "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "src_prototype_calendarimport_googlecalendar_ts"
-    },
-    {
-      "relation": "re_exports",
-      "context": "export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
       "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_index_ts",
       "target": "src_prototype_calendarimport_icsparser_ts"
-    },
-    {
-      "relation": "re_exports",
-      "context": "export",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/index.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_index_ts",
-      "target": "src_prototype_calendarimport_outlookcalendar_ts"
     },
     {
       "relation": "re_exports",
@@ -27065,288 +27347,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_calendarimport_applecalendar_ts",
       "target": "calendarimport_calendarapi_calendarfetchicsurl"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_base64urlencode"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L67",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_exchangecodefortoken"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L107",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_fetchevents"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_generatepkce"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L149",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L145",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_isoutlookconfigured"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L96",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_outlookevent"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_outlookcalendar_waitforpopupredirect"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "calendarimport_types_calendarevent"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_outlookcalendar_ts",
-      "target": "src_prototype_calendarimport_types_ts"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L26",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "calendarimport_outlookcalendar_generatepkce",
-      "target": "calendarimport_outlookcalendar_base64urlencode"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L155",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "target": "calendarimport_outlookcalendar_generatepkce"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L169",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "target": "calendarimport_outlookcalendar_waitforpopupredirect"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L170",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "target": "calendarimport_outlookcalendar_exchangecodefortoken"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/outlookCalendar.ts",
-      "source_location": "L171",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "target": "calendarimport_outlookcalendar_fetchevents"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L84",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_fetchevents"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L73",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_googleevent"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L128",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_importgooglecalendar"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L124",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_isgoogleconfigured"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_loadgis"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L51",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_requesttoken"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_googlecalendar_window"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "calendarimport_types_calendarevent"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_calendarimport_googlecalendar_ts",
-      "target": "src_prototype_calendarimport_types_ts"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L133",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "calendarimport_googlecalendar_importgooglecalendar",
-      "target": "calendarimport_googlecalendar_loadgis"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L134",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "calendarimport_googlecalendar_importgooglecalendar",
-      "target": "calendarimport_googlecalendar_requesttoken"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/calendarImport/googleCalendar.ts",
-      "source_location": "L135",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "calendarimport_googlecalendar_importgooglecalendar",
-      "target": "calendarimport_googlecalendar_fetchevents"
     },
     {
       "relation": "contains",
@@ -36943,5 +36943,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "956b5d2872c49b6304e99dc595b89bd9b6df3d52"
+  "built_at_commit": "9745911bcae38860395d6c3076f3e17fc0e1306f"
 }

@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1351 nodes, 2360 edges, 97 communities. Commit: 956b5d2</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1351 nodes, 2360 edges, 97 communities. Commit: 9745911</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -121,15 +121,15 @@ flowchart LR
     COMMUNITY_9_1D55D1EE -->|contains x35| OTHER_D0941E68
     OTHER_D0941E68 -->|imports x33| TESTS_FIXTURES_B84B1DCC
     COMMUNITY_8_9FC4FAC0 -->|contains x31| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x30| COMMUNITY_1_3073A0DB
     OTHER_D0941E68 -->|imports x25| COMMUNITY_35_B2C5BAA1
-    OTHER_D0941E68 -->|imports x25| COMMUNITY_1_3073A0DB
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
     COMMUNITY_35_B2C5BAA1 -->|imports x24| TESTS_FIXTURES_B84B1DCC
     TESTS_FIXTURES_B84B1DCC -->|imports x22| OTHER_D0941E68
     COMMUNITY_35_B2C5BAA1 -->|imports x20| OTHER_D0941E68
     COMMUNITY_6_7D637A07 -->|imports x17| SERVE_API_35EC8E86
     COMMUNITY_35_B2C5BAA1 -->|imports x17| SERVE_API_35EC8E86
-    COMMUNITY_1_3073A0DB -->|imports x16| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x16| SERVE_API_35EC8E86
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -2012,6 +2012,7 @@ flowchart LR
         calendarimport_outlookcalendar_waitforpopupredir_cdf384e3("waitForPopupRedirect()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
         calendarimport_outlookcalendar_exchangecodeforto_f8174bbd("exchangeCodeForToken()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
         calendarimport_outlookcalendar_fetchevents_0ecfc1ce("fetchEvents()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+        src_prototype_calendarimport_outlookcalendar_ts_4562c00b("outlookCalendar.ts")
     end
     subgraph community_1_prototype_calendarImport_appleCalend_8127ae04["prototype/calendarImport/appleCalendar.ts"]
         src_prototype_calendarimport_applecalendar_ts_c9f9e5f0("appleCalendar.ts")
@@ -2019,20 +2020,17 @@ flowchart LR
         calendarimport_applecalendar_importfromsubscript_a3a1f9c1("importFromSubscriptionUrl()<br/><small>prototype/calendarImport/appleCalendar.ts</small>")
         calendarimport_applecalendar_issubscriptionurl_86b0f620("isSubscriptionUrl()<br/><small>prototype/calendarImport/appleCalendar.ts</small>")
     end
-    subgraph community_1_src_prototype_types_ts_4b72de5d["src/prototype/types.ts"]
-        prototype_types_calendarprovider_d02d565a("CalendarProvider<br/><small>src/prototype/types.ts</small>")
-        prototype_types_mealslot_f4068e82("MealSlot<br/><small>src/prototype/types.ts</small>")
-        prototype_types_recipereview_493b967b("RecipeReview<br/><small>src/prototype/types.ts</small>")
+    subgraph community_1_src_prototype_data_ts_d02c074e["src/prototype/data.ts"]
+        src_prototype_data_ts_961d4457("data.ts")
+        prototype_data_allergens_c1146041("allergens<br/><small>src/prototype/data.ts</small>")
+        prototype_data_calendarproviders_7401f3ab("calendarProviders<br/><small>src/prototype/data.ts</small>")
     end
     subgraph community_1_prototype_calendarImport_icsParser_t_f236f699["prototype/calendarImport/icsParser.ts"]
         calendarimport_icsparser_parseicstext_6892e1f0("parseICSText()<br/><small>prototype/calendarImport/icsParser.ts</small>")
         calendarimport_icsparser_unfoldlines_134d1af9("unfoldLines()<br/><small>prototype/calendarImport/icsParser.ts</small>")
     end
-    subgraph community_1_src_prototype_data_ts_d02c074e["src/prototype/data.ts"]
-        src_prototype_data_ts_961d4457("data.ts")
-        prototype_data_allergens_c1146041("allergens<br/><small>src/prototype/data.ts</small>")
-    end
-    src_prototype_screens_settingsscreen_tsx_2c59e92d("SettingsScreen.tsx")
+    calendarimport_types_calendarevent_f62c2c1f("CalendarEvent<br/><small>prototype/calendarImport/types.ts</small>")
+    prototype_types_calendarprovider_d02d565a("CalendarProvider<br/><small>src/prototype/types.ts</small>")
     calendarimport_outlookcalendar_base64urlencode_1d9b3a8b -->|calls| calendarimport_outlookcalendar_generatepkce_a7deecff
     calendarimport_outlookcalendar_generatepkce_a7deecff -->|calls| calendarimport_outlookcalendar_importoutlookcale_3a7c989d
     calendarimport_outlookcalendar_waitforpopupredir_cdf384e3 -->|calls| calendarimport_outlookcalendar_importoutlookcale_3a7c989d
@@ -2042,18 +2040,11 @@ flowchart LR
     calendarimport_applecalendar_normalizewebcalurl_48caddb9 -->|calls| calendarimport_applecalendar_issubscriptionurl_86b0f620
     calendarimport_applecalendar_importfromsubscript_a3a1f9c1 -->|calls| calendarimport_icsparser_parseicstext_6892e1f0
     calendarimport_icsparser_unfoldlines_134d1af9 -->|calls| calendarimport_icsparser_parseicstext_6892e1f0
+    src_prototype_calendarimport_outlookcalendar_ts_4562c00b -->|imports| calendarimport_types_calendarevent_f62c2c1f
     src_prototype_data_ts_961d4457 -->|imports| prototype_types_calendarprovider_d02d565a
-    src_prototype_data_ts_961d4457 -->|imports| prototype_types_mealslot_f4068e82
-    src_prototype_data_ts_961d4457 -->|imports| prototype_types_recipereview_493b967b
-    src_prototype_data_ts_961d4457 -->|imports| src_prototype_screens_settingsscreen_tsx_2c59e92d
-    prototype_data_allergens_c1146041 -->|imports| src_prototype_screens_settingsscreen_tsx_2c59e92d
     prototype_types_calendarprovider_d02d565a -->|imports| src_prototype_calendarimport_applecalendar_ts_c9f9e5f0
-    prototype_types_calendarprovider_d02d565a -->|imports| src_prototype_screens_settingsscreen_tsx_2c59e92d
-    src_prototype_screens_settingsscreen_tsx_2c59e92d -->|imports| calendarimport_applecalendar_importfromsubscript_a3a1f9c1
-    src_prototype_screens_settingsscreen_tsx_2c59e92d -->|imports| calendarimport_applecalendar_issubscriptionurl_86b0f620
-    src_prototype_screens_settingsscreen_tsx_2c59e92d -->|imports| calendarimport_icsparser_parseicstext_6892e1f0
-    src_prototype_screens_settingsscreen_tsx_2c59e92d -->|imports| calendarimport_outlookcalendar_importoutlookcale_3a7c989d
     src_prototype_calendarimport_applecalendar_ts_c9f9e5f0 -->|imports| calendarimport_icsparser_parseicstext_6892e1f0
+    src_prototype_calendarimport_applecalendar_ts_c9f9e5f0 -->|imports| calendarimport_types_calendarevent_f62c2c1f
     %% Omitted for readability: 25 nodes, 0 edges
     class calendarimport_outlookcalendar_base64urlencode_1d9b3a8b function;
     class calendarimport_outlookcalendar_generatepkce_a7deecff function;
@@ -2061,18 +2052,18 @@ flowchart LR
     class calendarimport_outlookcalendar_waitforpopupredir_cdf384e3 function;
     class calendarimport_outlookcalendar_exchangecodeforto_f8174bbd function;
     class calendarimport_outlookcalendar_fetchevents_0ecfc1ce function;
+    class src_prototype_calendarimport_outlookcalendar_ts_4562c00b module;
     class src_prototype_calendarimport_applecalendar_ts_c9f9e5f0 module;
     class calendarimport_applecalendar_normalizewebcalurl_48caddb9 function;
     class calendarimport_applecalendar_importfromsubscript_a3a1f9c1 function;
     class calendarimport_applecalendar_issubscriptionurl_86b0f620 function;
-    class prototype_types_calendarprovider_d02d565a klass;
-    class prototype_types_mealslot_f4068e82 klass;
-    class prototype_types_recipereview_493b967b klass;
-    class calendarimport_icsparser_parseicstext_6892e1f0 function;
-    class calendarimport_icsparser_unfoldlines_134d1af9 function;
     class src_prototype_data_ts_961d4457 module;
     class prototype_data_allergens_c1146041 function;
-    class src_prototype_screens_settingsscreen_tsx_2c59e92d ui;
+    class prototype_data_calendarproviders_7401f3ab function;
+    class calendarimport_icsparser_parseicstext_6892e1f0 function;
+    class calendarimport_icsparser_unfoldlines_134d1af9 function;
+    class calendarimport_types_calendarevent_f62c2c1f klass;
+    class prototype_types_calendarprovider_d02d565a klass;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -2096,174 +2087,6 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>MealSlot</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br>+2 more</td>
-  <td>Module file in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>calendarProviders</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>calendarProviders node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>mealSlots</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>mealSlots node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>sampleReviews()</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>sampleReviews() node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>sourceOptions</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
-  <td>sourceOptions node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>allergens node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>dislikes</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>dislikes node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>likes</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>likes node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>dietary</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>dietary node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>universities</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>universities node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>MealSlot</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>MealSlot node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>RecipeReview</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>RecipeReview node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br>+2 more</td>
-  <td>CalendarProvider node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>calendarProviders</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br>+5 more</td>
-  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>calendarEventsToDeadlines()</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small><br><code>ChoiceGroup()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+7 more</td>
-  <td>Module file in prototype/screens/SettingsScreen.tsx.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>calendarProviders</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br>+6 more</td>
-  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>calendarEventsToDeadlines()</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small><br><code>ChoiceGroup()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+7 more</td>
-  <td>Module file in prototype/screens/Onboarding.tsx.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>Progress()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Progress() node in prototype/screens/Onboarding.tsx.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>PreferenceSection() node in prototype/screens/Onboarding.tsx.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>ChoiceGroup()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>ChoiceGroup() node in prototype/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>SelectField()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectField() node in prototype/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>index.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Module file in prototype/calendarImport/index.ts.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>calendarEventsToDeadlines()</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>calendarEventsToDeadlines() node in prototype/calendarImport/index.ts.</td>
-</tr>
-<tr>
-  <td>22</td>
   <td><code>outlookCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -2271,7 +2094,7 @@ flowchart LR
   <td>Module file in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>2</td>
   <td><code>base64UrlEncode()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2279,7 +2102,7 @@ flowchart LR
   <td>base64UrlEncode() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>3</td>
   <td><code>generatePKCE()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>base64UrlEncode()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
@@ -2287,7 +2110,7 @@ flowchart LR
   <td>generatePKCE() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>4</td>
   <td><code>waitForPopupRedirect()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2295,7 +2118,7 @@ flowchart LR
   <td>waitForPopupRedirect() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>5</td>
   <td><code>exchangeCodeForToken()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2303,7 +2126,7 @@ flowchart LR
   <td>exchangeCodeForToken() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>6</td>
   <td><code>OutlookEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -2311,7 +2134,7 @@ flowchart LR
   <td>OutlookEvent node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>7</td>
   <td><code>fetchEvents()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2319,7 +2142,7 @@ flowchart LR
   <td>fetchEvents() node in prototype/calendarImport/outlookCalendar.ts.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>8</td>
   <td><code>isOutlookConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2327,12 +2150,180 @@ flowchart LR
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>9</td>
   <td><code>importOutlookCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>exchangeCodeForToken()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>fetchEvents()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>generatePKCE()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br>+3 more</td>
-  <td>No direct outbound edge</td>
+  <td><code>exchangeCodeForToken()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>fetchEvents()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>generatePKCE()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br>+1 more</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
   <td>importOutlookCalendar() node in prototype/calendarImport/outlookCalendar.ts.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>MealSlot</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br>+2 more</td>
+  <td>Module file in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>calendarProviders</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>calendarProviders node in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>mealSlots</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>mealSlots node in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>sampleReviews()</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sampleReviews() node in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>sourceOptions</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td>sourceOptions node in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>allergens node in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>dislikes</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>dislikes node in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>likes</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>likes node in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>dietary</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>dietary node in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>universities</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>universities node in src/prototype/data.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>MealSlot</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>MealSlot node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>RecipeReview</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>RecipeReview node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br>+2 more</td>
+  <td>CalendarProvider node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>calendarProviders</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br>+6 more</td>
+  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>calendarEventsToDeadlines()</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small><br><code>ChoiceGroup()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+6 more</td>
+  <td>Module file in prototype/screens/SettingsScreen.tsx.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>calendarProviders</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br>+7 more</td>
+  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>calendarEventsToDeadlines()</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small><br><code>ChoiceGroup()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+6 more</td>
+  <td>Module file in prototype/screens/Onboarding.tsx.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>Progress()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Progress() node in prototype/screens/Onboarding.tsx.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>PreferenceSection() node in prototype/screens/Onboarding.tsx.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>ChoiceGroup()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>ChoiceGroup() node in prototype/components/primitives.tsx.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>SelectField()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>SelectField() node in prototype/components/primitives.tsx.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>index.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>Module file in prototype/calendarImport/index.ts.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>calendarEventsToDeadlines()</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>calendarEventsToDeadlines() node in prototype/calendarImport/index.ts.</td>
 </tr>
 </table>
 
@@ -4733,11 +4724,11 @@ flowchart LR
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
     %% Section: Other (293 nodes, 289 edges)
-    subgraph other_prototype_screens_RecipeDetailScreen_tsx_c4587fa4["prototype/screens/RecipeDetailScreen.tsx"]
-        screens_recipedetailscreen_mealtoform_0e326d68("mealToForm()<br/><small>prototype/screens/RecipeDetailScreen.tsx</small>")
-        screens_recipedetailscreen_ratinglabel_d7f7bd41("ratingLabel()<br/><small>prototype/screens/RecipeDetailScreen.tsx</small>")
-        screens_recipedetailscreen_recipedetailscreen_25b53988("RecipeDetailScreen()<br/><small>prototype/screens/RecipeDetailScreen.tsx</small>")
-        screens_recipedetailscreen_backlabel_8afbb211("backLabel()<br/><small>prototype/screens/RecipeDetailScreen.tsx</small>")
+    subgraph other_prototype_calendarImport_googleCalendar_ts_c0f9601c["prototype/calendarImport/googleCalendar.ts"]
+        calendarimport_googlecalendar_loadgis_d2388831("loadGIS()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
+        calendarimport_googlecalendar_importgooglecalend_1f63e428("importGoogleCalendar()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
+        calendarimport_googlecalendar_requesttoken_bfc21632("requestToken()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
+        calendarimport_googlecalendar_fetchevents_ae7cc7aa("fetchEvents()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
     end
     subgraph other_functions_lib_index_js_c34dee45["functions/lib/index.js"]
         lib_index_asrecord_ee234b0f("asRecord()<br/><small>functions/lib/index.js</small>")
@@ -4755,26 +4746,24 @@ flowchart LR
     end
     screens_calendarscreen_deadlineeditpanel_6043c978("DeadlineEditPanel()<br/><small>prototype/screens/CalendarScreen.tsx</small>")
     screens_onboarding_onboarding_b7499c1e("Onboarding()<br/><small>prototype/screens/Onboarding.tsx</small>")
-    screens_settingsscreen_settingsscreen_835e1102("SettingsScreen()<br/><small>prototype/screens/SettingsScreen.tsx</small>")
+    screens_recipedetailscreen_mealtoform_0e326d68("mealToForm()<br/><small>prototype/screens/RecipeDetailScreen.tsx</small>")
     src_prototype_deadlinefoodprototype_tsx_f5893eb1("DeadlineFoodPrototype.tsx")
     prototype_ingredients_ingredientdraftsfromingred_cddc19e4("ingredientDraftsFromIngredients()<br/><small>src/prototype/ingredients.ts</small>")
     prototype_utils_formatcookinglimit_1aa8477f("formatCookingLimit()<br/><small>src/prototype/utils.ts</small>")
+    calendarimport_googlecalendar_loadgis_d2388831 -->|calls| calendarimport_googlecalendar_importgooglecalend_1f63e428
+    calendarimport_googlecalendar_requesttoken_bfc21632 -->|calls| calendarimport_googlecalendar_importgooglecalend_1f63e428
+    calendarimport_googlecalendar_fetchevents_ae7cc7aa -->|calls| calendarimport_googlecalendar_importgooglecalend_1f63e428
     prototype_ingredients_ingredientdraftsfromingred_cddc19e4 -->|calls| screens_recipedetailscreen_mealtoform_0e326d68
     prototype_workloadmodel_workloadscore_7b7b4c61 -->|calls| prototype_workloadmodel_workloadlabel_fc9953c7
     prototype_workloadmodel_workloadlabel_fc9953c7 -->|calls| prototype_workloadmodel_cookingeffortreason_86670d03
     prototype_workloadmodel_cookingeffortreason_86670d03 -->|calls| screens_calendarscreen_deadlineeditpanel_6043c978
     prototype_utils_formatcookinglimit_1aa8477f -->|calls| screens_onboarding_onboarding_b7499c1e
-    prototype_utils_formatcookinglimit_1aa8477f -->|calls| screens_settingsscreen_settingsscreen_835e1102
-    screens_recipedetailscreen_ratinglabel_d7f7bd41 -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
-    screens_recipedetailscreen_backlabel_8afbb211 -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
     src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| screens_onboarding_onboarding_b7499c1e
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| screens_recipedetailscreen_recipedetailscreen_25b53988
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| screens_settingsscreen_settingsscreen_835e1102
     %% Omitted for readability: 275 nodes, 0 edges
-    class screens_recipedetailscreen_mealtoform_0e326d68 ui;
-    class screens_recipedetailscreen_ratinglabel_d7f7bd41 ui;
-    class screens_recipedetailscreen_recipedetailscreen_25b53988 ui;
-    class screens_recipedetailscreen_backlabel_8afbb211 ui;
+    class calendarimport_googlecalendar_loadgis_d2388831 function;
+    class calendarimport_googlecalendar_importgooglecalend_1f63e428 function;
+    class calendarimport_googlecalendar_requesttoken_bfc21632 function;
+    class calendarimport_googlecalendar_fetchevents_ae7cc7aa function;
     class lib_index_asrecord_ee234b0f function;
     class lib_index_openfoodfactscachedocid_ca6ca921 function;
     class lib_index_normalizeingredientkey_dc018ba4 function;
@@ -4785,7 +4774,7 @@ flowchart LR
     class src_index_openfoodfactscachedocid_28a03323 function;
     class screens_calendarscreen_deadlineeditpanel_6043c978 ui;
     class screens_onboarding_onboarding_b7499c1e ui;
-    class screens_settingsscreen_settingsscreen_835e1102 ui;
+    class screens_recipedetailscreen_mealtoform_0e326d68 ui;
     class src_prototype_deadlinefoodprototype_tsx_f5893eb1 ui;
     class prototype_ingredients_ingredientdraftsfromingred_cddc19e4 function;
     class prototype_utils_formatcookinglimit_1aa8477f function;
@@ -5099,7 +5088,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-01 09:41 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-01 10:13 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
