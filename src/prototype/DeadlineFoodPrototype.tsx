@@ -78,6 +78,7 @@ export function DeadlineFoodPrototype() {
   const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
   const [discoverSaved, setDiscoverSaved] = useState<Meal[]>([]);
   const [discoverRejected, setDiscoverRejected] = useState<Meal[]>([]);
+  const [discoverReviewedRecipeIds, setDiscoverReviewedRecipeIds] = useState<string[]>([]);
   const [icsSubscriptions, setIcsSubscriptions] = useState<IcsSubscription[]>([]);
   const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
@@ -200,8 +201,23 @@ export function DeadlineFoodPrototype() {
           setOnboarded(snapshot.settings.onboarded);
           setCanPersistSession(true);
           if (snapshot.settings.customRecipes) setCustomRecipes(snapshot.settings.customRecipes as Meal[]);
-          if (snapshot.settings.discoverSaved) setDiscoverSaved(snapshot.settings.discoverSaved as Meal[]);
-          if (snapshot.settings.discoverRejected) setDiscoverRejected(snapshot.settings.discoverRejected as Meal[]);
+          const restoredDiscoverSaved = snapshot.settings.discoverSaved ?? [];
+          const restoredDiscoverRejected = snapshot.settings.discoverRejected ?? [];
+          if (snapshot.settings.discoverSaved) setDiscoverSaved(restoredDiscoverSaved as Meal[]);
+          if (snapshot.settings.discoverRejected) setDiscoverRejected(restoredDiscoverRejected as Meal[]);
+          if (snapshot.settings.discoverReviewedRecipeIds) {
+            setDiscoverReviewedRecipeIds(snapshot.settings.discoverReviewedRecipeIds);
+          } else {
+            setDiscoverReviewedRecipeIds(
+              Array.from(
+                new Set(
+                  [...restoredDiscoverSaved, ...restoredDiscoverRejected]
+                    .map((recipe) => recipe.id)
+                    .filter((id): id is string => typeof id === "string" && id.length > 0),
+                ),
+              ),
+            );
+          }
           if (snapshot.settings.calendarEvents) setCalendarEvents(snapshot.settings.calendarEvents as CalendarEvent[]);
           if (snapshot.settings.icsSubscriptions) setIcsSubscriptions(snapshot.settings.icsSubscriptions as IcsSubscription[]);
           if (snapshot.settings.calendarTokens) setCalendarTokens(snapshot.settings.calendarTokens as CalendarToken[]);
@@ -239,6 +255,7 @@ export function DeadlineFoodPrototype() {
           customRecipes,
           discoverSaved,
           discoverRejected,
+          discoverReviewedRecipeIds,
           plan,
           calendarEvents,
           icsSubscriptions,
@@ -272,7 +289,7 @@ export function DeadlineFoodPrototype() {
         window.clearTimeout(saveSettingsDebounceRef.current);
       }
     };
-  }, [calendarEvents, calendarTokens, canPersistSession, customRecipes, deadlines, discoverRejected, discoverSaved, icsSubscriptions, onboarded, plan, prefs, selectedSources, sessionId, sessionLoaded]);
+  }, [calendarEvents, calendarTokens, canPersistSession, customRecipes, deadlines, discoverRejected, discoverReviewedRecipeIds, discoverSaved, icsSubscriptions, onboarded, plan, prefs, selectedSources, sessionId, sessionLoaded]);
 
   useEffect(() => {
     if (!sessionLoaded) {
@@ -357,7 +374,7 @@ export function DeadlineFoodPrototype() {
       {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} plan={plan} setPlan={setPlan} prefs={prefs} onSelectMeal={openRecipe} track={track} />}
+      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} plan={plan} setPlan={setPlan} prefs={prefs} onSelectMeal={openRecipe} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} backTo={previousScreen} track={track} />}
     </Shell>

@@ -1,5 +1,5 @@
 import { BookOpen, Plus, RefreshCcw, Sparkles, UtensilsCrossed } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,6 +18,7 @@ import type { TrackPrototypeEvent } from "../analytics";
 import { DiscoverScreen } from "./DiscoverScreen";
 
 type Tab = "saved" | "discover" | "add";
+type StateSetter<T> = Dispatch<SetStateAction<T>>;
 
 type CreateForm = {
   name: string;
@@ -73,6 +74,8 @@ export function RecipesHubScreen({
   setDiscoverSaved,
   discoverRejected,
   setDiscoverRejected,
+  discoverReviewedRecipeIds,
+  setDiscoverReviewedRecipeIds,
   plan,
   setPlan,
   prefs,
@@ -80,11 +83,13 @@ export function RecipesHubScreen({
   track,
 }: {
   customRecipes: Meal[];
-  setCustomRecipes: (recipes: Meal[]) => void;
+  setCustomRecipes: StateSetter<Meal[]>;
   discoverSaved: Meal[];
-  setDiscoverSaved: (saved: Meal[]) => void;
+  setDiscoverSaved: StateSetter<Meal[]>;
   discoverRejected: Meal[];
-  setDiscoverRejected: (rejected: Meal[]) => void;
+  setDiscoverRejected: StateSetter<Meal[]>;
+  discoverReviewedRecipeIds: string[];
+  setDiscoverReviewedRecipeIds: StateSetter<string[]>;
   plan: PlanEntry[];
   setPlan: (plan: PlanEntry[]) => void;
   prefs: Preferences;
@@ -186,7 +191,7 @@ export function RecipesHubScreen({
       isUserCreated: true,
     } satisfies Meal;
 
-    setCustomRecipes([nextRecipe, ...customRecipes]);
+    setCustomRecipes((recipes) => [nextRecipe, ...recipes]);
     track("custom_recipe_added", {
       meal_id: nextRecipe.id,
       minutes: nextRecipe.time,
@@ -296,6 +301,8 @@ export function RecipesHubScreen({
           setSaved={setDiscoverSaved}
           rejected={discoverRejected}
           setRejected={setDiscoverRejected}
+          reviewedRecipeIds={discoverReviewedRecipeIds}
+          setReviewedRecipeIds={setDiscoverReviewedRecipeIds}
           onSelectMeal={onSelectMeal}
           track={track}
         />
