@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1334 nodes, 2333 edges, 99 communities. Commit: cc01e1a</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1334 nodes, 2333 edges, 99 communities. Commit: 840772a</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -70,14 +70,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#serve-api">Serving API</a>
     <a href="#security-global">Security &amp; Global Graph</a>
     <a href="#tests-fixtures">Tests &amp; Fixtures</a>
-    <a href="#firebase-functions">Firebase Functions</a>
-    <a href="#compiled-session-backend">Compiled Session Backend</a>
-    <a href="#posthog-analytics">PostHog Analytics</a>
-    <a href="#app-typescript-config">App TypeScript Config</a>
-    <a href="#shadcn-component-config">Shadcn Component Config</a>
-    <a href="#firebase-emulator-config">Firebase Emulator Config</a>
-    <a href="#firestore-indexes">Firestore Indexes</a>
-    <a href="#functions-dev-tsconfig">Functions Dev TSConfig</a>
+    <a href="#community-6">Community 6</a>
+    <a href="#community-8">Community 8</a>
+    <a href="#community-9">Community 9</a>
+    <a href="#community-11">Community 11</a>
+    <a href="#community-12">Community 12</a>
+    <a href="#community-19">Community 19</a>
+    <a href="#community-26">Community 26</a>
+    <a href="#community-29">Community 29</a>
     <a href="#other">Other</a>
 </div>
 
@@ -100,36 +100,36 @@ flowchart LR
     class SECURITY_GLOBAL_5B9C6A04 module;
     TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>352 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
-    FIREBASE_FUNCTIONS_650C665A("Firebase Functions<br/><small>39 nodes</small>")
-    class FIREBASE_FUNCTIONS_650C665A module;
-    COMPILED_SESSION_BACKEND_52DD869B("Compiled Session Backend<br/><small>36 nodes</small>")
-    class COMPILED_SESSION_BACKEND_52DD869B module;
-    POSTHOG_ANALYTICS_6F807F07("PostHog Analytics<br/><small>36 nodes</small>")
-    class POSTHOG_ANALYTICS_6F807F07 module;
-    APP_TYPESCRIPT_CONFIG_4BC442D2("App TypeScript Config<br/><small>30 nodes</small>")
-    class APP_TYPESCRIPT_CONFIG_4BC442D2 module;
-    SHADCN_COMPONENT_CONFIG_FCFD3151("Shadcn Component Config<br/><small>28 nodes</small>")
-    class SHADCN_COMPONENT_CONFIG_FCFD3151 module;
-    FIREBASE_EMULATOR_CONFIG_8A9992AA("Firebase Emulator Config<br/><small>20 nodes</small>")
-    class FIREBASE_EMULATOR_CONFIG_8A9992AA module;
-    FIRESTORE_INDEXES_994C36A8("Firestore Indexes<br/><small>16 nodes</small>")
-    class FIRESTORE_INDEXES_994C36A8 module;
-    FUNCTIONS_DEV_TSCONFIG_2AA6F735("Functions Dev TSConfig<br/><small>15 nodes</small>")
-    class FUNCTIONS_DEV_TSCONFIG_2AA6F735 module;
+    COMMUNITY_6_7D637A07("Community 6<br/><small>39 nodes</small>")
+    class COMMUNITY_6_7D637A07 module;
+    COMMUNITY_8_9FC4FAC0("Community 8<br/><small>36 nodes</small>")
+    class COMMUNITY_8_9FC4FAC0 module;
+    COMMUNITY_9_1D55D1EE("Community 9<br/><small>36 nodes</small>")
+    class COMMUNITY_9_1D55D1EE module;
+    COMMUNITY_11_DE018FC2("Community 11<br/><small>30 nodes</small>")
+    class COMMUNITY_11_DE018FC2 module;
+    COMMUNITY_12_82F13F05("Community 12<br/><small>28 nodes</small>")
+    class COMMUNITY_12_82F13F05 module;
+    COMMUNITY_19_9462A0B9("Community 19<br/><small>20 nodes</small>")
+    class COMMUNITY_19_9462A0B9 module;
+    COMMUNITY_26_029F571A("Community 26<br/><small>16 nodes</small>")
+    class COMMUNITY_26_029F571A module;
+    COMMUNITY_29_DAB74D83("Community 29<br/><small>15 nodes</small>")
+    class COMMUNITY_29_DAB74D83 module;
     OTHER_D0941E68("Other<br/><small>222 nodes</small>")
     class OTHER_D0941E68 module;
     TESTS_FIXTURES_B84B1DCC -->|imports x65| SERVE_API_35EC8E86
-    POSTHOG_ANALYTICS_6F807F07 -->|contains x35| OTHER_D0941E68
-    COMPILED_SESSION_BACKEND_52DD869B -->|contains x31| OTHER_D0941E68
+    COMMUNITY_9_1D55D1EE -->|contains x35| OTHER_D0941E68
+    COMMUNITY_8_9FC4FAC0 -->|contains x31| OTHER_D0941E68
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
     OTHER_D0941E68 -->|imports x17| SERVE_API_35EC8E86
-    FIREBASE_FUNCTIONS_650C665A -->|imports x16| OTHER_D0941E68
-    FIREBASE_EMULATOR_CONFIG_8A9992AA -->|imports x12| SERVE_API_35EC8E86
-    OTHER_D0941E68 -->|imports x9| FIREBASE_EMULATOR_CONFIG_8A9992AA
-    FIREBASE_FUNCTIONS_650C665A -->|imports x7| TESTS_FIXTURES_B84B1DCC
-    TESTS_FIXTURES_B84B1DCC -->|imports x6| FIREBASE_EMULATOR_CONFIG_8A9992AA
-    APP_TYPESCRIPT_CONFIG_4BC442D2 -->|imports x6| OTHER_D0941E68
-    APP_TYPESCRIPT_CONFIG_4BC442D2 -->|imports x6| SERVE_API_35EC8E86
+    COMMUNITY_6_7D637A07 -->|imports x16| OTHER_D0941E68
+    COMMUNITY_19_9462A0B9 -->|imports x12| SERVE_API_35EC8E86
+    OTHER_D0941E68 -->|imports x9| COMMUNITY_19_9462A0B9
+    COMMUNITY_6_7D637A07 -->|imports x7| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x6| COMMUNITY_19_9462A0B9
+    COMMUNITY_11_DE018FC2 -->|imports x6| OTHER_D0941E68
+    COMMUNITY_11_DE018FC2 -->|imports x6| SERVE_API_35EC8E86
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,12 +146,12 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>180</td><td><code>13, 17, 22, 23, 27, 28, 30, 31, 32, 43, 57, 79, 92</code></td></tr><tr><td>Outputs &amp; Docs</td><td>22</td><td><code>25, 58</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>137</td><td><code>10, 16, 20, 24, 34, 39, 49, 65, 66, 67, 81, 82</code></td></tr><tr><td>Serving API</td><td>164</td><td><code>2, 5, 14, 21</code></td></tr><tr><td>Security &amp; Global Graph</td><td>37</td><td><code>7</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>352</td><td><code>0, 1, 3, 4, 15, 18, 36, 61, 68</code></td></tr><tr><td>Firebase Functions</td><td>39</td><td><code>6</code></td></tr><tr><td>Compiled Session Backend</td><td>36</td><td><code>8</code></td></tr><tr><td>PostHog Analytics</td><td>36</td><td><code>9</code></td></tr><tr><td>App TypeScript Config</td><td>30</td><td><code>11</code></td></tr><tr><td>Shadcn Component Config</td><td>28</td><td><code>12</code></td></tr><tr><td>Firebase Emulator Config</td><td>20</td><td><code>19</code></td></tr><tr><td>Firestore Indexes</td><td>16</td><td><code>26</code></td></tr><tr><td>Functions Dev TSConfig</td><td>15</td><td><code>29</code></td></tr><tr><td>Other</td><td>222</td><td><code>33, 35, 37, 38, 40, 41, 42, 44, 45, 46, 47, 48, 50, 51, 52, 53, 54, 55, 56, 59, 60, 62, 63, 64, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 80, 83, 84, 85, 86, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 98</code></td></tr>
+      <tr><td>Graph Build</td><td>180</td><td><code>13, 17, 22, 23, 27, 28, 30, 31, 32, 43, 57, 79, 92</code></td></tr><tr><td>Outputs &amp; Docs</td><td>22</td><td><code>25, 58</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>137</td><td><code>10, 16, 20, 24, 34, 39, 49, 65, 66, 67, 81, 82</code></td></tr><tr><td>Serving API</td><td>164</td><td><code>2, 5, 14, 21</code></td></tr><tr><td>Security &amp; Global Graph</td><td>37</td><td><code>7</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>352</td><td><code>0, 1, 3, 4, 15, 18, 36, 61, 68</code></td></tr><tr><td>Community 6</td><td>39</td><td><code>6</code></td></tr><tr><td>Community 8</td><td>36</td><td><code>8</code></td></tr><tr><td>Community 9</td><td>36</td><td><code>9</code></td></tr><tr><td>Community 11</td><td>30</td><td><code>11</code></td></tr><tr><td>Community 12</td><td>28</td><td><code>12</code></td></tr><tr><td>Community 19</td><td>20</td><td><code>19</code></td></tr><tr><td>Community 26</td><td>16</td><td><code>26</code></td></tr><tr><td>Community 29</td><td>15</td><td><code>29</code></td></tr><tr><td>Other</td><td>222</td><td><code>33, 35, 37, 38, 40, 41, 42, 44, 45, 46, 47, 48, 50, 51, 52, 53, 54, 55, 56, 59, 60, 62, 63, 64, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 80, 83, 84, 85, 86, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 98</code></td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Core Flow</h4>
-    <div class="arrow-chain">Graph Build -&gt; Outputs &amp; Docs -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Firebase Emulator Config -&gt; CLI &amp; Skill Installers -&gt; Other</div>
+    <div class="arrow-chain">Graph Build -&gt; Outputs &amp; Docs -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Community 19 -&gt; CLI &amp; Skill Installers -&gt; Other</div>
   </div>
 </div>
 <div class="grid">
@@ -2179,31 +2179,31 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 8. Firebase Functions ====== -->
-<h2 id="firebase-functions">8. Firebase Functions</h2>
-<p>Firebase Functions groups implementation around data, meals, domain, ingredientsts, mostly in src/domain/ingredients.ts, data/meals/remixChickenSaladBox.ts, data/meals/fallbackCampusHummusBox.ts. This section covers 39 nodes and 96 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 8. Community 6 ====== -->
+<h2 id="community-6">8. Community 6</h2>
+<p>Community 6 groups implementation around data, meals, domain, ingredientsts, mostly in src/domain/ingredients.ts, data/meals/remixChickenSaladBox.ts, data/meals/fallbackCampusHummusBox.ts. This section covers 39 nodes and 96 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Firebase Functions (39 nodes, 96 edges)
-    subgraph firebase_functions_data_meals_fallbackCampusHumm_87d91c93["data/meals/fallbackCampusHummusBox.ts"]
+    %% Section: Community 6 (39 nodes, 96 edges)
+    subgraph community_6_data_meals_fallbackCampusHummusBox_t_cee6da46["data/meals/fallbackCampusHummusBox.ts"]
         src_data_meals_fallbackcampushummusbox_ts_04d9b7db("fallbackCampusHummusBox.ts")
         meals_fallbackcampushummusbox_fallbackcampushumm_079781f9("fallbackCampusHummusBox<br/><small>data/meals/fallbackCampusHummusBox.ts</small>")
     end
-    subgraph firebase_functions_data_meals_fallbackCampusRice_0c9444da["data/meals/fallbackCampusRiceBowl.ts"]
+    subgraph community_6_data_meals_fallbackCampusRiceBowl_ts_02cbb75d["data/meals/fallbackCampusRiceBowl.ts"]
         src_data_meals_fallbackcampusricebowl_ts_bbb1ebd1("fallbackCampusRiceBowl.ts")
         meals_fallbackcampusricebowl_fallbackcampusriceb_eda72dff("fallbackCampusRiceBowl<br/><small>data/meals/fallbackCampusRiceBowl.ts</small>")
     end
-    subgraph firebase_functions_data_meals_fallbackCampusSush_83a3f979["data/meals/fallbackCampusSushiSnack.ts"]
+    subgraph community_6_data_meals_fallbackCampusSushiSnack_bd98e34e["data/meals/fallbackCampusSushiSnack.ts"]
         src_data_meals_fallbackcampussushisnack_ts_ad3a7dba("fallbackCampusSushiSnack.ts")
         meals_fallbackcampussushisnack_fallbackcampussus_a81c3c1d("fallbackCampusSushiSnack<br/><small>data/meals/fallbackCampusSushiSnack.ts</small>")
     end
-    subgraph firebase_functions_data_meals_fallbackHallsJacke_2abcb91f["data/meals/fallbackHallsJacketPotato.ts"]
+    subgraph community_6_data_meals_fallbackHallsJacketPotato_e4cdc6f2["data/meals/fallbackHallsJacketPotato.ts"]
         src_data_meals_fallbackhallsjacketpotato_ts_dec8457b("fallbackHallsJacketPotato.ts")
         meals_fallbackhallsjacketpotato_fallbackhallsjac_9186ce16("fallbackHallsJacketPotato<br/><small>data/meals/fallbackHallsJacketPotato.ts</small>")
     end
-    subgraph firebase_functions_data_meals_fallbackLibraryBea_5ccaa22d["data/meals/fallbackLibraryBeanWrap.ts"]
+    subgraph community_6_data_meals_fallbackLibraryBeanWrap_t_1b4bca69["data/meals/fallbackLibraryBeanWrap.ts"]
         src_data_meals_fallbacklibrarybeanwrap_ts_e57e77ce("fallbackLibraryBeanWrap.ts")
         meals_fallbacklibrarybeanwrap_fallbacklibrarybea_e2b63631("fallbackLibraryBeanWrap<br/><small>data/meals/fallbackLibraryBeanWrap.ts</small>")
     end
@@ -2536,15 +2536,15 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 9. Compiled Session Backend ====== -->
-<h2 id="compiled-session-backend">9. Compiled Session Backend</h2>
-<p>Compiled Session Backend groups implementation around indexjs, functions, firestore, prototypedatajs, mostly in functions/lib/index.js, lib/generated/prototypeData.js. This section covers 36 nodes and 36 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 9. Community 8 ====== -->
+<h2 id="community-8">9. Community 8</h2>
+<p>Community 8 groups implementation around indexjs, functions, firestore, prototypedatajs, mostly in functions/lib/index.js, lib/generated/prototypeData.js. This section covers 36 nodes and 36 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Compiled Session Backend (36 nodes, 36 edges)
-    subgraph compiled_session_backend_functions_lib_index_js_657134eb["functions/lib/index.js"]
+    %% Section: Community 8 (36 nodes, 36 edges)
+    subgraph community_8_functions_lib_index_js_8644ea97["functions/lib/index.js"]
         functions_lib_index_js_2dc2d2f7("index.js")
         lib_index_gramsforingredient_e3817340("gramsForIngredient()<br/><small>functions/lib/index.js</small>")
         lib_index_estimateingredientnutrition_bcf7ef34("estimateIngredientNutrition()<br/><small>functions/lib/index.js</small>")
@@ -2864,14 +2864,14 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 10. PostHog Analytics ====== -->
-<h2 id="posthog-analytics">10. PostHog Analytics</h2>
-<p>PostHog Analytics groups implementation around indexts, functions, firestore, prototyperef, mostly in functions/src/index.ts. This section covers 36 nodes and 36 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 10. Community 9 ====== -->
+<h2 id="community-9">10. Community 9</h2>
+<p>Community 9 groups implementation around indexts, functions, firestore, prototyperef, mostly in functions/src/index.ts. This section covers 36 nodes and 36 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: PostHog Analytics (36 nodes, 36 edges)
+    %% Section: Community 9 (36 nodes, 36 edges)
     src_index_roundmacro_25a7e576("roundMacro()<br/><small>functions/src/index.ts</small>")
     src_index_totalnutritionfromestimates_3e2a4e02("totalNutritionFromEstimates()<br/><small>functions/src/index.ts</small>")
     src_index_httprequest_afd6e4c1("HttpRequest<br/><small>functions/src/index.ts</small>")
@@ -3188,15 +3188,15 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 11. App TypeScript Config ====== -->
-<h2 id="app-typescript-config">11. App TypeScript Config</h2>
-<p>App TypeScript Config groups implementation around domain, plangeneratorts, constraintsts, typests, mostly in src/domain/planGenerator.ts, src/domain/constraints.ts, src/domain/types.ts. This section covers 30 nodes and 72 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 11. Community 11 ====== -->
+<h2 id="community-11">11. Community 11</h2>
+<p>Community 11 groups implementation around domain, plangeneratorts, constraintsts, typests, mostly in src/domain/planGenerator.ts, src/domain/constraints.ts, src/domain/types.ts. This section covers 30 nodes and 72 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: App TypeScript Config (30 nodes, 72 edges)
-    subgraph app_typescript_config_src_domain_planGenerator_t_89162b55["src/domain/planGenerator.ts"]
+    %% Section: Community 11 (30 nodes, 72 edges)
+    subgraph community_11_src_domain_planGenerator_ts_2b54e24c["src/domain/planGenerator.ts"]
         src_domain_plangenerator_ts_2aee0cb5("planGenerator.ts")
         domain_plangenerator_buildplanmeal_45c2b1f3("buildPlanMeal()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_compatiblemeals_5fca7da1("compatibleMeals()<br/><small>src/domain/planGenerator.ts</small>")
@@ -3210,7 +3210,7 @@ flowchart LR
         domain_plangenerator_pickremix_8e8340fd("pickRemix()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_buildnocookplan_968223f7("buildNoCookPlan()<br/><small>src/domain/planGenerator.ts</small>")
     end
-    subgraph app_typescript_config_src_domain_constraints_ts_8c7a66cd["src/domain/constraints.ts"]
+    subgraph community_11_src_domain_constraints_ts_99153cc3["src/domain/constraints.ts"]
         domain_constraints_getmealslotsforconstraints_ff9d403d("getMealSlotsForConstraints()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_getplanningdayids_9e7d9cb7("getPlanningDayIds()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_matchesdietarytags_2ab3caaf("matchesDietaryTags()<br/><small>src/domain/constraints.ts</small>")
@@ -3541,14 +3541,14 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 12. Shadcn Component Config ====== -->
-<h2 id="shadcn-component-config">12. Shadcn Component Config</h2>
-<p>Shadcn Component Config groups implementation around frontendmd, doc, active, frontend, mostly in doc/FRONTEND.md. This section covers 28 nodes and 27 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 12. Community 12 ====== -->
+<h2 id="community-12">12. Community 12</h2>
+<p>Community 12 groups implementation around frontendmd, doc, active, frontend, mostly in doc/FRONTEND.md. This section covers 28 nodes and 27 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Shadcn Component Config (28 nodes, 27 edges)
+    %% Section: Community 12 (28 nodes, 27 edges)
     doc_frontend_frontend_documentation_12cf8961("Frontend Documentation<br/><small>doc/FRONTEND.md</small>")
     doc_frontend_active_prototype_screens_432b98c5("Active Prototype Screens<br/><small>doc/FRONTEND.md</small>")
     doc_frontend_active_prototype_data_model_1accb26b("Active Prototype Data Model<br/><small>doc/FRONTEND.md</small>")
@@ -3865,15 +3865,15 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 13. Firebase Emulator Config ====== -->
-<h2 id="firebase-emulator-config">13. Firebase Emulator Config</h2>
-<p>Firebase Emulator Config groups implementation around application, deadlinemodets, deadlinemodeprovidertsx, state, mostly in src/application/deadlineMode.ts, src/state/DeadlineModeProvider.tsx, src/application/eventBus.ts. This section covers 20 nodes and 29 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 13. Community 19 ====== -->
+<h2 id="community-19">13. Community 19</h2>
+<p>Community 19 groups implementation around application, deadlinemodets, deadlinemodeprovidertsx, state, mostly in src/application/deadlineMode.ts, src/state/DeadlineModeProvider.tsx, src/application/eventBus.ts. This section covers 20 nodes and 29 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Firebase Emulator Config (20 nodes, 29 edges)
-    subgraph firebase_emulator_config_src_application_deadlin_51383d7d["src/application/deadlineMode.ts"]
+    %% Section: Community 19 (20 nodes, 29 edges)
+    subgraph community_19_src_application_deadlineMode_ts_e0eb1559["src/application/deadlineMode.ts"]
         application_deadlinemode_withevent_09ca8a2c("withEvent()<br/><small>src/application/deadlineMode.ts</small>")
         application_deadlinemode_deadlinemodereducer_7430197f("deadlineModeReducer()<br/><small>src/application/deadlineMode.ts</small>")
         src_application_deadlinemode_ts_89877258("deadlineMode.ts")
@@ -3885,12 +3885,12 @@ flowchart LR
         application_deadlinemode_deadlinemodeinternalact_d4b53378("DeadlineModeInternalAction<br/><small>src/application/deadlineMode.ts</small>")
         application_deadlinemode_eventtime_e672711b("eventTime()<br/><small>src/application/deadlineMode.ts</small>")
     end
-    subgraph firebase_emulator_config_src_application_eventBu_eabbd741["src/application/eventBus.ts"]
+    subgraph community_19_src_application_eventBus_ts_38733b11["src/application/eventBus.ts"]
         application_eventbus_createeventbus_fa058391("createEventBus()<br/><small>src/application/eventBus.ts</small>")
         src_application_eventbus_ts_eb1d68d1("eventBus.ts")
         application_eventbus_eventbus_3f841b6f("EventBus<br/><small>src/application/eventBus.ts</small>")
     end
-    subgraph firebase_emulator_config_src_state_DeadlineModeP_5cab57c4["src/state/DeadlineModeProvider.tsx"]
+    subgraph community_19_src_state_DeadlineModeProvider_tsx_e7eba92e["src/state/DeadlineModeProvider.tsx"]
         src_state_deadlinemodeprovider_tsx_f2378296("DeadlineModeProvider.tsx")
         state_deadlinemodeprovider_deadlinemodecontext_01a038bc("DeadlineModeContext<br/><small>src/state/DeadlineModeProvider.tsx</small>")
     end
@@ -4134,14 +4134,14 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 14. Firestore Indexes ====== -->
-<h2 id="firestore-indexes">14. Firestore Indexes</h2>
-<p>Firestore Indexes groups implementation around project, summarymd, doc, summary, mostly in doc/PROJECT_SUMMARY.md. This section covers 16 nodes and 15 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 14. Community 26 ====== -->
+<h2 id="community-26">14. Community 26</h2>
+<p>Community 26 groups implementation around project, summarymd, doc, summary, mostly in doc/PROJECT_SUMMARY.md. This section covers 16 nodes and 15 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Firestore Indexes (16 nodes, 15 edges)
+    %% Section: Community 26 (16 nodes, 15 edges)
     doc_project_summary_project_summary_5ea9ba82("Project Summary<br/><small>doc/PROJECT_SUMMARY.md</small>")
     doc_project_summary_current_implementation_snaps_7474a441("Current Implementation Snapshot<br/><small>doc/PROJECT_SUMMARY.md</small>")
     doc_project_summary_md_5e868e77("PROJECT_SUMMARY.md")
@@ -4355,14 +4355,14 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 15. Functions Dev TSConfig ====== -->
-<h2 id="functions-dev-tsconfig">15. Functions Dev TSConfig</h2>
-<p>Functions Dev TSConfig groups implementation around rag, rootmd, doc, codesh, mostly in doc/RAG_ROOT.md. This section covers 15 nodes and 14 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 15. Community 29 ====== -->
+<h2 id="community-29">15. Community 29</h2>
+<p>Community 29 groups implementation around rag, rootmd, doc, codesh, mostly in doc/RAG_ROOT.md. This section covers 15 nodes and 14 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Functions Dev TSConfig (15 nodes, 14 edges)
+    %% Section: Community 29 (15 nodes, 14 edges)
     doc_rag_root_rag_root_for_llm_coding_agents_8452b830("RAG Root For LLM Coding Agents<br/><small>doc/RAG_ROOT.md</small>")
     doc_rag_root_runtime_and_commands_72a009d1("Runtime And Commands<br/><small>doc/RAG_ROOT.md</small>")
     doc_rag_root_md_60866b57("RAG_ROOT.md")
@@ -4935,7 +4935,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-05-31 14:18 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-01 08:08 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

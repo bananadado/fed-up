@@ -7430,7 +7430,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L27",
       "id": "drp03_deadline_food_autopilot_spec_1_product_summary",
-      "community": 52,
+      "community": 51,
       "norm_label": "1. product summary"
     },
     {
@@ -7439,7 +7439,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L29",
       "id": "drp03_deadline_food_autopilot_spec_1_1_opportunity_statement",
-      "community": 52,
+      "community": 51,
       "norm_label": "1.1 opportunity statement"
     },
     {
@@ -7448,7 +7448,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L35",
       "id": "drp03_deadline_food_autopilot_spec_1_2_product_proposition",
-      "community": 52,
+      "community": 51,
       "norm_label": "1.2 product proposition"
     },
     {
@@ -7457,7 +7457,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L48",
       "id": "drp03_deadline_food_autopilot_spec_1_3_one_sentence_concept",
-      "community": 52,
+      "community": 51,
       "norm_label": "1.3 one-sentence concept"
     },
     {
@@ -7466,7 +7466,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L52",
       "id": "drp03_deadline_food_autopilot_spec_1_4_what_makes_the_concept_distinctive",
-      "community": 52,
+      "community": 51,
       "norm_label": "1.4 what makes the concept distinctive"
     },
     {
@@ -7538,7 +7538,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L161",
       "id": "drp03_deadline_food_autopilot_spec_5_target_users_and_stakeholders",
-      "community": 75,
+      "community": 74,
       "norm_label": "5. target users and stakeholders"
     },
     {
@@ -7547,7 +7547,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L163",
       "id": "drp03_deadline_food_autopilot_spec_5_1_primary_user_student_under_deadline_pressure",
-      "community": 75,
+      "community": 74,
       "norm_label": "5.1 primary user: student under deadline pressure"
     },
     {
@@ -7556,7 +7556,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L173",
       "id": "drp03_deadline_food_autopilot_spec_5_2_secondary_stakeholders",
-      "community": 75,
+      "community": 74,
       "norm_label": "5.2 secondary stakeholders"
     },
     {
@@ -7565,7 +7565,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L186",
       "id": "drp03_deadline_food_autopilot_spec_6_core_user_experience",
-      "community": 76,
+      "community": 75,
       "norm_label": "6. core user experience"
     },
     {
@@ -7574,7 +7574,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L188",
       "id": "drp03_deadline_food_autopilot_spec_6_1_experience_principle",
-      "community": 76,
+      "community": 75,
       "norm_label": "6.1 experience principle"
     },
     {
@@ -7583,7 +7583,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L198",
       "id": "drp03_deadline_food_autopilot_spec_6_2_primary_end_to_end_demonstration_scenario",
-      "community": 76,
+      "community": 75,
       "norm_label": "6.2 primary end-to-end demonstration scenario"
     },
     {
@@ -7700,7 +7700,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L300",
       "id": "drp03_deadline_food_autopilot_spec_7_3_flow_c_view_the_weekly_plan",
-      "community": 54,
+      "community": 53,
       "norm_label": "7.3 flow c \u2014 view the weekly plan"
     },
     {
@@ -7709,7 +7709,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L302",
       "id": "drp03_deadline_food_autopilot_spec_purpose_302",
-      "community": 54,
+      "community": 53,
       "norm_label": "purpose"
     },
     {
@@ -7718,7 +7718,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L306",
       "id": "drp03_deadline_food_autopilot_spec_required_plan_content",
-      "community": 54,
+      "community": 53,
       "norm_label": "required plan content"
     },
     {
@@ -7727,7 +7727,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L318",
       "id": "drp03_deadline_food_autopilot_spec_required_plan_summary",
-      "community": 54,
+      "community": 53,
       "norm_label": "required plan summary"
     },
     {
@@ -7736,7 +7736,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L327",
       "id": "drp03_deadline_food_autopilot_spec_interaction_requirements",
-      "community": 54,
+      "community": 53,
       "norm_label": "interaction requirements"
     },
     {
@@ -8105,7 +8105,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L677",
       "id": "drp03_deadline_food_autopilot_spec_12_2_deadline_mode_setup_screen",
-      "community": 70,
+      "community": 77,
       "norm_label": "12.2 deadline mode setup screen"
     },
     {
@@ -8114,7 +8114,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L679",
       "id": "drp03_deadline_food_autopilot_spec_must_include_controls_for",
-      "community": 70,
+      "community": 77,
       "norm_label": "must include controls for"
     },
     {
@@ -8123,7 +8123,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L688",
       "id": "drp03_deadline_food_autopilot_spec_design_requirements",
-      "community": 70,
+      "community": 77,
       "norm_label": "design requirements"
     },
     {
@@ -8132,7 +8132,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L697",
       "id": "drp03_deadline_food_autopilot_spec_12_3_strategy_comparison_screen",
-      "community": 77,
+      "community": 76,
       "norm_label": "12.3 strategy comparison screen"
     },
     {
@@ -8141,7 +8141,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L699",
       "id": "drp03_deadline_food_autopilot_spec_must_include_699",
-      "community": 77,
+      "community": 76,
       "norm_label": "must include"
     },
     {
@@ -8150,7 +8150,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L714",
       "id": "drp03_deadline_food_autopilot_spec_important",
-      "community": 77,
+      "community": 76,
       "norm_label": "important"
     },
     {
@@ -8159,7 +8159,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L720",
       "id": "drp03_deadline_food_autopilot_spec_12_4_plan_dashboard_screen",
-      "community": 71,
+      "community": 70,
       "norm_label": "12.4 plan dashboard screen"
     },
     {
@@ -8168,7 +8168,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L722",
       "id": "drp03_deadline_food_autopilot_spec_must_include_722",
-      "community": 71,
+      "community": 70,
       "norm_label": "must include"
     },
     {
@@ -8177,7 +8177,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L731",
       "id": "drp03_deadline_food_autopilot_spec_highlight",
-      "community": 71,
+      "community": 70,
       "norm_label": "highlight"
     },
     {
@@ -8186,7 +8186,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L737",
       "id": "drp03_deadline_food_autopilot_spec_12_5_rescue_substitution_ui",
-      "community": 72,
+      "community": 71,
       "norm_label": "12.5 rescue substitution ui"
     },
     {
@@ -8195,7 +8195,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L739",
       "id": "drp03_deadline_food_autopilot_spec_must_include_739",
-      "community": 72,
+      "community": 71,
       "norm_label": "must include"
     },
     {
@@ -8204,7 +8204,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L747",
       "id": "drp03_deadline_food_autopilot_spec_tone",
-      "community": 72,
+      "community": 71,
       "norm_label": "tone"
     },
     {
@@ -8213,7 +8213,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L753",
       "id": "drp03_deadline_food_autopilot_spec_13_ux_and_visual_design_principles",
-      "community": 73,
+      "community": 72,
       "norm_label": "13. ux and visual design principles"
     },
     {
@@ -8222,7 +8222,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L757",
       "id": "drp03_deadline_food_autopilot_spec_required_principles",
-      "community": 73,
+      "community": 72,
       "norm_label": "required principles"
     },
     {
@@ -8231,7 +8231,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L767",
       "id": "drp03_deadline_food_autopilot_spec_avoid",
-      "community": 73,
+      "community": 72,
       "norm_label": "avoid"
     },
     {
@@ -8240,7 +8240,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L777",
       "id": "drp03_deadline_food_autopilot_spec_14_technical_stack_and_architectural_assumptions",
-      "community": 55,
+      "community": 54,
       "norm_label": "14. technical stack and architectural assumptions"
     },
     {
@@ -8249,7 +8249,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L779",
       "id": "drp03_deadline_food_autopilot_spec_14_1_existing_project_direction",
-      "community": 55,
+      "community": 54,
       "norm_label": "14.1 existing project direction"
     },
     {
@@ -8258,7 +8258,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L792",
       "id": "drp03_deadline_food_autopilot_spec_14_2_mvp_architectural_principle",
-      "community": 55,
+      "community": 54,
       "norm_label": "14.2 mvp architectural principle"
     },
     {
@@ -8267,7 +8267,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L801",
       "id": "drp03_deadline_food_autopilot_spec_14_3_recommended_module_separation",
-      "community": 55,
+      "community": 54,
       "norm_label": "14.3 recommended module separation"
     },
     {
@@ -8276,7 +8276,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L805",
       "id": "drp03_deadline_food_autopilot_spec_codeblock_6",
-      "community": 55,
+      "community": 54,
       "norm_label": "code:text (src/)"
     },
     {
@@ -8339,7 +8339,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L908",
       "id": "drp03_deadline_food_autopilot_spec_16_firebase_data_model_optional_persistence_layer",
-      "community": 51,
+      "community": 55,
       "norm_label": "16. firebase data model \u2014 optional persistence layer"
     },
     {
@@ -8348,7 +8348,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L912",
       "id": "drp03_deadline_food_autopilot_spec_16_1_authentication",
-      "community": 51,
+      "community": 55,
       "norm_label": "16.1 authentication"
     },
     {
@@ -8357,7 +8357,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L920",
       "id": "drp03_deadline_food_autopilot_spec_16_2_suggested_firestore_collections",
-      "community": 51,
+      "community": 55,
       "norm_label": "16.2 suggested firestore collections"
     },
     {
@@ -8366,7 +8366,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L922",
       "id": "drp03_deadline_food_autopilot_spec_codeblock_9",
-      "community": 51,
+      "community": 55,
       "norm_label": "code:text (users/{uid})"
     },
     {
@@ -8375,7 +8375,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L961",
       "id": "drp03_deadline_food_autopilot_spec_16_3_mvp_recommendation",
-      "community": 51,
+      "community": 55,
       "norm_label": "16.3 mvp recommendation"
     },
     {
@@ -8483,7 +8483,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L1091",
       "id": "drp03_deadline_food_autopilot_spec_21_accessibility_and_responsible_design_requirements",
-      "community": 74,
+      "community": 73,
       "norm_label": "21. accessibility and responsible design requirements"
     },
     {
@@ -8492,7 +8492,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L1093",
       "id": "drp03_deadline_food_autopilot_spec_21_1_accessibility",
-      "community": 74,
+      "community": 73,
       "norm_label": "21.1 accessibility"
     },
     {
@@ -8501,7 +8501,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L1104",
       "id": "drp03_deadline_food_autopilot_spec_21_2_responsible_food_guidance",
-      "community": 74,
+      "community": 73,
       "norm_label": "21.2 responsible food guidance"
     },
     {
@@ -8519,7 +8519,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L1135",
       "id": "drp03_deadline_food_autopilot_spec_23_later_enhancements_explicitly_deferred",
-      "community": 53,
+      "community": 52,
       "norm_label": "23. later enhancements \u2014 explicitly deferred"
     },
     {
@@ -8528,7 +8528,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L1139",
       "id": "drp03_deadline_food_autopilot_spec_phase_2_increased_realism",
-      "community": 53,
+      "community": 52,
       "norm_label": "phase 2: increased realism"
     },
     {
@@ -8537,7 +8537,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L1148",
       "id": "drp03_deadline_food_autopilot_spec_phase_3_institution_provider_integration",
-      "community": 53,
+      "community": 52,
       "norm_label": "phase 3: institution/provider integration"
     },
     {
@@ -8546,7 +8546,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L1155",
       "id": "drp03_deadline_food_autopilot_spec_phase_4_advanced_personalisation",
-      "community": 53,
+      "community": 52,
       "norm_label": "phase 4: advanced personalisation"
     },
     {
@@ -8555,7 +8555,7 @@
       "source_file": "DEADLINE_FOOD_AUTOPILOT_SPEC.md",
       "source_location": "L1163",
       "id": "drp03_deadline_food_autopilot_spec_explicitly_optional_social_extension",
-      "community": 53,
+      "community": 52,
       "norm_label": "explicitly optional social extension"
     },
     {
@@ -22452,7 +22452,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L402",
+      "source_location": "L375",
       "weight": 1.0,
       "source": "screens_onboarding_onboarding",
       "target": "prototype_utils_formatcookinglimit"
@@ -25732,7 +25732,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L411",
+      "source_location": "L384",
       "weight": 1.0,
       "source": "screens_onboarding_onboarding",
       "target": "lib_utils_cn"
@@ -36512,5 +36512,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "cc01e1a4c55fc105fde7904427be7da12888dace"
+  "built_at_commit": "840772a0b79b9573d037850d4a8a7adc3ede5de5"
 }
