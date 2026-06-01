@@ -19,9 +19,12 @@ declare global {
   }
 }
 
+let _envGoogleClientId: string | undefined;
+try { _envGoogleClientId = process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID; } catch { /* bundled browser */ }
+
 const clientId: string =
   (typeof __BUN_PUBLIC_GOOGLE_CLIENT_ID__ !== "undefined" ? __BUN_PUBLIC_GOOGLE_CLIENT_ID__ : undefined) ??
-  (typeof process !== "undefined" ? process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID : undefined) ??
+  _envGoogleClientId ??
   "";
 
 const SCOPE = "https://www.googleapis.com/auth/calendar.events.readonly";
