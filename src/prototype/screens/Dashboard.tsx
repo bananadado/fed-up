@@ -58,7 +58,7 @@ export function Dashboard({
             </div>
             {nextCook ? (
               <>
-                <p className="mt-4 text-xl font-bold">
+                <p className="mt-4 break-words text-xl font-bold">
                   {nextCook.meal.image} {nextCook.meal.name}
                 </p>
                 <p className="mt-2 text-sm text-stone-500">
