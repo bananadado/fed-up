@@ -238,7 +238,7 @@ export const seedMeals: Meal[] = [
     price: 1.35,
     tags: ["vegetarian", "breakfast", "hot meal"],
     ingredients: [
-      { name: "egg", quantity: 2, unit: "egg" },
+      { name: "egg", quantity: 2, unit: "item" },
       { name: "bread", quantity: 2, unit: "slice" },
       { name: "spinach", quantity: 40, unit: "g" },
     ],
@@ -369,4 +369,5 @@ export const initialPreferences: Preferences = {
   allergens: [],
   dislikes: [],
   likes: [],
+  availableIngredients: [],
 };

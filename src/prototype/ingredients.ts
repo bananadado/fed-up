@@ -1,6 +1,6 @@
 import type { RecipeIngredient } from "./types";
 
-const numberPattern = /^(?<quantity>\d+(?:\.\d+)?|\d+\/\d+)\s*(?<unit>g|kg|ml|l|tbsp|tsp|cup|cups|slice|slices|wrap|wraps|egg|eggs|portion|portions|pack|packs)?\s+(?<name>.+)$/i;
+const numberPattern = /^(?<quantity>\d+(?:\.\d+)?|\d+\/\d+)\s*(?<unit>g|kg|ml|l|tbsp|tsp|cup|cups|slice|slices|wrap|wraps|item|items|can|cans|portion|portions|pack|packs)?\s+(?<name>.+)$/i;
 
 export const ingredientUnits = [
   "g",
@@ -12,7 +12,8 @@ export const ingredientUnits = [
   "cup",
   "slice",
   "wrap",
-  "egg",
+  "item",
+  "can",
   "portion",
   "pack",
   "serving",
@@ -93,11 +94,12 @@ const singularUnits = new Map([
   ["cups", "cup"],
   ["slices", "slice"],
   ["wraps", "wrap"],
-  ["eggs", "egg"],
+  ["items", "item"],
+  ["cans", "can"],
   ["portions", "portion"],
   ["packs", "pack"],
 ]);
-const countableUnits = new Set(["slice", "wrap", "egg", "portion", "pack"]);
+const countableUnits = new Set(["slice", "wrap", "item", "can", "portion", "pack"]);
 const preparationLookup = new Set<string>(ingredientPreparations);
 const preparationAliases = new Map([
   ["chop", "chopped"],
@@ -218,8 +220,8 @@ export function ingredientToDraft(ingredient: RecipeIngredient, index = 0): Ingr
   });
 }
 
-export function ingredientDraftsFromIngredients(ingredients: RecipeIngredient[]) {
-  return ingredients.length > 0 ? ingredients.map(ingredientToDraft) : [createIngredientDraft()];
+export function ingredientDraftsFromIngredients(ingredients: RecipeIngredient[], emptyFallback = true) {
+  return ingredients.length > 0 || !emptyFallback ? ingredients.map(ingredientToDraft) : [createIngredientDraft()];
 }
 
 export function sanitiseIngredientDraft(draft: IngredientDraft): RecipeIngredient | null {
@@ -281,11 +283,22 @@ export function formatIngredient(ingredient: RecipeIngredient | string) {
     return `${quantity}${ingredient.unit} ${preparation}${ingredient.name}`;
   }
 
+  if (ingredient.unit === "item") {
+    const name = ingredient.quantity === 1 ? ingredient.name : pluraliseIngredientName(ingredient.name);
+    return `${quantity} ${preparation}${name}`;
+  }
+
   if (ingredient.name.toLowerCase() === ingredient.unit) {
     return `${quantity} ${ingredient.quantity === 1 ? ingredient.unit : `${ingredient.unit}s`}`;
   }
 
   return `${quantity} ${ingredient.quantity === 1 ? ingredient.unit : `${ingredient.unit}s`} ${preparation}${ingredient.name}`;
+}
+
+function pluraliseIngredientName(name: string) {
+  if (name.endsWith("s")) return name;
+  if (name.endsWith("y")) return `${name.slice(0, -1)}ies`;
+  return `${name}s`;
 }
 
 export function parseIngredients(value: string): RecipeIngredient[] {
