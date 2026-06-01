@@ -98,7 +98,7 @@ export function Onboarding({
   const [importMessage, setImportMessage] = useState("");
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
-  const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients));
+  const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
 
   function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -344,7 +344,12 @@ export function Onboarding({
                 title="What ingredients do you already have?"
                 description="Add staples with the same ingredient controls used for recipes so shopping can focus on what you still need."
               >
-                <IngredientEditor ingredients={availableIngredientDrafts} onChange={updateAvailableIngredients} />
+                <IngredientEditor
+                  ingredients={availableIngredientDrafts}
+                  onChange={updateAvailableIngredients}
+                  allowEmpty
+                  emptyMessage="No ingredients added yet."
+                />
               </PreferenceSection>
             </div>
             <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">

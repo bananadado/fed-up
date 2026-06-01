@@ -220,8 +220,8 @@ export function ingredientToDraft(ingredient: RecipeIngredient, index = 0): Ingr
   });
 }
 
-export function ingredientDraftsFromIngredients(ingredients: RecipeIngredient[]) {
-  return ingredients.length > 0 ? ingredients.map(ingredientToDraft) : [createIngredientDraft()];
+export function ingredientDraftsFromIngredients(ingredients: RecipeIngredient[], emptyFallback = true) {
+  return ingredients.length > 0 || !emptyFallback ? ingredients.map(ingredientToDraft) : [createIngredientDraft()];
 }
 
 export function sanitiseIngredientDraft(draft: IngredientDraft): RecipeIngredient | null {
