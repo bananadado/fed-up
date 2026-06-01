@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-06-01)
 
 ## Corpus Check
-- 141 files · ~84,231 words
+- 141 files · ~84,267 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `71950d9d`
+- Built from commit: `c55f0004`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -126,16 +126,16 @@
 10. `AI Agent Playbook` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `Badge()` --calls--> `cn()`  [EXTRACTED]
+  src/prototype/components/primitives.tsx → src/lib/utils.ts
+- `AppButton()` --calls--> `cn()`  [EXTRACTED]
+  src/prototype/components/primitives.tsx → src/lib/utils.ts
+- `Field()` --calls--> `cn()`  [EXTRACTED]
+  src/prototype/components/primitives.tsx → src/lib/utils.ts
 - `fetchOpenFoodFactsNutrition()` --calls--> `deadlineFoodEndpointUrl()`  [EXTRACTED]
   src/prototype/nutritionApi.ts → src/adapters/deadlineFoodApi.ts
 - `compatibleMeals()` --calls--> `matchesDietaryTags()`  [EXTRACTED]
   src/domain/planGenerator.ts → src/domain/constraints.ts
-- `pickFallback()` --calls--> `sortByPreferredFallback()`  [EXTRACTED]
-  src/domain/planGenerator.ts → src/domain/constraints.ts
-- `BootstrapBoundary()` --calls--> `useDeadlineMode()`  [EXTRACTED]
-  src/app/router.tsx → src/state/DeadlineModeProvider.tsx
-- `BudgetResult()` --calls--> `formatPence()`  [EXTRACTED]
-  src/pages/RescuePage.tsx → src/components/deadline-food/format.ts
 
 ## Communities (100 total, 14 thin omitted)
 
@@ -472,20 +472,20 @@ Cohesion: 0.67
 Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block4 (Corpus: X files · ~Y words), Step 2 - Detect files
 
 ## Knowledge Gaps
-- **676 isolated node(s):** `$schema`, `buildCommand`, `installCommand`, `outputDirectory`, `deploymentEnabled` (+671 more)
+- **676 isolated node(s):** `Tone`, `badgeTones`, `AppButtonVariant`, `appButtonClasses`, `$schema` (+671 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Card()` connect `Community 0` to `Community 10`, `Community 13`, `Community 14`, `Community 18`, `Community 23`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **Why does `RecipeIngredient` connect `Community 10` to `Community 0`, `Community 5`, `Community 13`, `Community 45`, `Community 23`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **Why does `cn()` connect `Community 0` to `Community 18`, `Community 44`, `Community 13`, `Community 14`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **What connects `$schema`, `buildCommand`, `installCommand` to the rest of the system?**
+- **Why does `Card()` connect `Community 0` to `Community 10`, `Community 13`, `Community 14`, `Community 18`, `Community 23`?**
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+- **Why does `RecipeIngredient` connect `Community 10` to `Community 0`, `Community 5`, `Community 13`, `Community 45`, `Community 23`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **What connects `Tone`, `badgeTones`, `AppButtonVariant` to the rest of the system?**
   _676 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.07503506311360449 - nodes in this community are weakly interconnected._
