@@ -964,3 +964,64 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
     response.status(500).json({error: "Anonymous session could not be saved"});
   }
 });
+
+export const calendarFetchIcs = onRequest(publicHttpOptions, async (request, response) => {
+  if (request.method === "OPTIONS") {
+    response.status(204).send("");
+    return;
+  }
+
+  if (request.method !== "POST") {
+    response.set("Allow", "POST, OPTIONS");
+    response.status(405).json({error: "Method not allowed"});
+    return;
+  }
+
+  const body = readRequestBody(request);
+  const url = typeof body?.url === "string" ? (body.url as string).trim() : "";
+
+  if (!url) {
+    response.status(400).json({error: "A calendar URL is required."});
+    return;
+  }
+
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    response.status(400).json({error: "Invalid URL."});
+    return;
+  }
+
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+    response.status(400).json({error: "Only https:// URLs are supported."});
+    return;
+  }
+
+  let upstream: globalThis.Response | null;
+  try {
+    upstream = await fetch(url, {
+      headers: {Accept: "text/calendar, text/plain"},
+      signal: AbortSignal.timeout(15_000),
+    });
+  } catch {
+    upstream = null;
+  }
+
+  if (!upstream || !upstream.ok) {
+    response.status(502).json({
+      error: `Calendar could not be fetched (${upstream?.status ?? "network error"}).`,
+    });
+    return;
+  }
+
+  const text = await upstream.text();
+
+  if (!text.includes("BEGIN:VCALENDAR")) {
+    response.status(422).json({error: "The URL did not return a valid iCalendar file."});
+    return;
+  }
+
+  response.set("Content-Type", "text/calendar; charset=utf-8");
+  response.status(200).send(text);
+});
