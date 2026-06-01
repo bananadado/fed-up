@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
@@ -105,11 +105,21 @@ export function Onboarding({
   track: TrackPrototypeEvent;
 }) {
   const [step, setStep] = useState(0);
+  const [animationKey, setAnimationKey] = useState(0);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [importMessage, setImportMessage] = useState("");
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
+
+  function goToStep(nextStep: number) {
+    setStep(nextStep);
+    setAnimationKey(k => k + 1);
+  }
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step]);
 
   function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -231,7 +241,7 @@ export function Onboarding({
         </div>
         <Progress step={step} />
         {step === 0 && (
-          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 1 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
             <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days and lower cooking effort around them.</p>
@@ -326,14 +336,14 @@ export function Onboarding({
               })()}
             </div>
             <div className="mt-7 flex justify-end">
-              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); setStep(1); }}>
+              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); goToStep(1); }}>
                 Continue <ArrowRight size={16} />
               </AppButton>
             </div>
           </Card>
         )}
         {step === 1 && (
-          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 2 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">About you</h2>
             <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
@@ -392,10 +402,10 @@ export function Onboarding({
             <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
               <p className="mb-3 text-sm text-stone-600 sm:mb-0">You can update these any time in settings.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
-                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); setStep(0); }}>
+                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); goToStep(0); }}>
                   <ArrowLeft size={16} /> Back
                 </AppButton>
-                <AppButton className="justify-center py-3" disabled={!prefs.cookingAbility} onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); setStep(2); }}>
+                <AppButton className="justify-center py-3" disabled={!prefs.cookingAbility} onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); goToStep(2); }}>
                   Continue <ArrowRight size={16} />
                 </AppButton>
               </div>
@@ -403,7 +413,7 @@ export function Onboarding({
           </Card>
         )}
         {step === 2 && (
-          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 3 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
@@ -527,10 +537,10 @@ export function Onboarding({
             <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
               <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Continue to choose what the plan should optimise for.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
-                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); setStep(1); }}>
+                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); goToStep(1); }}>
                   <ArrowLeft size={16} /> Back
                 </AppButton>
-                <AppButton className="justify-center py-3" disabled={!prefs.kitchen || !prefs.university} onClick={() => { track("onboarding_step_completed", { step: 2, next_step: 3 }); setStep(3); }}>
+                <AppButton className="justify-center py-3" disabled={!prefs.kitchen || !prefs.university} onClick={() => { track("onboarding_step_completed", { step: 2, next_step: 3 }); goToStep(3); }}>
                   Continue <ArrowRight size={16} />
                 </AppButton>
               </div>
@@ -538,7 +548,7 @@ export function Onboarding({
           </Card>
         )}
         {step === 3 && (
-          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 4 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">Choose recommendation priorities</h2>
             <p className="mt-2 text-stone-600">Pick what Autopilot should optimise for. You can change this later.</p>
@@ -567,7 +577,7 @@ export function Onboarding({
             </div>
             <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
             <div className="mt-8 flex justify-between">
-              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 3, next_step: 2 }); setStep(2); }}>
+              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 3, next_step: 2 }); goToStep(2); }}>
                 <ArrowLeft size={16} /> Back
               </AppButton>
               <AppButton onClick={finish}>
