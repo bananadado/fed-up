@@ -325,6 +325,10 @@ export function DeadlineFoodPrototype() {
   // Derive the screen to render: if onboarded, pre-onboarding screens resolve to dashboard immediately
   const activeScreen: Screen = (onboarded && (screen === "onboarding" || screen === "landing")) ? "dashboard" : screen;
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeScreen]);
+
   function openRecipe(mealId: string) {
     track("recipe_viewed", { meal_id: mealId, source_screen: activeScreen });
     setSelectedMealId(mealId);
