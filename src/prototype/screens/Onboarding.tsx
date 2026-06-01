@@ -348,6 +348,7 @@ export function Onboarding({
                   onChange={(cookingAbility) => { track("onboarding_preference_changed", { field: "cooking_ability", value: cookingAbility }); setPrefs({ ...prefs, cookingAbility }); }}
                   options={cookingAbilities.map((ability) => ({ value: ability.id, label: `${ability.name} - ${ability.description}` }))}
                   placeholder="Select cooking ability"
+                  required
                 />
               </PreferenceSection>
               <PreferenceSection
@@ -394,7 +395,7 @@ export function Onboarding({
                 <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); setStep(0); }}>
                   <ArrowLeft size={16} /> Back
                 </AppButton>
-                <AppButton className="justify-center py-3" onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); setStep(2); }}>
+                <AppButton className="justify-center py-3" disabled={!prefs.cookingAbility} onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); setStep(2); }}>
                   Continue <ArrowRight size={16} />
                 </AppButton>
               </div>
