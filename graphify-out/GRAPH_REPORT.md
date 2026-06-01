@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-06-01)
 
 ## Corpus Check
-- 141 files · ~83,334 words
+- 141 files · ~83,365 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `949b2eda`
+- Built from commit: `ca4fcaba`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -121,6 +121,8 @@
 10. `AI Agent Playbook` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `CalendarScreen()` --calls--> `cn()`  [EXTRACTED]
+  src/prototype/screens/CalendarScreen.tsx → src/lib/utils.ts
 - `fetchOpenFoodFactsNutrition()` --calls--> `deadlineFoodEndpointUrl()`  [EXTRACTED]
   src/prototype/nutritionApi.ts → src/adapters/deadlineFoodApi.ts
 - `pickFallback()` --calls--> `sortByPreferredFallback()`  [EXTRACTED]
@@ -129,8 +131,6 @@
   src/app/router.tsx → src/state/DeadlineModeProvider.tsx
 - `BudgetResult()` --calls--> `formatPence()`  [EXTRACTED]
   src/pages/RescuePage.tsx → src/components/deadline-food/format.ts
-- `createDefaultForm()` --calls--> `createIngredientDraft()`  [EXTRACTED]
-  src/prototype/screens/RecipesHubScreen.tsx → src/prototype/ingredients.ts
 
 ## Communities (95 total, 15 thin omitted)
 
@@ -443,7 +443,7 @@ Cohesion: 0.16
 Nodes (21): AppButton(), appButtonClasses, AppButtonVariant, badgeTones, ChoiceGroup(), Field(), SelectField(), Tone (+13 more)
 
 ## Knowledge Gaps
-- **673 isolated node(s):** `$schema`, `buildCommand`, `installCommand`, `outputDirectory`, `deploymentEnabled` (+668 more)
+- **673 isolated node(s):** `urgencyLevels`, `urgencyLabel`, `WorkloadDraft`, `FormErrors`, `$schema` (+668 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -451,12 +451,12 @@ Nodes (21): AppButton(), appButtonClasses, AppButtonVariant, badgeTones, ChoiceG
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `cn()` connect `Community 0` to `Community 25`, `Community 10`, `Community 94`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `RecipeIngredient` connect `Community 17` to `Community 8`, `Community 10`, `Community 44`, `Community 12`, `Community 26`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **Why does `Card()` connect `Community 0` to `Community 94`, `Community 12`, `Community 14`, `Community 17`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **What connects `$schema`, `buildCommand`, `installCommand` to the rest of the system?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **What connects `urgencyLevels`, `urgencyLabel`, `WorkloadDraft` to the rest of the system?**
   _673 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.05804132973944295 - nodes in this community are weakly interconnected._
