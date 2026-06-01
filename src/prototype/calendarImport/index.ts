@@ -22,6 +22,10 @@ export function calendarEventsToDeadlines(events: CalendarEvent[]): Deadline[] {
       timeLabel = startDate.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
     }
 
+    const rawDate = startDate && !Number.isNaN(startDate.getTime())
+      ? startDate.toISOString().slice(0, 10)
+      : undefined;
+
     return {
       id: `cal-${event.source}-${index}`,
       title: event.title,
@@ -32,6 +36,7 @@ export function calendarEventsToDeadlines(events: CalendarEvent[]): Deadline[] {
       effortHours: eventType === "academic" ? 3 : 0,
       urgency: eventType === "academic" ? ("medium" as const) : ("low" as const),
       confirmed: false,
+      rawDate,
     };
   });
 }

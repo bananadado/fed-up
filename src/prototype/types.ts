@@ -77,6 +77,7 @@ export type Deadline = {
   effortHours: number;
   urgency: "low" | "medium" | "high";
   confirmed?: boolean;
+  rawDate?: string;
 };
 
 export type Preferences = {
