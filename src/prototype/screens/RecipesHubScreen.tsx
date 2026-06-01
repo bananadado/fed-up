@@ -167,7 +167,7 @@ export function RecipesHubScreen({
       id: `custom-${Date.now()}`,
       name: form.name.trim(),
       type: "cook",
-      mealSlots: ["lunch", "dinner"],
+      mealSlots: ["breakfast", "lunch", "dinner"],
       time: Math.max(0, Math.round(Number(form.minutes) || 0)),
       price: nextPrice,
       ingredients,
