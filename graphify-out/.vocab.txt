@@ -1,3 +1,4 @@
+abilities
 acceptance
 access
 accessibility
@@ -39,6 +40,7 @@ ast
 async
 audio
 audit
+auth
 authentication
 authority
 autopilot
@@ -164,6 +166,7 @@ critical
 crypto
 css
 current
+cutoff
 daily
 dashboard
 data
@@ -282,6 +285,8 @@ field
 fields
 file
 files
+filter
+filtered
 filtering
 final
 find
@@ -297,6 +302,7 @@ for
 form
 format
 framework
+fresh
 fried
 from
 frontend
@@ -305,6 +311,7 @@ function
 functional
 functionality
 functions
+future
 gaps
 gates
 gcloud
@@ -460,6 +467,7 @@ merge
 message
 meta
 method
+microsoft
 migration
 millis
 minutes
@@ -518,7 +526,9 @@ page
 panel
 parallel
 parameters
+params
 parse
+parsed
 parser
 part
 path
@@ -605,6 +615,7 @@ readme
 realism
 reality
 reason
+recent
 recipe
 recipes
 recommendation
@@ -616,6 +627,7 @@ reducer
 reduction
 ref
 refresh
+refreshed
 regex
 region
 register
@@ -661,6 +673,7 @@ sample
 sanitise
 save
 scenario
+scheduler
 schema
 scope
 score
@@ -673,6 +686,8 @@ scroll
 search
 secondary
 seconds
+secret
+secrets
 section
 security
 see
@@ -693,6 +708,7 @@ serving
 session
 sessions
 setpolicy
+setter
 settings
 setup
 shadcn
@@ -786,6 +802,7 @@ title
 today
 toggle
 token
+tokens
 tone
 tones
 tool
@@ -823,6 +840,7 @@ unknown
 unsupported
 unused
 update
+updated
 urgency
 url
 usage

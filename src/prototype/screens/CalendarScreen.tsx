@@ -45,7 +45,19 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
         </button>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <p className="mb-2 text-sm font-semibold text-stone-700">Time</p>
+          <Input
+            type="time"
+            step="60"
+            value={deadline.time}
+            onChange={(e) => onUpdate({ time: e.target.value })}
+            className="h-auto rounded-lg border-stone-200 bg-white p-3"
+          />
+          <p className="mt-1.5 text-xs text-stone-400">When this event starts.</p>
+        </div>
+
         <div>
           <p className="mb-2 text-sm font-semibold text-stone-700">Event type</p>
           <div className="flex gap-2">
