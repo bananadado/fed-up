@@ -373,7 +373,7 @@ export function RecipeDetailScreen({
             </aside>
 
             <section className="min-w-0">
-              <h1 className="text-3xl font-bold text-stone-950 md:text-4xl">{meal.name}</h1>
+              <h1 className="break-words text-3xl font-bold text-stone-950 md:text-4xl">{meal.name}</h1>
               <p className="mt-2 text-stone-600">{meal.note}</p>
               <div className="mt-7 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
                 <div>

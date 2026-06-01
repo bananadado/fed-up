@@ -129,7 +129,7 @@ export function DiscoverScreen({
                   <button
                     type="button"
                     onClick={() => onSelectMeal(current.id)}
-                    className="text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                    className="break-words text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                   >
                     {current.name}
                   </button>
@@ -188,7 +188,7 @@ export function DiscoverScreen({
                 {rejected.map((meal) => (
                   <div key={meal.id} className="grid gap-3 rounded-lg bg-rose-50 p-3 sm:grid-cols-[1fr_auto_auto] sm:items-center">
                     <div className="min-w-0">
-                      <button type="button" onClick={() => onSelectMeal(meal.id)} className="text-left font-semibold text-stone-800 hover:text-emerald-700 hover:underline">
+                      <button type="button" onClick={() => onSelectMeal(meal.id)} className="break-words text-left font-semibold text-stone-800 hover:text-emerald-700 hover:underline">
                         {meal.image} {meal.name}
                       </button>
                       <p className="text-sm text-stone-500">{meal.time} min · {money(meal.price)}</p>
@@ -206,7 +206,7 @@ export function DiscoverScreen({
               saved.map((meal) => (
                 <div key={meal.id} className="grid gap-3 rounded-lg bg-stone-50 p-4 sm:grid-cols-[1fr_auto_auto] sm:items-center">
                   <div className="min-w-0">
-                    <button type="button" onClick={() => onSelectMeal(meal.id)} className="text-left font-semibold hover:text-emerald-700 hover:underline">
+                    <button type="button" onClick={() => onSelectMeal(meal.id)} className="break-words text-left font-semibold hover:text-emerald-700 hover:underline">
                       {meal.image} {meal.name}
                     </button>
                     <p className="text-sm text-stone-500">

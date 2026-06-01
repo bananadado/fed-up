@@ -162,7 +162,7 @@ export function PlanScreen({
                               {meal.type === "fallback" ? "Fallback" : meal.type === "cook" ? "Cook" : "Remix"}
                             </Badge>
                           </div>
-                          <p className="mt-3 text-sm font-semibold leading-5">
+                          <p className="mt-3 break-words text-sm font-semibold leading-5">
                             {meal.image} {meal.name}
                           </p>
                           <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-600">
@@ -207,7 +207,7 @@ export function PlanScreen({
                       <div key={slot} className="rounded-lg bg-stone-50 p-3">
                         <p className="text-xs font-semibold uppercase text-stone-500">{slotLabels[slot]}</p>
                         <button type="button" onClick={() => onSelectMeal(meal.id)} className="mt-2 w-full text-left">
-                          <p className="font-semibold leading-5">
+                          <p className="break-words font-semibold leading-5">
                             {meal.image} {meal.name}
                           </p>
                           <p className="mt-1 text-sm text-stone-500">
@@ -306,7 +306,7 @@ export function PlanScreen({
                       <div key={meal.id} className="rounded-lg border border-stone-200 bg-stone-50 p-4">
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
-                            <p className="font-semibold">{meal.image} {meal.name}</p>
+                            <p className="break-words font-semibold">{meal.image} {meal.name}</p>
                             <p className="mt-1 text-sm text-stone-500">{meal.source} · {meal.time} min · {money(meal.price)} · {priceDiff(meal.price, originalMeal?.price ?? 0).label}</p>
                           </div>
                           <AppButton className="shrink-0" onClick={() => { track("meal_swap_browse_option_selected", { day: rescueChoice.day, meal_slot: rescueChoice.slot, meal_id: meal.id }); confirmSwapWith(meal, "browse"); }}>
@@ -344,7 +344,7 @@ export function PlanScreen({
                   <div className="rounded-lg bg-stone-50 p-4">
                     <p className="text-xs font-semibold uppercase text-stone-500">Original</p>
                     <div className="mt-2 flex justify-between gap-3">
-                      <p className="font-semibold">{originalMeal.name}</p>
+                      <p className="break-words font-semibold">{originalMeal.name}</p>
                       <p className="text-sm">
                         {originalMeal.time} min - {money(originalMeal.price)}
                       </p>
@@ -363,7 +363,7 @@ export function PlanScreen({
                               <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
                                   <div className="flex flex-wrap items-center gap-2">
-                                    <p className="font-semibold">
+                                    <p className="break-words font-semibold">
                                       {meal.image} {meal.name}
                                     </p>
                                     {index === 0 && <Badge tone="green">Best fit</Badge>}
