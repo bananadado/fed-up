@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1440 nodes, 2516 edges, 95 communities. Commit: a31d089</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1440 nodes, 2516 edges, 95 communities. Commit: 5bd267f</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -73,11 +73,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#community-1">Community 1</a>
     <a href="#community-2">Community 2</a>
     <a href="#community-3">Community 3</a>
-    <a href="#community-8">Community 8</a>
+    <a href="#community-5">Community 5</a>
+    <a href="#community-11">Community 11</a>
+    <a href="#community-13">Community 13</a>
     <a href="#community-14">Community 14</a>
     <a href="#community-15">Community 15</a>
-    <a href="#community-17">Community 17</a>
-    <a href="#community-94">Community 94</a>
     <a href="#other">Other</a>
 </div>
 
@@ -106,30 +106,30 @@ flowchart LR
     class COMMUNITY_2_8C8DF7B9 module;
     COMMUNITY_3_D8DFCEA7("Community 3<br/><small>50 nodes</small>")
     class COMMUNITY_3_D8DFCEA7 module;
-    COMMUNITY_8_9FC4FAC0("Community 8<br/><small>44 nodes</small>")
-    class COMMUNITY_8_9FC4FAC0 module;
-    COMMUNITY_14_21BC55C3("Community 14<br/><small>32 nodes</small>")
+    COMMUNITY_5_2966028D("Community 5<br/><small>44 nodes</small>")
+    class COMMUNITY_5_2966028D module;
+    COMMUNITY_11_DE018FC2("Community 11<br/><small>32 nodes</small>")
+    class COMMUNITY_11_DE018FC2 module;
+    COMMUNITY_13_E329587C("Community 13<br/><small>28 nodes</small>")
+    class COMMUNITY_13_E329587C module;
+    COMMUNITY_14_21BC55C3("Community 14<br/><small>28 nodes</small>")
     class COMMUNITY_14_21BC55C3 module;
     COMMUNITY_15_4BECAAD7("Community 15<br/><small>28 nodes</small>")
     class COMMUNITY_15_4BECAAD7 module;
-    COMMUNITY_17_648F8D7C("Community 17<br/><small>28 nodes</small>")
-    class COMMUNITY_17_648F8D7C module;
-    COMMUNITY_94_0AE67AB2("Community 94<br/><small>28 nodes</small>")
-    class COMMUNITY_94_0AE67AB2 module;
     OTHER_D0941E68("Other<br/><small>316 nodes</small>")
     class OTHER_D0941E68 module;
     COMMUNITY_2_8C8DF7B9 -->|contains x45| OTHER_D0941E68
     COMMUNITY_1_3073A0DB -->|contains x40| OTHER_D0941E68
-    COMMUNITY_94_0AE67AB2 -->|imports x34| SERVE_API_35EC8E86
+    COMMUNITY_14_21BC55C3 -->|imports x34| SERVE_API_35EC8E86
     TESTS_FIXTURES_B84B1DCC -->|imports x31| SERVE_API_35EC8E86
-    COMMUNITY_17_648F8D7C -->|imports x26| SERVE_API_35EC8E86
+    COMMUNITY_13_E329587C -->|imports x26| SERVE_API_35EC8E86
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
-    TESTS_FIXTURES_B84B1DCC -->|imports x22| COMMUNITY_94_0AE67AB2
-    TESTS_FIXTURES_B84B1DCC -->|imports x22| COMMUNITY_17_648F8D7C
-    COMMUNITY_94_0AE67AB2 -->|imports x21| OTHER_D0941E68
-    SERVE_API_35EC8E86 -->|imports x17| COMMUNITY_94_0AE67AB2
-    COMMUNITY_14_21BC55C3 -->|imports x17| TESTS_FIXTURES_B84B1DCC
-    COMMUNITY_17_648F8D7C -->|imports x17| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x22| COMMUNITY_13_E329587C
+    COMMUNITY_14_21BC55C3 -->|imports x21| OTHER_D0941E68
+    TESTS_FIXTURES_B84B1DCC -->|imports x21| COMMUNITY_14_21BC55C3
+    SERVE_API_35EC8E86 -->|imports x17| COMMUNITY_14_21BC55C3
+    COMMUNITY_11_DE018FC2 -->|imports x17| TESTS_FIXTURES_B84B1DCC
+    COMMUNITY_13_E329587C -->|imports x17| TESTS_FIXTURES_B84B1DCC
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,12 +146,12 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>180</td><td><code>18, 23, 29, 31, 33, 34, 37, 38, 39, 47, 61, 79, 84</code></td></tr><tr><td>Outputs &amp; Docs</td><td>22</td><td><code>21, 62</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>150</td><td><code>6, 11, 13, 24, 28</code></td></tr><tr><td>Serving API</td><td>191</td><td><code>0, 7, 19, 27</code></td></tr><tr><td>Security &amp; Global Graph</td><td>37</td><td><code>9</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>221</td><td><code>5, 10, 16, 4, 20, 12, 22, 44, 65, 68</code></td></tr><tr><td>Community 1</td><td>57</td><td><code>1</code></td></tr><tr><td>Community 2</td><td>56</td><td><code>2</code></td></tr><tr><td>Community 3</td><td>50</td><td><code>3</code></td></tr><tr><td>Community 8</td><td>44</td><td><code>8</code></td></tr><tr><td>Community 14</td><td>32</td><td><code>14</code></td></tr><tr><td>Community 15</td><td>28</td><td><code>15</code></td></tr><tr><td>Community 17</td><td>28</td><td><code>17</code></td></tr><tr><td>Community 94</td><td>28</td><td><code>94</code></td></tr><tr><td>Other</td><td>316</td><td><code>26, 30, 32, 35, 36, 40, 41, 42, 43, 25, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 63, 64, 66, 67, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 80, 81, 82, 83, 85, 86, 87, 88, 89, 90, 91, 92, 93</code></td></tr>
+      <tr><td>Graph Build</td><td>180</td><td><code>17, 22, 28, 30, 33, 34, 37, 38, 39, 48, 62, 80, 85</code></td></tr><tr><td>Outputs &amp; Docs</td><td>22</td><td><code>31, 63</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>150</td><td><code>6, 9, 12, 24, 27</code></td></tr><tr><td>Serving API</td><td>191</td><td><code>0, 7, 19, 26</code></td></tr><tr><td>Security &amp; Global Graph</td><td>37</td><td><code>8</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>221</td><td><code>4, 10, 16, 18, 21, 23, 25, 45, 65, 69</code></td></tr><tr><td>Community 1</td><td>57</td><td><code>1</code></td></tr><tr><td>Community 2</td><td>56</td><td><code>2</code></td></tr><tr><td>Community 3</td><td>50</td><td><code>3</code></td></tr><tr><td>Community 5</td><td>44</td><td><code>5</code></td></tr><tr><td>Community 11</td><td>32</td><td><code>11</code></td></tr><tr><td>Community 13</td><td>28</td><td><code>13</code></td></tr><tr><td>Community 14</td><td>28</td><td><code>14</code></td></tr><tr><td>Community 15</td><td>28</td><td><code>15</code></td></tr><tr><td>Other</td><td>316</td><td><code>20, 29, 32, 35, 36, 40, 41, 42, 43, 44, 46, 47, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 66, 67, 68, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 81, 82, 83, 84, 86, 87, 88, 89, 90, 91, 92, 93, 94</code></td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Core Flow</h4>
-    <div class="arrow-chain">Graph Build -&gt; Outputs &amp; Docs -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Community 94 -&gt; Other -&gt; Community 3</div>
+    <div class="arrow-chain">Graph Build -&gt; Outputs &amp; Docs -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Community 14 -&gt; Other -&gt; Community 3</div>
   </div>
 </div>
 <div class="grid">
@@ -1860,13 +1860,15 @@ flowchart LR
         domain_constraints_sortbypreferredfallback_38c880cc("sortByPreferredFallback()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_validateconstraints_5917bf9d("validateConstraints()<br/><small>src/domain/constraints.ts</small>")
     end
+    subgraph tests_fixtures_src_domain_recommendationRules_ts_a56600e9["src/domain/recommendationRules.ts"]
+        src_domain_recommendationrules_ts_09d7469c("recommendationRules.ts")
+        domain_recommendationrules_rankstrategies_2a9948a8("rankStrategies()<br/><small>src/domain/recommendationRules.ts</small>")
+    end
     subgraph tests_fixtures_src_domain_rescuePlanner_ts_dd447ad3["src/domain/rescuePlanner.ts"]
         src_domain_rescueplanner_ts_9b41e1dd("rescuePlanner.ts")
         domain_rescueplanner_findrescueoptions_e7090f48("findRescueOptions()<br/><small>src/domain/rescuePlanner.ts</small>")
     end
-    e2e_deadline_flow_spec_ts_f002dc4a("deadline-flow.spec.ts")
     application_deadlinemode_deadlinemodereducer_7430197f("deadlineModeReducer()<br/><small>src/application/deadlineMode.ts</small>")
-    domain_recommendationrules_rankstrategies_2a9948a8("rankStrategies()<br/><small>src/domain/recommendationRules.ts</small>")
     src_frontend_tsx_befdbdc9("frontend.tsx")
     src_prototype_deadlinefoodprototype_tsx_f5893eb1("DeadlineFoodPrototype.tsx")
     src_prototype_shopping_test_ts_f63b030b("shopping.test.ts")
@@ -1888,11 +1890,11 @@ flowchart LR
     class prototype_nutrition_estimateingredientnutrition_3255dd8d function;
     class domain_constraints_sortbypreferredfallback_38c880cc function;
     class domain_constraints_validateconstraints_5917bf9d function;
+    class src_domain_recommendationrules_ts_09d7469c module;
+    class domain_recommendationrules_rankstrategies_2a9948a8 function;
     class src_domain_rescueplanner_ts_9b41e1dd module;
     class domain_rescueplanner_findrescueoptions_e7090f48 function;
-    class e2e_deadline_flow_spec_ts_f002dc4a test;
     class application_deadlinemode_deadlinemodereducer_7430197f function;
-    class domain_recommendationrules_rankstrategies_2a9948a8 function;
     class src_frontend_tsx_befdbdc9 ui;
     class src_prototype_deadlinefoodprototype_tsx_f5893eb1 ui;
     class src_prototype_shopping_test_ts_f63b030b test;
@@ -3191,31 +3193,31 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 11. Community 8 ====== -->
-<h2 id="community-8">11. Community 8</h2>
-<p>Community 8 groups implementation around data, meals, domain, typests, mostly in src/domain/types.ts, src/domain/ingredients.ts, data/meals/remixChickenSaladBox.ts. This section covers 44 nodes and 117 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 11. Community 5 ====== -->
+<h2 id="community-5">11. Community 5</h2>
+<p>Community 5 groups implementation around data, meals, domain, typests, mostly in src/domain/types.ts, src/domain/ingredients.ts, data/meals/remixChickenSaladBox.ts. This section covers 44 nodes and 117 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 8 (44 nodes, 117 edges)
-    subgraph community_8_data_meals_fallbackCampusHummusBox_t_bdf2f5a7["data/meals/fallbackCampusHummusBox.ts"]
+    %% Section: Community 5 (44 nodes, 117 edges)
+    subgraph community_5_data_meals_fallbackCampusHummusBox_t_7b922c65["data/meals/fallbackCampusHummusBox.ts"]
         src_data_meals_fallbackcampushummusbox_ts_04d9b7db("fallbackCampusHummusBox.ts")
         meals_fallbackcampushummusbox_fallbackcampushumm_079781f9("fallbackCampusHummusBox<br/><small>data/meals/fallbackCampusHummusBox.ts</small>")
     end
-    subgraph community_8_data_meals_fallbackCampusRiceBowl_ts_17964dfe["data/meals/fallbackCampusRiceBowl.ts"]
+    subgraph community_5_data_meals_fallbackCampusRiceBowl_ts_2159132c["data/meals/fallbackCampusRiceBowl.ts"]
         src_data_meals_fallbackcampusricebowl_ts_bbb1ebd1("fallbackCampusRiceBowl.ts")
         meals_fallbackcampusricebowl_fallbackcampusriceb_eda72dff("fallbackCampusRiceBowl<br/><small>data/meals/fallbackCampusRiceBowl.ts</small>")
     end
-    subgraph community_8_data_meals_fallbackCampusSushiSnack_e83050b8["data/meals/fallbackCampusSushiSnack.ts"]
+    subgraph community_5_data_meals_fallbackCampusSushiSnack_445df7bc["data/meals/fallbackCampusSushiSnack.ts"]
         src_data_meals_fallbackcampussushisnack_ts_ad3a7dba("fallbackCampusSushiSnack.ts")
         meals_fallbackcampussushisnack_fallbackcampussus_a81c3c1d("fallbackCampusSushiSnack<br/><small>data/meals/fallbackCampusSushiSnack.ts</small>")
     end
-    subgraph community_8_data_meals_fallbackHallsJacketPotato_428c3340["data/meals/fallbackHallsJacketPotato.ts"]
+    subgraph community_5_data_meals_fallbackHallsJacketPotato_9b86f54a["data/meals/fallbackHallsJacketPotato.ts"]
         src_data_meals_fallbackhallsjacketpotato_ts_dec8457b("fallbackHallsJacketPotato.ts")
         meals_fallbackhallsjacketpotato_fallbackhallsjac_9186ce16("fallbackHallsJacketPotato<br/><small>data/meals/fallbackHallsJacketPotato.ts</small>")
     end
-    subgraph community_8_data_meals_fallbackLibraryBeanWrap_t_3a1c730d["data/meals/fallbackLibraryBeanWrap.ts"]
+    subgraph community_5_data_meals_fallbackLibraryBeanWrap_t_72fd072b["data/meals/fallbackLibraryBeanWrap.ts"]
         src_data_meals_fallbacklibrarybeanwrap_ts_e57e77ce("fallbackLibraryBeanWrap.ts")
         meals_fallbacklibrarybeanwrap_fallbacklibrarybea_e2b63631("fallbackLibraryBeanWrap<br/><small>data/meals/fallbackLibraryBeanWrap.ts</small>")
     end
@@ -3548,15 +3550,15 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 12. Community 14 ====== -->
-<h2 id="community-14">12. Community 14</h2>
-<p>Community 14 groups implementation around domain, plangeneratorts, constraintsts, deadlinesetuppagetsx, mostly in src/domain/planGenerator.ts, src/domain/constraints.ts, src/domain/types.ts. This section covers 32 nodes and 80 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 12. Community 11 ====== -->
+<h2 id="community-11">12. Community 11</h2>
+<p>Community 11 groups implementation around domain, plangeneratorts, constraintsts, deadlinesetuppagetsx, mostly in src/domain/planGenerator.ts, src/domain/constraints.ts, src/domain/types.ts. This section covers 32 nodes and 80 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 14 (32 nodes, 80 edges)
-    subgraph community_14_src_domain_planGenerator_ts_555d1617["src/domain/planGenerator.ts"]
+    %% Section: Community 11 (32 nodes, 80 edges)
+    subgraph community_11_src_domain_planGenerator_ts_2b54e24c["src/domain/planGenerator.ts"]
         src_domain_plangenerator_ts_2aee0cb5("planGenerator.ts")
         domain_plangenerator_buildplanmeal_45c2b1f3("buildPlanMeal()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_compatiblemeals_5fca7da1("compatibleMeals()<br/><small>src/domain/planGenerator.ts</small>")
@@ -3569,7 +3571,7 @@ flowchart LR
         domain_plangenerator_pickremix_8e8340fd("pickRemix()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_buildnocookplan_968223f7("buildNoCookPlan()<br/><small>src/domain/planGenerator.ts</small>")
     end
-    subgraph community_14_src_domain_constraints_ts_389ca0f0["src/domain/constraints.ts"]
+    subgraph community_11_src_domain_constraints_ts_99153cc3["src/domain/constraints.ts"]
         domain_constraints_getmealslotsforconstraints_ff9d403d("getMealSlotsForConstraints()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_getplanningdayids_9e7d9cb7("getPlanningDayIds()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_matchesdietarytags_2ab3caaf("matchesDietaryTags()<br/><small>src/domain/constraints.ts</small>")
@@ -3902,360 +3904,36 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 13. Community 15 ====== -->
-<h2 id="community-15">13. Community 15</h2>
-<p>Community 15 groups implementation around frontendmd, doc, active, frontend, mostly in doc/FRONTEND.md. This section covers 28 nodes and 27 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 13. Community 13 ====== -->
+<h2 id="community-13">13. Community 13</h2>
+<p>Community 13 groups implementation around prototype, screens, recipeshubscreentsx, recipedetailscreentsx, mostly in prototype/screens/RecipesHubScreen.tsx, prototype/screens/RecipeDetailScreen.tsx, src/prototype/utils.ts. This section covers 28 nodes and 49 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 15 (28 nodes, 27 edges)
-    doc_frontend_frontend_documentation_12cf8961("Frontend Documentation<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_active_prototype_screens_432b98c5("Active Prototype Screens<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_active_prototype_data_model_1accb26b("Active Prototype Data Model<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_md_66a5fd44("FRONTEND.md")
-    doc_frontend_active_prototype_navigation_d6b556db("Active Prototype Navigation<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_frontend_testing_6aef7816("Frontend Testing<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_active_components_0bf15ce8("Active Components<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_active_frontend_3147d84b("Active Frontend<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_active_prototype_helpers_7aa87358("Active Prototype Helpers<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_active_prototype_state_572bd19b("Active Prototype State<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_analytics_05bcc37c("Analytics<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_browser_boot_10905dff("Browser Boot<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_calendar_acb0c15f("Calendar<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_dashboard_aff2e893("Dashboard<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_discover_9eafb783("Discover<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_dormant_react_router_frontend_302a9bfa("Dormant React Router Frontend<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_frontend_change_checklist_63193414("Frontend Change Checklist<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_landing_a96bafce("Landing<br/><small>doc/FRONTEND.md</small>")
-    doc_frontend_md_66a5fd44 -->|contains| doc_frontend_frontend_documentation_12cf8961
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_components_0bf15ce8
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_frontend_3147d84b
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_data_model_1accb26b
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_helpers_7aa87358
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_navigation_d6b556db
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_screens_432b98c5
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_state_572bd19b
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_analytics_05bcc37c
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_browser_boot_10905dff
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_dormant_react_router_frontend_302a9bfa
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_frontend_change_checklist_63193414
-    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_frontend_testing_6aef7816
-    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_calendar_acb0c15f
-    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_dashboard_aff2e893
-    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_discover_9eafb783
-    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_landing_a96bafce
-    %% Omitted for readability: 10 nodes, 0 edges
-    class doc_frontend_frontend_documentation_12cf8961 concept;
-    class doc_frontend_active_prototype_screens_432b98c5 concept;
-    class doc_frontend_active_prototype_data_model_1accb26b concept;
-    class doc_frontend_md_66a5fd44 concept;
-    class doc_frontend_active_prototype_navigation_d6b556db concept;
-    class doc_frontend_frontend_testing_6aef7816 concept;
-    class doc_frontend_active_components_0bf15ce8 concept;
-    class doc_frontend_active_frontend_3147d84b concept;
-    class doc_frontend_active_prototype_helpers_7aa87358 concept;
-    class doc_frontend_active_prototype_state_572bd19b concept;
-    class doc_frontend_analytics_05bcc37c concept;
-    class doc_frontend_browser_boot_10905dff concept;
-    class doc_frontend_calendar_acb0c15f concept;
-    class doc_frontend_dashboard_aff2e893 concept;
-    class doc_frontend_discover_9eafb783 concept;
-    class doc_frontend_dormant_react_router_frontend_302a9bfa concept;
-    class doc_frontend_frontend_change_checklist_63193414 concept;
-    class doc_frontend_landing_a96bafce concept;
-    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
-    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
-    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
-    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
-    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
-    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
-    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
-    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
-    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
-</div>
-
-<h3>Call Details</h3>
-<table class="call-table">
-<tr>
-  <th style="width:5%">#</th>
-  <th style="width:28%">Node</th>
-  <th style="width:10%">Type</th>
-  <th style="width:17%">Caller</th>
-  <th style="width:20%">Callees</th>
-  <th style="width:20%">Description</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>FRONTEND.md</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing FRONTEND.md.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>Frontend Documentation</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Frontend Documentation.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>Active Frontend</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Active Frontend.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>Browser Boot</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Browser Boot.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>Active Prototype Navigation</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Active Prototype Navigation.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>code:ts (type Screen =)</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing code:ts (type Screen =).</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>Active Prototype State</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Active Prototype State.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>Active Prototype Data Model</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Active Prototype Data Model.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>code:ts (type MealType = &quot;cook&quot; | &quot;remix&quot; | &quot;fallback&quot;;)</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing code:ts (type MealType = &quot;cook&quot; | &quot;remix&quot; | &quot;fallback&quot;;).</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>code:ts (type MealSlot = &quot;breakfast&quot; | &quot;lunch&quot; | &quot;dinner&quot;;)</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing code:ts (type MealSlot = &quot;breakfast&quot; | &quot;lunch&quot; | &quot;dinner&quot;;).</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>Active Prototype Screens</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Active Prototype Screens.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>Landing</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Landing.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>Onboarding</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Onboarding.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>Dashboard</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Dashboard.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>Calendar</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Calendar.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>Plan</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Plan.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>Discover</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Discover.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>Recipes</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Recipes.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>Recipe Detail</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Recipe Detail.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>Settings</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Settings.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>Active Components</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Active Components.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>Active Prototype Helpers</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Active Prototype Helpers.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>Analytics</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Analytics.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>Styling And UX</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Styling And UX.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>Dormant React Router Frontend</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Dormant React Router Frontend.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>Frontend Testing</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Frontend Testing.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>code:sh (bun run test:unit)</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing code:sh (bun run test:unit).</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>Frontend Change Checklist</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Frontend Change Checklist.</td>
-</tr>
-</table>
-
-<div class="grid">
-  <div class="card">
-    <h4>Key Files</h4>
-    <table style="width:100%;font-size:0.85rem;">
-      <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>doc/FRONTEND.md</code></td><td>28 nodes</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x27. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
-  </div>
-</div>
-<hr>
-
-<!-- ====== 14. Community 17 ====== -->
-<h2 id="community-17">14. Community 17</h2>
-<p>Community 17 groups implementation around prototype, screens, recipeshubscreentsx, recipedetailscreentsx, mostly in prototype/screens/RecipesHubScreen.tsx, prototype/screens/RecipeDetailScreen.tsx, src/prototype/utils.ts. This section covers 28 nodes and 49 internal edges; the diagram shows only representative relationships to stay readable.</p>
-
-<div class="mermaid">
-%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
-flowchart LR
-    %% Section: Community 17 (28 nodes, 49 edges)
-    subgraph community_17_prototype_screens_RecipeDetailScree_696c5876["prototype/screens/RecipeDetailScreen.tsx"]
+    %% Section: Community 13 (28 nodes, 49 edges)
+    subgraph community_13_prototype_screens_RecipeDetailScree_e8be7feb["prototype/screens/RecipeDetailScreen.tsx"]
         screens_recipedetailscreen_recipedetailscreen_25b53988("RecipeDetailScreen()<br/><small>prototype/screens/RecipeDetailScreen.tsx</small>")
         screens_recipedetailscreen_ratinglabel_d7f7bd41("ratingLabel()<br/><small>prototype/screens/RecipeDetailScreen.tsx</small>")
         screens_recipedetailscreen_backlabel_8afbb211("backLabel()<br/><small>prototype/screens/RecipeDetailScreen.tsx</small>")
         src_prototype_screens_recipedetailscreen_tsx_314b628a("RecipeDetailScreen.tsx")
     end
-    subgraph community_17_prototype_screens_RecipesHubScreen_c3cf180d["prototype/screens/RecipesHubScreen.tsx"]
+    subgraph community_13_prototype_screens_RecipesHubScreen_4376d786["prototype/screens/RecipesHubScreen.tsx"]
         screens_recipeshubscreen_recipeshubscreen_ddf75768("RecipesHubScreen()<br/><small>prototype/screens/RecipesHubScreen.tsx</small>")
         screens_recipeshubscreen_positivenumber_a4564141("positiveNumber()<br/><small>prototype/screens/RecipesHubScreen.tsx</small>")
         src_prototype_screens_recipeshubscreen_tsx_9f031d43("RecipesHubScreen.tsx")
     end
-    subgraph community_17_src_prototype_ingredients_ts_2ee725d3["src/prototype/ingredients.ts"]
+    subgraph community_13_src_prototype_ingredients_ts_93e05a80["src/prototype/ingredients.ts"]
         prototype_ingredients_formatingredient_7f4e3031("formatIngredient()<br/><small>src/prototype/ingredients.ts</small>")
         prototype_ingredients_sanitiseingredientdrafts_e74d3f99("sanitiseIngredientDrafts()<br/><small>src/prototype/ingredients.ts</small>")
         prototype_ingredients_pluraliseingredientname_b077f425("pluraliseIngredientName()<br/><small>src/prototype/ingredients.ts</small>")
     end
-    subgraph community_17_src_prototype_utils_ts_5c8f3f6d["src/prototype/utils.ts"]
+    subgraph community_13_src_prototype_utils_ts_aff7cdaf["src/prototype/utils.ts"]
         prototype_utils_nutritionsourcesummary_5cf5bafb("nutritionSourceSummary()<br/><small>src/prototype/utils.ts</small>")
         prototype_utils_mealbyid_f9367acb("mealById()<br/><small>src/prototype/utils.ts</small>")
         src_prototype_utils_ts_ab166376("utils.ts")
     end
-    subgraph community_17_src_prototype_nutritionApi_ts_f722b5a6["src/prototype/nutritionApi.ts"]
+    subgraph community_13_src_prototype_nutritionApi_ts_f4eb89f6["src/prototype/nutritionApi.ts"]
         prototype_nutritionapi_fetchopenfoodfactsnutriti_2d446de7("fetchOpenFoodFactsNutrition()<br/><small>src/prototype/nutritionApi.ts</small>")
         src_prototype_nutritionapi_ts_476eee62("nutritionApi.ts")
     end
@@ -4574,15 +4252,15 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 15. Community 94 ====== -->
-<h2 id="community-94">15. Community 94</h2>
-<p>Community 94 groups implementation around prototype, datats, components, primitivestsx, mostly in src/prototype/data.ts, prototype/components/primitives.tsx, prototype/screens/Onboarding.tsx. This section covers 28 nodes and 61 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 14. Community 14 ====== -->
+<h2 id="community-14">14. Community 14</h2>
+<p>Community 14 groups implementation around prototype, datats, components, primitivestsx, mostly in src/prototype/data.ts, prototype/components/primitives.tsx, prototype/screens/Onboarding.tsx. This section covers 28 nodes and 61 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 94 (28 nodes, 61 edges)
-    subgraph community_94_src_prototype_data_ts_8e3182ce["src/prototype/data.ts"]
+    %% Section: Community 14 (28 nodes, 61 edges)
+    subgraph community_14_src_prototype_data_ts_847bf618["src/prototype/data.ts"]
         src_prototype_data_ts_961d4457("data.ts")
         prototype_data_allergens_c1146041("allergens<br/><small>src/prototype/data.ts</small>")
         prototype_data_calendarproviders_7401f3ab("calendarProviders<br/><small>src/prototype/data.ts</small>")
@@ -4593,16 +4271,16 @@ flowchart LR
         prototype_data_likes_6a99abdf("likes<br/><small>src/prototype/data.ts</small>")
         prototype_data_universities_08ec5f76("universities<br/><small>src/prototype/data.ts</small>")
     end
-    subgraph community_94_prototype_components_primitives_tsx_46fa74e6["prototype/components/primitives.tsx"]
+    subgraph community_14_prototype_components_primitives_tsx_da13eca3["prototype/components/primitives.tsx"]
         components_primitives_appbutton_f68ea74b("AppButton()<br/><small>prototype/components/primitives.tsx</small>")
         components_primitives_choicegroup_5f42003e("ChoiceGroup()<br/><small>prototype/components/primitives.tsx</small>")
         components_primitives_field_80de4fc0("Field()<br/><small>prototype/components/primitives.tsx</small>")
     end
-    subgraph community_94_prototype_screens_Onboarding_tsx_f4bee8aa["prototype/screens/Onboarding.tsx"]
+    subgraph community_14_prototype_screens_Onboarding_tsx_51ecef04["prototype/screens/Onboarding.tsx"]
         screens_onboarding_onboarding_b7499c1e("Onboarding()<br/><small>prototype/screens/Onboarding.tsx</small>")
         src_prototype_screens_onboarding_tsx_56a19b61("Onboarding.tsx")
     end
-    subgraph community_94_prototype_screens_SettingsScreen_ts_8e0ee726["prototype/screens/SettingsScreen.tsx"]
+    subgraph community_14_prototype_screens_SettingsScreen_ts_36b3a512["prototype/screens/SettingsScreen.tsx"]
         screens_settingsscreen_settingsscreen_835e1102("SettingsScreen()<br/><small>prototype/screens/SettingsScreen.tsx</small>")
         src_prototype_screens_settingsscreen_tsx_2c59e92d("SettingsScreen.tsx")
     end
@@ -4915,6 +4593,330 @@ flowchart LR
   <div class="card">
     <h4>Design Notes</h4>
     <p>This section comes from graphify community clustering. Relationship summary: imports x31, contains x21, imports x7, calls x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 15. Community 15 ====== -->
+<h2 id="community-15">15. Community 15</h2>
+<p>Community 15 groups implementation around frontendmd, doc, active, frontend, mostly in doc/FRONTEND.md. This section covers 28 nodes and 27 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Community 15 (28 nodes, 27 edges)
+    doc_frontend_frontend_documentation_12cf8961("Frontend Documentation<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_active_prototype_screens_432b98c5("Active Prototype Screens<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_active_prototype_data_model_1accb26b("Active Prototype Data Model<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_md_66a5fd44("FRONTEND.md")
+    doc_frontend_active_prototype_navigation_d6b556db("Active Prototype Navigation<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_frontend_testing_6aef7816("Frontend Testing<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_active_components_0bf15ce8("Active Components<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_active_frontend_3147d84b("Active Frontend<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_active_prototype_helpers_7aa87358("Active Prototype Helpers<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_active_prototype_state_572bd19b("Active Prototype State<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_analytics_05bcc37c("Analytics<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_browser_boot_10905dff("Browser Boot<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_calendar_acb0c15f("Calendar<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_dashboard_aff2e893("Dashboard<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_discover_9eafb783("Discover<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_dormant_react_router_frontend_302a9bfa("Dormant React Router Frontend<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_frontend_change_checklist_63193414("Frontend Change Checklist<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_landing_a96bafce("Landing<br/><small>doc/FRONTEND.md</small>")
+    doc_frontend_md_66a5fd44 -->|contains| doc_frontend_frontend_documentation_12cf8961
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_components_0bf15ce8
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_frontend_3147d84b
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_data_model_1accb26b
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_helpers_7aa87358
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_navigation_d6b556db
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_screens_432b98c5
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_state_572bd19b
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_analytics_05bcc37c
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_browser_boot_10905dff
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_dormant_react_router_frontend_302a9bfa
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_frontend_change_checklist_63193414
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_frontend_testing_6aef7816
+    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_calendar_acb0c15f
+    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_dashboard_aff2e893
+    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_discover_9eafb783
+    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_landing_a96bafce
+    %% Omitted for readability: 10 nodes, 0 edges
+    class doc_frontend_frontend_documentation_12cf8961 concept;
+    class doc_frontend_active_prototype_screens_432b98c5 concept;
+    class doc_frontend_active_prototype_data_model_1accb26b concept;
+    class doc_frontend_md_66a5fd44 concept;
+    class doc_frontend_active_prototype_navigation_d6b556db concept;
+    class doc_frontend_frontend_testing_6aef7816 concept;
+    class doc_frontend_active_components_0bf15ce8 concept;
+    class doc_frontend_active_frontend_3147d84b concept;
+    class doc_frontend_active_prototype_helpers_7aa87358 concept;
+    class doc_frontend_active_prototype_state_572bd19b concept;
+    class doc_frontend_analytics_05bcc37c concept;
+    class doc_frontend_browser_boot_10905dff concept;
+    class doc_frontend_calendar_acb0c15f concept;
+    class doc_frontend_dashboard_aff2e893 concept;
+    class doc_frontend_discover_9eafb783 concept;
+    class doc_frontend_dormant_react_router_frontend_302a9bfa concept;
+    class doc_frontend_frontend_change_checklist_63193414 concept;
+    class doc_frontend_landing_a96bafce concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>FRONTEND.md</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing FRONTEND.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Frontend Documentation</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Frontend Documentation.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Active Frontend</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Active Frontend.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Browser Boot</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Browser Boot.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Active Prototype Navigation</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Active Prototype Navigation.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>code:ts (type Screen =)</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing code:ts (type Screen =).</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Active Prototype State</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Active Prototype State.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>Active Prototype Data Model</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Active Prototype Data Model.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>code:ts (type MealType = &quot;cook&quot; | &quot;remix&quot; | &quot;fallback&quot;;)</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing code:ts (type MealType = &quot;cook&quot; | &quot;remix&quot; | &quot;fallback&quot;;).</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>code:ts (type MealSlot = &quot;breakfast&quot; | &quot;lunch&quot; | &quot;dinner&quot;;)</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing code:ts (type MealSlot = &quot;breakfast&quot; | &quot;lunch&quot; | &quot;dinner&quot;;).</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>Active Prototype Screens</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Active Prototype Screens.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>Landing</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Landing.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>Onboarding</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Onboarding.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>Dashboard</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Dashboard.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>Calendar</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Calendar.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>Plan</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Plan.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>Discover</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Discover.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>Recipes</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Recipes.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>Recipe Detail</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Recipe Detail.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>Settings</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Settings.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>Active Components</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Active Components.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>Active Prototype Helpers</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Active Prototype Helpers.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>Analytics</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Analytics.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>Styling And UX</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Styling And UX.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>Dormant React Router Frontend</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Dormant React Router Frontend.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>Frontend Testing</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Frontend Testing.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>code:sh (bun run test:unit)</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing code:sh (bun run test:unit).</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>Frontend Change Checklist</code><br><small style="color:var(--muted)">doc/FRONTEND.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Frontend Change Checklist.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>doc/FRONTEND.md</code></td><td>28 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x27. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5296,7 +5298,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-01 14:14 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-01 14:18 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
