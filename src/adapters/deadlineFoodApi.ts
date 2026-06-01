@@ -127,6 +127,14 @@ export function deadlineFoodEndpointUrl(endpoint: DeadlineEndpoint): string {
   return `${firebaseFunctionsBaseUrl()}/${firebaseFunctionNames[endpoint]}`;
 }
 
+export function firebaseFunctionUrl(functionName: string, localPath: string): string {
+  if (!shouldUseFirebaseBackend()) {
+    return localPath;
+  }
+
+  return `${firebaseFunctionsBaseUrl()}/${functionName}`;
+}
+
 async function readJson<T>(response: Response, label: string): Promise<T> {
   if (!response.ok) {
     throw new Error(`${label} request failed with ${response.status}`);
