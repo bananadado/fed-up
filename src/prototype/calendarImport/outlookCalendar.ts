@@ -4,7 +4,7 @@ declare const __BUN_PUBLIC_MICROSOFT_CLIENT_ID__: string | undefined;
 
 const clientId: string =
   (typeof __BUN_PUBLIC_MICROSOFT_CLIENT_ID__ !== "undefined" ? __BUN_PUBLIC_MICROSOFT_CLIENT_ID__ : undefined) ??
-  (typeof process !== "undefined" ? process.env.BUN_PUBLIC_MICROSOFT_CLIENT_ID : undefined) ??
+  process.env.BUN_PUBLIC_MICROSOFT_CLIENT_ID ??
   "";
 
 const AUTH_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";

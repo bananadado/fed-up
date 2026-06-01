@@ -21,7 +21,7 @@ declare global {
 
 const clientId: string =
   (typeof __BUN_PUBLIC_GOOGLE_CLIENT_ID__ !== "undefined" ? __BUN_PUBLIC_GOOGLE_CLIENT_ID__ : undefined) ??
-  (typeof process !== "undefined" ? process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID : undefined) ??
+  process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID ??
   "";
 
 const SCOPE = "https://www.googleapis.com/auth/calendar.events.readonly";
