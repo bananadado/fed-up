@@ -1,5 +1,5 @@
 import { ArrowLeft, MessageSquare, Pencil, RefreshCcw, Save, X } from "lucide-react";
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,6 +18,8 @@ import { mealById, money, nutritionSourceSummary } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import type { TrackPrototypeEvent } from "../analytics";
+
+type StateSetter<T> = Dispatch<SetStateAction<T>>;
 
 type RecipeForm = {
   name: string;
@@ -80,7 +82,7 @@ export function RecipeDetailScreen({
 }: {
   mealId: string;
   customRecipes: Meal[];
-  setCustomRecipes: (recipes: Meal[]) => void;
+  setCustomRecipes: StateSetter<Meal[]>;
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
   track: TrackPrototypeEvent;
@@ -118,7 +120,7 @@ export function RecipeDetailScreen({
   const shoppingItems = aggregateIngredients(selectedMeal.ingredients);
 
   function saveMeal(nextMeal: Meal) {
-    setCustomRecipes([nextMeal, ...customRecipes.filter((recipe) => recipe.id !== nextMeal.id)]);
+    setCustomRecipes((recipes) => [nextMeal, ...recipes.filter((recipe) => recipe.id !== nextMeal.id)]);
   }
 
   function saveRecipe(event: FormEvent<HTMLFormElement>) {
