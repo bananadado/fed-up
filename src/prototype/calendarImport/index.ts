@@ -1,7 +1,7 @@
 export type { CalendarEvent } from "./types";
 export { parseICSText } from "./icsParser";
-export { importGoogleCalendar, isGoogleConfigured } from "./googleCalendar";
-export { importOutlookCalendar, isOutlookConfigured } from "./outlookCalendar";
+export { importGoogleCalendar, isGoogleConfigured, type GoogleExchangeResult } from "./googleCalendar";
+export { importOutlookCalendar, isOutlookConfigured, type OutlookExchangeResult } from "./outlookCalendar";
 export { importFromSubscriptionUrl, isSubscriptionUrl, icsSubscriptionHints } from "./appleCalendar";
 
 import type { CalendarEvent } from "./types";
@@ -9,7 +9,17 @@ import type { Deadline } from "../types";
 import { classifyImportedEvent } from "../workloadModel";
 
 export function calendarEventsToDeadlines(events: CalendarEvent[]): Deadline[] {
-  return events.map((event, index) => {
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
+  return events
+    .filter((event) => {
+      if (!event.start) return true;
+      const startDate = new Date(event.start);
+      if (Number.isNaN(startDate.getTime())) return true;
+      return startDate >= todayStart;
+    })
+    .map((event, index) => {
     const eventType = classifyImportedEvent(event.title);
     const startDate = event.start ? new Date(event.start) : null;
 

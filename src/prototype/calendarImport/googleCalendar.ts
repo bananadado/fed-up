@@ -1,4 +1,5 @@
 import type { CalendarEvent } from "./types";
+import { calendarGoogleExchangeUrl } from "./calendarApi";
 
 declare const __BUN_PUBLIC_GOOGLE_CLIENT_ID__: string | undefined;
 
@@ -7,12 +8,13 @@ declare global {
     google?: {
       accounts: {
         oauth2: {
-          initTokenClient(config: {
+          initCodeClient(config: {
             client_id: string;
             scope: string;
-            callback: (response: { access_token?: string; error?: string; error_description?: string }) => void;
+            ux_mode: "popup";
+            callback: (response: { code?: string; error?: string; error_description?: string }) => void;
             error_callback?: (error: { type: string; message?: string }) => void;
-          }): { requestAccessToken(): void };
+          }): { requestCode(): void };
         };
       };
     };
@@ -28,7 +30,6 @@ const clientId: string =
   "";
 
 const SCOPE = "https://www.googleapis.com/auth/calendar.events.readonly";
-const API_URL = "https://www.googleapis.com/calendar/v3/calendars/primary/events";
 
 let scriptLoaded = false;
 
@@ -51,89 +52,64 @@ function loadGIS(): Promise<void> {
   });
 }
 
-function requestToken(clientId: string): Promise<string> {
+function requestCode(): Promise<string> {
   return new Promise((resolve, reject) => {
-    const client = window.google!.accounts.oauth2.initTokenClient({
+    const client = window.google!.accounts.oauth2.initCodeClient({
       client_id: clientId,
       scope: SCOPE,
+      ux_mode: "popup",
       callback: (response) => {
         if (response.error) {
           reject(new Error(response.error_description ?? response.error));
-        } else if (response.access_token) {
-          resolve(response.access_token);
+        } else if (response.code) {
+          resolve(response.code);
         } else {
-          reject(new Error("No access token received"));
+          reject(new Error("No authorization code received"));
         }
       },
       error_callback: (error) => {
         reject(new Error(error.message ?? error.type));
       },
     });
-    client.requestAccessToken();
+    client.requestCode();
   });
 }
 
-type GoogleEvent = {
-  id?: string;
-  summary?: string;
-  description?: string;
-  location?: string;
-  start?: { dateTime?: string; date?: string };
-  end?: { dateTime?: string; date?: string };
-  recurrence?: string[];
-  status?: string;
+export type GoogleExchangeResult = {
+  events: CalendarEvent[];
+  refreshToken?: string;
+  expiresAt?: string;
 };
 
-async function fetchEvents(accessToken: string): Promise<CalendarEvent[]> {
-  const now = new Date();
-  const until = new Date(now);
-  until.setMonth(until.getMonth() + 3);
-
-  const params = new URLSearchParams({
-    timeMin: now.toISOString(),
-    timeMax: until.toISOString(),
-    maxResults: "250",
-    singleEvents: "true",
-    orderBy: "startTime",
-  });
-
-  const response = await fetch(`${API_URL}?${params}`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
+async function exchangeCodeOnServer(code: string, sessionId: string): Promise<GoogleExchangeResult> {
+  const response = await fetch(calendarGoogleExchangeUrl(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      code,
+      redirectUri: window.location.origin,
+      sessionId,
+    }),
   });
 
   if (!response.ok) {
-    throw new Error(`Google Calendar API returned ${response.status}`);
+    const body = await response.json().catch(() => null) as { error?: string } | null;
+    throw new Error(body?.error ?? `Google Calendar exchange failed (${response.status})`);
   }
 
-  const data = (await response.json()) as { items?: GoogleEvent[] };
-  const importedAt = new Date().toISOString();
-
-  return (data.items ?? [])
-    .filter((e) => e.status !== "cancelled")
-    .map((e) => ({
-      id: e.id ?? `google-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      title: e.summary ?? "Untitled event",
-      description: e.description ?? "",
-      location: e.location ?? "",
-      start: e.start?.dateTime ?? e.start?.date ?? "",
-      end: e.end?.dateTime ?? e.end?.date ?? "",
-      allDay: !e.start?.dateTime,
-      recurrence: e.recurrence?.join(";") ?? "",
-      source: "google" as const,
-      importedAt,
-    }));
+  return response.json() as Promise<GoogleExchangeResult>;
 }
 
 export function isGoogleConfigured(): boolean {
   return clientId.length > 0;
 }
 
-export async function importGoogleCalendar(): Promise<CalendarEvent[]> {
+export async function importGoogleCalendar(sessionId: string): Promise<GoogleExchangeResult> {
   if (!clientId) {
     throw new Error("Google Calendar not configured. Add BUN_PUBLIC_GOOGLE_CLIENT_ID to your .env file.");
   }
 
   await loadGIS();
-  const token = await requestToken(clientId);
-  return fetchEvents(token);
+  const code = await requestCode();
+  return exchangeCodeOnServer(code, sessionId);
 }
