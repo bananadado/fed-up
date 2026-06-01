@@ -19,6 +19,7 @@ import {
   isSubscriptionUrl,
   parseICSText,
 } from "../calendarImport";
+import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
 
 export function SettingsScreen({
@@ -30,6 +31,11 @@ export function SettingsScreen({
   setDeadlines,
   calendarEvents,
   setCalendarEvents,
+  icsSubscriptions,
+  setIcsSubscriptions,
+  calendarTokens,
+  setCalendarTokens,
+  sessionId,
   track,
 }: {
   prefs: Preferences;
@@ -40,6 +46,11 @@ export function SettingsScreen({
   setDeadlines: (deadlines: Deadline[]) => void;
   calendarEvents: CalendarEvent[];
   setCalendarEvents: (events: CalendarEvent[]) => void;
+  icsSubscriptions: IcsSubscription[];
+  setIcsSubscriptions: (subs: IcsSubscription[]) => void;
+  calendarTokens: CalendarToken[];
+  setCalendarTokens: (tokens: CalendarToken[]) => void;
+  sessionId: string;
   track: TrackPrototypeEvent;
 }) {
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -77,10 +88,20 @@ export function SettingsScreen({
     track("calendar_provider_connect_clicked", { provider: calendarProvider });
 
     try {
-      const events = calendarProvider === "google"
-        ? await importGoogleCalendar()
-        : await importOutlookCalendar();
-      handleImportedEvents(events, calendarProvider);
+      const result = calendarProvider === "google"
+        ? await importGoogleCalendar(sessionId)
+        : await importOutlookCalendar(sessionId);
+      handleImportedEvents(result.events, calendarProvider);
+      if (result.refreshToken) {
+        const provider = calendarProvider as "google" | "outlook";
+        const newToken: CalendarToken = {
+          provider,
+          refreshToken: result.refreshToken,
+          expiresAt: result.expiresAt ?? "",
+          addedAt: new Date().toISOString(),
+        };
+        setCalendarTokens([...calendarTokens.filter((t) => t.provider !== provider), newToken]);
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Import failed";
       setImportMessage(message);
@@ -102,6 +123,8 @@ export function SettingsScreen({
     try {
       const events = await importFromSubscriptionUrl(subscriptionUrl, calendarProvider);
       handleImportedEvents(events, calendarProvider);
+      const newSub: IcsSubscription = { url: subscriptionUrl.trim(), source: calendarProvider, addedAt: new Date().toISOString() };
+      setIcsSubscriptions([...icsSubscriptions.filter((s) => s.url !== newSub.url), newSub]);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Import failed";
       setImportMessage(message);
