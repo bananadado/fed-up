@@ -166,6 +166,7 @@ export function DeadlineFoodPrototype() {
       selected_source_count: selectedSources.length,
       budget_band: budgetBand(prefs.budget),
       kitchen_access: prefs.kitchen,
+      cooking_ability: prefs.cookingAbility,
       max_time_bucket: maxTimeBucket(prefs.maxTime),
       dietary_count: prefs.dietary.length,
       allergen_count: prefs.allergens.length,
