@@ -1,9 +1,22 @@
 import {initializeApp} from "firebase-admin/app";
 import {FieldValue, getFirestore, Timestamp} from "firebase-admin/firestore";
 import {onRequest} from "firebase-functions/v2/https";
+import {onSchedule} from "firebase-functions/v2/scheduler";
 import {setGlobalOptions} from "firebase-functions/v2/options";
+import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import {randomUUID} from "crypto";
+import {parseICSText} from "./icsParser";
+import {
+  calendarEventsToDeadlines,
+  exchangeGoogleCode,
+  exchangeOutlookCode,
+  fetchGoogleEvents,
+  fetchOutlookEvents,
+  filterFutureEvents,
+  refreshGoogleToken,
+  refreshOutlookToken,
+} from "./calendarUtils";
 import {
   canonicalConstraints,
   deadlineBootstrap,
@@ -24,12 +37,30 @@ const openFoodFactsRateLimitRef = firestore
 const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
-const prototypeSessionSettingsVersion = 1;
+const prototypeSessionSettingsVersion = 2;
 const publicHttpOptions = {cors: true, invoker: "public"} as const;
 const nutritionHttpOptions = {
   ...publicHttpOptions,
   timeoutSeconds: 300,
 } as const;
+const googleClientId = defineSecret("GOOGLE_CLIENT_ID");
+const googleClientSecret = defineSecret("GOOGLE_CLIENT_SECRET");
+const microsoftClientId = defineSecret("MICROSOFT_CLIENT_ID");
+const microsoftClientSecret = defineSecret("MICROSOFT_CLIENT_SECRET");
+const googleOAuthHttpOptions = {
+  ...publicHttpOptions,
+  secrets: [googleClientId, googleClientSecret],
+};
+const microsoftOAuthHttpOptions = {
+  ...publicHttpOptions,
+  secrets: [microsoftClientId, microsoftClientSecret],
+};
+const calendarOAuthSecrets = [
+  googleClientId,
+  googleClientSecret,
+  microsoftClientId,
+  microsoftClientSecret,
+];
 const openFoodFactsProductionBaseUrl = "https://world.openfoodfacts.org";
 const openFoodFactsStagingBaseUrl = "https://world.openfoodfacts.net";
 const openFoodFactsBaseUrl = (
@@ -113,6 +144,32 @@ type HttpResponse = {
   send(body: string): void;
 };
 
+type IcsSubscription = {
+  url: string;
+  source: string;
+  addedAt: string;
+};
+
+type CalendarToken = {
+  provider: "google" | "outlook";
+  refreshToken: string;
+  expiresAt: string;
+  addedAt: string;
+};
+
+type CalendarEvent = {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  start: string;
+  end: string;
+  allDay: boolean;
+  recurrence: string;
+  source: string;
+  importedAt: string;
+};
+
 type PrototypeSessionSettings = {
   settingsVersion: typeof prototypeSessionSettingsVersion;
   preferences: {
@@ -134,6 +191,11 @@ type PrototypeSessionSettings = {
     date: string;
     time: string;
     intensity: string;
+    eventType: "academic" | "general";
+    effortHours: number;
+    urgency: string;
+    rawDate?: string;
+    confirmed?: boolean;
   }[];
   selectedSources: string[];
   onboarded: boolean;
@@ -141,6 +203,9 @@ type PrototypeSessionSettings = {
   discoverSaved: UnknownRecord[];
   discoverRejected: UnknownRecord[];
   plan: UnknownRecord[];
+  calendarEvents: CalendarEvent[];
+  icsSubscriptions: IcsSubscription[];
+  calendarTokens: CalendarToken[];
 };
 
 const servingGrams: Record<string, number> = {
@@ -314,6 +379,74 @@ function normalizeDeadline(value: unknown): PrototypeSessionSettings["deadlines"
     date: boundedString(deadline.date, ""),
     time: boundedString(deadline.time, ""),
     intensity: boundedString(deadline.intensity, "Medium", 40),
+    eventType: deadline.eventType === "academic" ? "academic" : "general",
+    effortHours: boundedNumber(deadline.effortHours, 3, 0, 12),
+    urgency: ["low", "medium", "high"].includes(String(deadline.urgency)) ?
+      String(deadline.urgency) :
+      "medium",
+    ...(typeof deadline.rawDate === "string" ? {rawDate: boundedString(deadline.rawDate, "", 10)} : {}),
+    ...(typeof deadline.confirmed === "boolean" ? {confirmed: deadline.confirmed} : {}),
+  };
+}
+
+function normalizeIcsSubscription(value: unknown): IcsSubscription | null {
+  const sub = asRecord(value);
+  if (sub === null) return null;
+
+  const url = boundedString(sub.url, "", 2048);
+  if (!url) return null;
+
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return null;
+  } catch {
+    return null;
+  }
+
+  return {
+    url,
+    source: boundedString(sub.source, "other", 20),
+    addedAt: boundedString(sub.addedAt, new Date().toISOString(), 40),
+  };
+}
+
+function normalizeCalendarToken(value: unknown): CalendarToken | null {
+  const token = asRecord(value);
+  if (token === null) return null;
+
+  const provider = String(token.provider);
+  if (provider !== "google" && provider !== "outlook") return null;
+
+  const refreshToken = boundedString(token.refreshToken, "", 4096);
+  if (!refreshToken) return null;
+
+  return {
+    provider,
+    refreshToken,
+    expiresAt: boundedString(token.expiresAt, "", 40),
+    addedAt: boundedString(token.addedAt, new Date().toISOString(), 40),
+  };
+}
+
+function normalizeCalendarEvent(value: unknown): CalendarEvent | null {
+  const event = asRecord(value);
+  if (event === null) return null;
+
+  const id = boundedString(event.id, "", 200);
+  const title = boundedString(event.title, "", 500);
+  if (!id || !title) return null;
+
+  return {
+    id,
+    title,
+    description: boundedString(event.description, "", 2000),
+    location: boundedString(event.location, "", 500),
+    start: boundedString(event.start, "", 40),
+    end: boundedString(event.end, "", 40),
+    allDay: event.allDay === true,
+    recurrence: boundedString(event.recurrence, "", 500),
+    source: boundedString(event.source, "other", 20),
+    importedAt: boundedString(event.importedAt, "", 40),
   };
 }
 
@@ -363,7 +496,7 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     throw new Error("Session settings must be an object.");
   }
 
-  if (settings.settingsVersion !== prototypeSessionSettingsVersion) {
+  if (settings.settingsVersion !== 1 && settings.settingsVersion !== prototypeSessionSettingsVersion) {
     throw new Error("Unsupported session settings version.");
   }
 
@@ -403,6 +536,24 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     discoverSaved: normalizeRecipeList(settings.discoverSaved),
     discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
     plan: normalizeRecipeList(settings.plan, 30),
+    calendarEvents: Array.isArray(settings.calendarEvents) ?
+      settings.calendarEvents
+        .map(normalizeCalendarEvent)
+        .filter((e): e is NonNullable<typeof e> => e !== null)
+        .slice(0, 250) :
+      [],
+    icsSubscriptions: Array.isArray(settings.icsSubscriptions) ?
+      settings.icsSubscriptions
+        .map(normalizeIcsSubscription)
+        .filter((s): s is NonNullable<typeof s> => s !== null)
+        .slice(0, 5) :
+      [],
+    calendarTokens: Array.isArray(settings.calendarTokens) ?
+      settings.calendarTokens
+        .map(normalizeCalendarToken)
+        .filter((t): t is NonNullable<typeof t> => t !== null)
+        .slice(0, 5) :
+      [],
   };
 }
 
@@ -1071,3 +1222,247 @@ export const calendarFetchIcs = onRequest(publicHttpOptions, async (request, res
   response.set("Content-Type", "text/calendar; charset=utf-8");
   response.status(200).send(text);
 });
+
+export const calendarGoogleExchange = onRequest(googleOAuthHttpOptions, async (request, response) => {
+  if (request.method === "OPTIONS") {
+    response.status(204).send("");
+    return;
+  }
+  if (request.method !== "POST") {
+    response.set("Allow", "POST, OPTIONS");
+    response.status(405).json({error: "Method not allowed"});
+    return;
+  }
+
+  const body = readRequestBody(request);
+  const code = typeof body?.code === "string" ? body.code : "";
+  const redirectUri = typeof body?.redirectUri === "string" ? body.redirectUri : "";
+  const sessionId = typeof body?.sessionId === "string" ? body.sessionId : "";
+
+  if (!code || !redirectUri) {
+    response.status(400).json({error: "code and redirectUri are required."});
+    return;
+  }
+
+  try {
+    const tokenResult = await exchangeGoogleCode(
+      code,
+      redirectUri,
+      googleClientId.value(),
+      googleClientSecret.value(),
+    );
+    const events = await fetchGoogleEvents(tokenResult.accessToken);
+
+    if (sessionId && anonymousSessionIdPattern.test(sessionId) && tokenResult.refreshToken) {
+      const sessionRef = anonymousSessionsRef.doc(sessionId);
+      const snapshot = await sessionRef.get();
+      if (snapshot.exists) {
+        const existingTokens: CalendarToken[] = (snapshot.data()?.settings?.calendarTokens ?? [])
+          .filter((t: CalendarToken) => t.provider !== "google");
+        existingTokens.push({
+          provider: "google",
+          refreshToken: tokenResult.refreshToken,
+          expiresAt: tokenResult.expiresAt,
+          addedAt: new Date().toISOString(),
+        });
+        await sessionRef.set(
+          {settings: {calendarTokens: existingTokens}, updatedAt: FieldValue.serverTimestamp()},
+          {merge: true},
+        );
+      }
+    }
+
+    response.json({
+      events,
+      refreshToken: tokenResult.refreshToken,
+      expiresAt: tokenResult.expiresAt,
+    });
+  } catch (error) {
+    logger.error("Google calendar exchange failed", error);
+    const message = error instanceof Error ? error.message : "Google Calendar import failed";
+    response.status(502).json({error: message});
+  }
+});
+
+export const calendarOutlookExchange = onRequest(microsoftOAuthHttpOptions, async (request, response) => {
+  if (request.method === "OPTIONS") {
+    response.status(204).send("");
+    return;
+  }
+  if (request.method !== "POST") {
+    response.set("Allow", "POST, OPTIONS");
+    response.status(405).json({error: "Method not allowed"});
+    return;
+  }
+
+  const body = readRequestBody(request);
+  const code = typeof body?.code === "string" ? body.code : "";
+  const redirectUri = typeof body?.redirectUri === "string" ? body.redirectUri : "";
+  const codeVerifier = typeof body?.codeVerifier === "string" ? body.codeVerifier : "";
+  const sessionId = typeof body?.sessionId === "string" ? body.sessionId : "";
+
+  if (!code || !redirectUri || !codeVerifier) {
+    response.status(400).json({error: "code, redirectUri and codeVerifier are required."});
+    return;
+  }
+
+  try {
+    const tokenResult = await exchangeOutlookCode(
+      code,
+      redirectUri,
+      codeVerifier,
+      microsoftClientId.value(),
+      microsoftClientSecret.value(),
+    );
+    const events = await fetchOutlookEvents(tokenResult.accessToken);
+
+    if (sessionId && anonymousSessionIdPattern.test(sessionId) && tokenResult.refreshToken) {
+      const sessionRef = anonymousSessionsRef.doc(sessionId);
+      const snapshot = await sessionRef.get();
+      if (snapshot.exists) {
+        const existingTokens: CalendarToken[] = (snapshot.data()?.settings?.calendarTokens ?? [])
+          .filter((t: CalendarToken) => t.provider !== "outlook");
+        existingTokens.push({
+          provider: "outlook",
+          refreshToken: tokenResult.refreshToken,
+          expiresAt: tokenResult.expiresAt,
+          addedAt: new Date().toISOString(),
+        });
+        await sessionRef.set(
+          {settings: {calendarTokens: existingTokens}, updatedAt: FieldValue.serverTimestamp()},
+          {merge: true},
+        );
+      }
+    }
+
+    response.json({
+      events,
+      refreshToken: tokenResult.refreshToken,
+      expiresAt: tokenResult.expiresAt,
+    });
+  } catch (error) {
+    logger.error("Outlook calendar exchange failed", error);
+    const message = error instanceof Error ? error.message : "Outlook Calendar import failed";
+    response.status(502).json({error: message});
+  }
+});
+
+export const calendarSubscriptionRefresh = onSchedule(
+  {
+    schedule: "every 6 hours",
+    region: "europe-west2",
+    timeoutSeconds: 120,
+    retryCount: 1,
+    secrets: calendarOAuthSecrets,
+  },
+  async () => {
+    const recentCutoff = Timestamp.fromDate(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000));
+    const sessions = await anonymousSessionsRef
+      .where("updatedAt", ">", recentCutoff)
+      .limit(200)
+      .get();
+
+    let refreshed = 0;
+    let pruned = 0;
+    const todayIso = new Date().toISOString().slice(0, 10);
+
+    for (const doc of sessions.docs) {
+      const data = doc.data();
+      const settings = data?.settings;
+      if (!settings) continue;
+
+      const subs: IcsSubscription[] = settings.icsSubscriptions ?? [];
+      const tokens: CalendarToken[] = settings.calendarTokens ?? [];
+      const hasCalendarSources = subs.length > 0 || tokens.length > 0;
+
+      if (!hasCalendarSources) {
+        const deadlines: Array<{id: string; rawDate?: string}> = settings.deadlines ?? [];
+        const filtered = deadlines.filter((d) => !d.rawDate || d.rawDate >= todayIso);
+        if (filtered.length < deadlines.length) {
+          await doc.ref.set(
+            {settings: {deadlines: filtered}, updatedAt: FieldValue.serverTimestamp()},
+            {merge: true},
+          );
+          pruned++;
+        }
+        continue;
+      }
+
+      try {
+        const allEvents: CalendarEvent[] = [];
+
+        for (const sub of subs) {
+          try {
+            const upstream = await fetch(sub.url, {
+              headers: {Accept: "text/calendar, text/plain"},
+              signal: AbortSignal.timeout(15_000),
+            });
+            if (upstream.ok) {
+              const text = await upstream.text();
+              if (text.includes("BEGIN:VCALENDAR")) {
+                const parsed = parseICSText(text, sub.source);
+                allEvents.push(...filterFutureEvents(parsed));
+              }
+            }
+          } catch (e) {
+            logger.warn(`ICS fetch failed for session ${doc.id}`, e);
+          }
+        }
+
+        const updatedTokens = [...tokens];
+        for (const [i, token] of tokens.entries()) {
+          try {
+            if (token.provider === "google") {
+              const refreshed = await refreshGoogleToken(
+                token.refreshToken,
+                googleClientId.value(),
+                googleClientSecret.value(),
+              );
+              const events = await fetchGoogleEvents(refreshed.accessToken);
+              allEvents.push(...events);
+              updatedTokens[i] = {...token, expiresAt: refreshed.expiresAt};
+            } else if (token.provider === "outlook") {
+              const refreshed = await refreshOutlookToken(
+                token.refreshToken,
+                microsoftClientId.value(),
+                microsoftClientSecret.value(),
+              );
+              const events = await fetchOutlookEvents(refreshed.accessToken);
+              allEvents.push(...events);
+              updatedTokens[i] = {
+                ...token,
+                refreshToken: refreshed.newRefreshToken,
+                expiresAt: refreshed.expiresAt,
+              };
+            }
+          } catch (e) {
+            logger.warn(`OAuth refresh failed for session ${doc.id}, provider ${token.provider}`, e);
+          }
+        }
+
+        const existingDeadlines: Array<{id: string; rawDate?: string}> = settings.deadlines ?? [];
+        const manualDeadlines = existingDeadlines.filter(
+          (d) => d.id.startsWith("manual-") && (!d.rawDate || d.rawDate >= todayIso),
+        );
+        const freshDeadlines = calendarEventsToDeadlines(allEvents);
+
+        await doc.ref.set(
+          {
+            settings: {
+              calendarEvents: allEvents.slice(0, 250),
+              calendarTokens: updatedTokens,
+              deadlines: [...freshDeadlines, ...manualDeadlines].slice(0, 50),
+            },
+            updatedAt: FieldValue.serverTimestamp(),
+          },
+          {merge: true},
+        );
+        refreshed++;
+      } catch (e) {
+        logger.error(`Calendar refresh failed for session ${doc.id}`, e);
+      }
+    }
+
+    logger.info(`Calendar refresh complete: ${refreshed} refreshed, ${pruned} pruned, ${sessions.size} checked`);
+  },
+);
