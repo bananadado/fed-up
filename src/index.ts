@@ -160,6 +160,18 @@ const server = serve({
       },
     },
 
+    "/api/calendar/google-exchange": {
+      async POST(req) {
+        return proxyToFirebaseFunction("calendarGoogleExchange", req);
+      },
+    },
+
+    "/api/calendar/outlook-exchange": {
+      async POST(req) {
+        return proxyToFirebaseFunction("calendarOutlookExchange", req);
+      },
+    },
+
     "/api/hello": {
       async GET() {
         return Response.json({

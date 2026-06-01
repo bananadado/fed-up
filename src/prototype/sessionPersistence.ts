@@ -1,8 +1,21 @@
-import type { CalendarEvent, Deadline, Meal, PlanEntry, Preferences } from "./types";
+import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences } from "./types";
 
 export const ANONYMOUS_SESSION_STORAGE_KEY = "deadlineFoodAnonymousSessionId";
-export const PROTOTYPE_SESSION_SETTINGS_VERSION = 1;
+export const PROTOTYPE_SESSION_SETTINGS_VERSION = 2;
 export const PROTOTYPE_SESSION_RETENTION_DAYS = 90;
+
+export type IcsSubscription = {
+  url: string;
+  source: CalendarProvider;
+  addedAt: string;
+};
+
+export type CalendarToken = {
+  provider: "google" | "outlook";
+  refreshToken: string;
+  expiresAt: string;
+  addedAt: string;
+};
 
 export type PrototypeSessionSettings = {
   settingsVersion: typeof PROTOTYPE_SESSION_SETTINGS_VERSION;
@@ -15,6 +28,8 @@ export type PrototypeSessionSettings = {
   discoverRejected?: Meal[];
   plan?: PlanEntry[];
   calendarEvents?: CalendarEvent[];
+  icsSubscriptions?: IcsSubscription[];
+  calendarTokens?: CalendarToken[];
 };
 
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
@@ -41,6 +56,8 @@ export function createPrototypeSessionSettings(input: {
   discoverRejected?: Meal[];
   plan?: PlanEntry[];
   calendarEvents?: CalendarEvent[];
+  icsSubscriptions?: IcsSubscription[];
+  calendarTokens?: CalendarToken[];
 }): PrototypeSessionSettings {
   return {
     settingsVersion: PROTOTYPE_SESSION_SETTINGS_VERSION,
@@ -53,6 +70,8 @@ export function createPrototypeSessionSettings(input: {
     discoverRejected: input.discoverRejected,
     plan: input.plan,
     calendarEvents: input.calendarEvents,
+    icsSubscriptions: input.icsSubscriptions,
+    calendarTokens: input.calendarTokens,
   };
 }
 

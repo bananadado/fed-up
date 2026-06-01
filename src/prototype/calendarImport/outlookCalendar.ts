@@ -1,4 +1,5 @@
 import type { CalendarEvent } from "./types";
+import { calendarOutlookExchangeUrl } from "./calendarApi";
 
 declare const __BUN_PUBLIC_MICROSOFT_CLIENT_ID__: string | undefined;
 
@@ -11,9 +12,7 @@ const clientId: string =
   "";
 
 const AUTH_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
-const TOKEN_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
-const GRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendarView";
-const SCOPE = "Calendars.Read";
+const SCOPE = "Calendars.Read offline_access";
 
 function base64UrlEncode(buffer: Uint8Array): string {
   let binary = "";
@@ -67,89 +66,37 @@ function waitForPopupRedirect(popup: Window, origin: string): Promise<string> {
   });
 }
 
-async function exchangeCodeForToken(
-  code: string,
-  clientId: string,
-  redirectUri: string,
-  codeVerifier: string,
-): Promise<string> {
-  const response = await fetch(TOKEN_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      client_id: clientId,
-      grant_type: "authorization_code",
-      code,
-      redirect_uri: redirectUri,
-      code_verifier: codeVerifier,
-      scope: `openid ${SCOPE}`,
-    }),
-  });
-
-  if (!response.ok) {
-    const body = (await response.json()) as { error_description?: string };
-    throw new Error(body.error_description ?? `Token exchange failed: ${response.status}`);
-  }
-
-  const data = (await response.json()) as { access_token?: string };
-  if (!data.access_token) throw new Error("No access token in response");
-  return data.access_token;
-}
-
-type OutlookEvent = {
-  id?: string;
-  subject?: string;
-  bodyPreview?: string;
-  location?: { displayName?: string };
-  start?: { dateTime?: string; timeZone?: string };
-  end?: { dateTime?: string; timeZone?: string };
-  isAllDay?: boolean;
-  recurrence?: unknown;
+export type OutlookExchangeResult = {
+  events: CalendarEvent[];
+  refreshToken?: string;
+  expiresAt?: string;
 };
 
-async function fetchEvents(accessToken: string): Promise<CalendarEvent[]> {
-  const now = new Date();
-  const until = new Date(now);
-  until.setMonth(until.getMonth() + 3);
-
-  const params = new URLSearchParams({
-    startDateTime: now.toISOString(),
-    endDateTime: until.toISOString(),
-    $top: "250",
-    $orderby: "start/dateTime",
-    $select: "id,subject,bodyPreview,location,start,end,isAllDay,recurrence",
-  });
-
-  const response = await fetch(`${GRAPH_URL}?${params}`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
+async function exchangeCodeOnServer(
+  code: string,
+  redirectUri: string,
+  codeVerifier: string,
+  sessionId: string,
+): Promise<OutlookExchangeResult> {
+  const response = await fetch(calendarOutlookExchangeUrl(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, redirectUri, codeVerifier, sessionId }),
   });
 
   if (!response.ok) {
-    throw new Error(`Microsoft Graph API returned ${response.status}`);
+    const body = await response.json().catch(() => null) as { error?: string } | null;
+    throw new Error(body?.error ?? `Outlook Calendar exchange failed (${response.status})`);
   }
 
-  const data = (await response.json()) as { value?: OutlookEvent[] };
-  const importedAt = new Date().toISOString();
-
-  return (data.value ?? []).map((e) => ({
-    id: e.id ?? `outlook-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    title: e.subject ?? "Untitled event",
-    description: e.bodyPreview ?? "",
-    location: e.location?.displayName ?? "",
-    start: e.start?.dateTime ? new Date(e.start.dateTime + "Z").toISOString() : "",
-    end: e.end?.dateTime ? new Date(e.end.dateTime + "Z").toISOString() : "",
-    allDay: e.isAllDay ?? false,
-    recurrence: e.recurrence ? JSON.stringify(e.recurrence) : "",
-    source: "outlook" as const,
-    importedAt,
-  }));
+  return response.json() as Promise<OutlookExchangeResult>;
 }
 
 export function isOutlookConfigured(): boolean {
   return clientId.length > 0;
 }
 
-export async function importOutlookCalendar(): Promise<CalendarEvent[]> {
+export async function importOutlookCalendar(sessionId: string): Promise<OutlookExchangeResult> {
   if (!clientId) {
     throw new Error("Outlook Calendar not configured. Add BUN_PUBLIC_MICROSOFT_CLIENT_ID to your .env file.");
   }
@@ -170,6 +117,5 @@ export async function importOutlookCalendar(): Promise<CalendarEvent[]> {
   if (!popup) throw new Error("Could not open sign-in window. Please allow popups.");
 
   const code = await waitForPopupRedirect(popup, window.location.origin);
-  const token = await exchangeCodeForToken(code, clientId, redirectUri, verifier);
-  return fetchEvents(token);
+  return exchangeCodeOnServer(code, redirectUri, verifier, sessionId);
 }
