@@ -192,6 +192,7 @@ export function SettingsScreen({
                 type="number"
                 value={prefs.budget === 0 ? "" : prefs.budget}
                 onChange={(event) => setPrefs({ ...prefs, budget: event.target.value === "" ? 0 : Number(event.target.value) })}
+                onKeyDown={(event) => { if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault(); }}
                 onBlur={() => track("settings_preference_changed", { field: "budget", value: prefs.budget })}
                 className="h-auto border-0 p-3 shadow-none focus-visible:ring-0"
               />
