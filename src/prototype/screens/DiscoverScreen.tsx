@@ -1,5 +1,5 @@
 import { Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
 import { seedMeals } from "../data";
@@ -8,6 +8,8 @@ import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, money, ingredientNames } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
+
+type StateSetter<T> = Dispatch<SetStateAction<T>>;
 
 function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
   if (rating === 0) return null;
@@ -31,6 +33,8 @@ export function DiscoverScreen({
   setSaved,
   rejected,
   setRejected,
+  reviewedRecipeIds,
+  setReviewedRecipeIds,
   onSelectMeal,
   track,
 }: {
@@ -39,43 +43,57 @@ export function DiscoverScreen({
   setPlan: (plan: PlanEntry[]) => void;
   plan: PlanEntry[];
   saved: Meal[];
-  setSaved: (saved: Meal[]) => void;
+  setSaved: StateSetter<Meal[]>;
   rejected: Meal[];
-  setRejected: (rejected: Meal[]) => void;
+  setRejected: StateSetter<Meal[]>;
+  reviewedRecipeIds: string[];
+  setReviewedRecipeIds: StateSetter<string[]>;
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
-  const initialQueue = [...customRecipes, ...seedMeals.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))];
+  const candidateRecipes = [...customRecipes, ...seedMeals.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))];
+  const reviewedRecipeIdSet = new Set([
+    ...reviewedRecipeIds,
+    ...saved.map((meal) => meal.id),
+    ...rejected.map((meal) => meal.id),
+  ]);
   const [sortBy, setSortBy] = useState<"priority" | "time" | "price" | "health">("priority");
-  const [queue, setQueue] = useState(() => initialQueue.filter((meal) => !saved.some((s) => s.id === meal.id) && !rejected.some((r) => r.id === meal.id)));
   function sortComparator(a: Meal, b: Meal): number {
     if (sortBy === "time") return a.time - b.time;
     if (sortBy === "price") return a.price - b.price;
     if (sortBy === "health") return b.nutrition.protein - a.nutrition.protein || a.price - b.price;
     return Number(b.tags.includes("high protein")) - Number(a.tags.includes("high protein")) || a.time - b.time;
   }
-  const sortedQueue = [...queue].sort(sortComparator);
+  const sortedQueue = candidateRecipes.filter((meal) => !reviewedRecipeIdSet.has(meal.id)).sort(sortComparator);
   const sortedSaved = [...saved].sort(sortComparator);
   const current = sortedQueue[0];
 
   function decideCurrentRecipe(like: boolean) {
-    if (current) {
-      track("discover_recipe_swiped", { meal_id: current.id, liked: like });
+    if (!current) {
+      return;
     }
 
-    if (current && like) {
-      setSaved([...saved, current]);
-    } else if (current) {
-      setRejected([current, ...rejected].slice(0, 3));
-    }
+    track("discover_recipe_swiped", { meal_id: current.id, liked: like });
+    setReviewedRecipeIds((ids) => (ids.includes(current.id) ? ids : [...ids, current.id]));
 
-    setQueue(queue.filter((meal) => meal.id !== current?.id));
+    if (like) {
+      setSaved((recipes) => (recipes.some((recipe) => recipe.id === current.id) ? recipes : [...recipes, current]));
+    } else {
+      setRejected((recipes) => [current, ...recipes.filter((recipe) => recipe.id !== current.id)].slice(0, 3));
+    }
   }
 
   function undo(meal: Meal) {
-    setRejected(rejected.filter((m) => m.id !== meal.id));
-    setQueue([meal, ...queue]);
+    setRejected((recipes) => recipes.filter((m) => m.id !== meal.id));
+    setReviewedRecipeIds((ids) => ids.filter((id) => id !== meal.id));
     track("discover_recipe_undo", { meal_id: meal.id });
+  }
+
+  function restartReviewQueue() {
+    const savedRecipeIds = new Set(saved.map((meal) => meal.id));
+    setReviewedRecipeIds([]);
+    setRejected([]);
+    track("discover_queue_restarted", { queue_size: candidateRecipes.filter((meal) => !savedRecipeIds.has(meal.id)).length });
   }
 
   function addToPlan(meal: Meal) {
@@ -174,7 +192,7 @@ export function DiscoverScreen({
             <Card className="gap-0 rounded-lg border-stone-200 bg-white p-10 text-center">
               <Sparkles className="mx-auto text-emerald-700" />
               <p className="mt-4 font-semibold">You have reviewed today's suggestions.</p>
-              <AppButton variant="secondary" className="mt-4" onClick={() => { track("discover_queue_restarted", { queue_size: initialQueue.length }); setQueue(initialQueue); }}>
+              <AppButton variant="secondary" className="mt-4" onClick={restartReviewQueue}>
                 Restart
               </AppButton>
             </Card>

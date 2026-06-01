@@ -26,6 +26,7 @@ export type PrototypeSessionSettings = {
   customRecipes?: Meal[];
   discoverSaved?: Meal[];
   discoverRejected?: Meal[];
+  discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
@@ -54,6 +55,7 @@ export function createPrototypeSessionSettings(input: {
   customRecipes?: Meal[];
   discoverSaved?: Meal[];
   discoverRejected?: Meal[];
+  discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
@@ -68,6 +70,7 @@ export function createPrototypeSessionSettings(input: {
     customRecipes: input.customRecipes,
     discoverSaved: input.discoverSaved,
     discoverRejected: input.discoverRejected,
+    discoverReviewedRecipeIds: input.discoverReviewedRecipeIds,
     plan: input.plan,
     calendarEvents: input.calendarEvents,
     icsSubscriptions: input.icsSubscriptions,
