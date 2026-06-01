@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1440 nodes, 2516 edges, 95 communities. Commit: 949b2ed</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1440 nodes, 2516 edges, 95 communities. Commit: a31d089</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -124,9 +124,9 @@ flowchart LR
     TESTS_FIXTURES_B84B1DCC -->|imports x31| SERVE_API_35EC8E86
     COMMUNITY_17_648F8D7C -->|imports x26| SERVE_API_35EC8E86
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
+    TESTS_FIXTURES_B84B1DCC -->|imports x22| COMMUNITY_94_0AE67AB2
     TESTS_FIXTURES_B84B1DCC -->|imports x22| COMMUNITY_17_648F8D7C
     COMMUNITY_94_0AE67AB2 -->|imports x21| OTHER_D0941E68
-    TESTS_FIXTURES_B84B1DCC -->|imports x21| COMMUNITY_94_0AE67AB2
     SERVE_API_35EC8E86 -->|imports x17| COMMUNITY_94_0AE67AB2
     COMMUNITY_14_21BC55C3 -->|imports x17| TESTS_FIXTURES_B84B1DCC
     COMMUNITY_17_648F8D7C -->|imports x17| TESTS_FIXTURES_B84B1DCC
@@ -1860,15 +1860,13 @@ flowchart LR
         domain_constraints_sortbypreferredfallback_38c880cc("sortByPreferredFallback()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_validateconstraints_5917bf9d("validateConstraints()<br/><small>src/domain/constraints.ts</small>")
     end
-    subgraph tests_fixtures_src_domain_recommendationRules_ts_a56600e9["src/domain/recommendationRules.ts"]
-        src_domain_recommendationrules_ts_09d7469c("recommendationRules.ts")
-        domain_recommendationrules_rankstrategies_2a9948a8("rankStrategies()<br/><small>src/domain/recommendationRules.ts</small>")
-    end
     subgraph tests_fixtures_src_domain_rescuePlanner_ts_dd447ad3["src/domain/rescuePlanner.ts"]
         src_domain_rescueplanner_ts_9b41e1dd("rescuePlanner.ts")
         domain_rescueplanner_findrescueoptions_e7090f48("findRescueOptions()<br/><small>src/domain/rescuePlanner.ts</small>")
     end
+    e2e_deadline_flow_spec_ts_f002dc4a("deadline-flow.spec.ts")
     application_deadlinemode_deadlinemodereducer_7430197f("deadlineModeReducer()<br/><small>src/application/deadlineMode.ts</small>")
+    domain_recommendationrules_rankstrategies_2a9948a8("rankStrategies()<br/><small>src/domain/recommendationRules.ts</small>")
     src_frontend_tsx_befdbdc9("frontend.tsx")
     src_prototype_deadlinefoodprototype_tsx_f5893eb1("DeadlineFoodPrototype.tsx")
     src_prototype_shopping_test_ts_f63b030b("shopping.test.ts")
@@ -1890,11 +1888,11 @@ flowchart LR
     class prototype_nutrition_estimateingredientnutrition_3255dd8d function;
     class domain_constraints_sortbypreferredfallback_38c880cc function;
     class domain_constraints_validateconstraints_5917bf9d function;
-    class src_domain_recommendationrules_ts_09d7469c module;
-    class domain_recommendationrules_rankstrategies_2a9948a8 function;
     class src_domain_rescueplanner_ts_9b41e1dd module;
     class domain_rescueplanner_findrescueoptions_e7090f48 function;
+    class e2e_deadline_flow_spec_ts_f002dc4a test;
     class application_deadlinemode_deadlinemodereducer_7430197f function;
+    class domain_recommendationrules_rankstrategies_2a9948a8 function;
     class src_frontend_tsx_befdbdc9 ui;
     class src_prototype_deadlinefoodprototype_tsx_f5893eb1 ui;
     class src_prototype_shopping_test_ts_f63b030b test;
@@ -5298,7 +5296,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-01 13:17 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-01 14:14 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

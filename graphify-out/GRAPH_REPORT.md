@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-06-01)
 
 ## Corpus Check
-- 141 files · ~83,334 words
+- 141 files · ~83,346 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `949b2eda`
+- Built from commit: `a31d0896`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -443,20 +443,20 @@ Cohesion: 0.16
 Nodes (21): AppButton(), appButtonClasses, AppButtonVariant, badgeTones, ChoiceGroup(), Field(), SelectField(), Tone (+13 more)
 
 ## Knowledge Gaps
-- **673 isolated node(s):** `$schema`, `buildCommand`, `installCommand`, `outputDirectory`, `deploymentEnabled` (+668 more)
+- **673 isolated node(s):** `sessionLoaded`, `$schema`, `buildCommand`, `installCommand`, `outputDirectory` (+668 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Community 0` to `Community 25`, `Community 10`, `Community 94`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
 - **Why does `RecipeIngredient` connect `Community 17` to `Community 8`, `Community 10`, `Community 44`, `Community 12`, `Community 26`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `Card()` connect `Community 0` to `Community 94`, `Community 12`, `Community 14`, `Community 17`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **What connects `$schema`, `buildCommand`, `installCommand` to the rest of the system?**
+- **Why does `Deadline Food Autopilot — Product and Implementation Specification` connect `Community 28` to `Community 40`, `Community 48`, `Community 49`, `Community 50`, `Community 51`, `Community 54`, `Community 55`, `Community 56`, `Community 57`, `Community 58`, `Community 59`, `Community 60`, `Community 64`, `Community 65`, `Community 66`, `Community 67`, `Community 69`, `Community 70`, `Community 71`, `Community 72`, `Community 73`, `Community 74`, `Community 75`, `Community 76`, `Community 77`, `Community 78`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **What connects `sessionLoaded`, `$schema`, `buildCommand` to the rest of the system?**
   _673 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.05804132973944295 - nodes in this community are weakly interconnected._
