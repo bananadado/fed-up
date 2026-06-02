@@ -19,11 +19,13 @@ export function IngredientEditor({
   onChange,
   allowEmpty = false,
   emptyMessage = "No ingredients yet.",
+  required = false,
 }: {
   ingredients: IngredientDraft[];
   onChange: (ingredients: IngredientDraft[]) => void;
   allowEmpty?: boolean;
   emptyMessage?: string;
+  required?: boolean;
 }) {
   const listId = useId();
 
@@ -40,7 +42,7 @@ export function IngredientEditor({
   return (
     <div>
       <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold">Ingredients</p>
+        <p className="text-sm font-semibold">Ingredients{required && <span className="ml-1 text-red-500">*</span>}</p>
         <AppButton type="button" variant="secondary" className="px-3 py-2" onClick={() => onChange([...ingredients, createIngredientDraft()])}>
           <Plus size={15} /> Add
         </AppButton>

@@ -1,5 +1,5 @@
 import { BookOpen, Plus, RefreshCcw, Sparkles, UtensilsCrossed } from "lucide-react";
-import { useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
+import { useRef, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -101,6 +101,7 @@ export function RecipesHubScreen({
   const [attempted, setAttempted] = useState(false);
   const [nutritionLoading, setNutritionLoading] = useState(false);
   const [nutritionStatus, setNutritionStatus] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const ingredients = sanitiseIngredientDrafts(form.ingredients);
   const servings = positiveNumber(Number(form.servings), 1);
@@ -112,6 +113,7 @@ export function RecipesHubScreen({
     servings: Number(form.servings) < 1,
     totalCost: totalCost <= 0,
   };
+  const hasErrors = errors.name || errors.ingredients || errors.servings || errors.totalCost;
 
   async function estimateNutrition() {
     if (ingredients.length === 0) {
@@ -151,8 +153,15 @@ export function RecipesHubScreen({
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (errors.name || errors.ingredients || errors.servings || errors.totalCost) {
+    if (hasErrors) {
       setAttempted(true);
+      requestAnimationFrame(() => {
+        const firstError = formRef.current?.querySelector("[data-field-error] input, [data-ingredient-error]");
+        if (firstError instanceof HTMLElement) {
+          firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+          firstError.focus({ preventScroll: true });
+        }
+      });
       return;
     }
 
@@ -315,20 +324,20 @@ export function RecipesHubScreen({
               <BookOpen size={18} className="text-emerald-700" />
               <h2 className="text-xl font-bold">New recipe</h2>
             </div>
-            <form onSubmit={submit}>
+            <form ref={formRef} onSubmit={submit}>
               <div className="space-y-4">
-                <Field label="Recipe name" value={form.name} onChange={(name) => setForm({ ...form, name })} placeholder="e.g. Microwave bean burrito" error={attempted && errors.name} errorMessage="Please enter a recipe name" />
+                <Field label="Recipe name" required value={form.name} onChange={(name) => setForm({ ...form, name })} placeholder="e.g. Microwave bean burrito" error={attempted && errors.name} errorMessage="Please enter a recipe name" />
                 <div className="grid grid-cols-2 gap-3">
                   <Field label="Time (mins)" type="number" value={form.minutes} onChange={(minutes) => setForm({ ...form, minutes: +minutes })} />
-                  <Field label="Servings" type="number" value={form.servings} onChange={(servingsValue) => setForm({ ...form, servings: +servingsValue })} error={attempted && errors.servings} errorMessage="Must be at least 1" />
+                  <Field label="Servings" type="number" required value={form.servings} onChange={(servingsValue) => setForm({ ...form, servings: +servingsValue })} error={attempted && errors.servings} errorMessage="Must be at least 1" />
                 </div>
-                <Field label="Total recipe cost (£)" type="number" step="0.05" value={form.totalCost} onChange={(cost) => setForm({ ...form, totalCost: +cost })} error={attempted && errors.totalCost} errorMessage="Please enter a cost" />
+                <Field label="Total recipe cost (£)" type="number" step="0.05" required value={form.totalCost} onChange={(cost) => setForm({ ...form, totalCost: +cost })} error={attempted && errors.totalCost} errorMessage="Please enter a cost" />
                 <p className="rounded-lg bg-emerald-50 p-3 text-sm font-medium text-emerald-800">
                   Estimated cost per portion: {money(costPerPortion)}
                 </p>
-                <div>
-                  <IngredientEditor ingredients={form.ingredients} onChange={(nextIngredients) => setForm({ ...form, ingredients: nextIngredients })} />
-                  {attempted && errors.ingredients && <p className="mt-2 text-xs font-medium text-red-600">Add at least one ingredient</p>}
+                <div data-field-error={attempted && errors.ingredients || undefined}>
+                  <IngredientEditor required ingredients={form.ingredients} onChange={(nextIngredients) => setForm({ ...form, ingredients: nextIngredients })} />
+                  {attempted && errors.ingredients && <p className="mt-2 text-xs font-medium text-red-600" data-ingredient-error>Add at least one ingredient</p>}
                 </div>
                 <Field label="Tags" value={form.tags} onChange={(tags) => setForm({ ...form, tags })} placeholder="vegetarian, microwave" />
                 <Field label="Allergens" value={form.allergens} onChange={(allergens) => setForm({ ...form, allergens })} placeholder="gluten, dairy" />
@@ -358,7 +367,12 @@ export function RecipesHubScreen({
                 </label>
                 <Field label="Notes" value={form.note} onChange={(note) => setForm({ ...form, note })} placeholder="Any tips or variations" />
               </div>
-              <AppButton type="submit" className="mt-6 w-full">
+              {attempted && hasErrors && (
+                <p className="mt-6 text-center text-sm font-medium text-red-600">
+                  Please fill in all required fields
+                </p>
+              )}
+              <AppButton type="submit" className={`${attempted && hasErrors ? "mt-3" : "mt-6"} w-full`}>
                 <Plus size={16} /> Add recipe
               </AppButton>
             </form>

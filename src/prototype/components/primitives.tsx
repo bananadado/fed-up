@@ -139,6 +139,7 @@ export function Field({
   onBlur,
   error,
   errorMessage,
+  required,
 }: {
   label: string;
   value: string | number;
@@ -151,10 +152,14 @@ export function Field({
   onBlur?: () => void;
   error?: boolean;
   errorMessage?: string;
+  required?: boolean;
 }) {
   return (
-    <Label className="block">
-      <span className={cn("text-sm font-semibold", error && "text-red-600")}>{label}</span>
+    <Label className="block" data-field-error={error || undefined}>
+      <span className={cn("text-sm font-semibold", error && "text-red-600")}>
+        {label}
+        {required && <span className="ml-1 text-red-500">*</span>}
+      </span>
       <Input
         type={type}
         step={step}
@@ -165,6 +170,7 @@ export function Field({
         onKeyDown={type === "number" ? (event) => { if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault(); } : undefined}
         onBlur={onBlur}
         placeholder={placeholder}
+        aria-invalid={error || undefined}
         className={cn(
           "mt-2 h-auto rounded-lg border-stone-200 bg-white p-3 focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20",
           error && "border-red-400 bg-red-50 ring-1 ring-red-400 focus-visible:border-red-400 focus-visible:ring-red-400/20",
