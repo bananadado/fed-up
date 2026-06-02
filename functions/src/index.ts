@@ -1534,7 +1534,8 @@ export const deadlineFoodRecipePhoto = onRequest(publicHttpOptions, async (reque
     if (storageEmulatorHost) {
       // Storage emulator serves all files publicly — makePublic() is a no-op / unsupported there.
       // Return the emulator download URL so the browser can load the image locally.
-      photoUrl = `http://${storageEmulatorHost}/v0/b/${encodeURIComponent(storageBucket)}/o/${encodeURIComponent(objectPath)}?alt=media`;
+      const encodedPath = encodeURIComponent(objectPath);
+      photoUrl = `http://${storageEmulatorHost}/v0/b/${encodeURIComponent(storageBucket)}/o/${encodedPath}?alt=media`;
     } else {
       await file.makePublic();
       photoUrl = `https://storage.googleapis.com/${storageBucket}/${objectPath}`;
