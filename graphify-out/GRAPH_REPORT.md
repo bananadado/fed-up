@@ -1,7 +1,7 @@
-# Graph Report - drp03  (2026-06-01)
+# Graph Report - drp03  (2026-06-02)
 
 ## Corpus Check
-- 141 files · ~84,284 words
+- 141 files · ~84,293 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1a6bb6bd`
+- Built from commit: `d4c13043`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -447,20 +447,20 @@ Cohesion: 0.67
 Nodes (3): 7.5 Flow E — Campus Fallback Details, MVP data approach, Required functionality
 
 ## Knowledge Gaps
-- **681 isolated node(s):** `$schema`, `buildCommand`, `installCommand`, `outputDirectory`, `deploymentEnabled` (+676 more)
+- **681 isolated node(s):** `Window`, `$schema`, `buildCommand`, `installCommand`, `outputDirectory` (+676 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Card()` connect `Community 0` to `Community 33`, `Community 6`, `Community 21`, `Community 23`, `Community 24`, `Community 26`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Why does `cn()` connect `Community 0` to `Community 17`, `Community 21`, `Community 6`, `Community 23`?**
+  _High betweenness centrality (0.007) - this node is a cross-community bridge._
 - **Why does `RecipeIngredient` connect `Community 33` to `Community 8`, `Community 13`, `Community 47`, `Community 23`, `Community 26`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `cn()` connect `Community 0` to `Community 17`, `Community 21`, `Community 6`, `Community 23`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **What connects `$schema`, `buildCommand`, `installCommand` to the rest of the system?**
+- **Why does `Card()` connect `Community 0` to `Community 33`, `Community 6`, `Community 21`, `Community 23`, `Community 24`, `Community 26`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **What connects `Window`, `$schema`, `buildCommand` to the rest of the system?**
   _681 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.08045977011494253 - nodes in this community are weakly interconnected._

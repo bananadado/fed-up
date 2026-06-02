@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1459 nodes, 2539 edges, 95 communities. Commit: 1a6bb6b</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1459 nodes, 2539 edges, 95 communities. Commit: d4c1304</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -1834,59 +1834,60 @@ flowchart LR
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
     %% Section: Tests &amp; Fixtures (288 nodes, 491 edges)
+    subgraph tests_fixtures_prototype_calendarImport_outlookC_1f2a873c["prototype/calendarImport/outlookCalendar.ts"]
+        calendarimport_outlookcalendar_base64urlencode_1d9b3a8b("base64UrlEncode()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+        calendarimport_outlookcalendar_generatepkce_a7deecff("generatePKCE()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+        calendarimport_outlookcalendar_importoutlookcale_3a7c989d("importOutlookCalendar()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+        calendarimport_outlookcalendar_waitforpopupredir_cdf384e3("waitForPopupRedirect()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+        calendarimport_outlookcalendar_exchangecodeonser_209b81ef("exchangeCodeOnServer()<br/><small>prototype/calendarImport/outlookCalendar.ts</small>")
+    end
+    subgraph tests_fixtures_prototype_calendarImport_googleCa_395e20e4["prototype/calendarImport/googleCalendar.ts"]
+        calendarimport_googlecalendar_loadgis_d2388831("loadGIS()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
+        calendarimport_googlecalendar_importgooglecalend_1f63e428("importGoogleCalendar()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
+        calendarimport_googlecalendar_requestcode_4a296780("requestCode()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
+        calendarimport_googlecalendar_exchangecodeonserv_b01dfa5a("exchangeCodeOnServer()<br/><small>prototype/calendarImport/googleCalendar.ts</small>")
+    end
     subgraph tests_fixtures_prototype_calendarImport_calendar_e67e7b9f["prototype/calendarImport/calendarApi.ts"]
-        calendarimport_calendarapi_calendarfetchicsurl_31986747("calendarFetchIcsUrl()<br/><small>prototype/calendarImport/calendarApi.ts</small>")
         calendarimport_calendarapi_calendargoogleexchang_9539cee3("calendarGoogleExchangeUrl()<br/><small>prototype/calendarImport/calendarApi.ts</small>")
         calendarimport_calendarapi_calendaroutlookexchan_f3790554("calendarOutlookExchangeUrl()<br/><small>prototype/calendarImport/calendarApi.ts</small>")
-    end
-    subgraph tests_fixtures_src_prototype_nutrition_ts_5c24a940["src/prototype/nutrition.ts"]
-        prototype_nutrition_roundmacro_f349ffbb("roundMacro()<br/><small>src/prototype/nutrition.ts</small>")
-        prototype_nutrition_totalnutritionfromestimates_617c1ad8("totalNutritionFromEstimates()<br/><small>src/prototype/nutrition.ts</small>")
-        prototype_nutrition_gramsforingredient_1b4740a6("gramsForIngredient()<br/><small>src/prototype/nutrition.ts</small>")
-    end
-    subgraph tests_fixtures_src_domain_constraints_ts_2a3a959a["src/domain/constraints.ts"]
-        domain_constraints_sortbypreferredfallback_38c880cc("sortByPreferredFallback()<br/><small>src/domain/constraints.ts</small>")
-        domain_constraints_validateconstraints_5917bf9d("validateConstraints()<br/><small>src/domain/constraints.ts</small>")
-    end
-    subgraph tests_fixtures_src_domain_rescuePlanner_ts_dd447ad3["src/domain/rescuePlanner.ts"]
-        src_domain_rescueplanner_ts_9b41e1dd("rescuePlanner.ts")
-        domain_rescueplanner_findrescueoptions_e7090f48("findRescueOptions()<br/><small>src/domain/rescuePlanner.ts</small>")
     end
     subgraph tests_fixtures_src_prototype_ingredients_ts_045c53ee["src/prototype/ingredients.ts"]
         src_prototype_ingredients_ts_87e93c45("ingredients.ts")
         prototype_ingredients_createingredientdraft_02bea079("createIngredientDraft()<br/><small>src/prototype/ingredients.ts</small>")
     end
     adapters_deadlinefoodapi_firebasefunctionurl_609ca870("firebaseFunctionUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-    application_deadlinemode_deadlinemodereducer_7430197f("deadlineModeReducer()<br/><small>src/application/deadlineMode.ts</small>")
-    domain_recommendationrules_rankstrategies_2a9948a8("rankStrategies()<br/><small>src/domain/recommendationRules.ts</small>")
+    src_domain_rescueplanner_ts_9b41e1dd("rescuePlanner.ts")
     src_prototype_data_ts_961d4457("data.ts")
     src_prototype_shopping_test_ts_f63b030b("shopping.test.ts")
     prototype_types_calendarprovider_d02d565a("CalendarProvider<br/><small>src/prototype/types.ts</small>")
-    adapters_deadlinefoodapi_firebasefunctionurl_609ca870 -->|calls| calendarimport_calendarapi_calendarfetchicsurl_31986747
+    calendarimport_googlecalendar_loadgis_d2388831 -->|calls| calendarimport_googlecalendar_importgooglecalend_1f63e428
+    calendarimport_googlecalendar_requestcode_4a296780 -->|calls| calendarimport_googlecalendar_importgooglecalend_1f63e428
+    calendarimport_googlecalendar_exchangecodeonserv_b01dfa5a -->|calls| calendarimport_calendarapi_calendargoogleexchang_9539cee3
+    calendarimport_googlecalendar_exchangecodeonserv_b01dfa5a -->|calls| calendarimport_googlecalendar_importgooglecalend_1f63e428
+    calendarimport_outlookcalendar_base64urlencode_1d9b3a8b -->|calls| calendarimport_outlookcalendar_generatepkce_a7deecff
+    calendarimport_outlookcalendar_generatepkce_a7deecff -->|calls| calendarimport_outlookcalendar_importoutlookcale_3a7c989d
+    calendarimport_outlookcalendar_waitforpopupredir_cdf384e3 -->|calls| calendarimport_outlookcalendar_importoutlookcale_3a7c989d
+    calendarimport_outlookcalendar_exchangecodeonser_209b81ef -->|calls| calendarimport_calendarapi_calendaroutlookexchan_f3790554
+    calendarimport_outlookcalendar_exchangecodeonser_209b81ef -->|calls| calendarimport_outlookcalendar_importoutlookcale_3a7c989d
     adapters_deadlinefoodapi_firebasefunctionurl_609ca870 -->|calls| calendarimport_calendarapi_calendargoogleexchang_9539cee3
     adapters_deadlinefoodapi_firebasefunctionurl_609ca870 -->|calls| calendarimport_calendarapi_calendaroutlookexchan_f3790554
-    domain_rescueplanner_findrescueoptions_e7090f48 -->|calls| domain_constraints_sortbypreferredfallback_38c880cc
-    domain_recommendationrules_rankstrategies_2a9948a8 -->|calls| application_deadlinemode_deadlinemodereducer_7430197f
-    domain_constraints_validateconstraints_5917bf9d -->|calls| application_deadlinemode_deadlinemodereducer_7430197f
-    prototype_nutrition_roundmacro_f349ffbb -->|calls| prototype_nutrition_totalnutritionfromestimates_617c1ad8
-    src_domain_rescueplanner_ts_9b41e1dd -->|imports| domain_constraints_sortbypreferredfallback_38c880cc
     src_prototype_data_ts_961d4457 -->|imports| prototype_types_calendarprovider_d02d565a
     %% Omitted for readability: 270 nodes, 0 edges
-    class calendarimport_calendarapi_calendarfetchicsurl_31986747 function;
+    class calendarimport_outlookcalendar_base64urlencode_1d9b3a8b function;
+    class calendarimport_outlookcalendar_generatepkce_a7deecff function;
+    class calendarimport_outlookcalendar_importoutlookcale_3a7c989d function;
+    class calendarimport_outlookcalendar_waitforpopupredir_cdf384e3 function;
+    class calendarimport_outlookcalendar_exchangecodeonser_209b81ef function;
+    class calendarimport_googlecalendar_loadgis_d2388831 function;
+    class calendarimport_googlecalendar_importgooglecalend_1f63e428 function;
+    class calendarimport_googlecalendar_requestcode_4a296780 function;
+    class calendarimport_googlecalendar_exchangecodeonserv_b01dfa5a function;
     class calendarimport_calendarapi_calendargoogleexchang_9539cee3 function;
     class calendarimport_calendarapi_calendaroutlookexchan_f3790554 function;
-    class prototype_nutrition_roundmacro_f349ffbb function;
-    class prototype_nutrition_totalnutritionfromestimates_617c1ad8 function;
-    class prototype_nutrition_gramsforingredient_1b4740a6 function;
-    class domain_constraints_sortbypreferredfallback_38c880cc function;
-    class domain_constraints_validateconstraints_5917bf9d function;
-    class src_domain_rescueplanner_ts_9b41e1dd module;
-    class domain_rescueplanner_findrescueoptions_e7090f48 function;
     class src_prototype_ingredients_ts_87e93c45 module;
     class prototype_ingredients_createingredientdraft_02bea079 function;
     class adapters_deadlinefoodapi_firebasefunctionurl_609ca870 function;
-    class application_deadlinemode_deadlinemodereducer_7430197f function;
-    class domain_recommendationrules_rankstrategies_2a9948a8 function;
+    class src_domain_rescueplanner_ts_9b41e1dd module;
     class src_prototype_data_ts_961d4457 module;
     class src_prototype_shopping_test_ts_f63b030b test;
     class prototype_types_calendarprovider_d02d565a klass;
@@ -1913,6 +1914,134 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
+  <td><code>googleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>calendarApi.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>calendarGoogleExchangeUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br>+1 more</td>
+  <td>Module file in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Window</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Window node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>loadGIS()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td>loadGIS() node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>requestCode()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td>requestCode() node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>GoogleExchangeResult</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>GoogleExchangeResult node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>exchangeCodeOnServer()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>calendarGoogleExchangeUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td>exchangeCodeOnServer() node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>isGoogleConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>exchangeCodeOnServer()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>loadGIS()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>requestCode()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>importGoogleCalendar() node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>outlookCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>calendarApi.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>calendarOutlookExchangeUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br>+1 more</td>
+  <td>Module file in prototype/calendarImport/outlookCalendar.ts.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>base64UrlEncode()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>generatePKCE()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td>base64UrlEncode() node in prototype/calendarImport/outlookCalendar.ts.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>generatePKCE()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>base64UrlEncode()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><code>importOutlookCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td>generatePKCE() node in prototype/calendarImport/outlookCalendar.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>waitForPopupRedirect()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>importOutlookCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td>waitForPopupRedirect() node in prototype/calendarImport/outlookCalendar.ts.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>OutlookExchangeResult</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>OutlookExchangeResult node in prototype/calendarImport/outlookCalendar.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>exchangeCodeOnServer()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>calendarOutlookExchangeUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br><code>importOutlookCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td>exchangeCodeOnServer() node in prototype/calendarImport/outlookCalendar.ts.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>isOutlookConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>importOutlookCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>exchangeCodeOnServer()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>generatePKCE()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small><br><code>waitForPopupRedirect()</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
+  <td>importOutlookCalendar() node in prototype/calendarImport/outlookCalendar.ts.</td>
+</tr>
+<tr>
+  <td>17</td>
   <td><code>firebaseFunctionUrl()</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1920,7 +2049,7 @@ flowchart LR
   <td>firebaseFunctionUrl() node in src/adapters/deadlineFoodApi.ts.</td>
 </tr>
 <tr>
-  <td>2</td>
+  <td>18</td>
   <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -1928,7 +2057,7 @@ flowchart LR
   <td>Module file in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>19</td>
   <td><code>calendarProviders</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1936,7 +2065,7 @@ flowchart LR
   <td>calendarProviders node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>20</td>
   <td><code>mealSlots</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1944,7 +2073,7 @@ flowchart LR
   <td>mealSlots node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>5</td>
+  <td>21</td>
   <td><code>sampleReviews()</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1952,7 +2081,7 @@ flowchart LR
   <td>sampleReviews() node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>22</td>
   <td><code>initialPlan</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1960,7 +2089,7 @@ flowchart LR
   <td>initialPlan node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>23</td>
   <td><code>sourceOptions</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1968,7 +2097,7 @@ flowchart LR
   <td>sourceOptions node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>24</td>
   <td><code>allergens</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1976,7 +2105,7 @@ flowchart LR
   <td>allergens node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>25</td>
   <td><code>dislikes</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1984,7 +2113,7 @@ flowchart LR
   <td>dislikes node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>26</td>
   <td><code>likes</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1992,7 +2121,7 @@ flowchart LR
   <td>likes node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>27</td>
   <td><code>dietary</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2000,7 +2129,7 @@ flowchart LR
   <td>dietary node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>28</td>
   <td><code>universities</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2008,7 +2137,7 @@ flowchart LR
   <td>universities node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>29</td>
   <td><code>cookingAbilities</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2016,140 +2145,12 @@ flowchart LR
   <td>cookingAbilities node in src/prototype/data.ts.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>30</td>
   <td><code>initialPreferences</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td><code>deadline-flow.spec.ts</code><br><small style="color:var(--muted)">e2e/deadline-flow.spec.ts</small><br><code>sessionPersistence.test.ts</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.test.ts</small></td>
   <td>initialPreferences node in src/prototype/data.ts.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>ingredientDraftsFromIngredients()</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>createIngredientDraft()</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small></td>
-  <td><code>mealToForm()</code><br><small style="color:var(--muted)">prototype/screens/RecipeDetailScreen.tsx</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/RecipeDetailScreen.tsx</small><br>+1 more</td>
-  <td>ingredientDraftsFromIngredients() node in src/prototype/ingredients.ts.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>formatCookingLimit()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen()</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small><br>+1 more</td>
-  <td>formatCookingLimit() node in src/prototype/utils.ts.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>RecipeReview</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>RecipeReview node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>Deadline</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>workloadModel.ts</code><br><small style="color:var(--muted)">src/prototype/workloadModel.ts</small></td>
-  <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/CalendarScreen.tsx</small><br><code>index.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br>+2 more</td>
-  <td>Deadline node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small></td>
-  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br>+3 more</td>
-  <td>CalendarProvider node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>sessionPersistence.ts</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>CalendarProvider</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br><code>Deadline</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>deadline-flow.spec.ts</code><br><small style="color:var(--muted)">e2e/deadline-flow.spec.ts</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br>+2 more</td>
-  <td>Module file in src/prototype/sessionPersistence.ts.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>IcsSubscription</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>IcsSubscription node in src/prototype/sessionPersistence.ts.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>CalendarToken</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>SettingsScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/SettingsScreen.tsx</small></td>
-  <td>CalendarToken node in src/prototype/sessionPersistence.ts.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>createPrototypeSessionSettings()</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>deadline-flow.spec.ts</code><br><small style="color:var(--muted)">e2e/deadline-flow.spec.ts</small><br><code>sessionPersistence.test.ts</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.test.ts</small></td>
-  <td>createPrototypeSessionSettings() node in src/prototype/sessionPersistence.ts.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>mealSlots</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>mealSlots node in src/prototype/sessionPersistence.ts.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>isPlanEntry()</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>isPlanEntry() node in src/prototype/sessionPersistence.ts.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>restorePrototypePlan()</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.ts</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>sessionPersistence.test.ts</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.test.ts</small></td>
-  <td>restorePrototypePlan() node in src/prototype/sessionPersistence.ts.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>sessionPersistence.test.ts</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.test.ts</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td><code>createPrototypeSessionSettings()</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.ts</small><br><code>data.ts</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br><code>initialPreferences</code><br><small style="color:var(--muted)">src/prototype/data.ts</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in src/prototype/sessionPersistence.test.ts.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>settings</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.test.ts</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>settings node in src/prototype/sessionPersistence.test.ts.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>fallbackPlan</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.test.ts</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>fallbackPlan node in src/prototype/sessionPersistence.test.ts.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>persistedPlan</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.test.ts</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>persistedPlan node in src/prototype/sessionPersistence.test.ts.</td>
 </tr>
 </table>
 
@@ -5258,7 +5259,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-01 20:11 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-02 10:45 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
