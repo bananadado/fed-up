@@ -107,10 +107,14 @@ export function Onboarding({
   const [step, setStep] = useState(0);
   const [animationKey, setAnimationKey] = useState(0);
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const step1Ref = useRef<HTMLDivElement>(null);
+  const step2Ref = useRef<HTMLDivElement>(null);
   const [importMessage, setImportMessage] = useState("");
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
+  const [step1Attempted, setStep1Attempted] = useState(false);
+  const [step2Attempted, setStep2Attempted] = useState(false);
 
   function goToStep(nextStep: number) {
     setStep(nextStep);
@@ -217,6 +221,16 @@ export function Onboarding({
   function updateAvailableIngredients(nextDrafts: IngredientDraft[]) {
     setAvailableIngredientDrafts(nextDrafts);
     setPrefs({ ...prefs, availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
+  }
+
+  function scrollToFirstError(container: HTMLElement | null) {
+    requestAnimationFrame(() => {
+      const firstError = container?.querySelector("[data-field-error] input, [data-field-error] button");
+      if (firstError instanceof HTMLElement) {
+        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstError.focus({ preventScroll: true });
+      }
+    });
   }
 
   function finish() {
@@ -343,7 +357,7 @@ export function Onboarding({
           </Card>
         )}
         {step === 1 && (
-          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} ref={step1Ref} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 2 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">About you</h2>
             <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
@@ -359,6 +373,8 @@ export function Onboarding({
                   options={cookingAbilities.map((ability) => ({ value: ability.id, label: `${ability.name} - ${ability.description}` }))}
                   placeholder="Select cooking ability"
                   required
+                  error={step1Attempted && !prefs.cookingAbility}
+                  errorMessage="Please select your cooking ability"
                 />
               </PreferenceSection>
               <PreferenceSection
@@ -399,13 +415,26 @@ export function Onboarding({
                 />
               </PreferenceSection>
             </div>
-            <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
+            {step1Attempted && !prefs.cookingAbility && (
+              <p className="mt-5 text-center text-sm font-medium text-red-600">
+                Please fill in all required fields
+              </p>
+            )}
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
               <p className="mb-3 text-sm text-stone-600 sm:mb-0">You can update these any time in settings.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
                 <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); goToStep(0); }}>
                   <ArrowLeft size={16} /> Back
                 </AppButton>
-                <AppButton className="justify-center py-3" disabled={!prefs.cookingAbility} onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); goToStep(2); }}>
+                <AppButton className="justify-center py-3" onClick={() => {
+                  if (!prefs.cookingAbility) {
+                    setStep1Attempted(true);
+                    scrollToFirstError(step1Ref.current);
+                    return;
+                  }
+                  track("onboarding_step_completed", { step: 1, next_step: 2 });
+                  goToStep(2);
+                }}>
                   Continue <ArrowRight size={16} />
                 </AppButton>
               </div>
@@ -413,7 +442,7 @@ export function Onboarding({
           </Card>
         )}
         {step === 2 && (
-          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} ref={step2Ref} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 3 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
@@ -491,6 +520,8 @@ export function Onboarding({
                       { value: "none", label: "No kitchen access" },
                     ]}
                     required
+                    error={step2Attempted && !prefs.kitchen}
+                    errorMessage="Please select your kitchen access"
                   />
                   <SelectField
                     label="Your university"
@@ -498,6 +529,8 @@ export function Onboarding({
                     onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
                     options={universities.map((university) => ({ value: university, label: university }))}
                     required
+                    error={step2Attempted && !prefs.university}
+                    errorMessage="Please select your university"
                   />
                   <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
                 </div>
@@ -564,13 +597,25 @@ export function Onboarding({
               </PreferenceSection>
             </div>
             <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
-            <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
+            {step2Attempted && (!prefs.kitchen || !prefs.university) && (
+              <p className="mt-5 text-center text-sm font-medium text-red-600">
+                Please fill in all required fields
+              </p>
+            )}
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
               <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Create your deadline-week plan when everything looks right.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
                 <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); goToStep(1); }}>
                   <ArrowLeft size={16} /> Back
                 </AppButton>
-                <AppButton className="justify-center py-3" disabled={!prefs.kitchen || !prefs.university} onClick={finish}>
+                <AppButton className="justify-center py-3" onClick={() => {
+                  if (!prefs.kitchen || !prefs.university) {
+                    setStep2Attempted(true);
+                    scrollToFirstError(step2Ref.current);
+                    return;
+                  }
+                  finish();
+                }}>
                   Create my plan <Sparkles size={16} />
                 </AppButton>
               </div>
