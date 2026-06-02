@@ -57,7 +57,7 @@ export function RecipesHubScreen({
       id: `custom-${Date.now()}`,
       name: output.name,
       type: "cook",
-      mealSlots: ["breakfast", "lunch", "dinner"],
+      mealSlots: output.mealSlots,
       time: output.time,
       price: output.price,
       ingredients: output.ingredients,
