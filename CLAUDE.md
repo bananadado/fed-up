@@ -22,6 +22,8 @@ Exception: Firebase Functions (`functions/`) use Node 24. Repo scripts use Bun t
 - React 19 + TypeScript
 - Tailwind CSS 4 + shadcn-style local UI primitives (`src/components/ui/*`)
 - Firebase Functions v2 + Firestore (backend persistence and data APIs)
+- GPU Recommender API (FastAPI + pgvector + sentence-transformers) on `gru` server
+- Grafana + Prometheus + Loki observability stack
 - Playwright (e2e)
 - PostHog (optional analytics/session replay)
 - Vercel (frontend deploy) + GitLab CI
@@ -81,11 +83,14 @@ Testing strategy by risk:
 - Active prototype behaviour change: `lint` + `typecheck` + `test:unit` + `test:e2e`
 - Domain planner change: `test:domain` + `typecheck`
 - Backend function change: `firebase:data` + `cd functions && bun run lint && bun run build`
+- GPU recommender change: edit `backend/`, push to staging — CI deploys only affected services
 - Deployment or shared contract change: `verify`
 
 If Playwright cannot find Chromium: `bunx playwright install chromium`
 
 ## Backend
+
+### Firebase (frontend data APIs)
 
 Two modes selected by `src/adapters/deadlineFoodApi.ts`:
 
@@ -102,6 +107,48 @@ Firebase project: `drp03-50059`, region: `europe-west2`.
 
 Firestore rules deny all direct client access — all data goes through Functions. Do not add client-side Firestore reads/writes without designing auth/rules first.
 
+### GPU Recommender Server (`backend/`)
+
+A Docker Compose stack running on `gru.end-pickerel.ts.net` (Tailscale). Accessible to anyone on the tailnet.
+
+| Service | URL | Notes |
+| --- | --- | --- |
+| Recommender API | `http://gru.end-pickerel.ts.net:8100` | FastAPI + GPU embeddings |
+| API Docs (Swagger) | `http://gru.end-pickerel.ts.net:8100/docs` | Interactive API explorer |
+| API Health | `http://gru.end-pickerel.ts.net:8100/health` | Returns `{"status": "ok"}` |
+| Grafana | `http://gru.end-pickerel.ts.net:3001` | admin / `deadline-food-2026` |
+| Prometheus | `localhost:9090` (on server only) | Metrics store |
+| Loki | `localhost:3100` (on server only) | Log aggregation |
+| PostgreSQL | `localhost:5432` (on server only) | pgvector, user: `recommender` |
+
+Recommender API endpoints:
+
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/health` | GET | Health check |
+| `/recipes` | GET | List all recipes |
+| `/recipes` | POST | Create recipe |
+| `/recipes/bulk` | POST | Bulk create recipes |
+| `/recipes/{id}` | GET | Get recipe by ID |
+| `/recipes/{id}/similar` | GET | Find similar recipes (embedding similarity) |
+| `/users` | POST | Create/update user profile |
+| `/users/{id}` | GET | Get user profile |
+| `/interactions` | POST | Record user interaction (swipe, cook, etc.) |
+| `/recommend` | POST | Get personalized recommendations |
+| `/stats` | GET | Database statistics |
+| `/jobs/recompute-all` | POST | Recompute embeddings, co-likes, trending |
+
+Directory structure:
+
+- `backend/recommender-api/` — FastAPI app + Dockerfile (builds `recommender-api` image)
+- `backend/db/` — PostgreSQL init schema + seed script
+- `backend/monitoring/` — Grafana dashboards, Prometheus, Loki, Promtail, nvidia-exporter configs
+- `backend/docker-compose.yml` — full stack definition
+- `backend/deploy.sh` — per-service restart script (logs deployments to Loki)
+- `backend/.env.example` — template for server-side `.env`
+
+CI/CD deploys only changed services: editing `backend/recommender-api/` restarts only `api`, editing `backend/monitoring/grafana/` restarts only `grafana`, etc. Deployment events appear as annotations on the Grafana dashboard.
+
 ### Firebase Commands
 
 ```sh
@@ -112,7 +159,7 @@ bun run firebase:deploy      # deploy functions, rules, indexes
 
 Never manually edit `functions/src/generated/prototypeData.ts` — always regenerate.
 
-## API Endpoints
+## API Endpoints (Frontend)
 
 | Endpoint | Local path | Firebase function |
 | --- | --- | --- |
@@ -147,13 +194,17 @@ CI/deploy:
 
 - `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `VERCEL_STAGING_ALIAS`
 - `FIREBASE_PROJECT_ID`, `FIREBASE_SERVICE_ACCOUNT_KEY_B64`
+- `DEPLOY_SSH_KEY_B64` — base64-encoded ed25519 private key for the `deploy` user on `gru`
+- `TAILSCALE_AUTH_KEY` — reusable ephemeral Tailscale auth key for CI containers
 
 ## CI/Deployment
 
 - GitLab CI (`.gitlab-ci.yml`)
 - Only `staging` may merge into `master`
-- Staging deploys on push to `staging` (Firebase + Vercel)
-- Production deploys on push to `master` (Firebase + Vercel)
+- Staging deploys on push to `staging` (Firebase + Vercel + GPU server)
+- Production deploys on push to `master` (Firebase + Vercel + GPU server)
+- GPU server deploy triggers only when `backend/**` files change
+- CI containers join Tailscale with an ephemeral key, rsync `backend/` to the server, and restart only the affected Docker services
 
 ## Implementation Rules
 
