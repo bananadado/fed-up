@@ -1,9 +1,11 @@
-import { ChevronRight, Clock3, CookingPot, Flame } from "lucide-react";
+import { ChevronRight, Clock3, CookingPot, Flame, RefreshCcw } from "lucide-react";
+import { useState } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Meal, PlanEntry, Preferences, Screen } from "../types";
+import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
+import { SwapModal } from "../components/SwapModal";
 import { getMealById, money } from "../utils";
 import { mealHealthSignals, weeklyBalanceSummary } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
@@ -11,6 +13,7 @@ import type { TrackPrototypeEvent } from "../analytics";
 export function Dashboard({
   prefs,
   plan,
+  setPlan,
   customRecipes,
   setScreen,
   onSelectMeal,
@@ -18,11 +21,13 @@ export function Dashboard({
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
+  setPlan: (plan: PlanEntry[]) => void;
   customRecipes: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
+  const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
   const nextCook = plan
     .flatMap((entry) =>
       entry.meals.map((planMeal) => ({
@@ -64,7 +69,7 @@ export function Dashboard({
                 <p className="mt-2 text-sm text-stone-500">
                   {nextCook.day} {nextCook.slot} - {nextCook.context}
                 </p>
-                <div className="mt-4 flex gap-2">
+                <div className="mt-4 flex flex-wrap items-center gap-2">
                   <Badge tone="green">
                     <Clock3 size={12} className="mr-1" /> {nextCook.meal.time} min
                   </Badge>
@@ -75,6 +80,9 @@ export function Dashboard({
                     </Badge>
                   ))}
                 </div>
+                <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: nextCook.day, meal_slot: nextCook.slot, meal_id: nextCook.mealId, layout: "dashboard_next_cook" }); setRescueChoice({ day: nextCook.day, slot: nextCook.slot }); }}>
+                  <RefreshCcw size={13} /> Change meal
+                </AppButton>
               </>
             ) : (
               <p className="mt-3 text-stone-500">No cooking planned this week.</p>
@@ -104,17 +112,26 @@ export function Dashboard({
                         const meal = getMealById(planMeal.mealId, customRecipes);
 
                         return (
-                          <button
-                            key={planMeal.slot}
-                            type="button"
-                            onClick={() => onSelectMeal(planMeal.mealId)}
-                            className="min-w-0 rounded-lg bg-white px-3 py-2 text-left transition hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
-                          >
-                            <p className="text-[11px] font-semibold uppercase text-stone-500">{planMeal.slot}</p>
-                            <p className="mt-1 truncate text-sm font-medium">
-                              {meal.image} {meal.name}
-                            </p>
-                          </button>
+                          <div key={planMeal.slot} className="relative min-w-0 rounded-lg bg-white px-3 py-2">
+                            <button
+                              type="button"
+                              onClick={() => onSelectMeal(planMeal.mealId)}
+                              className="block w-full text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                            >
+                              <p className="text-[11px] font-semibold uppercase text-stone-500">{planMeal.slot}</p>
+                              <p className="mt-1 truncate pr-5 text-sm font-medium">
+                                {meal.image} {meal.name}
+                              </p>
+                            </button>
+                            <button
+                              type="button"
+                              aria-label="Change meal"
+                              onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, layout: "dashboard" }); setRescueChoice({ day: entry.day, slot: planMeal.slot }); }}
+                              className="absolute right-1.5 top-1.5 rounded p-1 text-stone-400 hover:bg-stone-100 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                            >
+                              <RefreshCcw size={13} />
+                            </button>
+                          </div>
                         );
                       })}
                     </div>
@@ -126,6 +143,18 @@ export function Dashboard({
           <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{weeklyBalanceSummary(plan, customRecipes)}</p>
         </Card>
       </div>
+      {rescueChoice && (
+        <SwapModal
+          rescueChoice={rescueChoice}
+          onClose={() => setRescueChoice(null)}
+          plan={plan}
+          setPlan={setPlan}
+          prefs={prefs}
+          customRecipes={customRecipes}
+          setScreen={setScreen}
+          track={track}
+        />
+      )}
     </div>
   );
 }
