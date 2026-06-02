@@ -17,9 +17,13 @@ import {
 import { money, nutritionSourceSummary } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
-const MEAL_SLOT_OPTIONS: MealSlot[] = ["breakfast", "lunch", "dinner"];
+const MEAL_SLOT_OPTIONS: readonly MealSlot[] = ["breakfast", "lunch", "dinner"];
+const MEAL_SLOT_SET = new Set<string>(MEAL_SLOT_OPTIONS);
 
 const TAG_OPTIONS: string[] = [
+  "breakfast",
+  "lunch",
+  "dinner",
   "batch-friendly",
   "high protein",
   "hot meal",
@@ -40,7 +44,6 @@ type EditorForm = {
   price: number;
   totalCost: number;
   servings: number;
-  mealSlots: MealSlot[];
   ingredients: IngredientDraft[];
   tags: string[];
   allergens: string;
@@ -81,9 +84,8 @@ function mealToForm(meal: Meal): EditorForm {
     price: meal.price,
     totalCost: meal.price,
     servings: 1,
-    mealSlots: meal.mealSlots,
     ingredients: ingredientDraftsFromIngredients(meal.ingredients),
-    tags: meal.tags,
+    tags: [...meal.mealSlots, ...meal.tags],
     allergens: meal.allergens.join(", "),
     calories: meal.nutrition.calories,
     protein: meal.nutrition.protein,
@@ -102,9 +104,8 @@ function defaultForm(): EditorForm {
     price: 2.5,
     totalCost: 5,
     servings: 2,
-    mealSlots: ["breakfast", "lunch", "dinner"],
     ingredients: [createIngredientDraft()],
-    tags: [],
+    tags: ["breakfast", "lunch", "dinner"],
     allergens: "",
     calories: 500,
     protein: 20,
@@ -386,13 +387,6 @@ export function RecipeEditor({
     }
   }
 
-  function toggleMealSlot(slot: MealSlot) {
-    const next = form.mealSlots.includes(slot)
-      ? form.mealSlots.filter((s) => s !== slot)
-      : [...form.mealSlots, slot];
-    setForm({ ...form, mealSlots: next });
-  }
-
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (hasErrors) {
@@ -423,6 +417,8 @@ export function RecipeEditor({
 
     const nextServings = Math.max(1, Math.round(servings));
     const nextTotalCost = Number(totalCost.toFixed(2));
+    const mealSlots = form.tags.filter((t): t is MealSlot => MEAL_SLOT_SET.has(t));
+    const tags = form.tags.filter((t) => !MEAL_SLOT_SET.has(t));
     const output: RecipeEditorOutput = {
       name: form.name.trim(),
       time: Math.max(0, Math.round(Number(form.time) || 0)),
@@ -432,9 +428,9 @@ export function RecipeEditor({
           : Number(form.price) || 0,
       totalCost: nextTotalCost,
       servings: nextServings,
-      mealSlots: form.mealSlots.length > 0 ? form.mealSlots : ["breakfast", "lunch", "dinner"],
+      mealSlots: mealSlots.length > 0 ? mealSlots : ["breakfast", "lunch", "dinner"],
       ingredients,
-      tags: form.tags,
+      tags,
       allergens: splitList(form.allergens),
       nutrition: {
         calories: Math.max(0, Math.round(Number(form.calories) || 0)),
@@ -569,29 +565,6 @@ export function RecipeEditor({
               Add at least one ingredient
             </p>
           )}
-        </div>
-
-        <div>
-          <p className="mb-2 text-sm font-semibold">Meal slots</p>
-          <div className="flex flex-wrap gap-2">
-            {MEAL_SLOT_OPTIONS.map((slot) => {
-              const active = form.mealSlots.includes(slot);
-              return (
-                <button
-                  key={slot}
-                  type="button"
-                  onClick={() => toggleMealSlot(slot)}
-                  className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize transition ${
-                    active
-                      ? "border-emerald-600 bg-emerald-50 text-emerald-800"
-                      : "border-stone-200 bg-white text-stone-500 hover:border-stone-300 hover:text-stone-700"
-                  }`}
-                >
-                  {slot}
-                </button>
-              );
-            })}
-          </div>
         </div>
 
         <div>
