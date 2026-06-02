@@ -1,7 +1,135 @@
+import json
+
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .embeddings import embed_texts
+from .ability import (
+    DIMENSIONS,
+    DISLIKE_WEIGHTS,
+    LIKE_WEIGHTS,
+    derive_ability_profile,
+)
+from .embeddings import EMBEDDING_DIM, embed_texts
+
+POSITIVE_ACTIONS = set(LIKE_WEIGHTS)
+NEGATIVE_ACTIONS = set(DISLIKE_WEIGHTS)
+
+# How strongly disliked recipes push the taste embedding away from their region.
+DISLIKE_EMBED_FACTOR = 0.5
+
+
+def _parse_embedding(emb) -> list[float] | None:
+    if emb is None:
+        return None
+    if isinstance(emb, str):
+        try:
+            return json.loads(emb)
+        except json.JSONDecodeError:
+            return None
+    return list(emb)
+
+
+async def recompute_user_profile(db: AsyncSession, user_id: str) -> bool:
+    """Recompute a user's taste embedding *and* ability profile (issue #59).
+
+    Pulls the user's recent interactions joined with recipe metadata, splits
+    them into liked / disliked, derives the ability profile from onboarding +
+    behaviour, and computes a taste embedding as
+    ``mean(liked) - factor * mean(disliked)``.
+    """
+    user_row = await db.execute(text("SELECT * FROM users WHERE id = :uid"), {"uid": user_id})
+    user = user_row.mappings().first()
+    if not user:
+        return False
+    user = dict(user)
+
+    result = await db.execute(
+        text("""
+            SELECT i.action AS action, r.embedding AS embedding, r.difficulty AS difficulty,
+                   r.techniques AS techniques, r.prep_minutes AS prep_minutes,
+                   r.flavor_profile AS flavor_profile, r.dietary_tags AS dietary_tags,
+                   r.suitability_tags AS suitability_tags, r.cuisine AS cuisine
+            FROM interactions i
+            JOIN recipes r ON r.id = i.recipe_id
+            WHERE i.user_id = :uid
+            ORDER BY i.created_at DESC
+            LIMIT 200
+        """),
+        {"uid": user_id},
+    )
+    rows = [dict(r) for r in result.mappings().all()]
+
+    liked, liked_w, disliked, disliked_w = [], [], [], []
+    for row in rows:
+        recipe = {
+            "difficulty": row.get("difficulty"),
+            "techniques": row.get("techniques") or [],
+            "prep_minutes": row.get("prep_minutes") or 0,
+            "flavor_profile": row.get("flavor_profile") or [],
+            "dietary_tags": row.get("dietary_tags") or [],
+            "suitability_tags": row.get("suitability_tags") or [],
+            "cuisine": row.get("cuisine"),
+            "embedding": _parse_embedding(row.get("embedding")),
+        }
+        action = row.get("action")
+        if action in POSITIVE_ACTIONS:
+            liked.append(recipe)
+            liked_w.append(LIKE_WEIGHTS[action])
+        elif action in NEGATIVE_ACTIONS:
+            disliked.append(recipe)
+            disliked_w.append(DISLIKE_WEIGHTS[action])
+
+    profile = derive_ability_profile(user, liked, liked_w, disliked, disliked_w)
+    taste = _compute_taste_embedding(liked, liked_w, disliked, disliked_w)
+
+    set_clauses = [f"{d} = :{d}" for d in DIMENSIONS]
+    params = {d: profile[d] for d in DIMENSIONS}
+    params["uid"] = user_id
+    if taste is not None:
+        set_clauses.append("taste_embedding = CAST(:taste AS vector)")
+        params["taste"] = str(taste)
+
+    await db.execute(
+        text(f"UPDATE users SET {', '.join(set_clauses)}, updated_at = now() WHERE id = :uid"),
+        params,
+    )
+    await db.commit()
+    return True
+
+
+def _compute_taste_embedding(liked, liked_w, disliked, disliked_w) -> list[float] | None:
+    liked_embs = [(r["embedding"], w) for r, w in zip(liked, liked_w) if r.get("embedding")]
+    if not liked_embs:
+        return None
+    disliked_embs = [(r["embedding"], w) for r, w in zip(disliked, disliked_w) if r.get("embedding")]
+
+    acc = [0.0] * EMBEDDING_DIM
+    total = sum(w for _, w in liked_embs)
+    for emb, w in liked_embs:
+        for i in range(EMBEDDING_DIM):
+            acc[i] += emb[i] * w
+    acc = [v / total for v in acc]
+
+    if disliked_embs:
+        neg = [0.0] * EMBEDDING_DIM
+        dtotal = sum(w for _, w in disliked_embs)
+        for emb, w in disliked_embs:
+            for i in range(EMBEDDING_DIM):
+                neg[i] += emb[i] * w
+        acc = [acc[i] - DISLIKE_EMBED_FACTOR * (neg[i] / dtotal) for i in range(EMBEDDING_DIM)]
+
+    norm = sum(v * v for v in acc) ** 0.5 or 1.0
+    return [v / norm for v in acc]
+
+
+async def recompute_all_user_profiles(db: AsyncSession) -> int:
+    result = await db.execute(text("SELECT id FROM users"))
+    user_ids = [r["id"] for r in result.mappings().all()]
+    updated = 0
+    for uid in user_ids:
+        if await recompute_user_profile(db, uid):
+            updated += 1
+    return updated
 
 
 async def recompute_user_embedding(db: AsyncSession, user_id: str) -> bool:

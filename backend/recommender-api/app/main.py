@@ -9,12 +9,16 @@ from .db import get_db
 from .difficulty import score_difficulty
 from .embeddings import embed_single, synthesize_recipe_text
 from .jobs import (
+    NEGATIVE_ACTIONS,
+    POSITIVE_ACTIONS,
     embed_unembedded_recipes,
     recompute_all_user_embeddings,
+    recompute_all_user_profiles,
     recompute_co_likes,
     recompute_trending,
-    recompute_user_embedding,
+    recompute_user_profile,
 )
+from .ability import DIMENSIONS
 from .models import InteractionIn, RecommendRequest, RecipeIn, RecipeOut, ScoredRecipe, UserIn
 from .recommend import recommend
 
@@ -153,6 +157,26 @@ async def get_user(user_id: str, db: AsyncSession = Depends(get_db)):
     return dict(row)
 
 
+@app.get("/users/{user_id}/ability")
+async def get_user_ability(user_id: str, db: AsyncSession = Depends(get_db)):
+    """Return the user's derived cooking-ability & preference profile (#59)."""
+    result = await db.execute(text("SELECT * FROM users WHERE id = :uid"), {"uid": user_id})
+    row = result.mappings().first()
+    if not row:
+        raise HTTPException(404, "User not found")
+    d = dict(row)
+    return {dim: d.get(dim, 0.5) for dim in DIMENSIONS}
+
+
+@app.post("/users/{user_id}/recompute-profile")
+async def recompute_profile(user_id: str, db: AsyncSession = Depends(get_db)):
+    """Force-recompute a single user's taste embedding and ability profile (#59)."""
+    ok = await recompute_user_profile(db, user_id)
+    if not ok:
+        raise HTTPException(404, "User not found")
+    return {"status": "ok", "user_id": user_id}
+
+
 # ── Interactions ────────────────────────────────────────────────────────────
 
 @app.post("/interactions")
@@ -167,9 +191,10 @@ async def record_interaction(interaction: InteractionIn, db: AsyncSession = Depe
     )
     await db.commit()
 
-    positive_actions = {"swipe_right", "cook", "complete", "save"}
-    if interaction.action in positive_actions:
-        await recompute_user_embedding(db, interaction.user_id)
+    # Both positive and negative signals reshape the user's taste/ability
+    # profile, so recompute whenever discovery feedback arrives.
+    if interaction.action in POSITIVE_ACTIONS or interaction.action in NEGATIVE_ACTIONS:
+        await recompute_user_profile(db, interaction.user_id)
 
     return {"status": "ok"}
 
@@ -210,6 +235,12 @@ async def job_recompute_users(db: AsyncSession = Depends(get_db)):
     return {"updated": count}
 
 
+@app.post("/jobs/recompute-user-profiles")
+async def job_recompute_user_profiles(db: AsyncSession = Depends(get_db)):
+    count = await recompute_all_user_profiles(db)
+    return {"updated": count}
+
+
 @app.post("/jobs/recompute-co-likes")
 async def job_recompute_colikes(db: AsyncSession = Depends(get_db)):
     count = await recompute_co_likes(db)
@@ -225,10 +256,10 @@ async def job_recompute_trending(db: AsyncSession = Depends(get_db)):
 @app.post("/jobs/recompute-all")
 async def job_recompute_all(db: AsyncSession = Depends(get_db)):
     embedded = await embed_unembedded_recipes(db)
-    users = await recompute_all_user_embeddings(db)
+    users = await recompute_all_user_profiles(db)
     colikes = await recompute_co_likes(db)
     trending = await recompute_trending(db)
-    return {"embedded": embedded, "user_embeddings": users, "co_likes": colikes, "trending": trending}
+    return {"embedded": embedded, "user_profiles": users, "co_likes": colikes, "trending": trending}
 
 
 # ── Similar recipes ─────────────────────────────────────────────────────────
