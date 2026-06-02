@@ -67,8 +67,11 @@ GPU backend environment. The backend returns `401` for application requests that
 do not carry the expected key. `/health`, `/metrics`, and API schema pages remain
 public for monitoring and inspection.
 
-Discover falls back to the local seed catalogue when the remote recommender is
-unavailable, so local frontend development does not require the GPU service.
+Discover is driven entirely by the recommender. Recommended recipes are built
+from the API response (not merged onto local seed data), and user-created
+recipes are embedded on creation so they participate in ranking and feedback.
+When the recommender is unavailable the Discover queue shows only the user's own
+recipes rather than faking suggestions from the local seed catalogue.
 
 ## Bootstrap
 

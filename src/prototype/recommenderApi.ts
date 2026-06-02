@@ -1,7 +1,6 @@
 import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
-import { seedMeals } from "./data";
-import type { Deadline, Meal, Preferences, RecipeIngredient } from "./types";
+import type { Deadline, Meal, MealSlot, Preferences, RecipeIngredient } from "./types";
 
 type RecommenderRecipe = {
   id: string;
@@ -27,8 +26,6 @@ type ScoredRecipe = {
 };
 
 export type RecommenderInteractionAction = "swipe_left" | "swipe_right";
-
-const seedMealIds = new Set(seedMeals.map((meal) => meal.id));
 
 async function readJson<T>(response: Response, label: string): Promise<T> {
   if (!response.ok) {
@@ -115,18 +112,12 @@ export async function createRecommenderRecipe(meal: Meal): Promise<void> {
   await readJson(response, "Recommender recipe create");
 }
 
-function toPrototypeMeal(recipe: RecommenderRecipe): Meal | null {
-  const seedMeal = seedMeals.find((meal) => meal.id === recipe.id);
-
-  if (!seedMeal) {
-    return null;
-  }
-
+function toPrototypeMeal(recipe: RecommenderRecipe): Meal {
   return {
-    ...seedMeal,
+    id: recipe.id,
     name: recipe.name,
     type: recipe.meal_type === "fallback" ? "fallback" : recipe.meal_type === "remix" ? "remix" : "cook",
-    mealSlots: recipe.meal_slots.filter((slot): slot is Meal["mealSlots"][number] =>
+    mealSlots: recipe.meal_slots.filter((slot): slot is MealSlot =>
       slot === "breakfast" || slot === "lunch" || slot === "dinner"
     ),
     time: recipe.prep_minutes,
@@ -135,9 +126,12 @@ function toPrototypeMeal(recipe: RecommenderRecipe): Meal | null {
     allergens: recipe.allergens,
     ingredients: recipe.ingredients,
     instructions: recipe.instructions,
-    nutrition: recipe.nutrition ?? seedMeal.nutrition,
-    source: recipe.source ?? seedMeal.source,
-    note: recipe.note ?? seedMeal.note,
+    nutrition: recipe.nutrition ?? { calories: 0, protein: 0, carbs: 0, fat: 0 },
+    rating: 0,
+    reviews: [],
+    source: recipe.source ?? "Recommender",
+    note: recipe.note ?? "",
+    image: "🍽️",
   };
 }
 
@@ -161,9 +155,7 @@ export async function fetchRecommenderRecommendations(input: {
   });
   const recipes = await readJson<ScoredRecipe[]>(response, "Recommendations");
 
-  return recipes
-    .map(({ recipe }) => toPrototypeMeal(recipe))
-    .filter((meal): meal is Meal => meal !== null);
+  return recipes.map(({ recipe }) => toPrototypeMeal(recipe));
 }
 
 export async function recordRecommenderInteraction(input: {
@@ -171,15 +163,7 @@ export async function recordRecommenderInteraction(input: {
   recipeId: string;
   action: RecommenderInteractionAction;
   deadlines: Deadline[];
-  /** User-created recipes are embedded on creation, so their interactions are valid too. */
-  isUserCreated?: boolean;
 }): Promise<void> {
-  // Only recipes that exist in the recommender (seeds + embedded custom recipes)
-  // can be referenced by an interaction; the recipe_id column has a FK.
-  if (!seedMealIds.has(input.recipeId) && !input.isUserCreated) {
-    return;
-  }
-
   const response = await fetch(functionUrl("deadlineFoodInteraction", "/api/recommender/interaction"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
