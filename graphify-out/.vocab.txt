@@ -94,6 +94,7 @@ cat
 catalogue
 category
 cautions
+cell
 change
 changes
 cheapest
@@ -331,6 +332,7 @@ grams
 graph
 graphify
 graphml
+grid
 grocery
 group
 guidance
@@ -479,6 +481,7 @@ model
 models
 module
 money
+month
 mount
 mounted
 must
@@ -536,6 +539,7 @@ paths
 peanut
 pence
 per
+period
 persist
 persisted
 persistence
