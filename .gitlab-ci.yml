@@ -227,7 +227,7 @@ secret_detection:
     - |
       SSH_OPTS="-i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -o ProxyCommand='tailscale nc %h %p'"
 
-      rsync -avz --delete --exclude='.env' \
+      rsync -avz --delete --exclude='.env' --exclude='__pycache__' \
         -e "ssh $SSH_OPTS" \
         backend/ \
         "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/"
