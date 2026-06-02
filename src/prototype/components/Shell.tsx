@@ -37,20 +37,22 @@ export function Shell({
         <header className="sticky top-0 z-20 border-b border-stone-200/80 bg-[#faf9f5]/90 backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
             <div className="flex items-center gap-2">
-              {showBackButton && (
-                <button
-                  type="button"
-                  aria-label={`Go back to ${backTarget}`}
-                  title={`Back to ${backTarget}`}
-                  onClick={() => {
-                    track("navigation_back_clicked", { target_screen: backTarget, source_screen: screen, location: "header_back" });
-                    onBack();
-                  }}
-                  className="rounded-lg p-2 text-stone-600 hover:bg-stone-100"
-                >
-                  <ArrowLeft size={19} />
-                </button>
-              )}
+              <button
+                type="button"
+                aria-label={showBackButton ? `Go back to ${backTarget}` : "No previous screen"}
+                title={showBackButton ? `Back to ${backTarget}` : undefined}
+                disabled={!showBackButton}
+                onClick={showBackButton ? () => {
+                  track("navigation_back_clicked", { target_screen: backTarget, source_screen: screen, location: "header_back" });
+                  onBack();
+                } : undefined}
+                className={cn(
+                  "rounded-lg p-2",
+                  showBackButton ? "text-stone-600 hover:bg-stone-100" : "cursor-default text-stone-300 opacity-40",
+                )}
+              >
+                <ArrowLeft size={19} />
+              </button>
               <button
                 type="button"
                 className="flex items-center gap-2"
