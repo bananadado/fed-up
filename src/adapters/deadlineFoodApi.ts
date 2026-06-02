@@ -135,6 +135,25 @@ export function firebaseFunctionUrl(functionName: string, localPath: string): st
   return `${firebaseFunctionsBaseUrl()}/${functionName}`;
 }
 
+export async function uploadRecipePhoto(file: File): Promise<{ photoUrl: string }> {
+  const url = firebaseFunctionUrl("deadlineFoodRecipePhoto", "/api/deadline-food/recipe-photo");
+  const dataBase64 = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      resolve(result.split(",")[1] ?? "");
+    };
+    reader.onerror = () => reject(new Error("Failed to read file"));
+    reader.readAsDataURL(file);
+  });
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fileName: file.name, mimeType: file.type, dataBase64 }),
+  });
+  return readJson<{ photoUrl: string }>(response, "Photo upload");
+}
+
 async function readJson<T>(response: Response, label: string): Promise<T> {
   if (!response.ok) {
     throw new Error(`${label} request failed with ${response.status}`);

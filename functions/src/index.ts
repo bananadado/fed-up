@@ -1,5 +1,6 @@
 import {initializeApp} from "firebase-admin/app";
 import {FieldValue, getFirestore, Timestamp} from "firebase-admin/firestore";
+import {getStorage} from "firebase-admin/storage";
 import {onRequest} from "firebase-functions/v2/https";
 import {onSchedule} from "firebase-functions/v2/scheduler";
 import {setGlobalOptions} from "firebase-functions/v2/options";
@@ -70,6 +71,10 @@ const openFoodFactsBaseUrl = (
 const openFoodFactsUserAgent =
   process.env.OPENFOODFACTS_USER_AGENT ??
   "DeadlineFoodPrototype/0.1 Firebase Functions";
+const storageBucket = "drp03-50059.firebasestorage.app";
+const maxPhotoBytes = 5 * 1024 * 1024;
+const allowedPhotoMimeTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+
 const openFoodFactsTimeoutMs = 6000;
 const openFoodFactsMinRequestIntervalMs = 6500;
 const openFoodFactsCacheTtlMs = 24 * 60 * 60 * 1000;
@@ -1468,3 +1473,77 @@ export const calendarSubscriptionRefresh = onSchedule(
     logger.info(`Calendar refresh complete: ${refreshed} refreshed, ${pruned} pruned, ${sessions.size} checked`);
   },
 );
+
+export const deadlineFoodRecipePhoto = onRequest(publicHttpOptions, async (request, response) => {
+  if (request.method === "OPTIONS") {
+    response.status(204).send("");
+    return;
+  }
+
+  if (request.method !== "POST") {
+    response.set("Allow", "POST, OPTIONS");
+    response.status(405).json({error: "Method not allowed"});
+    return;
+  }
+
+  try {
+    const body = readRequestBody(request);
+    const mimeType = typeof body?.mimeType === "string" ? body.mimeType.trim() : "";
+    const dataBase64 = typeof body?.dataBase64 === "string" ? body.dataBase64 : "";
+    const fileName = typeof body?.fileName === "string" ? body.fileName.trim() : "photo";
+
+    if (!allowedPhotoMimeTypes.has(mimeType)) {
+      response.status(400).json({error: "Only JPEG, PNG and WebP images are supported."});
+      return;
+    }
+
+    if (!dataBase64) {
+      response.status(400).json({error: "Image data is required."});
+      return;
+    }
+
+    const fileBuffer = Buffer.from(dataBase64, "base64");
+
+    if (fileBuffer.length === 0) {
+      response.status(400).json({error: "Image data is required."});
+      return;
+    }
+
+    if (fileBuffer.length > maxPhotoBytes) {
+      response.status(400).json({error: "Image must be under 5 MB."});
+      return;
+    }
+
+    const ext = mimeType === "image/png" ? "png" : mimeType === "image/webp" ? "webp" : "jpg";
+    const safeName = `${randomUUID()}.${ext}`;
+    const objectPath = `recipe-photos/${safeName}`;
+
+    logger.info("Uploading recipe photo", {fileName, mimeType, bytes: fileBuffer.length});
+
+    const bucket = getStorage().bucket(storageBucket);
+    const file = bucket.file(objectPath);
+
+    await file.save(fileBuffer, {
+      contentType: mimeType,
+      metadata: {cacheControl: "public, max-age=31536000"},
+    });
+
+    const storageEmulatorHost = process.env.FIREBASE_STORAGE_EMULATOR_HOST;
+    let photoUrl: string;
+
+    if (storageEmulatorHost) {
+      // Storage emulator serves all files publicly — makePublic() is a no-op / unsupported there.
+      // Return the emulator download URL so the browser can load the image locally.
+      const encodedPath = encodeURIComponent(objectPath);
+      photoUrl = `http://${storageEmulatorHost}/v0/b/${encodeURIComponent(storageBucket)}/o/${encodedPath}?alt=media`;
+    } else {
+      await file.makePublic();
+      photoUrl = `https://storage.googleapis.com/${storageBucket}/${objectPath}`;
+    }
+    response.set("Cache-Control", "private, max-age=0, no-store");
+    response.status(200).json({photoUrl});
+  } catch (error) {
+    logger.error("Recipe photo upload failed", error);
+    response.status(500).json({error: "Photo could not be uploaded."});
+  }
+});
