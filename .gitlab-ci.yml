@@ -219,9 +219,9 @@ secret_detection:
     - apk add --no-cache openssh-client rsync iptables
     - wget -q -O /tmp/tailscale.tgz "https://pkgs.tailscale.com/stable/tailscale_latest_amd64.tgz"
     - tar -xzf /tmp/tailscale.tgz -C /tmp && cp /tmp/tailscale_*/tailscale* /usr/local/bin/ && rm -rf /tmp/tailscale*
-    - tailscaled --state=mem: --tun=userspace-networking &
+    - "tailscaled --state=mem: --tun=userspace-networking &"
     - sleep 2
-    - tailscale up --authkey="$TAILSCALE_AUTH_KEY" --hostname="ci-deploy-${CI_JOB_ID}"
+    - 'tailscale up --authkey="$TAILSCALE_AUTH_KEY" --hostname="ci-deploy-${CI_JOB_ID}"'
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - echo "$DEPLOY_SSH_KEY_B64" | base64 -d > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
     - |
