@@ -11,6 +11,7 @@ import {
 } from "./anonymousSessionApi";
 import { createPrototypeSessionSettings, restorePrototypePlan, type CalendarToken, type IcsSubscription } from "./sessionPersistence";
 import { syncRecommenderUser } from "./recommenderApi";
+import { fetchRecipeCatalogue, setRecipeCatalogue } from "./recipeCatalogue";
 import { Shell } from "./components/Shell";
 import { CalendarScreen } from "./screens/CalendarScreen";
 import { Dashboard } from "./screens/Dashboard";
@@ -83,6 +84,9 @@ export function DeadlineFoodPrototype() {
   const [icsSubscriptions, setIcsSubscriptions] = useState<IcsSubscription[]>([]);
   const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
+  // Bumped once the canonical recipe catalogue is hydrated from Firestore so
+  // screens re-read it via mealById/getMealById (issue #123).
+  const [, setCatalogueVersion] = useState(0);
   const syncPreviousScreen = useCallback(() => {
     setPreviousScreen(routeHistory.current.at(-1) ?? null);
   }, []);
@@ -100,6 +104,25 @@ export function DeadlineFoodPrototype() {
     window.location.hash = `/${nextScreen}`;
     setScreen(nextScreen);
   }, [enableSessionPersistence, screen, syncPreviousScreen]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchRecipeCatalogue()
+      .then((recipes) => {
+        if (!cancelled) {
+          setRecipeCatalogue(recipes);
+          setCatalogueVersion((version) => version + 1);
+        }
+      })
+      .catch((error) => {
+        console.warn("Recipe catalogue could not be loaded; using bundled seeds.", error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const navigateBack = useCallback(() => {
     const fallbackScreen: Screen = "dashboard";

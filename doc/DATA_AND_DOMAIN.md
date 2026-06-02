@@ -94,7 +94,14 @@ Active `seedMeals` include:
 - Remix meals.
 - Fallback meals.
 - Breakfast, lunch, dinner coverage.
-- Ingredients, allergens, nutrition estimates, ratings, reviews, instructions, source labels, notes, and emoji images.
+- Ingredients, allergens, nutrition estimates, instructions, source labels, notes, and emoji images.
+
+Recipe content is canonical in the Firestore `recipes` collection (issue #123).
+At runtime the active catalogue is hydrated from Firestore via
+`fetchRecipeCatalogue` into `recipeCatalogue.ts`, which backs `mealById` /
+`getMealById`; `seedMeals` is the bundled fallback used until the fetch resolves
+(and offline). Reviews/ratings are no longer seeded here — reviews live in the
+Firestore `recipeReviews` collection and ratings derive from them.
 
 Active `initialPlan` covers:
 
