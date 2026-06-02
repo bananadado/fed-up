@@ -167,7 +167,7 @@ export function RecipesHubScreen({
       id: `custom-${Date.now()}`,
       name: form.name.trim(),
       type: "cook",
-      mealSlots: ["lunch", "dinner"],
+      mealSlots: ["breakfast", "lunch", "dinner"],
       time: Math.max(0, Math.round(Number(form.minutes) || 0)),
       price: nextPrice,
       ingredients,
@@ -270,7 +270,7 @@ export function RecipesHubScreen({
                       <span className="text-3xl">{recipe.image}</span>
                       <Badge tone={isOwn ? "green" : "blue"}>{isOwn ? "Your recipe" : "Saved"}</Badge>
                     </div>
-                    <p className="mt-2 font-semibold leading-snug">{recipe.name}</p>
+                    <p className="mt-2 break-words font-semibold leading-snug">{recipe.name}</p>
                     <p className="mt-1 text-sm font-medium text-emerald-700">{money(recipe.price)}</p>
                     <p className="mt-1 text-xs text-stone-400">
                       {recipe.time} min · {recipe.ingredients.map(formatIngredient).slice(0, 3).join(", ")}
