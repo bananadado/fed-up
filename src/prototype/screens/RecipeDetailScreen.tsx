@@ -1,67 +1,18 @@
-import { ArrowLeft, Camera, MessageSquare, Pencil, RefreshCcw, Save, X } from "lucide-react";
+import { ArrowLeft, MessageSquare, Pencil } from "lucide-react";
 import { useMemo, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
-import { uploadRecipePhoto } from "@/adapters/deadlineFoodApi";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { seedMeals } from "../data";
-import { fetchOpenFoodFactsNutrition } from "../nutritionApi";
-import type { Meal, NutritionSource, Screen } from "../types";
+import type { Meal, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
-import { IngredientEditor } from "../components/IngredientEditor";
-import {
-  formatIngredient,
-  ingredientDraftsFromIngredients,
-  sanitiseIngredientDrafts,
-  type IngredientDraft,
-} from "../ingredients";
+import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
+import { formatIngredient } from "../ingredients";
 import { mealById, money, nutritionSourceSummary } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import type { TrackPrototypeEvent } from "../analytics";
 
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
-
-type RecipeForm = {
-  name: string;
-  time: number;
-  price: number;
-  ingredients: IngredientDraft[];
-  tags: string;
-  allergens: string;
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-  nutritionSource?: NutritionSource;
-  instructions: string;
-  note: string;
-};
-
-function mealToForm(meal: Meal): RecipeForm {
-  return {
-    name: meal.name,
-    time: meal.time,
-    price: meal.price,
-    ingredients: ingredientDraftsFromIngredients(meal.ingredients),
-    tags: meal.tags.join(", "),
-    allergens: meal.allergens.join(", "),
-    calories: meal.nutrition.calories,
-    protein: meal.nutrition.protein,
-    carbs: meal.nutrition.carbs,
-    fat: meal.nutrition.fat,
-    nutritionSource: meal.nutrition.source,
-    instructions: meal.instructions.join("\n"),
-    note: meal.note,
-  };
-}
-
-function splitList(value: string) {
-  return value
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
 
 function ratingLabel(rating: number) {
   return rating > 0 ? `${rating.toFixed(1)} / 5` : "No ratings yet";
@@ -89,15 +40,8 @@ export function RecipeDetailScreen({
   track: TrackPrototypeEvent;
 }) {
   const meal = mealById(mealId, customRecipes);
-  const fallbackMeal = (seedMeals[0] ?? customRecipes[0]) as Meal;
-  const [form, setForm] = useState<RecipeForm>(() => mealToForm(meal ?? fallbackMeal));
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
   const [isEditing, setIsEditing] = useState(false);
-  const [nutritionStatus, setNutritionStatus] = useState<string | null>(null);
-  const [nutritionLoading, setNutritionLoading] = useState(false);
-  const [editPhotoFile, setEditPhotoFile] = useState<File | null>(null);
-  const [editPhotoPreview, setEditPhotoPreview] = useState<string | null>(null);
-  const [editPhotoUploading, setEditPhotoUploading] = useState(false);
   const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
 
   const computedRating = useMemo(() => {
@@ -127,98 +71,32 @@ export function RecipeDetailScreen({
     setCustomRecipes((recipes) => [nextMeal, ...recipes.filter((recipe) => recipe.id !== nextMeal.id)]);
   }
 
-  async function saveRecipe(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    let photoUrl = selectedMeal.photoUrl;
-    if (editPhotoFile) {
-      setEditPhotoUploading(true);
-      try {
-        const result = await uploadRecipePhoto(editPhotoFile);
-        photoUrl = result.photoUrl;
-      } catch {
-        // non-fatal: keep existing photo
-      } finally {
-        setEditPhotoUploading(false);
-      }
-    }
-
+  function handleEditSubmit(output: RecipeEditorOutput, photoUrl: string | undefined) {
     saveMeal({
       ...selectedMeal,
-      name: form.name.trim() || selectedMeal.name,
-      time: Number(form.time) || 0,
-      price: Number(form.price) || 0,
-      ingredients: sanitiseIngredientDrafts(form.ingredients),
-      tags: splitList(form.tags),
-      allergens: splitList(form.allergens),
-      nutrition: {
-        calories: Number(form.calories) || 0,
-        protein: Number(form.protein) || 0,
-        carbs: Number(form.carbs) || 0,
-        fat: Number(form.fat) || 0,
-        source: form.nutritionSource,
-      },
-      instructions: form.instructions
-        .split("\n")
-        .map((step) => step.trim())
-        .filter(Boolean),
-      note: form.note.trim(),
+      name: output.name || selectedMeal.name,
+      time: output.time,
+      price: output.price,
+      ingredients: output.ingredients,
+      tags: output.tags,
+      allergens: output.allergens,
+      nutrition: output.nutrition,
+      instructions: output.instructions,
+      note: output.note,
       ...(photoUrl !== undefined ? { photoUrl } : {}),
     });
     track("recipe_saved", {
       meal_id: selectedMeal.id,
-      minutes: Number(form.time) || 0,
-      price: Number(form.price) || 0,
-      ingredient_count: sanitiseIngredientDrafts(form.ingredients).length,
-      tag_count: splitList(form.tags).length,
+      minutes: output.time,
+      price: output.price,
+      ingredient_count: output.ingredients.length,
+      tag_count: output.tags.length,
     });
-    setEditPhotoFile(null);
-    setEditPhotoPreview(null);
     setIsEditing(false);
-  }
-
-  async function refreshNutrition() {
-    const ingredients = sanitiseIngredientDrafts(form.ingredients);
-
-    if (ingredients.length === 0) {
-      setNutritionStatus("Add at least one ingredient with a quantity first.");
-      return;
-    }
-
-    setNutritionLoading(true);
-    setNutritionStatus(null);
-
-    try {
-      const nutrition = await fetchOpenFoodFactsNutrition(ingredients);
-      setForm({
-        ...form,
-        calories: nutrition.calories,
-        protein: nutrition.protein,
-        carbs: nutrition.carbs,
-        fat: nutrition.fat,
-        nutritionSource: nutrition.source,
-      });
-      setNutritionStatus(nutritionSourceSummary(nutrition.source));
-      track("recipe_nutrition_refreshed", {
-        meal_id: selectedMeal.id,
-        provider: nutrition.source?.provider,
-        ingredient_count: ingredients.length,
-        matched_count: nutrition.source?.matchedIngredients?.length ?? 0,
-        missing_count: nutrition.source?.missingIngredients?.length ?? 0,
-      });
-    } catch (error) {
-      setNutritionStatus(error instanceof Error ? error.message : "Nutrition data could not be loaded.");
-    } finally {
-      setNutritionLoading(false);
-    }
   }
 
   function cancelEdit() {
     track("recipe_edit_cancelled", { meal_id: selectedMeal.id });
-    setForm(mealToForm(selectedMeal));
-    setNutritionStatus(null);
-    setEditPhotoFile(null);
-    setEditPhotoPreview(null);
     setIsEditing(false);
   }
 
@@ -297,85 +175,15 @@ export function RecipeDetailScreen({
       </div>
 
       {isEditing ? (
-        <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h1 className="text-3xl font-bold">Edit recipe</h1>
-              <p className="mt-2 text-stone-600">Changes are saved into your recipe library for this prototype session.</p>
-            </div>
-            <AppButton type="button" variant="secondary" onClick={cancelEdit}>
-              <X size={16} /> Cancel
-            </AppButton>
-          </div>
-          <form className="mt-5 space-y-4" onSubmit={saveRecipe}>
-            <label className="relative inline-block cursor-pointer">
-              <div className="h-36 w-48 overflow-hidden rounded-lg bg-emerald-50 shadow-inner">
-                {editPhotoPreview ?? selectedMeal.photoUrl ? (
-                  <img
-                    src={editPhotoPreview ?? selectedMeal.photoUrl}
-                    alt={selectedMeal.name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-8xl">
-                    {selectedMeal.image}
-                  </div>
-                )}
-              </div>
-              <div className="absolute bottom-2 right-2 flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1.5 text-xs font-semibold text-stone-700 shadow-sm">
-                <Camera size={13} />
-                {editPhotoPreview ?? selectedMeal.photoUrl ? "Replace photo" : "Add photo"}
-              </div>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                className="sr-only"
-                onChange={(e) => {
-                  const file = e.target.files?.[0] ?? null;
-                  setEditPhotoFile(file);
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = () => setEditPhotoPreview(reader.result as string);
-                    reader.readAsDataURL(file);
-                  } else {
-                    setEditPhotoPreview(null);
-                  }
-                }}
-              />
-            </label>
-            <Field label="Recipe name" value={form.name} onChange={(name) => setForm({ ...form, name })} />
-            <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Time (mins)" type="number" value={form.time} onChange={(time) => setForm({ ...form, time: +time })} />
-              <Field label="Cost / portion (£)" type="number" step="0.05" value={form.price} onChange={(price) => setForm({ ...form, price: +price })} />
-            </div>
-            <IngredientEditor ingredients={form.ingredients} onChange={(ingredients) => setForm({ ...form, ingredients })} />
-            <Field label="Tags" value={form.tags} onChange={(tags) => setForm({ ...form, tags })} />
-            <Field label="Allergens" value={form.allergens} onChange={(allergensValue) => setForm({ ...form, allergens: allergensValue })} />
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-stone-50 p-3">
-              <div>
-                <p className="text-sm font-semibold">Nutrition data</p>
-                <p className="mt-1 text-xs text-stone-500">{nutritionStatus ?? nutritionSourceSummary(form.nutritionSource)}</p>
-              </div>
-              <AppButton type="button" variant="secondary" onClick={refreshNutrition} disabled={nutritionLoading}>
-                <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Pull from OpenFoodFacts"}
-              </AppButton>
-            </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <Field label="Calories" type="number" value={form.calories} onChange={(calories) => setForm({ ...form, calories: +calories })} />
-              <Field label="Protein (g)" type="number" value={form.protein} onChange={(protein) => setForm({ ...form, protein: +protein })} />
-              <Field label="Carbs (g)" type="number" value={form.carbs} onChange={(carbs) => setForm({ ...form, carbs: +carbs })} />
-              <Field label="Fat (g)" type="number" value={form.fat} onChange={(fat) => setForm({ ...form, fat: +fat })} />
-            </div>
-            <label className="block">
-              <span className="text-sm font-semibold">Method</span>
-              <Textarea value={form.instructions} onChange={(event) => setForm({ ...form, instructions: event.target.value })} className="mt-2 min-h-36 rounded-lg border-stone-200 bg-white" />
-            </label>
-            <Field label="Notes" value={form.note} onChange={(note) => setForm({ ...form, note })} />
-            <AppButton type="submit" disabled={editPhotoUploading}>
-              <Save size={16} /> {editPhotoUploading ? "Uploading..." : "Save recipe"}
-            </AppButton>
-          </form>
-        </Card>
+        <RecipeEditor
+          mode="edit"
+          meal={selectedMeal}
+          title="Edit recipe"
+          description="Changes are saved into your recipe library for this prototype session."
+          onSubmit={handleEditSubmit}
+          onCancel={cancelEdit}
+          track={track}
+        />
       ) : (
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4 sm:p-6">
           <div className="grid gap-7 lg:grid-cols-[340px_minmax(0,1fr)]">
