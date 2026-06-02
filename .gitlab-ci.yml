@@ -259,6 +259,15 @@ secret_detection:
     - tailscale logout 2>/dev/null || true
     - rm -f ~/.ssh/deploy_key
 
+deploy_gpu_test:
+  extends: .deploy_gpu_server
+  needs: []
+  environment:
+    name: gpu-test
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "backend-infra"'
+      when: manual
+
 deploy_gpu_staging:
   extends: .deploy_gpu_server
   needs:
