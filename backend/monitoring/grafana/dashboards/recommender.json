@@ -1,0 +1,237 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "loki" },
+        "enable": true,
+        "expr": "{job=\"deploy\"} |= \"deployment\"",
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Deployments",
+        "titleFormat": "Deploy: {{service}}",
+        "textFormat": "{{__line__}}",
+        "tagKeys": "service",
+        "type": "tags"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "panels": [
+    {
+      "title": "API Request Rate",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 8, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "reqps", "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [{
+        "expr": "rate(http_requests_total[1m])",
+        "legendFormat": "{{method}} {{handler}} {{status}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "title": "API Latency (p50 / p95 / p99)",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 8, "x": 8, "y": 0 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "s", "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [
+        { "expr": "histogram_quantile(0.50, rate(http_request_duration_seconds_bucket[5m]))", "legendFormat": "p50", "refId": "A" },
+        { "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))", "legendFormat": "p95", "refId": "B" },
+        { "expr": "histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))", "legendFormat": "p99", "refId": "C" }
+      ]
+    },
+    {
+      "title": "Requests In-Flight",
+      "type": "stat",
+      "gridPos": { "h": 7, "w": 4, "x": 16, "y": 0 },
+      "datasource": { "type": "prometheus" },
+      "targets": [{ "expr": "http_requests_in_progress", "refId": "A" }]
+    },
+    {
+      "title": "HTTP Errors (4xx/5xx)",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 4, "x": 20, "y": 0 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "reqps", "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [{
+        "expr": "rate(http_requests_total{status=~\"4..|5..\"}[1m])",
+        "legendFormat": "{{status}} {{handler}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "title": "CPU Usage",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 8, "x": 0, "y": 7 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "percentunit", "max": 1, "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [{
+        "expr": "1 - avg(rate(node_cpu_seconds_total{mode=\"idle\"}[1m]))",
+        "legendFormat": "CPU Usage",
+        "refId": "A"
+      }]
+    },
+    {
+      "title": "Memory Usage",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 8, "x": 8, "y": 7 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "bytes", "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [
+        { "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes", "legendFormat": "Used", "refId": "A" },
+        { "expr": "node_memory_MemTotal_bytes", "legendFormat": "Total", "refId": "B" }
+      ]
+    },
+    {
+      "title": "GPU Utilization",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 4, "x": 16, "y": 7 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "percent", "max": 100, "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [{ "expr": "nvidia_gpu_utilization", "legendFormat": "GPU %", "refId": "A" }]
+    },
+    {
+      "title": "GPU Memory",
+      "type": "gauge",
+      "gridPos": { "h": 7, "w": 4, "x": 20, "y": 7 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "decmbytes", "max": 8192, "thresholds": { "steps": [
+          { "color": "green", "value": null },
+          { "color": "yellow", "value": 4096 },
+          { "color": "red", "value": 6144 }
+        ]}}
+      },
+      "targets": [{ "expr": "nvidia_gpu_memory_used_mb", "refId": "A" }]
+    },
+    {
+      "title": "Container CPU",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 14 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "percentunit", "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [{
+        "expr": "rate(container_cpu_usage_seconds_total{name=~\"recommender.*|drp03-backend.*\"}[1m])",
+        "legendFormat": "{{name}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "title": "Container Memory",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 14 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "bytes", "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [{
+        "expr": "container_memory_usage_bytes{name=~\"recommender.*|drp03-backend.*\"}",
+        "legendFormat": "{{name}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "title": "Disk I/O",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 21 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "Bps", "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [
+        { "expr": "rate(node_disk_read_bytes_total[1m])", "legendFormat": "Read {{device}}", "refId": "A" },
+        { "expr": "rate(node_disk_written_bytes_total[1m])", "legendFormat": "Write {{device}}", "refId": "B" }
+      ]
+    },
+    {
+      "title": "Network I/O",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 21 },
+      "datasource": { "type": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "Bps", "color": { "mode": "palette-classic" } },
+        "overrides": []
+      },
+      "targets": [
+        { "expr": "rate(node_network_receive_bytes_total{device!=\"lo\"}[1m])", "legendFormat": "RX {{device}}", "refId": "A" },
+        { "expr": "rate(node_network_transmit_bytes_total{device!=\"lo\"}[1m])", "legendFormat": "TX {{device}}", "refId": "B" }
+      ]
+    },
+    {
+      "title": "Deployment Events",
+      "type": "logs",
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 28 },
+      "datasource": { "type": "loki" },
+      "targets": [{
+        "expr": "{job=\"deploy\"}",
+        "refId": "A"
+      }],
+      "options": {
+        "showTime": true,
+        "showLabels": true,
+        "showCommonLabels": false,
+        "wrapLogMessage": true,
+        "prettifyLogMessage": false,
+        "enableLogDetails": true,
+        "sortOrder": "Descending",
+        "dedupStrategy": "none"
+      }
+    },
+    {
+      "title": "Container Logs",
+      "type": "logs",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 34 },
+      "datasource": { "type": "loki" },
+      "targets": [{
+        "expr": "{service=~\"api|db\"}",
+        "refId": "A"
+      }],
+      "options": {
+        "showTime": true,
+        "showLabels": true,
+        "showCommonLabels": false,
+        "wrapLogMessage": true,
+        "prettifyLogMessage": false,
+        "enableLogDetails": true,
+        "sortOrder": "Descending",
+        "dedupStrategy": "none"
+      }
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": ["recommender", "deploy"],
+  "templating": { "list": [] },
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Recommender System",
+  "uid": "recommender-main"
+}
