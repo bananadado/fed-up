@@ -350,36 +350,29 @@ export function PlanScreen({
                       </p>
                     </div>
                   </div>
-                  {directOptions.length > 0 && (
+                  {replacement && (
                     <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-                      <p className="text-xs font-semibold uppercase text-emerald-700">Suggested suitable options</p>
-                      <div className="mt-3 space-y-3">
-                        {directOptions.map((meal, index) => {
-                          const optionTotal = planTotalAfter(meal);
-                          const optionRemaining = prefs.budget - optionTotal;
-
-                          return (
-                            <div key={meal.id} className="rounded-lg bg-white p-3 shadow-sm">
-                              <div className="flex items-start justify-between gap-3">
-                                <div className="min-w-0">
-                                  <div className="flex flex-wrap items-center gap-2">
-                                    <p className="break-words font-semibold">
-                                      {meal.image} {meal.name}
-                                    </p>
-                                    {index === 0 && <Badge tone="green">Best fit</Badge>}
-                                  </div>
-                                  <p className="mt-1 text-sm text-stone-600">{meal.source}</p>
-                                  <p className="mt-1 text-xs text-stone-500">
-                                    {meal.time} min - {money(meal.price)} · {priceDiff(meal.price, originalMeal.price).label} · total {money(optionTotal)} · {optionRemaining >= 0 ? `${money(optionRemaining)} left` : `${money(Math.abs(optionRemaining))} over`}
-                                  </p>
-                                </div>
-                                <AppButton className="shrink-0" onClick={() => confirmSwapWith(meal, "suggested")}>
-                                  Use
-                                </AppButton>
+                      <p className="text-xs font-semibold uppercase text-emerald-700">Suggested suitable option</p>
+                      <div className="mt-3">
+                        <div className="rounded-lg bg-white p-3 shadow-sm">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <p className="break-words font-semibold">
+                                  {replacement.image} {replacement.name}
+                                </p>
+                                <Badge tone="green">Suggested</Badge>
                               </div>
+                              <p className="mt-1 text-sm text-stone-600">{replacement.source}</p>
+                              <p className="mt-1 text-xs text-stone-500">
+                                {replacement.time} min - {money(replacement.price)} · {priceDiff(replacement.price, originalMeal.price).label} · total {money(planTotalAfter(replacement))} · {prefs.budget - planTotalAfter(replacement) >= 0 ? `${money(prefs.budget - planTotalAfter(replacement))} left` : `${money(Math.abs(prefs.budget - planTotalAfter(replacement)))} over`}
+                              </p>
                             </div>
-                          );
-                        })}
+                            <AppButton className="shrink-0" onClick={() => confirmSwapWith(replacement, "suggested")}>
+                              Use
+                            </AppButton>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}
