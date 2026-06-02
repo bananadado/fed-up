@@ -3,13 +3,15 @@ import { calendarOutlookExchangeUrl } from "./calendarApi";
 
 declare const __BUN_PUBLIC_MICROSOFT_CLIENT_ID__: string | undefined;
 
+const DEFAULT_MICROSOFT_CLIENT_ID = "8621b0da-c066-4c1e-9202-f6d1a2b47631";
+
 let _envMicrosoftClientId: string | undefined;
 try { _envMicrosoftClientId = process.env.BUN_PUBLIC_MICROSOFT_CLIENT_ID; } catch { /* bundled browser */ }
 
 const clientId: string =
-  (typeof __BUN_PUBLIC_MICROSOFT_CLIENT_ID__ !== "undefined" ? __BUN_PUBLIC_MICROSOFT_CLIENT_ID__ : undefined) ??
-  _envMicrosoftClientId ??
-  "";
+  (typeof __BUN_PUBLIC_MICROSOFT_CLIENT_ID__ !== "undefined" ? __BUN_PUBLIC_MICROSOFT_CLIENT_ID__ : undefined) ||
+  _envMicrosoftClientId ||
+  DEFAULT_MICROSOFT_CLIENT_ID;
 
 const AUTH_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
 const SCOPE = "Calendars.Read offline_access";
