@@ -140,10 +140,16 @@ export function DiscoverScreen({
               <button
                 type="button"
                 onClick={() => onSelectMeal(current.id)}
-                className="flex h-48 w-full items-center justify-center bg-emerald-50 text-7xl transition hover:bg-emerald-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                className="h-48 w-full overflow-hidden transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                 aria-label={`View details for ${current.name}`}
               >
-                {current.image}
+                {current.photoUrl ? (
+                  <img src={current.photoUrl} alt={current.name} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-emerald-50 text-7xl">
+                    {current.image}
+                  </div>
+                )}
               </button>
               <div className="p-6">
                 <div className="flex justify-between gap-3">
@@ -209,9 +215,16 @@ export function DiscoverScreen({
                 {rejected.map((meal) => (
                   <div key={meal.id} className="grid gap-3 rounded-lg bg-rose-50 p-3 sm:grid-cols-[1fr_auto_auto] sm:items-center">
                     <div className="min-w-0">
-                      <button type="button" onClick={() => onSelectMeal(meal.id)} className="break-words text-left font-semibold text-stone-800 hover:text-emerald-700 hover:underline">
-                        {meal.image} {meal.name}
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {meal.photoUrl ? (
+                          <img src={meal.photoUrl} alt={meal.name} className="h-8 w-8 shrink-0 rounded object-cover" />
+                        ) : (
+                          <span className="shrink-0 text-xl">{meal.image}</span>
+                        )}
+                        <button type="button" onClick={() => onSelectMeal(meal.id)} className="break-words text-left font-semibold text-stone-800 hover:text-emerald-700 hover:underline">
+                          {meal.name}
+                        </button>
+                      </div>
                       <p className="text-sm text-stone-500">{meal.time} min · {money(meal.price)}</p>
                       <StarRating rating={meal.rating} reviews={meal.reviews.length} />
                     </div>
@@ -227,9 +240,16 @@ export function DiscoverScreen({
               sortedSaved.map((meal) => (
                 <div key={meal.id} className="grid gap-3 rounded-lg bg-stone-50 p-3 sm:grid-cols-[1fr_auto_auto] sm:items-center">
                   <div className="min-w-0">
-                    <button type="button" onClick={() => onSelectMeal(meal.id)} className="break-words text-left font-semibold hover:text-emerald-700 hover:underline">
-                      {meal.image} {meal.name}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {meal.photoUrl ? (
+                        <img src={meal.photoUrl} alt={meal.name} className="h-8 w-8 shrink-0 rounded object-cover" />
+                      ) : (
+                        <span className="shrink-0 text-xl">{meal.image}</span>
+                      )}
+                      <button type="button" onClick={() => onSelectMeal(meal.id)} className="break-words text-left font-semibold hover:text-emerald-700 hover:underline">
+                        {meal.name}
+                      </button>
+                    </div>
                     <p className="text-sm text-stone-500">{meal.time} min · {money(meal.price)}</p>
                     <StarRating rating={meal.rating} reviews={meal.reviews.length} />
                   </div>

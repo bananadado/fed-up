@@ -160,6 +160,19 @@ const server = serve({
       },
     },
 
+    "/api/deadline-food/recipe-photo": {
+      async POST(req) {
+        if (firebaseFunctionsBaseUrl) {
+          return proxyToFirebaseFunction("deadlineFoodRecipePhoto", req);
+        }
+        const body = await req.json().catch(() => null) as { mimeType?: string; dataBase64?: string } | null;
+        if (!body?.dataBase64 || !body?.mimeType) {
+          return Response.json({ error: "dataBase64 and mimeType are required." }, { status: 400 });
+        }
+        return Response.json({ photoUrl: `data:${body.mimeType};base64,${body.dataBase64}` });
+      },
+    },
+
     "/api/calendar/google-exchange": {
       async POST(req) {
         return proxyToFirebaseFunction("calendarGoogleExchange", req);
