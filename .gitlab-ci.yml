@@ -212,21 +212,25 @@ secret_detection:
   image: alpine:3.20
   stage: backend_deploy
   variables:
-    DEPLOY_HOST: "172.17.0.1"
+    DEPLOY_HOST: "gru.end-pickerel.ts.net"
     DEPLOY_USER: "deploy"
     DEPLOY_DIR: "/opt/drp03-backend"
   before_script:
-    - apk add --no-cache openssh-client rsync
+    - apk add --no-cache openssh-client rsync iptables
+    - wget -q -O /tmp/tailscale.tgz "https://pkgs.tailscale.com/stable/tailscale_latest_amd64.tgz"
+    - tar -xzf /tmp/tailscale.tgz -C /tmp && cp /tmp/tailscale_*/tailscale* /usr/local/bin/ && rm -rf /tmp/tailscale*
+    - tailscaled --state=mem: --tun=userspace-networking &
+    - tailscale up --authkey="$TAILSCALE_AUTH_KEY" --hostname="ci-deploy-${CI_JOB_ID}"
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - echo "$DEPLOY_SSH_KEY_B64" | base64 -d > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
     - ssh-keyscan -t ed25519 "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
   script:
     - |
-      SSH_CMD="ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new"
+      SSH_CMD="ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -o ProxyCommand='tailscale nc %h %p'"
 
       # Sync backend/ to the deploy directory
       rsync -avz --delete --exclude='.env' \
-        -e "$SSH_CMD" \
+        -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -o ProxyCommand='tailscale nc %h %p'" \
         backend/ \
         "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/"
 
@@ -269,6 +273,7 @@ secret_detection:
       echo "Services to redeploy: $CHANGED_SERVICES"
       $SSH_CMD "${DEPLOY_USER}@${DEPLOY_HOST}" "cd ${DEPLOY_DIR} && bash deploy.sh $CHANGED_SERVICES"
   after_script:
+    - tailscale logout 2>/dev/null || true
     - rm -f ~/.ssh/deploy_key
 
 deploy_gpu_staging:
