@@ -1,17 +1,25 @@
 import os
+from typing import TYPE_CHECKING
 
-from sentence_transformers import SentenceTransformer
+if TYPE_CHECKING:
+    from sentence_transformers import SentenceTransformer
 
-_model: SentenceTransformer | None = None
+# The heavy ML stack (torch / sentence-transformers) is imported lazily inside
+# get_model() so this module can be imported in environments without a GPU or
+# the ML dependencies installed (e.g. the test suite, which mocks embeddings).
+_model: "SentenceTransformer | None" = None
 
 MODEL_NAME = os.environ.get("EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
 DEVICE = os.environ.get("DEVICE", "cuda")
 BATCH_SIZE = int(os.environ.get("BATCH_SIZE", "64"))
+EMBEDDING_DIM = 384  # bge-small-en-v1.5 output dimensionality
 
 
-def get_model() -> SentenceTransformer:
+def get_model() -> "SentenceTransformer":
     global _model
     if _model is None:
+        from sentence_transformers import SentenceTransformer
+
         _model = SentenceTransformer(MODEL_NAME, device=DEVICE)
     return _model
 
@@ -26,7 +34,32 @@ def embed_single(text: str) -> list[float]:
     return embed_texts([text])[0]
 
 
+def time_descriptor(prep_minutes: int) -> str:
+    """Qualitative bucket for prep time.
+
+    Synthesized natural-language descriptions cluster far better than raw
+    numbers, so we map minutes onto words the embedding model understands.
+    """
+    if prep_minutes <= 0:
+        return "No-cook"
+    if prep_minutes <= 10:
+        return "Very quick"
+    if prep_minutes <= 20:
+        return "Quick weeknight"
+    if prep_minutes <= 40:
+        return "Moderate effort"
+    if prep_minutes <= 75:
+        return "Involved"
+    return "Cooking project"
+
+
 def synthesize_recipe_text(recipe: dict) -> str:
+    """Build the natural-language description that gets embedded.
+
+    Deliberately emphasises the signals that matter for taste/skill clustering
+    (time, ingredients, techniques, cuisine, flavour) and ignores exact
+    measurements and calorie counts, per the recommendation design.
+    """
     parts = [recipe.get("name", "")]
 
     if recipe.get("cuisine"):
@@ -44,7 +77,9 @@ def synthesize_recipe_text(recipe: dict) -> str:
     ingredients = recipe.get("ingredients", [])
     if ingredients:
         names = [i["name"] if isinstance(i, dict) else str(i) for i in ingredients]
-        parts.append("Ingredients: " + ", ".join(names) + ".")
+        names = [n for n in names if n]
+        if names:
+            parts.append("Ingredients: " + ", ".join(names) + ".")
 
     if recipe.get("dietary_tags"):
         parts.append("Diet: " + ", ".join(recipe["dietary_tags"]) + ".")
@@ -63,9 +98,9 @@ def synthesize_recipe_text(recipe: dict) -> str:
         }
         parts.append(type_map.get(meal_type, meal_type) + ".")
 
-    prep = recipe.get("prep_minutes", 0)
+    prep = recipe.get("prep_minutes", 0) or 0
     if prep:
-        parts.append(f"{prep} minutes prep.")
+        parts.append(f"{time_descriptor(prep)}, {prep} minutes prep.")
 
     slots = recipe.get("meal_slots", [])
     if slots:
@@ -74,4 +109,4 @@ def synthesize_recipe_text(recipe: dict) -> str:
     if recipe.get("note"):
         parts.append(recipe["note"])
 
-    return " ".join(parts)
+    return " ".join(p for p in parts if p).strip()
