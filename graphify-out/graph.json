@@ -4010,7 +4010,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L1",
       "id": "e2e_deadline_flow_spec_ts",
-      "community": 5,
+      "community": 124,
       "norm_label": "deadline-flow.spec.ts"
     },
     {
@@ -4019,7 +4019,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L112",
       "id": "e2e_deadline_flow_spec_sessionloaded",
-      "community": 5,
+      "community": 124,
       "norm_label": "sessionloaded"
     },
     {
@@ -7478,7 +7478,7 @@
       "source_file": "src/state/DeadlineModeProvider.tsx",
       "source_location": "L1",
       "id": "src_state_deadlinemodeprovider_tsx",
-      "community": 10,
+      "community": 9,
       "norm_label": "deadlinemodeprovider.tsx"
     },
     {
@@ -7487,7 +7487,7 @@
       "source_file": "src/state/DeadlineModeProvider.tsx",
       "source_location": "L18",
       "id": "state_deadlinemodeprovider_deadlinemodecontextvalue",
-      "community": 10,
+      "community": 9,
       "norm_label": "deadlinemodecontextvalue"
     },
     {
@@ -7496,7 +7496,7 @@
       "source_file": "src/state/DeadlineModeProvider.tsx",
       "source_location": "L23",
       "id": "state_deadlinemodeprovider_deadlinemodecontext",
-      "community": 10,
+      "community": 9,
       "norm_label": "deadlinemodecontext"
     },
     {
@@ -7577,7 +7577,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L29",
       "id": "lib_posthog_analyticsproperties",
-      "community": 16,
+      "community": 11,
       "norm_label": "analyticsproperties"
     },
     {
@@ -7829,7 +7829,7 @@
       "source_file": "src/domain/constraints.ts",
       "source_location": "L70",
       "id": "domain_constraints_matchesdietarytags",
-      "community": 19,
+      "community": 10,
       "norm_label": "matchesdietarytags()"
     },
     {
@@ -8207,7 +8207,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L1",
       "id": "src_domain_types_ts",
-      "community": 2,
+      "community": 9,
       "norm_label": "types.ts"
     },
     {
@@ -8216,7 +8216,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L1",
       "id": "domain_types_mealtype",
-      "community": 2,
+      "community": 9,
       "norm_label": "mealtype"
     },
     {
@@ -8234,7 +8234,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L5",
       "id": "domain_types_kitchenaccess",
-      "community": 2,
+      "community": 9,
       "norm_label": "kitchenaccess"
     },
     {
@@ -8270,7 +8270,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L27",
       "id": "domain_types_recipedetails",
-      "community": 2,
+      "community": 9,
       "norm_label": "recipedetails"
     },
     {
@@ -8288,7 +8288,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L52",
       "id": "domain_types_plannedmeal",
-      "community": 2,
+      "community": 9,
       "norm_label": "plannedmeal"
     },
     {
@@ -8306,7 +8306,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L74",
       "id": "domain_types_rescueproposal",
-      "community": 10,
+      "community": 9,
       "norm_label": "rescueproposal"
     },
     {
@@ -8324,7 +8324,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L89",
       "id": "domain_types_rankedstrategy",
-      "community": 10,
+      "community": 9,
       "norm_label": "rankedstrategy"
     },
     {
@@ -8333,7 +8333,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L99",
       "id": "domain_types_prototypeevent",
-      "community": 10,
+      "community": 9,
       "norm_label": "prototypeevent"
     },
     {
@@ -8405,7 +8405,7 @@
       "source_file": "src/prototype/nutritionApi.ts",
       "source_location": "L1",
       "id": "src_prototype_nutritionapi_ts",
-      "community": 12,
+      "community": 54,
       "norm_label": "nutritionapi.ts"
     },
     {
@@ -8414,7 +8414,7 @@
       "source_file": "src/prototype/nutritionApi.ts",
       "source_location": "L4",
       "id": "prototype_nutritionapi_fetchopenfoodfactsnutrition",
-      "community": 12,
+      "community": 54,
       "norm_label": "fetchopenfoodfactsnutrition()"
     },
     {
@@ -8504,7 +8504,7 @@
       "source_file": "src/prototype/recommenderApi.test.ts",
       "source_location": "L1",
       "id": "src_prototype_recommenderapi_test_ts",
-      "community": 54,
+      "community": 12,
       "norm_label": "recommenderapi.test.ts"
     },
     {
@@ -8513,7 +8513,7 @@
       "source_file": "src/prototype/recommenderApi.test.ts",
       "source_location": "L6",
       "id": "prototype_recommenderapi_test_deadline",
-      "community": 54,
+      "community": 12,
       "norm_label": "deadline()"
     },
     {
@@ -8783,7 +8783,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L22",
       "id": "prototype_data_defaultdeadlines",
-      "community": 5,
+      "community": 16,
       "norm_label": "defaultdeadlines"
     },
     {
@@ -8873,7 +8873,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L367",
       "id": "prototype_data_initialpreferences",
-      "community": 5,
+      "community": 124,
       "norm_label": "initialpreferences"
     },
     {
@@ -8909,7 +8909,7 @@
       "source_file": "src/prototype/utils.ts",
       "source_location": "L22",
       "id": "prototype_utils_formatcookinglimit",
-      "community": 16,
+      "community": 5,
       "norm_label": "formatcookinglimit()"
     },
     {
@@ -8954,7 +8954,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L1",
       "id": "src_prototype_recommenderapi_ts",
-      "community": 54,
+      "community": 12,
       "norm_label": "recommenderapi.ts"
     },
     {
@@ -8963,7 +8963,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L6",
       "id": "prototype_recommenderapi_recommenderrecipe",
-      "community": 54,
+      "community": 12,
       "norm_label": "recommenderrecipe"
     },
     {
@@ -8972,7 +8972,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L23",
       "id": "prototype_recommenderapi_scoredrecipe",
-      "community": 54,
+      "community": 12,
       "norm_label": "scoredrecipe"
     },
     {
@@ -8981,7 +8981,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L29",
       "id": "prototype_recommenderapi_recommenderinteractionaction",
-      "community": 54,
+      "community": 12,
       "norm_label": "recommenderinteractionaction"
     },
     {
@@ -8990,7 +8990,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L31",
       "id": "prototype_recommenderapi_seedmealids",
-      "community": 54,
+      "community": 12,
       "norm_label": "seedmealids"
     },
     {
@@ -8999,7 +8999,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L33",
       "id": "prototype_recommenderapi_readjson",
-      "community": 54,
+      "community": 12,
       "norm_label": "readjson()"
     },
     {
@@ -9008,7 +9008,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L41",
       "id": "prototype_recommenderapi_functionurl",
-      "community": 54,
+      "community": 12,
       "norm_label": "functionurl()"
     },
     {
@@ -9017,7 +9017,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L45",
       "id": "prototype_recommenderapi_cookingability",
-      "community": 54,
+      "community": 12,
       "norm_label": "cookingability()"
     },
     {
@@ -9026,7 +9026,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L49",
       "id": "prototype_recommenderapi_deadlinestressfromdeadlines",
-      "community": 54,
+      "community": 12,
       "norm_label": "deadlinestressfromdeadlines()"
     },
     {
@@ -9035,7 +9035,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L61",
       "id": "prototype_recommenderapi_syncrecommenderuser",
-      "community": 54,
+      "community": 12,
       "norm_label": "syncrecommenderuser()"
     },
     {
@@ -9044,7 +9044,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L83",
       "id": "prototype_recommenderapi_toprototypemeal",
-      "community": 54,
+      "community": 12,
       "norm_label": "toprototypemeal()"
     },
     {
@@ -9053,7 +9053,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L109",
       "id": "prototype_recommenderapi_fetchrecommenderrecommendations",
-      "community": 54,
+      "community": 12,
       "norm_label": "fetchrecommenderrecommendations()"
     },
     {
@@ -9062,7 +9062,7 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L134",
       "id": "prototype_recommenderapi_recordrecommenderinteraction",
-      "community": 54,
+      "community": 12,
       "norm_label": "recordrecommenderinteraction()"
     },
     {
@@ -9098,7 +9098,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L1",
       "id": "src_prototype_anonymoussessionapi_ts",
-      "community": 12,
+      "community": 124,
       "norm_label": "anonymoussessionapi.ts"
     },
     {
@@ -9107,7 +9107,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L11",
       "id": "prototype_anonymoussessionapi_anonymoussessionresponse",
-      "community": 12,
+      "community": 124,
       "norm_label": "anonymoussessionresponse"
     },
     {
@@ -9116,7 +9116,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L18",
       "id": "prototype_anonymoussessionapi_readstoredsessionid",
-      "community": 12,
+      "community": 124,
       "norm_label": "readstoredsessionid()"
     },
     {
@@ -9125,7 +9125,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L36",
       "id": "prototype_anonymoussessionapi_storesessionid",
-      "community": 12,
+      "community": 124,
       "norm_label": "storesessionid()"
     },
     {
@@ -9134,7 +9134,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L44",
       "id": "prototype_anonymoussessionapi_getorcreateanonymoussessionid",
-      "community": 12,
+      "community": 124,
       "norm_label": "getorcreateanonymoussessionid()"
     },
     {
@@ -9143,7 +9143,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L56",
       "id": "prototype_anonymoussessionapi_readjson",
-      "community": 12,
+      "community": 124,
       "norm_label": "readjson()"
     },
     {
@@ -9152,7 +9152,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L64",
       "id": "prototype_anonymoussessionapi_loadanonymoussessionsettings",
-      "community": 12,
+      "community": 124,
       "norm_label": "loadanonymoussessionsettings()"
     },
     {
@@ -9161,7 +9161,7 @@
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L80",
       "id": "prototype_anonymoussessionapi_saveanonymoussessionsettings",
-      "community": 12,
+      "community": 124,
       "norm_label": "saveanonymoussessionsettings()"
     },
     {
@@ -9332,7 +9332,7 @@
       "source_file": "src/prototype/ingredients.ts",
       "source_location": "L203",
       "id": "prototype_ingredients_createingredientdraft",
-      "community": 14,
+      "community": 54,
       "norm_label": "createingredientdraft()"
     },
     {
@@ -9350,7 +9350,7 @@
       "source_file": "src/prototype/ingredients.ts",
       "source_location": "L223",
       "id": "prototype_ingredients_ingredientdraftsfromingredients",
-      "community": 14,
+      "community": 54,
       "norm_label": "ingredientdraftsfromingredients()"
     },
     {
@@ -9368,7 +9368,7 @@
       "source_file": "src/prototype/ingredients.ts",
       "source_location": "L246",
       "id": "prototype_ingredients_sanitiseingredientdrafts",
-      "community": 14,
+      "community": 54,
       "norm_label": "sanitiseingredientdrafts()"
     },
     {
@@ -9377,7 +9377,7 @@
       "source_file": "src/prototype/ingredients.ts",
       "source_location": "L262",
       "id": "prototype_ingredients_ingredientname",
-      "community": 14,
+      "community": 6,
       "norm_label": "ingredientname()"
     },
     {
@@ -9503,7 +9503,7 @@
       "source_file": "src/prototype/sessionPersistence.test.ts",
       "source_location": "L1",
       "id": "src_prototype_sessionpersistence_test_ts",
-      "community": 5,
+      "community": 124,
       "norm_label": "sessionpersistence.test.ts"
     },
     {
@@ -9512,7 +9512,7 @@
       "source_file": "src/prototype/sessionPersistence.test.ts",
       "source_location": "L20",
       "id": "prototype_sessionpersistence_test_settings",
-      "community": 5,
+      "community": 124,
       "norm_label": "settings"
     },
     {
@@ -9521,7 +9521,7 @@
       "source_file": "src/prototype/sessionPersistence.test.ts",
       "source_location": "L36",
       "id": "prototype_sessionpersistence_test_fallbackplan",
-      "community": 5,
+      "community": 124,
       "norm_label": "fallbackplan"
     },
     {
@@ -9530,7 +9530,7 @@
       "source_file": "src/prototype/sessionPersistence.test.ts",
       "source_location": "L56",
       "id": "prototype_sessionpersistence_test_persistedplan",
-      "community": 5,
+      "community": 124,
       "norm_label": "persistedplan"
     },
     {
@@ -9539,7 +9539,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L1",
       "id": "src_prototype_types_ts",
-      "community": 6,
+      "community": 54,
       "norm_label": "types.ts"
     },
     {
@@ -9548,7 +9548,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L1",
       "id": "prototype_types_mealtype",
-      "community": 6,
+      "community": 54,
       "norm_label": "mealtype"
     },
     {
@@ -9566,7 +9566,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L8",
       "id": "prototype_types_nutrition",
-      "community": 4,
+      "community": 54,
       "norm_label": "nutrition"
     },
     {
@@ -9575,7 +9575,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L16",
       "id": "prototype_types_nutritionsource",
-      "community": 14,
+      "community": 54,
       "norm_label": "nutritionsource"
     },
     {
@@ -9593,7 +9593,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L30",
       "id": "prototype_types_recipereview",
-      "community": 5,
+      "community": 54,
       "norm_label": "recipereview"
     },
     {
@@ -9611,7 +9611,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L59",
       "id": "prototype_types_planmeal",
-      "community": 6,
+      "community": 54,
       "norm_label": "planmeal"
     },
     {
@@ -9656,7 +9656,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L100",
       "id": "prototype_types_calendarprovider",
-      "community": 5,
+      "community": 12,
       "norm_label": "calendarprovider"
     },
     {
@@ -9665,7 +9665,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L1",
       "id": "src_prototype_sessionpersistence_ts",
-      "community": 5,
+      "community": 124,
       "norm_label": "sessionpersistence.ts"
     },
     {
@@ -9692,7 +9692,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L20",
       "id": "prototype_sessionpersistence_prototypesessionsettings",
-      "community": 12,
+      "community": 124,
       "norm_label": "prototypesessionsettings"
     },
     {
@@ -9701,7 +9701,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L38",
       "id": "prototype_sessionpersistence_isanonymoussessionid",
-      "community": 12,
+      "community": 124,
       "norm_label": "isanonymoussessionid()"
     },
     {
@@ -9710,7 +9710,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L42",
       "id": "prototype_sessionpersistence_createanonymoussessionid",
-      "community": 12,
+      "community": 124,
       "norm_label": "createanonymoussessionid()"
     },
     {
@@ -9719,7 +9719,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L50",
       "id": "prototype_sessionpersistence_createprototypesessionsettings",
-      "community": 5,
+      "community": 124,
       "norm_label": "createprototypesessionsettings()"
     },
     {
@@ -9728,7 +9728,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L81",
       "id": "prototype_sessionpersistence_mealslots",
-      "community": 5,
+      "community": 124,
       "norm_label": "mealslots"
     },
     {
@@ -9737,7 +9737,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L83",
       "id": "prototype_sessionpersistence_isplanentry",
-      "community": 5,
+      "community": 124,
       "norm_label": "isplanentry()"
     },
     {
@@ -9746,7 +9746,7 @@
       "source_file": "src/prototype/sessionPersistence.ts",
       "source_location": "L105",
       "id": "prototype_sessionpersistence_restoreprototypeplan",
-      "community": 5,
+      "community": 124,
       "norm_label": "restoreprototypeplan()"
     },
     {
@@ -9782,7 +9782,7 @@
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L28",
       "id": "screens_discoverscreen_discoverscreen",
-      "community": 16,
+      "community": 6,
       "norm_label": "discoverscreen()"
     },
     {
@@ -10070,7 +10070,7 @@
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L25",
       "id": "screens_settingsscreen_settingsscreen",
-      "community": 16,
+      "community": 5,
       "norm_label": "settingsscreen()"
     },
     {
@@ -10124,7 +10124,7 @@
       "source_file": "src/prototype/screens/Onboarding.tsx",
       "source_location": "L48",
       "id": "screens_onboarding_preferencesection",
-      "community": 9,
+      "community": 5,
       "norm_label": "preferencesection()"
     },
     {
@@ -10133,7 +10133,7 @@
       "source_file": "src/prototype/screens/Onboarding.tsx",
       "source_location": "L70",
       "id": "screens_onboarding_onboarding",
-      "community": 16,
+      "community": 5,
       "norm_label": "onboarding()"
     },
     {
@@ -10142,7 +10142,7 @@
       "source_file": "src/prototype/components/IngredientEditor.tsx",
       "source_location": "L1",
       "id": "src_prototype_components_ingredienteditor_tsx",
-      "community": 9,
+      "community": 14,
       "norm_label": "ingredienteditor.tsx"
     },
     {
@@ -10151,7 +10151,7 @@
       "source_file": "src/prototype/components/IngredientEditor.tsx",
       "source_location": "L17",
       "id": "components_ingredienteditor_ingredientcombobox",
-      "community": 9,
+      "community": 14,
       "norm_label": "ingredientcombobox()"
     },
     {
@@ -10187,23 +10187,41 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L1",
       "id": "src_prototype_components_recipeeditor_tsx",
-      "community": 14,
+      "community": 54,
       "norm_label": "recipeeditor.tsx"
+    },
+    {
+      "label": "MEAL_SLOT_OPTIONS",
+      "file_type": "code",
+      "source_file": "src/prototype/components/RecipeEditor.tsx",
+      "source_location": "L20",
+      "id": "components_recipeeditor_meal_slot_options",
+      "community": 54,
+      "norm_label": "meal_slot_options"
+    },
+    {
+      "label": "TAG_OPTIONS",
+      "file_type": "code",
+      "source_file": "src/prototype/components/RecipeEditor.tsx",
+      "source_location": "L22",
+      "id": "components_recipeeditor_tag_options",
+      "community": 54,
+      "norm_label": "tag_options"
     },
     {
       "label": "EditorForm",
       "file_type": "code",
       "source_file": "src/prototype/components/RecipeEditor.tsx",
-      "source_location": "L20",
+      "source_location": "L37",
       "id": "components_recipeeditor_editorform",
-      "community": 14,
+      "community": 54,
       "norm_label": "editorform"
     },
     {
       "label": "RecipeEditorOutput",
       "file_type": "code",
       "source_file": "src/prototype/components/RecipeEditor.tsx",
-      "source_location": "L38",
+      "source_location": "L56",
       "id": "components_recipeeditor_recipeeditoroutput",
       "community": 16,
       "norm_label": "recipeeditoroutput"
@@ -10212,45 +10230,54 @@
       "label": "mealToForm()",
       "file_type": "code",
       "source_file": "src/prototype/components/RecipeEditor.tsx",
-      "source_location": "L58",
+      "source_location": "L77",
       "id": "components_recipeeditor_mealtoform",
-      "community": 14,
+      "community": 54,
       "norm_label": "mealtoform()"
     },
     {
       "label": "defaultForm()",
       "file_type": "code",
       "source_file": "src/prototype/components/RecipeEditor.tsx",
-      "source_location": "L78",
+      "source_location": "L98",
       "id": "components_recipeeditor_defaultform",
-      "community": 14,
+      "community": 54,
       "norm_label": "defaultform()"
     },
     {
       "label": "splitList()",
       "file_type": "code",
       "source_file": "src/prototype/components/RecipeEditor.tsx",
-      "source_location": "L98",
+      "source_location": "L119",
       "id": "components_recipeeditor_splitlist",
-      "community": 14,
+      "community": 54,
       "norm_label": "splitlist()"
     },
     {
       "label": "positiveNumber()",
       "file_type": "code",
       "source_file": "src/prototype/components/RecipeEditor.tsx",
-      "source_location": "L105",
+      "source_location": "L126",
       "id": "components_recipeeditor_positivenumber",
-      "community": 14,
+      "community": 54,
       "norm_label": "positivenumber()"
+    },
+    {
+      "label": "TagEditor()",
+      "file_type": "code",
+      "source_file": "src/prototype/components/RecipeEditor.tsx",
+      "source_location": "L132",
+      "id": "components_recipeeditor_tageditor",
+      "community": 54,
+      "norm_label": "tageditor()"
     },
     {
       "label": "RecipeEditor()",
       "file_type": "code",
       "source_file": "src/prototype/components/RecipeEditor.tsx",
-      "source_location": "L109",
+      "source_location": "L298",
       "id": "components_recipeeditor_recipeeditor",
-      "community": 14,
+      "community": 54,
       "norm_label": "recipeeditor()"
     },
     {
@@ -10259,7 +10286,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L1",
       "id": "src_prototype_components_primitives_tsx",
-      "community": 9,
+      "community": 5,
       "norm_label": "primitives.tsx"
     },
     {
@@ -10268,7 +10295,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L9",
       "id": "components_primitives_tone",
-      "community": 9,
+      "community": 5,
       "norm_label": "tone"
     },
     {
@@ -10277,7 +10304,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L11",
       "id": "components_primitives_badgetones",
-      "community": 9,
+      "community": 5,
       "norm_label": "badgetones"
     },
     {
@@ -10286,7 +10313,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L19",
       "id": "components_primitives_appbuttonvariant",
-      "community": 9,
+      "community": 5,
       "norm_label": "appbuttonvariant"
     },
     {
@@ -10295,7 +10322,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L21",
       "id": "components_primitives_appbuttonclasses",
-      "community": 9,
+      "community": 5,
       "norm_label": "appbuttonclasses"
     },
     {
@@ -10313,7 +10340,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L36",
       "id": "components_primitives_appbutton",
-      "community": 16,
+      "community": 6,
       "norm_label": "appbutton()"
     },
     {
@@ -10331,7 +10358,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L130",
       "id": "components_primitives_field",
-      "community": 9,
+      "community": 5,
       "norm_label": "field()"
     },
     {
@@ -10340,7 +10367,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L184",
       "id": "components_primitives_selectfield",
-      "community": 9,
+      "community": 5,
       "norm_label": "selectfield()"
     },
     {
@@ -10772,7 +10799,7 @@
       "source_file": "src/components/ui/label.tsx",
       "source_location": "L1",
       "id": "src_components_ui_label_tsx",
-      "community": 9,
+      "community": 14,
       "norm_label": "label.tsx"
     },
     {
@@ -10781,7 +10808,7 @@
       "source_file": "src/components/ui/label.tsx",
       "source_location": "L8",
       "id": "ui_label_label",
-      "community": 9,
+      "community": 14,
       "norm_label": "label()"
     },
     {
@@ -10817,7 +10844,7 @@
       "source_file": "src/components/ui/input.tsx",
       "source_location": "L1",
       "id": "src_components_ui_input_tsx",
-      "community": 9,
+      "community": 5,
       "norm_label": "input.tsx"
     },
     {
@@ -10826,7 +10853,7 @@
       "source_file": "src/components/ui/input.tsx",
       "source_location": "L5",
       "id": "ui_input_input",
-      "community": 9,
+      "community": 5,
       "norm_label": "input()"
     },
     {
@@ -11267,7 +11294,7 @@
       "source_file": "src/application/eventBus.ts",
       "source_location": "L1",
       "id": "src_application_eventbus_ts",
-      "community": 10,
+      "community": 9,
       "norm_label": "eventbus.ts"
     },
     {
@@ -11276,7 +11303,7 @@
       "source_file": "src/application/eventBus.ts",
       "source_location": "L1",
       "id": "application_eventbus_eventbus",
-      "community": 10,
+      "community": 9,
       "norm_label": "eventbus"
     },
     {
@@ -11285,7 +11312,7 @@
       "source_file": "src/application/eventBus.ts",
       "source_location": "L6",
       "id": "application_eventbus_createeventbus",
-      "community": 10,
+      "community": 9,
       "norm_label": "createeventbus()"
     },
     {
@@ -22950,9 +22977,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "target": "tests_test_difficulty_test_case_insensitive_technique_matching",
-      "confidence_score": 1.0
+      "target": "tests_test_difficulty_test_case_insensitive_technique_matching"
     },
     {
       "relation": "contains",
@@ -22960,9 +22987,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "target": "tests_test_difficulty_test_fallback_meal_type_reduces_difficulty",
-      "confidence_score": 1.0
+      "target": "tests_test_difficulty_test_fallback_meal_type_reduces_difficulty"
     },
     {
       "relation": "contains",
@@ -22970,9 +22997,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "target": "tests_test_difficulty_test_legacy_keys_steps_and_type_are_supported",
-      "confidence_score": 1.0
+      "target": "tests_test_difficulty_test_legacy_keys_steps_and_type_are_supported"
     },
     {
       "relation": "contains",
@@ -22980,9 +23007,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "target": "tests_test_difficulty_test_longer_prep_increases_difficulty",
-      "confidence_score": 1.0
+      "target": "tests_test_difficulty_test_longer_prep_increases_difficulty"
     },
     {
       "relation": "contains",
@@ -22990,9 +23017,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "target": "tests_test_difficulty_test_more_ingredients_increase_difficulty",
-      "confidence_score": 1.0
+      "target": "tests_test_difficulty_test_more_ingredients_increase_difficulty"
     },
     {
       "relation": "contains",
@@ -23000,9 +23027,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "target": "tests_test_difficulty_test_more_techniques_increase_difficulty",
-      "confidence_score": 1.0
+      "target": "tests_test_difficulty_test_more_techniques_increase_difficulty"
     },
     {
       "relation": "contains",
@@ -23010,9 +23037,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "target": "tests_test_difficulty_test_score_is_clamped_between_zero_and_one",
-      "confidence_score": 1.0
+      "target": "tests_test_difficulty_test_score_is_clamped_between_zero_and_one"
     },
     {
       "relation": "contains",
@@ -23020,9 +23047,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "target": "tests_test_difficulty_test_uncommon_equipment_increases_difficulty",
-      "confidence_score": 1.0
+      "target": "tests_test_difficulty_test_uncommon_equipment_increases_difficulty"
     },
     {
       "relation": "contains",
@@ -23030,9 +23057,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "target": "tests_test_difficulty_test_unknown_technique_uses_default_weight",
-      "confidence_score": 1.0
+      "target": "tests_test_difficulty_test_unknown_technique_uses_default_weight"
     },
     {
       "relation": "rationale_for",
@@ -23040,9 +23067,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_difficulty_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py"
     },
     {
       "relation": "calls",
@@ -23150,9 +23177,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py"
     },
     {
       "relation": "contains",
@@ -23160,9 +23187,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "tests_test_embeddings_test_meal_type_is_described_in_words",
-      "confidence_score": 1.0
+      "target": "tests_test_embeddings_test_meal_type_is_described_in_words"
     },
     {
       "relation": "contains",
@@ -23170,9 +23197,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "tests_test_embeddings_test_synthesis_filters_blank_ingredient_names",
-      "confidence_score": 1.0
+      "target": "tests_test_embeddings_test_synthesis_filters_blank_ingredient_names"
     },
     {
       "relation": "contains",
@@ -23180,9 +23207,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "tests_test_embeddings_test_synthesis_handles_string_ingredients",
-      "confidence_score": 1.0
+      "target": "tests_test_embeddings_test_synthesis_handles_string_ingredients"
     },
     {
       "relation": "contains",
@@ -23190,9 +23217,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "tests_test_embeddings_test_synthesis_includes_core_signals",
-      "confidence_score": 1.0
+      "target": "tests_test_embeddings_test_synthesis_includes_core_signals"
     },
     {
       "relation": "contains",
@@ -23200,9 +23227,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "tests_test_embeddings_test_synthesis_includes_time_descriptor_and_minutes",
-      "confidence_score": 1.0
+      "target": "tests_test_embeddings_test_synthesis_includes_time_descriptor_and_minutes"
     },
     {
       "relation": "contains",
@@ -23210,9 +23237,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L72",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "tests_test_embeddings_test_synthesis_is_deterministic",
-      "confidence_score": 1.0
+      "target": "tests_test_embeddings_test_synthesis_is_deterministic"
     },
     {
       "relation": "contains",
@@ -23220,9 +23247,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "tests_test_embeddings_test_synthesis_omits_empty_sections",
-      "confidence_score": 1.0
+      "target": "tests_test_embeddings_test_synthesis_omits_empty_sections"
     },
     {
       "relation": "contains",
@@ -23230,9 +23257,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "tests_test_embeddings_test_time_descriptor_buckets",
-      "confidence_score": 1.0
+      "target": "tests_test_embeddings_test_time_descriptor_buckets"
     },
     {
       "relation": "contains",
@@ -23240,9 +23267,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L66",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "target": "tests_test_embeddings_test_time_descriptor_is_monotonic_across_buckets",
-      "confidence_score": 1.0
+      "target": "tests_test_embeddings_test_time_descriptor_is_monotonic_across_buckets"
     },
     {
       "relation": "rationale_for",
@@ -23250,9 +23277,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_embeddings.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_embeddings_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_embeddings_py"
     },
     {
       "relation": "calls",
@@ -23403,9 +23430,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_auth.py",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_auth_py",
-      "target": "tests_test_auth_test_application_endpoint_rejects_missing_cloud_function_key",
-      "confidence_score": 1.0
+      "target": "tests_test_auth_test_application_endpoint_rejects_missing_cloud_function_key"
     },
     {
       "relation": "contains",
@@ -23413,9 +23440,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_auth.py",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_auth_py",
-      "target": "tests_test_auth_test_application_endpoint_rejects_wrong_cloud_function_key",
-      "confidence_score": 1.0
+      "target": "tests_test_auth_test_application_endpoint_rejects_wrong_cloud_function_key"
     },
     {
       "relation": "contains",
@@ -23423,9 +23450,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_auth.py",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_auth_py",
-      "target": "tests_test_auth_test_health_does_not_require_cloud_function_key",
-      "confidence_score": 1.0
+      "target": "tests_test_auth_test_health_does_not_require_cloud_function_key"
     },
     {
       "relation": "rationale_for",
@@ -23433,9 +23460,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_auth.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_auth_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_auth_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_auth_py"
     },
     {
       "relation": "contains",
@@ -23443,9 +23470,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L227",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_client",
-      "confidence_score": 1.0
+      "target": "tests_conftest_client"
     },
     {
       "relation": "contains",
@@ -23453,9 +23480,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_fake_embed_single",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fake_embed_single"
     },
     {
       "relation": "contains",
@@ -23463,9 +23490,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_fake_embed_texts",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fake_embed_texts"
     },
     {
       "relation": "contains",
@@ -23473,9 +23500,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L74",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_fakeresult",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakeresult"
     },
     {
       "relation": "contains",
@@ -23483,9 +23510,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_fakesession",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession"
     },
     {
       "relation": "contains",
@@ -23493,9 +23520,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_mappings",
-      "confidence_score": 1.0
+      "target": "tests_conftest_mappings"
     },
     {
       "relation": "contains",
@@ -23503,9 +23530,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_mock_embeddings",
-      "confidence_score": 1.0
+      "target": "tests_conftest_mock_embeddings"
     },
     {
       "relation": "contains",
@@ -23513,9 +23540,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L245",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_sample_recipe",
-      "confidence_score": 1.0
+      "target": "tests_conftest_sample_recipe"
     },
     {
       "relation": "contains",
@@ -23523,9 +23550,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L270",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_sample_user",
-      "confidence_score": 1.0
+      "target": "tests_conftest_sample_user"
     },
     {
       "relation": "contains",
@@ -23533,9 +23560,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L222",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "target": "tests_conftest_store",
-      "confidence_score": 1.0
+      "target": "tests_conftest_store"
     },
     {
       "relation": "imports_from",
@@ -23544,9 +23571,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py"
     },
     {
       "relation": "imports_from",
@@ -23555,9 +23582,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py"
     },
     {
       "relation": "rationale_for",
@@ -23565,9 +23592,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py"
     },
     {
       "relation": "references",
@@ -23576,9 +23603,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fake_embed_single",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py_float"
     },
     {
       "relation": "references",
@@ -23587,9 +23614,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fake_embed_single",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py_str"
     },
     {
       "relation": "calls",
@@ -23598,9 +23625,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fake_embed_texts",
-      "target": "tests_conftest_fake_embed_single",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fake_embed_single"
     },
     {
       "relation": "rationale_for",
@@ -23608,9 +23635,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_rationale_37",
-      "target": "tests_conftest_fake_embed_single",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fake_embed_single"
     },
     {
       "relation": "references",
@@ -23619,9 +23646,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fake_embed_texts",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py_str"
     },
     {
       "relation": "references",
@@ -23630,9 +23657,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fake_embed_texts",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_conftest_py_float"
     },
     {
       "relation": "references",
@@ -23641,9 +23668,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakeresult_mappings",
-      "target": "tests_conftest_mappings",
-      "confidence_score": 1.0
+      "target": "tests_conftest_mappings"
     },
     {
       "relation": "method",
@@ -23651,9 +23678,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L67",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_mappings",
-      "target": "tests_conftest_mappings_all",
-      "confidence_score": 1.0
+      "target": "tests_conftest_mappings_all"
     },
     {
       "relation": "method",
@@ -23661,9 +23688,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L70",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_mappings",
-      "target": "tests_conftest_mappings_first",
-      "confidence_score": 1.0
+      "target": "tests_conftest_mappings_first"
     },
     {
       "relation": "method",
@@ -23671,9 +23698,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_mappings",
-      "target": "tests_conftest_mappings_init",
-      "confidence_score": 1.0
+      "target": "tests_conftest_mappings_init"
     },
     {
       "relation": "method",
@@ -23681,9 +23708,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakeresult",
-      "target": "tests_conftest_fakeresult_all",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakeresult_all"
     },
     {
       "relation": "method",
@@ -23691,9 +23718,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakeresult",
-      "target": "tests_conftest_fakeresult_init",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakeresult_init"
     },
     {
       "relation": "method",
@@ -23701,9 +23728,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakeresult",
-      "target": "tests_conftest_fakeresult_mappings",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakeresult_mappings"
     },
     {
       "relation": "method",
@@ -23711,9 +23738,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakeresult",
-      "target": "tests_conftest_fakeresult_scalar",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakeresult_scalar"
     },
     {
       "relation": "calls",
@@ -23722,9 +23749,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L102",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakesession_execute",
-      "target": "tests_conftest_fakeresult",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakeresult"
     },
     {
       "relation": "calls",
@@ -23733,9 +23760,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L228",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_client",
-      "target": "tests_conftest_fakesession",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession"
     },
     {
       "relation": "method",
@@ -23743,9 +23770,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L203",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakesession",
-      "target": "tests_conftest_fakesession_commit",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession_commit"
     },
     {
       "relation": "method",
@@ -23753,9 +23780,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L96",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakesession",
-      "target": "tests_conftest_fakesession_execute",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession_execute"
     },
     {
       "relation": "method",
@@ -23763,9 +23790,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakesession",
-      "target": "tests_conftest_fakesession_init",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession_init"
     },
     {
       "relation": "method",
@@ -23773,9 +23800,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L217",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakesession",
-      "target": "tests_conftest_fakesession_recipe_row",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession_recipe_row"
     },
     {
       "relation": "method",
@@ -23783,9 +23810,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L207",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakesession",
-      "target": "tests_conftest_fakesession_upsert_recipe",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession_upsert_recipe"
     },
     {
       "relation": "rationale_for",
@@ -23793,9 +23820,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_rationale_90",
-      "target": "tests_conftest_fakesession",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession"
     },
     {
       "relation": "calls",
@@ -23848,9 +23875,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L166",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakesession_execute",
-      "target": "tests_conftest_fakesession_recipe_row",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession_recipe_row"
     },
     {
       "relation": "calls",
@@ -23859,9 +23886,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_conftest_fakesession_execute",
-      "target": "tests_conftest_fakesession_upsert_recipe",
-      "confidence_score": 1.0
+      "target": "tests_conftest_fakesession_upsert_recipe"
     },
     {
       "relation": "calls",
@@ -24100,9 +24127,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_ability_defaults_to_neutral_for_new_user",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_ability_defaults_to_neutral_for_new_user"
     },
     {
       "relation": "contains",
@@ -24110,9 +24137,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_ability_endpoint_404",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_ability_endpoint_404"
     },
     {
       "relation": "contains",
@@ -24120,9 +24147,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_create_and_get_user",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_create_and_get_user"
     },
     {
       "relation": "contains",
@@ -24130,9 +24157,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_get_user_404",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_get_user_404"
     },
     {
       "relation": "contains",
@@ -24140,9 +24167,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_negative_interaction_also_recomputes_profile",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_negative_interaction_also_recomputes_profile"
     },
     {
       "relation": "contains",
@@ -24150,9 +24177,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_neutral_action_does_not_require_profile",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_neutral_action_does_not_require_profile"
     },
     {
       "relation": "contains",
@@ -24160,9 +24187,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_positive_interaction_updates_profile",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_positive_interaction_updates_profile"
     },
     {
       "relation": "contains",
@@ -24170,9 +24197,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_recompute_profile_endpoint_404",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_recompute_profile_endpoint_404"
     },
     {
       "relation": "contains",
@@ -24180,9 +24207,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_recompute_profile_endpoint_ok",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_recompute_profile_endpoint_ok"
     },
     {
       "relation": "contains",
@@ -24190,9 +24217,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_recompute_profile_missing_user",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_recompute_profile_missing_user"
     },
     {
       "relation": "contains",
@@ -24200,9 +24227,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "target": "tests_test_users_api_test_taste_embedding_likes_minus_dislikes",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_taste_embedding_likes_minus_dislikes"
     },
     {
       "relation": "rationale_for",
@@ -24210,9 +24237,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_users_api_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_users_api_py"
     },
     {
       "relation": "rationale_for",
@@ -24220,9 +24247,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_users_api.py",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_users_api_rationale_85",
-      "target": "tests_test_users_api_test_taste_embedding_likes_minus_dislikes",
-      "confidence_score": 1.0
+      "target": "tests_test_users_api_test_taste_embedding_likes_minus_dislikes"
     },
     {
       "relation": "calls",
@@ -24252,9 +24279,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_bulk_create_recipes",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_bulk_create_recipes"
     },
     {
       "relation": "contains",
@@ -24262,9 +24289,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_create_recipe_computes_difficulty_and_embedding_text",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_create_recipe_computes_difficulty_and_embedding_text"
     },
     {
       "relation": "contains",
@@ -24272,9 +24299,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_create_recipe_is_idempotent_upsert",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_create_recipe_is_idempotent_upsert"
     },
     {
       "relation": "contains",
@@ -24282,9 +24309,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_create_recipe_rejects_missing_required_fields",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_create_recipe_rejects_missing_required_fields"
     },
     {
       "relation": "contains",
@@ -24292,9 +24319,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L96",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_embed_unembedded_recipes_job",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_embed_unembedded_recipes_job"
     },
     {
       "relation": "contains",
@@ -24302,9 +24329,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L106",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_embed_unembedded_recipes_noop_when_all_embedded",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_embed_unembedded_recipes_noop_when_all_embedded"
     },
     {
       "relation": "contains",
@@ -24312,9 +24339,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L67",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_get_recipe_404",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_get_recipe_404"
     },
     {
       "relation": "contains",
@@ -24322,9 +24349,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_get_recipe_roundtrip",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_get_recipe_roundtrip"
     },
     {
       "relation": "contains",
@@ -24332,9 +24359,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_health_ok",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_health_ok"
     },
     {
       "relation": "contains",
@@ -24342,9 +24369,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_list_recipes_sorted_by_name",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_list_recipes_sorted_by_name"
     },
     {
       "relation": "contains",
@@ -24352,9 +24379,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_similar_recipes",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_similar_recipes"
     },
     {
       "relation": "contains",
@@ -24362,9 +24389,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L81",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_similar_recipes_404_when_not_embedded",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_similar_recipes_404_when_not_embedded"
     },
     {
       "relation": "contains",
@@ -24372,9 +24399,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_stats_counts",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_stats_counts"
     },
     {
       "relation": "rationale_for",
@@ -24382,9 +24409,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_recipes_api_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_recipes_api_py"
     },
     {
       "relation": "calls",
@@ -24414,9 +24441,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_api_py",
-      "target": "tests_test_context_api_payload",
-      "confidence_score": 1.0
+      "target": "tests_test_context_api_payload"
     },
     {
       "relation": "contains",
@@ -24424,9 +24451,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_api_py",
-      "target": "tests_test_context_api_test_context_deadlines_defaults_today_when_omitted",
-      "confidence_score": 1.0
+      "target": "tests_test_context_api_test_context_deadlines_defaults_today_when_omitted"
     },
     {
       "relation": "contains",
@@ -24434,9 +24461,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_api_py",
-      "target": "tests_test_context_api_test_context_deadlines_empty_events",
-      "confidence_score": 1.0
+      "target": "tests_test_context_api_test_context_deadlines_empty_events"
     },
     {
       "relation": "contains",
@@ -24444,9 +24471,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_api_py",
-      "target": "tests_test_context_api_test_context_deadlines_rejects_out_of_range_horizon",
-      "confidence_score": 1.0
+      "target": "tests_test_context_api_test_context_deadlines_rejects_out_of_range_horizon"
     },
     {
       "relation": "contains",
@@ -24454,9 +24481,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_api_py",
-      "target": "tests_test_context_api_test_context_deadlines_requires_event_start",
-      "confidence_score": 1.0
+      "target": "tests_test_context_api_test_context_deadlines_requires_event_start"
     },
     {
       "relation": "contains",
@@ -24464,9 +24491,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_api_py",
-      "target": "tests_test_context_api_test_context_deadlines_returns_deadlines_and_days",
-      "confidence_score": 1.0
+      "target": "tests_test_context_api_test_context_deadlines_returns_deadlines_and_days"
     },
     {
       "relation": "contains",
@@ -24474,9 +24501,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_api_py",
-      "target": "tests_test_context_api_test_context_deadlines_stress_present_for_each_day",
-      "confidence_score": 1.0
+      "target": "tests_test_context_api_test_context_deadlines_stress_present_for_each_day"
     },
     {
       "relation": "rationale_for",
@@ -24484,9 +24511,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_context_api_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_api_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_api_py"
     },
     {
       "relation": "calls",
@@ -24495,9 +24522,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_context_api_test_context_deadlines_returns_deadlines_and_days",
-      "target": "tests_test_context_api_payload",
-      "confidence_score": 1.0
+      "target": "tests_test_context_api_payload"
     },
     {
       "relation": "calls",
@@ -24506,9 +24533,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context_api.py",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_context_api_test_context_deadlines_stress_present_for_each_day",
-      "target": "tests_test_context_api_payload",
-      "confidence_score": 1.0
+      "target": "tests_test_context_api_payload"
     },
     {
       "relation": "imports_from",
@@ -24517,9 +24544,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "datetime",
-      "confidence_score": 1.0
+      "target": "datetime"
     },
     {
       "relation": "contains",
@@ -24527,9 +24554,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_classify_event_keywords",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_classify_event_keywords"
     },
     {
       "relation": "contains",
@@ -24537,9 +24564,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_deadline_keyword_beats_study_keyword",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_deadline_keyword_beats_study_keyword"
     },
     {
       "relation": "contains",
@@ -24547,9 +24574,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L126",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_distant_deadline_less_pressing_than_near_one",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_distant_deadline_less_pressing_than_near_one"
     },
     {
       "relation": "contains",
@@ -24557,9 +24584,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L146",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_extract_context_is_deterministic_with_fixed_today",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_extract_context_is_deterministic_with_fixed_today"
     },
     {
       "relation": "contains",
@@ -24567,9 +24594,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_extract_context_shape_and_horizon",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_extract_context_shape_and_horizon"
     },
     {
       "relation": "contains",
@@ -24577,9 +24604,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_extract_deadlines_filters_past_and_sorts",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_extract_deadlines_filters_past_and_sorts"
     },
     {
       "relation": "contains",
@@ -24587,9 +24614,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_extract_deadlines_urgency_and_effort",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_extract_deadlines_urgency_and_effort"
     },
     {
       "relation": "contains",
@@ -24597,9 +24624,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L111",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_high_stress_tightens_constraints",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_high_stress_tightens_constraints"
     },
     {
       "relation": "contains",
@@ -24607,9 +24634,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L119",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_late_event_removes_free_evening",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_late_event_removes_free_evening"
     },
     {
       "relation": "contains",
@@ -24617,9 +24644,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_long_untitled_event_is_work_shift",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_long_untitled_event_is_work_shift"
     },
     {
       "relation": "contains",
@@ -24627,9 +24654,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_normalize_all_day_has_no_hour_or_duration",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_normalize_all_day_has_no_hour_or_duration"
     },
     {
       "relation": "contains",
@@ -24637,9 +24664,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_normalize_computes_duration",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_normalize_computes_duration"
     },
     {
       "relation": "contains",
@@ -24647,9 +24674,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_normalize_parses_zulu_time_and_hour",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_normalize_parses_zulu_time_and_hour"
     },
     {
       "relation": "contains",
@@ -24657,9 +24684,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_normalize_undated_event_returns_none",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_normalize_undated_event_returns_none"
     },
     {
       "relation": "contains",
@@ -24667,9 +24694,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L102",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "target": "tests_test_context_test_same_day_deadline_raises_stress",
-      "confidence_score": 1.0
+      "target": "tests_test_context_test_same_day_deadline_raises_stress"
     },
     {
       "relation": "rationale_for",
@@ -24677,9 +24704,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_context.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_context_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_context_py"
     },
     {
       "relation": "calls",
@@ -24907,9 +24934,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "contains",
@@ -24917,9 +24944,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L118",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_behaviour_pulls_profile_away_from_priors",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_behaviour_pulls_profile_away_from_priors"
     },
     {
       "relation": "contains",
@@ -24927,9 +24954,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L87",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_behavioural_none_without_signal",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_behavioural_none_without_signal"
     },
     {
       "relation": "contains",
@@ -24937,9 +24964,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L96",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_disliking_spicy_lowers_spice_preference",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_disliking_spicy_lowers_spice_preference"
     },
     {
       "relation": "contains",
@@ -24947,9 +24974,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L102",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_like_and_dislike_combine_symmetrically",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_like_and_dislike_combine_symmetrically"
     },
     {
       "relation": "contains",
@@ -24957,9 +24984,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L91",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_liking_high_difficulty_raises_complexity",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_liking_high_difficulty_raises_complexity"
     },
     {
       "relation": "contains",
@@ -24967,9 +24994,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L124",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_more_interactions_increase_behavioural_weight",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_more_interactions_increase_behavioural_weight"
     },
     {
       "relation": "contains",
@@ -24977,9 +25004,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L112",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_no_interactions_returns_priors",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_no_interactions_returns_priors"
     },
     {
       "relation": "contains",
@@ -24987,9 +25014,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_onboarding_priors_all_in_range",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_onboarding_priors_all_in_range"
     },
     {
       "relation": "contains",
@@ -24997,9 +25024,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_onboarding_skill_maps_to_dimensions",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_onboarding_skill_maps_to_dimensions"
     },
     {
       "relation": "contains",
@@ -25007,9 +25034,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_onboarding_spice_and_health_from_likes_and_diet",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_onboarding_spice_and_health_from_likes_and_diet"
     },
     {
       "relation": "contains",
@@ -25017,9 +25044,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_onboarding_time_tolerance_scales_with_max_time",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_onboarding_time_tolerance_scales_with_max_time"
     },
     {
       "relation": "contains",
@@ -25027,9 +25054,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_onboarding_unknown_ability_defaults_to_basic",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_onboarding_unknown_ability_defaults_to_basic"
     },
     {
       "relation": "contains",
@@ -25037,9 +25064,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_profile_always_has_all_dimensions_in_range",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_profile_always_has_all_dimensions_in_range"
     },
     {
       "relation": "contains",
@@ -25047,9 +25074,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_recipe_targets_difficulty_drives_skill_dimensions",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_recipe_targets_difficulty_drives_skill_dimensions"
     },
     {
       "relation": "contains",
@@ -25057,9 +25084,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L76",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_recipe_targets_exotic_cuisine_raises_adventurousness",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_recipe_targets_exotic_cuisine_raises_adventurousness"
     },
     {
       "relation": "contains",
@@ -25067,9 +25094,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L81",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_recipe_targets_missing_difficulty_defaults",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_recipe_targets_missing_difficulty_defaults"
     },
     {
       "relation": "contains",
@@ -25077,9 +25104,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "target": "tests_test_ability_test_recipe_targets_spicy_flavour",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_test_recipe_targets_spicy_flavour"
     },
     {
       "relation": "rationale_for",
@@ -25087,9 +25114,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_ability_py"
     },
     {
       "relation": "calls",
@@ -25098,9 +25125,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L120",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_test_behaviour_pulls_profile_away_from_priors",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "calls",
@@ -25109,9 +25136,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L97",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_test_disliking_spicy_lowers_spice_preference",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "calls",
@@ -25120,9 +25147,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L104",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_test_like_and_dislike_combine_symmetrically",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "calls",
@@ -25131,9 +25158,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_test_liking_high_difficulty_raises_complexity",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "calls",
@@ -25142,9 +25169,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L126",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_test_more_interactions_increase_behavioural_weight",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "calls",
@@ -25153,9 +25180,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L137",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_test_profile_always_has_all_dimensions_in_range",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "calls",
@@ -25164,9 +25191,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L66",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_test_recipe_targets_difficulty_drives_skill_dimensions",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "calls",
@@ -25175,9 +25202,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L77",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_test_recipe_targets_exotic_cuisine_raises_adventurousness",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "calls",
@@ -25186,9 +25213,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_ability.py",
       "source_location": "L72",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_ability_test_recipe_targets_spicy_flavour",
-      "target": "tests_test_ability_recipe",
-      "confidence_score": 1.0
+      "target": "tests_test_ability_recipe"
     },
     {
       "relation": "calls",
@@ -25646,9 +25673,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/main.py",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_main_py",
-      "target": "datetime",
-      "confidence_score": 1.0
+      "target": "datetime"
     },
     {
       "relation": "imports_from",
@@ -25668,9 +25695,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/main.py",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_main_py",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py"
     },
     {
       "relation": "imports_from",
@@ -25679,9 +25706,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/main.py",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_main_py",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_auth_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_auth_py"
     },
     {
       "relation": "imports_from",
@@ -25690,9 +25717,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/main.py",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_main_py",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py"
     },
     {
       "relation": "imports_from",
@@ -25869,9 +25896,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/auth.py",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_auth_py",
-      "target": "fastapi",
-      "confidence_score": 1.0
+      "target": "fastapi"
     },
     {
       "relation": "references",
@@ -28911,9 +28938,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py"
     },
     {
       "relation": "contains",
@@ -28921,9 +28948,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L95",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py",
-      "target": "app_ability_behavioural_profile",
-      "confidence_score": 1.0
+      "target": "app_ability_behavioural_profile"
     },
     {
       "relation": "contains",
@@ -28931,9 +28958,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py",
-      "target": "app_ability_clamp",
-      "confidence_score": 1.0
+      "target": "app_ability_clamp"
     },
     {
       "relation": "contains",
@@ -28941,9 +28968,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L123",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py",
-      "target": "app_ability_derive_ability_profile",
-      "confidence_score": 1.0
+      "target": "app_ability_derive_ability_profile"
     },
     {
       "relation": "contains",
@@ -28951,9 +28978,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py",
-      "target": "app_ability_onboarding_priors",
-      "confidence_score": 1.0
+      "target": "app_ability_onboarding_priors"
     },
     {
       "relation": "contains",
@@ -28961,9 +28988,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py",
-      "target": "app_ability_recipe_targets",
-      "confidence_score": 1.0
+      "target": "app_ability_recipe_targets"
     },
     {
       "relation": "contains",
@@ -28971,9 +28998,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py",
-      "target": "app_ability_weighted_means",
-      "confidence_score": 1.0
+      "target": "app_ability_weighted_means"
     },
     {
       "relation": "imports_from",
@@ -28982,9 +29009,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_jobs_py",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py"
     },
     {
       "relation": "calls",
@@ -28993,9 +29020,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L119",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_behavioural_profile",
-      "target": "app_ability_clamp",
-      "confidence_score": 1.0
+      "target": "app_ability_clamp"
     },
     {
       "relation": "references",
@@ -29004,9 +29031,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_clamp",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float"
     },
     {
       "relation": "calls",
@@ -29015,9 +29042,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_onboarding_priors",
-      "target": "app_ability_clamp",
-      "confidence_score": 1.0
+      "target": "app_ability_clamp"
     },
     {
       "relation": "calls",
@@ -29026,9 +29053,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L74",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_recipe_targets",
-      "target": "app_ability_clamp",
-      "confidence_score": 1.0
+      "target": "app_ability_clamp"
     },
     {
       "relation": "references",
@@ -29037,9 +29064,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L95",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_behavioural_profile",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float"
     },
     {
       "relation": "references",
@@ -29048,9 +29075,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L123",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_derive_ability_profile",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float"
     },
     {
       "relation": "references",
@@ -29059,9 +29086,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_onboarding_priors",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float"
     },
     {
       "relation": "references",
@@ -29070,9 +29097,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_recipe_targets",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float"
     },
     {
       "relation": "references",
@@ -29081,9 +29108,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_weighted_means",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_float"
     },
     {
       "relation": "calls",
@@ -29092,9 +29119,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L141",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_derive_ability_profile",
-      "target": "app_ability_onboarding_priors",
-      "confidence_score": 1.0
+      "target": "app_ability_onboarding_priors"
     },
     {
       "relation": "references",
@@ -29103,9 +29130,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_onboarding_priors",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str"
     },
     {
       "relation": "rationale_for",
@@ -29113,9 +29140,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_rationale_44",
-      "target": "app_ability_onboarding_priors",
-      "confidence_score": 1.0
+      "target": "app_ability_onboarding_priors"
     },
     {
       "relation": "references",
@@ -29124,9 +29151,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L95",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_behavioural_profile",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str"
     },
     {
       "relation": "references",
@@ -29135,9 +29162,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L123",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_derive_ability_profile",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str"
     },
     {
       "relation": "references",
@@ -29146,9 +29173,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_recipe_targets",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str"
     },
     {
       "relation": "references",
@@ -29157,9 +29184,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_weighted_means",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_ability_py_str"
     },
     {
       "relation": "rationale_for",
@@ -29167,9 +29194,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_rationale_62",
-      "target": "app_ability_recipe_targets",
-      "confidence_score": 1.0
+      "target": "app_ability_recipe_targets"
     },
     {
       "relation": "calls",
@@ -29178,9 +29205,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_weighted_means",
-      "target": "app_ability_recipe_targets",
-      "confidence_score": 1.0
+      "target": "app_ability_recipe_targets"
     },
     {
       "relation": "calls",
@@ -29189,9 +29216,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L110",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_behavioural_profile",
-      "target": "app_ability_weighted_means",
-      "confidence_score": 1.0
+      "target": "app_ability_weighted_means"
     },
     {
       "relation": "calls",
@@ -29200,9 +29227,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_derive_ability_profile",
-      "target": "app_ability_behavioural_profile",
-      "confidence_score": 1.0
+      "target": "app_ability_behavioural_profile"
     },
     {
       "relation": "rationale_for",
@@ -29210,9 +29237,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L101",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_rationale_101",
-      "target": "app_ability_behavioural_profile",
-      "confidence_score": 1.0
+      "target": "app_ability_behavioural_profile"
     },
     {
       "relation": "rationale_for",
@@ -29220,9 +29247,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/ability.py",
       "source_location": "L130",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_ability_rationale_130",
-      "target": "app_ability_derive_ability_profile",
-      "confidence_score": 1.0
+      "target": "app_ability_derive_ability_profile"
     },
     {
       "relation": "calls",
@@ -30602,9 +30629,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py"
     },
     {
       "relation": "contains",
@@ -30612,9 +30639,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L137",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "app_context_clamp",
-      "confidence_score": 1.0
+      "target": "app_context_clamp"
     },
     {
       "relation": "contains",
@@ -30622,9 +30649,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "app_context_classify_event",
-      "confidence_score": 1.0
+      "target": "app_context_classify_event"
     },
     {
       "relation": "contains",
@@ -30632,9 +30659,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "app_context_daily_context",
-      "confidence_score": 1.0
+      "target": "app_context_daily_context"
     },
     {
       "relation": "contains",
@@ -30642,9 +30669,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L192",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "app_context_extract_context",
-      "confidence_score": 1.0
+      "target": "app_context_extract_context"
     },
     {
       "relation": "contains",
@@ -30652,9 +30679,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L113",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "app_context_extract_deadlines",
-      "confidence_score": 1.0
+      "target": "app_context_extract_deadlines"
     },
     {
       "relation": "contains",
@@ -30662,9 +30689,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "app_context_normalize_event",
-      "confidence_score": 1.0
+      "target": "app_context_normalize_event"
     },
     {
       "relation": "contains",
@@ -30672,9 +30699,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "app_context_parse_dt",
-      "confidence_score": 1.0
+      "target": "app_context_parse_dt"
     },
     {
       "relation": "contains",
@@ -30682,9 +30709,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L141",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "app_context_recommended_constraints",
-      "confidence_score": 1.0
+      "target": "app_context_recommended_constraints"
     },
     {
       "relation": "contains",
@@ -30692,9 +30719,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "app_context_urgency",
-      "confidence_score": 1.0
+      "target": "app_context_urgency"
     },
     {
       "relation": "imports_from",
@@ -30703,9 +30730,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py",
-      "target": "datetime",
-      "confidence_score": 1.0
+      "target": "datetime"
     },
     {
       "relation": "references",
@@ -30714,9 +30741,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_classify_event",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_float"
     },
     {
       "relation": "references",
@@ -30725,9 +30752,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_classify_event",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_str"
     },
     {
       "relation": "calls",
@@ -30736,9 +30763,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L91",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_normalize_event",
-      "target": "app_context_classify_event",
-      "confidence_score": 1.0
+      "target": "app_context_classify_event"
     },
     {
       "relation": "references",
@@ -30747,9 +30774,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_parse_dt",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_str"
     },
     {
       "relation": "references",
@@ -30758,9 +30785,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_urgency",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_str",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_str"
     },
     {
       "relation": "references",
@@ -30769,9 +30796,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L137",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_clamp",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_float"
     },
     {
       "relation": "references",
@@ -30780,9 +30807,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L141",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_recommended_constraints",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_float",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_float"
     },
     {
       "relation": "calls",
@@ -30791,9 +30818,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L81",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_normalize_event",
-      "target": "app_context_parse_dt",
-      "confidence_score": 1.0
+      "target": "app_context_parse_dt"
     },
     {
       "relation": "references",
@@ -30802,9 +30829,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_parse_dt",
-      "target": "datetime",
-      "confidence_score": 1.0
+      "target": "datetime"
     },
     {
       "relation": "calls",
@@ -30813,9 +30840,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L197",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_extract_context",
-      "target": "app_context_normalize_event",
-      "confidence_score": 1.0
+      "target": "app_context_normalize_event"
     },
     {
       "relation": "calls",
@@ -30824,9 +30851,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_extract_deadlines",
-      "target": "app_context_normalize_event",
-      "confidence_score": 1.0
+      "target": "app_context_normalize_event"
     },
     {
       "relation": "calls",
@@ -30835,9 +30862,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L94",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_normalize_event",
-      "target": "date",
-      "confidence_score": 1.0
+      "target": "date"
     },
     {
       "relation": "rationale_for",
@@ -30845,9 +30872,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L80",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_rationale_80",
-      "target": "app_context_normalize_event",
-      "confidence_score": 1.0
+      "target": "app_context_normalize_event"
     },
     {
       "relation": "calls",
@@ -30856,9 +30883,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L129",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_extract_deadlines",
-      "target": "app_context_urgency",
-      "confidence_score": 1.0
+      "target": "app_context_urgency"
     },
     {
       "relation": "references",
@@ -30867,9 +30894,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_urgency",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_int",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_int"
     },
     {
       "relation": "references",
@@ -30878,9 +30905,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_daily_context",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_int",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_int"
     },
     {
       "relation": "references",
@@ -30889,9 +30916,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L192",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_extract_context",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_int",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_context_py_int"
     },
     {
       "relation": "calls",
@@ -30900,9 +30927,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L200",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_extract_context",
-      "target": "app_context_extract_deadlines",
-      "confidence_score": 1.0
+      "target": "app_context_extract_deadlines"
     },
     {
       "relation": "references",
@@ -30911,9 +30938,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L113",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_extract_deadlines",
-      "target": "date",
-      "confidence_score": 1.0
+      "target": "date"
     },
     {
       "relation": "rationale_for",
@@ -30921,9 +30948,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L114",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_rationale_114",
-      "target": "app_context_extract_deadlines",
-      "confidence_score": 1.0
+      "target": "app_context_extract_deadlines"
     },
     {
       "relation": "references",
@@ -30932,9 +30959,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_daily_context",
-      "target": "date",
-      "confidence_score": 1.0
+      "target": "date"
     },
     {
       "relation": "references",
@@ -30943,9 +30970,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L192",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_extract_context",
-      "target": "date",
-      "confidence_score": 1.0
+      "target": "date"
     },
     {
       "relation": "calls",
@@ -30954,9 +30981,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L155",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_daily_context",
-      "target": "app_context_clamp",
-      "confidence_score": 1.0
+      "target": "app_context_clamp"
     },
     {
       "relation": "calls",
@@ -30965,9 +30992,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L188",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_daily_context",
-      "target": "app_context_recommended_constraints",
-      "confidence_score": 1.0
+      "target": "app_context_recommended_constraints"
     },
     {
       "relation": "calls",
@@ -30976,9 +31003,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L205",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_extract_context",
-      "target": "app_context_daily_context",
-      "confidence_score": 1.0
+      "target": "app_context_daily_context"
     },
     {
       "relation": "rationale_for",
@@ -30986,9 +31013,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L150",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_rationale_150",
-      "target": "app_context_daily_context",
-      "confidence_score": 1.0
+      "target": "app_context_daily_context"
     },
     {
       "relation": "rationale_for",
@@ -30996,9 +31023,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/context.py",
       "source_location": "L193",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_context_rationale_193",
-      "target": "app_context_extract_context",
-      "confidence_score": 1.0
+      "target": "app_context_extract_context"
     },
     {
       "relation": "rationale_for",
@@ -31006,9 +31033,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/auth.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_auth_rationale_1",
-      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_auth_py",
-      "confidence_score": 1.0
+      "target": "home_kolesniii_uni_drp03_backend_recommender_api_app_auth_py"
     },
     {
       "relation": "contains",
@@ -31016,9 +31043,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/auth.py",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_kolesniii_uni_drp03_backend_recommender_api_app_auth_py",
-      "target": "app_auth_verify_cloud_function",
-      "confidence_score": 1.0
+      "target": "app_auth_verify_cloud_function"
     },
     {
       "relation": "rationale_for",
@@ -31026,9 +31053,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/auth.py",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_auth_rationale_13",
-      "target": "app_auth_verify_cloud_function",
-      "confidence_score": 1.0
+      "target": "app_auth_verify_cloud_function"
     },
     {
       "relation": "references",
@@ -31037,9 +31064,9 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/auth.py",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_auth_verify_cloud_function",
-      "target": "request",
-      "confidence_score": 1.0
+      "target": "request"
     },
     {
       "relation": "contains",
@@ -34890,9 +34917,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_adapters_deadlinefoodapi_ts",
-      "confidence_score": 1.0
+      "target": "src_adapters_deadlinefoodapi_ts"
     },
     {
       "relation": "imports_from",
@@ -34912,9 +34939,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "src_adapters_deadlinefoodapi_ts",
-      "confidence_score": 1.0
+      "target": "src_adapters_deadlinefoodapi_ts"
     },
     {
       "relation": "imports_from",
@@ -35242,9 +35269,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_functionurl",
-      "target": "adapters_deadlinefoodapi_firebasefunctionurl",
-      "confidence_score": 1.0
+      "target": "adapters_deadlinefoodapi_firebasefunctionurl"
     },
     {
       "relation": "imports",
@@ -35264,9 +35291,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "adapters_deadlinefoodapi_firebasefunctionurl",
-      "confidence_score": 1.0
+      "target": "adapters_deadlinefoodapi_firebasefunctionurl"
     },
     {
       "relation": "calls",
@@ -35286,9 +35313,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "adapters_deadlinefoodapi_uploadrecipephoto",
-      "confidence_score": 1.0
+      "target": "adapters_deadlinefoodapi_uploadrecipephoto"
     },
     {
       "relation": "calls",
@@ -38359,9 +38386,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "domain_types_recipeingredient",
-      "confidence_score": 1.0
+      "target": "domain_types_recipeingredient"
     },
     {
       "relation": "imports",
@@ -38403,9 +38430,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "domain_types_recipeingredient",
-      "confidence_score": 1.0
+      "target": "domain_types_recipeingredient"
     },
     {
       "relation": "imports",
@@ -38740,9 +38767,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_prototype_nutritionapi_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_nutritionapi_ts"
     },
     {
       "relation": "contains",
@@ -38783,9 +38810,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_nutritionapi_fetchopenfoodfactsnutrition",
-      "confidence_score": 1.0
+      "target": "prototype_nutritionapi_fetchopenfoodfactsnutrition"
     },
     {
       "relation": "contains",
@@ -39096,9 +39123,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_prototype_analytics_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_analytics_ts"
     },
     {
       "relation": "imports_from",
@@ -39228,9 +39255,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_analytics_trackprototypeevent",
-      "confidence_score": 1.0
+      "target": "prototype_analytics_trackprototypeevent"
     },
     {
       "relation": "imports",
@@ -39360,9 +39387,9 @@
       "source_file": "src/prototype/recommenderApi.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_test_ts",
-      "target": "prototype_recommenderapi_deadlinestressfromdeadlines",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_deadlinestressfromdeadlines"
     },
     {
       "relation": "contains",
@@ -39370,9 +39397,9 @@
       "source_file": "src/prototype/recommenderApi.test.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_test_ts",
-      "target": "prototype_recommenderapi_test_deadline",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_test_deadline"
     },
     {
       "relation": "imports",
@@ -39381,9 +39408,9 @@
       "source_file": "src/prototype/recommenderApi.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_test_ts",
-      "target": "prototype_types_deadline",
-      "confidence_score": 1.0
+      "target": "prototype_types_deadline"
     },
     {
       "relation": "imports_from",
@@ -39392,9 +39419,9 @@
       "source_file": "src/prototype/recommenderApi.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_test_ts",
-      "target": "src_prototype_recommenderapi_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_recommenderapi_ts"
     },
     {
       "relation": "imports_from",
@@ -39403,9 +39430,9 @@
       "source_file": "src/prototype/recommenderApi.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_test_ts",
-      "target": "src_prototype_types_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_types_ts"
     },
     {
       "relation": "imports",
@@ -40753,9 +40780,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "src_prototype_data_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_data_ts"
     },
     {
       "relation": "imports_from",
@@ -40896,9 +40923,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_data_seedmeals",
-      "confidence_score": 1.0
+      "target": "prototype_data_seedmeals"
     },
     {
       "relation": "imports",
@@ -41094,9 +41121,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_prototype_utils_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_utils_ts"
     },
     {
       "relation": "imports_from",
@@ -41428,9 +41455,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_utils_money",
-      "confidence_score": 1.0
+      "target": "prototype_utils_money"
     },
     {
       "relation": "imports",
@@ -41681,9 +41708,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_utils_nutritionsourcesummary",
-      "confidence_score": 1.0
+      "target": "prototype_utils_nutritionsourcesummary"
     },
     {
       "relation": "imports",
@@ -41713,9 +41740,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_cookingability",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_cookingability"
     },
     {
       "relation": "contains",
@@ -41723,9 +41750,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_deadlinestressfromdeadlines",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_deadlinestressfromdeadlines"
     },
     {
       "relation": "contains",
@@ -41733,9 +41760,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L109",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_fetchrecommenderrecommendations",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_fetchrecommenderrecommendations"
     },
     {
       "relation": "contains",
@@ -41743,9 +41770,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_functionurl",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_functionurl"
     },
     {
       "relation": "contains",
@@ -41753,9 +41780,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_readjson",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_readjson"
     },
     {
       "relation": "contains",
@@ -41763,9 +41790,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_recommenderinteractionaction",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_recommenderinteractionaction"
     },
     {
       "relation": "contains",
@@ -41773,9 +41800,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_recommenderrecipe",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_recommenderrecipe"
     },
     {
       "relation": "contains",
@@ -41783,9 +41810,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_recordrecommenderinteraction",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_recordrecommenderinteraction"
     },
     {
       "relation": "contains",
@@ -41793,9 +41820,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_scoredrecipe",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_scoredrecipe"
     },
     {
       "relation": "contains",
@@ -41803,9 +41830,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_seedmealids",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_seedmealids"
     },
     {
       "relation": "contains",
@@ -41813,9 +41840,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_syncrecommenderuser",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_syncrecommenderuser"
     },
     {
       "relation": "contains",
@@ -41823,9 +41850,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_recommenderapi_toprototypemeal",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_toprototypemeal"
     },
     {
       "relation": "imports",
@@ -41834,9 +41861,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_types_deadline",
-      "confidence_score": 1.0
+      "target": "prototype_types_deadline"
     },
     {
       "relation": "imports",
@@ -41845,9 +41872,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_types_meal",
-      "confidence_score": 1.0
+      "target": "prototype_types_meal"
     },
     {
       "relation": "imports",
@@ -41856,9 +41883,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "prototype_types_preferences",
-      "confidence_score": 1.0
+      "target": "prototype_types_preferences"
     },
     {
       "relation": "imports_from",
@@ -41867,9 +41894,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_recommenderapi_ts",
-      "target": "src_prototype_types_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_types_ts"
     },
     {
       "relation": "imports_from",
@@ -41878,9 +41905,9 @@
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_discoverscreen_tsx",
-      "target": "src_prototype_recommenderapi_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_recommenderapi_ts"
     },
     {
       "relation": "calls",
@@ -41889,9 +41916,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L157",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_recordrecommenderinteraction",
-      "target": "prototype_recommenderapi_readjson",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_readjson"
     },
     {
       "relation": "calls",
@@ -41900,9 +41927,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L80",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_syncrecommenderuser",
-      "target": "prototype_recommenderapi_readjson",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_readjson"
     },
     {
       "relation": "calls",
@@ -41911,9 +41938,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_fetchrecommenderrecommendations",
-      "target": "prototype_recommenderapi_functionurl",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_functionurl"
     },
     {
       "relation": "calls",
@@ -41922,9 +41949,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L144",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_recordrecommenderinteraction",
-      "target": "prototype_recommenderapi_functionurl",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_functionurl"
     },
     {
       "relation": "calls",
@@ -41933,9 +41960,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_syncrecommenderuser",
-      "target": "prototype_recommenderapi_functionurl",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_functionurl"
     },
     {
       "relation": "calls",
@@ -41944,9 +41971,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L67",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_syncrecommenderuser",
-      "target": "prototype_recommenderapi_cookingability",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_cookingability"
     },
     {
       "relation": "calls",
@@ -41955,9 +41982,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L123",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_fetchrecommenderrecommendations",
-      "target": "prototype_recommenderapi_deadlinestressfromdeadlines",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_deadlinestressfromdeadlines"
     },
     {
       "relation": "calls",
@@ -41966,9 +41993,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L152",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_recordrecommenderinteraction",
-      "target": "prototype_recommenderapi_deadlinestressfromdeadlines",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_deadlinestressfromdeadlines"
     },
     {
       "relation": "calls",
@@ -41977,9 +42004,9 @@
       "source_file": "src/prototype/recommenderApi.ts",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_recommenderapi_fetchrecommenderrecommendations",
-      "target": "prototype_recommenderapi_syncrecommenderuser",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_syncrecommenderuser"
     },
     {
       "relation": "imports",
@@ -41988,9 +42015,9 @@
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_discoverscreen_tsx",
-      "target": "prototype_recommenderapi_fetchrecommenderrecommendations",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_fetchrecommenderrecommendations"
     },
     {
       "relation": "imports",
@@ -41999,9 +42026,9 @@
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_discoverscreen_tsx",
-      "target": "prototype_recommenderapi_recordrecommenderinteraction",
-      "confidence_score": 1.0
+      "target": "prototype_recommenderapi_recordrecommenderinteraction"
     },
     {
       "relation": "contains",
@@ -42265,9 +42292,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_prototype_ingredients_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_ingredients_ts"
     },
     {
       "relation": "imports_from",
@@ -42666,9 +42693,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_ingredients_ingredientdraft",
-      "confidence_score": 1.0
+      "target": "prototype_ingredients_ingredientdraft"
     },
     {
       "relation": "imports",
@@ -42831,9 +42858,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "components_recipeeditor_defaultform",
-      "target": "prototype_ingredients_createingredientdraft",
-      "confidence_score": 1.0
+      "target": "prototype_ingredients_createingredientdraft"
     },
     {
       "relation": "calls",
@@ -42875,9 +42902,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_ingredients_createingredientdraft",
-      "confidence_score": 1.0
+      "target": "prototype_ingredients_createingredientdraft"
     },
     {
       "relation": "calls",
@@ -42886,9 +42913,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "components_recipeeditor_mealtoform",
-      "target": "prototype_ingredients_ingredientdraftsfromingredients",
-      "confidence_score": 1.0
+      "target": "prototype_ingredients_ingredientdraftsfromingredients"
     },
     {
       "relation": "imports",
@@ -42897,9 +42924,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_ingredients_ingredientdraftsfromingredients",
-      "confidence_score": 1.0
+      "target": "prototype_ingredients_ingredientdraftsfromingredients"
     },
     {
       "relation": "imports",
@@ -42941,9 +42968,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_ingredients_sanitiseingredientdrafts",
-      "confidence_score": 1.0
+      "target": "prototype_ingredients_sanitiseingredientdrafts"
     },
     {
       "relation": "imports",
@@ -43305,9 +43332,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_prototype_types_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_types_ts"
     },
     {
       "relation": "imports_from",
@@ -43575,6 +43602,17 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/prototype/components/RecipeEditor.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_prototype_components_recipeeditor_tsx",
+      "target": "prototype_types_mealslot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/prototype/components/SwapModal.tsx",
       "source_location": "L6",
       "weight": 1.0,
@@ -43611,9 +43649,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_types_nutritionsource",
-      "confidence_score": 1.0
+      "target": "prototype_types_nutritionsource"
     },
     {
       "relation": "imports",
@@ -43633,9 +43671,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_types_meal",
-      "confidence_score": 1.0
+      "target": "prototype_types_meal"
     },
     {
       "relation": "imports",
@@ -44522,9 +44560,9 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_recipeshubscreen_tsx",
-      "target": "components_recipeeditor_recipeeditor",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_recipeeditor"
     },
     {
       "relation": "imports",
@@ -44533,9 +44571,9 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_recipeshubscreen_tsx",
-      "target": "components_recipeeditor_recipeeditoroutput",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_recipeeditoroutput"
     },
     {
       "relation": "contains",
@@ -44585,9 +44623,9 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_recipeshubscreen_tsx",
-      "target": "src_prototype_components_recipeeditor_tsx",
-      "confidence_score": 1.0
+      "target": "src_prototype_components_recipeeditor_tsx"
     },
     {
       "relation": "imports",
@@ -44910,9 +44948,9 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_recipedetailscreen_tsx",
-      "target": "components_recipeeditor_recipeeditor",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_recipeeditor"
     },
     {
       "relation": "imports",
@@ -44921,9 +44959,9 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_recipedetailscreen_tsx",
-      "target": "components_recipeeditor_recipeeditoroutput",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_recipeeditoroutput"
     },
     {
       "relation": "imports",
@@ -45016,9 +45054,9 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_recipedetailscreen_tsx",
-      "target": "src_prototype_components_recipeeditor_tsx",
-      "confidence_score": 1.0
+      "target": "src_prototype_components_recipeeditor_tsx"
     },
     {
       "relation": "imports_from",
@@ -45789,9 +45827,9 @@
       "source_file": "src/prototype/components/IngredientEditor.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_ingredienteditor_tsx",
-      "target": "components_ingredienteditor_ingredientcombobox",
-      "confidence_score": 1.0
+      "target": "components_ingredienteditor_ingredientcombobox"
     },
     {
       "relation": "contains",
@@ -45876,9 +45914,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_prototype_components_ingredienteditor_tsx",
-      "confidence_score": 1.0
+      "target": "src_prototype_components_ingredienteditor_tsx"
     },
     {
       "relation": "imports",
@@ -45887,9 +45925,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_ingredienteditor_ingredienteditor",
-      "confidence_score": 1.0
+      "target": "components_ingredienteditor_ingredienteditor"
     },
     {
       "relation": "contains",
@@ -45908,9 +45946,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_primitives_appbutton",
-      "confidence_score": 1.0
+      "target": "components_primitives_appbutton"
     },
     {
       "relation": "imports",
@@ -45919,9 +45957,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_primitives_field",
-      "confidence_score": 1.0
+      "target": "components_primitives_field"
     },
     {
       "relation": "contains",
@@ -45929,9 +45967,19 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_recipeeditor_defaultform",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_defaultform"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/components/RecipeEditor.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_components_recipeeditor_tsx",
+      "target": "components_recipeeditor_editorform"
     },
     {
       "relation": "contains",
@@ -45940,7 +45988,7 @@
       "source_location": "L20",
       "weight": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_recipeeditor_editorform",
+      "target": "components_recipeeditor_meal_slot_options",
       "confidence_score": 1.0
     },
     {
@@ -45949,9 +45997,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_recipeeditor_mealtoform",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_mealtoform"
     },
     {
       "relation": "contains",
@@ -45959,9 +46007,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_recipeeditor_positivenumber",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_positivenumber"
     },
     {
       "relation": "contains",
@@ -45969,9 +46017,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L109",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_recipeeditor_recipeeditor",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_recipeeditor"
     },
     {
       "relation": "contains",
@@ -45979,9 +46027,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_recipeeditor_recipeeditoroutput",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_recipeeditoroutput"
     },
     {
       "relation": "contains",
@@ -45989,8 +46037,28 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L98",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "components_recipeeditor_splitlist",
+      "target": "components_recipeeditor_splitlist"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/components/RecipeEditor.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_prototype_components_recipeeditor_tsx",
+      "target": "components_recipeeditor_tag_options",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/components/RecipeEditor.tsx",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "src_prototype_components_recipeeditor_tsx",
+      "target": "components_recipeeditor_tageditor",
       "confidence_score": 1.0
     },
     {
@@ -46000,9 +46068,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_components_ui_card_tsx",
-      "confidence_score": 1.0
+      "target": "src_components_ui_card_tsx"
     },
     {
       "relation": "imports_from",
@@ -46011,9 +46079,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_components_ui_textarea_tsx",
-      "confidence_score": 1.0
+      "target": "src_components_ui_textarea_tsx"
     },
     {
       "relation": "imports_from",
@@ -46022,9 +46090,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "src_prototype_components_primitives_tsx",
-      "confidence_score": 1.0
+      "target": "src_prototype_components_primitives_tsx"
     },
     {
       "relation": "imports",
@@ -46033,9 +46101,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "ui_card_card",
-      "confidence_score": 1.0
+      "target": "ui_card_card"
     },
     {
       "relation": "imports",
@@ -46044,9 +46112,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "ui_textarea_textarea",
-      "confidence_score": 1.0
+      "target": "ui_textarea_textarea"
     },
     {
       "relation": "calls",
@@ -46055,9 +46123,9 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L138",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "components_recipeeditor_recipeeditor",
-      "target": "components_recipeeditor_positivenumber",
-      "confidence_score": 1.0
+      "target": "components_recipeeditor_positivenumber"
     },
     {
       "relation": "contains",
@@ -54017,5 +54085,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "04935d3f00c67c068e36f3f7e7adf25d72f9d0d9"
+  "built_at_commit": "7b9754c31ec240aa24d16fa64904535b36c045b9"
 }

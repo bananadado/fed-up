@@ -77,6 +77,7 @@ export function RecipeDetailScreen({
       name: output.name || selectedMeal.name,
       time: output.time,
       price: output.price,
+      mealSlots: output.mealSlots,
       ingredients: output.ingredients,
       tags: output.tags,
       allergens: output.allergens,
