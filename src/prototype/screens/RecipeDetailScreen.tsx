@@ -1,5 +1,6 @@
-import { ArrowLeft, MessageSquare, Pencil, RefreshCcw, Save, X } from "lucide-react";
+import { ArrowLeft, Camera, MessageSquare, Pencil, RefreshCcw, Save, X } from "lucide-react";
 import { useMemo, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
+import { uploadRecipePhoto } from "@/adapters/deadlineFoodApi";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -94,6 +95,9 @@ export function RecipeDetailScreen({
   const [isEditing, setIsEditing] = useState(false);
   const [nutritionStatus, setNutritionStatus] = useState<string | null>(null);
   const [nutritionLoading, setNutritionLoading] = useState(false);
+  const [editPhotoFile, setEditPhotoFile] = useState<File | null>(null);
+  const [editPhotoPreview, setEditPhotoPreview] = useState<string | null>(null);
+  const [editPhotoUploading, setEditPhotoUploading] = useState(false);
   const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
 
   const computedRating = useMemo(() => {
@@ -123,8 +127,21 @@ export function RecipeDetailScreen({
     setCustomRecipes((recipes) => [nextMeal, ...recipes.filter((recipe) => recipe.id !== nextMeal.id)]);
   }
 
-  function saveRecipe(event: FormEvent<HTMLFormElement>) {
+  async function saveRecipe(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    let photoUrl = selectedMeal.photoUrl;
+    if (editPhotoFile) {
+      setEditPhotoUploading(true);
+      try {
+        const result = await uploadRecipePhoto(editPhotoFile);
+        photoUrl = result.photoUrl;
+      } catch {
+        // non-fatal: keep existing photo
+      } finally {
+        setEditPhotoUploading(false);
+      }
+    }
 
     saveMeal({
       ...selectedMeal,
@@ -146,6 +163,7 @@ export function RecipeDetailScreen({
         .map((step) => step.trim())
         .filter(Boolean),
       note: form.note.trim(),
+      ...(photoUrl !== undefined ? { photoUrl } : {}),
     });
     track("recipe_saved", {
       meal_id: selectedMeal.id,
@@ -154,6 +172,8 @@ export function RecipeDetailScreen({
       ingredient_count: sanitiseIngredientDrafts(form.ingredients).length,
       tag_count: splitList(form.tags).length,
     });
+    setEditPhotoFile(null);
+    setEditPhotoPreview(null);
     setIsEditing(false);
   }
 
@@ -197,6 +217,8 @@ export function RecipeDetailScreen({
     track("recipe_edit_cancelled", { meal_id: selectedMeal.id });
     setForm(mealToForm(selectedMeal));
     setNutritionStatus(null);
+    setEditPhotoFile(null);
+    setEditPhotoPreview(null);
     setIsEditing(false);
   }
 
@@ -286,6 +308,41 @@ export function RecipeDetailScreen({
             </AppButton>
           </div>
           <form className="mt-5 space-y-4" onSubmit={saveRecipe}>
+            <label className="relative inline-block cursor-pointer">
+              <div className="h-36 w-48 overflow-hidden rounded-lg bg-emerald-50 shadow-inner">
+                {editPhotoPreview ?? selectedMeal.photoUrl ? (
+                  <img
+                    src={editPhotoPreview ?? selectedMeal.photoUrl}
+                    alt={selectedMeal.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-8xl">
+                    {selectedMeal.image}
+                  </div>
+                )}
+              </div>
+              <div className="absolute bottom-2 right-2 flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1.5 text-xs font-semibold text-stone-700 shadow-sm">
+                <Camera size={13} />
+                {editPhotoPreview ?? selectedMeal.photoUrl ? "Replace photo" : "Add photo"}
+              </div>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] ?? null;
+                  setEditPhotoFile(file);
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = () => setEditPhotoPreview(reader.result as string);
+                    reader.readAsDataURL(file);
+                  } else {
+                    setEditPhotoPreview(null);
+                  }
+                }}
+              />
+            </label>
             <Field label="Recipe name" value={form.name} onChange={(name) => setForm({ ...form, name })} />
             <div className="grid gap-3 sm:grid-cols-2">
               <Field label="Time (mins)" type="number" value={form.time} onChange={(time) => setForm({ ...form, time: +time })} />
@@ -314,8 +371,8 @@ export function RecipeDetailScreen({
               <Textarea value={form.instructions} onChange={(event) => setForm({ ...form, instructions: event.target.value })} className="mt-2 min-h-36 rounded-lg border-stone-200 bg-white" />
             </label>
             <Field label="Notes" value={form.note} onChange={(note) => setForm({ ...form, note })} />
-            <AppButton type="submit">
-              <Save size={16} /> Save recipe
+            <AppButton type="submit" disabled={editPhotoUploading}>
+              <Save size={16} /> {editPhotoUploading ? "Uploading..." : "Save recipe"}
             </AppButton>
           </form>
         </Card>
@@ -323,8 +380,14 @@ export function RecipeDetailScreen({
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4 sm:p-6">
           <div className="grid gap-7 lg:grid-cols-[340px_minmax(0,1fr)]">
             <aside className="space-y-4">
-              <div className="flex aspect-[4/3] items-center justify-center rounded-lg bg-emerald-50 text-8xl shadow-inner" role="img" aria-label={`${meal.name} image`}>
-                {meal.image}
+              <div className="aspect-[4/3] overflow-hidden rounded-lg bg-emerald-50 shadow-inner">
+                {meal.photoUrl ? (
+                  <img src={meal.photoUrl} alt={meal.name} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-8xl" role="img" aria-label={`${meal.name} image`}>
+                    {meal.image}
+                  </div>
+                )}
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <div className="rounded-lg bg-stone-50 p-3">
