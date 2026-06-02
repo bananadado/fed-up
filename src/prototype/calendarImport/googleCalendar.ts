@@ -3,6 +3,8 @@ import { calendarGoogleExchangeUrl } from "./calendarApi";
 
 declare const __BUN_PUBLIC_GOOGLE_CLIENT_ID__: string | undefined;
 
+const DEFAULT_GOOGLE_CLIENT_ID = "462837238446-hug5j7of8b35dt1t13fd8be1nebnrrbb.apps.googleusercontent.com";
+
 declare global {
   interface Window {
     google?: {
@@ -25,9 +27,9 @@ let _envGoogleClientId: string | undefined;
 try { _envGoogleClientId = process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID; } catch { /* bundled browser */ }
 
 const clientId: string =
-  (typeof __BUN_PUBLIC_GOOGLE_CLIENT_ID__ !== "undefined" ? __BUN_PUBLIC_GOOGLE_CLIENT_ID__ : undefined) ??
-  _envGoogleClientId ??
-  "";
+  (typeof __BUN_PUBLIC_GOOGLE_CLIENT_ID__ !== "undefined" ? __BUN_PUBLIC_GOOGLE_CLIENT_ID__ : undefined) ||
+  _envGoogleClientId ||
+  DEFAULT_GOOGLE_CLIENT_ID;
 
 const SCOPE = "https://www.googleapis.com/auth/calendar.events.readonly";
 
