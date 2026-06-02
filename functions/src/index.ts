@@ -22,6 +22,7 @@ import {
   canonicalConstraints,
   deadlineBootstrap,
   prototypeMeta,
+  prototypeRecipes,
   seededMeals,
 } from "./generated/prototypeData";
 
@@ -30,12 +31,17 @@ setGlobalOptions({region: "europe-west2", maxInstances: 10});
 
 const firestore = getFirestore();
 const prototypeRef = firestore.collection("prototypeData").doc("deadlineFood");
+// Canonical recipe content lives in Firestore (issue #123). pgvector stores only
+// the recipe UID as primary key plus its embedding; reviews are Firestore-only.
+const recipesRef = firestore.collection("recipes");
+const recipeReviewsRef = firestore.collection("recipeReviews");
 const anonymousSessionsRef = firestore.collection("anonymousSessions");
 const openFoodFactsCacheRef = firestore.collection("openFoodFactsNutritionCache");
 const openFoodFactsRateLimitRef = firestore
   .collection("serviceRateLimits")
   .doc("openFoodFactsSearchV2");
 const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
+const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
 const prototypeSessionSettingsVersion = 2;
@@ -294,6 +300,142 @@ function rejectUnsupportedMethod(request: HttpRequest, response: HttpResponse): 
   }
 
   return false;
+}
+
+function rejectUnsupportedReviewMethod(request: HttpRequest, response: HttpResponse): boolean {
+  if (request.method === "OPTIONS") {
+    response.status(204).send("");
+    return true;
+  }
+
+  if (request.method !== "GET" && request.method !== "HEAD" && request.method !== "POST") {
+    response.set("Allow", "GET, HEAD, POST, OPTIONS");
+    response.status(405).json({error: "Method not allowed"});
+    return true;
+  }
+
+  return false;
+}
+
+// ── Canonical recipe store (Firestore) ──────────────────────────────────────
+// Recipe content is owned by Firestore; pgvector holds only the UID + embedding.
+
+async function ensureRecipesSeeded(): Promise<void> {
+  const existing = await recipesRef.limit(1).get();
+  if (!existing.empty) return;
+
+  const batch = firestore.batch();
+  for (const recipe of prototypeRecipes) {
+    batch.set(recipesRef.doc(recipe.id), {
+      ...recipe,
+      updatedAt: FieldValue.serverTimestamp(),
+    });
+  }
+  await batch.commit();
+}
+
+async function listRecipes(): Promise<UnknownRecord[]> {
+  await ensureRecipesSeeded();
+  const snapshot = await recipesRef.get();
+  return snapshot.docs.map((doc) => doc.data() as UnknownRecord);
+}
+
+// Map a canonical prototype recipe (Firestore shape) to the recommender's
+// RecipeIn payload so pgvector can embed it keyed by the recipe UID.
+function toRecommenderRecipePayload(recipe: UnknownRecord): UnknownRecord {
+  const num = (value: unknown, fallback = 0): number =>
+    typeof value === "number" && Number.isFinite(value) ? value : fallback;
+  const str = (value: unknown): string => (typeof value === "string" ? value : "");
+  const list = (value: unknown): unknown[] => (Array.isArray(value) ? value : []);
+  const nutrition = asRecord(recipe.nutrition) ?? {};
+
+  return {
+    id: recipe.id,
+    name: str(recipe.name),
+    meal_type: str(recipe.type) || "cook",
+    meal_slots: list(recipe.mealSlots),
+    price_pence: Math.round(num(recipe.price) * 100),
+    prep_minutes: num(recipe.time),
+    dietary_tags: [],
+    allergens: list(recipe.allergens),
+    suitability_tags: list(recipe.tags),
+    ingredients: list(recipe.ingredients),
+    instructions: list(recipe.instructions),
+    nutrition: {
+      calories: num(nutrition.calories),
+      protein: num(nutrition.protein),
+      carbs: num(nutrition.carbs),
+      fat: num(nutrition.fat),
+    },
+    source: str(recipe.source) || null,
+    note: str(recipe.note) || null,
+  };
+}
+
+type StoredReview = {
+  id: string;
+  author: string;
+  rating: number;
+  comment: string;
+  date: string;
+};
+
+function sanitizeReviewInput(
+  value: UnknownRecord | null,
+): {author: string; rating: number; comment: string} | null {
+  if (!value) return null;
+
+  const comment = typeof value.comment === "string" ? value.comment.trim() : "";
+  if (!comment) return null;
+
+  const author =
+    typeof value.author === "string" && value.author.trim() ?
+      value.author.trim().slice(0, 60) :
+      "Anonymous";
+  const ratingRaw = typeof value.rating === "number" ? value.rating : Number(value.rating);
+  const rating = Number.isFinite(ratingRaw) ?
+    Math.min(5, Math.max(1, Math.round(ratingRaw))) :
+    5;
+
+  return {author, rating, comment: comment.slice(0, 2000)};
+}
+
+function averageRating(reviews: StoredReview[]): number {
+  if (reviews.length === 0) return 0;
+  return reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+}
+
+async function readRecipeReviews(recipeId: string): Promise<StoredReview[]> {
+  const snapshot = await recipeReviewsRef.doc(recipeId).get();
+  const data = snapshot.data();
+  return Array.isArray(data?.reviews) ? (data?.reviews as StoredReview[]) : [];
+}
+
+async function appendRecipeReview(
+  recipeId: string,
+  review: {author: string; rating: number; comment: string},
+): Promise<StoredReview[]> {
+  const docRef = recipeReviewsRef.doc(recipeId);
+
+  return firestore.runTransaction(async (transaction) => {
+    const snapshot = await transaction.get(docRef);
+    const data = snapshot.data();
+    const existing = Array.isArray(data?.reviews) ? (data?.reviews as StoredReview[]) : [];
+    const stored: StoredReview = {
+      id: randomUUID(),
+      author: review.author,
+      rating: review.rating,
+      comment: review.comment,
+      date: new Date().toISOString(),
+    };
+    const next = [stored, ...existing].slice(0, 200);
+    transaction.set(
+      docRef,
+      {reviews: next, updatedAt: FieldValue.serverTimestamp()},
+      {merge: true},
+    );
+    return next;
+  });
 }
 
 function rejectUnsupportedSessionMethod(
@@ -621,6 +763,7 @@ async function proxyRecommenderRequest(
   request: HttpRequest,
   response: HttpResponse,
   path: string,
+  payloadOverride?: unknown,
 ): Promise<void> {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
@@ -633,7 +776,7 @@ async function proxyRecommenderRequest(
         "Content-Type": "application/json",
         "X-Deadline-Food-API-Key": recommenderApiKey.value(),
       },
-      body: JSON.stringify(request.body ?? {}),
+      body: JSON.stringify(payloadOverride ?? request.body ?? {}),
       signal: AbortSignal.timeout(30_000),
     });
     const body = await upstream.text();
@@ -1102,8 +1245,79 @@ export const deadlineFoodRecommenderUser = onRequest(recommenderHttpOptions, asy
   await proxyRecommenderRequest(request, response, "/users");
 });
 
+export const deadlineFoodRecipes = onRequest(publicHttpOptions, async (request, response) => {
+  if (rejectUnsupportedMethod(request, response)) return;
+
+  try {
+    sendJson(response, await listRecipes());
+  } catch (error) {
+    sendError(response, error);
+  }
+});
+
+export const deadlineFoodRecipeReviews = onRequest(publicHttpOptions, async (request, response) => {
+  if (rejectUnsupportedReviewMethod(request, response)) return;
+
+  try {
+    if (request.method === "POST") {
+      const body = asRecord(request.body);
+      const recipeId = typeof body?.recipeId === "string" ? body.recipeId : null;
+      if (!recipeId || !recipeIdPattern.test(recipeId)) {
+        response.status(400).json({error: "A valid recipeId is required"});
+        return;
+      }
+      const review = sanitizeReviewInput(asRecord(body?.review));
+      if (!review) {
+        response.status(400).json({error: "A review comment is required"});
+        return;
+      }
+      const reviews = await appendRecipeReview(recipeId, review);
+      response.set("Cache-Control", "private, max-age=0, no-store");
+      response.status(200).json({reviews, rating: averageRating(reviews)});
+      return;
+    }
+
+    const recipeId = typeof request.query.recipeId === "string" ? request.query.recipeId : "";
+    if (!recipeId || !recipeIdPattern.test(recipeId)) {
+      response.status(400).json({error: "A valid recipeId is required"});
+      return;
+    }
+    const reviews = await readRecipeReviews(recipeId);
+    response.set("Cache-Control", "private, max-age=0, no-store");
+    response.status(200).json({reviews, rating: averageRating(reviews)});
+  } catch (error) {
+    sendError(response, error);
+  }
+});
+
 export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async (request, response) => {
-  await proxyRecommenderRequest(request, response, "/recipes");
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = asRecord(request.body);
+  const recipeId = typeof body?.id === "string" ? body.id : null;
+  if (!body || !recipeId || !recipeIdPattern.test(recipeId)) {
+    response.status(400).json({error: "A valid recipe id is required"});
+    return;
+  }
+
+  try {
+    // Canonical recipe content -> Firestore (issue #123). Reviews live in the
+    // recipeReviews collection only, so strip them (and the derived rating) here.
+    const recipeContent = {...body};
+    delete recipeContent.reviews;
+    delete recipeContent.rating;
+    await recipesRef.doc(recipeId).set(
+      {...recipeContent, updatedAt: FieldValue.serverTimestamp()},
+      {merge: true},
+    );
+  } catch (error) {
+    logger.error("Recipe could not be written to Firestore", {recipeId, error});
+    response.status(502).json({error: "Recipe could not be saved"});
+    return;
+  }
+
+  // Embedding keyed by the recipe UID -> pgvector recommender.
+  await proxyRecommenderRequest(request, response, "/recipes", toRecommenderRecipePayload(body));
 });
 
 export const deadlineFoodRecommendations = onRequest(recommenderHttpOptions, async (request, response) => {

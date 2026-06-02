@@ -29,7 +29,10 @@ async function proxyToFirebaseFunction(functionName: string, req: Request): Prom
     );
   }
 
-  const response = await fetch(`${firebaseFunctionsBaseUrl}/${functionName}`, {
+  const target = new URL(`${firebaseFunctionsBaseUrl}/${functionName}`);
+  target.search = new URL(req.url).search;
+
+  const response = await fetch(target, {
     method: req.method,
     headers: req.headers,
     body: req.body,
@@ -73,6 +76,21 @@ const server = serve({
     "/api/deadline-food/nutrition/openfoodfacts": {
       async POST(req) {
         return proxyToFirebaseFunction("deadlineFoodNutrition", req);
+      },
+    },
+
+    "/api/deadline-food/recipes": {
+      async GET(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipes", req);
+      },
+    },
+
+    "/api/deadline-food/recipe-reviews": {
+      async GET(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipeReviews", req);
+      },
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipeReviews", req);
       },
     },
 

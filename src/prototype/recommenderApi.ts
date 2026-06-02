@@ -78,35 +78,17 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences)
 }
 
 /**
- * Push a user-created recipe to the recommender so it is embedded instantly on
- * creation. Fire-and-forget at the call site; the backend embeds synchronously
- * inside POST /recipes.
+ * Persist a user-created recipe on creation. The canonical recipe content is
+ * written to Firestore (issue #123) and the recommender embeds it keyed by the
+ * recipe UID — both handled by the deadlineFoodRecipeCreate function, which
+ * receives the canonical Meal and maps it to the recommender payload itself.
+ * Fire-and-forget at the call site.
  */
 export async function createRecommenderRecipe(meal: Meal): Promise<void> {
   const response = await fetch(functionUrl("deadlineFoodRecipeCreate", "/api/recommender/recipe"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id: meal.id,
-      name: meal.name,
-      meal_type: meal.type,
-      meal_slots: meal.mealSlots,
-      price_pence: Math.round(meal.price * 100),
-      prep_minutes: meal.time,
-      dietary_tags: [],
-      allergens: meal.allergens,
-      suitability_tags: meal.tags,
-      ingredients: meal.ingredients,
-      instructions: meal.instructions,
-      nutrition: {
-        calories: meal.nutrition.calories,
-        protein: meal.nutrition.protein,
-        carbs: meal.nutrition.carbs,
-        fat: meal.nutrition.fat,
-      },
-      source: meal.source,
-      note: meal.note,
-    }),
+    body: JSON.stringify(meal),
   });
 
   await readJson(response, "Recommender recipe create");
