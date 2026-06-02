@@ -1,10 +1,12 @@
 import json
 from contextlib import asynccontextmanager
+from datetime import date
 
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from .context import extract_context
 from .db import get_db
 from .difficulty import score_difficulty
 from .embeddings import embed_single, synthesize_recipe_text
@@ -19,7 +21,15 @@ from .jobs import (
     recompute_user_profile,
 )
 from .ability import DIMENSIONS
-from .models import InteractionIn, RecommendRequest, RecipeIn, RecipeOut, ScoredRecipe, UserIn
+from .models import (
+    ContextRequest,
+    InteractionIn,
+    RecipeIn,
+    RecipeOut,
+    RecommendRequest,
+    ScoredRecipe,
+    UserIn,
+)
 from .recommend import recommend
 
 from prometheus_fastapi_instrumentator import Instrumentator
@@ -219,6 +229,20 @@ async def get_recommendations(req: RecommendRequest, db: AsyncSession = Depends(
         )
         for r in results
     ]
+
+
+# ── Context / deadline extraction ───────────────────────────────────────────
+
+@app.post("/context/deadlines")
+async def context_deadlines(req: ContextRequest):
+    """Extract academic deadlines and per-day cooking-pressure context (#65).
+
+    Pure inference over calendar events — no DB. The per-day ``stress`` score is
+    designed to be fed back as ``deadline_stress`` to ``/recommend``.
+    """
+    today = date.fromisoformat(req.today) if req.today else None
+    events = [e.model_dump() for e in req.events]
+    return extract_context(events, today=today, horizon_days=req.horizon_days)
 
 
 # ── Batch Jobs (triggered via API) ─────────────────────────────────────────
