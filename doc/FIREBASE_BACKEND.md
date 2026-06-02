@@ -129,6 +129,7 @@ timeoutSeconds: 300
 | `deadlineFoodSession` | `GET`, `HEAD`, `PUT`, `POST`, `OPTIONS` | Loads/saves anonymous session settings in Firestore. |
 | `deadlineFoodNutrition` | `POST`, `OPTIONS` | Estimates nutrition from ingredients via OpenFoodFacts. |
 | `deadlineFoodRecommenderUser` | `POST`, `OPTIONS` | Upserts an anonymous recommender profile. |
+| `deadlineFoodRecipeCreate` | `POST`, `OPTIONS` | Embeds a user-created recipe on the recommender at creation time. |
 | `deadlineFoodRecommendations` | `POST`, `OPTIONS` | Loads GPU-ranked recipe recommendations. |
 | `deadlineFoodInteraction` | `POST`, `OPTIONS` | Records save/pass feedback for recommender learning. |
 | `deadlineFoodDeadlineContext` | `POST`, `OPTIONS` | Extracts deadline pressure context from calendar events. |
@@ -137,9 +138,11 @@ Unsupported methods return `405` with an `Allow` header.
 
 ## GPU Recommender Proxy
 
-The browser must not call `backend/recommender-api` directly. The three
-`deadlineFoodRecommender*` Functions and `deadlineFoodDeadlineContext` proxy only
-the FastAPI operations needed by the frontend. Functions attach a shared
+The browser must not call `backend/recommender-api` directly. The
+`deadlineFoodRecommenderUser`, `deadlineFoodRecipeCreate`,
+`deadlineFoodRecommendations`, `deadlineFoodInteraction`, and
+`deadlineFoodDeadlineContext` Functions proxy only the FastAPI operations needed
+by the frontend. Functions attach a shared
 `X-Deadline-Food-API-Key` header; FastAPI rejects unverified application calls.
 
 Provision the Firebase secrets before deployment:

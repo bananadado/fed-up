@@ -1102,6 +1102,10 @@ export const deadlineFoodRecommenderUser = onRequest(recommenderHttpOptions, asy
   await proxyRecommenderRequest(request, response, "/users");
 });
 
+export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async (request, response) => {
+  await proxyRecommenderRequest(request, response, "/recipes");
+});
+
 export const deadlineFoodRecommendations = onRequest(recommenderHttpOptions, async (request, response) => {
   await proxyRecommenderRequest(request, response, "/recommend");
 });

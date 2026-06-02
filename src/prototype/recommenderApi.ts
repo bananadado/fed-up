@@ -80,6 +80,41 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences)
   await readJson(response, "Recommender user sync");
 }
 
+/**
+ * Push a user-created recipe to the recommender so it is embedded instantly on
+ * creation. Fire-and-forget at the call site; the backend embeds synchronously
+ * inside POST /recipes.
+ */
+export async function createRecommenderRecipe(meal: Meal): Promise<void> {
+  const response = await fetch(functionUrl("deadlineFoodRecipeCreate", "/api/recommender/recipe"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: meal.id,
+      name: meal.name,
+      meal_type: meal.type,
+      meal_slots: meal.mealSlots,
+      price_pence: Math.round(meal.price * 100),
+      prep_minutes: meal.time,
+      dietary_tags: [],
+      allergens: meal.allergens,
+      suitability_tags: meal.tags,
+      ingredients: meal.ingredients,
+      instructions: meal.instructions,
+      nutrition: {
+        calories: meal.nutrition.calories,
+        protein: meal.nutrition.protein,
+        carbs: meal.nutrition.carbs,
+        fat: meal.nutrition.fat,
+      },
+      source: meal.source,
+      note: meal.note,
+    }),
+  });
+
+  await readJson(response, "Recommender recipe create");
+}
+
 function toPrototypeMeal(recipe: RecommenderRecipe): Meal | null {
   const seedMeal = seedMeals.find((meal) => meal.id === recipe.id);
 
@@ -136,8 +171,12 @@ export async function recordRecommenderInteraction(input: {
   recipeId: string;
   action: RecommenderInteractionAction;
   deadlines: Deadline[];
+  /** User-created recipes are embedded on creation, so their interactions are valid too. */
+  isUserCreated?: boolean;
 }): Promise<void> {
-  if (!seedMealIds.has(input.recipeId)) {
+  // Only recipes that exist in the recommender (seeds + embedded custom recipes)
+  // can be referenced by an interaction; the recipe_id column has a FK.
+  if (!seedMealIds.has(input.recipeId) && !input.isUserCreated) {
     return;
   }
 

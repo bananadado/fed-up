@@ -56,6 +56,7 @@ The browser never calls `backend/recommender-api` directly. Discover requests us
 | Browser operation | Local Bun path | Firebase Function | FastAPI endpoint |
 |---|---|---|---|
 | Sync anonymous profile | `/api/recommender/user` | `deadlineFoodRecommenderUser` | `POST /users` |
+| Embed a user-created recipe | `/api/recommender/recipe` | `deadlineFoodRecipeCreate` | `POST /recipes` |
 | Load ranked recipes | `/api/recommender/recommendations` | `deadlineFoodRecommendations` | `POST /recommend` |
 | Record save/pass feedback | `/api/recommender/interaction` | `deadlineFoodInteraction` | `POST /interactions` |
 | Extract deadline context | `/api/recommender/deadline-context` | `deadlineFoodDeadlineContext` | `POST /context/deadlines` |

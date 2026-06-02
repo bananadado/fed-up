@@ -122,6 +122,12 @@ const server = serve({
       },
     },
 
+    "/api/recommender/recipe": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipeCreate", req);
+      },
+    },
+
     "/api/recommender/recommendations": {
       async POST(req) {
         return proxyToFirebaseFunction("deadlineFoodRecommendations", req);

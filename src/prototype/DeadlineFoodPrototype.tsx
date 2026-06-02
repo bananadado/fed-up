@@ -10,6 +10,7 @@ import {
   saveAnonymousSessionSettings,
 } from "./anonymousSessionApi";
 import { createPrototypeSessionSettings, restorePrototypePlan, type CalendarToken, type IcsSubscription } from "./sessionPersistence";
+import { syncRecommenderUser } from "./recommenderApi";
 import { Shell } from "./components/Shell";
 import { CalendarScreen } from "./screens/CalendarScreen";
 import { Dashboard } from "./screens/Dashboard";
@@ -352,6 +353,13 @@ export function DeadlineFoodPrototype() {
         setOnboarded={(nextOnboarded) => {
           enableSessionPersistence();
           setOnboarded(nextOnboarded);
+          if (nextOnboarded) {
+            // Create + embed the user profile on the recommender at onboarding
+            // time rather than lazily on first Discover load.
+            syncRecommenderUser(sessionId, prefs).catch((error) => {
+              console.warn("Recommender user profile could not be created.", error);
+            });
+          }
         }}
         setScreen={navigateScreen}
         prefs={prefs}

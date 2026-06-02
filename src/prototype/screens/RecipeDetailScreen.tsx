@@ -9,6 +9,7 @@ import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEdito
 import { formatIngredient } from "../ingredients";
 import { mealById, money, nutritionSourceSummary } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
+import { createRecommenderRecipe } from "../recommenderApi";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -69,6 +70,13 @@ export function RecipeDetailScreen({
 
   function saveMeal(nextMeal: Meal) {
     setCustomRecipes((recipes) => [nextMeal, ...recipes.filter((recipe) => recipe.id !== nextMeal.id)]);
+    // Re-embed user-created recipes on edit. Seed recipes are shared across all
+    // users on the recommender, so we never overwrite them from a local edit.
+    if (nextMeal.isUserCreated) {
+      createRecommenderRecipe(nextMeal).catch((error) => {
+        console.warn("Recipe could not be embedded on the recommender.", error);
+      });
+    }
   }
 
   function handleEditSubmit(output: RecipeEditorOutput, photoUrl: string | undefined) {

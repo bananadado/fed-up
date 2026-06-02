@@ -119,6 +119,7 @@ export function DiscoverScreen({
       recipeId: current.id,
       action: like ? "swipe_right" : "swipe_left",
       deadlines,
+      isUserCreated: current.isUserCreated,
     }).catch((error) => {
       console.warn("Recommender interaction could not be recorded.", error);
     });
