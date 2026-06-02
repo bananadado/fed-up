@@ -215,53 +215,36 @@ secret_detection:
     DEPLOY_HOST: "gru.end-pickerel.ts.net"
     DEPLOY_USER: "deploy"
     DEPLOY_DIR: "/opt/drp03-backend"
-  before_script:
+  script:
     - apk add --no-cache openssh-client rsync iptables
     - wget -q -O /tmp/tailscale.tgz "https://pkgs.tailscale.com/stable/tailscale_latest_amd64.tgz"
     - tar -xzf /tmp/tailscale.tgz -C /tmp && cp /tmp/tailscale_*/tailscale* /usr/local/bin/ && rm -rf /tmp/tailscale*
     - tailscaled --state=mem: --tun=userspace-networking &
+    - sleep 2
     - tailscale up --authkey="$TAILSCALE_AUTH_KEY" --hostname="ci-deploy-${CI_JOB_ID}"
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - echo "$DEPLOY_SSH_KEY_B64" | base64 -d > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
-    - ssh-keyscan -t ed25519 "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
-  script:
     - |
-      SSH_CMD="ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -o ProxyCommand='tailscale nc %h %p'"
+      SSH_OPTS="-i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -o ProxyCommand='tailscale nc %h %p'"
 
-      # Sync backend/ to the deploy directory
       rsync -avz --delete --exclude='.env' \
-        -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -o ProxyCommand='tailscale nc %h %p'" \
+        -e "ssh $SSH_OPTS" \
         backend/ \
         "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/"
 
-      # Detect which services changed
       CHANGED_SERVICES=""
       CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA" -- backend/ 2>/dev/null || echo "backend/")
 
       if echo "$CHANGED_FILES" | grep -q "backend/docker-compose.yml"; then
         CHANGED_SERVICES="api db grafana prometheus loki promtail node-exporter cadvisor nvidia-exporter"
       else
-        if echo "$CHANGED_FILES" | grep -q "backend/recommender-api/"; then
-          CHANGED_SERVICES="$CHANGED_SERVICES api"
-        fi
-        if echo "$CHANGED_FILES" | grep -q "backend/db/"; then
-          CHANGED_SERVICES="$CHANGED_SERVICES db"
-        fi
-        if echo "$CHANGED_FILES" | grep -q "backend/monitoring/grafana/"; then
-          CHANGED_SERVICES="$CHANGED_SERVICES grafana"
-        fi
-        if echo "$CHANGED_FILES" | grep -q "backend/monitoring/prometheus/"; then
-          CHANGED_SERVICES="$CHANGED_SERVICES prometheus"
-        fi
-        if echo "$CHANGED_FILES" | grep -q "backend/monitoring/loki/"; then
-          CHANGED_SERVICES="$CHANGED_SERVICES loki"
-        fi
-        if echo "$CHANGED_FILES" | grep -q "backend/monitoring/promtail/"; then
-          CHANGED_SERVICES="$CHANGED_SERVICES promtail"
-        fi
-        if echo "$CHANGED_FILES" | grep -q "backend/monitoring/nvidia-exporter.py"; then
-          CHANGED_SERVICES="$CHANGED_SERVICES nvidia-exporter"
-        fi
+        echo "$CHANGED_FILES" | grep -q "backend/recommender-api/" && CHANGED_SERVICES="$CHANGED_SERVICES api"
+        echo "$CHANGED_FILES" | grep -q "backend/db/" && CHANGED_SERVICES="$CHANGED_SERVICES db"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/grafana/" && CHANGED_SERVICES="$CHANGED_SERVICES grafana"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/prometheus/" && CHANGED_SERVICES="$CHANGED_SERVICES prometheus"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/loki/" && CHANGED_SERVICES="$CHANGED_SERVICES loki"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/promtail/" && CHANGED_SERVICES="$CHANGED_SERVICES promtail"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/nvidia-exporter.py" && CHANGED_SERVICES="$CHANGED_SERVICES nvidia-exporter"
       fi
 
       CHANGED_SERVICES=$(echo "$CHANGED_SERVICES" | xargs)
@@ -271,7 +254,7 @@ secret_detection:
       fi
 
       echo "Services to redeploy: $CHANGED_SERVICES"
-      $SSH_CMD "${DEPLOY_USER}@${DEPLOY_HOST}" "cd ${DEPLOY_DIR} && bash deploy.sh $CHANGED_SERVICES"
+      ssh $SSH_OPTS "${DEPLOY_USER}@${DEPLOY_HOST}" "cd ${DEPLOY_DIR} && bash deploy.sh $CHANGED_SERVICES"
   after_script:
     - tailscale logout 2>/dev/null || true
     - rm -f ~/.ssh/deploy_key
