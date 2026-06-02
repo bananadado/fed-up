@@ -48,6 +48,8 @@ const googleClientId = defineSecret("GOOGLE_CLIENT_ID");
 const googleClientSecret = defineSecret("GOOGLE_CLIENT_SECRET");
 const microsoftClientId = defineSecret("MICROSOFT_CLIENT_ID");
 const microsoftClientSecret = defineSecret("MICROSOFT_CLIENT_SECRET");
+const recommenderApiUrl = defineSecret("RECOMMENDER_API_URL");
+const recommenderApiKey = defineSecret("RECOMMENDER_API_KEY");
 const googleOAuthHttpOptions = {
   ...publicHttpOptions,
   secrets: [googleClientId, googleClientSecret],
@@ -62,6 +64,11 @@ const calendarOAuthSecrets = [
   microsoftClientId,
   microsoftClientSecret,
 ];
+const recommenderHttpOptions = {
+  ...publicHttpOptions,
+  secrets: [recommenderApiUrl, recommenderApiKey],
+  timeoutSeconds: 60,
+};
 const openFoodFactsProductionBaseUrl = "https://world.openfoodfacts.org";
 const openFoodFactsStagingBaseUrl = "https://world.openfoodfacts.net";
 const openFoodFactsBaseUrl = (
@@ -592,6 +599,54 @@ function readRequestBody(request: HttpRequest): UnknownRecord | null {
   return asRecord(request.body);
 }
 
+function rejectUnsupportedRecommenderMethod(
+  request: HttpRequest,
+  response: HttpResponse,
+): boolean {
+  if (request.method === "OPTIONS") {
+    response.status(204).send("");
+    return true;
+  }
+
+  if (request.method !== "POST") {
+    response.set("Allow", "POST, OPTIONS");
+    response.status(405).json({error: "Method not allowed"});
+    return true;
+  }
+
+  return false;
+}
+
+async function proxyRecommenderRequest(
+  request: HttpRequest,
+  response: HttpResponse,
+  path: string,
+): Promise<void> {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  try {
+    const url = new URL(path, recommenderApiUrl.value().replace(/\/$/, ""));
+    const upstream = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "X-Deadline-Food-API-Key": recommenderApiKey.value(),
+      },
+      body: JSON.stringify(request.body ?? {}),
+      signal: AbortSignal.timeout(30_000),
+    });
+    const body = await upstream.text();
+
+    response.set("Cache-Control", "private, max-age=0, no-store");
+    response.set("Content-Type", upstream.headers.get("content-type") ?? "application/json");
+    response.status(upstream.status).send(body);
+  } catch (error) {
+    logger.error("Recommender API request failed", {path, error});
+    response.status(502).json({error: "Recommender API could not be reached"});
+  }
+}
+
 function rejectUnsupportedNutritionMethod(
   request: HttpRequest,
   response: HttpResponse,
@@ -1041,6 +1096,22 @@ export const deadlineFoodScenario = onRequest(publicHttpOptions, async (request,
   } catch (error) {
     sendError(response, error);
   }
+});
+
+export const deadlineFoodRecommenderUser = onRequest(recommenderHttpOptions, async (request, response) => {
+  await proxyRecommenderRequest(request, response, "/users");
+});
+
+export const deadlineFoodRecommendations = onRequest(recommenderHttpOptions, async (request, response) => {
+  await proxyRecommenderRequest(request, response, "/recommend");
+});
+
+export const deadlineFoodInteraction = onRequest(recommenderHttpOptions, async (request, response) => {
+  await proxyRecommenderRequest(request, response, "/interactions");
+});
+
+export const deadlineFoodDeadlineContext = onRequest(recommenderHttpOptions, async (request, response) => {
+  await proxyRecommenderRequest(request, response, "/context/deadlines");
 });
 
 export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (request, response) => {

@@ -19,6 +19,7 @@ import os
 
 os.environ.setdefault("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
 os.environ.setdefault("DEVICE", "cpu")
+os.environ.setdefault("RECOMMENDER_API_KEY", "test-recommender-api-key")
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
@@ -230,7 +231,10 @@ def client(store):
         yield session
 
     main_module.app.dependency_overrides[db_module.get_db] = override_get_db
-    with TestClient(main_module.app) as c:
+    with TestClient(
+        main_module.app,
+        headers={"X-Deadline-Food-API-Key": os.environ["RECOMMENDER_API_KEY"]},
+    ) as c:
         c.fake_session = session  # type: ignore[attr-defined]
         yield c
     main_module.app.dependency_overrides.clear()

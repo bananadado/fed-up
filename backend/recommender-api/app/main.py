@@ -6,6 +6,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from .auth import verify_cloud_function
 from .context import extract_context
 from .db import get_db
 from .difficulty import score_difficulty
@@ -47,6 +48,7 @@ app = FastAPI(
     description="Multi-stage recipe recommendation engine with GPU-accelerated embeddings",
     version="0.1.0",
     lifespan=lifespan,
+    dependencies=[Depends(verify_cloud_function)],
 )
 
 Instrumentator(

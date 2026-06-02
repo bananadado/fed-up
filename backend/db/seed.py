@@ -13,6 +13,7 @@ import sys
 import httpx
 
 API = os.environ.get("API_URL", "http://localhost:8000")
+API_KEY = os.environ.get("RECOMMENDER_API_KEY", "")
 
 PROTOTYPE_MEALS = [
     {
@@ -492,7 +493,11 @@ PROTOTYPE_MEALS = [
 
 
 async def seed():
-    async with httpx.AsyncClient(base_url=API, timeout=120) as client:
+    async with httpx.AsyncClient(
+        base_url=API,
+        timeout=120,
+        headers={"X-Deadline-Food-API-Key": API_KEY},
+    ) as client:
         print(f"Seeding {len(PROTOTYPE_MEALS)} recipes...")
         resp = await client.post("/recipes/bulk", json=PROTOTYPE_MEALS)
         resp.raise_for_status()

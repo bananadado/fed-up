@@ -7,6 +7,7 @@ Firebase is used as a backend platform for:
 - Public HTTP functions serving prototype data.
 - Anonymous no-sign-in settings persistence.
 - OpenFoodFacts nutrition estimates with Firestore caching and rate limiting.
+- Verified proxy calls to the GPU recommender API.
 
 The app does not use client-side Firebase SDK reads/writes. Firestore rules currently deny all direct client access.
 
@@ -127,8 +128,36 @@ timeoutSeconds: 300
 | `deadlineFoodScenario` | `GET`, `HEAD`, `OPTIONS` | Returns canonical constraints. |
 | `deadlineFoodSession` | `GET`, `HEAD`, `PUT`, `POST`, `OPTIONS` | Loads/saves anonymous session settings in Firestore. |
 | `deadlineFoodNutrition` | `POST`, `OPTIONS` | Estimates nutrition from ingredients via OpenFoodFacts. |
+| `deadlineFoodRecommenderUser` | `POST`, `OPTIONS` | Upserts an anonymous recommender profile. |
+| `deadlineFoodRecommendations` | `POST`, `OPTIONS` | Loads GPU-ranked recipe recommendations. |
+| `deadlineFoodInteraction` | `POST`, `OPTIONS` | Records save/pass feedback for recommender learning. |
+| `deadlineFoodDeadlineContext` | `POST`, `OPTIONS` | Extracts deadline pressure context from calendar events. |
 
 Unsupported methods return `405` with an `Allow` header.
+
+## GPU Recommender Proxy
+
+The browser must not call `backend/recommender-api` directly. The three
+`deadlineFoodRecommender*` Functions and `deadlineFoodDeadlineContext` proxy only
+the FastAPI operations needed by the frontend. Functions attach a shared
+`X-Deadline-Food-API-Key` header; FastAPI rejects unverified application calls.
+
+Provision the Firebase secrets before deployment:
+
+```sh
+firebase functions:secrets:set RECOMMENDER_API_URL
+firebase functions:secrets:set RECOMMENDER_API_KEY
+```
+
+Configure the same key in the GPU server's `/opt/drp03-backend/.env`:
+
+```dotenv
+RECOMMENDER_API_KEY=<same-secret-value>
+```
+
+`RECOMMENDER_API_URL` must be reachable from Firebase Functions. A URL available
+only inside the deployment tailnet is insufficient unless the Functions runtime
+has an explicit route into that network.
 
 ## Firestore Collections
 
@@ -388,4 +417,3 @@ cd functions && bun run lint && bun run build
 ```sh
 bun run verify
 ```
-
