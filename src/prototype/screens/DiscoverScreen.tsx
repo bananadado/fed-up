@@ -1,13 +1,14 @@
 import { Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
 import { seedMeals } from "../data";
-import type { Meal, PlanEntry, Preferences } from "../types";
+import type { Deadline, Meal, PlanEntry, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, money, ingredientNames } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
+import { fetchRecommenderRecommendations, recordRecommenderInteraction } from "../recommenderApi";
 
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
 
@@ -26,6 +27,8 @@ function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
 
 export function DiscoverScreen({
   prefs,
+  deadlines,
+  sessionId,
   customRecipes,
   setPlan,
   plan,
@@ -39,6 +42,8 @@ export function DiscoverScreen({
   track,
 }: {
   prefs: Preferences;
+  deadlines: Deadline[];
+  sessionId: string;
   customRecipes: Meal[];
   setPlan: (plan: PlanEntry[]) => void;
   plan: PlanEntry[];
@@ -51,13 +56,48 @@ export function DiscoverScreen({
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
-  const candidateRecipes = [...customRecipes, ...seedMeals.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))];
+  const [recommendedRecipes, setRecommendedRecipes] = useState<Meal[] | null>(null);
   const reviewedRecipeIdSet = new Set([
     ...reviewedRecipeIds,
     ...saved.map((meal) => meal.id),
     ...rejected.map((meal) => meal.id),
   ]);
+  const candidateRecipes = [
+    ...customRecipes,
+    ...(recommendedRecipes ?? seedMeals).filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id)),
+  ];
   const [sortBy, setSortBy] = useState<"priority" | "time" | "price" | "health">("priority");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchRecommenderRecommendations({
+      sessionId,
+      prefs,
+      deadlines,
+      excludeIds: [
+        ...reviewedRecipeIds,
+        ...saved.map((meal) => meal.id),
+        ...rejected.map((meal) => meal.id),
+      ],
+    })
+      .then((recipes) => {
+        if (!cancelled) {
+          setRecommendedRecipes(recipes.length > 0 ? recipes : null);
+        }
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          console.warn("Remote recommendations could not be loaded; using local recipes.", error);
+          setRecommendedRecipes(null);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [deadlines, prefs, reviewedRecipeIds, saved, rejected, sessionId]);
+
   function sortComparator(a: Meal, b: Meal): number {
     if (sortBy === "time") return a.time - b.time;
     if (sortBy === "price") return a.price - b.price;
@@ -74,6 +114,14 @@ export function DiscoverScreen({
     }
 
     track("discover_recipe_swiped", { meal_id: current.id, liked: like });
+    recordRecommenderInteraction({
+      sessionId,
+      recipeId: current.id,
+      action: like ? "swipe_right" : "swipe_left",
+      deadlines,
+    }).catch((error) => {
+      console.warn("Recommender interaction could not be recorded.", error);
+    });
     setReviewedRecipeIds((ids) => (ids.includes(current.id) ? ids : [...ids, current.id]));
 
     if (like) {

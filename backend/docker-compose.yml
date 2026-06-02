@@ -32,6 +32,7 @@ services:
       BATCH_SIZE: 64
       EXPLORATION_RATE: 0.2
       EXPLORATION_TEMPERATURE: 0.15
+      RECOMMENDER_API_KEY: ${RECOMMENDER_API_KEY:?RECOMMENDER_API_KEY is required}
     ports:
       - "8100:8000"
     volumes:

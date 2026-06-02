@@ -116,6 +116,30 @@ const server = serve({
       },
     },
 
+    "/api/recommender/user": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecommenderUser", req);
+      },
+    },
+
+    "/api/recommender/recommendations": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecommendations", req);
+      },
+    },
+
+    "/api/recommender/interaction": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodInteraction", req);
+      },
+    },
+
+    "/api/recommender/deadline-context": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodDeadlineContext", req);
+      },
+    },
+
     "/api/calendar/fetch-ics": {
       async POST(req) {
         const body = await req.json().catch(() => null) as { url?: string } | null;

@@ -49,6 +49,26 @@ Firebase base URL can be overridden with:
 - Browser query/localStorage `firebaseFunctionsBaseUrl`.
 - Env `BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL`.
 
+## GPU Recommender Boundary
+
+The browser never calls `backend/recommender-api` directly. Discover requests use:
+
+| Browser operation | Local Bun path | Firebase Function | FastAPI endpoint |
+|---|---|---|---|
+| Sync anonymous profile | `/api/recommender/user` | `deadlineFoodRecommenderUser` | `POST /users` |
+| Load ranked recipes | `/api/recommender/recommendations` | `deadlineFoodRecommendations` | `POST /recommend` |
+| Record save/pass feedback | `/api/recommender/interaction` | `deadlineFoodInteraction` | `POST /interactions` |
+| Extract deadline context | `/api/recommender/deadline-context` | `deadlineFoodDeadlineContext` | `POST /context/deadlines` |
+
+Firebase Functions attach `X-Deadline-Food-API-Key` when calling FastAPI. The shared
+`RECOMMENDER_API_KEY` must be configured in both Firebase Secret Manager and the
+GPU backend environment. The backend returns `401` for application requests that
+do not carry the expected key. `/health`, `/metrics`, and API schema pages remain
+public for monitoring and inspection.
+
+Discover falls back to the local seed catalogue when the remote recommender is
+unavailable, so local frontend development does not require the GPU service.
+
 ## Bootstrap
 
 ### Local
@@ -372,4 +392,3 @@ bun run typecheck
 bun run firebase:data
 cd functions && bun run lint && bun run build
 ```
-
