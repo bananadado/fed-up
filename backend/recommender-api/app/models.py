@@ -85,3 +85,16 @@ class ScoredRecipe(BaseModel):
     recipe: RecipeOut
     score: float
     breakdown: dict[str, float]
+
+
+class CalendarEventIn(BaseModel):
+    title: str = ""
+    start: str  # ISO datetime or date
+    end: str | None = None
+    all_day: bool = False
+
+
+class ContextRequest(BaseModel):
+    events: list[CalendarEventIn] = []
+    today: str | None = None  # ISO date; defaults to the server's today
+    horizon_days: int = Field(default=14, ge=0, le=60)
