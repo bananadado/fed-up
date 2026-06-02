@@ -212,7 +212,7 @@ secret_detection:
   image: alpine:3.20
   stage: backend_deploy
   variables:
-    DEPLOY_HOST: "gru.end-pickerel.ts.net"
+    DEPLOY_HOST: "172.17.0.1"
     DEPLOY_USER: "deploy"
     DEPLOY_DIR: "/opt/drp03-backend"
   before_script:
