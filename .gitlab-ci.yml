@@ -130,6 +130,31 @@ firebase_functions:
     - (cd functions && bun run lint)
     - (cd functions && bun run build)
 
+recommender_api_tests:
+  image: python:3.12-slim
+  stage: checks
+  needs: []
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - backend/recommender-api/**/*
+    - if: '$CI_COMMIT_BRANCH'
+      changes:
+        - backend/recommender-api/**/*
+    - when: never
+  cache:
+    key:
+      files:
+        - backend/recommender-api/requirements-dev.txt
+    paths:
+      - .cache/pip/
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  script:
+    - cd backend/recommender-api
+    - pip install --quiet -r requirements-dev.txt
+    - python -m pytest
+
 e2e_tests:
   extends: .bun_job
   stage: prototype
@@ -264,6 +289,8 @@ deploy_gpu_staging:
   needs:
     - job: lint
     - job: typecheck
+    - job: recommender_api_tests
+      optional: true
   environment:
     name: gpu-staging
   rules:
@@ -277,6 +304,8 @@ deploy_gpu_production:
   needs:
     - job: lint
     - job: typecheck
+    - job: recommender_api_tests
+      optional: true
   environment:
     name: gpu-production
   rules:

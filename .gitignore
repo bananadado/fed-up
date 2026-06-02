@@ -34,6 +34,12 @@ firestore-debug.log
 .cache
 *.tsbuildinfo
 
+# Python (recommender API)
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
 # IntelliJ based IDEs
 .idea
 

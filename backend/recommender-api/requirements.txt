@@ -1,0 +1,11 @@
+# Runtime dependencies for the recommender API.
+# Pinned to match the versions installed in the Dockerfile image.
+fastapi[standard]==0.116.0
+uvicorn[standard]==0.34.3
+sqlalchemy[asyncio]==2.0.41
+asyncpg==0.30.0
+pgvector==0.3.6
+sentence-transformers==4.1.0
+pydantic==2.11.4
+numpy==2.3.0
+prometheus-fastapi-instrumentator==7.1.0
