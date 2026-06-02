@@ -1,5 +1,6 @@
-import { BookOpen, Plus, RefreshCcw, Sparkles, UtensilsCrossed } from "lucide-react";
+import { BookOpen, Camera, Plus, RefreshCcw, Sparkles, UtensilsCrossed, X } from "lucide-react";
 import { useRef, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
+import { uploadRecipePhoto } from "@/adapters/deadlineFoodApi";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -101,6 +102,9 @@ export function RecipesHubScreen({
   const [attempted, setAttempted] = useState(false);
   const [nutritionLoading, setNutritionLoading] = useState(false);
   const [nutritionStatus, setNutritionStatus] = useState<string | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoUploading, setPhotoUploading] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   const ingredients = sanitiseIngredientDrafts(form.ingredients);
@@ -150,7 +154,7 @@ export function RecipesHubScreen({
     }
   }
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (hasErrors) {
@@ -163,6 +167,19 @@ export function RecipesHubScreen({
         }
       });
       return;
+    }
+
+    let photoUrl: string | undefined;
+    if (photoFile) {
+      setPhotoUploading(true);
+      try {
+        const result = await uploadRecipePhoto(photoFile);
+        photoUrl = result.photoUrl;
+      } catch {
+        // non-fatal: recipe saved without photo
+      } finally {
+        setPhotoUploading(false);
+      }
     }
 
     const instructions = form.instructions
@@ -197,6 +214,7 @@ export function RecipesHubScreen({
       source: "My recipes",
       note: form.note.trim() || `${nextServings} portions from about ${money(nextTotalCost)} total`,
       image: "🍽️",
+      ...(photoUrl ? { photoUrl } : {}),
       isUserCreated: true,
     } satisfies Meal;
 
@@ -213,6 +231,8 @@ export function RecipesHubScreen({
     setAttempted(false);
     setForm(createDefaultForm());
     setNutritionStatus(null);
+    setPhotoFile(null);
+    setPhotoPreview(null);
     setTab("saved");
   }
 
@@ -276,7 +296,11 @@ export function RecipesHubScreen({
                     className="rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-emerald-300 hover:bg-emerald-50"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <span className="text-3xl">{recipe.image}</span>
+                      {recipe.photoUrl ? (
+                        <img src={recipe.photoUrl} alt={recipe.name} className="h-12 w-12 rounded-md object-cover" />
+                      ) : (
+                        <span className="text-3xl">{recipe.image}</span>
+                      )}
                       <Badge tone={isOwn ? "green" : "blue"}>{isOwn ? "Your recipe" : "Saved"}</Badge>
                     </div>
                     <p className="mt-2 break-words font-semibold leading-snug">{recipe.name}</p>
@@ -366,14 +390,53 @@ export function RecipesHubScreen({
                   />
                 </label>
                 <Field label="Notes" value={form.note} onChange={(note) => setForm({ ...form, note })} placeholder="Any tips or variations" />
+                <div>
+                  <p className="text-sm font-semibold">Photo <span className="font-normal text-stone-400">(optional)</span></p>
+                  <div className="mt-2">
+                    {photoPreview ? (
+                      <div className="relative inline-block">
+                        <img src={photoPreview} alt="Preview" className="h-32 rounded-lg object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => { setPhotoFile(null); setPhotoPreview(null); }}
+                          className="absolute -right-2 -top-2 rounded-full bg-white p-1 shadow hover:bg-stone-100"
+                          aria-label="Remove photo"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : (
+                      <label className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border-2 border-dashed border-stone-200 px-4 py-3 text-sm text-stone-500 hover:border-emerald-300 hover:text-emerald-700">
+                        <Camera size={16} />
+                        <span>Add a photo</span>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          className="sr-only"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0] ?? null;
+                            setPhotoFile(file);
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = () => setPhotoPreview(reader.result as string);
+                              reader.readAsDataURL(file);
+                            } else {
+                              setPhotoPreview(null);
+                            }
+                          }}
+                        />
+                      </label>
+                    )}
+                  </div>
+                </div>
               </div>
               {attempted && hasErrors && (
                 <p className="mt-6 text-center text-sm font-medium text-red-600">
                   Please fill in all required fields
                 </p>
               )}
-              <AppButton type="submit" className={`${attempted && hasErrors ? "mt-3" : "mt-6"} w-full`}>
-                <Plus size={16} /> Add recipe
+              <AppButton type="submit" className={`${attempted && hasErrors ? "mt-3" : "mt-6"} w-full`} disabled={photoUploading}>
+                <Plus size={16} /> {photoUploading ? "Uploading photo..." : "Add recipe"}
               </AppButton>
             </form>
           </Card>
