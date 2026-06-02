@@ -188,6 +188,8 @@ export function SelectField({
   onChange,
   placeholder = "Please select…",
   required,
+  error,
+  errorMessage,
 }: {
   label: string;
   value: string;
@@ -195,15 +197,24 @@ export function SelectField({
   onChange: (value: string) => void;
   placeholder?: string;
   required?: boolean;
+  error?: boolean;
+  errorMessage?: string;
 }) {
   return (
-    <Label className="block">
-      <span className="text-sm font-semibold">
+    <Label className="block" data-field-error={error || undefined}>
+      <span className={cn("text-sm font-semibold", error && "text-red-600")}>
         {label}
         {required && <span className="ml-1 text-red-500">*</span>}
       </span>
       <Select value={value || ""} onValueChange={onChange}>
-        <SelectTrigger className={cn("mt-2 h-auto w-full rounded-lg border-stone-200 bg-white p-3", !value && "text-stone-400")}>
+        <SelectTrigger
+          aria-invalid={error || undefined}
+          className={cn(
+            "mt-2 h-auto w-full rounded-lg border-stone-200 bg-white p-3",
+            !value && "text-stone-400",
+            error && "border-red-400 bg-red-50 ring-1 ring-red-400",
+          )}
+        >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
@@ -214,6 +225,7 @@ export function SelectField({
           ))}
         </SelectContent>
       </Select>
+      {error && errorMessage && <p className="mt-1 text-xs font-medium text-red-600">{errorMessage}</p>}
     </Label>
   );
 }
