@@ -189,6 +189,47 @@ test("direct plan refresh restores nav and seeded timetable for returning users 
   await expect(page.getByRole("button", { name: /overnight oat jar/i }).first()).toBeVisible();
 });
 
+test("dashboard meal cards have swap action that opens the swap modal", async ({ page }) => {
+  const sessionId = "dashboard-swap-session-39";
+
+  await page.request.put("/api/deadline-food/session", {
+    data: {
+      sessionId,
+      settings: createPrototypeSessionSettings({
+        preferences: initialPreferences,
+        deadlines: defaultDeadlines,
+        selectedSources: ["budget", "bbc", "own", "campus"],
+        onboarded: true,
+      }),
+    },
+  });
+
+  await page.addInitScript(
+    ({ key, value }) => {
+      window.localStorage.setItem(key, value);
+    },
+    { key: ANONYMOUS_SESSION_STORAGE_KEY, value: sessionId },
+  );
+
+  const sessionLoaded = page.waitForResponse(
+    response =>
+      response.url().includes("/api/deadline-food/session") &&
+      response.request().method() === "GET" &&
+      response.status() === 200,
+  );
+
+  await page.goto("/");
+  await sessionLoaded;
+  await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
+
+  await page.getByRole("button", { name: /change meal/i }).first().click();
+  await expect(page.getByRole("heading", { name: /change this meal/i })).toBeVisible();
+  await expect(page.getByText(/suggested suitable option/i)).toBeVisible();
+  await page.getByRole("button", { name: /use suggested meal/i }).click();
+  await expect(page.getByRole("heading", { name: /change this meal/i })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
+});
+
 test("missing session load does not overwrite the session with default onboarding state", async ({ page }) => {
   const sessionId = "missing-session-reload-39";
   let saveRequests = 0;
