@@ -119,11 +119,43 @@ class FakeSession:
                 rec["embedding_text"] = params.get("txt")
             return FakeResult()
 
-        if low.startswith("update users set taste_embedding"):
-            user = self.store["users"].get(params["uid"])
+        if low.startswith("update users set"):
+            user = self.store["users"].get(params.get("uid"))
             if user is not None:
-                user["taste_embedding"] = params.get("emb")
+                for key in (
+                    "knife_skill", "multi_tasking", "time_tolerance", "spice_preference",
+                    "adventurousness", "healthy_bias", "complexity_tolerance",
+                    "taste_embedding", "emb", "taste",
+                ):
+                    if key in params:
+                        col = "taste_embedding" if key in ("emb", "taste") else key
+                        user[col] = params[key]
             return FakeResult()
+
+        if "from interactions i" in low and "join recipes r" in low:
+            uid = params.get("uid")
+            rows = []
+            for it in self.store["interactions"]:
+                if it.get("user_id") != uid:
+                    continue
+                rec = self.store["recipes"].get(it.get("recipe_id"))
+                if not rec:
+                    continue
+                rows.append({
+                    "action": it.get("action"),
+                    "embedding": rec.get("embedding"),
+                    "difficulty": rec.get("difficulty"),
+                    "techniques": rec.get("techniques") or [],
+                    "prep_minutes": rec.get("prep_minutes") or 0,
+                    "flavor_profile": rec.get("flavor_profile") or [],
+                    "dietary_tags": rec.get("dietary_tags") or [],
+                    "suitability_tags": rec.get("suitability_tags") or [],
+                    "cuisine": rec.get("cuisine"),
+                })
+            return FakeResult(rows=rows)
+
+        if low.startswith("select id from users"):
+            return FakeResult(rows=[{"id": uid} for uid in self.store["users"]])
 
         if "select embedding from recipes where id" in low:
             rec = self.store["recipes"].get(params["rid"])
@@ -187,7 +219,7 @@ class FakeSession:
 
 @pytest.fixture
 def store() -> dict:
-    return {"recipes": {}, "users": {}, "interactions": {}, "co_likes": [], "trending": {}}
+    return {"recipes": {}, "users": {}, "interactions": [], "co_likes": [], "trending": {}}
 
 
 @pytest.fixture
