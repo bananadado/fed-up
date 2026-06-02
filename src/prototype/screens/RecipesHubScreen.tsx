@@ -1,7 +1,7 @@
 import { Plus, Sparkles, UtensilsCrossed } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
 
-import type { Meal, PlanEntry, Preferences } from "../types";
+import type { Deadline, Meal, PlanEntry, Preferences } from "../types";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { AppButton, Badge } from "../components/primitives";
 import { formatIngredient } from "../ingredients";
@@ -24,6 +24,8 @@ export function RecipesHubScreen({
   plan,
   setPlan,
   prefs,
+  deadlines,
+  sessionId,
   onSelectMeal,
   track,
 }: {
@@ -38,6 +40,8 @@ export function RecipesHubScreen({
   plan: PlanEntry[];
   setPlan: (plan: PlanEntry[]) => void;
   prefs: Preferences;
+  deadlines: Deadline[];
+  sessionId: string;
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
@@ -174,6 +178,8 @@ export function RecipesHubScreen({
       {tab === "discover" && (
         <DiscoverScreen
           prefs={prefs}
+          deadlines={deadlines}
+          sessionId={sessionId}
           customRecipes={customRecipes}
           plan={plan}
           setPlan={setPlan}
