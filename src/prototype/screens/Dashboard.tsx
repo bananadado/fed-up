@@ -1,4 +1,4 @@
-import { ChevronRight, Clock3, CookingPot, Flame, RefreshCcw } from "lucide-react";
+import { ChevronRight, Clock3, Flame, RefreshCcw, Utensils } from "lucide-react";
 import { useState } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -28,7 +28,7 @@ export function Dashboard({
   track: TrackPrototypeEvent;
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
-  const nextCook = plan
+  const nextMeal = plan
     .flatMap((entry) =>
       entry.meals.map((planMeal) => ({
         day: entry.day,
@@ -38,7 +38,7 @@ export function Dashboard({
         meal: getMealById(planMeal.mealId, customRecipes),
       })),
     )
-    .find((entry) => entry.meal.type === "cook");
+    .at(0) ?? null;
 
   return (
     <div>
@@ -59,33 +59,33 @@ export function Dashboard({
           <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-5">
             <div className="flex items-center gap-2 text-sm font-semibold text-stone-600">
-              <CookingPot size={17} /> Next cooking
+              <Utensils size={17} /> Next meal
             </div>
-            {nextCook ? (
+            {nextMeal ? (
               <>
                 <p className="mt-4 break-words text-xl font-bold">
-                  {nextCook.meal.image} {nextCook.meal.name}
+                  {nextMeal.meal.image} {nextMeal.meal.name}
                 </p>
                 <p className="mt-2 text-sm text-stone-500">
-                  {nextCook.day} {nextCook.slot} - {nextCook.context}
+                  {nextMeal.day} {nextMeal.slot} - {nextMeal.context}
                 </p>
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                   <Badge tone="green">
-                    <Clock3 size={12} className="mr-1" /> {nextCook.meal.time} min
+                    <Clock3 size={12} className="mr-1" /> {nextMeal.meal.time} min
                   </Badge>
-                  <Badge>{money(nextCook.meal.price)}</Badge>
-                  {mealHealthSignals(nextCook.meal).map((signal) => (
+                  <Badge>{money(nextMeal.meal.price)}</Badge>
+                  {mealHealthSignals(nextMeal.meal).map((signal) => (
                     <Badge key={signal} tone="blue">
                       {signal}
                     </Badge>
                   ))}
                 </div>
-                <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: nextCook.day, meal_slot: nextCook.slot, meal_id: nextCook.mealId, layout: "dashboard_next_cook" }); setRescueChoice({ day: nextCook.day, slot: nextCook.slot }); }}>
+                <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, layout: "dashboard_next_meal" }); setRescueChoice({ day: nextMeal.day, slot: nextMeal.slot }); }}>
                   <RefreshCcw size={13} /> Change meal
                 </AppButton>
               </>
             ) : (
-              <p className="mt-3 text-stone-500">No cooking planned this week.</p>
+              <p className="mt-3 text-stone-500">No meals planned this week.</p>
             )}
           </Card>
         </div>
