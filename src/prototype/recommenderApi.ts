@@ -17,6 +17,7 @@ type RecommenderRecipe = {
   nutrition: Meal["nutrition"] | null;
   source: string | null;
   note: string | null;
+  photoUrl?: string | null;
 };
 
 type ScoredRecipe = {
@@ -94,7 +95,7 @@ export async function createRecommenderRecipe(meal: Meal): Promise<void> {
   await readJson(response, "Recommender recipe create");
 }
 
-function toPrototypeMeal(recipe: RecommenderRecipe): Meal {
+export function toPrototypeMeal(recipe: RecommenderRecipe): Meal {
   return {
     id: recipe.id,
     name: recipe.name,
@@ -114,6 +115,7 @@ function toPrototypeMeal(recipe: RecommenderRecipe): Meal {
     source: recipe.source ?? "Recommender",
     note: recipe.note ?? "",
     image: "🍽️",
+    ...(recipe.photoUrl ? { photoUrl: recipe.photoUrl } : {}),
   };
 }
 
