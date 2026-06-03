@@ -841,6 +841,7 @@ profile
 profiles
 progress
 project
+projects
 promotes
 prompt
 properties

@@ -134,6 +134,16 @@ export async function createRecommenderRecipe(meal: Meal): Promise<void> {
   await readJson(response, "Recommender recipe create");
 }
 
+export async function deleteRecommenderRecipe(recipeId: string): Promise<void> {
+  const response = await fetch(functionUrl("deadlineFoodRecipeDelete", "/api/recommender/recipe/delete"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ recipeId }),
+  });
+
+  await readJson(response, "Recommender recipe delete");
+}
+
 export function toPrototypeMeal(recipe: RecommenderRecipe): Meal {
   return {
     id: recipe.id,
