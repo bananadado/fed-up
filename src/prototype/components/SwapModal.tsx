@@ -249,7 +249,7 @@ export function SwapModal({
                 Browse options
               </AppButton>
               <AppButton className="flex-1" onClick={confirmSwap} disabled={!replacement}>
-                Use suggested meal
+                Use suggested
               </AppButton>
             </div>
           </>
