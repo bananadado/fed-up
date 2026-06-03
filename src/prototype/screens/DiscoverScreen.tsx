@@ -2,7 +2,6 @@ import { Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
-import { seedMeals } from "../data";
 import type { Deadline, Meal, PlanEntry, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, money, ingredientNames } from "../utils";
@@ -64,7 +63,7 @@ export function DiscoverScreen({
   ]);
   const candidateRecipes = [
     ...customRecipes,
-    ...(recommendedRecipes ?? seedMeals).filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id)),
+    ...(recommendedRecipes ?? []).filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id)),
   ];
   const [sortBy, setSortBy] = useState<"priority" | "time" | "price" | "health">("priority");
 

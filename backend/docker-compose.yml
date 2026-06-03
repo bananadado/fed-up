@@ -46,6 +46,33 @@ services:
               count: 1
               capabilities: [gpu]
 
+  # ── Database visualisers ────────────────────────────────────────────────
+
+  adminer:
+    image: adminer:4
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_DESIGN: dracula
+    ports:
+      - "8101:8080"
+
+  embedding-viz:
+    build:
+      context: ./embedding-viz
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://recommender:${POSTGRES_PASSWORD:-changeme_in_production}@db:5432/recommender
+    ports:
+      - "8102:8000"
+
   # ── Monitoring ──────────────────────────────────────────────────────────
 
   grafana:

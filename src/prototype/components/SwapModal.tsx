@@ -2,7 +2,7 @@ import { ArrowLeft, X } from "lucide-react";
 import { useState } from "react";
 
 import { Card } from "@/components/ui/card";
-import { seedMeals } from "../data";
+import { getRecipeCatalogue } from "../recipeCatalogue";
 import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
 import { ingredientName } from "../ingredients";
 import { getMealById, money } from "../utils";
@@ -48,7 +48,7 @@ export function SwapModal({
   const originalPlanMeal = originalDay?.meals.find((meal) => meal.slot === rescueChoice.slot);
   const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
-  const browseOptions = [...customRecipes, ...seedMeals.filter((m) => !customRecipes.some((c) => c.id === m.id))]
+  const browseOptions = [...customRecipes, ...getRecipeCatalogue().filter((m) => !customRecipes.some((c) => c.id === m.id))]
     .filter((meal) => meal.mealSlots.includes(rescueChoice.slot))
     .filter((meal) => meal.id !== originalPlanMeal?.mealId)
     .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))

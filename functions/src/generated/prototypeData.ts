@@ -827,6 +827,633 @@ export const seededMeals = [
   }
 ] as const;
 
+export const prototypeRecipes = [
+  {
+    "id": "m1",
+    "name": "Roast veg & chickpea traybake",
+    "type": "cook",
+    "mealSlots": [
+      "dinner"
+    ],
+    "time": 20,
+    "price": 2.85,
+    "tags": [
+      "vegetarian",
+      "vegan",
+      "batch-friendly"
+    ],
+    "ingredients": [
+      {
+        "name": "chickpeas",
+        "quantity": 120,
+        "unit": "g"
+      },
+      {
+        "name": "peppers",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "courgette",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "couscous",
+        "quantity": 75,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "nutrition": {
+      "calories": 510,
+      "protein": 19,
+      "carbs": 74,
+      "fat": 14
+    },
+    "instructions": [
+      "Chop the vegetables and spread them on a tray.",
+      "Add chickpeas, oil and seasoning, then roast until tender.",
+      "Serve with couscous and save leftovers for wraps."
+    ],
+    "source": "Budget Bytes",
+    "note": "Makes two remix portions",
+    "image": "🥗"
+  },
+  {
+    "id": "m2",
+    "name": "Traybake hummus wrap",
+    "type": "remix",
+    "mealSlots": [
+      "lunch",
+      "dinner"
+    ],
+    "time": 4,
+    "price": 1.95,
+    "tags": [
+      "vegetarian",
+      "vegan",
+      "quick"
+    ],
+    "ingredients": [
+      {
+        "name": "chickpeas",
+        "quantity": 80,
+        "unit": "g"
+      },
+      {
+        "name": "wrap",
+        "quantity": 1,
+        "unit": "wrap"
+      },
+      {
+        "name": "hummus",
+        "quantity": 40,
+        "unit": "g"
+      },
+      {
+        "name": "salad",
+        "quantity": 50,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "gluten",
+      "sesame"
+    ],
+    "nutrition": {
+      "calories": 430,
+      "protein": 15,
+      "carbs": 58,
+      "fat": 15
+    },
+    "instructions": [
+      "Warm the wrap if you have time.",
+      "Add hummus, leftover traybake and salad.",
+      "Roll tightly and pack with a napkin."
+    ],
+    "source": "From your prep",
+    "note": "Uses Monday's traybake",
+    "image": "🌯"
+  },
+  {
+    "id": "m3",
+    "name": "Ginger tofu noodles",
+    "type": "cook",
+    "mealSlots": [
+      "dinner"
+    ],
+    "time": 14,
+    "price": 3.2,
+    "tags": [
+      "vegetarian",
+      "vegan",
+      "high protein"
+    ],
+    "ingredients": [
+      {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "noodles",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "soy sauce",
+        "quantity": 15,
+        "unit": "ml"
+      },
+      {
+        "name": "broccoli",
+        "quantity": 100,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "soy",
+      "gluten"
+    ],
+    "nutrition": {
+      "calories": 560,
+      "protein": 27,
+      "carbs": 68,
+      "fat": 18
+    },
+    "instructions": [
+      "Boil or soak the noodles according to the pack.",
+      "Fry tofu with ginger until browned.",
+      "Add broccoli, soy sauce and noodles, then toss together."
+    ],
+    "source": "BBC Good Food",
+    "note": "One pan",
+    "image": "🍜"
+  },
+  {
+    "id": "m4",
+    "name": "Lentil pesto pasta pot",
+    "type": "cook",
+    "mealSlots": [
+      "lunch",
+      "dinner"
+    ],
+    "time": 12,
+    "price": 2.65,
+    "tags": [
+      "vegetarian",
+      "high protein"
+    ],
+    "ingredients": [
+      {
+        "name": "lentils",
+        "quantity": 120,
+        "unit": "g"
+      },
+      {
+        "name": "pasta",
+        "quantity": 90,
+        "unit": "g"
+      },
+      {
+        "name": "pesto",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "spinach",
+        "quantity": 50,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "gluten",
+      "milk",
+      "tree nuts"
+    ],
+    "nutrition": {
+      "calories": 590,
+      "protein": 24,
+      "carbs": 79,
+      "fat": 17
+    },
+    "instructions": [
+      "Cook pasta until just tender.",
+      "Stir through lentils, pesto and spinach.",
+      "Loosen with a splash of pasta water and pack warm."
+    ],
+    "source": "Student Eats",
+    "note": "Good before an evening study session",
+    "image": "🍝"
+  },
+  {
+    "id": "m5",
+    "name": "Bean & salad wrap",
+    "type": "fallback",
+    "mealSlots": [
+      "lunch",
+      "dinner"
+    ],
+    "time": 2,
+    "price": 4.1,
+    "tags": [
+      "vegetarian",
+      "vegan",
+      "near library",
+      "no cooking"
+    ],
+    "ingredients": [
+      {
+        "name": "beans",
+        "quantity": 120,
+        "unit": "g"
+      },
+      {
+        "name": "salad",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "wrap",
+        "quantity": 1,
+        "unit": "wrap"
+      }
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "nutrition": {
+      "calories": 455,
+      "protein": 16,
+      "carbs": 62,
+      "fat": 13
+    },
+    "instructions": [
+      "Pick up from the cafe chiller.",
+      "Check the label against your allergy settings.",
+      "Eat cold or ask for it toasted if there is time."
+    ],
+    "source": "Library Cafe",
+    "note": "2 min collection - illustrative price",
+    "image": "🥙"
+  },
+  {
+    "id": "m6",
+    "name": "Falafel grain bowl",
+    "type": "fallback",
+    "mealSlots": [
+      "lunch",
+      "dinner"
+    ],
+    "time": 4,
+    "price": 4.55,
+    "tags": [
+      "vegetarian",
+      "vegan",
+      "near campus",
+      "no cooking"
+    ],
+    "ingredients": [
+      {
+        "name": "falafel",
+        "quantity": 120,
+        "unit": "g"
+      },
+      {
+        "name": "grains",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "salad",
+        "quantity": 60,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "sesame",
+      "gluten"
+    ],
+    "nutrition": {
+      "calories": 620,
+      "protein": 20,
+      "carbs": 78,
+      "fat": 22
+    },
+    "instructions": [
+      "Order the standard bowl.",
+      "Choose the lighter dressing if you want a lower-fat option.",
+      "Add water or fruit if this is your main meal."
+    ],
+    "source": "Campus Food Hall",
+    "note": "4 min walk - illustrative price",
+    "image": "🥣"
+  },
+  {
+    "id": "m7",
+    "name": "Chicken rice bowl",
+    "type": "fallback",
+    "mealSlots": [
+      "lunch",
+      "dinner"
+    ],
+    "time": 4,
+    "price": 4.7,
+    "tags": [
+      "high protein",
+      "near campus",
+      "no cooking"
+    ],
+    "ingredients": [
+      {
+        "name": "chicken",
+        "quantity": 140,
+        "unit": "g"
+      },
+      {
+        "name": "rice",
+        "quantity": 180,
+        "unit": "g"
+      },
+      {
+        "name": "vegetables",
+        "quantity": 100,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "soy"
+    ],
+    "nutrition": {
+      "calories": 640,
+      "protein": 38,
+      "carbs": 70,
+      "fat": 18
+    },
+    "instructions": [
+      "Pick up from the hot counter.",
+      "Ask for sauce on the side if available.",
+      "Check the daily allergen board before buying."
+    ],
+    "source": "Campus Food Hall",
+    "note": "4 min walk - illustrative price",
+    "image": "🍛"
+  },
+  {
+    "id": "m8",
+    "name": "Microwave lentil dhal & rice",
+    "type": "fallback",
+    "mealSlots": [
+      "dinner"
+    ],
+    "time": 3,
+    "price": 3.25,
+    "tags": [
+      "vegetarian",
+      "vegan",
+      "near halls",
+      "no cooking"
+    ],
+    "ingredients": [
+      {
+        "name": "lentils",
+        "quantity": 180,
+        "unit": "g"
+      },
+      {
+        "name": "rice",
+        "quantity": 180,
+        "unit": "g"
+      }
+    ],
+    "allergens": [],
+    "nutrition": {
+      "calories": 520,
+      "protein": 21,
+      "carbs": 84,
+      "fat": 9
+    },
+    "instructions": [
+      "Microwave the rice and dhal packs.",
+      "Stir halfway through heating.",
+      "Serve in one bowl and add spinach if you have it."
+    ],
+    "source": "Local supermarket",
+    "note": "3 min heat-up - illustrative price",
+    "image": "🍲"
+  },
+  {
+    "id": "m9",
+    "name": "Overnight oat jar",
+    "type": "cook",
+    "mealSlots": [
+      "breakfast"
+    ],
+    "time": 5,
+    "price": 1.15,
+    "tags": [
+      "vegetarian",
+      "vegan",
+      "breakfast",
+      "no cooking"
+    ],
+    "ingredients": [
+      {
+        "name": "oats",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "oat milk",
+        "quantity": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "berries",
+        "quantity": 80,
+        "unit": "g"
+      },
+      {
+        "name": "chia seeds",
+        "quantity": 10,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "nutrition": {
+      "calories": 390,
+      "protein": 13,
+      "carbs": 58,
+      "fat": 11
+    },
+    "instructions": [
+      "Mix oats, oat milk and chia seeds in a jar.",
+      "Refrigerate overnight.",
+      "Top with berries before leaving."
+    ],
+    "source": "Student Eats",
+    "note": "Make the night before",
+    "image": "🥣"
+  },
+  {
+    "id": "m10",
+    "name": "Scrambled egg toast",
+    "type": "cook",
+    "mealSlots": [
+      "breakfast"
+    ],
+    "time": 8,
+    "price": 1.35,
+    "tags": [
+      "vegetarian",
+      "breakfast",
+      "hot meal"
+    ],
+    "ingredients": [
+      {
+        "name": "egg",
+        "quantity": 2,
+        "unit": "item"
+      },
+      {
+        "name": "bread",
+        "quantity": 2,
+        "unit": "slice"
+      },
+      {
+        "name": "spinach",
+        "quantity": 40,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "eggs",
+      "gluten"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein": 22,
+      "carbs": 38,
+      "fat": 18
+    },
+    "instructions": [
+      "Toast the bread.",
+      "Scramble eggs in a pan or microwave-safe bowl.",
+      "Add spinach at the end and serve on toast."
+    ],
+    "source": "My staples",
+    "note": "High-protein breakfast",
+    "image": "🍳"
+  },
+  {
+    "id": "m11",
+    "name": "Banana oat breakfast pot",
+    "type": "fallback",
+    "mealSlots": [
+      "breakfast"
+    ],
+    "time": 2,
+    "price": 2.25,
+    "tags": [
+      "vegetarian",
+      "vegan",
+      "breakfast",
+      "near campus",
+      "no cooking"
+    ],
+    "ingredients": [
+      {
+        "name": "oats",
+        "quantity": 45,
+        "unit": "g"
+      },
+      {
+        "name": "banana",
+        "quantity": 1,
+        "unit": "serving"
+      },
+      {
+        "name": "seeds",
+        "quantity": 15,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "nutrition": {
+      "calories": 360,
+      "protein": 10,
+      "carbs": 64,
+      "fat": 8
+    },
+    "instructions": [
+      "Pick up from the campus shop.",
+      "Check the label against your allergy settings.",
+      "Pair with coffee or water if needed."
+    ],
+    "source": "Campus shop",
+    "note": "2 min pickup - illustrative price",
+    "image": "🍌"
+  },
+  {
+    "id": "m12",
+    "name": "Yoghurt fruit granola cup",
+    "type": "fallback",
+    "mealSlots": [
+      "breakfast"
+    ],
+    "time": 2,
+    "price": 2.4,
+    "tags": [
+      "vegetarian",
+      "breakfast",
+      "near library",
+      "no cooking"
+    ],
+    "ingredients": [
+      {
+        "name": "yoghurt",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "berries",
+        "quantity": 70,
+        "unit": "g"
+      },
+      {
+        "name": "granola",
+        "quantity": 40,
+        "unit": "g"
+      }
+    ],
+    "allergens": [
+      "milk",
+      "gluten"
+    ],
+    "nutrition": {
+      "calories": 340,
+      "protein": 15,
+      "carbs": 49,
+      "fat": 9
+    },
+    "instructions": [
+      "Pick up chilled.",
+      "Check the label for nut traces.",
+      "Eat before lectures or keep chilled until mid-morning."
+    ],
+    "source": "Library Cafe",
+    "note": "2 min collection - illustrative price",
+    "image": "🍓"
+  }
+] as const;
+
 export const canonicalConstraints = {
   "budgetPence": 2400,
   "deadlineDays": [
