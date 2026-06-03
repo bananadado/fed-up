@@ -4,9 +4,10 @@ import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } fr
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions, universities } from "../data";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
@@ -523,11 +524,10 @@ export function Onboarding({
                     error={step2Attempted && !prefs.kitchen}
                     errorMessage="Please select your kitchen access"
                   />
-                  <SelectField
+                  <UniversityField
                     label="Your university"
                     value={prefs.university}
                     onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
-                    options={universities.map((university) => ({ value: university, label: university }))}
                     required
                     error={step2Attempted && !prefs.university}
                     errorMessage="Please select your university"
