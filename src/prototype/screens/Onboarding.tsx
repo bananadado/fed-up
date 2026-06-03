@@ -22,6 +22,7 @@ import {
 } from "../calendarImport";
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
+import { filterFoodPreferenceOptions } from "../preferenceOptions";
 
 function Progress({ step }: { step: number }) {
   const labels = ["Calendar", "About you", "Preferences"];
@@ -117,6 +118,8 @@ export function Onboarding({
   const [step1Attempted, setStep1Attempted] = useState(false);
   const [step2Attempted, setStep2Attempted] = useState(false);
   const [showCalendarSkipConfirm, setShowCalendarSkipConfirm] = useState(false);
+  const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
+  const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
 
   function goToStep(nextStep: number) {
     setStep(nextStep);
@@ -396,13 +399,34 @@ export function Onboarding({
                   errorMessage="Please select your cooking ability"
                 />
               </PreferenceSection>
+              <PreferenceSection title="Dietary safety" description="Restrictions and allergens are treated as hard filters before recipes are suggested.">
+                <div className="grid gap-5">
+                  <ChoiceGroup
+                    title="Dietary requirements (leave blank if none)"
+                    options={dietary}
+                    selected={prefs.dietary}
+                    onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    addPlaceholder="Add a dietary requirement"
+                  />
+                  <ChoiceGroup
+                    title="Allergic to / cannot eat"
+                    options={allergens}
+                    selected={prefs.allergens}
+                    onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    addPlaceholder="Add an allergy or avoided ingredient"
+                    danger
+                  />
+                </div>
+              </PreferenceSection>
               <PreferenceSection
                 title="What do you usually eat?"
                 description="Pick the meals you reach for most. This helps us suggest things you'll actually make — not recipes that require skills you don't need."
               >
                 <ChoiceGroup
                   title=""
-                  options={likes}
+                  options={filteredLikes}
                   selected={prefs.likes}
                   onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
                   onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
@@ -415,7 +439,7 @@ export function Onboarding({
               >
                 <ChoiceGroup
                   title=""
-                  options={dislikes}
+                  options={filteredDislikes}
                   selected={prefs.dislikes}
                   onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
                   onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
@@ -564,27 +588,6 @@ export function Onboarding({
               </button>
             </div>
             <div className="mt-4 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
-              <PreferenceSection title="Dietary safety" description="Restrictions and allergens are treated as hard filters before recipes are suggested.">
-                <div className="grid gap-5">
-                  <ChoiceGroup
-                    title="Dietary requirements (leave blank if none)"
-                    options={dietary}
-                    selected={prefs.dietary}
-                    onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                    addPlaceholder="Add a dietary requirement"
-                  />
-                  <ChoiceGroup
-                    title="Allergic to / cannot eat"
-                    options={allergens}
-                    selected={prefs.allergens}
-                    onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                    addPlaceholder="Add an allergy or avoided ingredient"
-                    danger
-                  />
-                </div>
-              </PreferenceSection>
               <PreferenceSection
                 title="Planning Priorities"
                 description="What should we optimise for? You can change this later."

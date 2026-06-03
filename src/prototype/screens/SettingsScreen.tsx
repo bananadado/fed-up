@@ -22,6 +22,7 @@ import {
 } from "../calendarImport";
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
+import { filterFoodPreferenceOptions } from "../preferenceOptions";
 
 export function SettingsScreen({
   prefs,
@@ -59,6 +60,8 @@ export function SettingsScreen({
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
+  const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
+  const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
 
   function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -242,7 +245,7 @@ export function SettingsScreen({
           />
           <ChoiceGroup
             title="What do you usually eat?"
-            options={likes}
+            options={filteredLikes}
             selected={prefs.likes}
             onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
             onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
@@ -250,7 +253,7 @@ export function SettingsScreen({
           />
           <ChoiceGroup
             title="Ingredients I dislike"
-            options={dislikes}
+            options={filteredDislikes}
             selected={prefs.dislikes}
             onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
             onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
