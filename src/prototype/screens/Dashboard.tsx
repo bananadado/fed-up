@@ -1,16 +1,19 @@
-import { ChevronRight, Clock3, CookingPot, Flame } from "lucide-react";
+import { ChevronRight, Clock3, RefreshCcw, Utensils } from "lucide-react";
+import { useState } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Meal, PlanEntry, Preferences, Screen } from "../types";
+import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
+import { SwapModal } from "../components/SwapModal";
 import { getMealById, money } from "../utils";
-import { mealHealthSignals, weeklyBalanceSummary } from "../healthSignals";
+import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
 export function Dashboard({
   prefs,
   plan,
+  setPlan,
   customRecipes,
   setScreen,
   onSelectMeal,
@@ -18,12 +21,14 @@ export function Dashboard({
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
+  setPlan: (plan: PlanEntry[]) => void;
   customRecipes: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
-  const nextCook = plan
+  const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
+  const nextMeal = plan
     .flatMap((entry) =>
       entry.meals.map((planMeal) => ({
         day: entry.day,
@@ -33,16 +38,13 @@ export function Dashboard({
         meal: getMealById(planMeal.mealId, customRecipes),
       })),
     )
-    .find((entry) => entry.meal.type === "cook");
+    .at(0) ?? null;
 
   return (
     <div>
       <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <Badge tone="rose">
-            <Flame size={12} className="mr-1" /> Deadline Mode active
-          </Badge>
-          <h1 className="mt-3 text-3xl font-bold">Your week is covered.</h1>
+          <h1 className="text-3xl font-bold">Your week is covered.</h1>
           <p className="mt-2 text-stone-600">Mixed Mode: quick preparation plus realistic campus fallbacks.</p>
         </div>
         <AppButton variant="secondary" onClick={() => { track("dashboard_full_plan_clicked"); setScreen("plan"); }}>
@@ -54,30 +56,37 @@ export function Dashboard({
           <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-5">
             <div className="flex items-center gap-2 text-sm font-semibold text-stone-600">
-              <CookingPot size={17} /> Next cooking
+              <Utensils size={17} /> Next meal
             </div>
-            {nextCook ? (
+            {nextMeal ? (
               <>
-                <p className="mt-4 text-xl font-bold">
-                  {nextCook.meal.image} {nextCook.meal.name}
-                </p>
+                <button
+                  type="button"
+                  onClick={() => { track("dashboard_next_meal_clicked", { meal_id: nextMeal.mealId }); onSelectMeal(nextMeal.mealId); }}
+                  className="mt-4 break-words text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                >
+                  {nextMeal.meal.image} {nextMeal.meal.name}
+                </button>
                 <p className="mt-2 text-sm text-stone-500">
-                  {nextCook.day} {nextCook.slot} - {nextCook.context}
+                  {nextMeal.day} {nextMeal.slot} - {nextMeal.context}
                 </p>
-                <div className="mt-4 flex gap-2">
+                <div className="mt-4 flex flex-wrap items-center gap-2">
                   <Badge tone="green">
-                    <Clock3 size={12} className="mr-1" /> {nextCook.meal.time} min
+                    <Clock3 size={12} className="mr-1" /> {nextMeal.meal.time} min
                   </Badge>
-                  <Badge>{money(nextCook.meal.price)}</Badge>
-                  {mealHealthSignals(nextCook.meal).map((signal) => (
+                  <Badge>{money(nextMeal.meal.price)}</Badge>
+                  {mealHealthSignals(nextMeal.meal).map((signal) => (
                     <Badge key={signal} tone="blue">
                       {signal}
                     </Badge>
                   ))}
                 </div>
+                <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, layout: "dashboard_next_meal" }); setRescueChoice({ day: nextMeal.day, slot: nextMeal.slot }); }}>
+                  <RefreshCcw size={13} /> Change meal
+                </AppButton>
               </>
             ) : (
-              <p className="mt-3 text-stone-500">No cooking planned this week.</p>
+              <p className="mt-3 text-stone-500">No meals planned this week.</p>
             )}
           </Card>
         </div>
@@ -104,17 +113,26 @@ export function Dashboard({
                         const meal = getMealById(planMeal.mealId, customRecipes);
 
                         return (
-                          <button
-                            key={planMeal.slot}
-                            type="button"
-                            onClick={() => onSelectMeal(planMeal.mealId)}
-                            className="min-w-0 rounded-lg bg-white px-3 py-2 text-left transition hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
-                          >
-                            <p className="text-[11px] font-semibold uppercase text-stone-500">{planMeal.slot}</p>
-                            <p className="mt-1 truncate text-sm font-medium">
-                              {meal.image} {meal.name}
-                            </p>
-                          </button>
+                          <div key={planMeal.slot} className="relative min-w-0 rounded-lg bg-white px-3 py-2">
+                            <button
+                              type="button"
+                              onClick={() => onSelectMeal(planMeal.mealId)}
+                              className="block w-full text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                            >
+                              <p className="text-[11px] font-semibold uppercase text-stone-500">{planMeal.slot}</p>
+                              <p className="mt-1 truncate pr-5 text-sm font-medium">
+                                {meal.image} {meal.name}
+                              </p>
+                            </button>
+                            <button
+                              type="button"
+                              aria-label="Change meal"
+                              onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, layout: "dashboard" }); setRescueChoice({ day: entry.day, slot: planMeal.slot }); }}
+                              className="absolute right-1.5 top-1.5 rounded p-1 text-stone-400 hover:bg-stone-100 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                            >
+                              <RefreshCcw size={13} />
+                            </button>
+                          </div>
                         );
                       })}
                     </div>
@@ -123,9 +141,20 @@ export function Dashboard({
               );
             })}
           </div>
-          <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{weeklyBalanceSummary(plan, customRecipes)}</p>
         </Card>
       </div>
+      {rescueChoice && (
+        <SwapModal
+          rescueChoice={rescueChoice}
+          onClose={() => setRescueChoice(null)}
+          plan={plan}
+          setPlan={setPlan}
+          prefs={prefs}
+          customRecipes={customRecipes}
+          onSelectMeal={onSelectMeal}
+          track={track}
+        />
+      )}
     </div>
   );
 }

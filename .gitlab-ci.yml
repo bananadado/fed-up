@@ -130,6 +130,31 @@ firebase_functions:
     - (cd functions && bun run lint)
     - (cd functions && bun run build)
 
+recommender_api_tests:
+  image: python:3.12-slim
+  stage: checks
+  needs: []
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - backend/recommender-api/**/*
+    - if: "$CI_COMMIT_BRANCH"
+      changes:
+        - backend/recommender-api/**/*
+    - when: never
+  cache:
+    key:
+      files:
+        - backend/recommender-api/requirements-dev.txt
+    paths:
+      - .cache/pip/
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  script:
+    - cd backend/recommender-api
+    - pip install --quiet -r requirements-dev.txt
+    - python -m pytest
+
 e2e_tests:
   extends: .bun_job
   stage: prototype
@@ -207,6 +232,103 @@ secret_detection:
   stage: security
   needs: []
   allow_failure: false
+
+.deploy_gpu_server:
+  image: alpine:3.20
+  stage: backend_deploy
+  variables:
+    DEPLOY_HOST: "gru.end-pickerel.ts.net"
+    DEPLOY_USER: "deploy"
+    DEPLOY_DIR: "/opt/drp03-backend"
+  script:
+    - apk add --no-cache openssh-client rsync iptables
+    - wget -q -O /tmp/tailscale.tgz "https://pkgs.tailscale.com/stable/tailscale_latest_amd64.tgz"
+    - tar -xzf /tmp/tailscale.tgz -C /tmp && cp /tmp/tailscale_*/tailscale* /usr/local/bin/ && rm -rf /tmp/tailscale*
+    - "tailscaled --state=mem: --tun=userspace-networking &"
+    - sleep 2
+    - tailscale up --authkey=${TAILSCALE_AUTH_KEY} --hostname="ci-deploy-$CI_JOB_ID" --accept-routes
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - echo "$DEPLOY_SSH_KEY_B64" | base64 -d > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
+    - |
+      # Drive ssh/rsync through an ssh config so the ProxyCommand (which contains
+      # spaces) isn't mangled by word-splitting when passed via a variable.
+      printf '%s\n' \
+        "Host ${DEPLOY_HOST}" \
+        "  HostName ${DEPLOY_HOST}" \
+        "  User ${DEPLOY_USER}" \
+        "  IdentityFile ~/.ssh/deploy_key" \
+        "  StrictHostKeyChecking accept-new" \
+        "  ProxyCommand tailscale nc %h %p" \
+        > ~/.ssh/config
+      chmod 600 ~/.ssh/config
+
+      rsync -avz --delete --exclude='.env' --exclude='__pycache__' \
+        -e ssh \
+        backend/ \
+        "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/"
+
+      ALL_SERVICES="api db adminer embedding-viz grafana prometheus loki promtail node-exporter cadvisor nvidia-exporter"
+      CHANGED_SERVICES=""
+      CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA" -- backend/ 2>/dev/null || true)
+
+      if [ -z "$CHANGED_FILES" ] || echo "$CHANGED_FILES" | grep -q "backend/docker-compose.yml"; then
+        # Empty diff (shallow clone, merge commit, or a new branch where
+        # CI_COMMIT_BEFORE_SHA is absent) or a compose change: redeploy
+        # everything rather than silently skipping. The job's `changes:` rule
+        # already guarantees something under backend/ actually changed.
+        CHANGED_SERVICES="$ALL_SERVICES"
+      else
+        echo "$CHANGED_FILES" | grep -q "backend/recommender-api/" && CHANGED_SERVICES="$CHANGED_SERVICES api"
+        echo "$CHANGED_FILES" | grep -q "backend/db/" && CHANGED_SERVICES="$CHANGED_SERVICES db"
+        echo "$CHANGED_FILES" | grep -q "backend/embedding-viz/" && CHANGED_SERVICES="$CHANGED_SERVICES embedding-viz"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/grafana/" && CHANGED_SERVICES="$CHANGED_SERVICES grafana"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/prometheus/" && CHANGED_SERVICES="$CHANGED_SERVICES prometheus"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/loki/" && CHANGED_SERVICES="$CHANGED_SERVICES loki"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/promtail/" && CHANGED_SERVICES="$CHANGED_SERVICES promtail"
+        echo "$CHANGED_FILES" | grep -q "backend/monitoring/nvidia-exporter.py" && CHANGED_SERVICES="$CHANGED_SERVICES nvidia-exporter"
+      fi
+
+      CHANGED_SERVICES=$(echo "$CHANGED_SERVICES" | xargs)
+      if [ -z "$CHANGED_SERVICES" ]; then
+        echo "No backend services changed — skipping deploy."
+        exit 0
+      fi
+
+      echo "Services to redeploy: $CHANGED_SERVICES"
+      ssh "${DEPLOY_USER}@${DEPLOY_HOST}" "cd ${DEPLOY_DIR} && bash deploy.sh $CHANGED_SERVICES"
+  after_script:
+    - tailscale logout 2>/dev/null || true
+    - rm -f ~/.ssh/deploy_key ~/.ssh/config
+
+deploy_gpu_staging:
+  extends: .deploy_gpu_server
+  needs:
+    - job: lint
+    - job: typecheck
+    - job: recommender_api_tests
+      optional: true
+  environment:
+    name: gpu-staging
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "staging"'
+      changes:
+        - backend/**/*
+    - when: never
+
+deploy_gpu_production:
+  extends: .deploy_gpu_server
+  needs:
+    - job: lint
+    - job: typecheck
+    - job: recommender_api_tests
+      optional: true
+  environment:
+    name: gpu-production
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"'
+      changes:
+        - backend/**/*
+    - when: never
 
 .deploy_vercel:
   extends: .bun_job

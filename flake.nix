@@ -14,8 +14,10 @@
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
           bun
+          chromium
           nodejs_24
           git
+          jdk_headless
           jq
           eslint
           prettier
@@ -25,6 +27,7 @@
         ];
 
         PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+        PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
         PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "1";
         NPM_CONFIG_UPDATE_NOTIFIER = "false";

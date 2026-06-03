@@ -23,7 +23,7 @@ cd functions
 bun run build
 cd ..
 
-./node_modules/.bin/firebase emulators:start --only functions,firestore &
+./node_modules/.bin/firebase emulators:start --only functions,firestore,storage &
 EMULATOR_PID="$!"
 
 printf "Waiting for Firebase Functions emulator at %s...\n" "$FUNCTIONS_BASE_URL"

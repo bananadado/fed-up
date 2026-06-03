@@ -1,0 +1,6152 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "tsconfig.dev.json",
+      "file_type": "code",
+      "source_file": "tsconfig.dev.json",
+      "source_location": "L1",
+      "id": "tsconfig_dev_json",
+      "community": 13,
+      "norm_label": "tsconfig.dev.json"
+    },
+    {
+      "label": "include",
+      "file_type": "code",
+      "source_file": "tsconfig.dev.json",
+      "source_location": "L2",
+      "id": "functions_tsconfig_dev_include",
+      "community": 13,
+      "norm_label": "include"
+    },
+    {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L1",
+      "id": "package_json",
+      "community": 2,
+      "norm_label": "package.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "id": "functions_package_name",
+      "community": 2,
+      "norm_label": "name"
+    },
+    {
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "id": "functions_package_scripts",
+      "community": 2,
+      "norm_label": "scripts"
+    },
+    {
+      "label": "lint",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "id": "functions_package_scripts_lint",
+      "community": 2,
+      "norm_label": "lint"
+    },
+    {
+      "label": "build",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "id": "functions_package_scripts_build",
+      "community": 2,
+      "norm_label": "build"
+    },
+    {
+      "label": "build:watch",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "id": "functions_package_scripts_build_watch",
+      "community": 2,
+      "norm_label": "build:watch"
+    },
+    {
+      "label": "serve",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "id": "functions_package_scripts_serve",
+      "community": 2,
+      "norm_label": "serve"
+    },
+    {
+      "label": "shell",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L8",
+      "id": "functions_package_scripts_shell",
+      "community": 2,
+      "norm_label": "shell"
+    },
+    {
+      "label": "start",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "id": "functions_package_scripts_start",
+      "community": 2,
+      "norm_label": "start"
+    },
+    {
+      "label": "deploy",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "id": "functions_package_scripts_deploy",
+      "community": 2,
+      "norm_label": "deploy"
+    },
+    {
+      "label": "logs",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "id": "functions_package_scripts_logs",
+      "community": 2,
+      "norm_label": "logs"
+    },
+    {
+      "label": "engines",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L13",
+      "id": "functions_package_engines",
+      "community": 2,
+      "norm_label": "engines"
+    },
+    {
+      "label": "node",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L14",
+      "id": "functions_package_engines_node",
+      "community": 2,
+      "norm_label": "node"
+    },
+    {
+      "label": "main",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "id": "functions_package_main",
+      "community": 2,
+      "norm_label": "main"
+    },
+    {
+      "label": "dependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L17",
+      "id": "functions_package_dependencies",
+      "community": 2,
+      "norm_label": "dependencies"
+    },
+    {
+      "label": "@google-cloud/functions-framework",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "id": "functions_package_dependencies_google_cloud_functions_framework",
+      "community": 2,
+      "norm_label": "@google-cloud/functions-framework"
+    },
+    {
+      "label": "firebase-admin",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "id": "functions_package_dependencies_firebase_admin",
+      "community": 2,
+      "norm_label": "firebase-admin"
+    },
+    {
+      "label": "firebase-functions",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "id": "functions_package_dependencies_firebase_functions",
+      "community": 2,
+      "norm_label": "firebase-functions"
+    },
+    {
+      "label": "devDependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "id": "functions_package_devdependencies",
+      "community": 2,
+      "norm_label": "devdependencies"
+    },
+    {
+      "label": "@typescript-eslint/eslint-plugin",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "id": "functions_package_devdependencies_typescript_eslint_eslint_plugin",
+      "community": 2,
+      "norm_label": "@typescript-eslint/eslint-plugin"
+    },
+    {
+      "label": "@typescript-eslint/parser",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L24",
+      "id": "functions_package_devdependencies_typescript_eslint_parser",
+      "community": 2,
+      "norm_label": "@typescript-eslint/parser"
+    },
+    {
+      "label": "eslint",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "id": "functions_package_devdependencies_eslint",
+      "community": 2,
+      "norm_label": "eslint"
+    },
+    {
+      "label": "eslint-config-google",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "id": "functions_package_devdependencies_eslint_config_google",
+      "community": 2,
+      "norm_label": "eslint-config-google"
+    },
+    {
+      "label": "eslint-plugin-import",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "id": "functions_package_devdependencies_eslint_plugin_import",
+      "community": 2,
+      "norm_label": "eslint-plugin-import"
+    },
+    {
+      "label": "firebase-functions-test",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L28",
+      "id": "functions_package_devdependencies_firebase_functions_test",
+      "community": 2,
+      "norm_label": "firebase-functions-test"
+    },
+    {
+      "label": "typescript",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L29",
+      "id": "functions_package_devdependencies_typescript",
+      "community": 2,
+      "norm_label": "typescript"
+    },
+    {
+      "label": "private",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "id": "functions_package_private",
+      "community": 2,
+      "norm_label": "private"
+    },
+    {
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L1",
+      "id": "tsconfig_json",
+      "community": 5,
+      "norm_label": "tsconfig.json"
+    },
+    {
+      "label": "compilerOptions",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L2",
+      "id": "functions_tsconfig_compileroptions",
+      "community": 5,
+      "norm_label": "compileroptions"
+    },
+    {
+      "label": "module",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L3",
+      "id": "functions_tsconfig_compileroptions_module",
+      "community": 5,
+      "norm_label": "module"
+    },
+    {
+      "label": "esModuleInterop",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "id": "functions_tsconfig_compileroptions_esmoduleinterop",
+      "community": 5,
+      "norm_label": "esmoduleinterop"
+    },
+    {
+      "label": "moduleResolution",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "id": "functions_tsconfig_compileroptions_moduleresolution",
+      "community": 5,
+      "norm_label": "moduleresolution"
+    },
+    {
+      "label": "noImplicitReturns",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L6",
+      "id": "functions_tsconfig_compileroptions_noimplicitreturns",
+      "community": 5,
+      "norm_label": "noimplicitreturns"
+    },
+    {
+      "label": "noUnusedLocals",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L7",
+      "id": "functions_tsconfig_compileroptions_nounusedlocals",
+      "community": 5,
+      "norm_label": "nounusedlocals"
+    },
+    {
+      "label": "outDir",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L8",
+      "id": "functions_tsconfig_compileroptions_outdir",
+      "community": 5,
+      "norm_label": "outdir"
+    },
+    {
+      "label": "skipLibCheck",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L9",
+      "id": "functions_tsconfig_compileroptions_skiplibcheck",
+      "community": 5,
+      "norm_label": "skiplibcheck"
+    },
+    {
+      "label": "sourceMap",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L10",
+      "id": "functions_tsconfig_compileroptions_sourcemap",
+      "community": 5,
+      "norm_label": "sourcemap"
+    },
+    {
+      "label": "strict",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L11",
+      "id": "functions_tsconfig_compileroptions_strict",
+      "community": 5,
+      "norm_label": "strict"
+    },
+    {
+      "label": "target",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L12",
+      "id": "functions_tsconfig_compileroptions_target",
+      "community": 5,
+      "norm_label": "target"
+    },
+    {
+      "label": "types",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L13",
+      "id": "functions_tsconfig_compileroptions_types",
+      "community": 5,
+      "norm_label": "types"
+    },
+    {
+      "label": "compileOnSave",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L15",
+      "id": "functions_tsconfig_compileonsave",
+      "community": 5,
+      "norm_label": "compileonsave"
+    },
+    {
+      "label": "include",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L16",
+      "id": "functions_tsconfig_include",
+      "community": 5,
+      "norm_label": "include"
+    },
+    {
+      "label": ".eslintrc.js",
+      "file_type": "code",
+      "source_file": ".eslintrc.js",
+      "source_location": "L1",
+      "id": "eslintrc_js",
+      "community": 21,
+      "norm_label": ".eslintrc.js"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1",
+      "id": "src_index_ts",
+      "community": 1,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "firestore",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L30",
+      "id": "src_index_firestore",
+      "community": 1,
+      "norm_label": "firestore"
+    },
+    {
+      "label": "prototypeRef",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L31",
+      "id": "src_index_prototyperef",
+      "community": 1,
+      "norm_label": "prototyperef"
+    },
+    {
+      "label": "anonymousSessionsRef",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L32",
+      "id": "src_index_anonymoussessionsref",
+      "community": 1,
+      "norm_label": "anonymoussessionsref"
+    },
+    {
+      "label": "openFoodFactsCacheRef",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L33",
+      "id": "src_index_openfoodfactscacheref",
+      "community": 1,
+      "norm_label": "openfoodfactscacheref"
+    },
+    {
+      "label": "openFoodFactsRateLimitRef",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L34",
+      "id": "src_index_openfoodfactsratelimitref",
+      "community": 1,
+      "norm_label": "openfoodfactsratelimitref"
+    },
+    {
+      "label": "publicHttpOptions",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L41",
+      "id": "src_index_publichttpoptions",
+      "community": 1,
+      "norm_label": "publichttpoptions"
+    },
+    {
+      "label": "nutritionHttpOptions",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L42",
+      "id": "src_index_nutritionhttpoptions",
+      "community": 1,
+      "norm_label": "nutritionhttpoptions"
+    },
+    {
+      "label": "googleClientId",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L46",
+      "id": "src_index_googleclientid",
+      "community": 1,
+      "norm_label": "googleclientid"
+    },
+    {
+      "label": "googleClientSecret",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L47",
+      "id": "src_index_googleclientsecret",
+      "community": 1,
+      "norm_label": "googleclientsecret"
+    },
+    {
+      "label": "microsoftClientId",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L48",
+      "id": "src_index_microsoftclientid",
+      "community": 1,
+      "norm_label": "microsoftclientid"
+    },
+    {
+      "label": "microsoftClientSecret",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L49",
+      "id": "src_index_microsoftclientsecret",
+      "community": 1,
+      "norm_label": "microsoftclientsecret"
+    },
+    {
+      "label": "googleOAuthHttpOptions",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L50",
+      "id": "src_index_googleoauthhttpoptions",
+      "community": 1,
+      "norm_label": "googleoauthhttpoptions"
+    },
+    {
+      "label": "microsoftOAuthHttpOptions",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L54",
+      "id": "src_index_microsoftoauthhttpoptions",
+      "community": 1,
+      "norm_label": "microsoftoauthhttpoptions"
+    },
+    {
+      "label": "calendarOAuthSecrets",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L58",
+      "id": "src_index_calendaroauthsecrets",
+      "community": 1,
+      "norm_label": "calendaroauthsecrets"
+    },
+    {
+      "label": "openFoodFactsBaseUrl",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L66",
+      "id": "src_index_openfoodfactsbaseurl",
+      "community": 1,
+      "norm_label": "openfoodfactsbaseurl"
+    },
+    {
+      "label": "PrototypeData",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L79",
+      "id": "src_index_prototypedata",
+      "community": 1,
+      "norm_label": "prototypedata"
+    },
+    {
+      "label": "UnknownRecord",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L80",
+      "id": "src_index_unknownrecord",
+      "community": 1,
+      "norm_label": "unknownrecord"
+    },
+    {
+      "label": "RecipeIngredient",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L82",
+      "id": "src_index_recipeingredient",
+      "community": 1,
+      "norm_label": "recipeingredient"
+    },
+    {
+      "label": "Nutrition",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L89",
+      "id": "src_index_nutrition",
+      "community": 1,
+      "norm_label": "nutrition"
+    },
+    {
+      "label": "OpenFoodFactsProduct",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L107",
+      "id": "src_index_openfoodfactsproduct",
+      "community": 1,
+      "norm_label": "openfoodfactsproduct"
+    },
+    {
+      "label": "IngredientNutritionEstimate",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L120",
+      "id": "src_index_ingredientnutritionestimate",
+      "community": 1,
+      "norm_label": "ingredientnutritionestimate"
+    },
+    {
+      "label": "OpenFoodFactsSearchResponse",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L130",
+      "id": "src_index_openfoodfactssearchresponse",
+      "community": 1,
+      "norm_label": "openfoodfactssearchresponse"
+    },
+    {
+      "label": "HttpRequest",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L134",
+      "id": "src_index_httprequest",
+      "community": 1,
+      "norm_label": "httprequest"
+    },
+    {
+      "label": "HttpResponse",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L140",
+      "id": "src_index_httpresponse",
+      "community": 1,
+      "norm_label": "httpresponse"
+    },
+    {
+      "label": "IcsSubscription",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L147",
+      "id": "src_index_icssubscription",
+      "community": 1,
+      "norm_label": "icssubscription"
+    },
+    {
+      "label": "CalendarToken",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L153",
+      "id": "src_index_calendartoken",
+      "community": 1,
+      "norm_label": "calendartoken"
+    },
+    {
+      "label": "CalendarEvent",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L160",
+      "id": "src_index_calendarevent",
+      "community": 1,
+      "norm_label": "calendarevent"
+    },
+    {
+      "label": "PrototypeSessionSettings",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L173",
+      "id": "src_index_prototypesessionsettings",
+      "community": 1,
+      "norm_label": "prototypesessionsettings"
+    },
+    {
+      "label": "servingGrams",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L210",
+      "id": "src_index_servinggrams",
+      "community": 1,
+      "norm_label": "servinggrams"
+    },
+    {
+      "label": "cookingAdjectives",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L223",
+      "id": "src_index_cookingadjectives",
+      "community": 1,
+      "norm_label": "cookingadjectives"
+    },
+    {
+      "label": "irregularCategoryTerms",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L228",
+      "id": "src_index_irregularcategoryterms",
+      "community": 1,
+      "norm_label": "irregularcategoryterms"
+    },
+    {
+      "label": "seedPrototypeData()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L238",
+      "id": "src_index_seedprototypedata",
+      "community": 18,
+      "norm_label": "seedprototypedata()"
+    },
+    {
+      "label": "getPrototypeData()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L250",
+      "id": "src_index_getprototypedata",
+      "community": 18,
+      "norm_label": "getprototypedata()"
+    },
+    {
+      "label": "rejectUnsupportedMethod()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L270",
+      "id": "src_index_rejectunsupportedmethod",
+      "community": 1,
+      "norm_label": "rejectunsupportedmethod()"
+    },
+    {
+      "label": "rejectUnsupportedSessionMethod()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L285",
+      "id": "src_index_rejectunsupportedsessionmethod",
+      "community": 1,
+      "norm_label": "rejectunsupportedsessionmethod()"
+    },
+    {
+      "label": "sendJson()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L308",
+      "id": "src_index_sendjson",
+      "community": 1,
+      "norm_label": "sendjson()"
+    },
+    {
+      "label": "sendError()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L313",
+      "id": "src_index_senderror",
+      "community": 1,
+      "norm_label": "senderror()"
+    },
+    {
+      "label": "asRecord()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L318",
+      "id": "src_index_asrecord",
+      "community": 8,
+      "norm_label": "asrecord()"
+    },
+    {
+      "label": "boundedString()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L326",
+      "id": "src_index_boundedstring",
+      "community": 8,
+      "norm_label": "boundedstring()"
+    },
+    {
+      "label": "boundedNumber()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L334",
+      "id": "src_index_boundednumber",
+      "community": 8,
+      "norm_label": "boundednumber()"
+    },
+    {
+      "label": "boundedStringList()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L347",
+      "id": "src_index_boundedstringlist",
+      "community": 8,
+      "norm_label": "boundedstringlist()"
+    },
+    {
+      "label": "normalizeRecipeList()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L363",
+      "id": "src_index_normalizerecipelist",
+      "community": 8,
+      "norm_label": "normalizerecipelist()"
+    },
+    {
+      "label": "normalizeDeadline()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L368",
+      "id": "src_index_normalizedeadline",
+      "community": 8,
+      "norm_label": "normalizedeadline()"
+    },
+    {
+      "label": "normalizeIcsSubscription()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L391",
+      "id": "src_index_normalizeicssubscription",
+      "community": 8,
+      "norm_label": "normalizeicssubscription()"
+    },
+    {
+      "label": "normalizeCalendarToken()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L412",
+      "id": "src_index_normalizecalendartoken",
+      "community": 8,
+      "norm_label": "normalizecalendartoken()"
+    },
+    {
+      "label": "normalizeCalendarEvent()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L430",
+      "id": "src_index_normalizecalendarevent",
+      "community": 8,
+      "norm_label": "normalizecalendarevent()"
+    },
+    {
+      "label": "normalizeRecipeIngredient()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L452",
+      "id": "src_index_normalizerecipeingredient",
+      "community": 8,
+      "norm_label": "normalizerecipeingredient()"
+    },
+    {
+      "label": "normalizeRecipeIngredientList()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L480",
+      "id": "src_index_normalizerecipeingredientlist",
+      "community": 8,
+      "norm_label": "normalizerecipeingredientlist()"
+    },
+    {
+      "label": "normalizePrototypeSessionSettings()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L491",
+      "id": "src_index_normalizeprototypesessionsettings",
+      "community": 8,
+      "norm_label": "normalizeprototypesessionsettings()"
+    },
+    {
+      "label": "sessionExpiryTimestamp()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L558",
+      "id": "src_index_sessionexpirytimestamp",
+      "community": 1,
+      "norm_label": "sessionexpirytimestamp()"
+    },
+    {
+      "label": "timestampToIso()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L562",
+      "id": "src_index_timestamptoiso",
+      "community": 19,
+      "norm_label": "timestamptoiso()"
+    },
+    {
+      "label": "readRequestBody()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L574",
+      "id": "src_index_readrequestbody",
+      "community": 8,
+      "norm_label": "readrequestbody()"
+    },
+    {
+      "label": "rejectUnsupportedNutritionMethod()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L586",
+      "id": "src_index_rejectunsupportednutritionmethod",
+      "community": 1,
+      "norm_label": "rejectunsupportednutritionmethod()"
+    },
+    {
+      "label": "isRecipeIngredient()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L604",
+      "id": "src_index_isrecipeingredient",
+      "community": 1,
+      "norm_label": "isrecipeingredient()"
+    },
+    {
+      "label": "normalizeIngredientKey()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L618",
+      "id": "src_index_normalizeingredientkey",
+      "community": 4,
+      "norm_label": "normalizeingredientkey()"
+    },
+    {
+      "label": "openFoodFactsCacheDocId()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L622",
+      "id": "src_index_openfoodfactscachedocid",
+      "community": 4,
+      "norm_label": "openfoodfactscachedocid()"
+    },
+    {
+      "label": "toCategoryTag()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L626",
+      "id": "src_index_tocategorytag",
+      "community": 4,
+      "norm_label": "tocategorytag()"
+    },
+    {
+      "label": "uniqueTerms()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L633",
+      "id": "src_index_uniqueterms",
+      "community": 4,
+      "norm_label": "uniqueterms()"
+    },
+    {
+      "label": "openFoodFactsCategoryTerms()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L637",
+      "id": "src_index_openfoodfactscategoryterms",
+      "community": 4,
+      "norm_label": "openfoodfactscategoryterms()"
+    },
+    {
+      "label": "gramsForIngredient()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L654",
+      "id": "src_index_gramsforingredient",
+      "community": 17,
+      "norm_label": "gramsforingredient()"
+    },
+    {
+      "label": "estimateIngredientNutrition()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L677",
+      "id": "src_index_estimateingredientnutrition",
+      "community": 17,
+      "norm_label": "estimateingredientnutrition()"
+    },
+    {
+      "label": "roundMacro()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L712",
+      "id": "src_index_roundmacro",
+      "community": 20,
+      "norm_label": "roundmacro()"
+    },
+    {
+      "label": "totalNutritionFromEstimates()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L716",
+      "id": "src_index_totalnutritionfromestimates",
+      "community": 20,
+      "norm_label": "totalnutritionfromestimates()"
+    },
+    {
+      "label": "timestampMillis()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L739",
+      "id": "src_index_timestampmillis",
+      "community": 4,
+      "norm_label": "timestampmillis()"
+    },
+    {
+      "label": "parseCachedProduct()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L751",
+      "id": "src_index_parsecachedproduct",
+      "community": 4,
+      "norm_label": "parsecachedproduct()"
+    },
+    {
+      "label": "compactOpenFoodFactsProduct()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L785",
+      "id": "src_index_compactopenfoodfactsproduct",
+      "community": 4,
+      "norm_label": "compactopenfoodfactsproduct()"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L810",
+      "id": "src_index_sleep",
+      "community": 4,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "waitForOpenFoodFactsTurn()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L814",
+      "id": "src_index_waitforopenfoodfactsturn",
+      "community": 4,
+      "norm_label": "waitforopenfoodfactsturn()"
+    },
+    {
+      "label": "fetchOpenFoodFactsProducts()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L836",
+      "id": "src_index_fetchopenfoodfactsproducts",
+      "community": 4,
+      "norm_label": "fetchopenfoodfactsproducts()"
+    },
+    {
+      "label": "fetchOpenFoodFactsProductForIngredient()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L863",
+      "id": "src_index_fetchopenfoodfactsproductforingredient",
+      "community": 4,
+      "norm_label": "fetchopenfoodfactsproductforingredient()"
+    },
+    {
+      "label": "tryAcquireOpenFoodFactsCacheLock()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L878",
+      "id": "src_index_tryacquireopenfoodfactscachelock",
+      "community": 4,
+      "norm_label": "tryacquireopenfoodfactscachelock()"
+    },
+    {
+      "label": "readOpenFoodFactsCachedProduct()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L912",
+      "id": "src_index_readopenfoodfactscachedproduct",
+      "community": 4,
+      "norm_label": "readopenfoodfactscachedproduct()"
+    },
+    {
+      "label": "cacheOpenFoodFactsProduct()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L938",
+      "id": "src_index_cacheopenfoodfactsproduct",
+      "community": 4,
+      "norm_label": "cacheopenfoodfactsproduct()"
+    },
+    {
+      "label": "findOpenFoodFactsProductForIngredient()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L956",
+      "id": "src_index_findopenfoodfactsproductforingredient",
+      "community": 4,
+      "norm_label": "findopenfoodfactsproductforingredient()"
+    },
+    {
+      "label": "sendSessionJson()",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L991",
+      "id": "src_index_sendsessionjson",
+      "community": 19,
+      "norm_label": "sendsessionjson()"
+    },
+    {
+      "label": "deadlineFoodBootstrap",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1005",
+      "id": "src_index_deadlinefoodbootstrap",
+      "community": 1,
+      "norm_label": "deadlinefoodbootstrap"
+    },
+    {
+      "label": "deadlineFoodMeals",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1015",
+      "id": "src_index_deadlinefoodmeals",
+      "community": 1,
+      "norm_label": "deadlinefoodmeals"
+    },
+    {
+      "label": "deadlineFoodScenario",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1026",
+      "id": "src_index_deadlinefoodscenario",
+      "community": 1,
+      "norm_label": "deadlinefoodscenario"
+    },
+    {
+      "label": "deadlineFoodNutrition",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1037",
+      "id": "src_index_deadlinefoodnutrition",
+      "community": 1,
+      "norm_label": "deadlinefoodnutrition"
+    },
+    {
+      "label": "deadlineFoodSession",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1081",
+      "id": "src_index_deadlinefoodsession",
+      "community": 1,
+      "norm_label": "deadlinefoodsession"
+    },
+    {
+      "label": "calendarFetchIcs",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1163",
+      "id": "src_index_calendarfetchics",
+      "community": 1,
+      "norm_label": "calendarfetchics"
+    },
+    {
+      "label": "calendarGoogleExchange",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1224",
+      "id": "src_index_calendargoogleexchange",
+      "community": 1,
+      "norm_label": "calendargoogleexchange"
+    },
+    {
+      "label": "calendarOutlookExchange",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1285",
+      "id": "src_index_calendaroutlookexchange",
+      "community": 1,
+      "norm_label": "calendaroutlookexchange"
+    },
+    {
+      "label": "calendarSubscriptionRefresh",
+      "file_type": "code",
+      "source_file": "src/index.ts",
+      "source_location": "L1348",
+      "id": "src_index_calendarsubscriptionrefresh",
+      "community": 1,
+      "norm_label": "calendarsubscriptionrefresh"
+    },
+    {
+      "label": "icsParser.ts",
+      "file_type": "code",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L1",
+      "id": "src_icsparser_ts",
+      "community": 3,
+      "norm_label": "icsparser.ts"
+    },
+    {
+      "label": "CalendarEvent",
+      "file_type": "code",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L3",
+      "id": "src_icsparser_calendarevent",
+      "community": 3,
+      "norm_label": "calendarevent"
+    },
+    {
+      "label": "unfoldLines()",
+      "file_type": "code",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L16",
+      "id": "src_icsparser_unfoldlines",
+      "community": 3,
+      "norm_label": "unfoldlines()"
+    },
+    {
+      "label": "extractField()",
+      "file_type": "code",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L20",
+      "id": "src_icsparser_extractfield",
+      "community": 3,
+      "norm_label": "extractfield()"
+    },
+    {
+      "label": "parseICSDateTime()",
+      "file_type": "code",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L25",
+      "id": "src_icsparser_parseicsdatetime",
+      "community": 3,
+      "norm_label": "parseicsdatetime()"
+    },
+    {
+      "label": "unescapeICSValue()",
+      "file_type": "code",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L42",
+      "id": "src_icsparser_unescapeicsvalue",
+      "community": 3,
+      "norm_label": "unescapeicsvalue()"
+    },
+    {
+      "label": "parseICSText()",
+      "file_type": "code",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L50",
+      "id": "src_icsparser_parseicstext",
+      "community": 3,
+      "norm_label": "parseicstext()"
+    },
+    {
+      "label": "calendarUtils.ts",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L1",
+      "id": "src_calendarutils_ts",
+      "community": 3,
+      "norm_label": "calendarutils.ts"
+    },
+    {
+      "label": "filterFutureEvents()",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L10",
+      "id": "src_calendarutils_filterfutureevents",
+      "community": 3,
+      "norm_label": "filterfutureevents()"
+    },
+    {
+      "label": "Deadline",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L22",
+      "id": "src_calendarutils_deadline",
+      "community": 3,
+      "norm_label": "deadline"
+    },
+    {
+      "label": "calendarEventsToDeadlines()",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L35",
+      "id": "src_calendarutils_calendareventstodeadlines",
+      "community": 3,
+      "norm_label": "calendareventstodeadlines()"
+    },
+    {
+      "label": "refreshGoogleToken()",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L70",
+      "id": "src_calendarutils_refreshgoogletoken",
+      "community": 3,
+      "norm_label": "refreshgoogletoken()"
+    },
+    {
+      "label": "refreshOutlookToken()",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L100",
+      "id": "src_calendarutils_refreshoutlooktoken",
+      "community": 3,
+      "norm_label": "refreshoutlooktoken()"
+    },
+    {
+      "label": "GoogleEvent",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L136",
+      "id": "src_calendarutils_googleevent",
+      "community": 3,
+      "norm_label": "googleevent"
+    },
+    {
+      "label": "fetchGoogleEvents()",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L147",
+      "id": "src_calendarutils_fetchgoogleevents",
+      "community": 3,
+      "norm_label": "fetchgoogleevents()"
+    },
+    {
+      "label": "OutlookEvent",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L187",
+      "id": "src_calendarutils_outlookevent",
+      "community": 3,
+      "norm_label": "outlookevent"
+    },
+    {
+      "label": "fetchOutlookEvents()",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L198",
+      "id": "src_calendarutils_fetchoutlookevents",
+      "community": 3,
+      "norm_label": "fetchoutlookevents()"
+    },
+    {
+      "label": "exchangeGoogleCode()",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L236",
+      "id": "src_calendarutils_exchangegooglecode",
+      "community": 3,
+      "norm_label": "exchangegooglecode()"
+    },
+    {
+      "label": "exchangeOutlookCode()",
+      "file_type": "code",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L273",
+      "id": "src_calendarutils_exchangeoutlookcode",
+      "community": 3,
+      "norm_label": "exchangeoutlookcode()"
+    },
+    {
+      "label": "prototypeData.ts",
+      "file_type": "code",
+      "source_file": "src/generated/prototypeData.ts",
+      "source_location": "L1",
+      "id": "src_generated_prototypedata_ts",
+      "community": 12,
+      "norm_label": "prototypedata.ts"
+    },
+    {
+      "label": "seededMeals",
+      "file_type": "code",
+      "source_file": "src/generated/prototypeData.ts",
+      "source_location": "L4",
+      "id": "generated_prototypedata_seededmeals",
+      "community": 12,
+      "norm_label": "seededmeals"
+    },
+    {
+      "label": "canonicalConstraints",
+      "file_type": "code",
+      "source_file": "src/generated/prototypeData.ts",
+      "source_location": "L830",
+      "id": "generated_prototypedata_canonicalconstraints",
+      "community": 12,
+      "norm_label": "canonicalconstraints"
+    },
+    {
+      "label": "prototypeMeta",
+      "file_type": "code",
+      "source_file": "src/generated/prototypeData.ts",
+      "source_location": "L850",
+      "id": "generated_prototypedata_prototypemeta",
+      "community": 12,
+      "norm_label": "prototypemeta"
+    },
+    {
+      "label": "deadlineBootstrap",
+      "file_type": "code",
+      "source_file": "src/generated/prototypeData.ts",
+      "source_location": "L856",
+      "id": "generated_prototypedata_deadlinebootstrap",
+      "community": 12,
+      "norm_label": "deadlinebootstrap"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L1",
+      "id": "lib_index_js",
+      "community": 0,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "app_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L38",
+      "id": "lib_index_app_1",
+      "community": 0,
+      "norm_label": "app_1"
+    },
+    {
+      "label": "firestore_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L39",
+      "id": "lib_index_firestore_1",
+      "community": 0,
+      "norm_label": "firestore_1"
+    },
+    {
+      "label": "https_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L40",
+      "id": "lib_index_https_1",
+      "community": 0,
+      "norm_label": "https_1"
+    },
+    {
+      "label": "scheduler_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L41",
+      "id": "lib_index_scheduler_1",
+      "community": 0,
+      "norm_label": "scheduler_1"
+    },
+    {
+      "label": "options_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L42",
+      "id": "lib_index_options_1",
+      "community": 0,
+      "norm_label": "options_1"
+    },
+    {
+      "label": "params_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L43",
+      "id": "lib_index_params_1",
+      "community": 0,
+      "norm_label": "params_1"
+    },
+    {
+      "label": "logger",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L44",
+      "id": "lib_index_logger",
+      "community": 0,
+      "norm_label": "logger"
+    },
+    {
+      "label": "crypto_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L45",
+      "id": "lib_index_crypto_1",
+      "community": 0,
+      "norm_label": "crypto_1"
+    },
+    {
+      "label": "icsParser_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L46",
+      "id": "lib_index_icsparser_1",
+      "community": 0,
+      "norm_label": "icsparser_1"
+    },
+    {
+      "label": "calendarUtils_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L47",
+      "id": "lib_index_calendarutils_1",
+      "community": 0,
+      "norm_label": "calendarutils_1"
+    },
+    {
+      "label": "prototypeData_1",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L48",
+      "id": "lib_index_prototypedata_1",
+      "community": 0,
+      "norm_label": "prototypedata_1"
+    },
+    {
+      "label": "firestore",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L51",
+      "id": "lib_index_firestore",
+      "community": 0,
+      "norm_label": "firestore"
+    },
+    {
+      "label": "prototypeRef",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L52",
+      "id": "lib_index_prototyperef",
+      "community": 0,
+      "norm_label": "prototyperef"
+    },
+    {
+      "label": "anonymousSessionsRef",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L53",
+      "id": "lib_index_anonymoussessionsref",
+      "community": 0,
+      "norm_label": "anonymoussessionsref"
+    },
+    {
+      "label": "openFoodFactsCacheRef",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L54",
+      "id": "lib_index_openfoodfactscacheref",
+      "community": 0,
+      "norm_label": "openfoodfactscacheref"
+    },
+    {
+      "label": "openFoodFactsRateLimitRef",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L55",
+      "id": "lib_index_openfoodfactsratelimitref",
+      "community": 0,
+      "norm_label": "openfoodfactsratelimitref"
+    },
+    {
+      "label": "publicHttpOptions",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L62",
+      "id": "lib_index_publichttpoptions",
+      "community": 0,
+      "norm_label": "publichttpoptions"
+    },
+    {
+      "label": "nutritionHttpOptions",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L63",
+      "id": "lib_index_nutritionhttpoptions",
+      "community": 0,
+      "norm_label": "nutritionhttpoptions"
+    },
+    {
+      "label": "googleClientId",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L64",
+      "id": "lib_index_googleclientid",
+      "community": 0,
+      "norm_label": "googleclientid"
+    },
+    {
+      "label": "googleClientSecret",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L65",
+      "id": "lib_index_googleclientsecret",
+      "community": 0,
+      "norm_label": "googleclientsecret"
+    },
+    {
+      "label": "microsoftClientId",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L66",
+      "id": "lib_index_microsoftclientid",
+      "community": 0,
+      "norm_label": "microsoftclientid"
+    },
+    {
+      "label": "microsoftClientSecret",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L67",
+      "id": "lib_index_microsoftclientsecret",
+      "community": 0,
+      "norm_label": "microsoftclientsecret"
+    },
+    {
+      "label": "googleOAuthHttpOptions",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L68",
+      "id": "lib_index_googleoauthhttpoptions",
+      "community": 0,
+      "norm_label": "googleoauthhttpoptions"
+    },
+    {
+      "label": "microsoftOAuthHttpOptions",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L69",
+      "id": "lib_index_microsoftoauthhttpoptions",
+      "community": 0,
+      "norm_label": "microsoftoauthhttpoptions"
+    },
+    {
+      "label": "calendarOAuthSecrets",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L70",
+      "id": "lib_index_calendaroauthsecrets",
+      "community": 0,
+      "norm_label": "calendaroauthsecrets"
+    },
+    {
+      "label": "openFoodFactsBaseUrl",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L78",
+      "id": "lib_index_openfoodfactsbaseurl",
+      "community": 0,
+      "norm_label": "openfoodfactsbaseurl"
+    },
+    {
+      "label": "servingGrams",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L85",
+      "id": "lib_index_servinggrams",
+      "community": 0,
+      "norm_label": "servinggrams"
+    },
+    {
+      "label": "cookingAdjectives",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L97",
+      "id": "lib_index_cookingadjectives",
+      "community": 0,
+      "norm_label": "cookingadjectives"
+    },
+    {
+      "label": "irregularCategoryTerms",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L101",
+      "id": "lib_index_irregularcategoryterms",
+      "community": 0,
+      "norm_label": "irregularcategoryterms"
+    },
+    {
+      "label": "seedPrototypeData()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L110",
+      "id": "lib_index_seedprototypedata",
+      "community": 11,
+      "norm_label": "seedprototypedata()"
+    },
+    {
+      "label": "getPrototypeData()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L114",
+      "id": "lib_index_getprototypedata",
+      "community": 11,
+      "norm_label": "getprototypedata()"
+    },
+    {
+      "label": "rejectUnsupportedMethod()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L128",
+      "id": "lib_index_rejectunsupportedmethod",
+      "community": 0,
+      "norm_label": "rejectunsupportedmethod()"
+    },
+    {
+      "label": "rejectUnsupportedSessionMethod()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L140",
+      "id": "lib_index_rejectunsupportedsessionmethod",
+      "community": 0,
+      "norm_label": "rejectunsupportedsessionmethod()"
+    },
+    {
+      "label": "sendJson()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L155",
+      "id": "lib_index_sendjson",
+      "community": 0,
+      "norm_label": "sendjson()"
+    },
+    {
+      "label": "sendError()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L159",
+      "id": "lib_index_senderror",
+      "community": 0,
+      "norm_label": "senderror()"
+    },
+    {
+      "label": "asRecord()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L163",
+      "id": "lib_index_asrecord",
+      "community": 6,
+      "norm_label": "asrecord()"
+    },
+    {
+      "label": "boundedString()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L169",
+      "id": "lib_index_boundedstring",
+      "community": 6,
+      "norm_label": "boundedstring()"
+    },
+    {
+      "label": "boundedNumber()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L175",
+      "id": "lib_index_boundednumber",
+      "community": 6,
+      "norm_label": "boundednumber()"
+    },
+    {
+      "label": "boundedStringList()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L181",
+      "id": "lib_index_boundedstringlist",
+      "community": 6,
+      "norm_label": "boundedstringlist()"
+    },
+    {
+      "label": "normalizeRecipeList()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L191",
+      "id": "lib_index_normalizerecipelist",
+      "community": 6,
+      "norm_label": "normalizerecipelist()"
+    },
+    {
+      "label": "normalizeDeadline()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L196",
+      "id": "lib_index_normalizedeadline",
+      "community": 6,
+      "norm_label": "normalizedeadline()"
+    },
+    {
+      "label": "normalizeIcsSubscription()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L205",
+      "id": "lib_index_normalizeicssubscription",
+      "community": 6,
+      "norm_label": "normalizeicssubscription()"
+    },
+    {
+      "label": "normalizeCalendarToken()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L226",
+      "id": "lib_index_normalizecalendartoken",
+      "community": 6,
+      "norm_label": "normalizecalendartoken()"
+    },
+    {
+      "label": "normalizeCalendarEvent()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L243",
+      "id": "lib_index_normalizecalendarevent",
+      "community": 6,
+      "norm_label": "normalizecalendarevent()"
+    },
+    {
+      "label": "normalizeRecipeIngredient()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L264",
+      "id": "lib_index_normalizerecipeingredient",
+      "community": 6,
+      "norm_label": "normalizerecipeingredient()"
+    },
+    {
+      "label": "normalizeRecipeIngredientList()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L281",
+      "id": "lib_index_normalizerecipeingredientlist",
+      "community": 6,
+      "norm_label": "normalizerecipeingredientlist()"
+    },
+    {
+      "label": "normalizePrototypeSessionSettings()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L290",
+      "id": "lib_index_normalizeprototypesessionsettings",
+      "community": 6,
+      "norm_label": "normalizeprototypesessionsettings()"
+    },
+    {
+      "label": "sessionExpiryTimestamp()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L350",
+      "id": "lib_index_sessionexpirytimestamp",
+      "community": 0,
+      "norm_label": "sessionexpirytimestamp()"
+    },
+    {
+      "label": "timestampToIso()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L353",
+      "id": "lib_index_timestamptoiso",
+      "community": 15,
+      "norm_label": "timestamptoiso()"
+    },
+    {
+      "label": "readRequestBody()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L362",
+      "id": "lib_index_readrequestbody",
+      "community": 6,
+      "norm_label": "readrequestbody()"
+    },
+    {
+      "label": "rejectUnsupportedNutritionMethod()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L373",
+      "id": "lib_index_rejectunsupportednutritionmethod",
+      "community": 0,
+      "norm_label": "rejectunsupportednutritionmethod()"
+    },
+    {
+      "label": "isRecipeIngredient()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L385",
+      "id": "lib_index_isrecipeingredient",
+      "community": 0,
+      "norm_label": "isrecipeingredient()"
+    },
+    {
+      "label": "normalizeIngredientKey()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L395",
+      "id": "lib_index_normalizeingredientkey",
+      "community": 7,
+      "norm_label": "normalizeingredientkey()"
+    },
+    {
+      "label": "openFoodFactsCacheDocId()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L398",
+      "id": "lib_index_openfoodfactscachedocid",
+      "community": 7,
+      "norm_label": "openfoodfactscachedocid()"
+    },
+    {
+      "label": "toCategoryTag()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L401",
+      "id": "lib_index_tocategorytag",
+      "community": 7,
+      "norm_label": "tocategorytag()"
+    },
+    {
+      "label": "uniqueTerms()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L407",
+      "id": "lib_index_uniqueterms",
+      "community": 7,
+      "norm_label": "uniqueterms()"
+    },
+    {
+      "label": "openFoodFactsCategoryTerms()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L410",
+      "id": "lib_index_openfoodfactscategoryterms",
+      "community": 7,
+      "norm_label": "openfoodfactscategoryterms()"
+    },
+    {
+      "label": "gramsForIngredient()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L424",
+      "id": "lib_index_gramsforingredient",
+      "community": 14,
+      "norm_label": "gramsforingredient()"
+    },
+    {
+      "label": "estimateIngredientNutrition()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L447",
+      "id": "lib_index_estimateingredientnutrition",
+      "community": 14,
+      "norm_label": "estimateingredientnutrition()"
+    },
+    {
+      "label": "roundMacro()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L473",
+      "id": "lib_index_roundmacro",
+      "community": 16,
+      "norm_label": "roundmacro()"
+    },
+    {
+      "label": "totalNutritionFromEstimates()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L476",
+      "id": "lib_index_totalnutritionfromestimates",
+      "community": 16,
+      "norm_label": "totalnutritionfromestimates()"
+    },
+    {
+      "label": "timestampMillis()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L495",
+      "id": "lib_index_timestampmillis",
+      "community": 11,
+      "norm_label": "timestampmillis()"
+    },
+    {
+      "label": "parseCachedProduct()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L504",
+      "id": "lib_index_parsecachedproduct",
+      "community": 11,
+      "norm_label": "parsecachedproduct()"
+    },
+    {
+      "label": "compactOpenFoodFactsProduct()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L530",
+      "id": "lib_index_compactopenfoodfactsproduct",
+      "community": 7,
+      "norm_label": "compactopenfoodfactsproduct()"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L544",
+      "id": "lib_index_sleep",
+      "community": 7,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "waitForOpenFoodFactsTurn()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L547",
+      "id": "lib_index_waitforopenfoodfactsturn",
+      "community": 7,
+      "norm_label": "waitforopenfoodfactsturn()"
+    },
+    {
+      "label": "fetchOpenFoodFactsProducts()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L562",
+      "id": "lib_index_fetchopenfoodfactsproducts",
+      "community": 7,
+      "norm_label": "fetchopenfoodfactsproducts()"
+    },
+    {
+      "label": "fetchOpenFoodFactsProductForIngredient()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L585",
+      "id": "lib_index_fetchopenfoodfactsproductforingredient",
+      "community": 7,
+      "norm_label": "fetchopenfoodfactsproductforingredient()"
+    },
+    {
+      "label": "tryAcquireOpenFoodFactsCacheLock()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L595",
+      "id": "lib_index_tryacquireopenfoodfactscachelock",
+      "community": 7,
+      "norm_label": "tryacquireopenfoodfactscachelock()"
+    },
+    {
+      "label": "readOpenFoodFactsCachedProduct()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L617",
+      "id": "lib_index_readopenfoodfactscachedproduct",
+      "community": 11,
+      "norm_label": "readopenfoodfactscachedproduct()"
+    },
+    {
+      "label": "cacheOpenFoodFactsProduct()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L633",
+      "id": "lib_index_cacheopenfoodfactsproduct",
+      "community": 7,
+      "norm_label": "cacheopenfoodfactsproduct()"
+    },
+    {
+      "label": "findOpenFoodFactsProductForIngredient()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L643",
+      "id": "lib_index_findopenfoodfactsproductforingredient",
+      "community": 7,
+      "norm_label": "findopenfoodfactsproductforingredient()"
+    },
+    {
+      "label": "sendSessionJson()",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L669",
+      "id": "lib_index_sendsessionjson",
+      "community": 15,
+      "norm_label": "sendsessionjson()"
+    },
+    {
+      "label": "body",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L713",
+      "id": "lib_index_body",
+      "community": 0,
+      "norm_label": "body"
+    },
+    {
+      "label": "ingredients",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L715",
+      "id": "lib_index_ingredients",
+      "community": 0,
+      "norm_label": "ingredients"
+    },
+    {
+      "label": "estimates",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L728",
+      "id": "lib_index_estimates",
+      "community": 0,
+      "norm_label": "estimates"
+    },
+    {
+      "label": "missingIngredients",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L729",
+      "id": "lib_index_missingingredients",
+      "community": 0,
+      "norm_label": "missingingredients"
+    },
+    {
+      "label": "sessionRef",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L757",
+      "id": "lib_index_sessionref",
+      "community": 0,
+      "norm_label": "sessionref"
+    },
+    {
+      "label": "data",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L763",
+      "id": "lib_index_data",
+      "community": 11,
+      "norm_label": "data"
+    },
+    {
+      "label": "settings",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L764",
+      "id": "lib_index_settings",
+      "community": 0,
+      "norm_label": "settings"
+    },
+    {
+      "label": "expiresAt",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L765",
+      "id": "lib_index_expiresat",
+      "community": 0,
+      "norm_label": "expiresat"
+    },
+    {
+      "label": "tokenResult",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L875",
+      "id": "lib_index_tokenresult",
+      "community": 0,
+      "norm_label": "tokenresult"
+    },
+    {
+      "label": "events",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L876",
+      "id": "lib_index_events",
+      "community": 0,
+      "norm_label": "events"
+    },
+    {
+      "label": "existingTokens",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L881",
+      "id": "lib_index_existingtokens",
+      "community": 0,
+      "norm_label": "existingtokens"
+    },
+    {
+      "label": "recentCutoff",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L962",
+      "id": "lib_index_recentcutoff",
+      "community": 0,
+      "norm_label": "recentcutoff"
+    },
+    {
+      "label": "todayIso",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L969",
+      "id": "lib_index_todayiso",
+      "community": 0,
+      "norm_label": "todayiso"
+    },
+    {
+      "label": "filtered",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L980",
+      "id": "lib_index_filtered",
+      "community": 0,
+      "norm_label": "filtered"
+    },
+    {
+      "label": "allEvents",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L988",
+      "id": "lib_index_allevents",
+      "community": 0,
+      "norm_label": "allevents"
+    },
+    {
+      "label": "parsed",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L998",
+      "id": "lib_index_parsed",
+      "community": 0,
+      "norm_label": "parsed"
+    },
+    {
+      "label": "updatedTokens",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L1007",
+      "id": "lib_index_updatedtokens",
+      "community": 0,
+      "norm_label": "updatedtokens"
+    },
+    {
+      "label": "refreshed",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L1011",
+      "id": "lib_index_refreshed",
+      "community": 0,
+      "norm_label": "refreshed"
+    },
+    {
+      "label": "manualDeadlines",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L1028",
+      "id": "lib_index_manualdeadlines",
+      "community": 0,
+      "norm_label": "manualdeadlines"
+    },
+    {
+      "label": "freshDeadlines",
+      "file_type": "code",
+      "source_file": "lib/index.js",
+      "source_location": "L1029",
+      "id": "lib_index_freshdeadlines",
+      "community": 0,
+      "norm_label": "freshdeadlines"
+    },
+    {
+      "label": "icsParser.js",
+      "file_type": "code",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L1",
+      "id": "lib_icsparser_js",
+      "community": 10,
+      "norm_label": "icsparser.js"
+    },
+    {
+      "label": "unfoldLines()",
+      "file_type": "code",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L5",
+      "id": "lib_icsparser_unfoldlines",
+      "community": 10,
+      "norm_label": "unfoldlines()"
+    },
+    {
+      "label": "extractField()",
+      "file_type": "code",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L8",
+      "id": "lib_icsparser_extractfield",
+      "community": 10,
+      "norm_label": "extractfield()"
+    },
+    {
+      "label": "parseICSDateTime()",
+      "file_type": "code",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L13",
+      "id": "lib_icsparser_parseicsdatetime",
+      "community": 10,
+      "norm_label": "parseicsdatetime()"
+    },
+    {
+      "label": "unescapeICSValue()",
+      "file_type": "code",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L27",
+      "id": "lib_icsparser_unescapeicsvalue",
+      "community": 10,
+      "norm_label": "unescapeicsvalue()"
+    },
+    {
+      "label": "parseICSText()",
+      "file_type": "code",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L34",
+      "id": "lib_icsparser_parseicstext",
+      "community": 10,
+      "norm_label": "parseicstext()"
+    },
+    {
+      "label": "calendarUtils.js",
+      "file_type": "code",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L1",
+      "id": "lib_calendarutils_js",
+      "community": 9,
+      "norm_label": "calendarutils.js"
+    },
+    {
+      "label": "filterFutureEvents()",
+      "file_type": "code",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L16",
+      "id": "lib_calendarutils_filterfutureevents",
+      "community": 9,
+      "norm_label": "filterfutureevents()"
+    },
+    {
+      "label": "calendarEventsToDeadlines()",
+      "file_type": "code",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L28",
+      "id": "lib_calendarutils_calendareventstodeadlines",
+      "community": 9,
+      "norm_label": "calendareventstodeadlines()"
+    },
+    {
+      "label": "refreshGoogleToken()",
+      "file_type": "code",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L56",
+      "id": "lib_calendarutils_refreshgoogletoken",
+      "community": 9,
+      "norm_label": "refreshgoogletoken()"
+    },
+    {
+      "label": "refreshOutlookToken()",
+      "file_type": "code",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L80",
+      "id": "lib_calendarutils_refreshoutlooktoken",
+      "community": 9,
+      "norm_label": "refreshoutlooktoken()"
+    },
+    {
+      "label": "fetchGoogleEvents()",
+      "file_type": "code",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L106",
+      "id": "lib_calendarutils_fetchgoogleevents",
+      "community": 9,
+      "norm_label": "fetchgoogleevents()"
+    },
+    {
+      "label": "fetchOutlookEvents()",
+      "file_type": "code",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L144",
+      "id": "lib_calendarutils_fetchoutlookevents",
+      "community": 9,
+      "norm_label": "fetchoutlookevents()"
+    },
+    {
+      "label": "exchangeGoogleCode()",
+      "file_type": "code",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L180",
+      "id": "lib_calendarutils_exchangegooglecode",
+      "community": 9,
+      "norm_label": "exchangegooglecode()"
+    },
+    {
+      "label": "exchangeOutlookCode()",
+      "file_type": "code",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L206",
+      "id": "lib_calendarutils_exchangeoutlookcode",
+      "community": 9,
+      "norm_label": "exchangeoutlookcode()"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.dev.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tsconfig_dev_json",
+      "target": "functions_tsconfig_dev_include",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "package_json",
+      "target": "functions_package_dependencies",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "package_json",
+      "target": "functions_package_devdependencies",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "package_json",
+      "target": "functions_package_engines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "package_json",
+      "target": "functions_package_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "package_json",
+      "target": "functions_package_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "package_json",
+      "target": "functions_package_private",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "package_json",
+      "target": "functions_package_scripts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "functions_package_scripts",
+      "target": "functions_package_scripts_build",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "functions_package_scripts",
+      "target": "functions_package_scripts_build_watch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "functions_package_scripts",
+      "target": "functions_package_scripts_deploy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "functions_package_scripts",
+      "target": "functions_package_scripts_lint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "functions_package_scripts",
+      "target": "functions_package_scripts_logs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "functions_package_scripts",
+      "target": "functions_package_scripts_serve",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "functions_package_scripts",
+      "target": "functions_package_scripts_shell",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "functions_package_scripts",
+      "target": "functions_package_scripts_start",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "functions_package_engines",
+      "target": "functions_package_engines_node",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "functions_package_dependencies",
+      "target": "functions_package_dependencies_firebase_admin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "functions_package_dependencies",
+      "target": "functions_package_dependencies_firebase_functions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "functions_package_dependencies",
+      "target": "functions_package_dependencies_google_cloud_functions_framework",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "functions_package_devdependencies",
+      "target": "functions_package_devdependencies_eslint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "functions_package_devdependencies",
+      "target": "functions_package_devdependencies_eslint_config_google",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "functions_package_devdependencies",
+      "target": "functions_package_devdependencies_eslint_plugin_import",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "functions_package_devdependencies",
+      "target": "functions_package_devdependencies_firebase_functions_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "functions_package_devdependencies",
+      "target": "functions_package_devdependencies_typescript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "functions_package_devdependencies",
+      "target": "functions_package_devdependencies_typescript_eslint_eslint_plugin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "functions_package_devdependencies",
+      "target": "functions_package_devdependencies_typescript_eslint_parser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "tsconfig_json",
+      "target": "functions_tsconfig_compileonsave",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tsconfig_json",
+      "target": "functions_tsconfig_compileroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "tsconfig_json",
+      "target": "functions_tsconfig_include",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_esmoduleinterop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_moduleresolution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_noimplicitreturns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_nounusedlocals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_outdir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_skiplibcheck",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_sourcemap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_strict",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "functions_tsconfig_compileroptions",
+      "target": "functions_tsconfig_compileroptions_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "generated_prototypedata_canonicalconstraints",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "generated_prototypedata_deadlinebootstrap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "generated_prototypedata_prototypemeta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "generated_prototypedata_seededmeals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_calendarutils_calendareventstodeadlines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_calendarutils_exchangegooglecode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_calendarutils_exchangeoutlookcode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_calendarutils_fetchgoogleevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_calendarutils_fetchoutlookevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_calendarutils_filterfutureevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_calendarutils_refreshgoogletoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_calendarutils_refreshoutlooktoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_calendarutils_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_generated_prototypedata_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_icsparser_parseicstext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_icsparser_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_anonymoussessionsref",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L318",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L334",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_boundednumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L326",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L347",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_boundedstringlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L938",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_cacheopenfoodfactsproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L160",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_calendarevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1163",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_calendarfetchics",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1224",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_calendargoogleexchange",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_calendaroauthsecrets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1285",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_calendaroutlookexchange",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1348",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_calendarsubscriptionrefresh",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L153",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_calendartoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L785",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_compactopenfoodfactsproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L223",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_cookingadjectives",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1005",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_deadlinefoodbootstrap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1015",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_deadlinefoodmeals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1037",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_deadlinefoodnutrition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1026",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_deadlinefoodscenario",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1081",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_deadlinefoodsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L677",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_estimateingredientnutrition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L863",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_fetchopenfoodfactsproductforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L836",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_fetchopenfoodfactsproducts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L956",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_findopenfoodfactsproductforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_firestore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L250",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_getprototypedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_googleclientid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_googleclientsecret",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_googleoauthhttpoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L654",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_gramsforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_httprequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_httpresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_icssubscription",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_ingredientnutritionestimate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L228",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_irregularcategoryterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L604",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_isrecipeingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_microsoftclientid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_microsoftclientsecret",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_microsoftoauthhttpoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L430",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_normalizecalendarevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L412",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_normalizecalendartoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L368",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_normalizedeadline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L391",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_normalizeicssubscription",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L618",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_normalizeingredientkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L491",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_normalizeprototypesessionsettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L452",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_normalizerecipeingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L480",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_normalizerecipeingredientlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L363",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_normalizerecipelist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_nutrition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_nutritionhttpoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_openfoodfactsbaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L622",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_openfoodfactscacheref",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L637",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_openfoodfactscategoryterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L107",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_openfoodfactsproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_openfoodfactsratelimitref",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L130",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_openfoodfactssearchresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L751",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_parsecachedproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_prototypedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_prototyperef",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L173",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_prototypesessionsettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_publichttpoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L912",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_readopenfoodfactscachedproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L574",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_readrequestbody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_recipeingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L270",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_rejectunsupportedmethod",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L586",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_rejectunsupportednutritionmethod",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L285",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_rejectunsupportedsessionmethod",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L712",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_roundmacro",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L238",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_seedprototypedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L313",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_senderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L308",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_sendjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L991",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_sendsessionjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L210",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_servinggrams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L558",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_sessionexpirytimestamp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L810",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L739",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_timestampmillis",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L562",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_timestamptoiso",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L626",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_tocategorytag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L716",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_totalnutritionfromestimates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L878",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_tryacquireopenfoodfactscachelock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L633",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_uniqueterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_unknownrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L814",
+      "weight": 1.0,
+      "source": "src_index_ts",
+      "target": "src_index_waitforopenfoodfactsturn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L254",
+      "weight": 1.0,
+      "source": "src_index_getprototypedata",
+      "target": "src_index_seedprototypedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L431",
+      "weight": 1.0,
+      "source": "src_index_normalizecalendarevent",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L413",
+      "weight": 1.0,
+      "source": "src_index_normalizecalendartoken",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L369",
+      "weight": 1.0,
+      "source": "src_index_normalizedeadline",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L392",
+      "weight": 1.0,
+      "source": "src_index_normalizeicssubscription",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L492",
+      "weight": 1.0,
+      "source": "src_index_normalizeprototypesessionsettings",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L458",
+      "weight": 1.0,
+      "source": "src_index_normalizerecipeingredient",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L756",
+      "weight": 1.0,
+      "source": "src_index_parsecachedproduct",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L577",
+      "weight": 1.0,
+      "source": "src_index_readrequestbody",
+      "target": "src_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L434",
+      "weight": 1.0,
+      "source": "src_index_normalizecalendarevent",
+      "target": "src_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L419",
+      "weight": 1.0,
+      "source": "src_index_normalizecalendartoken",
+      "target": "src_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L376",
+      "weight": 1.0,
+      "source": "src_index_normalizedeadline",
+      "target": "src_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L395",
+      "weight": 1.0,
+      "source": "src_index_normalizeicssubscription",
+      "target": "src_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L516",
+      "weight": 1.0,
+      "source": "src_index_normalizeprototypesessionsettings",
+      "target": "src_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L454",
+      "weight": 1.0,
+      "source": "src_index_normalizerecipeingredient",
+      "target": "src_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L382",
+      "weight": 1.0,
+      "source": "src_index_normalizedeadline",
+      "target": "src_index_boundednumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L514",
+      "weight": 1.0,
+      "source": "src_index_normalizeprototypesessionsettings",
+      "target": "src_index_boundednumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L474",
+      "weight": 1.0,
+      "source": "src_index_normalizerecipeingredient",
+      "target": "src_index_boundednumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L519",
+      "weight": 1.0,
+      "source": "src_index_normalizeprototypesessionsettings",
+      "target": "src_index_boundedstringlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L533",
+      "weight": 1.0,
+      "source": "src_index_normalizeprototypesessionsettings",
+      "target": "src_index_normalizerecipelist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L523",
+      "weight": 1.0,
+      "source": "src_index_normalizeprototypesessionsettings",
+      "target": "src_index_normalizerecipeingredientlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L1001",
+      "weight": 1.0,
+      "source": "src_index_sendsessionjson",
+      "target": "src_index_timestamptoiso",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L959",
+      "weight": 1.0,
+      "source": "src_index_findopenfoodfactsproductforingredient",
+      "target": "src_index_normalizeingredientkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L638",
+      "weight": 1.0,
+      "source": "src_index_openfoodfactscategoryterms",
+      "target": "src_index_normalizeingredientkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L627",
+      "weight": 1.0,
+      "source": "src_index_tocategorytag",
+      "target": "src_index_normalizeingredientkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L944",
+      "weight": 1.0,
+      "source": "src_index_cacheopenfoodfactsproduct",
+      "target": "src_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L979",
+      "weight": 1.0,
+      "source": "src_index_findopenfoodfactsproductforingredient",
+      "target": "src_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L916",
+      "weight": 1.0,
+      "source": "src_index_readopenfoodfactscachedproduct",
+      "target": "src_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L881",
+      "weight": 1.0,
+      "source": "src_index_tryacquireopenfoodfactscachelock",
+      "target": "src_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L651",
+      "weight": 1.0,
+      "source": "src_index_openfoodfactscategoryterms",
+      "target": "src_index_uniqueterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L866",
+      "weight": 1.0,
+      "source": "src_index_fetchopenfoodfactsproductforingredient",
+      "target": "src_index_openfoodfactscategoryterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L682",
+      "weight": 1.0,
+      "source": "src_index_estimateingredientnutrition",
+      "target": "src_index_gramsforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L721",
+      "weight": 1.0,
+      "source": "src_index_totalnutritionfromestimates",
+      "target": "src_index_roundmacro",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L929",
+      "weight": 1.0,
+      "source": "src_index_readopenfoodfactscachedproduct",
+      "target": "src_index_timestampmillis",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L923",
+      "weight": 1.0,
+      "source": "src_index_readopenfoodfactscachedproduct",
+      "target": "src_index_parsecachedproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L871",
+      "weight": 1.0,
+      "source": "src_index_fetchopenfoodfactsproductforingredient",
+      "target": "src_index_compactopenfoodfactsproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L969",
+      "weight": 1.0,
+      "source": "src_index_findopenfoodfactsproductforingredient",
+      "target": "src_index_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L833",
+      "weight": 1.0,
+      "source": "src_index_waitforopenfoodfactsturn",
+      "target": "src_index_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L844",
+      "weight": 1.0,
+      "source": "src_index_fetchopenfoodfactsproducts",
+      "target": "src_index_waitforopenfoodfactsturn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L867",
+      "weight": 1.0,
+      "source": "src_index_fetchopenfoodfactsproductforingredient",
+      "target": "src_index_fetchopenfoodfactsproducts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L974",
+      "weight": 1.0,
+      "source": "src_index_findopenfoodfactsproductforingredient",
+      "target": "src_index_fetchopenfoodfactsproductforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L966",
+      "weight": 1.0,
+      "source": "src_index_findopenfoodfactsproductforingredient",
+      "target": "src_index_tryacquireopenfoodfactscachelock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L960",
+      "weight": 1.0,
+      "source": "src_index_findopenfoodfactsproductforingredient",
+      "target": "src_index_readopenfoodfactscachedproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/index.ts",
+      "source_location": "L975",
+      "weight": 1.0,
+      "source": "src_index_findopenfoodfactsproductforingredient",
+      "target": "src_index_cacheopenfoodfactsproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_icsparser_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_icsparser_ts",
+      "target": "src_icsparser_calendarevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_icsparser_ts",
+      "target": "src_icsparser_extractfield",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_icsparser_ts",
+      "target": "src_icsparser_parseicsdatetime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "src_icsparser_ts",
+      "target": "src_icsparser_parseicstext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "src_icsparser_ts",
+      "target": "src_icsparser_unescapeicsvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_icsparser_ts",
+      "target": "src_icsparser_unfoldlines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_icsparser_calendarevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/icsParser.ts",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "src_icsparser_parseicstext",
+      "target": "src_icsparser_unfoldlines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_calendareventstodeadlines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_deadline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L236",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_exchangegooglecode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L273",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_exchangeoutlookcode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_fetchgoogleevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L198",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_fetchoutlookevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_filterfutureevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_googleevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L187",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_outlookevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_refreshgoogletoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "src_calendarutils_ts",
+      "target": "src_calendarutils_refreshoutlooktoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/calendarUtils.ts",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "src_calendarutils_calendareventstodeadlines",
+      "target": "src_calendarutils_filterfutureevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/generated/prototypeData.ts",
+      "source_location": "L830",
+      "weight": 1.0,
+      "source": "src_generated_prototypedata_ts",
+      "target": "generated_prototypedata_canonicalconstraints",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/generated/prototypeData.ts",
+      "source_location": "L856",
+      "weight": 1.0,
+      "source": "src_generated_prototypedata_ts",
+      "target": "generated_prototypedata_deadlinebootstrap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/generated/prototypeData.ts",
+      "source_location": "L850",
+      "weight": 1.0,
+      "source": "src_generated_prototypedata_ts",
+      "target": "generated_prototypedata_prototypemeta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/generated/prototypeData.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_generated_prototypedata_ts",
+      "target": "generated_prototypedata_seededmeals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_calendarutils_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_icsparser_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L988",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_allevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_anonymoussessionsref",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_app_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L163",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L915",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_body",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L175",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_boundednumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L169",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L181",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_boundedstringlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L633",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_cacheopenfoodfactsproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_calendaroauthsecrets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_calendarutils_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L530",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_compactopenfoodfactsproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_cookingadjectives",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_crypto_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L971",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L447",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_estimateingredientnutrition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L728",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_estimates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L1018",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_events",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L931",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_existingtokens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L793",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_expiresat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L585",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_fetchopenfoodfactsproductforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L562",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_fetchopenfoodfactsproducts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L980",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_filtered",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L643",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_findopenfoodfactsproductforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_firestore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_firestore_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L1029",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_freshdeadlines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L114",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_getprototypedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_googleclientid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_googleclientsecret",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_googleoauthhttpoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L424",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_gramsforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_https_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_icsparser_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L715",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_ingredients",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L101",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_irregularcategoryterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L385",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_isrecipeingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_logger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L1028",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_manualdeadlines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_microsoftclientid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_microsoftclientsecret",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_microsoftoauthhttpoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L729",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_missingingredients",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L243",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_normalizecalendarevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L226",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_normalizecalendartoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L196",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_normalizedeadline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L205",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_normalizeicssubscription",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L395",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_normalizeingredientkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L290",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_normalizeprototypesessionsettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L264",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_normalizerecipeingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L281",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_normalizerecipeingredientlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L191",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_normalizerecipelist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_nutritionhttpoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_openfoodfactsbaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L398",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_openfoodfactscacheref",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L410",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_openfoodfactscategoryterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_openfoodfactsratelimitref",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_options_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_params_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L504",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_parsecachedproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L998",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_parsed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_prototypedata_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_prototyperef",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_publichttpoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L617",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_readopenfoodfactscachedproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L362",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_readrequestbody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L962",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_recentcutoff",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L1017",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_refreshed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_rejectunsupportedmethod",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L373",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_rejectunsupportednutritionmethod",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_rejectunsupportedsessionmethod",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L473",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_roundmacro",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_scheduler_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L110",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_seedprototypedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L159",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_senderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L155",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_sendjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L669",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_sendsessionjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_servinggrams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L350",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_sessionexpirytimestamp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L928",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_sessionref",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L764",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L544",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L495",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_timestampmillis",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L353",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_timestamptoiso",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L401",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_tocategorytag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L969",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_todayiso",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L925",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_tokenresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L476",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_totalnutritionfromestimates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L595",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_tryacquireopenfoodfactscachelock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L407",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_uniqueterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L1007",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_updatedtokens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L547",
+      "weight": 1.0,
+      "source": "lib_index_js",
+      "target": "lib_index_waitforopenfoodfactsturn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "lib_index_getprototypedata",
+      "target": "lib_index_seedprototypedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L119",
+      "weight": 1.0,
+      "source": "lib_index_getprototypedata",
+      "target": "lib_index_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L244",
+      "weight": 1.0,
+      "source": "lib_index_normalizecalendarevent",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L227",
+      "weight": 1.0,
+      "source": "lib_index_normalizecalendartoken",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L197",
+      "weight": 1.0,
+      "source": "lib_index_normalizedeadline",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L206",
+      "weight": 1.0,
+      "source": "lib_index_normalizeicssubscription",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L291",
+      "weight": 1.0,
+      "source": "lib_index_normalizeprototypesessionsettings",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L269",
+      "weight": 1.0,
+      "source": "lib_index_normalizerecipeingredient",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L508",
+      "weight": 1.0,
+      "source": "lib_index_parsecachedproduct",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L365",
+      "weight": 1.0,
+      "source": "lib_index_readrequestbody",
+      "target": "lib_index_asrecord",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L247",
+      "weight": 1.0,
+      "source": "lib_index_normalizecalendarevent",
+      "target": "lib_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L233",
+      "weight": 1.0,
+      "source": "lib_index_normalizecalendartoken",
+      "target": "lib_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L201",
+      "weight": 1.0,
+      "source": "lib_index_normalizedeadline",
+      "target": "lib_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L209",
+      "weight": 1.0,
+      "source": "lib_index_normalizeicssubscription",
+      "target": "lib_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L309",
+      "weight": 1.0,
+      "source": "lib_index_normalizeprototypesessionsettings",
+      "target": "lib_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L266",
+      "weight": 1.0,
+      "source": "lib_index_normalizerecipeingredient",
+      "target": "lib_index_boundedstring",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L201",
+      "weight": 1.0,
+      "source": "lib_index_normalizedeadline",
+      "target": "lib_index_boundednumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L307",
+      "weight": 1.0,
+      "source": "lib_index_normalizeprototypesessionsettings",
+      "target": "lib_index_boundednumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L279",
+      "weight": 1.0,
+      "source": "lib_index_normalizerecipeingredient",
+      "target": "lib_index_boundednumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L312",
+      "weight": 1.0,
+      "source": "lib_index_normalizeprototypesessionsettings",
+      "target": "lib_index_boundedstringlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L326",
+      "weight": 1.0,
+      "source": "lib_index_normalizeprototypesessionsettings",
+      "target": "lib_index_normalizerecipelist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L316",
+      "weight": 1.0,
+      "source": "lib_index_normalizeprototypesessionsettings",
+      "target": "lib_index_normalizerecipeingredientlist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L674",
+      "weight": 1.0,
+      "source": "lib_index_sendsessionjson",
+      "target": "lib_index_timestamptoiso",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L645",
+      "weight": 1.0,
+      "source": "lib_index_findopenfoodfactsproductforingredient",
+      "target": "lib_index_normalizeingredientkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L412",
+      "weight": 1.0,
+      "source": "lib_index_openfoodfactscategoryterms",
+      "target": "lib_index_normalizeingredientkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L402",
+      "weight": 1.0,
+      "source": "lib_index_tocategorytag",
+      "target": "lib_index_normalizeingredientkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L635",
+      "weight": 1.0,
+      "source": "lib_index_cacheopenfoodfactsproduct",
+      "target": "lib_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L662",
+      "weight": 1.0,
+      "source": "lib_index_findopenfoodfactsproductforingredient",
+      "target": "lib_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L618",
+      "weight": 1.0,
+      "source": "lib_index_readopenfoodfactscachedproduct",
+      "target": "lib_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L596",
+      "weight": 1.0,
+      "source": "lib_index_tryacquireopenfoodfactscachelock",
+      "target": "lib_index_openfoodfactscachedocid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L422",
+      "weight": 1.0,
+      "source": "lib_index_openfoodfactscategoryterms",
+      "target": "lib_index_uniqueterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L586",
+      "weight": 1.0,
+      "source": "lib_index_fetchopenfoodfactsproductforingredient",
+      "target": "lib_index_openfoodfactscategoryterms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L450",
+      "weight": 1.0,
+      "source": "lib_index_estimateingredientnutrition",
+      "target": "lib_index_gramsforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L478",
+      "weight": 1.0,
+      "source": "lib_index_totalnutritionfromestimates",
+      "target": "lib_index_roundmacro",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L627",
+      "weight": 1.0,
+      "source": "lib_index_readopenfoodfactscachedproduct",
+      "target": "lib_index_timestampmillis",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L623",
+      "weight": 1.0,
+      "source": "lib_index_readopenfoodfactscachedproduct",
+      "target": "lib_index_parsecachedproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L590",
+      "weight": 1.0,
+      "source": "lib_index_fetchopenfoodfactsproductforingredient",
+      "target": "lib_index_compactopenfoodfactsproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L652",
+      "weight": 1.0,
+      "source": "lib_index_findopenfoodfactsproductforingredient",
+      "target": "lib_index_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L560",
+      "weight": 1.0,
+      "source": "lib_index_waitforopenfoodfactsturn",
+      "target": "lib_index_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L570",
+      "weight": 1.0,
+      "source": "lib_index_fetchopenfoodfactsproducts",
+      "target": "lib_index_waitforopenfoodfactsturn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L587",
+      "weight": 1.0,
+      "source": "lib_index_fetchopenfoodfactsproductforingredient",
+      "target": "lib_index_fetchopenfoodfactsproducts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L656",
+      "weight": 1.0,
+      "source": "lib_index_findopenfoodfactsproductforingredient",
+      "target": "lib_index_fetchopenfoodfactsproductforingredient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L650",
+      "weight": 1.0,
+      "source": "lib_index_findopenfoodfactsproductforingredient",
+      "target": "lib_index_tryacquireopenfoodfactscachelock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L646",
+      "weight": 1.0,
+      "source": "lib_index_findopenfoodfactsproductforingredient",
+      "target": "lib_index_readopenfoodfactscachedproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L622",
+      "weight": 1.0,
+      "source": "lib_index_readopenfoodfactscachedproduct",
+      "target": "lib_index_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/index.js",
+      "source_location": "L657",
+      "weight": 1.0,
+      "source": "lib_index_findopenfoodfactsproductforingredient",
+      "target": "lib_index_cacheopenfoodfactsproduct",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "lib_icsparser_js",
+      "target": "lib_icsparser_extractfield",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "lib_icsparser_js",
+      "target": "lib_icsparser_parseicsdatetime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "lib_icsparser_js",
+      "target": "lib_icsparser_parseicstext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "lib_icsparser_js",
+      "target": "lib_icsparser_unescapeicsvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "lib_icsparser_js",
+      "target": "lib_icsparser_unfoldlines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/icsParser.js",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "lib_icsparser_parseicstext",
+      "target": "lib_icsparser_unfoldlines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "lib_calendarutils_js",
+      "target": "lib_calendarutils_calendareventstodeadlines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L180",
+      "weight": 1.0,
+      "source": "lib_calendarutils_js",
+      "target": "lib_calendarutils_exchangegooglecode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L206",
+      "weight": 1.0,
+      "source": "lib_calendarutils_js",
+      "target": "lib_calendarutils_exchangeoutlookcode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L106",
+      "weight": 1.0,
+      "source": "lib_calendarutils_js",
+      "target": "lib_calendarutils_fetchgoogleevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L144",
+      "weight": 1.0,
+      "source": "lib_calendarutils_js",
+      "target": "lib_calendarutils_fetchoutlookevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "lib_calendarutils_js",
+      "target": "lib_calendarutils_filterfutureevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "lib_calendarutils_js",
+      "target": "lib_calendarutils_refreshgoogletoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "lib_calendarutils_js",
+      "target": "lib_calendarutils_refreshoutlooktoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/calendarUtils.js",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "lib_calendarutils_calendareventstodeadlines",
+      "target": "lib_calendarutils_filterfutureevents",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "0f26b039b15008572af21aabdb169f471ee3ce83"
+}

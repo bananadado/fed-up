@@ -1,70 +1,17 @@
-import { BookOpen, Plus, RefreshCcw, Sparkles, UtensilsCrossed } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { Plus, Sparkles, UtensilsCrossed } from "lucide-react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
-import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import type { Meal, NutritionSource, PlanEntry, Preferences } from "../types";
-import { IngredientEditor } from "../components/IngredientEditor";
-import { AppButton, Badge, Field } from "../components/primitives";
-import {
-  createIngredientDraft,
-  formatIngredient,
-  sanitiseIngredientDrafts,
-  type IngredientDraft,
-} from "../ingredients";
-import { fetchOpenFoodFactsNutrition } from "../nutritionApi";
-import { money, nutritionSourceSummary } from "../utils";
+import type { Deadline, Meal, Preferences } from "../types";
+import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
+import { AppButton, Badge } from "../components/primitives";
+import { formatIngredient } from "../ingredients";
+import { money } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 import { DiscoverScreen } from "./DiscoverScreen";
+import { createRecommenderRecipe } from "../recommenderApi";
 
 type Tab = "saved" | "discover" | "add";
-
-type CreateForm = {
-  name: string;
-  minutes: number;
-  totalCost: number;
-  servings: number;
-  ingredients: IngredientDraft[];
-  tags: string;
-  allergens: string;
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-  nutritionSource?: NutritionSource;
-  instructions: string;
-  note: string;
-};
-
-function createDefaultForm(): CreateForm {
-  return {
-    name: "",
-    minutes: 10,
-    totalCost: 5,
-    servings: 2,
-    ingredients: [createIngredientDraft()],
-    tags: "",
-    allergens: "",
-    calories: 500,
-    protein: 20,
-    carbs: 60,
-    fat: 15,
-    nutritionSource: undefined,
-    instructions: "",
-    note: "",
-  };
-}
-
-function splitList(value: string) {
-  return value
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
-function positiveNumber(value: number, fallback: number) {
-  return Number.isFinite(value) && value > 0 ? value : fallback;
-}
+type StateSetter<T> = Dispatch<SetStateAction<T>>;
 
 export function RecipesHubScreen({
   customRecipes,
@@ -73,131 +20,72 @@ export function RecipesHubScreen({
   setDiscoverSaved,
   discoverRejected,
   setDiscoverRejected,
-  plan,
-  setPlan,
+  discoverReviewedRecipeIds,
+  setDiscoverReviewedRecipeIds,
   prefs,
+  deadlines,
+  sessionId,
   onSelectMeal,
   track,
 }: {
   customRecipes: Meal[];
-  setCustomRecipes: (recipes: Meal[]) => void;
+  setCustomRecipes: StateSetter<Meal[]>;
   discoverSaved: Meal[];
-  setDiscoverSaved: (saved: Meal[]) => void;
+  setDiscoverSaved: StateSetter<Meal[]>;
   discoverRejected: Meal[];
-  setDiscoverRejected: (rejected: Meal[]) => void;
-  plan: PlanEntry[];
-  setPlan: (plan: PlanEntry[]) => void;
+  setDiscoverRejected: StateSetter<Meal[]>;
+  discoverReviewedRecipeIds: string[];
+  setDiscoverReviewedRecipeIds: StateSetter<string[]>;
   prefs: Preferences;
+  deadlines: Deadline[];
+  sessionId: string;
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
   const [tab, setTab] = useState<Tab>("saved");
-  const [form, setForm] = useState<CreateForm>(() => createDefaultForm());
-  const [attempted, setAttempted] = useState(false);
-  const [nutritionLoading, setNutritionLoading] = useState(false);
-  const [nutritionStatus, setNutritionStatus] = useState<string | null>(null);
+  const [savedSortBy, setSavedSortBy] = useState<"default" | "time" | "price" | "health">("default");
 
-  const ingredients = sanitiseIngredientDrafts(form.ingredients);
-  const servings = positiveNumber(Number(form.servings), 1);
-  const totalCost = Math.max(0, Number(form.totalCost) || 0);
-  const costPerPortion = totalCost / servings;
-  const errors = {
-    name: !form.name.trim(),
-    ingredients: ingredients.length === 0,
-    servings: Number(form.servings) < 1,
-    totalCost: totalCost <= 0,
-  };
+  function handleCreateRecipe(output: RecipeEditorOutput, photoUrl: string | undefined) {
+    const instructions =
+      output.instructions.length > 0
+        ? output.instructions
+        : ["Prepare the ingredients.", "Cook or assemble the meal.", "Taste and adjust seasoning."];
 
-  async function estimateNutrition() {
-    if (ingredients.length === 0) {
-      setAttempted(true);
-      setNutritionStatus("Add at least one ingredient with a quantity first.");
-      return;
-    }
-
-    setNutritionLoading(true);
-    setNutritionStatus(null);
-
-    try {
-      const nutrition = await fetchOpenFoodFactsNutrition(ingredients);
-      setForm((prev) => ({
-        ...prev,
-        calories: nutrition.calories,
-        protein: nutrition.protein,
-        carbs: nutrition.carbs,
-        fat: nutrition.fat,
-        nutritionSource: nutrition.source,
-      }));
-      const missing = nutrition.source?.missingIngredients ?? [];
-      setNutritionStatus(missing.length > 0 ? `Couldn't find: ${missing.join(", ")}` : "All ingredients matched");
-      track("recipe_nutrition_refreshed", {
-        provider: nutrition.source?.provider,
-        ingredient_count: ingredients.length,
-        matched_count: nutrition.source?.matchedIngredients?.length ?? 0,
-        missing_count: missing.length,
-      });
-    } catch (error) {
-      setNutritionStatus(error instanceof Error ? error.message : "Nutrition data could not be loaded.");
-    } finally {
-      setNutritionLoading(false);
-    }
-  }
-
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (errors.name || errors.ingredients || errors.servings || errors.totalCost) {
-      setAttempted(true);
-      return;
-    }
-
-    const instructions = form.instructions
-      .split("\n")
-      .map((value) => value.trim())
-      .filter(Boolean);
-    const nextServings = Math.max(1, Math.round(servings));
-    const nextTotalCost = Number(totalCost.toFixed(2));
-    const nextPrice = Number((nextTotalCost / nextServings).toFixed(2));
-    const nextRecipe = {
+    const nextRecipe: Meal = {
       id: `custom-${Date.now()}`,
-      name: form.name.trim(),
+      name: output.name,
       type: "cook",
-      mealSlots: ["lunch", "dinner"],
-      time: Math.max(0, Math.round(Number(form.minutes) || 0)),
-      price: nextPrice,
-      ingredients,
-      tags: splitList(form.tags),
-      allergens: splitList(form.allergens),
-      nutrition: {
-        calories: Math.max(0, Math.round(Number(form.calories) || 0)),
-        protein: Math.max(0, Math.round(Number(form.protein) || 0)),
-        carbs: Math.max(0, Math.round(Number(form.carbs) || 0)),
-        fat: Math.max(0, Math.round(Number(form.fat) || 0)),
-        source: form.nutritionSource,
-      },
+      mealSlots: output.mealSlots,
+      time: output.time,
+      price: output.price,
+      ingredients: output.ingredients,
+      tags: output.tags,
+      allergens: output.allergens,
+      nutrition: output.nutrition,
       rating: 0,
       reviews: [],
-      instructions: instructions.length > 0
-        ? instructions
-        : ["Prepare the ingredients.", "Cook or assemble the meal.", "Taste and adjust seasoning."],
+      instructions,
       source: "My recipes",
-      note: form.note.trim() || `${nextServings} portions from about ${money(nextTotalCost)} total`,
+      note: output.note || `${output.servings} portions from about ${money(output.totalCost)} total`,
       image: "🍽️",
-    } satisfies Meal;
+      ...(photoUrl ? { photoUrl } : {}),
+      isUserCreated: true,
+    };
 
-    setCustomRecipes([nextRecipe, ...customRecipes]);
+    setCustomRecipes((recipes) => [nextRecipe, ...recipes]);
+    // Embed the recipe on the recommender immediately on creation.
+    createRecommenderRecipe(nextRecipe).catch((error) => {
+      console.warn("Recipe could not be embedded on the recommender.", error);
+    });
     track("custom_recipe_added", {
       meal_id: nextRecipe.id,
       minutes: nextRecipe.time,
       price: nextRecipe.price,
-      total_cost: nextTotalCost,
-      servings: nextServings,
+      total_cost: output.totalCost,
+      servings: output.servings,
       ingredient_count: nextRecipe.ingredients.length,
       tag_count: nextRecipe.tags.length,
     });
-    setAttempted(false);
-    setForm(createDefaultForm());
-    setNutritionStatus(null);
     setTab("saved");
   }
 
@@ -208,6 +96,12 @@ export function RecipesHubScreen({
   ];
 
   const allSaved = [...customRecipes, ...discoverSaved.filter((s) => !customRecipes.some((c) => c.id === s.id))];
+  const sortedSaved = [...allSaved].sort((a, b) => {
+    if (savedSortBy === "time") return a.time - b.time;
+    if (savedSortBy === "price") return a.price - b.price;
+    if (savedSortBy === "health") return b.nutrition.protein - a.nutrition.protein || a.price - b.price;
+    return 0;
+  });
 
   return (
     <div>
@@ -250,9 +144,23 @@ export function RecipesHubScreen({
               </div>
             </div>
           ) : (
+            <>
+              <div className="mb-4 flex flex-wrap items-center gap-2">
+                <span className="text-sm text-stone-500">Sort by</span>
+                {(["default", "time", "price", "health"] as const).map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => { track("saved_sort_changed", { sort_by: option }); setSavedSortBy(option); }}
+                    className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize transition ${savedSortBy === option ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                  >
+                    {option === "default" ? "Default" : option === "health" ? "Nutrition" : option.charAt(0).toUpperCase() + option.slice(1)}
+                  </button>
+                ))}
+              </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {allSaved.map((recipe) => {
-                const isOwn = customRecipes.some((c) => c.id === recipe.id);
+              {sortedSaved.map((recipe) => {
+                const isOwn = recipe.isUserCreated === true;
                 return (
                   <button
                     key={recipe.id}
@@ -261,10 +169,14 @@ export function RecipesHubScreen({
                     className="rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-emerald-300 hover:bg-emerald-50"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <span className="text-3xl">{recipe.image}</span>
+                      {recipe.photoUrl ? (
+                        <img src={recipe.photoUrl} alt={recipe.name} className="h-12 w-12 rounded-md object-cover" />
+                      ) : (
+                        <span className="text-3xl">{recipe.image}</span>
+                      )}
                       <Badge tone={isOwn ? "green" : "blue"}>{isOwn ? "Your recipe" : "Saved"}</Badge>
                     </div>
-                    <p className="mt-2 font-semibold leading-snug">{recipe.name}</p>
+                    <p className="mt-2 break-words font-semibold leading-snug">{recipe.name}</p>
                     <p className="mt-1 text-sm font-medium text-emerald-700">{money(recipe.price)}</p>
                     <p className="mt-1 text-xs text-stone-400">
                       {recipe.time} min · {recipe.ingredients.map(formatIngredient).slice(0, 3).join(", ")}
@@ -281,6 +193,7 @@ export function RecipesHubScreen({
                 <Plus size={16} /> Add recipe
               </button>
             </div>
+            </>
           )}
         </div>
       )}
@@ -288,74 +201,27 @@ export function RecipesHubScreen({
       {tab === "discover" && (
         <DiscoverScreen
           prefs={prefs}
+          deadlines={deadlines}
+          sessionId={sessionId}
           customRecipes={customRecipes}
-          plan={plan}
-          setPlan={setPlan}
           saved={discoverSaved}
           setSaved={setDiscoverSaved}
           rejected={discoverRejected}
           setRejected={setDiscoverRejected}
+          reviewedRecipeIds={discoverReviewedRecipeIds}
+          setReviewedRecipeIds={setDiscoverReviewedRecipeIds}
           onSelectMeal={onSelectMeal}
           track={track}
         />
       )}
 
       {tab === "add" && (
-        <div>
-          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6">
-            <div className="mb-5 flex items-center gap-2">
-              <BookOpen size={18} className="text-emerald-700" />
-              <h2 className="text-xl font-bold">New recipe</h2>
-            </div>
-            <form onSubmit={submit}>
-              <div className="space-y-4">
-                <Field label="Recipe name" value={form.name} onChange={(name) => setForm({ ...form, name })} placeholder="e.g. Microwave bean burrito" error={attempted && errors.name} errorMessage="Please enter a recipe name" />
-                <div className="grid grid-cols-2 gap-3">
-                  <Field label="Time (mins)" type="number" value={form.minutes} onChange={(minutes) => setForm({ ...form, minutes: +minutes })} />
-                  <Field label="Servings" type="number" value={form.servings} onChange={(servingsValue) => setForm({ ...form, servings: +servingsValue })} error={attempted && errors.servings} errorMessage="Must be at least 1" />
-                </div>
-                <Field label="Total recipe cost (£)" type="number" step="0.05" value={form.totalCost} onChange={(cost) => setForm({ ...form, totalCost: +cost })} error={attempted && errors.totalCost} errorMessage="Please enter a cost" />
-                <p className="rounded-lg bg-emerald-50 p-3 text-sm font-medium text-emerald-800">
-                  Estimated cost per portion: {money(costPerPortion)}
-                </p>
-                <div>
-                  <IngredientEditor ingredients={form.ingredients} onChange={(nextIngredients) => setForm({ ...form, ingredients: nextIngredients })} />
-                  {attempted && errors.ingredients && <p className="mt-2 text-xs font-medium text-red-600">Add at least one ingredient</p>}
-                </div>
-                <Field label="Tags" value={form.tags} onChange={(tags) => setForm({ ...form, tags })} placeholder="vegetarian, microwave" />
-                <Field label="Allergens" value={form.allergens} onChange={(allergens) => setForm({ ...form, allergens })} placeholder="gluten, dairy" />
-                <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-stone-50 p-3">
-                  <div>
-                    <p className="text-sm font-semibold">Nutrition data</p>
-                    <p className="mt-1 text-xs text-stone-500">{nutritionStatus ?? nutritionSourceSummary(form.nutritionSource)}</p>
-                  </div>
-                  <AppButton type="button" variant="secondary" onClick={estimateNutrition} disabled={nutritionLoading}>
-                    <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Pull from OpenFoodFacts"}
-                  </AppButton>
-                </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  <Field label="Calories" type="number" value={form.calories} onChange={(calories) => setForm({ ...form, calories: +calories })} />
-                  <Field label="Protein (g)" type="number" value={form.protein} onChange={(protein) => setForm({ ...form, protein: +protein })} />
-                  <Field label="Carbs (g)" type="number" value={form.carbs} onChange={(carbs) => setForm({ ...form, carbs: +carbs })} />
-                  <Field label="Fat (g)" type="number" value={form.fat} onChange={(fat) => setForm({ ...form, fat: +fat })} />
-                </div>
-                <label className="block">
-                  <span className="text-sm font-semibold">Method</span>
-                  <Textarea
-                    value={form.instructions}
-                    onChange={(event) => setForm({ ...form, instructions: event.target.value })}
-                    className="mt-2 min-h-36 rounded-lg border-stone-200 bg-white"
-                    placeholder={"Step 1\nStep 2\nStep 3"}
-                  />
-                </label>
-                <Field label="Notes" value={form.note} onChange={(note) => setForm({ ...form, note })} placeholder="Any tips or variations" />
-              </div>
-              <AppButton type="submit" className="mt-6 w-full">
-                <Plus size={16} /> Add recipe
-              </AppButton>
-            </form>
-          </Card>
-        </div>
+        <RecipeEditor
+          mode="create"
+          title="New recipe"
+          onSubmit={handleCreateRecipe}
+          track={track}
+        />
       )}
     </div>
   );
