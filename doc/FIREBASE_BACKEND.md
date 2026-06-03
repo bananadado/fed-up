@@ -386,21 +386,42 @@ bun run firebase:dev
 
 This script:
 
-1. Exports generated prototype data.
-2. Builds functions.
-3. Starts Firebase emulators for Functions and Firestore.
-4. Waits until `deadlineFoodBootstrap` responds.
-5. Starts the Bun app with:
+1. Starts the backend Docker Compose stack in the isolated `drp03-firebase-dev` project when an NVIDIA Docker runtime is available.
+2. Waits until the recommender API health endpoint responds.
+3. Exports generated prototype data.
+4. Builds functions.
+5. Starts Firebase emulators for Functions, Firestore, and Storage.
+6. Waits until `deadlineFoodBootstrap` responds.
+7. Starts the Bun app with:
    - `BUN_PUBLIC_DEADLINE_FOOD_API_BACKEND=firebase`
    - `BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL=http://127.0.0.1:5001/<project>/europe-west2`
    - `BUN_PUBLIC_FIREBASE_PROJECT_ID`
    - `BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION`
+
+The same script exports local function secrets so emulated Functions call a
+recommender API. `FIREBASE_DEV_BACKEND=auto` is the default: machines with
+NVIDIA Docker use the local recommender at `http://127.0.0.1:8100`, while other
+machines use `https://recommender.timkolesnichenko.me`. Local compose uses
+`RECOMMENDER_API_KEY=local-firebase-dev-recommender-key` unless overridden.
+Remote recommender endpoints still require the real `RECOMMENDER_API_KEY` in
+your environment. On Ctrl+C or normal exit, the Firebase emulator is stopped and
+any compose project started by the script is brought down.
+
+Useful overrides:
+
+```sh
+FIREBASE_DEV_BACKEND=remote bun run firebase:dev
+FIREBASE_DEV_BACKEND=local bun run firebase:dev
+RECOMMENDER_API_URL=http://127.0.0.1:8100 bun run firebase:dev
+BACKEND_COMPOSE_SERVICES=api bun run firebase:dev
+```
 
 Useful local URLs:
 
 - App: `http://localhost:3000/`
 - Emulator UI: `http://127.0.0.1:4000`
 - Functions base: `http://127.0.0.1:5001/drp03-50059/europe-west2`
+- Recommender API: `http://127.0.0.1:8100`
 
 ## Backend Deploy
 
