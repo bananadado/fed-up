@@ -261,10 +261,11 @@ secret_detection:
       CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA" -- backend/ 2>/dev/null || echo "backend/")
 
       if echo "$CHANGED_FILES" | grep -q "backend/docker-compose.yml"; then
-        CHANGED_SERVICES="api db grafana prometheus loki promtail node-exporter cadvisor nvidia-exporter"
+        CHANGED_SERVICES="api db adminer embedding-viz grafana prometheus loki promtail node-exporter cadvisor nvidia-exporter"
       else
         echo "$CHANGED_FILES" | grep -q "backend/recommender-api/" && CHANGED_SERVICES="$CHANGED_SERVICES api"
         echo "$CHANGED_FILES" | grep -q "backend/db/" && CHANGED_SERVICES="$CHANGED_SERVICES db"
+        echo "$CHANGED_FILES" | grep -q "backend/embedding-viz/" && CHANGED_SERVICES="$CHANGED_SERVICES embedding-viz"
         echo "$CHANGED_FILES" | grep -q "backend/monitoring/grafana/" && CHANGED_SERVICES="$CHANGED_SERVICES grafana"
         echo "$CHANGED_FILES" | grep -q "backend/monitoring/prometheus/" && CHANGED_SERVICES="$CHANGED_SERVICES prometheus"
         echo "$CHANGED_FILES" | grep -q "backend/monitoring/loki/" && CHANGED_SERVICES="$CHANGED_SERVICES loki"

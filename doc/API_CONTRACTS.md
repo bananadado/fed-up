@@ -26,6 +26,8 @@ Local Bun paths:
 | `scenario` | `/api/deadline-food/scenario` |
 | `session` | `/api/deadline-food/session` |
 | `nutrition` | `/api/deadline-food/nutrition/openfoodfacts` |
+| `recipes` | `/api/deadline-food/recipes` |
+| `recipe-reviews` | `/api/deadline-food/recipe-reviews` |
 
 Firebase function names:
 
@@ -36,6 +38,8 @@ Firebase function names:
 | `scenario` | `deadlineFoodScenario` |
 | `session` | `deadlineFoodSession` |
 | `nutrition` | `deadlineFoodNutrition` |
+| `recipes` | `deadlineFoodRecipes` |
+| `recipe-reviews` | `deadlineFoodRecipeReviews` |
 
 Selection rules:
 
@@ -56,6 +60,7 @@ The browser never calls `backend/recommender-api` directly. Discover requests us
 | Browser operation | Local Bun path | Firebase Function | FastAPI endpoint |
 |---|---|---|---|
 | Sync anonymous profile | `/api/recommender/user` | `deadlineFoodRecommenderUser` | `POST /users` |
+| Create a recipe (Firestore + embed) | `/api/recommender/recipe` | `deadlineFoodRecipeCreate` | `POST /recipes` |
 | Load ranked recipes | `/api/recommender/recommendations` | `deadlineFoodRecommendations` | `POST /recommend` |
 | Record save/pass feedback | `/api/recommender/interaction` | `deadlineFoodInteraction` | `POST /interactions` |
 | Extract deadline context | `/api/recommender/deadline-context` | `deadlineFoodDeadlineContext` | `POST /context/deadlines` |
@@ -66,8 +71,29 @@ GPU backend environment. The backend returns `401` for application requests that
 do not carry the expected key. `/health`, `/metrics`, and API schema pages remain
 public for monitoring and inspection.
 
-Discover falls back to the local seed catalogue when the remote recommender is
-unavailable, so local frontend development does not require the GPU service.
+Discover is driven entirely by the recommender. Recommended recipes are built
+from the API response (not merged onto local seed data), and user-created
+recipes are embedded on creation so they participate in ranking and feedback.
+When the recommender is unavailable the Discover queue shows only the user's own
+recipes rather than faking suggestions from the local seed catalogue.
+
+## Recipes & Reviews (issue #123)
+
+Recipe content is canonical in the Firestore `recipes` collection; the
+recommender (pgvector) stores only the recipe UID as primary key plus its
+embedding. Reviews live in the Firestore `recipeReviews` collection only — they
+are global and persist across reloads, fixing the prior session-local behaviour.
+
+| Browser operation | Local Bun path | Firebase Function |
+|---|---|---|
+| List canonical recipes | `/api/deadline-food/recipes` | `deadlineFoodRecipes` |
+| Load a recipe's reviews | `GET /api/deadline-food/recipe-reviews?recipeId=<id>` | `deadlineFoodRecipeReviews` |
+| Leave a review | `POST /api/deadline-food/recipe-reviews` | `deadlineFoodRecipeReviews` |
+
+`deadlineFoodRecipeCreate` writes recipe content to `recipes/{id}` (stripping
+`reviews`/`rating`) and then embeds the recipe on the recommender keyed by the
+UID. Review responses are `{ reviews: RecipeReview[], rating: number }`; the POST
+body is `{ recipeId, review: { author, rating, comment } }`.
 
 ## Bootstrap
 

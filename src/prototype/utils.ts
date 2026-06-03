@@ -1,4 +1,4 @@
-import { seedMeals } from "./data";
+import { getRecipeCatalogue } from "./recipeCatalogue";
 import type { Deadline, Meal, NutritionSource, RecipeIngredient } from "./types";
 import { formatIngredient, ingredientName } from "./ingredients";
 
@@ -34,14 +34,14 @@ export function formatCookingLimit(minutes: number | null) {
 }
 
 export function mealById(id: string, customRecipes: Meal[]) {
-  return [...customRecipes, ...seedMeals].find((meal) => meal.id === id);
+  return [...customRecipes, ...getRecipeCatalogue()].find((meal) => meal.id === id);
 }
 
 export function getMealById(id: string, customRecipes: Meal[]) {
   const meal = mealById(id, customRecipes);
 
   if (!meal) {
-    return seedMeals[0] as Meal;
+    return getRecipeCatalogue()[0] as Meal;
   }
 
   return meal;

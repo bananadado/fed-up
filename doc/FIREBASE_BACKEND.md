@@ -128,7 +128,10 @@ timeoutSeconds: 300
 | `deadlineFoodScenario` | `GET`, `HEAD`, `OPTIONS` | Returns canonical constraints. |
 | `deadlineFoodSession` | `GET`, `HEAD`, `PUT`, `POST`, `OPTIONS` | Loads/saves anonymous session settings in Firestore. |
 | `deadlineFoodNutrition` | `POST`, `OPTIONS` | Estimates nutrition from ingredients via OpenFoodFacts. |
+| `deadlineFoodRecipes` | `GET`, `HEAD`, `OPTIONS` | Returns the canonical recipe catalogue from the Firestore `recipes` collection (seeded on first read). |
+| `deadlineFoodRecipeReviews` | `GET`, `HEAD`, `POST`, `OPTIONS` | Reads/appends recipe reviews in the Firestore `recipeReviews` collection (global, persistent). |
 | `deadlineFoodRecommenderUser` | `POST`, `OPTIONS` | Upserts an anonymous recommender profile. |
+| `deadlineFoodRecipeCreate` | `POST`, `OPTIONS` | Writes canonical recipe content to Firestore and embeds it on the recommender keyed by the recipe UID. |
 | `deadlineFoodRecommendations` | `POST`, `OPTIONS` | Loads GPU-ranked recipe recommendations. |
 | `deadlineFoodInteraction` | `POST`, `OPTIONS` | Records save/pass feedback for recommender learning. |
 | `deadlineFoodDeadlineContext` | `POST`, `OPTIONS` | Extracts deadline pressure context from calendar events. |
@@ -137,9 +140,11 @@ Unsupported methods return `405` with an `Allow` header.
 
 ## GPU Recommender Proxy
 
-The browser must not call `backend/recommender-api` directly. The three
-`deadlineFoodRecommender*` Functions and `deadlineFoodDeadlineContext` proxy only
-the FastAPI operations needed by the frontend. Functions attach a shared
+The browser must not call `backend/recommender-api` directly. The
+`deadlineFoodRecommenderUser`, `deadlineFoodRecipeCreate`,
+`deadlineFoodRecommendations`, `deadlineFoodInteraction`, and
+`deadlineFoodDeadlineContext` Functions proxy only the FastAPI operations needed
+by the frontend. Functions attach a shared
 `X-Deadline-Food-API-Key` header; FastAPI rejects unverified application calls.
 
 Provision the Firebase secrets before deployment:
@@ -185,6 +190,37 @@ Shape:
 ```
 
 If the document does not exist, `getPrototypeData()` seeds it from generated static data.
+
+### `recipes/{recipeId}`
+
+Canonical recipe store (issue #123). Holds the full prototype `Meal` content
+(name, ingredients, instructions, nutrition, price, image, tags, …) **without**
+reviews or the derived `rating` — those live in `recipeReviews`. The recommender
+(pgvector) stores only the recipe UID as primary key plus its embedding, so
+Firestore is the source of truth for recipe content.
+
+Used by:
+
+- `deadlineFoodRecipes` — lists recipes; seeds the collection from the generated
+  `prototypeRecipes` on first read if empty.
+- `deadlineFoodRecipeCreate` — writes recipe content here, then embeds it on the
+  recommender keyed by the recipe UID.
+
+### `recipeReviews/{recipeId}`
+
+Global, persistent recipe reviews — the fix for issue #123 (reviews previously
+lived in per-session local state and vanished on reload). Shape:
+
+```ts
+{
+  reviews: { id: string, author: string, rating: number, comment: string, date: string }[],
+  updatedAt: serverTimestamp()
+}
+```
+
+Used by `deadlineFoodRecipeReviews` (`GET` lists, `POST` appends inside a
+transaction). Reviews are stored here only and never embedded in the recipe doc
+or the recommender.
 
 ### `anonymousSessions/{sessionId}`
 

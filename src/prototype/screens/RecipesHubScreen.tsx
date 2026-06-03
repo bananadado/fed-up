@@ -8,6 +8,7 @@ import { formatIngredient } from "../ingredients";
 import { money } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 import { DiscoverScreen } from "./DiscoverScreen";
+import { createRecommenderRecipe } from "../recommenderApi";
 
 type Tab = "saved" | "discover" | "add";
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
@@ -75,6 +76,10 @@ export function RecipesHubScreen({
     };
 
     setCustomRecipes((recipes) => [nextRecipe, ...recipes]);
+    // Embed the recipe on the recommender immediately on creation.
+    createRecommenderRecipe(nextRecipe).catch((error) => {
+      console.warn("Recipe could not be embedded on the recommender.", error);
+    });
     track("custom_recipe_added", {
       meal_id: nextRecipe.id,
       minutes: nextRecipe.time,

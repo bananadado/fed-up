@@ -17,13 +17,17 @@ def test_get_user_404(client):
     assert client.get("/users/ghost").status_code == 404
 
 
-def test_ability_defaults_to_neutral_for_new_user(client):
-    client.post("/users", json=sample_user())
+def test_ability_derived_from_onboarding_on_creation(client):
+    # The ability profile is embedded on creation from onboarding answers alone,
+    # with no interactions required (#59).
+    client.post("/users", json=sample_user(cooking_ability="advanced", likes=["spicy"]))
     resp = client.get("/users/u1/ability")
     assert resp.status_code == 200
     body = resp.json()
     assert set(body) == set(DIMENSIONS)
-    assert all(v == 0.5 for v in body.values())
+    # Onboarding priors, not neutral 0.5 defaults.
+    assert body["complexity_tolerance"] == 0.85  # advanced cook
+    assert body["spice_preference"] == 0.7  # likes spicy
 
 
 def test_ability_endpoint_404(client):
@@ -59,13 +63,14 @@ def test_negative_interaction_also_recomputes_profile(client):
     assert ability["spice_preference"] < 0.5
 
 
-def test_neutral_action_does_not_require_profile(client):
+def test_neutral_action_does_not_recompute_profile(client):
     client.post("/users", json=sample_user(id="u1"))
     client.post("/recipes", json=sample_recipe(id="r1"))
+    before = client.get("/users/u1/ability").json()
     resp = client.post("/interactions", json={"user_id": "u1", "recipe_id": "r1", "action": "view"})
     assert resp.status_code == 200
-    # "view" is neither positive nor negative -> profile untouched.
-    assert "complexity_tolerance" not in client.fake_session.store["users"]["u1"]
+    # "view" is neither positive nor negative -> profile unchanged from creation.
+    assert client.get("/users/u1/ability").json() == before
 
 
 def test_recompute_profile_endpoint_404(client):
