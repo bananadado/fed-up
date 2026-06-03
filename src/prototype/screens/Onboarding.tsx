@@ -12,13 +12,13 @@ import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
-  calendarEventsToDeadlines,
   icsSubscriptionHints,
   importFromSubscriptionUrl,
   importGoogleCalendar,
   importOutlookCalendar,
   isSubscriptionUrl,
   parseICSText,
+  resolveDeadlinesFromEvents,
 } from "../calendarImport";
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
@@ -114,6 +114,7 @@ export function Onboarding({
   const [importMessage, setImportMessage] = useState("");
   const [importError, setImportError] = useState(false);
   const [importing, setImporting] = useState(false);
+  const [importedDeadlines, setImportedDeadlines] = useState<Deadline[]>([]);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
   const [step1Attempted, setStep1Attempted] = useState(false);
@@ -131,9 +132,10 @@ export function Onboarding({
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
 
-  function handleImportedEvents(events: CalendarEvent[], source: string) {
+  async function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
-    const asDeadlines = calendarEventsToDeadlines(events);
+    const asDeadlines = await resolveDeadlinesFromEvents(events);
+    setImportedDeadlines(asDeadlines);
     if (asDeadlines.length > 0) {
       setDeadlines(asDeadlines);
       setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
@@ -150,7 +152,7 @@ export function Onboarding({
     const reader = new FileReader();
     reader.onload = () => {
       const events = parseICSText(String(reader.result));
-      handleImportedEvents(events, "ics");
+      void handleImportedEvents(events, "ics");
     };
     reader.readAsText(file);
   }
@@ -165,7 +167,7 @@ export function Onboarding({
         ? await importGoogleCalendar(sessionId)
         : await importOutlookCalendar(sessionId);
       setImportError(false);
-      handleImportedEvents(result.events, calendarProvider);
+      await handleImportedEvents(result.events, calendarProvider);
       if (result.refreshToken) {
         const provider = calendarProvider as "google" | "outlook";
         const newToken: CalendarToken = {
@@ -198,7 +200,7 @@ export function Onboarding({
     try {
       const events = await importFromSubscriptionUrl(subscriptionUrl, calendarProvider);
       setImportError(false);
-      handleImportedEvents(events, calendarProvider);
+      await handleImportedEvents(events, calendarProvider);
       const newSub: IcsSubscription = { url: subscriptionUrl.trim(), source: calendarProvider, addedAt: new Date().toISOString() };
       setIcsSubscriptions([...icsSubscriptions.filter((s) => s.url !== newSub.url), newSub]);
     } catch (error) {
@@ -356,7 +358,7 @@ export function Onboarding({
               <div className="mt-7 rounded-lg bg-stone-50 p-4">
                 {(() => {
                   const today = new Date().toISOString().slice(0, 10);
-                  const futureEvents = calendarEventsToDeadlines(calendarEvents)
+                  const futureEvents = importedDeadlines
                     .filter((d) => d.rawDate ? d.rawDate >= today : true)
                     .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""));
                   const shown = futureEvents.slice(0, 5);
