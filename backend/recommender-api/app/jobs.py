@@ -152,7 +152,7 @@ async def recompute_user_embedding(db: AsyncSession, user_id: str) -> bool:
 
     action_weights = {"complete": 2.0, "cook": 1.5, "save": 1.2, "swipe_right": 1.0}
 
-    dims = 384
+    dims = EMBEDDING_DIM
     acc = [0.0] * dims
     total_weight = 0.0
 

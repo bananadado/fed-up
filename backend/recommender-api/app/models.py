@@ -79,6 +79,10 @@ class RecommendRequest(BaseModel):
     n: int = Field(default=20, ge=1, le=100)
     deadline_stress: float = Field(default=0.0, ge=0.0, le=1.0)
     exclude_ids: list[str] = []
+    # Optional per-request exploration controls (#61). Default to the engine's
+    # env-configured values when omitted.
+    exploration_rate: float | None = Field(default=None, ge=0.0, le=1.0)
+    temperature: float | None = Field(default=None, ge=0.0, le=2.0)
 
 
 class ScoredRecipe(BaseModel):
