@@ -4,7 +4,7 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { Card } from "@/components/ui/card";
 import type { Deadline, Meal, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
-import { formatCookingLimit, money, ingredientNames } from "../utils";
+import { formatCookingLimit, money, ingredientNames, sourceUrl } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 import { fetchRecommenderRecommendations, recordRecommenderInteraction } from "../recommenderApi";
@@ -165,7 +165,21 @@ export function DiscoverScreen({
                   <span className="whitespace-nowrap font-semibold text-emerald-700">{money(current.price)}</span>
                   <StarRating rating={current.rating} reviews={current.reviews.length} />
                 </div>
-                <p className="mt-1 text-sm text-stone-400">{current.source}</p>
+                <p className="mt-1 text-sm text-stone-400">
+                  {sourceUrl(current.source) ? (
+                    <a
+                      href={sourceUrl(current.source) as string}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-2 hover:text-stone-600"
+                      onClick={() => track("recipe_source_link_clicked", { meal_id: current.id })}
+                    >
+                      {current.source}
+                    </a>
+                  ) : (
+                    current.source
+                  )}
+                </p>
                 <div className="mt-4 rounded-lg bg-stone-50 p-3">
                   <p className="text-xs font-semibold uppercase text-stone-500">Key ingredients</p>
                   <p className="mt-1 text-sm text-stone-700">{ingredientNames(current.ingredients, 5)}</p>
