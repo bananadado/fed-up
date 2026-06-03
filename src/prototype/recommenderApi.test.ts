@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test";
 
-import { deadlineStressFromDeadlines, resolveDeadlineStress, toPrototypeMeal } from "./recommenderApi";
+import { deadlineStressFromDeadlines, fetchRecommenderRecommendations, resolveDeadlineStress, toPrototypeMeal } from "./recommenderApi";
 import type { Deadline } from "./types";
 
 const originalFetch = globalThis.fetch;
@@ -58,6 +58,40 @@ describe("recommender API helpers", () => {
 
     const stress = await resolveDeadlineStress([deadline("high", "academic", "2099-01-02")]);
     expect(stress).toBe(deadlineStressFromDeadlines([deadline("high", "academic", "2099-01-02")]));
+  });
+
+  test("requests the provided recommendation batch size", async () => {
+    const requestBodies: unknown[] = [];
+    globalThis.fetch = ((_url: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
+      requestBodies.push(JSON.parse(String(init?.body ?? "{}")));
+      return Promise.resolve({ ok: true, status: 200, json: async () => [] });
+    }) as unknown as typeof fetch;
+
+    await fetchRecommenderRecommendations({
+      sessionId: "session-1",
+      prefs: {
+        dietary: [],
+        allergens: [],
+        dislikes: [],
+        likes: [],
+        budget: 20,
+        maxTime: 30,
+        cookingAbility: "basic",
+        kitchen: "shared",
+        university: "",
+        postcode: "",
+        availableIngredients: [],
+      },
+      deadlines: [deadline("medium")],
+      excludeIds: ["recipe-1"],
+      count: 5,
+    });
+
+    expect(requestBodies[1]).toMatchObject({
+      user_id: "session-1",
+      n: 5,
+      exclude_ids: ["recipe-1"],
+    });
   });
 
   test("preserves recipe photos from recommendation responses", () => {
