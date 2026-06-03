@@ -1,4 +1,4 @@
-import { ChevronRight, Clock3, Flame, RefreshCcw, Utensils } from "lucide-react";
+import { ChevronRight, Clock3, RefreshCcw, Utensils } from "lucide-react";
 import { useState } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -7,7 +7,7 @@ import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal } from "../components/SwapModal";
 import { getMealById, money } from "../utils";
-import { mealHealthSignals, weeklyBalanceSummary } from "../healthSignals";
+import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
 export function Dashboard({
@@ -44,10 +44,7 @@ export function Dashboard({
     <div>
       <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <Badge tone="rose">
-            <Flame size={12} className="mr-1" /> Deadline Mode active
-          </Badge>
-          <h1 className="mt-3 text-3xl font-bold">Your week is covered.</h1>
+          <h1 className="text-3xl font-bold">Your week is covered.</h1>
           <p className="mt-2 text-stone-600">Mixed Mode: quick preparation plus realistic campus fallbacks.</p>
         </div>
         <AppButton variant="secondary" onClick={() => { track("dashboard_full_plan_clicked"); setScreen("plan"); }}>
@@ -144,7 +141,6 @@ export function Dashboard({
               );
             })}
           </div>
-          <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{weeklyBalanceSummary(plan, customRecipes)}</p>
         </Card>
       </div>
       {rescueChoice && (
@@ -155,7 +151,7 @@ export function Dashboard({
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
-          setScreen={setScreen}
+          onSelectMeal={onSelectMeal}
           track={track}
         />
       )}

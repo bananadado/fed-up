@@ -685,12 +685,6 @@ export function CalendarScreen({
         />
       )}
 
-      <div className="mt-6 rounded-lg border border-emerald-100 bg-emerald-50 p-5">
-        <p className="font-semibold text-emerald-900">Why Mixed Mode was chosen</p>
-        <p className="mt-2 text-sm text-emerald-800">
-          You have clustered academic tasks and late-campus days, but enough time for one short prep session. Your plan places purchased fallbacks on the busiest study days.
-        </p>
-      </div>
     </div>
   );
 }

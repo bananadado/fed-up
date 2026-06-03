@@ -72,7 +72,6 @@ export function Onboarding({
   setScreen,
   prefs,
   setPrefs,
-  deadlines,
   setDeadlines,
   setCalendarEvents,
   selectedSources,
@@ -318,37 +317,6 @@ export function Onboarding({
               <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
             </div>
             {importMessage && <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
-            <div className="mt-7 rounded-lg bg-stone-50 p-4">
-              {(() => {
-                const today = new Date().toISOString().slice(0, 10);
-                const futureEvents = deadlines
-                  .filter((d) => d.rawDate ? d.rawDate >= today : true)
-                  .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""));
-                const shown = futureEvents.slice(0, 5);
-                return (
-                  <>
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold">Detected study-load signals</p>
-                      <Badge tone="amber">{futureEvents.length} found</Badge>
-                    </div>
-                    {futureEvents.length > 5 && (
-                      <p className="mb-2 text-xs text-stone-500">Showing the next 5 closest events</p>
-                    )}
-                    <div className="space-y-2">
-                      {shown.map((deadline) => (
-                        <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
-                          <div>
-                            <p className="font-medium">{deadline.title}</p>
-                            <p className="text-stone-500">{deadline.date}</p>
-                          </div>
-                          <span className="text-stone-500">{deadline.time}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                );
-              })()}
-            </div>
             <div className="mt-7 flex justify-end">
               <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); goToStep(1); }}>
                 Continue <ArrowRight size={16} />
@@ -596,7 +564,6 @@ export function Onboarding({
                 </div>
               </PreferenceSection>
             </div>
-            <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
             {step2Attempted && (!prefs.kitchen || !prefs.university) && (
               <p className="mt-5 text-center text-sm font-medium text-red-600">
                 Please fill in all required fields
