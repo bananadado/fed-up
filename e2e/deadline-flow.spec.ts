@@ -40,6 +40,15 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
 
   await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
   await expect(page.getByText(/planned spend/i)).toBeVisible();
+  const desktopNav = page.locator("header nav");
+  await desktopNav.getByRole("button", { name: "Calendar", exact: true }).click();
+  await expect(page.getByRole("heading", { name: /deadline calendar/i })).toBeVisible();
+  await expect(page.getByText(/no calendar has been imported/i)).toBeVisible();
+  await expect(page.getByText("Algorithms coursework")).toHaveCount(0);
+  await expect(page.getByText("Design review")).toHaveCount(0);
+  await expect(page.getByText("Databases quiz")).toHaveCount(0);
+  await desktopNav.getByRole("button", { name: "Today", exact: true }).click();
+  await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
   await page.getByRole("button", { name: /view full plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();

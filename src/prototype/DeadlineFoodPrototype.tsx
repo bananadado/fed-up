@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePostHog } from "@posthog/react";
 
 import { capturePostHogEvent, registerPostHogContext, registerPostHogSession, type AnalyticsProperties } from "@/lib/posthog";
-import { defaultDeadlines, initialPlan, initialPreferences } from "./data";
+import { initialPlan, initialPreferences } from "./data";
 import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences, Screen } from "./types";
 import {
   getOrCreateAnonymousSessionId,
@@ -72,7 +72,7 @@ export function DeadlineFoodPrototype() {
   const [previousScreen, setPreviousScreen] = useState<Screen | null>(null);
   const [onboarded, setOnboarded] = useState(false);
   const [calendarProvider, setCalendarProvider] = useState<CalendarProvider>("google");
-  const [deadlines, setDeadlines] = useState<Deadline[]>(defaultDeadlines);
+  const [deadlines, setDeadlines] = useState<Deadline[]>([]);
   const [prefs, setPrefs] = useState<Preferences>(initialPreferences);
   const [selectedSources, setSelectedSources] = useState(["budget", "bbc", "own", "campus"]);
   const [plan, setPlan] = useState<PlanEntry[]>(initialPlan);
