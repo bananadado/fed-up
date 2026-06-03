@@ -1,13 +1,23 @@
+import json
 import os
 import random
 
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from .ability import DIMENSIONS, recipe_targets
+
 EXPLORATION_RATE = float(os.environ.get("EXPLORATION_RATE", "0.2"))
 EXPLORATION_TEMPERATURE = float(os.environ.get("EXPLORATION_TEMPERATURE", "0.15"))
 
 ABILITY_MAP = {"beginner": 0.25, "basic": 0.45, "intermediate": 0.65, "advanced": 0.85}
+
+# Ability dimensions where only an *over-demand* should be penalised: a recipe
+# asking for more skill/time than the user can give is a poor match, but a user
+# who is more capable than a recipe requires is perfectly happy to cook it.
+CAPABILITY_DIMS = ("knife_skill", "multi_tasking", "time_tolerance", "complexity_tolerance")
+# Preference dimensions where any mismatch (in either direction) is a miss.
+PREFERENCE_DIMS = ("spice_preference", "adventurousness", "healthy_bias")
 
 RANKING_WEIGHTS = {
     "taste_similarity": 0.35,
@@ -35,14 +45,27 @@ async def recommend(
     n: int = 20,
     deadline_stress: float = 0.0,
     exclude_ids: list[str] | None = None,
+    exploration_rate: float | None = None,
+    temperature: float | None = None,
+    rng: random.Random | None = None,
 ) -> list[dict]:
+    """Reactive recommendation engine (issue #61).
+
+    Multi-stage pipeline that, after the hard filters and embedding-nearest
+    retrieval seeded by the #60 recipe embeddings and #59 user profile, ranks
+    candidates and then injects temperature-controlled wildcards so the swipe
+    deck does not collapse into an echo chamber.
+    """
     exclude_ids = exclude_ids or []
+    rate = EXPLORATION_RATE if exploration_rate is None else exploration_rate
+    temp = EXPLORATION_TEMPERATURE if temperature is None else temperature
 
     user = await _get_user(db, user_id)
     if not user:
         return []
 
     weights = _blend_weights(deadline_stress)
+    profile = _ability_profile(user)
 
     candidates = await _stage1_filter_and_retrieve(db, user, meal_slot, exclude_ids)
     if not candidates:
@@ -58,25 +81,12 @@ async def recommend(
         rid = rec["id"]
         breakdown = {}
 
-        if user.get("taste_embedding") and rec.get("embedding"):
-            breakdown["taste_similarity"] = _cosine_sim(user["taste_embedding"], rec["embedding"])
-        else:
-            breakdown["taste_similarity"] = 0.5
-
-        user_ability = ABILITY_MAP.get(user.get("cooking_ability", "basic"), 0.45)
-        diff = rec.get("difficulty", 0.5)
-        breakdown["ability_match"] = max(0, 1.0 - abs(user_ability - diff) * 2)
-
-        if deadline_stress > 0.5:
-            if diff > user_ability + 0.1:
-                breakdown["ability_match"] *= 0.5
-
+        breakdown["taste_similarity"] = _taste_similarity(user, rec)
+        breakdown["ability_match"] = _ability_match(profile, rec, deadline_stress)
         breakdown["novelty"] = 0.2 if rid in seen_ids else 0.8
-
         breakdown["health_goal"] = _health_score(rec, user)
         breakdown["budget_fit"] = _budget_score(rec, user)
         breakdown["trending"] = trending_map.get(rid, 0.3)
-
         breakdown["collaborative"] = collab_boost.get(rid, 0.0)
 
         total = sum(breakdown.get(k, 0) * weights[k] for k in weights)
@@ -84,19 +94,45 @@ async def recommend(
 
         scored.append({"recipe": rec, "score": total, "breakdown": breakdown})
 
+    return _apply_exploration(scored, n=n, rate=rate, temperature=temp, rng=rng)
+
+
+def _apply_exploration(
+    scored: list[dict],
+    n: int,
+    rate: float,
+    temperature: float,
+    rng: random.Random | None = None,
+) -> list[dict]:
+    """Return the top-``n`` deck with the tail reserved for exploration.
+
+    The strongest ``(1 - rate)`` of the deck are the user's safe picks (ranked
+    purely by score). The remaining slots are filled by sampling the rest of the
+    candidates with Gaussian noise scaled by ``temperature`` — so wildcards
+    actually surface in the returned deck instead of being buried past position
+    ``n`` (which is what happened when exploration only reshuffled the tail of
+    the *full* candidate list).
+    """
+    generator = rng or random
     scored.sort(key=lambda x: x["score"], reverse=True)
+    if not scored:
+        return []
 
-    safe_count = max(1, int(len(scored) * (1 - EXPLORATION_RATE)))
-    safe = scored[:safe_count]
-    explore_pool = scored[safe_count:]
+    deck_size = min(n, len(scored))
+    n_safe = max(1, round(deck_size * (1 - rate)))
+    n_safe = min(n_safe, len(scored))
 
-    for item in explore_pool:
-        item["score"] += random.gauss(0, EXPLORATION_TEMPERATURE)
+    safe = scored[:n_safe]
+    rest = scored[n_safe:]
 
-    explore_pool.sort(key=lambda x: x["score"], reverse=True)
+    if temperature > 0 and rest:
+        for item in rest:
+            item["explore_score"] = item["score"] + generator.gauss(0, temperature)
+        rest.sort(key=lambda x: x["explore_score"], reverse=True)
+        for item in rest:
+            item.pop("explore_score", None)
 
-    result = safe + explore_pool
-    return result[:n]
+    return (safe + rest)[:n]
 
 
 async def _get_user(db: AsyncSession, user_id: str) -> dict | None:
@@ -224,10 +260,61 @@ async def _recently_seen(db: AsyncSession, user_id: str) -> set[str]:
     return {r["recipe_id"] for r in result.mappings().all()}
 
 
+def _ability_profile(user: dict) -> dict[str, float]:
+    """The user's 7-dimension cooking-ability & preference profile (issue #59).
+
+    Uses the derived profile stored on the user row when present (every column
+    defaults to 0.5), falling back to the ``cooking_ability`` self-rating spread
+    across all dimensions for rows that predate the profile pipeline.
+    """
+    if all(user.get(d) is not None for d in DIMENSIONS):
+        return {d: float(user[d]) for d in DIMENSIONS}
+    scalar = ABILITY_MAP.get((user.get("cooking_ability") or "basic"), 0.45)
+    return {d: scalar for d in DIMENSIONS}
+
+
+def _taste_similarity(user: dict, recipe: dict) -> float:
+    taste = user.get("taste_embedding")
+    emb = recipe.get("embedding")
+    if taste and emb:
+        return _cosine_sim(taste, emb)
+    return 0.5
+
+
+def _ability_match(profile: dict[str, float], recipe: dict, stress: float = 0.0) -> float:
+    """Match the user's profile (#59) against the recipe's implied demands (#60).
+
+    Capability dimensions are one-sided (only over-demand is penalised) and the
+    penalty sharpens with ``deadline_stress`` so ambitious recipes drop fast
+    during crunch weeks. Preference dimensions are symmetric.
+    """
+    targets = recipe_targets(recipe)
+    penalties = []
+    for d in CAPABILITY_DIMS:
+        over = max(0.0, targets[d] - profile[d])
+        penalties.append(min(1.0, over * (1.0 + max(0.0, stress))))
+    for d in PREFERENCE_DIMS:
+        penalties.append(abs(targets[d] - profile[d]))
+    return max(0.0, 1.0 - sum(penalties) / len(penalties))
+
+
+def _as_vector(v: list[float] | str | None) -> list[float] | None:
+    if v is None:
+        return None
+    if isinstance(v, str):
+        try:
+            parsed = json.loads(v)
+        except (ValueError, TypeError):
+            return None
+        return parsed if isinstance(parsed, list) else None
+    return list(v)
+
+
 def _cosine_sim(a: list[float] | str, b: list[float] | str) -> float:
-    if isinstance(a, str) or isinstance(b, str):
+    va, vb = _as_vector(a), _as_vector(b)
+    if not va or not vb:
         return 0.5
-    dot = sum(x * y for x, y in zip(a, b))
+    dot = sum(x * y for x, y in zip(va, vb))
     return max(0, min(1, (dot + 1) / 2))
 
 
