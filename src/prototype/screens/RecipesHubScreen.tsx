@@ -44,6 +44,7 @@ export function RecipesHubScreen({
 }) {
   const [tab, setTab] = useState<Tab>("saved");
   const [savedSortBy, setSavedSortBy] = useState<"default" | "time" | "price" | "health">("default");
+  const [savedTagFilter, setSavedTagFilter] = useState<string | null>(null);
 
   function handleCreateRecipe(output: RecipeEditorOutput, photoUrl: string | undefined) {
     const instructions =
@@ -96,7 +97,11 @@ export function RecipesHubScreen({
   ];
 
   const allSaved = [...customRecipes, ...discoverSaved.filter((s) => !customRecipes.some((c) => c.id === s.id))];
-  const sortedSaved = [...allSaved].sort((a, b) => {
+  const availableTags = [...new Set(allSaved.flatMap((recipe) => recipe.tags))].sort((a, b) => a.localeCompare(b));
+  // Keep the active tag filter valid if the underlying saved recipes change.
+  const activeTagFilter = savedTagFilter && availableTags.includes(savedTagFilter) ? savedTagFilter : null;
+  const filteredSaved = activeTagFilter ? allSaved.filter((recipe) => recipe.tags.includes(activeTagFilter)) : allSaved;
+  const sortedSaved = [...filteredSaved].sort((a, b) => {
     if (savedSortBy === "time") return a.time - b.time;
     if (savedSortBy === "price") return a.price - b.price;
     if (savedSortBy === "health") return b.nutrition.protein - a.nutrition.protein || a.price - b.price;
@@ -145,7 +150,7 @@ export function RecipesHubScreen({
             </div>
           ) : (
             <>
-              <div className="mb-4 flex flex-wrap items-center gap-2">
+              <div className="mb-3 flex flex-wrap items-center gap-2">
                 <span className="text-sm text-stone-500">Sort by</span>
                 {(["default", "time", "price", "health"] as const).map((option) => (
                   <button
@@ -158,6 +163,32 @@ export function RecipesHubScreen({
                   </button>
                 ))}
               </div>
+              {availableTags.length > 0 && (
+                <div className="mb-4 flex flex-wrap items-center gap-2">
+                  <span className="text-sm text-stone-500">Filter by tag</span>
+                  <button
+                    type="button"
+                    onClick={() => { track("saved_tag_filter_changed", { tag: null }); setSavedTagFilter(null); }}
+                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${activeTagFilter === null ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                  >
+                    All
+                  </button>
+                  {availableTags.map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => {
+                        const next = activeTagFilter === tag ? null : tag;
+                        track("saved_tag_filter_changed", { tag: next });
+                        setSavedTagFilter(next);
+                      }}
+                      className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize transition ${activeTagFilter === tag ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              )}
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {sortedSaved.map((recipe) => {
                 const isOwn = recipe.isUserCreated === true;
