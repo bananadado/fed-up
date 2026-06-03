@@ -250,10 +250,20 @@ secret_detection:
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - echo "$DEPLOY_SSH_KEY_B64" | base64 -d > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
     - |
-      SSH_OPTS="-i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -o ProxyCommand='tailscale nc %h %p'"
+      # Drive ssh/rsync through an ssh config so the ProxyCommand (which contains
+      # spaces) isn't mangled by word-splitting when passed via a variable.
+      printf '%s\n' \
+        "Host ${DEPLOY_HOST}" \
+        "  HostName ${DEPLOY_HOST}" \
+        "  User ${DEPLOY_USER}" \
+        "  IdentityFile ~/.ssh/deploy_key" \
+        "  StrictHostKeyChecking accept-new" \
+        "  ProxyCommand tailscale nc %h %p" \
+        > ~/.ssh/config
+      chmod 600 ~/.ssh/config
 
       rsync -avz --delete --exclude='.env' --exclude='__pycache__' \
-        -e "ssh $SSH_OPTS" \
+        -e ssh \
         backend/ \
         "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/"
 
@@ -285,10 +295,10 @@ secret_detection:
       fi
 
       echo "Services to redeploy: $CHANGED_SERVICES"
-      ssh $SSH_OPTS "${DEPLOY_USER}@${DEPLOY_HOST}" "cd ${DEPLOY_DIR} && bash deploy.sh $CHANGED_SERVICES"
+      ssh "${DEPLOY_USER}@${DEPLOY_HOST}" "cd ${DEPLOY_DIR} && bash deploy.sh $CHANGED_SERVICES"
   after_script:
     - tailscale logout 2>/dev/null || true
-    - rm -f ~/.ssh/deploy_key
+    - rm -f ~/.ssh/deploy_key ~/.ssh/config
 
 deploy_gpu_staging:
   extends: .deploy_gpu_server
