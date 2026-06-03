@@ -1,8 +1,8 @@
-import { Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { LoaderCircle, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
+import { useEffect, useMemo, useRef, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Deadline, Meal, Preferences } from "../types";
+import type { Deadline, DiscoverRecommendationState, Meal, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, money, ingredientNames } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
@@ -10,6 +10,8 @@ import type { TrackPrototypeEvent } from "../analytics";
 import { fetchRecommenderRecommendations, recordRecommenderInteraction } from "../recommenderApi";
 
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
+
+const RECOMMENDATION_BATCH_SIZE = 5;
 
 function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
   if (rating === 0) return null;
@@ -35,6 +37,8 @@ export function DiscoverScreen({
   setRejected,
   reviewedRecipeIds,
   setReviewedRecipeIds,
+  recommendationState,
+  setRecommendationState,
   onSelectMeal,
   track,
 }: {
@@ -48,58 +52,98 @@ export function DiscoverScreen({
   setRejected: StateSetter<Meal[]>;
   reviewedRecipeIds: string[];
   setReviewedRecipeIds: StateSetter<string[]>;
+  recommendationState: DiscoverRecommendationState;
+  setRecommendationState: StateSetter<DiscoverRecommendationState>;
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
-  const [recommendedRecipes, setRecommendedRecipes] = useState<Meal[] | null>(null);
-  const reviewedRecipeIdSet = new Set([
-    ...reviewedRecipeIds,
-    ...saved.map((meal) => meal.id),
-    ...rejected.map((meal) => meal.id),
-  ]);
-  const ownRecipeIds = new Set(customRecipes.map((meal) => meal.id));
-  const candidateRecipes = (recommendedRecipes ?? []).filter((meal) => !ownRecipeIds.has(meal.id));
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetchRecommenderRecommendations({
-      sessionId,
-      prefs,
-      deadlines,
-      excludeIds: [
-        ...reviewedRecipeIds,
-        ...saved.map((meal) => meal.id),
-        ...rejected.map((meal) => meal.id),
-        ...customRecipes.map((meal) => meal.id),
-      ],
-    })
-      .then((recipes) => {
-        if (!cancelled) {
-          setRecommendedRecipes(recipes.length > 0 ? recipes : null);
-        }
-      })
-      .catch((error) => {
-        if (!cancelled) {
-          console.warn("Remote recommendations could not be loaded; using local recipes.", error);
-          setRecommendedRecipes(null);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [deadlines, prefs, reviewedRecipeIds, saved, rejected, customRecipes, sessionId]);
+  const latestRecommendationRequestId = useRef(0);
+  const recommendationContextKey = useMemo(
+    () => JSON.stringify({ deadlines, prefs, sessionId }),
+    [deadlines, prefs, sessionId],
+  );
+  const recommendedRecipes = useMemo(
+    () => recommendationState.contextKey === recommendationContextKey ? recommendationState.recipes : [],
+    [recommendationContextKey, recommendationState],
+  );
+  const recommendationStatus = recommendationState.contextKey === recommendationContextKey ? recommendationState.status : "idle";
+  const excludedRecipeIds = useMemo(
+    () => [...new Set([
+      ...reviewedRecipeIds,
+      ...saved.map((meal) => meal.id),
+      ...rejected.map((meal) => meal.id),
+    ])],
+    [reviewedRecipeIds, saved, rejected],
+  );
+  const reviewedRecipeIdSet = useMemo(() => new Set(excludedRecipeIds), [excludedRecipeIds]);
+  const candidateRecipes = [
+    ...customRecipes,
+    ...recommendedRecipes.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id)),
+  ];
 
   const sortedQueue = candidateRecipes
     .filter((meal) => !reviewedRecipeIdSet.has(meal.id))
     .sort((a, b) => Number(b.tags.includes("high protein")) - Number(a.tags.includes("high protein")) || a.time - b.time);
   const current = sortedQueue[0];
+  const shouldLoadRecommendationBatch =
+    recommendationStatus === "idle" ||
+    (recommendationStatus === "ready" && sortedQueue.length === 0);
+  const recommendationExcludeIds = useMemo(
+    () => [...new Set([
+      ...excludedRecipeIds,
+      ...recommendedRecipes.map((meal) => meal.id),
+      ...customRecipes.map((meal) => meal.id),
+    ])],
+    [customRecipes, excludedRecipeIds, recommendedRecipes],
+  );
+
+  useEffect(() => {
+    if (!shouldLoadRecommendationBatch) return;
+
+    let cancelled = false;
+    const requestId = latestRecommendationRequestId.current + 1;
+    latestRecommendationRequestId.current = requestId;
+    const controller = new AbortController();
+    const excludedAtRequest = new Set(recommendationExcludeIds);
+    fetchRecommenderRecommendations({
+      sessionId,
+      prefs,
+      deadlines,
+      excludeIds: recommendationExcludeIds,
+      count: RECOMMENDATION_BATCH_SIZE,
+      signal: controller.signal,
+    })
+      .then((recipes) => {
+        if (!cancelled && latestRecommendationRequestId.current === requestId) {
+          const usableRecipes = recipes.filter((recipe) => !excludedAtRequest.has(recipe.id));
+          setRecommendationState({
+            contextKey: recommendationContextKey,
+            recipes: usableRecipes,
+            status: usableRecipes.length > 0 ? "ready" : "exhausted",
+          });
+        }
+      })
+      .catch((error) => {
+        if (controller.signal.aborted) return;
+
+        if (!cancelled && latestRecommendationRequestId.current === requestId) {
+          console.warn("Remote recommendations could not be loaded.", error);
+          setRecommendationState({
+            contextKey: recommendationContextKey,
+            recipes: [],
+            status: "exhausted",
+          });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [deadlines, prefs, recommendationContextKey, recommendationExcludeIds, sessionId, setRecommendationState, shouldLoadRecommendationBatch]);
 
   function decideCurrentRecipe(like: boolean) {
-    if (!current) {
-      return;
-    }
+    if (!current) return;
 
     track("discover_recipe_swiped", { meal_id: current.id, liked: like });
     recordRecommenderInteraction({
@@ -123,8 +167,11 @@ export function DiscoverScreen({
     const savedRecipeIds = new Set(saved.map((meal) => meal.id));
     setReviewedRecipeIds([]);
     setRejected([]);
+    setRecommendationState({ contextKey: "", recipes: [], status: "idle" });
     track("discover_queue_restarted", { queue_size: candidateRecipes.filter((meal) => !savedRecipeIds.has(meal.id)).length });
   }
+
+  const showRecommendationLoading = sortedQueue.length === 0 && shouldLoadRecommendationBatch;
 
   return (
     <div>
@@ -136,7 +183,12 @@ export function DiscoverScreen({
       </div>
       <div className="mx-auto max-w-[480px]">
         <div>
-          {current ? (
+          {showRecommendationLoading ? (
+            <Card className="gap-0 rounded-lg border-stone-200 bg-white p-10 text-center">
+              <LoaderCircle className="mx-auto animate-spin text-emerald-700" />
+              <p className="mt-4 font-semibold">Finding recipe ideas...</p>
+            </Card>
+          ) : current ? (
             <Card className="gap-0 overflow-hidden rounded-lg border-stone-200 bg-white shadow-sm">
               <button
                 type="button"
@@ -170,15 +222,17 @@ export function DiscoverScreen({
                   <p className="mt-1 text-sm text-stone-700">{ingredientNames(current.ingredients, 5)}</p>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {current.tags.slice(0, 3).map((tag) => (
-                    <Badge key={tag} tone="green">
-                      {tag}
-                    </Badge>
+                  {current.mealSlots.map((slot) => (
+                    <Badge key={`slot-${slot}`}>{slot.charAt(0).toUpperCase() + slot.slice(1)}</Badge>
+                  ))}
+                  {current.tags.map((tag) => (
+                    <Badge key={`tag-${tag}`} tone="green">{tag}</Badge>
                   ))}
                   {mealHealthSignals(current).map((signal) => (
-                    <Badge key={signal} tone="blue">
-                      {signal}
-                    </Badge>
+                    <Badge key={`health-${signal}`} tone="blue">{signal}</Badge>
+                  ))}
+                  {current.allergens.map((allergen) => (
+                    <Badge key={`allergen-${allergen}`} tone="rose">{allergen}</Badge>
                   ))}
                 </div>
                 <div className="mt-6 grid grid-cols-2 gap-3">

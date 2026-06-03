@@ -1421,6 +1421,41 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
   await proxyRecommenderRequest(request, response, "/recipes", toRecommenderRecipePayload(body));
 });
 
+export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async (request, response) => {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = asRecord(request.body);
+  const recipeId = typeof body?.recipeId === "string" ? body.recipeId : null;
+  if (!recipeId || !recipeIdPattern.test(recipeId)) {
+    response.status(400).json({error: "A valid recipe id is required"});
+    return;
+  }
+
+  try {
+    await recipesRef.doc(recipeId).delete();
+    await recipeReviewsRef.doc(recipeId).delete();
+  } catch (error) {
+    logger.error("Recipe could not be deleted from Firestore", {recipeId, error});
+    response.status(502).json({error: "Recipe could not be deleted"});
+    return;
+  }
+
+  try {
+    const url = new URL(`/recipes/${encodeURIComponent(recipeId)}`, recommenderApiUrl.value().replace(/\/$/, ""));
+    await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "X-Deadline-Food-API-Key": recommenderApiKey.value(),
+      },
+      signal: AbortSignal.timeout(15_000),
+    });
+  } catch (error) {
+    logger.warn("Recipe could not be deleted from recommender (Firestore deletion succeeded)", {recipeId, error});
+  }
+
+  response.status(204).send("");
+});
+
 export const deadlineFoodRecommendations = onRequest(recommenderHttpOptions, async (request, response) => {
   await proxyRecommenderRecommendations(request, response);
 });
