@@ -14,10 +14,9 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /sign in with google/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /upload \.ics file/i })).toBeVisible();
-  await page.getByRole("button", { name: /^continue$/i }).click();
+  await page.getByRole("button", { name: /skip for now/i }).click();
   const calendarWarning = page.getByRole("dialog", { name: /continue without a calendar/i });
   await expect(calendarWarning).toBeVisible();
-  await expect(calendarWarning.getByText(/you can import calendar events any time through settings or the calendar menu/i)).toBeVisible();
   await page.getByRole("button", { name: /continue anyway/i }).click();
 
   await expect(page.getByRole("heading", { name: /about you/i })).toBeVisible();
@@ -88,6 +87,16 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.getByRole("button", { name: "Add recipe", exact: true }).click();
   await expect(page.getByText("Microwave bean burrito")).toBeVisible();
   await expect(page.getByText("10 min · 100g mixed beans, 1 wrap tortilla wrap, 50g tomato")).toBeVisible();
+});
+
+test("onboarding 'skip for now' shows confirmation dialog then advances to 'About you'", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /build my meal plan/i }).click();
+  await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
+  await page.getByRole("button", { name: /skip for now/i }).click();
+  await expect(page.getByRole("dialog", { name: /continue without a calendar/i })).toBeVisible();
+  await page.getByRole("button", { name: /continue anyway/i }).click();
+  await expect(page.getByRole("heading", { name: /about you/i })).toBeVisible();
 });
 
 test("returning users land on dashboard, not the landing or onboarding page", async ({ page }) => {
