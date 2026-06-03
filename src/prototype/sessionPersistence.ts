@@ -1,8 +1,21 @@
-import type { Deadline, Meal, PlanEntry, Preferences } from "./types";
+import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences } from "./types";
 
 export const ANONYMOUS_SESSION_STORAGE_KEY = "deadlineFoodAnonymousSessionId";
-export const PROTOTYPE_SESSION_SETTINGS_VERSION = 1;
+export const PROTOTYPE_SESSION_SETTINGS_VERSION = 2;
 export const PROTOTYPE_SESSION_RETENTION_DAYS = 90;
+
+export type IcsSubscription = {
+  url: string;
+  source: CalendarProvider;
+  addedAt: string;
+};
+
+export type CalendarToken = {
+  provider: "google" | "outlook";
+  refreshToken: string;
+  expiresAt: string;
+  addedAt: string;
+};
 
 export type PrototypeSessionSettings = {
   settingsVersion: typeof PROTOTYPE_SESSION_SETTINGS_VERSION;
@@ -13,7 +26,11 @@ export type PrototypeSessionSettings = {
   customRecipes?: Meal[];
   discoverSaved?: Meal[];
   discoverRejected?: Meal[];
+  discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
+  calendarEvents?: CalendarEvent[];
+  icsSubscriptions?: IcsSubscription[];
+  calendarTokens?: CalendarToken[];
 };
 
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
@@ -38,7 +55,11 @@ export function createPrototypeSessionSettings(input: {
   customRecipes?: Meal[];
   discoverSaved?: Meal[];
   discoverRejected?: Meal[];
+  discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
+  calendarEvents?: CalendarEvent[];
+  icsSubscriptions?: IcsSubscription[];
+  calendarTokens?: CalendarToken[];
 }): PrototypeSessionSettings {
   return {
     settingsVersion: PROTOTYPE_SESSION_SETTINGS_VERSION,
@@ -49,6 +70,44 @@ export function createPrototypeSessionSettings(input: {
     customRecipes: input.customRecipes,
     discoverSaved: input.discoverSaved,
     discoverRejected: input.discoverRejected,
+    discoverReviewedRecipeIds: input.discoverReviewedRecipeIds,
     plan: input.plan,
+    calendarEvents: input.calendarEvents,
+    icsSubscriptions: input.icsSubscriptions,
+    calendarTokens: input.calendarTokens,
   };
+}
+
+const mealSlots = new Set(["breakfast", "lunch", "dinner"]);
+
+function isPlanEntry(value: unknown): value is PlanEntry {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return false;
+  }
+
+  const entry = value as Record<string, unknown>;
+
+  if (typeof entry.day !== "string" || typeof entry.context !== "string" || !Array.isArray(entry.meals)) {
+    return false;
+  }
+
+  return entry.meals.every((meal) => {
+    if (typeof meal !== "object" || meal === null || Array.isArray(meal)) {
+      return false;
+    }
+
+    const planMeal = meal as Record<string, unknown>;
+
+    return mealSlots.has(String(planMeal.slot)) && typeof planMeal.mealId === "string" && planMeal.mealId.length > 0;
+  });
+}
+
+export function restorePrototypePlan(value: unknown, fallback: PlanEntry[]): PlanEntry[] {
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+
+  const restoredPlan = value.filter(isPlanEntry);
+
+  return restoredPlan.length > 0 ? restoredPlan : fallback;
 }

@@ -1,18 +1,31 @@
-import { useRef, useState, type ReactNode } from "react";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, dietary, dislikes, likes, sourceOptions, universities } from "../data";
-import type { CalendarProvider, Deadline, Preferences, Screen } from "../types";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions } from "../data";
+import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
-import { classifyImportedEvent } from "../workloadModel";
+import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
+import { IngredientEditor } from "../components/IngredientEditor";
+import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
+import {
+  icsSubscriptionHints,
+  importFromSubscriptionUrl,
+  importGoogleCalendar,
+  importOutlookCalendar,
+  isSubscriptionUrl,
+  parseICSText,
+  resolveDeadlinesFromEvents,
+} from "../calendarImport";
+import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
+import { filterFoodPreferenceOptions } from "../preferenceOptions";
 
 function Progress({ step }: { step: number }) {
-  const labels = ["Calendar", "Preferences", "Recipe sources"];
+  const labels = ["Calendar", "About you", "Preferences"];
 
   return (
     <div className="mb-8 flex gap-2">
@@ -56,83 +69,171 @@ function PreferenceSection({
   );
 }
 
+function InfoTooltip({ children }: { children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative flex shrink-0 items-center">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        onBlur={() => setOpen(false)}
+        aria-label="More information"
+        aria-expanded={open}
+        className="flex h-5 w-5 items-center justify-center rounded-full border border-stone-300 bg-white text-[11px] font-bold text-stone-400 hover:border-emerald-400 hover:text-emerald-700"
+      >
+        ?
+      </button>
+      {open && (
+        <div className="absolute bottom-full left-0 z-10 mb-2 w-64 rounded-lg border border-stone-200 bg-white p-3 text-xs leading-5 text-stone-600 shadow-lg">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Onboarding({
   setOnboarded,
   setScreen,
   prefs,
   setPrefs,
-  deadlines,
   setDeadlines,
+  calendarEvents,
+  setCalendarEvents,
   selectedSources,
   setSelectedSources,
   calendarProvider,
   setCalendarProvider,
+  icsSubscriptions,
+  setIcsSubscriptions,
+  calendarTokens,
+  setCalendarTokens,
+  sessionId,
   track,
 }: {
   setOnboarded: (onboarded: boolean) => void;
   setScreen: (screen: Screen) => void;
   prefs: Preferences;
   setPrefs: (prefs: Preferences) => void;
-  deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
+  calendarEvents: CalendarEvent[];
+  setCalendarEvents: (events: CalendarEvent[]) => void;
   selectedSources: string[];
   setSelectedSources: (sources: string[]) => void;
   calendarProvider: CalendarProvider;
   setCalendarProvider: (provider: CalendarProvider) => void;
+  icsSubscriptions: IcsSubscription[];
+  setIcsSubscriptions: (subs: IcsSubscription[]) => void;
+  calendarTokens: CalendarToken[];
+  setCalendarTokens: (tokens: CalendarToken[]) => void;
+  sessionId: string;
   track: TrackPrototypeEvent;
 }) {
   const [step, setStep] = useState(0);
+  const [animationKey, setAnimationKey] = useState(0);
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const step1Ref = useRef<HTMLDivElement>(null);
+  const step2Ref = useRef<HTMLDivElement>(null);
   const [importMessage, setImportMessage] = useState("");
+  const [importError, setImportError] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [importedDeadlines, setImportedDeadlines] = useState<Deadline[]>([]);
+  const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
+  const [step1Attempted, setStep1Attempted] = useState(false);
+  const [step2Attempted, setStep2Attempted] = useState(false);
+  const [showCalendarSkipConfirm, setShowCalendarSkipConfirm] = useState(false);
+  const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
+  const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
 
-  function parseICS(text: string) {
-    const blocks = text.split("BEGIN:VEVENT").slice(1);
-    const parsed = blocks.map((block, index) => {
-      const title = (block.match(/SUMMARY:(.+)/)?.[1] || `Imported event ${index + 1}`).trim();
-      const raw = block.match(/DTSTART(?:;[^:]*)?:(\d{8})(?:T(\d{4}))?/) || [];
-      const date = raw[1] ? new Date(`${raw[1].slice(0, 4)}-${raw[1].slice(4, 6)}-${raw[1].slice(6, 8)}T12:00:00`) : null;
-      const label = date ? date.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : "Upcoming";
-      const time = raw[2] ? `${raw[2].slice(0, 2)}:${raw[2].slice(2, 4)}` : "All day";
+  function goToStep(nextStep: number) {
+    setStep(nextStep);
+    setAnimationKey(k => k + 1);
+  }
 
-      const eventType = classifyImportedEvent(title);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step]);
 
-      return {
-        id: `ics-${index}`,
-        title,
-        date: label,
-        time,
-        intensity: eventType === "academic" ? "Medium" : "Low",
-        eventType,
-        effortHours: eventType === "academic" ? 3 : 0,
-        urgency: eventType === "academic" ? "medium" : "low",
-        confirmed: false,
-      } satisfies Deadline;
-    });
-
-    return parsed.length ? parsed.slice(0, 5) : null;
+  async function handleImportedEvents(events: CalendarEvent[], source: string) {
+    setCalendarEvents(events);
+    const asDeadlines = await resolveDeadlinesFromEvents(events);
+    setImportedDeadlines(asDeadlines);
+    if (asDeadlines.length > 0) {
+      setDeadlines(asDeadlines);
+      setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
+    } else {
+      setImportMessage("No calendar events were found in that import.");
+    }
+    track("calendar_imported", { source, event_count: events.length });
   }
 
   function loadICS(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = () => {
-      const parsed = parseICS(String(reader.result));
-
-      if (parsed) {
-        setDeadlines(parsed);
-        setImportMessage(`${parsed.length} calendar events imported.`);
-        track("ics_calendar_imported", { event_count: parsed.length });
-      } else {
-        setImportMessage("No events found. Showing the example deadline week instead.");
-        track("ics_calendar_imported", { event_count: 0 });
-      }
+      const events = parseICSText(String(reader.result));
+      void handleImportedEvents(events, "ics");
     };
     reader.readAsText(file);
+  }
+
+  async function connectOAuth() {
+    setImporting(true);
+    setImportMessage("");
+    track("calendar_provider_connect_clicked", { provider: calendarProvider });
+
+    try {
+      const result = calendarProvider === "google"
+        ? await importGoogleCalendar(sessionId)
+        : await importOutlookCalendar(sessionId);
+      setImportError(false);
+      await handleImportedEvents(result.events, calendarProvider);
+      if (result.refreshToken) {
+        const provider = calendarProvider as "google" | "outlook";
+        const newToken: CalendarToken = {
+          provider,
+          refreshToken: result.refreshToken,
+          expiresAt: result.expiresAt ?? "",
+          addedAt: new Date().toISOString(),
+        };
+        setCalendarTokens([...calendarTokens.filter((t) => t.provider !== provider), newToken]);
+      }
+    } catch (error) {
+      const rawMessage = error instanceof Error ? error.message : "Import failed";
+      setImportError(true);
+      setImportMessage("We couldn't connect — you can set this up later in Settings.");
+      track("calendar_import_error", { provider: calendarProvider, error: rawMessage });
+    } finally {
+      setImporting(false);
+    }
+  }
+
+  async function connectSubscriptionUrl() {
+    if (!isSubscriptionUrl(subscriptionUrl)) {
+      setImportMessage("Enter a valid webcal:// or https:// calendar URL.");
+      return;
+    }
+    setImporting(true);
+    setImportMessage("");
+    track("calendar_subscription_url_imported", { provider: calendarProvider });
+
+    try {
+      const events = await importFromSubscriptionUrl(subscriptionUrl, calendarProvider);
+      setImportError(false);
+      await handleImportedEvents(events, calendarProvider);
+      const newSub: IcsSubscription = { url: subscriptionUrl.trim(), source: calendarProvider, addedAt: new Date().toISOString() };
+      setIcsSubscriptions([...icsSubscriptions.filter((s) => s.url !== newSub.url), newSub]);
+    } catch (error) {
+      const rawMessage = error instanceof Error ? error.message : "Import failed";
+      setImportError(true);
+      setImportMessage("We couldn't connect — you can set this up later in Settings.");
+      track("calendar_import_error", { provider: calendarProvider, error: rawMessage });
+    } finally {
+      setImporting(false);
+    }
   }
 
   function toggle(values: string[], value: string, update: (next: string[]) => void) {
@@ -152,15 +253,49 @@ export function Onboarding({
     update([...values, normalizedValue]);
   }
 
+  function updateAvailableIngredients(nextDrafts: IngredientDraft[]) {
+    setAvailableIngredientDrafts(nextDrafts);
+    setPrefs({ ...prefs, availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
+  }
+
+  function scrollToFirstError(container: HTMLElement | null) {
+    requestAnimationFrame(() => {
+      const firstError = container?.querySelector("[data-field-error] input, [data-field-error] button");
+      if (firstError instanceof HTMLElement) {
+        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstError.focus({ preventScroll: true });
+      }
+    });
+  }
+
   function finish() {
     track("onboarding_completed", {
       recipe_sources: selectedSources,
       dietary_requirements: prefs.dietary,
+      available_ingredient_count: prefs.availableIngredients.length,
       kitchen_access: prefs.kitchen,
+      cooking_ability: prefs.cookingAbility,
       budget_pounds: prefs.budget,
     });
     setOnboarded(true);
     setScreen("dashboard");
+  }
+
+  function continueFromCalendarStep() {
+    if (calendarEvents.length === 0) {
+      track("calendar_skip_confirmation_shown", { provider: calendarProvider });
+      setShowCalendarSkipConfirm(true);
+      return;
+    }
+    track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider });
+    goToStep(1);
+  }
+
+  function confirmCalendarSkip() {
+    track("calendar_skip_confirmed", { provider: calendarProvider });
+    setShowCalendarSkipConfirm(false);
+    track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider, calendar_skipped: true });
+    goToStep(1);
   }
 
   return (
@@ -172,10 +307,10 @@ export function Onboarding({
         </div>
         <Progress step={step} />
         {step === 0 && (
-          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 1 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
-            <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days and lower cooking effort around them.</p>
+            <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days. This is optional — you can connect later in Settings.</p>
             <div className="mt-7 grid grid-cols-2 gap-3">
               {calendarProviders.map((provider) => (
                 <button
@@ -197,53 +332,262 @@ export function Onboarding({
               ))}
             </div>
             <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4">
-              {calendarProvider !== "manual" ? (
+              {(calendarProvider === "google" || calendarProvider === "outlook") && (
                 <>
-                  <AppButton type="button" onClick={() => track("calendar_provider_connect_clicked", { provider: calendarProvider })}>
-                    <CalendarDays size={15} /> Link {calendarProviders.find((p) => p.id === calendarProvider)?.name}
+                  <AppButton type="button" onClick={connectOAuth} disabled={importing} className="w-full justify-center py-3 text-base">
+                    <CalendarDays size={18} /> {importing ? "Connecting…" : `Sign in with ${calendarProvider === "google" ? "Google" : "Microsoft"}`}
                   </AppButton>
-                  <p className="mt-2 text-xs text-stone-500">You can reconnect or switch provider later in settings.</p>
-                </>
-              ) : (
-                <>
-                  <p className="text-sm text-stone-500">Upload a .ics file from your calendar app. This is a one-off import, not a live connection.</p>
-                  <div className="mt-3">
-                    <AppButton type="button" variant="secondary" onClick={() => fileRef.current?.click()}>
-                      <Import size={15} /> Import .ics file
-                    </AppButton>
+                  {calendarProvider === "outlook" && (
+                    <p className="mt-2 text-xs font-medium text-amber-700">University and organisation accounts may block sign-in — use a subscription link below instead.</p>
+                  )}
+                  <div className="my-4 flex items-center gap-3">
+                    <div className="h-px flex-1 bg-stone-200" />
+                    <span className="text-xs font-medium text-stone-400">or use a subscription link</span>
+                    <div className="h-px flex-1 bg-stone-200" />
                   </div>
-                  <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
                 </>
               )}
-            </div>
-            {importMessage && <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
-            <div className="mt-7 rounded-lg bg-stone-50 p-4">
-              <div className="mb-3 flex items-center justify-between">
-                <p className="text-sm font-semibold">Detected study-load signals</p>
-                <Badge tone="amber">{deadlines.length} found</Badge>
+              <div className="flex items-center gap-2">
+                <InfoTooltip>
+                  <p className="font-semibold text-stone-700">Calendar subscription link</p>
+                  <p className="mt-1">A <span className="font-medium">webcal://</span> or <span className="font-medium">https://</span> URL your calendar app provides so other apps can sync your events.</p>
+                  <p className="mt-1.5 font-medium text-stone-500">Where to find it:</p>
+                  <ul className="mt-0.5 space-y-0.5 text-stone-500">
+                    <li><span className="font-medium">Google:</span> Settings → your calendar → "Secret address in iCal format"</li>
+                    <li><span className="font-medium">Outlook:</span> Calendar settings → Share → Get a link</li>
+                    <li><span className="font-medium">University:</span> check your timetable portal for a "subscribe" or "iCal" option</li>
+                  </ul>
+                </InfoTooltip>
+                <div className="flex flex-1 gap-2">
+                  <Input
+                    value={subscriptionUrl}
+                    onChange={(e) => setSubscriptionUrl(e.target.value)}
+                    placeholder="webcal://… or https://…"
+                    className="h-auto flex-1 rounded-lg border-stone-200 bg-white p-3 text-sm"
+                  />
+                  <AppButton type="button" variant="secondary" onClick={connectSubscriptionUrl} disabled={importing || !subscriptionUrl.trim()}>
+                    {importing ? "Fetching…" : "Import"}
+                  </AppButton>
+                </div>
               </div>
-              <div className="space-y-2">
-                {deadlines.map((deadline) => (
-                  <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
-                    <div>
-                      <p className="font-medium">{deadline.title}</p>
-                      <p className="text-stone-500">{deadline.date}</p>
-                    </div>
-                    <span className="text-stone-500">{deadline.time}</span>
-                  </div>
-                ))}
+              <p className="mt-2 text-xs text-stone-400">{icsSubscriptionHints[calendarProvider]}</p>
+              <div className="mt-4 flex items-center gap-2">
+                <InfoTooltip>
+                  <p className="font-semibold text-stone-700">ICS / .ics file</p>
+                  <p className="mt-1">A standard calendar export file. Download one from:</p>
+                  <ul className="mt-0.5 space-y-0.5 text-stone-500">
+                    <li><span className="font-medium">Google:</span> Settings → Import &amp; export → Export</li>
+                    <li><span className="font-medium">Outlook:</span> File → Save calendar</li>
+                    <li><span className="font-medium">University timetable:</span> look for "Export" or "Download"</li>
+                  </ul>
+                  <p className="mt-1.5 text-stone-400">Note: a one-off snapshot — it won't stay in sync. Use a subscription link above for live updates.</p>
+                </InfoTooltip>
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  className="flex items-center gap-1.5 text-sm text-stone-400 hover:text-stone-600"
+                >
+                  <Import size={14} /> Upload .ics file
+                </button>
               </div>
+              <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
             </div>
-            <div className="mt-7 flex justify-end">
-              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); setStep(1); }}>
+            {importMessage && (
+              <p className={cn("mt-4 rounded-lg p-3 text-sm", importError ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800")}>
+                {importMessage}
+              </p>
+            )}
+            <p className="mt-4 text-sm text-stone-500">
+              Adding a calendar is optional. You can import calendar events any time through Settings or the Calendar menu.
+            </p>
+            {calendarEvents.length > 0 && (
+              <div className="mt-7 rounded-lg bg-stone-50 p-4">
+                {(() => {
+                  const today = new Date().toISOString().slice(0, 10);
+                  const futureEvents = importedDeadlines
+                    .filter((d) => d.rawDate ? d.rawDate >= today : true)
+                    .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""));
+                  const shown = futureEvents.slice(0, 5);
+                  return (
+                    <>
+                      <div className="mb-3 flex items-center justify-between">
+                        <p className="text-sm font-semibold">Detected study-load signals</p>
+                        <Badge tone="amber">{futureEvents.length} found</Badge>
+                      </div>
+                      {futureEvents.length > 5 && (
+                        <p className="mb-2 text-xs text-stone-500">Showing the next 5 closest events</p>
+                      )}
+                      <div className="space-y-2">
+                        {shown.map((deadline) => (
+                          <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
+                            <div>
+                              <p className="font-medium">{deadline.title}</p>
+                              <p className="text-stone-500">{deadline.date}</p>
+                            </div>
+                            <span className="text-stone-500">{deadline.time}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            )}
+            <div className="mt-7 flex items-center justify-between">
+              {calendarEvents.length === 0 && (
+                <button
+                  type="button"
+                  className="text-sm text-stone-500 hover:text-stone-700"
+                  onClick={() => { track("calendar_skip_button_clicked", { provider: calendarProvider }); setShowCalendarSkipConfirm(true); }}
+                >
+                  Skip for now
+                </button>
+              )}
+              <AppButton disabled={calendarEvents.length === 0} onClick={continueFromCalendarStep} className="ml-auto">
                 Continue <ArrowRight size={16} />
               </AppButton>
             </div>
           </Card>
         )}
+        {showCalendarSkipConfirm && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="calendar-skip-title"
+            className="fixed inset-0 z-50 grid place-items-center bg-stone-950/45 px-4"
+          >
+            <div className="w-full max-w-md rounded-lg border border-amber-200 bg-white p-6 shadow-xl">
+              <div className="flex gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+                  <AlertTriangle size={20} />
+                </div>
+                <div>
+                  <h3 id="calendar-skip-title" className="text-lg font-bold text-stone-950">Continue without a calendar?</h3>
+                  <p className="mt-2 text-sm leading-6 text-stone-600">
+                    No calendar has been imported, so Autopilot will not adapt meals around your real events yet. You can import calendar events any time through Settings or the Calendar menu.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <AppButton type="button" variant="secondary" className="justify-center" onClick={() => setShowCalendarSkipConfirm(false)}>
+                  Go back
+                </AppButton>
+                <AppButton type="button" className="justify-center" onClick={confirmCalendarSkip}>
+                  Continue anyway
+                </AppButton>
+              </div>
+            </div>
+          </div>
+        )}
         {step === 1 && (
-          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} ref={step1Ref} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 2 of 3</Badge>
+            <h2 className="mt-4 text-3xl font-bold">About you</h2>
+            <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
+            <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
+              <PreferenceSection
+                title="Cooking ability"
+                description="Choose the closest level so recipe suggestions match the techniques you are comfortable with."
+              >
+                <SelectField
+                  label="Current cooking ability"
+                  value={prefs.cookingAbility}
+                  onChange={(cookingAbility) => { track("onboarding_preference_changed", { field: "cooking_ability", value: cookingAbility }); setPrefs({ ...prefs, cookingAbility }); }}
+                  options={cookingAbilities.map((ability) => ({ value: ability.id, label: `${ability.name} - ${ability.description}` }))}
+                  placeholder="Select cooking ability"
+                  required
+                  error={step1Attempted && !prefs.cookingAbility}
+                  errorMessage="Please select your cooking ability"
+                />
+              </PreferenceSection>
+              <PreferenceSection title="Dietary safety" description="Restrictions and allergens are treated as hard filters before recipes are suggested.">
+                <div className="grid gap-5">
+                  <ChoiceGroup
+                    title="Dietary requirements (leave blank if none)"
+                    options={dietary}
+                    selected={prefs.dietary}
+                    onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    addPlaceholder="Add a dietary requirement"
+                  />
+                  <ChoiceGroup
+                    title="Allergic to / cannot eat"
+                    options={allergens}
+                    selected={prefs.allergens}
+                    onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    addPlaceholder="Add an allergy or avoided ingredient"
+                    danger
+                  />
+                </div>
+              </PreferenceSection>
+              <PreferenceSection
+                title="What do you usually eat?"
+                description="Pick the meals you reach for most. This helps us suggest things you'll actually make — not recipes that require skills you don't need."
+              >
+                <ChoiceGroup
+                  title=""
+                  options={filteredLikes}
+                  selected={prefs.likes}
+                  onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                  onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                  addPlaceholder="Add a meal you often eat"
+                />
+              </PreferenceSection>
+              <PreferenceSection
+                title="Anything you'd rather avoid?"
+                description="Ingredients or foods you dislike. These are soft filters — we'll still show them if there's no better option."
+              >
+                <ChoiceGroup
+                  title=""
+                  options={filteredDislikes}
+                  selected={prefs.dislikes}
+                  onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
+                  onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
+                  addPlaceholder="Add an ingredient you dislike"
+                />
+              </PreferenceSection>
+              <PreferenceSection
+                title="What ingredients do you already have?"
+                description="Add staples with the same ingredient controls used for recipes so shopping can focus on what you still need."
+              >
+                <IngredientEditor
+                  ingredients={availableIngredientDrafts}
+                  onChange={updateAvailableIngredients}
+                  allowEmpty
+                  emptyMessage="No ingredients added yet."
+                />
+              </PreferenceSection>
+            </div>
+            {step1Attempted && !prefs.cookingAbility && (
+              <p className="mt-5 text-center text-sm font-medium text-red-600">
+                Please fill in all required fields
+              </p>
+            )}
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
+              <p className="mb-3 text-sm text-stone-600 sm:mb-0">You can update these any time in settings.</p>
+              <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
+                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); goToStep(0); }}>
+                  <ArrowLeft size={16} /> Back
+                </AppButton>
+                <AppButton className="justify-center py-3" onClick={() => {
+                  if (!prefs.cookingAbility) {
+                    setStep1Attempted(true);
+                    scrollToFirstError(step1Ref.current);
+                    return;
+                  }
+                  track("onboarding_step_completed", { step: 1, next_step: 2 });
+                  goToStep(2);
+                }}>
+                  Continue <ArrowRight size={16} />
+                </AppButton>
+              </div>
+            </div>
+          </Card>
+        )}
+        {step === 2 && (
+          <Card key={animationKey} ref={step2Ref} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+            <Badge tone="green">Step 3 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -302,6 +646,7 @@ export function Onboarding({
                       <Input
                         value={prefs.budget === 0 ? "" : prefs.budget}
                         onChange={(event) => setPrefs({ ...prefs, budget: event.target.value === "" ? 0 : Number(event.target.value) })}
+                        onKeyDown={(event) => { if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault(); }}
                         onBlur={() => track("onboarding_preference_changed", { field: "budget", value: prefs.budget })}
                         type="number"
                         min="1"
@@ -319,13 +664,16 @@ export function Onboarding({
                       { value: "none", label: "No kitchen access" },
                     ]}
                     required
+                    error={step2Attempted && !prefs.kitchen}
+                    errorMessage="Please select your kitchen access"
                   />
-                  <SelectField
+                  <UniversityField
                     label="Your university"
                     value={prefs.university}
                     onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
-                    options={universities.map((university) => ({ value: university, label: university }))}
                     required
+                    error={step2Attempted && !prefs.university}
+                    errorMessage="Please select your university"
                   />
                   <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
                 </div>
@@ -341,98 +689,57 @@ export function Onboarding({
               </button>
             </div>
             <div className="mt-4 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
-              <PreferenceSection title="Dietary safety" description="Restrictions and allergens are treated as hard filters before recipes are suggested.">
-                <div className="grid gap-5">
-                  <ChoiceGroup
-                    title="Dietary requirements (leave blank if none)"
-                    options={dietary}
-                    selected={prefs.dietary}
-                    onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                    addPlaceholder="Add a dietary requirement"
-                  />
-                  <ChoiceGroup
-                    title="Allergic to / cannot eat"
-                    options={allergens}
-                    selected={prefs.allergens}
-                    onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                    addPlaceholder="Add an allergy or avoided ingredient"
-                    danger
-                  />
-                </div>
-              </PreferenceSection>
+              <PreferenceSection
+                title="Planning Priorities"
+                description="What should we optimise for? You can change this later."
+              >
+                <div className="space-y-3">
+                  {sourceOptions.map((source) => {
+                    const active = selectedSources.includes(source.id);
 
-              <PreferenceSection title="Taste preferences" description="Use these to avoid low-confidence suggestions without needing to write a full food profile.">
-                <div className="grid gap-5">
-                  <ChoiceGroup
-                    title="Optional inspiration foods"
-                    options={likes}
-                    selected={prefs.likes}
-                    onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                    onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                    addPlaceholder="Add a meal you often choose"
-                  />
-                  <ChoiceGroup
-                    title="Ingredients I dislike"
-                    options={dislikes}
-                    selected={prefs.dislikes}
-                    onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
-                    onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
-                    addPlaceholder="Add an ingredient you dislike"
-                  />
+                    return (
+                      <button
+                        key={source.id}
+                        type="button"
+                        onClick={() => {
+                          track("recipe_source_toggled", { source: source.id, selected: !active });
+                          setSelectedSources(active ? selectedSources.filter((value) => value !== source.id) : [...selectedSources, source.id]);
+                        }}
+                        className={cn("flex w-full items-center justify-between gap-4 rounded-lg border p-4 text-left", active ? "border-emerald-600 bg-emerald-50" : "border-stone-200")}
+                      >
+                        <div>
+                          <p className="font-semibold">{source.name}</p>
+                          <p className="text-sm text-stone-500">{source.desc}</p>
+                        </div>
+                        <div className={cn("flex h-6 w-6 shrink-0 items-center justify-center rounded-md border", active ? "border-emerald-700 bg-emerald-700 text-white" : "border-stone-300")}>{active && <Check size={14} />}</div>
+                      </button>
+                    );
+                  })}
                 </div>
               </PreferenceSection>
             </div>
-            <div className="mt-8 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
-              <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Continue to choose what the plan should optimise for.</p>
+            {step2Attempted && (!prefs.kitchen || !prefs.university) && (
+              <p className="mt-5 text-center text-sm font-medium text-red-600">
+                Please fill in all required fields
+              </p>
+            )}
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
+              <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Create your deadline-week plan when everything looks right.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
-                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 1, next_step: 0 }); setStep(0); }}>
+                <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); goToStep(1); }}>
                   <ArrowLeft size={16} /> Back
                 </AppButton>
-                <AppButton className="justify-center py-3" disabled={!prefs.kitchen || !prefs.university} onClick={() => { track("onboarding_step_completed", { step: 1, next_step: 2 }); setStep(2); }}>
-                  Continue <ArrowRight size={16} />
+                <AppButton className="justify-center py-3" onClick={() => {
+                  if (!prefs.kitchen || !prefs.university) {
+                    setStep2Attempted(true);
+                    scrollToFirstError(step2Ref.current);
+                    return;
+                  }
+                  finish();
+                }}>
+                  Create my plan <Sparkles size={16} />
                 </AppButton>
               </div>
-            </div>
-          </Card>
-        )}
-        {step === 2 && (
-          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 3 of 3</Badge>
-            <h2 className="mt-4 text-3xl font-bold">Choose recommendation priorities</h2>
-            <p className="mt-2 text-stone-600">Pick what Autopilot should optimise for. You can change this later.</p>
-            <div className="mt-7 space-y-3">
-              {sourceOptions.map((source) => {
-                const active = selectedSources.includes(source.id);
-
-                return (
-                  <button
-                    key={source.id}
-                    type="button"
-                    onClick={() => {
-                      track("recipe_source_toggled", { source: source.id, selected: !active });
-                      setSelectedSources(active ? selectedSources.filter((value) => value !== source.id) : [...selectedSources, source.id]);
-                    }}
-                    className={cn("flex w-full items-center justify-between rounded-lg border p-4 text-left", active ? "border-emerald-600 bg-emerald-50" : "border-stone-200")}
-                  >
-                    <div>
-                      <p className="font-semibold">{source.name}</p>
-                      <p className="text-sm text-stone-500">{source.desc}</p>
-                    </div>
-                    <div className={cn("flex h-6 w-6 items-center justify-center rounded-full border", active ? "border-emerald-700 bg-emerald-700 text-white" : "border-stone-300")}>{active && <Check size={14} />}</div>
-                  </button>
-                );
-              })}
-            </div>
-            <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
-            <div className="mt-8 flex justify-between">
-              <AppButton variant="ghost" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); setStep(1); }}>
-                <ArrowLeft size={16} /> Back
-              </AppButton>
-              <AppButton onClick={finish}>
-                Create my plan <Sparkles size={16} />
-              </AppButton>
             </div>
           </Card>
         )}

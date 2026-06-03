@@ -52,6 +52,8 @@ export type Meal = {
   source: string;
   note: string;
   image: string;
+  photoUrl?: string;
+  isUserCreated?: boolean;
 };
 
 export type PlanMeal = {
@@ -76,20 +78,25 @@ export type Deadline = {
   effortHours: number;
   urgency: "low" | "medium" | "high";
   confirmed?: boolean;
+  rawDate?: string;
 };
 
 export type Preferences = {
   maxTime: number | null;
   budget: number;
   kitchen: string;
+  cookingAbility: string;
   postcode: string;
   university: string;
   dietary: string[];
   allergens: string[];
   dislikes: string[];
   likes: string[];
+  availableIngredients: RecipeIngredient[];
 };
 
 export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "recipes" | "settings" | "recipe-detail";
 
-export type CalendarProvider = "google" | "outlook" | "apple" | "manual";
+export type CalendarProvider = "google" | "outlook" | "apple" | "other";
+
+export type { CalendarEvent } from "./calendarImport/types";

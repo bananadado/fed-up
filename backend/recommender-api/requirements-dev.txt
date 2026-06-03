@@ -1,0 +1,12 @@
+# Test-only dependencies. Deliberately excludes the heavy ML stack
+# (torch / sentence-transformers / asyncpg) so the suite runs fast on CI
+# without a GPU or Postgres: embeddings are mocked and the DB dependency
+# is overridden with an in-memory fake (see tests/conftest.py).
+fastapi==0.116.0
+httpx==0.28.1
+sqlalchemy[asyncio]==2.0.41
+aiosqlite==0.21.0
+pydantic==2.11.4
+prometheus-fastapi-instrumentator==7.1.0
+pytest==8.3.5
+pytest-asyncio==0.25.3

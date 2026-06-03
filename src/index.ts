@@ -29,7 +29,10 @@ async function proxyToFirebaseFunction(functionName: string, req: Request): Prom
     );
   }
 
-  const response = await fetch(`${firebaseFunctionsBaseUrl}/${functionName}`, {
+  const target = new URL(`${firebaseFunctionsBaseUrl}/${functionName}`);
+  target.search = new URL(req.url).search;
+
+  const response = await fetch(target, {
     method: req.method,
     headers: req.headers,
     body: req.body,
@@ -76,6 +79,21 @@ const server = serve({
       },
     },
 
+    "/api/deadline-food/recipes": {
+      async GET(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipes", req);
+      },
+    },
+
+    "/api/deadline-food/recipe-reviews": {
+      async GET(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipeReviews", req);
+      },
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipeReviews", req);
+      },
+    },
+
     "/api/deadline-food/session": {
       async GET(req) {
         const sessionId = new URL(req.url).searchParams.get("sessionId");
@@ -113,6 +131,105 @@ const server = serve({
         });
 
         return sessionResponse(sessionId, payload.settings, expiresAt);
+      },
+    },
+
+    "/api/recommender/user": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecommenderUser", req);
+      },
+    },
+
+    "/api/recommender/recipe": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipeCreate", req);
+      },
+    },
+
+    "/api/recommender/recommendations": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecommendations", req);
+      },
+    },
+
+    "/api/recommender/interaction": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodInteraction", req);
+      },
+    },
+
+    "/api/recommender/deadline-context": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodDeadlineContext", req);
+      },
+    },
+
+    "/api/calendar/fetch-ics": {
+      async POST(req) {
+        const body = await req.json().catch(() => null) as { url?: string } | null;
+        const url = body?.url?.trim();
+
+        if (!url) {
+          return Response.json({ error: "A calendar URL is required." }, { status: 400 });
+        }
+
+        let parsed: URL;
+        try {
+          parsed = new URL(url);
+        } catch {
+          return Response.json({ error: "Invalid URL." }, { status: 400 });
+        }
+
+        if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+          return Response.json({ error: "Only https:// URLs are supported." }, { status: 400 });
+        }
+
+        const upstream = await fetch(url, {
+          headers: { Accept: "text/calendar, text/plain" },
+          signal: AbortSignal.timeout(15_000),
+        }).catch(() => null);
+
+        if (!upstream || !upstream.ok) {
+          return Response.json(
+            { error: `Calendar could not be fetched (${upstream?.status ?? "network error"}).` },
+            { status: 502 },
+          );
+        }
+
+        const text = await upstream.text();
+
+        if (!text.includes("BEGIN:VCALENDAR")) {
+          return Response.json({ error: "The URL did not return a valid iCalendar file." }, { status: 422 });
+        }
+
+        return new Response(text, {
+          headers: { "Content-Type": "text/calendar; charset=utf-8" },
+        });
+      },
+    },
+
+    "/api/deadline-food/recipe-photo": {
+      async POST(req) {
+        if (firebaseFunctionsBaseUrl) {
+          return proxyToFirebaseFunction("deadlineFoodRecipePhoto", req);
+        }
+        const body = await req.json().catch(() => null) as { mimeType?: string; dataBase64?: string } | null;
+        if (!body?.dataBase64 || !body?.mimeType) {
+          return Response.json({ error: "dataBase64 and mimeType are required." }, { status: 400 });
+        }
+        return Response.json({ photoUrl: `data:${body.mimeType};base64,${body.dataBase64}` });
+      },
+    },
+
+    "/api/calendar/google-exchange": {
+      async POST(req) {
+        return proxyToFirebaseFunction("calendarGoogleExchange", req);
+      },
+    },
+
+    "/api/calendar/outlook-exchange": {
+      async POST(req) {
+        return proxyToFirebaseFunction("calendarOutlookExchange", req);
       },
     },
 

@@ -2,14 +2,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePostHog } from "@posthog/react";
 
 import { capturePostHogEvent, registerPostHogContext, registerPostHogSession, type AnalyticsProperties } from "@/lib/posthog";
-import { defaultDeadlines, initialPlan, initialPreferences } from "./data";
-import type { CalendarProvider, Deadline, Meal, PlanEntry, Preferences, Screen } from "./types";
+import { initialPlan, initialPreferences } from "./data";
+import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences, Screen } from "./types";
 import {
   getOrCreateAnonymousSessionId,
   loadAnonymousSessionSettings,
   saveAnonymousSessionSettings,
 } from "./anonymousSessionApi";
-import { createPrototypeSessionSettings } from "./sessionPersistence";
+import { createPrototypeSessionSettings, restorePrototypePlan, type CalendarToken, type IcsSubscription } from "./sessionPersistence";
+import { syncRecommenderUser } from "./recommenderApi";
+import { fetchRecipeCatalogue, setRecipeCatalogue } from "./recipeCatalogue";
 import { Shell } from "./components/Shell";
 import { CalendarScreen } from "./screens/CalendarScreen";
 import { Dashboard } from "./screens/Dashboard";
@@ -21,12 +23,27 @@ import { RecipesHubScreen } from "./screens/RecipesHubScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
 
 const screens: Screen[] = ["landing", "onboarding", "dashboard", "calendar", "plan", "recipes", "settings", "recipe-detail"];
+const onboardingScreens = new Set<Screen>(["landing", "onboarding"]);
 
 function screenFromHash(): Screen | null {
   if (typeof window === "undefined") return null;
 
   const value = window.location.hash.replace("#/", "") as Screen;
   return screens.includes(value) ? value : null;
+}
+
+function isAppScreen(screen: Screen): boolean {
+  return !onboardingScreens.has(screen);
+}
+
+function LoadingScreen() {
+  return (
+    <main className="grid min-h-screen place-items-center bg-[#faf9f5] px-5 text-stone-900">
+      <div className="rounded-lg border border-stone-200 bg-white px-6 py-5 text-stone-700 shadow-sm">
+        Loading your meal plan...
+      </div>
+    </main>
+  );
 }
 
 function budgetBand(budget: number): string {
@@ -48,36 +65,71 @@ export function DeadlineFoodPrototype() {
   const posthog = usePostHog();
   const [sessionId] = useState(() => getOrCreateAnonymousSessionId());
   const [sessionLoaded, setSessionLoaded] = useState(false);
+  const [canPersistSession, setCanPersistSession] = useState(false);
   const [screen, setScreen] = useState<Screen>(() => screenFromHash() ?? "landing");
   const routeHistory = useRef<Screen[]>([]);
   const pendingHashScreen = useRef<Screen | null>(null);
   const [previousScreen, setPreviousScreen] = useState<Screen | null>(null);
   const [onboarded, setOnboarded] = useState(false);
   const [calendarProvider, setCalendarProvider] = useState<CalendarProvider>("google");
-  const [deadlines, setDeadlines] = useState<Deadline[]>(defaultDeadlines);
+  const [deadlines, setDeadlines] = useState<Deadline[]>([]);
   const [prefs, setPrefs] = useState<Preferences>(initialPreferences);
   const [selectedSources, setSelectedSources] = useState(["budget", "bbc", "own", "campus"]);
   const [plan, setPlan] = useState<PlanEntry[]>(initialPlan);
   const [customRecipes, setCustomRecipes] = useState<Meal[]>([]);
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
   const [discoverSaved, setDiscoverSaved] = useState<Meal[]>([]);
   const [discoverRejected, setDiscoverRejected] = useState<Meal[]>([]);
+  const [discoverReviewedRecipeIds, setDiscoverReviewedRecipeIds] = useState<string[]>([]);
+  const [icsSubscriptions, setIcsSubscriptions] = useState<IcsSubscription[]>([]);
+  const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
+  // Bumped once the canonical recipe catalogue is hydrated from Firestore so
+  // screens re-read it via mealById/getMealById (issue #123).
+  const [, setCatalogueVersion] = useState(0);
   const syncPreviousScreen = useCallback(() => {
     setPreviousScreen(routeHistory.current.at(-1) ?? null);
   }, []);
 
+  const enableSessionPersistence = useCallback(() => {
+    setCanPersistSession(true);
+  }, []);
+
   const navigateScreen = useCallback((nextScreen: Screen) => {
     if (screen === nextScreen) return;
+    enableSessionPersistence();
     routeHistory.current = [...routeHistory.current, screen].slice(-20);
     syncPreviousScreen();
     pendingHashScreen.current = nextScreen;
     window.location.hash = `/${nextScreen}`;
     setScreen(nextScreen);
-  }, [screen, syncPreviousScreen]);
+  }, [enableSessionPersistence, screen, syncPreviousScreen]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchRecipeCatalogue()
+      .then((recipes) => {
+        if (!cancelled) {
+          setRecipeCatalogue(recipes);
+          setCatalogueVersion((version) => version + 1);
+        }
+      })
+      .catch((error) => {
+        console.warn("Recipe catalogue could not be loaded; using bundled seeds.", error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const navigateBack = useCallback(() => {
     const fallbackScreen: Screen = "dashboard";
-    const nextScreen = routeHistory.current.pop() ?? fallbackScreen;
+    let nextScreen = routeHistory.current.pop() ?? fallbackScreen;
+    while (onboarded && (nextScreen === "onboarding" || nextScreen === "landing")) {
+      nextScreen = routeHistory.current.pop() ?? fallbackScreen;
+    }
 
     syncPreviousScreen();
 
@@ -88,7 +140,7 @@ export function DeadlineFoodPrototype() {
     pendingHashScreen.current = nextScreen;
     window.location.hash = `/${nextScreen}`;
     setScreen(nextScreen);
-  }, [screen, syncPreviousScreen]);
+  }, [screen, syncPreviousScreen, onboarded]);
 
   const track = useCallback(
     (eventName: string, properties: AnalyticsProperties = {}) => {
@@ -141,6 +193,7 @@ export function DeadlineFoodPrototype() {
       selected_source_count: selectedSources.length,
       budget_band: budgetBand(prefs.budget),
       kitchen_access: prefs.kitchen,
+      cooking_ability: prefs.cookingAbility,
       max_time_bucket: maxTimeBucket(prefs.maxTime),
       dietary_count: prefs.dietary.length,
       allergen_count: prefs.allergens.length,
@@ -170,10 +223,29 @@ export function DeadlineFoodPrototype() {
           })));
           setSelectedSources(snapshot.settings.selectedSources);
           setOnboarded(snapshot.settings.onboarded);
+          setCanPersistSession(true);
           if (snapshot.settings.customRecipes) setCustomRecipes(snapshot.settings.customRecipes as Meal[]);
-          if (snapshot.settings.discoverSaved) setDiscoverSaved(snapshot.settings.discoverSaved as Meal[]);
-          if (snapshot.settings.discoverRejected) setDiscoverRejected(snapshot.settings.discoverRejected as Meal[]);
-          if (snapshot.settings.plan) setPlan(snapshot.settings.plan as PlanEntry[]);
+          const restoredDiscoverSaved = snapshot.settings.discoverSaved ?? [];
+          const restoredDiscoverRejected = snapshot.settings.discoverRejected ?? [];
+          if (snapshot.settings.discoverSaved) setDiscoverSaved(restoredDiscoverSaved as Meal[]);
+          if (snapshot.settings.discoverRejected) setDiscoverRejected(restoredDiscoverRejected as Meal[]);
+          if (snapshot.settings.discoverReviewedRecipeIds) {
+            setDiscoverReviewedRecipeIds(snapshot.settings.discoverReviewedRecipeIds);
+          } else {
+            setDiscoverReviewedRecipeIds(
+              Array.from(
+                new Set(
+                  [...restoredDiscoverSaved, ...restoredDiscoverRejected]
+                    .map((recipe) => recipe.id)
+                    .filter((id): id is string => typeof id === "string" && id.length > 0),
+                ),
+              ),
+            );
+          }
+          if (snapshot.settings.calendarEvents) setCalendarEvents(snapshot.settings.calendarEvents as CalendarEvent[]);
+          if (snapshot.settings.icsSubscriptions) setIcsSubscriptions(snapshot.settings.icsSubscriptions as IcsSubscription[]);
+          if (snapshot.settings.calendarTokens) setCalendarTokens(snapshot.settings.calendarTokens as CalendarToken[]);
+          setPlan(restorePrototypePlan(snapshot.settings.plan, initialPlan));
         }
 
         setSessionLoaded(true);
@@ -190,10 +262,13 @@ export function DeadlineFoodPrototype() {
     };
   }, [sessionId]);
 
-  useEffect(() => {
-    if (!sessionLoaded) return;
+  const saveSettingsDebounceRef = useRef<number | null>(null);
+  const saveSettingsCooldownRef = useRef(false);
 
-    const timeout = window.setTimeout(() => {
+  useEffect(() => {
+    if (!sessionLoaded || !canPersistSession) return;
+
+    const doSave = () => {
       saveAnonymousSessionSettings(
         sessionId,
         createPrototypeSessionSettings({
@@ -204,52 +279,139 @@ export function DeadlineFoodPrototype() {
           customRecipes,
           discoverSaved,
           discoverRejected,
+          discoverReviewedRecipeIds,
           plan,
+          calendarEvents,
+          icsSubscriptions,
+          calendarTokens,
         }),
       ).catch(error => {
         console.warn("Anonymous session settings could not be saved.", error);
       });
-    }, 600);
+    };
 
-    return () => window.clearTimeout(timeout);
-  }, [customRecipes, deadlines, discoverRejected, discoverSaved, onboarded, plan, prefs, selectedSources, sessionId, sessionLoaded]);
+    if (!saveSettingsCooldownRef.current) {
+      doSave();
+      saveSettingsCooldownRef.current = true;
+      saveSettingsDebounceRef.current = window.setTimeout(() => {
+        saveSettingsCooldownRef.current = false;
+        saveSettingsDebounceRef.current = null;
+      }, 600);
+    } else {
+      if (saveSettingsDebounceRef.current !== null) {
+        window.clearTimeout(saveSettingsDebounceRef.current);
+      }
+      saveSettingsDebounceRef.current = window.setTimeout(() => {
+        doSave();
+        saveSettingsCooldownRef.current = false;
+        saveSettingsDebounceRef.current = null;
+      }, 600);
+    }
+
+    return () => {
+      if (saveSettingsDebounceRef.current !== null) {
+        window.clearTimeout(saveSettingsDebounceRef.current);
+      }
+    };
+  }, [calendarEvents, calendarTokens, canPersistSession, customRecipes, deadlines, discoverRejected, discoverReviewedRecipeIds, discoverSaved, icsSubscriptions, onboarded, plan, prefs, selectedSources, sessionId, sessionLoaded]);
+
+  useEffect(() => {
+    if (!sessionLoaded) {
+      return;
+    }
+
+    if (onboarded && onboardingScreens.has(screen)) {
+      routeHistory.current = [];
+      pendingHashScreen.current = "dashboard";
+      window.location.hash = "/dashboard";
+      return;
+    }
+
+    if (!onboarded && isAppScreen(screen)) {
+      routeHistory.current = [];
+      pendingHashScreen.current = "landing";
+      window.location.hash = "/landing";
+    }
+  }, [onboarded, screen, sessionLoaded]);
+
+  useEffect(() => {
+    if (onboarded && (screen === "onboarding" || screen === "landing")) {
+      routeHistory.current = routeHistory.current.filter(
+        s => s !== "onboarding" && s !== "landing"
+      );
+      syncPreviousScreen();
+      pendingHashScreen.current = "dashboard";
+      window.location.hash = "/dashboard";
+      // onHashChange will call setScreen("dashboard") once the hashchange event fires
+    }
+  }, [onboarded, screen, syncPreviousScreen]);
+
+  // Derive the screen to render: if onboarded, pre-onboarding screens resolve to dashboard immediately
+  const activeScreen: Screen = (onboarded && (screen === "onboarding" || screen === "landing")) ? "dashboard" : screen;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeScreen]);
 
   function openRecipe(mealId: string) {
-    track("recipe_viewed", { meal_id: mealId, source_screen: screen });
+    track("recipe_viewed", { meal_id: mealId, source_screen: activeScreen });
     setSelectedMealId(mealId);
     navigateScreen("recipe-detail");
   }
 
-  if (screen === "landing") {
-    return <Landing onStart={() => navigateScreen("onboarding")} track={track} />;
+  if (!sessionLoaded || (onboarded && onboardingScreens.has(screen)) || (!onboarded && isAppScreen(screen))) {
+    return <LoadingScreen />;
   }
 
-  if (screen === "onboarding") {
+  if (activeScreen === "landing") {
+    return <Landing onStart={() => {
+      enableSessionPersistence();
+      navigateScreen("onboarding");
+    }} track={track} />;
+  }
+
+  if (activeScreen === "onboarding") {
     return (
       <Onboarding
-        setOnboarded={setOnboarded}
+        setOnboarded={(nextOnboarded) => {
+          enableSessionPersistence();
+          setOnboarded(nextOnboarded);
+          if (nextOnboarded) {
+            // Create + embed the user profile on the recommender at onboarding
+            // time rather than lazily on first Discover load.
+            syncRecommenderUser(sessionId, prefs).catch((error) => {
+              console.warn("Recommender user profile could not be created.", error);
+            });
+          }
+        }}
         setScreen={navigateScreen}
         prefs={prefs}
         setPrefs={setPrefs}
-        deadlines={deadlines}
         setDeadlines={setDeadlines}
+        calendarEvents={calendarEvents}
+        setCalendarEvents={setCalendarEvents}
         selectedSources={selectedSources}
         setSelectedSources={setSelectedSources}
         calendarProvider={calendarProvider}
         setCalendarProvider={setCalendarProvider}
+        icsSubscriptions={icsSubscriptions}
+        setIcsSubscriptions={setIcsSubscriptions}
+        calendarTokens={calendarTokens}
+        setCalendarTokens={setCalendarTokens}
+        sessionId={sessionId}
         track={track}
       />
     );
   }
 
   return (
-    <Shell screen={screen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
-      {screen === "dashboard" && <Dashboard prefs={prefs} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {screen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} setScreen={navigateScreen} track={track} />}
-      {screen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {screen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} plan={plan} setPlan={setPlan} prefs={prefs} onSelectMeal={openRecipe} track={track} />}
-      {screen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} track={track} />}
-      {screen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} backTo={previousScreen} track={track} />}
+    <Shell screen={activeScreen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
+      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
+      {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setScreen={navigateScreen} track={track} />}
+      {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
+      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} track={track} />}
+      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} track={track} />}
+      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} />}
     </Shell>
   );
 }

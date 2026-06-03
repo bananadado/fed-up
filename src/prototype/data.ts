@@ -1,29 +1,19 @@
-import type { CalendarProvider, Deadline, Meal, MealSlot, PlanEntry, Preferences, RecipeReview } from "./types";
+import type { CalendarProvider, Deadline, Meal, MealSlot, PlanEntry, Preferences } from "./types";
+export { universities } from "./universities";
 
 export const calendarProviders: { id: CalendarProvider; name: string; hint: string; recommended: boolean }[] = [
-  { id: "google", name: "Google Calendar", hint: "Link with your Google account", recommended: true },
-  { id: "outlook", name: "Outlook Calendar", hint: "Link with your Microsoft account", recommended: false },
-  { id: "apple", name: "Apple Calendar", hint: "Link with your Apple ID", recommended: false },
-  { id: "manual", name: "Manual (.ics)", hint: "One-time file import", recommended: false },
+  { id: "google", name: "Google Calendar", hint: "Sign in or paste a subscription link", recommended: true },
+  { id: "outlook", name: "Outlook Calendar", hint: "Sign in or paste a subscription link", recommended: false },
+  { id: "apple", name: "Apple Calendar", hint: "Paste your iCloud subscription link", recommended: false },
+  { id: "other", name: "Other calendar", hint: "Any app that publishes an .ics link", recommended: false },
 ];
 
-export const days = ["Mon 1 Jun", "Tue 2 Jun", "Wed 3 Jun", "Thu 4 Jun", "Fri 5 Jun"];
 export const mealSlots: MealSlot[] = ["breakfast", "lunch", "dinner"];
 
-const sampleReviews = (rating: number, comment: string): RecipeReview[] => [
-  {
-    id: `review-${comment.toLowerCase().replaceAll(" ", "-").slice(0, 18)}`,
-    author: "Prototype tester",
-    rating,
-    comment,
-    date: "2026-05-26",
-  },
-];
-
 export const defaultDeadlines: Deadline[] = [
-  { id: "d1", title: "Algorithms coursework", date: "Wed 3 Jun", time: "16:00", intensity: "High", eventType: "academic", effortHours: 8, urgency: "high", confirmed: true },
-  { id: "d2", title: "Design review", date: "Thu 4 Jun", time: "10:00", intensity: "Medium", eventType: "academic", effortHours: 4, urgency: "medium", confirmed: true },
-  { id: "d3", title: "Databases quiz", date: "Fri 5 Jun", time: "09:00", intensity: "High", eventType: "academic", effortHours: 5, urgency: "high", confirmed: true },
+  { id: "d1", title: "Algorithms coursework", date: "Wed 3 Jun", time: "16:00", intensity: "High", eventType: "academic", effortHours: 8, urgency: "high", confirmed: true, rawDate: "2026-06-03" },
+  { id: "d2", title: "Design review", date: "Thu 4 Jun", time: "10:00", intensity: "Medium", eventType: "academic", effortHours: 4, urgency: "medium", confirmed: true, rawDate: "2026-06-04" },
+  { id: "d3", title: "Databases quiz", date: "Fri 5 Jun", time: "09:00", intensity: "High", eventType: "academic", effortHours: 5, urgency: "high", confirmed: true, rawDate: "2026-06-05" },
 ];
 
 export const seedMeals: Meal[] = [
@@ -43,8 +33,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["gluten"],
     nutrition: { calories: 510, protein: 19, carbs: 74, fat: 14 },
-    rating: 4.6,
-    reviews: sampleReviews(5, "Good for making leftovers without much washing up."),
+    rating: 0,
+    reviews: [],
     instructions: ["Chop the vegetables and spread them on a tray.", "Add chickpeas, oil and seasoning, then roast until tender.", "Serve with couscous and save leftovers for wraps."],
     source: "Budget Bytes",
     note: "Makes two remix portions",
@@ -66,8 +56,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["gluten", "sesame"],
     nutrition: { calories: 430, protein: 15, carbs: 58, fat: 15 },
-    rating: 4.4,
-    reviews: sampleReviews(4, "Fast and still feels like a real meal."),
+    rating: 0,
+    reviews: [],
     instructions: ["Warm the wrap if you have time.", "Add hummus, leftover traybake and salad.", "Roll tightly and pack with a napkin."],
     source: "From your prep",
     note: "Uses Monday's traybake",
@@ -89,8 +79,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["soy", "gluten"],
     nutrition: { calories: 560, protein: 27, carbs: 68, fat: 18 },
-    rating: 4.5,
-    reviews: sampleReviews(5, "Useful on days when I need something hot quickly."),
+    rating: 0,
+    reviews: [],
     instructions: ["Boil or soak the noodles according to the pack.", "Fry tofu with ginger until browned.", "Add broccoli, soy sauce and noodles, then toss together."],
     source: "BBC Good Food",
     note: "One pan",
@@ -112,8 +102,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["gluten", "milk", "tree nuts"],
     nutrition: { calories: 590, protein: 24, carbs: 79, fat: 17 },
-    rating: 4.3,
-    reviews: sampleReviews(4, "Cheap and filling before a long study block."),
+    rating: 0,
+    reviews: [],
     instructions: ["Cook pasta until just tender.", "Stir through lentils, pesto and spinach.", "Loosen with a splash of pasta water and pack warm."],
     source: "Student Eats",
     note: "Good before an evening study session",
@@ -134,8 +124,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["gluten"],
     nutrition: { calories: 455, protein: 16, carbs: 62, fat: 13 },
-    rating: 4.1,
-    reviews: sampleReviews(4, "Best emergency option near the library."),
+    rating: 0,
+    reviews: [],
     instructions: ["Pick up from the cafe chiller.", "Check the label against your allergy settings.", "Eat cold or ask for it toasted if there is time."],
     source: "Library Cafe",
     note: "2 min collection - illustrative price",
@@ -156,8 +146,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["sesame", "gluten"],
     nutrition: { calories: 620, protein: 20, carbs: 78, fat: 22 },
-    rating: 4.2,
-    reviews: sampleReviews(4, "Reliable when queues are short."),
+    rating: 0,
+    reviews: [],
     instructions: ["Order the standard bowl.", "Choose the lighter dressing if you want a lower-fat option.", "Add water or fruit if this is your main meal."],
     source: "Campus Food Hall",
     note: "4 min walk - illustrative price",
@@ -178,8 +168,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["soy"],
     nutrition: { calories: 640, protein: 38, carbs: 70, fat: 18 },
-    rating: 4.3,
-    reviews: sampleReviews(4, "Good protein option after a long day."),
+    rating: 0,
+    reviews: [],
     instructions: ["Pick up from the hot counter.", "Ask for sauce on the side if available.", "Check the daily allergen board before buying."],
     source: "Campus Food Hall",
     note: "4 min walk - illustrative price",
@@ -199,8 +189,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: [],
     nutrition: { calories: 520, protein: 21, carbs: 84, fat: 9 },
-    rating: 4.4,
-    reviews: sampleReviews(5, "Cheap backup for evenings in halls."),
+    rating: 0,
+    reviews: [],
     instructions: ["Microwave the rice and dhal packs.", "Stir halfway through heating.", "Serve in one bowl and add spinach if you have it."],
     source: "Local supermarket",
     note: "3 min heat-up - illustrative price",
@@ -222,8 +212,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["gluten"],
     nutrition: { calories: 390, protein: 13, carbs: 58, fat: 11 },
-    rating: 4.7,
-    reviews: sampleReviews(5, "Easy to prep the night before."),
+    rating: 0,
+    reviews: [],
     instructions: ["Mix oats, oat milk and chia seeds in a jar.", "Refrigerate overnight.", "Top with berries before leaving."],
     source: "Student Eats",
     note: "Make the night before",
@@ -238,14 +228,14 @@ export const seedMeals: Meal[] = [
     price: 1.35,
     tags: ["vegetarian", "breakfast", "hot meal"],
     ingredients: [
-      { name: "egg", quantity: 2, unit: "egg" },
+      { name: "egg", quantity: 2, unit: "item" },
       { name: "bread", quantity: 2, unit: "slice" },
       { name: "spinach", quantity: 40, unit: "g" },
     ],
     allergens: ["eggs", "gluten"],
     nutrition: { calories: 420, protein: 22, carbs: 38, fat: 18 },
-    rating: 4.2,
-    reviews: sampleReviews(4, "Good when I need a hot breakfast."),
+    rating: 0,
+    reviews: [],
     instructions: ["Toast the bread.", "Scramble eggs in a pan or microwave-safe bowl.", "Add spinach at the end and serve on toast."],
     source: "My staples",
     note: "High-protein breakfast",
@@ -266,8 +256,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["gluten"],
     nutrition: { calories: 360, protein: 10, carbs: 64, fat: 8 },
-    rating: 4,
-    reviews: sampleReviews(4, "Good emergency breakfast before lectures."),
+    rating: 0,
+    reviews: [],
     instructions: ["Pick up from the campus shop.", "Check the label against your allergy settings.", "Pair with coffee or water if needed."],
     source: "Campus shop",
     note: "2 min pickup - illustrative price",
@@ -288,8 +278,8 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["milk", "gluten"],
     nutrition: { calories: 340, protein: 15, carbs: 49, fat: 9 },
-    rating: 4.1,
-    reviews: sampleReviews(4, "Simple breakfast when I am already on campus."),
+    rating: 0,
+    reviews: [],
     instructions: ["Pick up chilled.", "Check the label for nut traces.", "Eat before lectures or keep chilled until mid-morning."],
     source: "Library Cafe",
     note: "2 min collection - illustrative price",
@@ -299,7 +289,7 @@ export const seedMeals: Meal[] = [
 
 export const initialPlan: PlanEntry[] = [
   {
-    day: days[0] ?? "Mon 1 Jun",
+    day: "Mon 1 Jun",
     context: "Prep window before deadline week",
     meals: [
       { slot: "breakfast", mealId: "m9" },
@@ -308,7 +298,7 @@ export const initialPlan: PlanEntry[] = [
     ],
   },
   {
-    day: days[1] ?? "Tue 2 Jun",
+    day: "Tue 2 Jun",
     context: "Low pressure day",
     meals: [
       { slot: "breakfast", mealId: "m10" },
@@ -317,7 +307,7 @@ export const initialPlan: PlanEntry[] = [
     ],
   },
   {
-    day: days[2] ?? "Wed 3 Jun",
+    day: "Wed 3 Jun",
     context: "Late library - Algorithms due",
     meals: [
       { slot: "breakfast", mealId: "m11" },
@@ -326,7 +316,7 @@ export const initialPlan: PlanEntry[] = [
     ],
   },
   {
-    day: days[3] ?? "Thu 4 Jun",
+    day: "Thu 4 Jun",
     context: "Design review morning",
     meals: [
       { slot: "breakfast", mealId: "m12" },
@@ -335,7 +325,7 @@ export const initialPlan: PlanEntry[] = [
     ],
   },
   {
-    day: days[4] ?? "Fri 5 Jun",
+    day: "Fri 5 Jun",
     context: "Quiz morning - late campus",
     meals: [
       { slot: "breakfast", mealId: "m9" },
@@ -355,18 +345,25 @@ export const sourceOptions = [
 
 export const allergens = ["Peanuts", "Tree nuts", "Milk", "Eggs", "Gluten", "Soy", "Sesame", "Shellfish"];
 export const dislikes = ["Mushrooms", "Tofu", "Fish", "Spicy food", "Beans", "Courgette"];
-export const likes = ["Noodles", "Rice bowls", "Wraps", "Oats", "Fruit", "High-protein meals"];
+export const likes = ["Pasta", "Rice and curry", "Stir fry", "Sandwiches", "Instant noodles", "Soup", "Omelettes", "Wraps", "Toast / cereal", "Salads", "Roasted meals", "High-protein meals"];
 export const dietary = ["Vegetarian", "Vegan", "Halal", "Gluten-free", "Dairy-free"];
-export const universities = ["Imperial College London", "University College London", "King's College London", "University of Manchester", "University of Edinburgh", "Other university"];
+export const cookingAbilities = [
+  { id: "beginner", name: "Beginner", description: "Toast, sandwiches, microwave meals, boiling pasta" },
+  { id: "basic", name: "Basic", description: "Simple one-pot meals, stir-fries, eggs" },
+  { id: "intermediate", name: "Intermediate", description: "Follow most recipes, meal prep" },
+  { id: "advanced", name: "Advanced", description: "Comfortable adapting recipes and techniques" },
+];
 
 export const initialPreferences: Preferences = {
   maxTime: 180,
   budget: 48,
   kitchen: "",
+  cookingAbility: "",
   postcode: "",
   university: "",
   dietary: [],
   allergens: [],
   dislikes: [],
   likes: [],
+  availableIngredients: [],
 };

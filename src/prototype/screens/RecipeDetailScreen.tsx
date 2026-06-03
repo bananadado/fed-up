@@ -1,64 +1,20 @@
-import { ArrowLeft, MessageSquare, Pencil, RefreshCcw, Save, X } from "lucide-react";
-import { useMemo, useState, type FormEvent } from "react";
+import { ArrowLeft, Clock3, MessageSquare, Pencil, Star } from "lucide-react";
+import { useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { seedMeals } from "../data";
-import { fetchOpenFoodFactsNutrition } from "../nutritionApi";
-import type { Meal, NutritionSource, Screen } from "../types";
+import type { Meal, RecipeReview, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
-import { IngredientEditor } from "../components/IngredientEditor";
-import {
-  formatIngredient,
-  ingredientDraftsFromIngredients,
-  sanitiseIngredientDrafts,
-  type IngredientDraft,
-} from "../ingredients";
+import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
+import { formatIngredient } from "../ingredients";
 import { mealById, money, nutritionSourceSummary } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
+import { createRecommenderRecipe } from "../recommenderApi";
+import { fetchRecipeReviews, submitRecipeReview } from "../reviewsApi";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import type { TrackPrototypeEvent } from "../analytics";
 
-type RecipeForm = {
-  name: string;
-  time: number;
-  price: number;
-  ingredients: IngredientDraft[];
-  tags: string;
-  allergens: string;
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-  nutritionSource?: NutritionSource;
-  instructions: string;
-  note: string;
-};
-
-function mealToForm(meal: Meal): RecipeForm {
-  return {
-    name: meal.name,
-    time: meal.time,
-    price: meal.price,
-    ingredients: ingredientDraftsFromIngredients(meal.ingredients),
-    tags: meal.tags.join(", "),
-    allergens: meal.allergens.join(", "),
-    calories: meal.nutrition.calories,
-    protein: meal.nutrition.protein,
-    carbs: meal.nutrition.carbs,
-    fat: meal.nutrition.fat,
-    nutritionSource: meal.nutrition.source,
-    instructions: meal.instructions.join("\n"),
-    note: meal.note,
-  };
-}
-
-function splitList(value: string) {
-  return value
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
+type StateSetter<T> = Dispatch<SetStateAction<T>>;
 
 function ratingLabel(rating: number) {
   return rating > 0 ? `${rating.toFixed(1)} / 5` : "No ratings yet";
@@ -76,31 +32,50 @@ export function RecipeDetailScreen({
   setCustomRecipes,
   setScreen,
   backTo,
+  onSelectMeal,
   track,
 }: {
   mealId: string;
   customRecipes: Meal[];
-  setCustomRecipes: (recipes: Meal[]) => void;
+  setCustomRecipes: StateSetter<Meal[]>;
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
+  onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
   const meal = mealById(mealId, customRecipes);
-  const fallbackMeal = (seedMeals[0] ?? customRecipes[0]) as Meal;
-  const [form, setForm] = useState<RecipeForm>(() => mealToForm(meal ?? fallbackMeal));
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
   const [isEditing, setIsEditing] = useState(false);
-  const [nutritionStatus, setNutritionStatus] = useState<string | null>(null);
-  const [nutritionLoading, setNutritionLoading] = useState(false);
   const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
+  // Reviews are owned by Firestore (issue #123): global and persistent, not part
+  // of the local meal/session state.
+  const [reviews, setReviews] = useState<RecipeReview[]>([]);
+  const [reviewsRating, setReviewsRating] = useState(0);
 
-  const computedRating = useMemo(() => {
-    if (!meal || meal.reviews.length === 0) {
-      return meal?.rating ?? 0;
-    }
+  useEffect(() => {
+    let cancelled = false;
 
-    return meal.reviews.reduce((sum, item) => sum + item.rating, 0) / meal.reviews.length;
-  }, [meal]);
+    fetchRecipeReviews(mealId)
+      .then((result) => {
+        if (!cancelled) {
+          setReviews(result.reviews);
+          setReviewsRating(result.rating);
+        }
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          console.warn("Recipe reviews could not be loaded.", error);
+          setReviews([]);
+          setReviewsRating(0);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [mealId]);
+
+  const computedRating = reviews.length > 0 ? reviewsRating : meal?.rating ?? 0;
 
   if (!meal) {
     return (
@@ -118,83 +93,68 @@ export function RecipeDetailScreen({
   const shoppingItems = aggregateIngredients(selectedMeal.ingredients);
 
   function saveMeal(nextMeal: Meal) {
-    setCustomRecipes([nextMeal, ...customRecipes.filter((recipe) => recipe.id !== nextMeal.id)]);
-  }
-
-  function saveRecipe(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    saveMeal({
-      ...selectedMeal,
-      name: form.name.trim() || selectedMeal.name,
-      time: Number(form.time) || 0,
-      price: Number(form.price) || 0,
-      ingredients: sanitiseIngredientDrafts(form.ingredients),
-      tags: splitList(form.tags),
-      allergens: splitList(form.allergens),
-      nutrition: {
-        calories: Number(form.calories) || 0,
-        protein: Number(form.protein) || 0,
-        carbs: Number(form.carbs) || 0,
-        fat: Number(form.fat) || 0,
-        source: form.nutritionSource,
-      },
-      instructions: form.instructions
-        .split("\n")
-        .map((step) => step.trim())
-        .filter(Boolean),
-      note: form.note.trim(),
-    });
-    track("recipe_saved", {
-      meal_id: selectedMeal.id,
-      minutes: Number(form.time) || 0,
-      price: Number(form.price) || 0,
-      ingredient_count: sanitiseIngredientDrafts(form.ingredients).length,
-      tag_count: splitList(form.tags).length,
-    });
-    setIsEditing(false);
-  }
-
-  async function refreshNutrition() {
-    const ingredients = sanitiseIngredientDrafts(form.ingredients);
-
-    if (ingredients.length === 0) {
-      setNutritionStatus("Add at least one ingredient with a quantity first.");
-      return;
+    setCustomRecipes((recipes) => [nextMeal, ...recipes.filter((recipe) => recipe.id !== nextMeal.id)]);
+    // Re-embed user-created recipes on edit. Seed recipes are shared across all
+    // users on the recommender, so we never overwrite them from a local edit.
+    if (nextMeal.isUserCreated) {
+      createRecommenderRecipe(nextMeal).catch((error) => {
+        console.warn("Recipe could not be embedded on the recommender.", error);
+      });
     }
+  }
 
-    setNutritionLoading(true);
-    setNutritionStatus(null);
+  function handleEditSubmit(output: RecipeEditorOutput, photoUrl: string | undefined) {
+    const updatedFields = {
+      name: output.name || selectedMeal.name,
+      time: output.time,
+      price: output.price,
+      mealSlots: output.mealSlots,
+      ingredients: output.ingredients,
+      tags: output.tags,
+      allergens: output.allergens,
+      nutrition: output.nutrition,
+      instructions: output.instructions,
+      note: output.note,
+      ...(photoUrl !== undefined ? { photoUrl } : {}),
+    };
 
-    try {
-      const nutrition = await fetchOpenFoodFactsNutrition(ingredients);
-      setForm({
-        ...form,
-        calories: nutrition.calories,
-        protein: nutrition.protein,
-        carbs: nutrition.carbs,
-        fat: nutrition.fat,
-        nutritionSource: nutrition.source,
-      });
-      setNutritionStatus(nutritionSourceSummary(nutrition.source));
-      track("recipe_nutrition_refreshed", {
+    if (selectedMeal.isUserCreated) {
+      // User owns this recipe — edit in place, keep same ID and reviews
+      saveMeal({ ...selectedMeal, ...updatedFields });
+      track("recipe_saved", {
         meal_id: selectedMeal.id,
-        provider: nutrition.source?.provider,
-        ingredient_count: ingredients.length,
-        matched_count: nutrition.source?.matchedIngredients?.length ?? 0,
-        missing_count: nutrition.source?.missingIngredients?.length ?? 0,
+        minutes: output.time,
+        price: output.price,
+        ingredient_count: output.ingredients.length,
+        tag_count: output.tags.length,
       });
-    } catch (error) {
-      setNutritionStatus(error instanceof Error ? error.message : "Nutrition data could not be loaded.");
-    } finally {
-      setNutritionLoading(false);
+      setIsEditing(false);
+    } else {
+      // Seed or borrowed recipe — fork into a new user-owned copy
+      const newRecipe: Meal = {
+        ...selectedMeal,
+        ...updatedFields,
+        id: `custom-${Date.now()}`,
+        isUserCreated: true,
+        rating: 0,
+        reviews: [],
+      };
+      setCustomRecipes((recipes) => [newRecipe, ...recipes]);
+      track("recipe_created_from_edit", {
+        original_meal_id: selectedMeal.id,
+        new_meal_id: newRecipe.id,
+        minutes: newRecipe.time,
+        price: newRecipe.price,
+        ingredient_count: newRecipe.ingredients.length,
+        tag_count: newRecipe.tags.length,
+      });
+      setIsEditing(false);
+      onSelectMeal(newRecipe.id);
     }
   }
 
   function cancelEdit() {
     track("recipe_edit_cancelled", { meal_id: selectedMeal.id });
-    setForm(mealToForm(selectedMeal));
-    setNutritionStatus(null);
     setIsEditing(false);
   }
 
@@ -206,20 +166,19 @@ export function RecipeDetailScreen({
       return;
     }
 
-    const nextReviews = [
-      {
-        id: `review-${Date.now()}`,
-        author: review.author.trim() || "You",
-        rating: Math.min(5, Math.max(1, Number(review.rating) || 5)),
-        comment,
-        date: new Date().toISOString().slice(0, 10),
-      },
-      ...selectedMeal.reviews,
-    ];
-    const nextRating = nextReviews.reduce((sum, item) => sum + item.rating, 0) / nextReviews.length;
+    const rating = Math.min(5, Math.max(1, Number(review.rating) || 5));
+    const author = review.author.trim() || "You";
 
-    saveMeal({ ...selectedMeal, reviews: nextReviews, rating: nextRating });
-    track("recipe_review_submitted", { meal_id: selectedMeal.id, rating: nextReviews[0]?.rating ?? 0 });
+    submitRecipeReview({ recipeId: selectedMeal.id, author, rating, comment })
+      .then((result) => {
+        setReviews(result.reviews);
+        setReviewsRating(result.rating);
+      })
+      .catch((error) => {
+        console.warn("Review could not be saved.", error);
+      });
+
+    track("recipe_review_submitted", { meal_id: selectedMeal.id, rating });
     setReview({ author: "You", rating: 5, comment: "" });
   }
 
@@ -273,60 +232,31 @@ export function RecipeDetailScreen({
       </div>
 
       {isEditing ? (
-        <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h1 className="text-3xl font-bold">Edit recipe</h1>
-              <p className="mt-2 text-stone-600">Changes are saved into your recipe library for this prototype session.</p>
-            </div>
-            <AppButton type="button" variant="secondary" onClick={cancelEdit}>
-              <X size={16} /> Cancel
-            </AppButton>
-          </div>
-          <form className="mt-5 space-y-4" onSubmit={saveRecipe}>
-            <Field label="Recipe name" value={form.name} onChange={(name) => setForm({ ...form, name })} />
-            <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Time (mins)" type="number" value={form.time} onChange={(time) => setForm({ ...form, time: +time })} />
-              <Field label="Cost / portion (£)" type="number" step="0.05" value={form.price} onChange={(price) => setForm({ ...form, price: +price })} />
-            </div>
-            <IngredientEditor ingredients={form.ingredients} onChange={(ingredients) => setForm({ ...form, ingredients })} />
-            <Field label="Tags" value={form.tags} onChange={(tags) => setForm({ ...form, tags })} />
-            <Field label="Allergens" value={form.allergens} onChange={(allergensValue) => setForm({ ...form, allergens: allergensValue })} />
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-stone-50 p-3">
-              <div>
-                <p className="text-sm font-semibold">Nutrition data</p>
-                <p className="mt-1 text-xs text-stone-500">{nutritionStatus ?? nutritionSourceSummary(form.nutritionSource)}</p>
-              </div>
-              <AppButton type="button" variant="secondary" onClick={refreshNutrition} disabled={nutritionLoading}>
-                <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Pull from OpenFoodFacts"}
-              </AppButton>
-            </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <Field label="Calories" type="number" value={form.calories} onChange={(calories) => setForm({ ...form, calories: +calories })} />
-              <Field label="Protein (g)" type="number" value={form.protein} onChange={(protein) => setForm({ ...form, protein: +protein })} />
-              <Field label="Carbs (g)" type="number" value={form.carbs} onChange={(carbs) => setForm({ ...form, carbs: +carbs })} />
-              <Field label="Fat (g)" type="number" value={form.fat} onChange={(fat) => setForm({ ...form, fat: +fat })} />
-            </div>
-            <label className="block">
-              <span className="text-sm font-semibold">Method</span>
-              <Textarea value={form.instructions} onChange={(event) => setForm({ ...form, instructions: event.target.value })} className="mt-2 min-h-36 rounded-lg border-stone-200 bg-white" />
-            </label>
-            <Field label="Notes" value={form.note} onChange={(note) => setForm({ ...form, note })} />
-            <AppButton type="submit">
-              <Save size={16} /> Save recipe
-            </AppButton>
-          </form>
-        </Card>
+        <RecipeEditor
+          mode="edit"
+          meal={selectedMeal}
+          title="Edit recipe"
+          description="Changes are saved into your recipe library for this prototype session."
+          onSubmit={handleEditSubmit}
+          onCancel={cancelEdit}
+          track={track}
+        />
       ) : (
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4 sm:p-6">
           <div className="grid gap-7 lg:grid-cols-[340px_minmax(0,1fr)]">
             <aside className="space-y-4">
-              <div className="flex aspect-[4/3] items-center justify-center rounded-lg bg-emerald-50 text-8xl shadow-inner" role="img" aria-label={`${meal.name} image`}>
-                {meal.image}
+              <div className="aspect-[4/3] overflow-hidden rounded-lg bg-emerald-50 shadow-inner">
+                {meal.photoUrl ? (
+                  <img src={meal.photoUrl} alt={meal.name} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-8xl" role="img" aria-label={`${meal.name} image`}>
+                    {meal.image}
+                  </div>
+                )}
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <div className="rounded-lg bg-stone-50 p-3">
-                  <p className="text-xs text-stone-500">Time</p>
+                  <p className="flex items-center gap-1 text-xs text-stone-500"><Clock3 size={12} /> Time</p>
                   <p className="mt-1 font-semibold">{meal.time} min</p>
                 </div>
                 <div className="rounded-lg bg-stone-50 p-3">
@@ -334,8 +264,17 @@ export function RecipeDetailScreen({
                   <p className="mt-1 font-semibold">{money(meal.price)}</p>
                 </div>
                 <div className="rounded-lg bg-stone-50 p-3">
-                  <p className="text-xs text-stone-500">Rating</p>
-                  <p className="mt-1 font-semibold">{ratingLabel(computedRating)}</p>
+                  <p className="flex items-center gap-1 text-xs text-stone-500"><Star size={12} /> Rating</p>
+                  {computedRating > 0 ? (
+                    <div className="mt-1 flex items-center gap-0.5">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <Star key={i} size={13} className={i < Math.round(computedRating) ? "fill-amber-400 text-amber-400" : "fill-stone-200 text-stone-200"} />
+                      ))}
+                      <span className="ml-1 text-xs font-semibold text-stone-700">{computedRating.toFixed(1)}</span>
+                    </div>
+                  ) : (
+                    <p className="mt-1 text-xs text-stone-400">No ratings</p>
+                  )}
                 </div>
               </div>
               <div className="rounded-lg bg-stone-50 p-4">
@@ -373,7 +312,7 @@ export function RecipeDetailScreen({
             </aside>
 
             <section className="min-w-0">
-              <h1 className="text-3xl font-bold text-stone-950 md:text-4xl">{meal.name}</h1>
+              <h1 className="break-words text-3xl font-bold text-stone-950 md:text-4xl">{meal.name}</h1>
               <p className="mt-2 text-stone-600">{meal.note}</p>
               <div className="mt-7 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
                 <div>
@@ -421,17 +360,17 @@ export function RecipeDetailScreen({
           </form>
 
           <div className="mt-6 space-y-3">
-            {meal.reviews.length === 0 ? (
+            {reviews.length === 0 ? (
               <p className="rounded-lg bg-stone-50 p-4 text-sm text-stone-500">No reviews yet.</p>
             ) : (
-              meal.reviews.map((item) => (
+              reviews.map((item) => (
                 <div key={item.id} className="rounded-lg bg-stone-50 p-4">
                   <div className="flex justify-between gap-3">
                     <p className="font-semibold">{item.author}</p>
                     <p className="text-sm text-stone-500">{item.rating} / 5</p>
                   </div>
                   <p className="mt-2 text-sm text-stone-600">{item.comment}</p>
-                  <p className="mt-2 text-xs text-stone-400">{item.date}</p>
+                  <p className="mt-2 text-xs text-stone-400">{item.date.slice(0, 10)}</p>
                 </div>
               ))
             )}
