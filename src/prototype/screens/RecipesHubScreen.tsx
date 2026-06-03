@@ -55,7 +55,7 @@ export function RecipesHubScreen({
     return "saved";
   });
   const [savedSortBy, setSavedSortBy] = useState<"default" | "time" | "price" | "health">("default");
-  const [savedTagFilter, setSavedTagFilter] = useState<string | null>(null);
+  const [savedTagFilter, setSavedTagFilter] = useState<string[]>([]);
   const [confirmAction, setConfirmAction] = useState<{ recipeId: string; isOwn: boolean } | null>(null);
 
   useEffect(() => {
@@ -122,8 +122,10 @@ export function RecipesHubScreen({
   const allSaved = [...customRecipes, ...discoverSaved.filter((s) => !customRecipes.some((c) => c.id === s.id))];
   const availableTags = [...new Set(allSaved.flatMap((recipe) => recipe.tags))].sort((a, b) => a.localeCompare(b));
   // Keep the active tag filter valid if the underlying saved recipes change.
-  const activeTagFilter = savedTagFilter && availableTags.includes(savedTagFilter) ? savedTagFilter : null;
-  const filteredSaved = activeTagFilter ? allSaved.filter((recipe) => recipe.tags.includes(activeTagFilter)) : allSaved;
+  const activeTagFilter = savedTagFilter.filter((t) => availableTags.includes(t));
+  const filteredSaved = activeTagFilter.length > 0
+    ? allSaved.filter((recipe) => activeTagFilter.every((t) => recipe.tags.includes(t)))
+    : allSaved;
   const sortedSaved = [...filteredSaved].sort((a, b) => {
     if (savedSortBy === "time") return a.time - b.time;
     if (savedSortBy === "price") return a.price - b.price;
@@ -192,8 +194,8 @@ export function RecipesHubScreen({
                   <span className="text-sm text-stone-500">Filter by tag</span>
                   <button
                     type="button"
-                    onClick={() => { track("saved_tag_filter_changed", { tag: null }); setSavedTagFilter(null); }}
-                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${activeTagFilter === null ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                    onClick={() => { track("saved_tag_filter_changed", { tags: [] }); setSavedTagFilter([]); }}
+                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${activeTagFilter.length === 0 ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
                   >
                     All
                   </button>
@@ -202,11 +204,13 @@ export function RecipesHubScreen({
                       key={tag}
                       type="button"
                       onClick={() => {
-                        const next = activeTagFilter === tag ? null : tag;
-                        track("saved_tag_filter_changed", { tag: next });
+                        const next = activeTagFilter.includes(tag)
+                          ? activeTagFilter.filter((t) => t !== tag)
+                          : [...activeTagFilter, tag];
+                        track("saved_tag_filter_changed", { tags: next });
                         setSavedTagFilter(next);
                       }}
-                      className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize transition ${activeTagFilter === tag ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                      className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize transition ${activeTagFilter.includes(tag) ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
                     >
                       {tag}
                     </button>
