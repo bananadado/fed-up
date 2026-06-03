@@ -1,7 +1,7 @@
 import { Plus, Sparkles, UtensilsCrossed } from "lucide-react";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
-import type { Deadline, Meal, Preferences } from "../types";
+import type { Deadline, DiscoverRecommendationState, Meal, Preferences } from "../types";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { AppButton, Badge } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
@@ -23,6 +23,8 @@ export function RecipesHubScreen({
   setDiscoverRejected,
   discoverReviewedRecipeIds,
   setDiscoverReviewedRecipeIds,
+  discoverRecommendationState,
+  setDiscoverRecommendationState,
   prefs,
   deadlines,
   sessionId,
@@ -37,15 +39,27 @@ export function RecipesHubScreen({
   setDiscoverRejected: StateSetter<Meal[]>;
   discoverReviewedRecipeIds: string[];
   setDiscoverReviewedRecipeIds: StateSetter<string[]>;
+  discoverRecommendationState: DiscoverRecommendationState;
+  setDiscoverRecommendationState: StateSetter<DiscoverRecommendationState>;
   prefs: Preferences;
   deadlines: Deadline[];
   sessionId: string;
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
-  const [tab, setTab] = useState<Tab>("saved");
+  const [tab, setTab] = useState<Tab>(() => {
+    try {
+      const stored = sessionStorage.getItem("deadlineFood:recipesTab");
+      if (stored === "discover" || stored === "saved" || stored === "add") return stored;
+    } catch { /* ignore */ }
+    return "saved";
+  });
   const [savedSortBy, setSavedSortBy] = useState<"default" | "time" | "price" | "health">("default");
   const [confirmAction, setConfirmAction] = useState<{ recipeId: string; isOwn: boolean } | null>(null);
+
+  useEffect(() => {
+    try { sessionStorage.setItem("deadlineFood:recipesTab", tab); } catch { /* ignore */ }
+  }, [tab]);
 
   function handleCreateRecipe(output: RecipeEditorOutput, photoUrl: string | undefined) {
     const instructions =
@@ -225,6 +239,8 @@ export function RecipesHubScreen({
           setRejected={setDiscoverRejected}
           reviewedRecipeIds={discoverReviewedRecipeIds}
           setReviewedRecipeIds={setDiscoverReviewedRecipeIds}
+          recommendationState={discoverRecommendationState}
+          setRecommendationState={setDiscoverRecommendationState}
           onSelectMeal={onSelectMeal}
           track={track}
         />
