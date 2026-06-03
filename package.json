@@ -32,11 +32,13 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "firebase": "^12.13.0",
+    "functions": "^1.0.9",
     "lucide-react": "^1.16.0",
     "posthog-js": "^1.376.2",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router": "^7.15.1",
+    "root": "^3.2.0",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
@@ -48,6 +50,7 @@
     "eslint": "10.4.0",
     "eslint-plugin-react-hooks": "7.1.1",
     "eslint-plugin-react-refresh": "0.5.2",
+    "firebase-admin": "^13.10.0",
     "firebase-tools": "15.18.0",
     "globals": "17.6.0",
     "tailwindcss": "^4.3.0",
