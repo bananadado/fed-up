@@ -257,11 +257,16 @@ secret_detection:
         backend/ \
         "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/"
 
+      ALL_SERVICES="api db adminer embedding-viz grafana prometheus loki promtail node-exporter cadvisor nvidia-exporter"
       CHANGED_SERVICES=""
-      CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA" -- backend/ 2>/dev/null || echo "backend/")
+      CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA" -- backend/ 2>/dev/null || true)
 
-      if echo "$CHANGED_FILES" | grep -q "backend/docker-compose.yml"; then
-        CHANGED_SERVICES="api db adminer embedding-viz grafana prometheus loki promtail node-exporter cadvisor nvidia-exporter"
+      if [ -z "$CHANGED_FILES" ] || echo "$CHANGED_FILES" | grep -q "backend/docker-compose.yml"; then
+        # Empty diff (shallow clone, merge commit, or a new branch where
+        # CI_COMMIT_BEFORE_SHA is absent) or a compose change: redeploy
+        # everything rather than silently skipping. The job's `changes:` rule
+        # already guarantees something under backend/ actually changed.
+        CHANGED_SERVICES="$ALL_SERVICES"
       else
         echo "$CHANGED_FILES" | grep -q "backend/recommender-api/" && CHANGED_SERVICES="$CHANGED_SERVICES api"
         echo "$CHANGED_FILES" | grep -q "backend/db/" && CHANGED_SERVICES="$CHANGED_SERVICES db"
