@@ -1,4 +1,4 @@
-import { Plus, Sparkles, UtensilsCrossed } from "lucide-react";
+import { Plus, RotateCcw, Sparkles, UtensilsCrossed } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
 
 import type { Deadline, Meal, Preferences } from "../types";
@@ -89,6 +89,13 @@ export function RecipesHubScreen({
     setTab("saved");
   }
 
+  function handleRestorePassed(recipe: Meal) {
+    setDiscoverRejected((recipes) => recipes.filter((item) => item.id !== recipe.id));
+    setDiscoverSaved((recipes) => (recipes.some((item) => item.id === recipe.id) ? recipes : [...recipes, recipe]));
+    setDiscoverReviewedRecipeIds((ids) => ids.filter((id) => id !== recipe.id));
+    track("discover_passed_restored", { meal_id: recipe.id });
+  }
+
   const tabs: { id: Tab; label: string }[] = [
     { id: "saved", label: "Saved" },
     { id: "discover", label: "Discover" },
@@ -102,6 +109,7 @@ export function RecipesHubScreen({
     if (savedSortBy === "health") return b.nutrition.protein - a.nutrition.protein || a.price - b.price;
     return 0;
   });
+  const recentlyPassed = discoverRejected.filter((r) => !allSaved.some((s) => s.id === r.id));
 
   return (
     <div>
@@ -194,6 +202,54 @@ export function RecipesHubScreen({
               </button>
             </div>
             </>
+          )}
+
+          {recentlyPassed.length > 0 && (
+            <section className="mt-10 border-t border-stone-200 pt-6">
+              <div className="mb-1 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-stone-700">Recently passed</h2>
+                <Badge tone="neutral">{recentlyPassed.length}</Badge>
+              </div>
+              <p className="mb-4 text-sm text-stone-500">
+                Recipes you passed on in Discover. Move one back to your saved list any time.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {recentlyPassed.map((recipe) => (
+                  <div
+                    key={recipe.id}
+                    className="flex flex-col rounded-xl border border-stone-200 bg-stone-50 p-4"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => onSelectMeal(recipe.id)}
+                      className="flex-1 text-left transition hover:opacity-90"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        {recipe.photoUrl ? (
+                          <img src={recipe.photoUrl} alt={recipe.name} className="h-12 w-12 rounded-md object-cover opacity-80" />
+                        ) : (
+                          <span className="text-3xl opacity-70">{recipe.image}</span>
+                        )}
+                        <Badge tone="neutral">Passed</Badge>
+                      </div>
+                      <p className="mt-2 break-words font-semibold leading-snug text-stone-700">{recipe.name}</p>
+                      <p className="mt-1 text-sm font-medium text-stone-500">{money(recipe.price)}</p>
+                      <p className="mt-1 text-xs text-stone-400">
+                        {recipe.time} min · {recipe.ingredients.map(formatIngredient).slice(0, 3).join(", ")}
+                        {recipe.ingredients.length > 3 ? ` +${recipe.ingredients.length - 3}` : ""}
+                      </p>
+                    </button>
+                    <AppButton
+                      variant="secondary"
+                      className="mt-3 w-full justify-center"
+                      onClick={() => handleRestorePassed(recipe)}
+                    >
+                      <RotateCcw size={15} /> Move to saved
+                    </AppButton>
+                  </div>
+                ))}
+              </div>
+            </section>
           )}
         </div>
       )}
