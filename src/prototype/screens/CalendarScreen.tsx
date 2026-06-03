@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
-import { CalendarPlus, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight } from "lucide-react";
-import type { Deadline, Screen } from "../types";
+import { AlertTriangle, CalendarPlus, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import type { CalendarEvent, Deadline, Screen } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -233,11 +233,13 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
 export function CalendarScreen({
   deadlines,
   setDeadlines,
+  calendarEvents,
   setScreen,
   track,
 }: {
   deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
+  calendarEvents: CalendarEvent[];
   setScreen: (screen: Screen) => void;
   track: TrackPrototypeEvent;
 }) {
@@ -349,6 +351,20 @@ export function CalendarScreen({
           Manage import
         </AppButton>
       </div>
+
+      {calendarEvents.length === 0 && (
+        <div className="mb-5 rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-900">
+          <div className="flex gap-3">
+            <AlertTriangle className="mt-0.5 shrink-0 text-amber-700" size={18} />
+            <div>
+              <p className="text-sm font-semibold">No calendar has been imported.</p>
+              <p className="mt-1 text-sm leading-6">
+                Calendar import is optional. You can import calendar events any time through Settings or the Calendar menu.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Calendar navigation bar */}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
