@@ -25517,9 +25517,9 @@
       "source_file": "src/prototype/universities.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_test_ts",
-      "target": "prototype_universities_getuniversitysuggestions",
-      "confidence_score": 1.0
+      "target": "prototype_universities_getuniversitysuggestions"
     },
     {
       "relation": "imports_from",
@@ -25528,9 +25528,9 @@
       "source_file": "src/prototype/universities.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_test_ts",
-      "target": "src_prototype_universities_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_universities_ts"
     },
     {
       "relation": "imports_from",
@@ -26109,9 +26109,9 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_data_ts",
-      "target": "prototype_universities_universities",
-      "confidence_score": 1.0
+      "target": "prototype_universities_universities"
     },
     {
       "relation": "imports_from",
@@ -26131,9 +26131,9 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_data_ts",
-      "target": "src_prototype_universities_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_universities_ts"
     },
     {
       "relation": "imports_from",
@@ -30725,9 +30725,9 @@
       "source_file": "src/prototype/components/UniversityField.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_universityfield_tsx",
-      "target": "src_prototype_universities_ts",
-      "confidence_score": 1.0
+      "target": "src_prototype_universities_ts"
     },
     {
       "relation": "contains",
@@ -30735,9 +30735,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L180",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_acronymfor",
-      "confidence_score": 1.0
+      "target": "prototype_universities_acronymfor"
     },
     {
       "relation": "contains",
@@ -30745,9 +30745,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_defaultuniversitysuggestions",
-      "confidence_score": 1.0
+      "target": "prototype_universities_defaultuniversitysuggestions"
     },
     {
       "relation": "contains",
@@ -30755,9 +30755,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L207",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_fuzzyratio",
-      "confidence_score": 1.0
+      "target": "prototype_universities_fuzzyratio"
     },
     {
       "relation": "contains",
@@ -30765,9 +30765,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L267",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_getuniversitysuggestions",
-      "confidence_score": 1.0
+      "target": "prototype_universities_getuniversitysuggestions"
     },
     {
       "relation": "contains",
@@ -30775,9 +30775,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L188",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_levenshteindistance",
-      "confidence_score": 1.0
+      "target": "prototype_universities_levenshteindistance"
     },
     {
       "relation": "contains",
@@ -30785,9 +30785,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L169",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_normalizesearchtext",
-      "confidence_score": 1.0
+      "target": "prototype_universities_normalizesearchtext"
     },
     {
       "relation": "contains",
@@ -30795,9 +30795,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L254",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_optionscore",
-      "confidence_score": 1.0
+      "target": "prototype_universities_optionscore"
     },
     {
       "relation": "contains",
@@ -30805,9 +30805,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L211",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_scorecandidate",
-      "confidence_score": 1.0
+      "target": "prototype_universities_scorecandidate"
     },
     {
       "relation": "contains",
@@ -30815,9 +30815,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L167",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_stopwords",
-      "confidence_score": 1.0
+      "target": "prototype_universities_stopwords"
     },
     {
       "relation": "contains",
@@ -30825,9 +30825,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L165",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_universities",
-      "confidence_score": 1.0
+      "target": "prototype_universities_universities"
     },
     {
       "relation": "contains",
@@ -30835,9 +30835,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_universityoption",
-      "confidence_score": 1.0
+      "target": "prototype_universities_universityoption"
     },
     {
       "relation": "contains",
@@ -30845,9 +30845,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_universities_ts",
-      "target": "prototype_universities_universityoptions",
-      "confidence_score": 1.0
+      "target": "prototype_universities_universityoptions"
     },
     {
       "relation": "calls",
@@ -30856,9 +30856,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L181",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_universities_acronymfor",
-      "target": "prototype_universities_normalizesearchtext",
-      "confidence_score": 1.0
+      "target": "prototype_universities_normalizesearchtext"
     },
     {
       "relation": "calls",
@@ -30867,9 +30867,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L268",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_universities_getuniversitysuggestions",
-      "target": "prototype_universities_normalizesearchtext",
-      "confidence_score": 1.0
+      "target": "prototype_universities_normalizesearchtext"
     },
     {
       "relation": "calls",
@@ -30878,9 +30878,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L212",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_universities_scorecandidate",
-      "target": "prototype_universities_normalizesearchtext",
-      "confidence_score": 1.0
+      "target": "prototype_universities_normalizesearchtext"
     },
     {
       "relation": "calls",
@@ -30889,9 +30889,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L215",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_universities_scorecandidate",
-      "target": "prototype_universities_acronymfor",
-      "confidence_score": 1.0
+      "target": "prototype_universities_acronymfor"
     },
     {
       "relation": "calls",
@@ -30900,9 +30900,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L208",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_universities_fuzzyratio",
-      "target": "prototype_universities_levenshteindistance",
-      "confidence_score": 1.0
+      "target": "prototype_universities_levenshteindistance"
     },
     {
       "relation": "calls",
@@ -30911,9 +30911,9 @@
       "source_file": "src/prototype/universities.ts",
       "source_location": "L244",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prototype_universities_scorecandidate",
-      "target": "prototype_universities_fuzzyratio",
-      "confidence_score": 1.0
+      "target": "prototype_universities_fuzzyratio"
     },
     {
       "relation": "imports",
@@ -30922,9 +30922,9 @@
       "source_file": "src/prototype/components/UniversityField.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_universityfield_tsx",
-      "target": "prototype_universities_getuniversitysuggestions",
-      "confidence_score": 1.0
+      "target": "prototype_universities_getuniversitysuggestions"
     },
     {
       "relation": "contains",
@@ -31948,6 +31948,17 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_prototype_screens_calendarscreen_tsx",
+      "target": "calendarimport_types_calendarevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -32570,9 +32581,9 @@
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "components_universityfield_universityfield",
-      "confidence_score": 1.0
+      "target": "components_universityfield_universityfield"
     },
     {
       "relation": "imports",
@@ -32679,9 +32690,9 @@
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_prototype_components_universityfield_tsx",
-      "confidence_score": 1.0
+      "target": "src_prototype_components_universityfield_tsx"
     },
     {
       "relation": "imports",
@@ -33339,9 +33350,9 @@
       "source_file": "src/prototype/screens/Onboarding.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_universityfield_universityfield",
-      "confidence_score": 1.0
+      "target": "components_universityfield_universityfield"
     },
     {
       "relation": "imports",
@@ -33468,9 +33479,9 @@
       "source_file": "src/prototype/screens/Onboarding.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_components_universityfield_tsx",
-      "confidence_score": 1.0
+      "target": "src_prototype_components_universityfield_tsx"
     },
     {
       "relation": "imports",
@@ -34358,9 +34369,9 @@
       "source_file": "src/prototype/components/UniversityField.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_universityfield_tsx",
-      "target": "components_universityfield_universityfield",
-      "confidence_score": 1.0
+      "target": "components_universityfield_universityfield"
     },
     {
       "relation": "imports",
@@ -34369,9 +34380,9 @@
       "source_file": "src/prototype/components/UniversityField.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_universityfield_tsx",
-      "target": "lib_utils_cn",
-      "confidence_score": 1.0
+      "target": "lib_utils_cn"
     },
     {
       "relation": "imports_from",
@@ -34380,9 +34391,9 @@
       "source_file": "src/prototype/components/UniversityField.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_universityfield_tsx",
-      "target": "src_components_ui_input_tsx",
-      "confidence_score": 1.0
+      "target": "src_components_ui_input_tsx"
     },
     {
       "relation": "imports_from",
@@ -34391,9 +34402,9 @@
       "source_file": "src/prototype/components/UniversityField.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_universityfield_tsx",
-      "target": "src_components_ui_label_tsx",
-      "confidence_score": 1.0
+      "target": "src_components_ui_label_tsx"
     },
     {
       "relation": "imports_from",
@@ -34402,9 +34413,9 @@
       "source_file": "src/prototype/components/UniversityField.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_universityfield_tsx",
-      "target": "src_lib_utils_ts",
-      "confidence_score": 1.0
+      "target": "src_lib_utils_ts"
     },
     {
       "relation": "imports",
@@ -34413,9 +34424,9 @@
       "source_file": "src/prototype/components/UniversityField.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_universityfield_tsx",
-      "target": "ui_input_input",
-      "confidence_score": 1.0
+      "target": "ui_input_input"
     },
     {
       "relation": "imports",
@@ -34424,9 +34435,9 @@
       "source_file": "src/prototype/components/UniversityField.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_prototype_components_universityfield_tsx",
-      "target": "ui_label_label",
-      "confidence_score": 1.0
+      "target": "ui_label_label"
     },
     {
       "relation": "calls",
@@ -37575,9 +37586,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_embedding_viz_app_py",
-      "target": "embedding_viz_app_fetch_vectors",
-      "confidence_score": 1.0
+      "target": "embedding_viz_app_fetch_vectors"
     },
     {
       "relation": "contains",
@@ -37585,9 +37596,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L77",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_embedding_viz_app_py",
-      "target": "embedding_viz_app_health",
-      "confidence_score": 1.0
+      "target": "embedding_viz_app_health"
     },
     {
       "relation": "contains",
@@ -37595,9 +37606,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L96",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_embedding_viz_app_py",
-      "target": "embedding_viz_app_index",
-      "confidence_score": 1.0
+      "target": "embedding_viz_app_index"
     },
     {
       "relation": "contains",
@@ -37605,9 +37616,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_embedding_viz_app_py",
-      "target": "embedding_viz_app_parse_vector",
-      "confidence_score": 1.0
+      "target": "embedding_viz_app_parse_vector"
     },
     {
       "relation": "contains",
@@ -37615,9 +37626,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_embedding_viz_app_py",
-      "target": "embedding_viz_app_pca_2d",
-      "confidence_score": 1.0
+      "target": "embedding_viz_app_pca_2d"
     },
     {
       "relation": "contains",
@@ -37625,9 +37636,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_embedding_viz_app_py",
-      "target": "embedding_viz_app_points",
-      "confidence_score": 1.0
+      "target": "embedding_viz_app_points"
     },
     {
       "relation": "imports_from",
@@ -37636,9 +37647,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_embedding_viz_app_py",
-      "target": "fastapi",
-      "confidence_score": 1.0
+      "target": "fastapi"
     },
     {
       "relation": "rationale_for",
@@ -37646,9 +37657,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "embedding_viz_app_rationale_1",
-      "target": "backend_embedding_viz_app_py",
-      "confidence_score": 1.0
+      "target": "backend_embedding_viz_app_py"
     },
     {
       "relation": "calls",
@@ -37668,9 +37679,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "embedding_viz_app_parse_vector",
-      "target": "backend_embedding_viz_app_py_float",
-      "confidence_score": 1.0
+      "target": "backend_embedding_viz_app_py_float"
     },
     {
       "relation": "references",
@@ -37679,9 +37690,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "embedding_viz_app_parse_vector",
-      "target": "backend_embedding_viz_app_py_str",
-      "confidence_score": 1.0
+      "target": "backend_embedding_viz_app_py_str"
     },
     {
       "relation": "references",
@@ -37732,9 +37743,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "embedding_viz_app_fetch_vectors",
-      "target": "backend_embedding_viz_app_py_str",
-      "confidence_score": 1.0
+      "target": "backend_embedding_viz_app_py_str"
     },
     {
       "relation": "references",
@@ -37743,9 +37754,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L77",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "embedding_viz_app_health",
-      "target": "backend_embedding_viz_app_py_str",
-      "confidence_score": 1.0
+      "target": "backend_embedding_viz_app_py_str"
     },
     {
       "relation": "references",
@@ -37754,9 +37765,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L96",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "embedding_viz_app_index",
-      "target": "backend_embedding_viz_app_py_str",
-      "confidence_score": 1.0
+      "target": "backend_embedding_viz_app_py_str"
     },
     {
       "relation": "references",
@@ -37765,9 +37776,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "embedding_viz_app_fetch_vectors",
-      "target": "backend_embedding_viz_app_py_float",
-      "confidence_score": 1.0
+      "target": "backend_embedding_viz_app_py_float"
     },
     {
       "relation": "references",
@@ -37776,9 +37787,9 @@
       "source_file": "backend/embedding-viz/app.py",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "embedding_viz_app_pca_2d",
-      "target": "backend_embedding_viz_app_py_float",
-      "confidence_score": 1.0
+      "target": "backend_embedding_viz_app_py_float"
     },
     {
       "relation": "references",
@@ -57654,5 +57665,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "a6455d2d4ca901094cdb64914bc4c1881dea0d45"
+  "built_at_commit": "155e1f404654c00a975ab94c06e8525ea452e863"
 }
