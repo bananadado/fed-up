@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 2207 nodes, 4400 edges, 128 communities. Commit: 0d5249e</p>
+<p class="subtitle">Generated from graphify knowledge graph: 2207 nodes, 4400 edges, 128 communities. Commit: 3637439</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -2550,9 +2550,9 @@ flowchart LR
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
     %% Section: Community 5 (72 nodes, 73 edges)
-    src_index_gramsforingredient_19362058("gramsForIngredient()<br/><small>functions/src/index.ts</small>")
     src_index_roundmacro_25a7e576("roundMacro()<br/><small>functions/src/index.ts</small>")
-    src_index_estimateingredientnutrition_3cf20bcc("estimateIngredientNutrition()<br/><small>functions/src/index.ts</small>")
+    src_index_seedprototypedata_97c4a157("seedPrototypeData()<br/><small>functions/src/index.ts</small>")
+    src_index_getprototypedata_46a57640("getPrototypeData()<br/><small>functions/src/index.ts</small>")
     src_index_totalnutritionfromestimates_3e2a4e02("totalNutritionFromEstimates()<br/><small>functions/src/index.ts</small>")
     src_index_calendarevent_4041e61f("CalendarEvent<br/><small>functions/src/index.ts</small>")
     src_index_calendartoken_2b1049b8("CalendarToken<br/><small>functions/src/index.ts</small>")
@@ -2568,12 +2568,12 @@ flowchart LR
     src_index_recipeingredient_c93a9fd0("RecipeIngredient<br/><small>functions/src/index.ts</small>")
     src_index_storedreview_e9131598("StoredReview<br/><small>functions/src/index.ts</small>")
     src_index_unknownrecord_8f628066("UnknownRecord<br/><small>functions/src/index.ts</small>")
-    src_index_gramsforingredient_19362058 -->|calls| src_index_estimateingredientnutrition_3cf20bcc
+    src_index_seedprototypedata_97c4a157 -->|calls| src_index_getprototypedata_46a57640
     src_index_roundmacro_25a7e576 -->|calls| src_index_totalnutritionfromestimates_3e2a4e02
     %% Omitted for readability: 54 nodes, 0 edges
-    class src_index_gramsforingredient_19362058 function;
     class src_index_roundmacro_25a7e576 function;
-    class src_index_estimateingredientnutrition_3cf20bcc function;
+    class src_index_seedprototypedata_97c4a157 function;
+    class src_index_getprototypedata_46a57640 function;
     class src_index_totalnutritionfromestimates_3e2a4e02 function;
     class src_index_calendarevent_4041e61f klass;
     class src_index_calendartoken_2b1049b8 klass;
@@ -4894,12 +4894,12 @@ flowchart LR
         src_index_asrecord_128d572b("asRecord()<br/><small>functions/src/index.ts</small>")
         src_index_boundedstring_dceb72f0("boundedString()<br/><small>functions/src/index.ts</small>")
         src_index_openfoodfactscachedocid_28a03323("openFoodFactsCacheDocId()<br/><small>functions/src/index.ts</small>")
-        src_index_seedprototypedata_97c4a157("seedPrototypeData()<br/><small>functions/src/index.ts</small>")
-        src_index_getprototypedata_46a57640("getPrototypeData()<br/><small>functions/src/index.ts</small>")
         src_index_ensurerecipesseeded_e3b4982b("ensureRecipesSeeded()<br/><small>functions/src/index.ts</small>")
         src_index_listrecipes_7bfe956b("listRecipes()<br/><small>functions/src/index.ts</small>")
         src_index_torecommenderrecipepayload_363422fd("toRecommenderRecipePayload()<br/><small>functions/src/index.ts</small>")
         src_index_normalizecalendarevent_4e6e3493("normalizeCalendarEvent()<br/><small>functions/src/index.ts</small>")
+        src_index_normalizecalendartoken_b53c0426("normalizeCalendarToken()<br/><small>functions/src/index.ts</small>")
+        src_index_normalizedeadline_e85b975a("normalizeDeadline()<br/><small>functions/src/index.ts</small>")
     end
     subgraph other_backend_monitoring_nvidia_exporter_py_1bc22159["backend/monitoring/nvidia-exporter.py"]
         monitoring_nvidia_exporter_get_gpu_metrics_6d4ac1d6("get_gpu_metrics()<br/><small>backend/monitoring/nvidia-exporter.py</small>")
@@ -4920,21 +4920,24 @@ flowchart LR
     monitoring_nvidia_exporter_get_gpu_metrics_6d4ac1d6 -->|calls| monitoring_nvidia_exporter_handler_do_get_057616cb
     monitoring_nvidia_exporter_handler_bb66b8f2 -->|method| monitoring_nvidia_exporter_handler_do_get_057616cb
     monitoring_nvidia_exporter_handler_bb66b8f2 -->|method| monitoring_nvidia_exporter_handler_log_message_703bd338
-    src_index_seedprototypedata_97c4a157 -->|calls| src_index_getprototypedata_46a57640
     src_index_ensurerecipesseeded_e3b4982b -->|calls| src_index_listrecipes_7bfe956b
     src_index_torecommenderrecipepayload_363422fd -->|calls| src_index_asrecord_128d572b
     src_index_asrecord_128d572b -->|calls| src_index_normalizecalendarevent_4e6e3493
+    src_index_asrecord_128d572b -->|calls| src_index_normalizecalendartoken_b53c0426
+    src_index_asrecord_128d572b -->|calls| src_index_normalizedeadline_e85b975a
     src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizecalendarevent_4e6e3493
+    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizecalendartoken_b53c0426
+    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizedeadline_e85b975a
     %% Omitted for readability: 287 nodes, 0 edges
     class src_index_asrecord_128d572b function;
     class src_index_boundedstring_dceb72f0 function;
     class src_index_openfoodfactscachedocid_28a03323 function;
-    class src_index_seedprototypedata_97c4a157 function;
-    class src_index_getprototypedata_46a57640 function;
     class src_index_ensurerecipesseeded_e3b4982b async;
     class src_index_listrecipes_7bfe956b function;
     class src_index_torecommenderrecipepayload_363422fd function;
     class src_index_normalizecalendarevent_4e6e3493 function;
+    class src_index_normalizecalendartoken_b53c0426 function;
+    class src_index_normalizedeadline_e85b975a function;
     class monitoring_nvidia_exporter_get_gpu_metrics_6d4ac1d6 function;
     class monitoring_nvidia_exporter_handler_do_get_057616cb function;
     class monitoring_nvidia_exporter_handler_bb66b8f2 klass;
@@ -5254,7 +5257,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-03 18:03 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-03 19:34 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
