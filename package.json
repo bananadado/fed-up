@@ -16,6 +16,7 @@
     "audit": "sh scripts/audit.sh",
     "build": "bun run build.ts",
     "firebase:data": "bun run scripts/export-firebase-prototype-data.ts",
+    "ingest:recipes": "bun scripts/ingest-recipes.ts",
     "firebase:functions:build": "bun run firebase:data && cd functions && bun run build",
     "firebase:functions:lint": "bun run firebase:data && cd functions && bun run lint",
     "firebase:emulators": "bun run firebase:data && cd functions && bun run build && cd .. && firebase emulators:start --only functions,firestore",
