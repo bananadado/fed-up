@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { deadlineStressFromDeadlines } from "./recommenderApi";
+import { deadlineStressFromDeadlines, toPrototypeMeal } from "./recommenderApi";
 import type { Deadline } from "./types";
 
 function deadline(urgency: Deadline["urgency"], eventType: Deadline["eventType"] = "academic"): Deadline {
@@ -24,5 +24,27 @@ describe("recommender API helpers", () => {
 
   test("ignores non-academic events", () => {
     expect(deadlineStressFromDeadlines([deadline("high", "general")])).toBe(0);
+  });
+
+  test("preserves recipe photos from recommendation responses", () => {
+    const meal = toPrototypeMeal({
+      id: "custom-123",
+      name: "Uploaded recipe",
+      meal_type: "cook",
+      meal_slots: ["dinner"],
+      price_pence: 250,
+      prep_minutes: 20,
+      dietary_tags: [],
+      allergens: [],
+      suitability_tags: ["quick"],
+      ingredients: [],
+      instructions: [],
+      nutrition: null,
+      source: "My recipes",
+      note: null,
+      photoUrl: "https://storage.googleapis.com/bucket/recipe-photos/custom.jpg",
+    });
+
+    expect(meal.photoUrl).toBe("https://storage.googleapis.com/bucket/recipe-photos/custom.jpg");
   });
 });
