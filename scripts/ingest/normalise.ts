@@ -11,12 +11,12 @@ import type { Nutrition } from "./types.ts";
 // ── Allergens ─────────────────────────────────────────────────────────────
 
 const ALLERGEN_KEYWORDS: Array<[string, string]> = [
-  ["gluten", "wheat|flour|pasta|bread|breadcrumb|noodle|couscous|barley|rye|spelt|oat|tortilla|wrap|pita|soy sauce|udon|ramen|bulgur"],
+  ["gluten", "wheat|flour|pasta|bread|breadcrumb|noodle|couscous|barley|rye|spelt|oat|tortilla|wrap|pita|soy sauce|udon|ramen|bulgur|bun|roll|bagel|bap|croissant|muffin|cracker|cereal|semolina|matzo|beer|ale|stout"],
   ["milk", "milk|butter|cream|cheese|yoghurt|yogurt|cheddar|mozzarella|parmesan|brie|feta|ricotta|ghee|lactose|whey"],
   ["eggs", "egg"],
   ["nuts", "almond|walnut|pecan|cashew|pistachio|hazelnut|macadamia|brazil nut|pine nut"],
   ["peanuts", "peanut"],
-  ["soy", "soy|tofu|edamame|miso|tempeh"],
+  ["soy", "\\bsoy\\b|tofu|edamame|miso|tempeh"],
   ["fish", "fish|salmon|tuna|cod|haddock|mackerel|sardine|anchov|tilapia|bass|trout|halibut|sole"],
   ["shellfish", "prawn|shrimp|crab|lobster|mussel|scallop|squid|oyster|clam|crayfish"],
   ["sesame", "sesame|tahini"],
@@ -39,14 +39,14 @@ export function detectAllergens(ingredients: string[]): string[] {
 // ── Dietary tags ───────────────────────────────────────────────────────────
 
 const MEAT_PATTERN =
-  /\b(beef|chicken|pork|lamb|bacon|ham|turkey|duck|veal|venison|goat|sausage|salami|chorizo|pepperoni|lard|gelatin)\b/;
+  /\b(beefs?|chickens?|porks?|lambs?|bacons?|hams?|turkeys?|ducks?|veal|venison|goats?|sausages?|salami|chorizo|pepperoni|lard|gelatin)\b/;
 const FISH_PATTERN =
-  /\b(fish|salmon|tuna|cod|haddock|mackerel|sardine|anchov|prawn|shrimp|crab|lobster|mussel|scallop|squid|oyster|clam|seafood)\b/;
+  /fish\b|(salmons?|tunas?|cods?|haddocks?|mackerels?|sardines?|anchovies|anchov\w*|prawns?|shrimps?|crabs?|lobsters?|mussels?|scallops?|squids?|oysters?|clams?|seafood)\b/;
 const DAIRY_PATTERN =
-  /\b(milk|butter|cream|cheese|yoghurt|yogurt|ghee|whey|lactose)\b/;
-const EGG_PATTERN = /\begg\b/;
+  /\b(milks?|butters?|creams?|cheeses?|yoghurts?|yogurts?|ghee|whey|lactose|halloumi)\b/;
+const EGG_PATTERN = /\beggs?\b/;
 const GLUTEN_PATTERN =
-  /\b(wheat|flour|pasta|bread|breadcrumb|noodle|couscous|barley|rye|spelt|tortilla|wrap|pita|udon|ramen|bulgur)\b/;
+  /\b(wheat|flour|pasta|bread|breadcrumbs?|noodles?|couscous|barley|rye|spelt|tortillas?|wraps?|pita|udon|ramen|bulgur|buns?|rolls?|bagels?|baps?|croissants?|muffins?|crackers?|cereal|semolina|matzo|beer|ale|stout)\b/;
 
 export function detectDietaryTags(
   ingredients: string[],
