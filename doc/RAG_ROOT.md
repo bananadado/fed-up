@@ -160,7 +160,10 @@ Firebase local development:
 bun run firebase:dev
 ```
 
-This starts Firestore and Functions emulators, then starts the Bun app configured to call the local Firebase functions.
+This starts the backend Docker Compose stack on NVIDIA-capable Docker hosts,
+then Firestore, Storage, and Functions emulators. On machines without NVIDIA
+Docker, emulated Functions fall back to the remote recommender API. The Bun app
+is configured to call the local Firebase functions.
 
 Deploy backend:
 
@@ -249,4 +252,3 @@ Do not break these without an explicit product decision:
 - PostHog is optional at runtime and only initializes when public env vars are present.
 - Production endpoint selection defaults to Firebase unless overridden by `BUN_PUBLIC_DEADLINE_FOOD_API_BACKEND=local`.
 - Existing `docs/anonymous-session-storage.md` predates this `doc/` tree and remains useful backend-specific reference.
-
