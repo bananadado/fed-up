@@ -9,7 +9,7 @@ import { formatIngredient } from "../ingredients";
 import { money } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 import { DiscoverScreen } from "./DiscoverScreen";
-import { createRecommenderRecipe } from "../recommenderApi";
+import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
 
 type Tab = "saved" | "discover" | "add";
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
@@ -251,6 +251,9 @@ export function RecipesHubScreen({
           onConfirm={() => {
             if (confirmAction.isOwn) {
               setCustomRecipes((prev) => prev.filter((r) => r.id !== confirmAction.recipeId));
+              deleteRecommenderRecipe(confirmAction.recipeId).catch((error) => {
+                console.warn("Recipe could not be deleted from backend.", error);
+              });
             } else {
               setDiscoverSaved((prev) => prev.filter((r) => r.id !== confirmAction.recipeId));
             }

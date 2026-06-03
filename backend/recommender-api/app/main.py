@@ -135,6 +135,15 @@ async def get_recipe(recipe_id: str, db: AsyncSession = Depends(get_db)):
     return _row_to_recipe(row)
 
 
+@app.delete("/recipes/{recipe_id}", status_code=204)
+async def delete_recipe(recipe_id: str, db: AsyncSession = Depends(get_db)):
+    await db.execute(text("DELETE FROM interactions WHERE recipe_id = :rid"), {"rid": recipe_id})
+    result = await db.execute(text("DELETE FROM recipes WHERE id = :rid"), {"rid": recipe_id})
+    await db.commit()
+    if result.rowcount == 0:
+        raise HTTPException(404, "Recipe not found")
+
+
 # ── Users ───────────────────────────────────────────────────────────────────
 
 @app.post("/users")

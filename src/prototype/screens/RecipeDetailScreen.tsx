@@ -10,7 +10,7 @@ import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEdito
 import { formatIngredient } from "../ingredients";
 import { mealById, money, nutritionSourceSummary } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
-import { createRecommenderRecipe } from "../recommenderApi";
+import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
 import { fetchRecipeReviews, submitRecipeReview } from "../reviewsApi";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import type { TrackPrototypeEvent } from "../analytics";
@@ -452,6 +452,9 @@ export function RecipeDetailScreen({
           onConfirm={() => {
             if (isOwn) {
               setCustomRecipes((prev) => prev.filter((r) => r.id !== mealId));
+              deleteRecommenderRecipe(mealId).catch((error) => {
+                console.warn("Recipe could not be deleted from backend.", error);
+              });
               track("recipe_deleted", { meal_id: mealId });
               setScreen(backTo ?? "recipes");
             } else {
