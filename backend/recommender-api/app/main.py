@@ -226,6 +226,8 @@ async def get_recommendations(req: RecommendRequest, db: AsyncSession = Depends(
         n=req.n,
         deadline_stress=req.deadline_stress,
         exclude_ids=req.exclude_ids,
+        exploration_rate=req.exploration_rate,
+        temperature=req.temperature,
     )
     return [
         ScoredRecipe(
