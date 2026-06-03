@@ -1,15 +1,16 @@
-import { ArrowLeft, Clock3, Heart, MessageSquare, Pencil, Star } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, Clock3, MessageSquare, Pencil, Star, Trash2 } from "lucide-react";
 import { useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import type { Meal, RecipeReview, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { formatIngredient } from "../ingredients";
 import { mealById, money, nutritionSourceSummary } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
-import { createRecommenderRecipe } from "../recommenderApi";
+import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
 import { fetchRecipeReviews, submitRecipeReview } from "../reviewsApi";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import type { TrackPrototypeEvent } from "../analytics";
@@ -30,26 +31,30 @@ export function RecipeDetailScreen({
   mealId,
   customRecipes,
   setCustomRecipes,
+  discoverSaved,
+  setDiscoverSaved,
   setScreen,
   backTo,
   onSelectMeal,
-  savedRecipes,
-  setSavedRecipes,
   track,
 }: {
   mealId: string;
   customRecipes: Meal[];
   setCustomRecipes: StateSetter<Meal[]>;
+  discoverSaved: Meal[];
+  setDiscoverSaved: StateSetter<Meal[]>;
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
   onSelectMeal: (mealId: string) => void;
-  savedRecipes: Meal[];
-  setSavedRecipes: StateSetter<Meal[]>;
   track: TrackPrototypeEvent;
 }) {
   const meal = mealById(mealId, customRecipes);
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const isOwn = meal?.isUserCreated === true;
+  const isSaved = isOwn || discoverSaved.some((r) => r.id === mealId);
   const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
   // Reviews are owned by Firestore (issue #123): global and persistent, not part
   // of the local meal/session state.
@@ -228,21 +233,25 @@ export function RecipeDetailScreen({
         </AppButton>
         {!isEditing && (
           <div className="flex flex-wrap gap-3">
-            {savedRecipes.some((r) => r.id === selectedMeal.id) ? (
-              <AppButton variant="secondary" disabled>
-                <Heart size={16} className="fill-emerald-700 text-emerald-700" /> Saved
-              </AppButton>
-            ) : (
-              <AppButton variant="secondary" onClick={() => {
-                setSavedRecipes((recipes) => recipes.some((r) => r.id === selectedMeal.id) ? recipes : [...recipes, selectedMeal]);
-                track("recipe_saved_from_detail", { meal_id: selectedMeal.id });
-              }}>
-                <Heart size={16} /> Save recipe
-              </AppButton>
-            )}
             <AppButton variant="secondary" onClick={() => { track("recipe_edit_started", { meal_id: selectedMeal.id }); setIsEditing(true); }}>
               <Pencil size={16} /> Edit recipe
             </AppButton>
+            {isOwn ? (
+              <AppButton variant="danger" onClick={() => setConfirmDelete(true)}>
+                <Trash2 size={16} /> Delete recipe
+              </AppButton>
+            ) : isSaved ? (
+              <AppButton variant="secondary" onClick={() => setConfirmDelete(true)}>
+                <BookmarkCheck size={16} /> Unsave
+              </AppButton>
+            ) : (
+              <AppButton variant="secondary" onClick={() => {
+                setDiscoverSaved((prev) => [meal, ...prev]);
+                track("recipe_saved_from_detail", { meal_id: selectedMeal.id });
+              }}>
+                <Bookmark size={16} /> Save recipe
+              </AppButton>
+            )}
           </div>
         )}
       </div>
@@ -430,6 +439,33 @@ export function RecipeDetailScreen({
           </Card>
         </div>
       </div>
+
+      {confirmDelete && (
+        <ConfirmDialog
+          title={isOwn ? "Delete recipe?" : "Unsave recipe?"}
+          message={
+            isOwn
+              ? "This will permanently remove your recipe from your library."
+              : "This recipe will be removed from your saved list. You can save it again from Discover."
+          }
+          confirmLabel={isOwn ? "Delete" : "Unsave"}
+          onConfirm={() => {
+            if (isOwn) {
+              setCustomRecipes((prev) => prev.filter((r) => r.id !== mealId));
+              deleteRecommenderRecipe(mealId).catch((error) => {
+                console.warn("Recipe could not be deleted from backend.", error);
+              });
+              track("recipe_deleted", { meal_id: mealId });
+              setScreen(backTo ?? "recipes");
+            } else {
+              setDiscoverSaved((prev) => prev.filter((r) => r.id !== mealId));
+              track("recipe_unsaved_from_detail", { meal_id: mealId });
+              setConfirmDelete(false);
+            }
+          }}
+          onCancel={() => setConfirmDelete(false)}
+        />
+      )}
     </div>
   );
 }
