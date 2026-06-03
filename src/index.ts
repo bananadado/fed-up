@@ -146,6 +146,12 @@ const server = serve({
       },
     },
 
+    "/api/recommender/recipe/delete": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipeDelete", req);
+      },
+    },
+
     "/api/recommender/recommendations": {
       async POST(req) {
         return proxyToFirebaseFunction("deadlineFoodRecommendations", req);
