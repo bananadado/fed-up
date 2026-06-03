@@ -117,6 +117,8 @@ A Docker Compose stack running on `gru.end-pickerel.ts.net` (Tailscale). Accessi
 | API Docs (Swagger) | `http://gru.end-pickerel.ts.net:8100/docs` | Interactive API explorer |
 | API Health | `http://gru.end-pickerel.ts.net:8100/health` | Returns `{"status": "ok"}` |
 | Grafana | `http://gru.end-pickerel.ts.net:3001` | admin / `deadline-food-2026` |
+| Adminer (DB browser) | `http://gru.end-pickerel.ts.net:8101` | Postgres/pgvector web UI; log in with server `db`, user `recommender` |
+| Embedding visualiser | `http://gru.end-pickerel.ts.net:8102` | PCA(384→2) scatter of recipe + user taste embeddings |
 | Prometheus | `localhost:9090` (on server only) | Metrics store |
 | Loki | `localhost:3100` (on server only) | Log aggregation |
 | PostgreSQL | `localhost:5432` (on server only) | pgvector, user: `recommender` |
@@ -142,12 +144,13 @@ Directory structure:
 
 - `backend/recommender-api/` — FastAPI app + Dockerfile (builds `recommender-api` image)
 - `backend/db/` — PostgreSQL init schema + seed script
+- `backend/embedding-viz/` — FastAPI app that PCA-projects pgvector embeddings to a 2D scatter (builds `embedding-viz` image)
 - `backend/monitoring/` — Grafana dashboards, Prometheus, Loki, Promtail, nvidia-exporter configs
 - `backend/docker-compose.yml` — full stack definition
 - `backend/deploy.sh` — per-service restart script (logs deployments to Loki)
 - `backend/.env.example` — template for server-side `.env`
 
-CI/CD deploys only changed services: editing `backend/recommender-api/` restarts only `api`, editing `backend/monitoring/grafana/` restarts only `grafana`, etc. Deployment events appear as annotations on the Grafana dashboard.
+CI/CD deploys only changed services: editing `backend/recommender-api/` restarts only `api`, editing `backend/embedding-viz/` restarts only `embedding-viz`, editing `backend/monitoring/grafana/` restarts only `grafana`, etc. Editing `backend/docker-compose.yml` redeploys every service (including `adminer`, which has no source dir of its own). Deployment events appear as annotations on the Grafana dashboard.
 
 ### Firebase Commands
 
