@@ -112,7 +112,6 @@ export function Onboarding({
   const step2Ref = useRef<HTMLDivElement>(null);
   const [importMessage, setImportMessage] = useState("");
   const [importError, setImportError] = useState(false);
-  const [calendarImported, setCalendarImported] = useState(false);
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
@@ -130,7 +129,6 @@ export function Onboarding({
   }, [step]);
 
   function handleImportedEvents(events: CalendarEvent[], source: string) {
-    setCalendarImported(true);
     setCalendarEvents(events);
     const asDeadlines = calendarEventsToDeadlines(events);
     if (asDeadlines.length > 0) {
