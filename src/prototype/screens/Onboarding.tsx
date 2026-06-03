@@ -383,14 +383,16 @@ export function Onboarding({
               </div>
             )}
             <div className="mt-7 flex items-center justify-between">
-              <button
-                type="button"
-                className="text-sm text-stone-500 hover:text-stone-700"
-                onClick={() => { track("calendar_skip_button_clicked", { provider: calendarProvider }); setShowCalendarSkipConfirm(true); }}
-              >
-                Skip for now
-              </button>
-              <AppButton onClick={continueFromCalendarStep}>
+              {calendarEvents.length === 0 && (
+                <button
+                  type="button"
+                  className="text-sm text-stone-500 hover:text-stone-700"
+                  onClick={() => { track("calendar_skip_button_clicked", { provider: calendarProvider }); setShowCalendarSkipConfirm(true); }}
+                >
+                  Skip for now
+                </button>
+              )}
+              <AppButton disabled={calendarEvents.length === 0} onClick={continueFromCalendarStep} className="ml-auto">
                 Continue <ArrowRight size={16} />
               </AppButton>
             </div>
