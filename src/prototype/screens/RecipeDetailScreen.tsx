@@ -1,14 +1,16 @@
 import { ArrowLeft, MessageSquare, Pencil } from "lucide-react";
-import { useMemo, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import type { Meal, Screen } from "../types";
+import type { Meal, RecipeReview, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { formatIngredient } from "../ingredients";
 import { mealById, money, nutritionSourceSummary } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
+import { createRecommenderRecipe } from "../recommenderApi";
+import { fetchRecipeReviews, submitRecipeReview } from "../reviewsApi";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -45,14 +47,35 @@ export function RecipeDetailScreen({
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
+  // Reviews are owned by Firestore (issue #123): global and persistent, not part
+  // of the local meal/session state.
+  const [reviews, setReviews] = useState<RecipeReview[]>([]);
+  const [reviewsRating, setReviewsRating] = useState(0);
 
-  const computedRating = useMemo(() => {
-    if (!meal || meal.reviews.length === 0) {
-      return meal?.rating ?? 0;
-    }
+  useEffect(() => {
+    let cancelled = false;
 
-    return meal.reviews.reduce((sum, item) => sum + item.rating, 0) / meal.reviews.length;
-  }, [meal]);
+    fetchRecipeReviews(mealId)
+      .then((result) => {
+        if (!cancelled) {
+          setReviews(result.reviews);
+          setReviewsRating(result.rating);
+        }
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          console.warn("Recipe reviews could not be loaded.", error);
+          setReviews([]);
+          setReviewsRating(0);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [mealId]);
+
+  const computedRating = reviews.length > 0 ? reviewsRating : meal?.rating ?? 0;
 
   if (!meal) {
     return (
@@ -71,6 +94,13 @@ export function RecipeDetailScreen({
 
   function saveMeal(nextMeal: Meal) {
     setCustomRecipes((recipes) => [nextMeal, ...recipes.filter((recipe) => recipe.id !== nextMeal.id)]);
+    // Re-embed user-created recipes on edit. Seed recipes are shared across all
+    // users on the recommender, so we never overwrite them from a local edit.
+    if (nextMeal.isUserCreated) {
+      createRecommenderRecipe(nextMeal).catch((error) => {
+        console.warn("Recipe could not be embedded on the recommender.", error);
+      });
+    }
   }
 
   function handleEditSubmit(output: RecipeEditorOutput, photoUrl: string | undefined) {
@@ -136,20 +166,19 @@ export function RecipeDetailScreen({
       return;
     }
 
-    const nextReviews = [
-      {
-        id: `review-${Date.now()}`,
-        author: review.author.trim() || "You",
-        rating: Math.min(5, Math.max(1, Number(review.rating) || 5)),
-        comment,
-        date: new Date().toISOString().slice(0, 10),
-      },
-      ...selectedMeal.reviews,
-    ];
-    const nextRating = nextReviews.reduce((sum, item) => sum + item.rating, 0) / nextReviews.length;
+    const rating = Math.min(5, Math.max(1, Number(review.rating) || 5));
+    const author = review.author.trim() || "You";
 
-    saveMeal({ ...selectedMeal, reviews: nextReviews, rating: nextRating });
-    track("recipe_review_submitted", { meal_id: selectedMeal.id, rating: nextReviews[0]?.rating ?? 0 });
+    submitRecipeReview({ recipeId: selectedMeal.id, author, rating, comment })
+      .then((result) => {
+        setReviews(result.reviews);
+        setReviewsRating(result.rating);
+      })
+      .catch((error) => {
+        console.warn("Review could not be saved.", error);
+      });
+
+    track("recipe_review_submitted", { meal_id: selectedMeal.id, rating });
     setReview({ author: "You", rating: 5, comment: "" });
   }
 
@@ -322,17 +351,17 @@ export function RecipeDetailScreen({
           </form>
 
           <div className="mt-6 space-y-3">
-            {meal.reviews.length === 0 ? (
+            {reviews.length === 0 ? (
               <p className="rounded-lg bg-stone-50 p-4 text-sm text-stone-500">No reviews yet.</p>
             ) : (
-              meal.reviews.map((item) => (
+              reviews.map((item) => (
                 <div key={item.id} className="rounded-lg bg-stone-50 p-4">
                   <div className="flex justify-between gap-3">
                     <p className="font-semibold">{item.author}</p>
                     <p className="text-sm text-stone-500">{item.rating} / 5</p>
                   </div>
                   <p className="mt-2 text-sm text-stone-600">{item.comment}</p>
-                  <p className="mt-2 text-xs text-stone-400">{item.date}</p>
+                  <p className="mt-2 text-xs text-stone-400">{item.date.slice(0, 10)}</p>
                 </div>
               ))
             )}

@@ -157,6 +157,10 @@ async def create_user(user: UserIn, db: AsyncSession = Depends(get_db)):
         d,
     )
     await db.commit()
+    # Derive the ability profile from onboarding immediately so a freshly
+    # created user is embedded on creation (taste embedding fills in once
+    # interactions arrive).
+    await recompute_user_profile(db, user.id)
     return {"status": "ok", "user_id": user.id}
 
 

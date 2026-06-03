@@ -1,0 +1,6 @@
+# Runtime dependencies for the embedding visualiser.
+# Versions aligned with backend/recommender-api where shared.
+fastapi[standard]==0.116.0
+uvicorn[standard]==0.34.3
+asyncpg==0.30.0
+numpy==2.3.0

@@ -1,7 +1,6 @@
 import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
-import { seedMeals } from "./data";
-import type { Deadline, Meal, Preferences, RecipeIngredient } from "./types";
+import type { Deadline, Meal, MealSlot, Preferences, RecipeIngredient } from "./types";
 
 type RecommenderRecipe = {
   id: string;
@@ -27,8 +26,6 @@ type ScoredRecipe = {
 };
 
 export type RecommenderInteractionAction = "swipe_left" | "swipe_right";
-
-const seedMealIds = new Set(seedMeals.map((meal) => meal.id));
 
 async function readJson<T>(response: Response, label: string): Promise<T> {
   if (!response.ok) {
@@ -80,18 +77,29 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences)
   await readJson(response, "Recommender user sync");
 }
 
-function toPrototypeMeal(recipe: RecommenderRecipe): Meal | null {
-  const seedMeal = seedMeals.find((meal) => meal.id === recipe.id);
+/**
+ * Persist a user-created recipe on creation. The canonical recipe content is
+ * written to Firestore (issue #123) and the recommender embeds it keyed by the
+ * recipe UID — both handled by the deadlineFoodRecipeCreate function, which
+ * receives the canonical Meal and maps it to the recommender payload itself.
+ * Fire-and-forget at the call site.
+ */
+export async function createRecommenderRecipe(meal: Meal): Promise<void> {
+  const response = await fetch(functionUrl("deadlineFoodRecipeCreate", "/api/recommender/recipe"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(meal),
+  });
 
-  if (!seedMeal) {
-    return null;
-  }
+  await readJson(response, "Recommender recipe create");
+}
 
+function toPrototypeMeal(recipe: RecommenderRecipe): Meal {
   return {
-    ...seedMeal,
+    id: recipe.id,
     name: recipe.name,
     type: recipe.meal_type === "fallback" ? "fallback" : recipe.meal_type === "remix" ? "remix" : "cook",
-    mealSlots: recipe.meal_slots.filter((slot): slot is Meal["mealSlots"][number] =>
+    mealSlots: recipe.meal_slots.filter((slot): slot is MealSlot =>
       slot === "breakfast" || slot === "lunch" || slot === "dinner"
     ),
     time: recipe.prep_minutes,
@@ -100,9 +108,12 @@ function toPrototypeMeal(recipe: RecommenderRecipe): Meal | null {
     allergens: recipe.allergens,
     ingredients: recipe.ingredients,
     instructions: recipe.instructions,
-    nutrition: recipe.nutrition ?? seedMeal.nutrition,
-    source: recipe.source ?? seedMeal.source,
-    note: recipe.note ?? seedMeal.note,
+    nutrition: recipe.nutrition ?? { calories: 0, protein: 0, carbs: 0, fat: 0 },
+    rating: 0,
+    reviews: [],
+    source: recipe.source ?? "Recommender",
+    note: recipe.note ?? "",
+    image: "🍽️",
   };
 }
 
@@ -126,9 +137,7 @@ export async function fetchRecommenderRecommendations(input: {
   });
   const recipes = await readJson<ScoredRecipe[]>(response, "Recommendations");
 
-  return recipes
-    .map(({ recipe }) => toPrototypeMeal(recipe))
-    .filter((meal): meal is Meal => meal !== null);
+  return recipes.map(({ recipe }) => toPrototypeMeal(recipe));
 }
 
 export async function recordRecommenderInteraction(input: {
@@ -137,10 +146,6 @@ export async function recordRecommenderInteraction(input: {
   action: RecommenderInteractionAction;
   deadlines: Deadline[];
 }): Promise<void> {
-  if (!seedMealIds.has(input.recipeId)) {
-    return;
-  }
-
   const response = await fetch(functionUrl("deadlineFoodInteraction", "/api/recommender/interaction"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
