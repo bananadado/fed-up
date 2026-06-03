@@ -1,9 +1,9 @@
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowRight, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, TrendingDown, TrendingUp, X } from "lucide-react";
 import { useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import { getRecipeCatalogue } from "../recipeCatalogue";
-import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
+import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
 import { ingredientName } from "../ingredients";
 import { getMealById, money } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
@@ -13,6 +13,12 @@ export const slotLabels: Record<MealSlot, string> = {
   breakfast: "Breakfast",
   lunch: "Lunch",
   dinner: "Dinner",
+};
+
+export const mealTypeIcon: Record<string, React.ElementType> = {
+  cook: Flame,
+  fallback: ShoppingBag,
+  remix: Layers,
 };
 
 function priceDiff(newPrice: number, oldPrice: number) {
@@ -30,7 +36,7 @@ export function SwapModal({
   setPlan,
   prefs,
   customRecipes,
-  setScreen,
+  onSelectMeal,
   track,
 }: {
   rescueChoice: { day: string; slot: MealSlot };
@@ -39,16 +45,18 @@ export function SwapModal({
   setPlan: (plan: PlanEntry[]) => void;
   prefs: Preferences;
   customRecipes: Meal[];
-  setScreen: (screen: Screen) => void;
+  onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
-  const [browseMode, setBrowseMode] = useState(false);
+  const [search, setSearch] = useState("");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const originalDay = plan.find((entry) => entry.day === rescueChoice.day);
   const originalPlanMeal = originalDay?.meals.find((meal) => meal.slot === rescueChoice.slot);
   const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
-  const browseOptions = [...customRecipes, ...getRecipeCatalogue().filter((m) => !customRecipes.some((c) => c.id === m.id))]
+
+  const allOptions = [...customRecipes, ...getRecipeCatalogue().filter((m) => !customRecipes.some((c) => c.id === m.id))]
     .filter((meal) => meal.mealSlots.includes(rescueChoice.slot))
     .filter((meal) => meal.id !== originalPlanMeal?.mealId)
     .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
@@ -58,26 +66,28 @@ export function SwapModal({
       const bScore = b.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
       return bScore - aScore || a.time - b.time || a.price - b.price;
     });
-  const directOptions = browseOptions.slice(0, 2);
-  const replacement = directOptions[0];
+
+  const filteredOptions = search.trim()
+    ? allOptions.filter((m) => m.name.toLowerCase().includes(search.toLowerCase()))
+    : allOptions;
+
+  // selectedId=null means "use first option as default"
+  const effectiveId = selectedId ?? allOptions[0]?.id ?? null;
+  const selectedMeal = allOptions.find((m) => m.id === effectiveId) ?? allOptions[0] ?? null;
+
   const total = plan.reduce(
     (sum, entry) => sum + entry.meals.reduce((daySum, meal) => daySum + getMealById(meal.mealId, customRecipes).price, 0),
     0,
   );
-  const newTotal = originalMeal && replacement ? total - originalMeal.price + replacement.price : total;
+  const newTotal = originalMeal && selectedMeal ? total - originalMeal.price + selectedMeal.price : total;
 
   if (!originalMeal) return null;
 
-  function planTotalAfter(meal: Meal) {
-    return originalMeal ? total - originalMeal.price + meal.price : total;
-  }
-
   function closeAndReset() {
-    setBrowseMode(false);
     onClose();
   }
 
-  function confirmSwapWith(meal: Meal, source: "suggested" | "browse") {
+  function confirmSwapWith(meal: Meal) {
     setPlan(
       plan.map((entry) =>
         entry.day === rescueChoice.day
@@ -94,166 +104,192 @@ export function SwapModal({
       original_meal_id: originalPlanMeal?.mealId,
       replacement_meal_id: meal.id,
       minutes_saved: originalMeal ? Math.max(0, originalMeal.time - meal.time) : undefined,
-      source,
     });
     closeAndReset();
   }
 
-  function confirmSwap() {
-    if (!replacement) return;
-    confirmSwapWith(replacement, "suggested");
+  function viewRecipe(mealId: string) {
+    track("meal_swap_recipe_viewed", { meal_id: mealId, day: rescueChoice.day, meal_slot: rescueChoice.slot });
+    sessionStorage.setItem("deadlineFood:pendingRescueChoice", JSON.stringify(rescueChoice));
+    closeAndReset();
+    onSelectMeal(mealId);
   }
 
+  const budgetAfter = prefs.budget - newTotal;
+
   return (
-    <div className="fixed inset-0 z-40 flex items-end justify-center bg-stone-950/40 p-0 sm:items-center sm:p-5">
-      <Card className="w-full max-w-lg gap-0 overflow-y-auto rounded-t-lg bg-white p-6 shadow-2xl max-h-[90dvh] sm:rounded-lg">
-        {browseMode ? (
-          <>
-            <div className="flex justify-between">
-              <div>
-                <Badge tone="amber">{slotLabels[rescueChoice.slot]}</Badge>
-                <h2 className="mt-3 text-2xl font-bold">Choose a different meal</h2>
-              </div>
-              <button type="button" aria-label="Close option chooser" onClick={() => { track("meal_swap_cancelled", { action: "close", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }} className="h-fit rounded-lg p-2 hover:bg-stone-100">
-                <X size={18} />
-              </button>
+    <div className="fixed inset-0 z-40 flex items-end justify-center bg-stone-950/40 p-0 sm:items-center sm:p-5" onClick={() => { track("meal_swap_cancelled", { action: "backdrop", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }}>
+      <Card className="flex max-h-[92dvh] w-full max-w-lg flex-col gap-0 rounded-t-2xl bg-white shadow-2xl sm:rounded-lg" onClick={(e) => e.stopPropagation()}>
+
+        {/* Drag handle — mobile affordance */}
+        <div className="mx-auto mt-3 h-1 w-10 shrink-0 rounded-full bg-stone-200 sm:hidden" />
+
+        {/* Fixed header section — never scrolls */}
+        <div className="shrink-0 px-5 pt-4">
+
+          {/* Header */}
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <Badge tone="amber">{slotLabels[rescueChoice.slot]}</Badge>
+              <h2 className="mt-2 text-xl font-bold">Change this meal</h2>
             </div>
-            <p className="mt-2 text-stone-600">Your saved recipes and other suitable options for this slot.</p>
-            <div className="mt-5 max-h-80 space-y-3 overflow-y-auto">
-              {browseOptions.length > 0 ? (
-                browseOptions.map((meal) => (
-                  <div key={meal.id} className="rounded-lg border border-stone-200 bg-stone-50 p-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="break-words font-semibold">{meal.image} {meal.name}</p>
-                        <p className="mt-1 text-sm text-stone-500">{meal.source} · {meal.time} min · {money(meal.price)} · {priceDiff(meal.price, originalMeal.price).label}</p>
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={() => { track("meal_swap_cancelled", { action: "close", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }}
+              className="shrink-0 rounded-lg p-1.5 text-stone-400 hover:bg-stone-100"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Current meal */}
+          <div className="mt-4 rounded-lg bg-stone-50 px-3 py-2.5">
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Current</p>
+            <p className="break-words font-semibold text-stone-800">{originalMeal.image} {originalMeal.name}</p>
+            <div className="mt-1 flex items-center gap-3 text-xs text-stone-500">
+              <span className="flex items-center gap-1"><Clock3 size={12} /> {originalMeal.time} min</span>
+              <span>{money(originalMeal.price)}</span>
+            </div>
+          </div>
+
+          {/* Search */}
+          <div className="relative mt-3">
+            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search meals…"
+              className="w-full rounded-lg border border-stone-200 bg-white py-2.5 pl-8 pr-3 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20"
+            />
+          </div>
+        </div>
+
+        {/* Scrollable options list only */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-3 pt-3">
+          <div className="space-y-2">
+            {filteredOptions.length === 0 ? (
+              <p className="py-6 text-center text-sm text-stone-400">No matching meals found</p>
+            ) : (
+              filteredOptions.map((meal) => {
+                const isSelected = meal.id === effectiveId;
+                const diff = priceDiff(meal.price, originalMeal.price);
+                const DiffIcon = diff.sign === "saving" ? TrendingDown : diff.sign === "extra" ? TrendingUp : null;
+                const diffColor = diff.sign === "saving" ? "text-emerald-700" : diff.sign === "extra" ? "text-rose-600" : "text-stone-400";
+                const timeDiff = originalMeal.time - meal.time;
+
+                return (
+                  <div
+                    key={meal.id}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setSelectedId(meal.id)}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setSelectedId(meal.id); }}
+                    className={`cursor-pointer rounded-xl p-3 transition ${
+                      isSelected
+                        ? "border-2 border-emerald-400 bg-emerald-50"
+                        : "border border-stone-200 bg-stone-50 hover:border-stone-300 hover:bg-white"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
+                        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
+                          <span className="flex items-center gap-1"><Clock3 size={11} /> {meal.time} min</span>
+                          <span>{money(meal.price)}</span>
+                          {DiffIcon && (
+                            <span className={`flex items-center gap-0.5 font-medium ${diffColor}`}>
+                              <DiffIcon size={11} /> {diff.label}
+                            </span>
+                          )}
+                          <span className={`flex items-center gap-0.5 font-medium ${timeDiff > 0 ? "text-emerald-700" : timeDiff < 0 ? "text-rose-600" : "text-stone-400"}`}>
+                            <Clock3 size={11} /> {timeDiff >= 0 ? `saves ${timeDiff} min` : `${Math.abs(timeDiff)} min longer`}
+                          </span>
+                        </div>
                       </div>
-                      <AppButton className="shrink-0" onClick={() => { track("meal_swap_browse_option_selected", { day: rescueChoice.day, meal_slot: rescueChoice.slot, meal_id: meal.id }); confirmSwapWith(meal, "browse"); }}>
-                        Use
-                      </AppButton>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); viewRecipe(meal.id); }}
+                        className="shrink-0 rounded-lg border border-stone-200 bg-white p-1.5 text-stone-400 transition hover:border-emerald-300 hover:text-emerald-700"
+                        aria-label={`View ${meal.name} recipe`}
+                      >
+                        <Eye size={14} />
+                      </button>
                     </div>
                   </div>
-                ))
-              ) : (
-                <p className="rounded-lg bg-stone-50 p-4 text-sm text-stone-500">No alternatives found for your restrictions.</p>
-              )}
-            </div>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              <AppButton variant="secondary" className="flex-1" onClick={() => setBrowseMode(false)}>
-                <ArrowLeft size={15} /> Back
-              </AppButton>
-              <AppButton variant="secondary" className="flex-1" onClick={() => { track("meal_swap_discover_clicked", { day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); setScreen("recipes"); }}>
-                Find more on Recipes
-              </AppButton>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="flex justify-between">
-              <div>
-                <Badge tone="amber">{slotLabels[rescueChoice.slot]}</Badge>
-                <h2 className="mt-3 text-2xl font-bold">Change this meal</h2>
-              </div>
-              <button type="button" aria-label="Close option chooser" onClick={() => { track("meal_swap_cancelled", { action: "close", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }} className="h-fit rounded-lg p-2 hover:bg-stone-100">
-                <X size={18} />
-              </button>
-            </div>
-            <p className="mt-2 text-stone-600">Your budget and restrictions stay in view as you choose.</p>
-            <div className="mt-5 space-y-3">
-              <div className="rounded-lg bg-stone-50 p-4">
-                <p className="text-xs font-semibold uppercase text-stone-500">Original</p>
-                <div className="mt-2 flex justify-between gap-3">
-                  <p className="break-words font-semibold">{originalMeal.name}</p>
-                  <p className="text-sm">
-                    {originalMeal.time} min - {money(originalMeal.price)}
-                  </p>
-                </div>
-              </div>
-              {directOptions.length > 0 && (
-                <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-                  <p className="text-xs font-semibold uppercase text-emerald-700">Suggested suitable options</p>
-                  <div className="mt-3 space-y-3">
-                    {directOptions.map((meal, index) => {
-                      const optionTotal = planTotalAfter(meal);
-                      const optionRemaining = prefs.budget - optionTotal;
-
-                      return (
-                        <div key={meal.id} className="rounded-lg bg-white p-3 shadow-sm">
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="min-w-0">
-                              <div className="flex flex-wrap items-center gap-2">
-                                <p className="break-words font-semibold">
-                                  {meal.image} {meal.name}
-                                </p>
-                                {index === 0 && <Badge tone="green">Best fit</Badge>}
-                              </div>
-                              <p className="mt-1 text-sm text-stone-600">{meal.source}</p>
-                              <p className="mt-1 text-xs text-stone-500">
-                                {meal.time} min - {money(meal.price)} · {priceDiff(meal.price, originalMeal.price).label} · total {money(optionTotal)} · {optionRemaining >= 0 ? `${money(optionRemaining)} left` : `${money(Math.abs(optionRemaining))} over`}
-                              </p>
-                            </div>
-                            <AppButton className="shrink-0" onClick={() => confirmSwapWith(meal, "suggested")}>
-                              Use
-                            </AppButton>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-            {replacement && (
-              <div className="mt-5 rounded-lg bg-stone-900 p-4 text-center text-sm text-white">
-                <div className="grid gap-3 sm:grid-cols-3">
-                  <div>
-                    <p className="text-xs uppercase text-stone-400">Current plan</p>
-                    <p className="mt-1 font-semibold">{money(total)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase text-stone-400">After best fit</p>
-                    <p className="mt-1 font-semibold">{money(newTotal)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase text-stone-400">Budget left</p>
-                    <p className="mt-1 font-semibold">{prefs.budget - newTotal >= 0 ? money(prefs.budget - newTotal) : `${money(newTotal - prefs.budget)} over`}</p>
-                  </div>
-                </div>
-                <p className="mt-3 text-stone-300">
-                  {originalMeal.time - replacement.time > 0 ? (
-                    <>Best fit saves <strong className="text-white">{originalMeal.time - replacement.time} minutes</strong> compared with the original.</>
-                  ) : originalMeal.time - replacement.time < 0 ? (
-                    <>Best fit takes <strong className="text-white">{replacement.time - originalMeal.time} minutes longer</strong> than the original.</>
-                  ) : (
-                    <>Best fit takes the same time as the original.</>
-                  )}
-                  {" "}
-                  {(() => {
-                    const diff = priceDiff(replacement.price, originalMeal.price);
-                    return diff.sign === "saving" ? (
-                      <>You've <strong className="text-white">saved {money(Math.abs(replacement.price - originalMeal.price))}</strong> on this meal.</>
-                    ) : diff.sign === "extra" ? (
-                      <>You've <strong className="text-white">spent {money(replacement.price - originalMeal.price)} more</strong> on this meal.</>
-                    ) : (
-                      <>This meal costs the same.</>
-                    );
-                  })()}
-                </p>
-              </div>
+                );
+              })
             )}
-            <div className="mt-5 grid gap-3 sm:grid-cols-3">
-              <AppButton variant="secondary" className="flex-1" onClick={() => { track("meal_swap_cancelled", { action: "keep_original", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }}>
-                Keep original
-              </AppButton>
-              <AppButton variant="secondary" className="flex-1" onClick={() => { track("meal_swap_browse_clicked", { day: rescueChoice.day, meal_slot: rescueChoice.slot }); setBrowseMode(true); }}>
-                Browse options
-              </AppButton>
-              <AppButton className="flex-1" onClick={confirmSwap} disabled={!replacement}>
-                Use suggested
-              </AppButton>
-            </div>
-          </>
-        )}
+          </div>
+        </div>
+
+        {/* Fixed bottom — summary + actions always visible */}
+        <div className="shrink-0 border-t border-stone-100 px-5 pb-6 pt-3 sm:pb-4">
+
+          {/* Before / after summary */}
+          {selectedMeal && (() => {
+            const timeDiff = originalMeal.time - selectedMeal.time;
+            const pDiff = priceDiff(selectedMeal.price, originalMeal.price);
+            return (
+              <div className="mb-3 rounded-xl bg-emerald-900 p-4 text-white">
+                {/* Now → After + Budget left */}
+                <div className="flex items-end gap-3">
+                  <div>
+                    <p className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
+                      <ShoppingCart size={10} /> Now
+                    </p>
+                    <p className="mt-1 text-xl font-bold">{money(total)}</p>
+                  </div>
+                  <ArrowRight size={16} className="mb-1 shrink-0 text-emerald-500" />
+                  <div>
+                    <p className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
+                      After
+                    </p>
+                    <p className={`mt-1 text-xl font-bold ${newTotal < total ? "text-emerald-300" : newTotal > total ? "text-rose-300" : "text-white"}`}>
+                      {money(newTotal)}
+                    </p>
+                  </div>
+                  <div className="ml-auto text-right">
+                    <p className="flex items-center justify-end gap-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
+                      <PiggyBank size={10} /> Budget left
+                    </p>
+                    <p className={`mt-1 text-xl font-bold ${budgetAfter >= 0 ? "text-emerald-300" : "text-rose-300"}`}>
+                      {budgetAfter >= 0 ? money(budgetAfter) : `${money(Math.abs(budgetAfter))} over`}
+                    </p>
+                  </div>
+                </div>
+                {/* Time & price pills */}
+                <div className="mt-3 flex flex-wrap gap-2 border-t border-emerald-700/50 pt-3">
+                  <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${timeDiff > 0 ? "bg-emerald-700 text-emerald-100" : timeDiff < 0 ? "bg-rose-800/70 text-rose-200" : "bg-emerald-800 text-emerald-300"}`}>
+                    <Clock3 size={11} />
+                    {timeDiff >= 0 ? `saves ${timeDiff} min` : `${Math.abs(timeDiff)} min longer`}
+                  </span>
+                  <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${pDiff.sign === "saving" ? "bg-emerald-700 text-emerald-100" : pDiff.sign === "extra" ? "bg-rose-800/70 text-rose-200" : "bg-emerald-800 text-emerald-300"}`}>
+                    {pDiff.sign === "saving" ? <TrendingDown size={11} /> : pDiff.sign === "extra" ? <TrendingUp size={11} /> : null}
+                    {pDiff.sign === "saving"
+                      ? `saves ${money(Math.abs(selectedMeal.price - originalMeal.price))}`
+                      : pDiff.sign === "extra"
+                        ? `costs ${money(selectedMeal.price - originalMeal.price)} more`
+                        : "same price"}
+                  </span>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Actions */}
+          <div className="grid grid-cols-2 gap-3">
+            <AppButton
+              variant="secondary"
+              onClick={() => { track("meal_swap_cancelled", { action: "keep_original", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }}
+            >
+              Keep original
+            </AppButton>
+            <AppButton onClick={() => { if (selectedMeal) confirmSwapWith(selectedMeal); }} disabled={!selectedMeal}>
+              Use selected
+            </AppButton>
+          </div>
+        </div>
       </Card>
     </div>
   );

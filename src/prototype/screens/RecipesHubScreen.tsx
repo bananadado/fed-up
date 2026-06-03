@@ -1,7 +1,7 @@
 import { Plus, Sparkles, UtensilsCrossed } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
 
-import type { Deadline, Meal, PlanEntry, Preferences } from "../types";
+import type { Deadline, Meal, Preferences } from "../types";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { AppButton, Badge } from "../components/primitives";
 import { formatIngredient } from "../ingredients";
@@ -22,8 +22,6 @@ export function RecipesHubScreen({
   setDiscoverRejected,
   discoverReviewedRecipeIds,
   setDiscoverReviewedRecipeIds,
-  plan,
-  setPlan,
   prefs,
   deadlines,
   sessionId,
@@ -38,8 +36,6 @@ export function RecipesHubScreen({
   setDiscoverRejected: StateSetter<Meal[]>;
   discoverReviewedRecipeIds: string[];
   setDiscoverReviewedRecipeIds: StateSetter<string[]>;
-  plan: PlanEntry[];
-  setPlan: (plan: PlanEntry[]) => void;
   prefs: Preferences;
   deadlines: Deadline[];
   sessionId: string;
@@ -47,6 +43,7 @@ export function RecipesHubScreen({
   track: TrackPrototypeEvent;
 }) {
   const [tab, setTab] = useState<Tab>("saved");
+  const [savedSortBy, setSavedSortBy] = useState<"default" | "time" | "price" | "health">("default");
 
   function handleCreateRecipe(output: RecipeEditorOutput, photoUrl: string | undefined) {
     const instructions =
@@ -99,6 +96,12 @@ export function RecipesHubScreen({
   ];
 
   const allSaved = [...customRecipes, ...discoverSaved.filter((s) => !customRecipes.some((c) => c.id === s.id))];
+  const sortedSaved = [...allSaved].sort((a, b) => {
+    if (savedSortBy === "time") return a.time - b.time;
+    if (savedSortBy === "price") return a.price - b.price;
+    if (savedSortBy === "health") return b.nutrition.protein - a.nutrition.protein || a.price - b.price;
+    return 0;
+  });
 
   return (
     <div>
@@ -141,8 +144,22 @@ export function RecipesHubScreen({
               </div>
             </div>
           ) : (
+            <>
+              <div className="mb-4 flex flex-wrap items-center gap-2">
+                <span className="text-sm text-stone-500">Sort by</span>
+                {(["default", "time", "price", "health"] as const).map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => { track("saved_sort_changed", { sort_by: option }); setSavedSortBy(option); }}
+                    className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize transition ${savedSortBy === option ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                  >
+                    {option === "default" ? "Default" : option === "health" ? "Nutrition" : option.charAt(0).toUpperCase() + option.slice(1)}
+                  </button>
+                ))}
+              </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {allSaved.map((recipe) => {
+              {sortedSaved.map((recipe) => {
                 const isOwn = recipe.isUserCreated === true;
                 return (
                   <button
@@ -176,6 +193,7 @@ export function RecipesHubScreen({
                 <Plus size={16} /> Add recipe
               </button>
             </div>
+            </>
           )}
         </div>
       )}
@@ -186,8 +204,6 @@ export function RecipesHubScreen({
           deadlines={deadlines}
           sessionId={sessionId}
           customRecipes={customRecipes}
-          plan={plan}
-          setPlan={setPlan}
           saved={discoverSaved}
           setSaved={setDiscoverSaved}
           rejected={discoverRejected}

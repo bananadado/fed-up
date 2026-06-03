@@ -9,7 +9,6 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.goto("/");
 
   await expect(page.getByRole("heading", { name: /healthy meals that fit around coursework/i })).toBeVisible();
-  await expect(page.getByText(/meal planning for busy study weeks/i)).toBeVisible();
   await page.getByRole("button", { name: /build my meal plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
@@ -19,7 +18,7 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   const calendarWarning = page.getByRole("dialog", { name: /continue without a calendar/i });
   await expect(calendarWarning).toBeVisible();
   await expect(calendarWarning.getByText(/you can import calendar events any time through settings or the calendar menu/i)).toBeVisible();
-  await page.getByRole("button", { name: /continue without calendar/i }).click();
+  await page.getByRole("button", { name: /continue anyway/i }).click();
 
   await expect(page.getByRole("heading", { name: /about you/i })).toBeVisible();
   await page.getByLabel("Current cooking ability").click();
@@ -62,9 +61,9 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
   await page.getByRole("button", { name: /change meal/i }).first().click();
   await expect(page.getByRole("heading", { name: /change this meal/i })).toBeVisible();
-  await expect(page.getByText(/suggested suitable option/i)).toBeVisible();
-  await expect(page.getByText(/after best fit/i)).toBeVisible();
-  await page.getByRole("button", { name: /use suggested/i }).click();
+  await expect(page.getByRole("button", { name: /use selected/i })).toBeVisible();
+  await expect(page.getByText(/after/i)).toBeVisible();
+  await page.getByRole("button", { name: /use selected/i }).click();
   await expect(page.getByText("Rescued")).toBeVisible();
 
   await page.getByRole("button", { name: "Recipes", exact: true }).click();
@@ -228,8 +227,8 @@ test("dashboard meal cards have swap action that opens the swap modal", async ({
 
   await page.getByRole("button", { name: /change meal/i }).first().click();
   await expect(page.getByRole("heading", { name: /change this meal/i })).toBeVisible();
-  await expect(page.getByText(/suggested suitable option/i)).toBeVisible();
-  await page.getByRole("button", { name: /use suggested/i }).click();
+  await expect(page.getByRole("button", { name: /use selected/i })).toBeVisible();
+  await page.getByRole("button", { name: /use selected/i }).click();
   await expect(page.getByRole("heading", { name: /change this meal/i })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
 });

@@ -1,5 +1,3 @@
-import { Wallet } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import type { Meal, PlanEntry } from "../types";
 import { getMealById, money } from "../utils";
@@ -22,12 +20,9 @@ export function BudgetCard({
 
   return (
     <div className="rounded-lg bg-emerald-800 p-5 text-white">
-      <div className="flex justify-between">
-        <div>
-          <p className="text-sm text-emerald-100">Planned spend</p>
-          <p className="mt-1 text-3xl font-bold">{money(total)}</p>
-        </div>
-        <Wallet className="text-emerald-200" />
+      <div>
+        <p className="text-sm text-emerald-100">Planned spend</p>
+        <p className="mt-1 text-3xl font-bold">{money(total)}</p>
       </div>
       <div className="mt-5 h-2 overflow-hidden rounded-full bg-emerald-950/40">
         <div className={cn("h-full rounded-full", remaining >= 0 ? "bg-emerald-200" : "bg-rose-300")} style={{ width: `${percent}%` }} />
