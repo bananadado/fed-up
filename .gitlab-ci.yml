@@ -138,7 +138,7 @@ recommender_api_tests:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - backend/recommender-api/**/*
-    - if: '$CI_COMMIT_BRANCH'
+    - if: "$CI_COMMIT_BRANCH"
       changes:
         - backend/recommender-api/**/*
     - when: never
