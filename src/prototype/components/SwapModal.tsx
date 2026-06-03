@@ -110,6 +110,7 @@ export function SwapModal({
 
   function viewRecipe(mealId: string) {
     track("meal_swap_recipe_viewed", { meal_id: mealId, day: rescueChoice.day, meal_slot: rescueChoice.slot });
+    sessionStorage.setItem("deadlineFood:pendingRescueChoice", JSON.stringify(rescueChoice));
     closeAndReset();
     onSelectMeal(mealId);
   }
@@ -117,17 +118,17 @@ export function SwapModal({
   const budgetAfter = prefs.budget - newTotal;
 
   return (
-    <div className="fixed inset-0 z-40 flex items-end justify-center bg-stone-950/40 p-0 sm:items-center sm:p-5">
-      <Card className="flex max-h-[92dvh] w-full max-w-lg flex-col gap-0 rounded-t-2xl bg-white shadow-2xl sm:rounded-lg">
+    <div className="fixed inset-0 z-40 flex items-end justify-center bg-stone-950/40 p-0 sm:items-center sm:p-5" onClick={() => { track("meal_swap_cancelled", { action: "backdrop", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }}>
+      <Card className="flex max-h-[92dvh] w-full max-w-lg flex-col gap-0 rounded-t-2xl bg-white shadow-2xl sm:rounded-lg" onClick={(e) => e.stopPropagation()}>
 
         {/* Drag handle — mobile affordance */}
         <div className="mx-auto mt-3 h-1 w-10 shrink-0 rounded-full bg-stone-200 sm:hidden" />
 
-        {/* Scrollable top section */}
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pb-3 pt-4">
+        {/* Fixed header section — never scrolls */}
+        <div className="shrink-0 px-5 pt-4">
 
           {/* Header */}
-          <div className="flex shrink-0 items-start justify-between gap-3">
+          <div className="flex items-start justify-between gap-3">
             <div>
               <Badge tone="amber">{slotLabels[rescueChoice.slot]}</Badge>
               <h2 className="mt-2 text-xl font-bold">Change this meal</h2>
@@ -143,7 +144,7 @@ export function SwapModal({
           </div>
 
           {/* Current meal */}
-          <div className="mt-4 shrink-0 rounded-lg bg-stone-50 px-3 py-2.5">
+          <div className="mt-4 rounded-lg bg-stone-50 px-3 py-2.5">
             <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Current</p>
             <p className="break-words font-semibold text-stone-800">{originalMeal.image} {originalMeal.name}</p>
             <div className="mt-1 flex items-center gap-3 text-xs text-stone-500">
@@ -153,7 +154,7 @@ export function SwapModal({
           </div>
 
           {/* Search */}
-          <div className="relative mt-3 shrink-0">
+          <div className="relative mt-3">
             <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
             <input
               value={search}
@@ -162,9 +163,11 @@ export function SwapModal({
               className="w-full rounded-lg border border-stone-200 bg-white py-2.5 pl-8 pr-3 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20"
             />
           </div>
+        </div>
 
-          {/* Options list — grows to fill space */}
-          <div className="mt-3 space-y-2">
+        {/* Scrollable options list only */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-3 pt-3">
+          <div className="space-y-2">
             {filteredOptions.length === 0 ? (
               <p className="py-6 text-center text-sm text-stone-400">No matching meals found</p>
             ) : (

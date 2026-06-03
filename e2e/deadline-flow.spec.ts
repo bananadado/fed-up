@@ -18,7 +18,7 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   const calendarWarning = page.getByRole("dialog", { name: /continue without a calendar/i });
   await expect(calendarWarning).toBeVisible();
   await expect(calendarWarning.getByText(/you can import calendar events any time through settings or the calendar menu/i)).toBeVisible();
-  await page.getByRole("button", { name: /continue without calendar/i }).click();
+  await page.getByRole("button", { name: /continue anyway/i }).click();
 
   await expect(page.getByRole("heading", { name: /about you/i })).toBeVisible();
   await page.getByLabel("Current cooking ability").click();

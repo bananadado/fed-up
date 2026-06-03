@@ -35,7 +35,16 @@ export function PlanScreen({
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
-  const [rescueChoice, setRescueChoice] = useState<RescueChoice>(null);
+  const [rescueChoice, setRescueChoice] = useState<RescueChoice>(() => {
+    try {
+      const saved = sessionStorage.getItem("deadlineFood:pendingRescueChoice");
+      if (saved) {
+        sessionStorage.removeItem("deadlineFood:pendingRescueChoice");
+        return JSON.parse(saved) as RescueChoice;
+      }
+    } catch { /* sessionStorage unavailable */ }
+    return null;
+  });
   const [shoppingOpen, setShoppingOpen] = useState(false);
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);

@@ -369,7 +369,7 @@ export function Onboarding({
                   Go back
                 </AppButton>
                 <AppButton type="button" className="justify-center" onClick={confirmCalendarSkip}>
-                  Continue without calendar
+                  Continue anyway
                 </AppButton>
               </div>
             </div>
