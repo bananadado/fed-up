@@ -4,9 +4,10 @@ import { Import, RotateCcw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, universities } from "../data";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
@@ -199,11 +200,10 @@ export function SettingsScreen({
             </div>
           </label>
           <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("settings_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
-          <SelectField
+          <UniversityField
             label="Your university"
             value={prefs.university}
             onChange={(university) => { track("settings_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
-            options={universities.map((university) => ({ value: university, label: university }))}
           />
           <SelectField
             label="Cooking ability"

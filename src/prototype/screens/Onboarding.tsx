@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions, universities } from "../data";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
@@ -73,6 +74,7 @@ export function Onboarding({
   prefs,
   setPrefs,
   setDeadlines,
+  calendarEvents,
   setCalendarEvents,
   selectedSources,
   setSelectedSources,
@@ -89,8 +91,8 @@ export function Onboarding({
   setScreen: (screen: Screen) => void;
   prefs: Preferences;
   setPrefs: (prefs: Preferences) => void;
-  deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
+  calendarEvents: CalendarEvent[];
   setCalendarEvents: (events: CalendarEvent[]) => void;
   selectedSources: string[];
   setSelectedSources: (sources: string[]) => void;
@@ -114,6 +116,7 @@ export function Onboarding({
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
   const [step1Attempted, setStep1Attempted] = useState(false);
   const [step2Attempted, setStep2Attempted] = useState(false);
+  const [showCalendarSkipConfirm, setShowCalendarSkipConfirm] = useState(false);
 
   function goToStep(nextStep: number) {
     setStep(nextStep);
@@ -131,7 +134,7 @@ export function Onboarding({
       setDeadlines(asDeadlines);
       setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
     } else {
-      setImportMessage("No events found. Showing the example deadline week instead.");
+      setImportMessage("No calendar events were found in that import.");
     }
     track("calendar_imported", { source, event_count: events.length });
   }
@@ -245,6 +248,24 @@ export function Onboarding({
     setScreen("dashboard");
   }
 
+  function continueFromCalendarStep() {
+    if (calendarEvents.length === 0) {
+      track("calendar_skip_confirmation_shown", { provider: calendarProvider });
+      setShowCalendarSkipConfirm(true);
+      return;
+    }
+
+    track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider });
+    goToStep(1);
+  }
+
+  function confirmCalendarSkip() {
+    track("calendar_skip_confirmed", { provider: calendarProvider });
+    setShowCalendarSkipConfirm(false);
+    track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider, calendar_skipped: true });
+    goToStep(1);
+  }
+
   return (
     <div className="min-h-screen bg-[#faf9f5] px-4 py-7 sm:px-6">
       <div className="mx-auto max-w-3xl">
@@ -318,11 +339,41 @@ export function Onboarding({
             </div>
             {importMessage && <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
             <div className="mt-7 flex justify-end">
-              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); goToStep(1); }}>
+              <AppButton onClick={continueFromCalendarStep}>
                 Continue <ArrowRight size={16} />
               </AppButton>
             </div>
           </Card>
+        )}
+        {showCalendarSkipConfirm && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="calendar-skip-title"
+            className="fixed inset-0 z-50 grid place-items-center bg-stone-950/45 px-4"
+          >
+            <div className="w-full max-w-md rounded-lg border border-amber-200 bg-white p-6 shadow-xl">
+              <div className="flex gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+                  <AlertTriangle size={20} />
+                </div>
+                <div>
+                  <h3 id="calendar-skip-title" className="text-lg font-bold text-stone-950">Continue without a calendar?</h3>
+                  <p className="mt-2 text-sm leading-6 text-stone-600">
+                    No calendar has been imported, so Autopilot will not adapt meals around your real events yet. You can import calendar events any time through Settings or the Calendar menu.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <AppButton type="button" variant="secondary" className="justify-center" onClick={() => setShowCalendarSkipConfirm(false)}>
+                  Go back
+                </AppButton>
+                <AppButton type="button" className="justify-center" onClick={confirmCalendarSkip}>
+                  Continue without calendar
+                </AppButton>
+              </div>
+            </div>
+          </div>
         )}
         {step === 1 && (
           <Card key={animationKey} ref={step1Ref} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
@@ -491,11 +542,10 @@ export function Onboarding({
                     error={step2Attempted && !prefs.kitchen}
                     errorMessage="Please select your kitchen access"
                   />
-                  <SelectField
+                  <UniversityField
                     label="Your university"
                     value={prefs.university}
                     onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
-                    options={universities.map((university) => ({ value: university, label: university }))}
                     required
                     error={step2Attempted && !prefs.university}
                     errorMessage="Please select your university"
