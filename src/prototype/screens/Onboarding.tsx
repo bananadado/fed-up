@@ -129,11 +129,15 @@ export function Onboarding({
   sessionId: string;
   track: TrackPrototypeEvent;
 }) {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem("deadlineFood:onboardingStep");
+      if (saved !== null) { const n = parseInt(saved, 10); if (n >= 0 && n <= 2) return n; }
+    } catch { /* sessionStorage unavailable */ }
+    return 0;
+  });
   const [animationKey, setAnimationKey] = useState(0);
   const fileRef = useRef<HTMLInputElement | null>(null);
-  const step1Ref = useRef<HTMLDivElement>(null);
-  const step2Ref = useRef<HTMLDivElement>(null);
   const [importMessage, setImportMessage] = useState("");
   const [importError, setImportError] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -143,12 +147,15 @@ export function Onboarding({
   const [step1Attempted, setStep1Attempted] = useState(false);
   const [step2Attempted, setStep2Attempted] = useState(false);
   const [showCalendarSkipConfirm, setShowCalendarSkipConfirm] = useState(false);
+  const [showStep1SkipConfirm, setShowStep1SkipConfirm] = useState(false);
+  const [showStep2SkipConfirm, setShowStep2SkipConfirm] = useState(false);
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
 
   function goToStep(nextStep: number) {
     setStep(nextStep);
     setAnimationKey(k => k + 1);
+    try { sessionStorage.setItem("deadlineFood:onboardingStep", String(nextStep)); } catch { /* ignore */ }
   }
 
   useEffect(() => {
@@ -258,17 +265,8 @@ export function Onboarding({
     setPrefs({ ...prefs, availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
   }
 
-  function scrollToFirstError(container: HTMLElement | null) {
-    requestAnimationFrame(() => {
-      const firstError = container?.querySelector("[data-field-error] input, [data-field-error] button");
-      if (firstError instanceof HTMLElement) {
-        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-        firstError.focus({ preventScroll: true });
-      }
-    });
-  }
-
   function finish() {
+    try { sessionStorage.removeItem("deadlineFood:onboardingStep"); } catch { /* ignore */ }
     track("onboarding_completed", {
       recipe_sources: selectedSources,
       dietary_requirements: prefs.dietary,
@@ -433,18 +431,9 @@ export function Onboarding({
                 })()}
               </div>
             )}
-            <div className="mt-7 flex items-center justify-between">
-              {calendarEvents.length === 0 && (
-                <button
-                  type="button"
-                  className="text-sm text-stone-500 hover:text-stone-700"
-                  onClick={() => { track("calendar_skip_button_clicked", { provider: calendarProvider }); setShowCalendarSkipConfirm(true); }}
-                >
-                  Skip for now
-                </button>
-              )}
-              <AppButton disabled={calendarEvents.length === 0} onClick={continueFromCalendarStep} className="ml-auto">
-                Continue <ArrowRight size={16} />
+            <div className="mt-7 flex justify-end">
+              <AppButton variant={calendarEvents.length === 0 ? "secondary" : undefined} onClick={continueFromCalendarStep}>
+                {calendarEvents.length === 0 ? "Skip for now" : "Continue"} <ArrowRight size={16} />
               </AppButton>
             </div>
           </Card>
@@ -479,8 +468,82 @@ export function Onboarding({
             </div>
           </div>
         )}
+        {showStep1SkipConfirm && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="step1-skip-title"
+            className="fixed inset-0 z-50 grid place-items-center bg-stone-950/45 px-4"
+          >
+            <div className="w-full max-w-md rounded-lg border border-amber-200 bg-white p-6 shadow-xl">
+              <div className="flex gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+                  <AlertTriangle size={20} />
+                </div>
+                <div>
+                  <h3 id="step1-skip-title" className="text-lg font-bold text-stone-950">Skip cooking ability?</h3>
+                  <p className="mt-2 text-sm leading-6 text-stone-600">
+                    Your cooking level helps us filter out recipes that are too complex or time-consuming. Without it, suggestions may not match what you can realistically make. You can set it any time in Settings.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <AppButton type="button" variant="secondary" className="justify-center" onClick={() => setShowStep1SkipConfirm(false)}>
+                  Go back
+                </AppButton>
+                <AppButton type="button" className="justify-center" onClick={() => {
+                  setShowStep1SkipConfirm(false);
+                  track("onboarding_step_completed", { step: 1, next_step: 2, skipped_cooking_ability: true });
+                  goToStep(2);
+                }}>
+                  Continue anyway
+                </AppButton>
+              </div>
+            </div>
+          </div>
+        )}
+        {showStep2SkipConfirm && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="step2-skip-title"
+            className="fixed inset-0 z-50 grid place-items-center bg-stone-950/45 px-4"
+          >
+            <div className="w-full max-w-md rounded-lg border border-amber-200 bg-white p-6 shadow-xl">
+              <div className="flex gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+                  <AlertTriangle size={20} />
+                </div>
+                <div>
+                  <h3 id="step2-skip-title" className="text-lg font-bold text-stone-950">
+                    {!prefs.kitchen && !prefs.university ? "Skip kitchen access and university?" : !prefs.kitchen ? "Skip kitchen access?" : "Skip university?"}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-stone-600">
+                    {!prefs.kitchen && !prefs.university
+                      ? "Kitchen access and university help us suggest meals that fit your actual setup and find campus fallback options."
+                      : !prefs.kitchen
+                        ? "Kitchen access helps us avoid suggesting recipes you can't make where you are."
+                        : "Your university helps us find campus meal fallbacks near you."
+                    }{" "}You can set {!prefs.kitchen && !prefs.university ? "them" : "it"} any time in Settings.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <AppButton type="button" variant="secondary" className="justify-center" onClick={() => setShowStep2SkipConfirm(false)}>
+                  Go back
+                </AppButton>
+                <AppButton type="button" className="justify-center" onClick={() => {
+                  setShowStep2SkipConfirm(false);
+                  finish();
+                }}>
+                  Continue anyway
+                </AppButton>
+              </div>
+            </div>
+          </div>
+        )}
         {step === 1 && (
-          <Card key={animationKey} ref={step1Ref} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 2 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">About you</h2>
             <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
@@ -559,11 +622,6 @@ export function Onboarding({
                 />
               </PreferenceSection>
             </div>
-            {step1Attempted && !prefs.cookingAbility && (
-              <p className="mt-5 text-center text-sm font-medium text-red-600">
-                Please fill in all required fields
-              </p>
-            )}
             <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
               <p className="mb-3 text-sm text-stone-600 sm:mb-0">You can update these any time in settings.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
@@ -573,7 +631,7 @@ export function Onboarding({
                 <AppButton className="justify-center py-3" onClick={() => {
                   if (!prefs.cookingAbility) {
                     setStep1Attempted(true);
-                    scrollToFirstError(step1Ref.current);
+                    setShowStep1SkipConfirm(true);
                     return;
                   }
                   track("onboarding_step_completed", { step: 1, next_step: 2 });
@@ -586,7 +644,7 @@ export function Onboarding({
           </Card>
         )}
         {step === 2 && (
-          <Card key={animationKey} ref={step2Ref} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 3 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
@@ -718,11 +776,6 @@ export function Onboarding({
                 </div>
               </PreferenceSection>
             </div>
-            {step2Attempted && (!prefs.kitchen || !prefs.university) && (
-              <p className="mt-5 text-center text-sm font-medium text-red-600">
-                Please fill in all required fields
-              </p>
-            )}
             <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
               <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Create your deadline-week plan when everything looks right.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
@@ -732,7 +785,7 @@ export function Onboarding({
                 <AppButton className="justify-center py-3" onClick={() => {
                   if (!prefs.kitchen || !prefs.university) {
                     setStep2Attempted(true);
-                    scrollToFirstError(step2Ref.current);
+                    setShowStep2SkipConfirm(true);
                     return;
                   }
                   finish();
