@@ -12,13 +12,13 @@ import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
-  calendarEventsToDeadlines,
   icsSubscriptionHints,
   importFromSubscriptionUrl,
   importGoogleCalendar,
   importOutlookCalendar,
   isSubscriptionUrl,
   parseICSText,
+  resolveDeadlinesFromEvents,
 } from "../calendarImport";
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
@@ -63,9 +63,9 @@ export function SettingsScreen({
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
 
-  function handleImportedEvents(events: CalendarEvent[], source: string) {
+  async function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
-    const asDeadlines = calendarEventsToDeadlines(events);
+    const asDeadlines = await resolveDeadlinesFromEvents(events);
     if (asDeadlines.length > 0) {
       setDeadlines(asDeadlines);
       setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
@@ -81,7 +81,7 @@ export function SettingsScreen({
     const reader = new FileReader();
     reader.onload = () => {
       const events = parseICSText(String(reader.result));
-      handleImportedEvents(events, "ics");
+      void handleImportedEvents(events, "ics");
     };
     reader.readAsText(file);
   }
@@ -95,7 +95,7 @@ export function SettingsScreen({
       const result = calendarProvider === "google"
         ? await importGoogleCalendar(sessionId)
         : await importOutlookCalendar(sessionId);
-      handleImportedEvents(result.events, calendarProvider);
+      await handleImportedEvents(result.events, calendarProvider);
       if (result.refreshToken) {
         const provider = calendarProvider as "google" | "outlook";
         const newToken: CalendarToken = {
@@ -126,7 +126,7 @@ export function SettingsScreen({
 
     try {
       const events = await importFromSubscriptionUrl(subscriptionUrl, calendarProvider);
-      handleImportedEvents(events, calendarProvider);
+      await handleImportedEvents(events, calendarProvider);
       const newSub: IcsSubscription = { url: subscriptionUrl.trim(), source: calendarProvider, addedAt: new Date().toISOString() };
       setIcsSubscriptions([...icsSubscriptions.filter((s) => s.url !== newSub.url), newSub]);
     } catch (error) {

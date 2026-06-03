@@ -1,5 +1,6 @@
 import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
+import { requestDeadlineContext, type ContextEventInput } from "./calendarImport";
 import type { Deadline, Meal, MealSlot, Preferences, RecipeIngredient } from "./types";
 
 type RecommenderRecipe = {
@@ -54,6 +55,43 @@ export function deadlineStressFromDeadlines(deadlines: Deadline[]): number {
     }, 0);
 
   return Math.min(1, total / 3);
+}
+
+/** Reconstruct a minimal context event from a deadline so the backend pipeline
+ * can re-score it. Deadlines without a concrete date can't be placed. */
+function deadlineToContextEvent(deadline: Deadline): ContextEventInput | null {
+  if (!deadline.rawDate) return null;
+  const hasClockTime = /^\d{2}:\d{2}$/.test(deadline.time);
+  return {
+    title: deadline.title,
+    start: hasClockTime ? `${deadline.rawDate}T${deadline.time}:00` : deadline.rawDate,
+    all_day: !hasClockTime,
+  };
+}
+
+/**
+ * Resolve today's cooking-pressure score for the recommender. Prefers the
+ * backend #65 per-day stress (which also weighs calendar density, meetings and
+ * late events), falling back to the local urgency heuristic when the deadline
+ * context endpoint is unavailable or no dated deadlines exist.
+ */
+export async function resolveDeadlineStress(deadlines: Deadline[]): Promise<number> {
+  const events = deadlines
+    .map(deadlineToContextEvent)
+    .filter((event): event is ContextEventInput => event !== null);
+
+  if (events.length === 0) {
+    return deadlineStressFromDeadlines(deadlines);
+  }
+
+  try {
+    const context = await requestDeadlineContext(events);
+    const today = context.days[0];
+    return typeof today?.stress === "number" ? today.stress : deadlineStressFromDeadlines(deadlines);
+  } catch (error) {
+    console.warn("Deadline context unavailable; using local stress heuristic.", error);
+    return deadlineStressFromDeadlines(deadlines);
+  }
 }
 
 export async function syncRecommenderUser(sessionId: string, prefs: Preferences): Promise<void> {
@@ -127,13 +165,15 @@ export async function fetchRecommenderRecommendations(input: {
 }): Promise<Meal[]> {
   await syncRecommenderUser(input.sessionId, input.prefs);
 
+  const deadlineStress = await resolveDeadlineStress(input.deadlines);
+
   const response = await fetch(functionUrl("deadlineFoodRecommendations", "/api/recommender/recommendations"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       user_id: input.sessionId,
       n: 100,
-      deadline_stress: deadlineStressFromDeadlines(input.deadlines),
+      deadline_stress: deadlineStress,
       exclude_ids: input.excludeIds,
     }),
   });
