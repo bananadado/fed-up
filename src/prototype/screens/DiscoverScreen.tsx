@@ -2,7 +2,7 @@ import { Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Deadline, Meal, PlanEntry, Preferences } from "../types";
+import type { Deadline, Meal, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, money, ingredientNames } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
@@ -29,8 +29,6 @@ export function DiscoverScreen({
   deadlines,
   sessionId,
   customRecipes,
-  setPlan,
-  plan,
   saved,
   setSaved,
   rejected,
@@ -44,8 +42,6 @@ export function DiscoverScreen({
   deadlines: Deadline[];
   sessionId: string;
   customRecipes: Meal[];
-  setPlan: (plan: PlanEntry[]) => void;
-  plan: PlanEntry[];
   saved: Meal[];
   setSaved: StateSetter<Meal[]>;
   rejected: Meal[];
@@ -65,7 +61,6 @@ export function DiscoverScreen({
     ...customRecipes,
     ...(recommendedRecipes ?? []).filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id)),
   ];
-  const [sortBy, setSortBy] = useState<"priority" | "time" | "price" | "health">("priority");
 
   useEffect(() => {
     let cancelled = false;
@@ -97,14 +92,9 @@ export function DiscoverScreen({
     };
   }, [deadlines, prefs, reviewedRecipeIds, saved, rejected, sessionId]);
 
-  function sortComparator(a: Meal, b: Meal): number {
-    if (sortBy === "time") return a.time - b.time;
-    if (sortBy === "price") return a.price - b.price;
-    if (sortBy === "health") return b.nutrition.protein - a.nutrition.protein || a.price - b.price;
-    return Number(b.tags.includes("high protein")) - Number(a.tags.includes("high protein")) || a.time - b.time;
-  }
-  const sortedQueue = candidateRecipes.filter((meal) => !reviewedRecipeIdSet.has(meal.id)).sort(sortComparator);
-  const sortedSaved = [...saved].sort(sortComparator);
+  const sortedQueue = candidateRecipes
+    .filter((meal) => !reviewedRecipeIdSet.has(meal.id))
+    .sort((a, b) => Number(b.tags.includes("high protein")) - Number(a.tags.includes("high protein")) || a.time - b.time);
   const current = sortedQueue[0];
 
   function decideCurrentRecipe(like: boolean) {
@@ -130,33 +120,11 @@ export function DiscoverScreen({
     }
   }
 
-  function undo(meal: Meal) {
-    setRejected((recipes) => recipes.filter((m) => m.id !== meal.id));
-    setReviewedRecipeIds((ids) => ids.filter((id) => id !== meal.id));
-    track("discover_recipe_undo", { meal_id: meal.id });
-  }
-
   function restartReviewQueue() {
     const savedRecipeIds = new Set(saved.map((meal) => meal.id));
     setReviewedRecipeIds([]);
     setRejected([]);
     track("discover_queue_restarted", { queue_size: candidateRecipes.filter((meal) => !savedRecipeIds.has(meal.id)).length });
-  }
-
-  function addToPlan(meal: Meal) {
-    const targetSlot = meal.mealSlots.includes("dinner") ? "dinner" : (meal.mealSlots[0] ?? "dinner");
-
-    setPlan(
-      plan.map((entry, index) =>
-        index === 1
-          ? {
-              ...entry,
-              meals: entry.meals.map((planMeal) => (planMeal.slot === targetSlot ? { ...planMeal, mealId: meal.id } : planMeal)),
-            }
-          : entry,
-      ),
-    );
-    track("discover_recipe_added_to_plan", { meal_id: meal.id, target_day_index: 1, meal_slot: targetSlot });
   }
 
   return (
@@ -166,21 +134,8 @@ export function DiscoverScreen({
         <p className="mt-2 text-stone-600">
           Save or pass on each option. Every suggestion respects your {formatCookingLimit(prefs.maxTime).toLowerCase()} cooking limit or is a nearby campus fallback.
         </p>
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <span className="text-sm text-stone-500">Sort by</span>
-          {(["priority", "time", "price", "health"] as const).map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => { track("discover_sort_changed", { sort_by: option }); setSortBy(option); }}
-              className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize ${sortBy === option ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 bg-white text-stone-600"}`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
       </div>
-      <div className="grid gap-8 lg:grid-cols-[420px_1fr]">
+      <div className="mx-auto max-w-[480px]">
         <div>
           {current ? (
             <Card className="gap-0 overflow-hidden rounded-lg border-stone-200 bg-white shadow-sm">
@@ -250,67 +205,6 @@ export function DiscoverScreen({
             </Card>
           )}
         </div>
-        <Card className="gap-0 rounded-lg border-stone-200 bg-white p-5">
-          <div className="flex items-baseline gap-2">
-            <h2 className="font-bold">Saved recipes</h2>
-            {saved.length > 0 && <span className="text-sm text-stone-400">{saved.length}</span>}
-          </div>
-          <div className="mt-4 space-y-3">
-            {rejected.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-xs font-semibold uppercase text-stone-400">Recently passed</p>
-                {rejected.map((meal) => (
-                  <div key={meal.id} className="grid gap-3 rounded-lg bg-rose-50 p-3 sm:grid-cols-[1fr_auto_auto] sm:items-center">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        {meal.photoUrl ? (
-                          <img src={meal.photoUrl} alt={meal.name} className="h-8 w-8 shrink-0 rounded object-cover" />
-                        ) : (
-                          <span className="shrink-0 text-xl">{meal.image}</span>
-                        )}
-                        <button type="button" onClick={() => onSelectMeal(meal.id)} className="break-words text-left font-semibold text-stone-800 hover:text-emerald-700 hover:underline">
-                          {meal.name}
-                        </button>
-                      </div>
-                      <p className="text-sm text-stone-500">{meal.time} min · {money(meal.price)}</p>
-                      <StarRating rating={meal.rating} reviews={meal.reviews.length} />
-                    </div>
-                    <AppButton variant="secondary" onClick={() => undo(meal)}>Undo</AppButton>
-                    <AppButton variant="ghost" onClick={() => onSelectMeal(meal.id)}>View</AppButton>
-                  </div>
-                ))}
-              </div>
-            )}
-            {saved.length === 0 ? (
-              <p className="rounded-lg bg-stone-50 p-4 text-sm text-stone-500">Use Save on a recipe card to keep suitable options here.</p>
-            ) : (
-              sortedSaved.map((meal) => (
-                <div key={meal.id} className="grid gap-3 rounded-lg bg-stone-50 p-3 sm:grid-cols-[1fr_auto_auto] sm:items-center">
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      {meal.photoUrl ? (
-                        <img src={meal.photoUrl} alt={meal.name} className="h-8 w-8 shrink-0 rounded object-cover" />
-                      ) : (
-                        <span className="shrink-0 text-xl">{meal.image}</span>
-                      )}
-                      <button type="button" onClick={() => onSelectMeal(meal.id)} className="break-words text-left font-semibold hover:text-emerald-700 hover:underline">
-                        {meal.name}
-                      </button>
-                    </div>
-                    <p className="text-sm text-stone-500">{meal.time} min · {money(meal.price)}</p>
-                    <StarRating rating={meal.rating} reviews={meal.reviews.length} />
-                  </div>
-                  <AppButton variant="secondary" onClick={() => addToPlan(meal)}>
-                    Use
-                  </AppButton>
-                  <AppButton variant="ghost" onClick={() => onSelectMeal(meal.id)}>
-                    View
-                  </AppButton>
-                </div>
-              ))
-            )}
-          </div>
-        </Card>
       </div>
     </div>
   );

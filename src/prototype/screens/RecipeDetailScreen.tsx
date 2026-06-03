@@ -1,4 +1,4 @@
-import { ArrowLeft, MessageSquare, Pencil } from "lucide-react";
+import { ArrowLeft, Clock3, MessageSquare, Pencil, Star } from "lucide-react";
 import { useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -256,7 +256,7 @@ export function RecipeDetailScreen({
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <div className="rounded-lg bg-stone-50 p-3">
-                  <p className="text-xs text-stone-500">Time</p>
+                  <p className="flex items-center gap-1 text-xs text-stone-500"><Clock3 size={12} /> Time</p>
                   <p className="mt-1 font-semibold">{meal.time} min</p>
                 </div>
                 <div className="rounded-lg bg-stone-50 p-3">
@@ -264,8 +264,17 @@ export function RecipeDetailScreen({
                   <p className="mt-1 font-semibold">{money(meal.price)}</p>
                 </div>
                 <div className="rounded-lg bg-stone-50 p-3">
-                  <p className="text-xs text-stone-500">Rating</p>
-                  <p className="mt-1 font-semibold">{ratingLabel(computedRating)}</p>
+                  <p className="flex items-center gap-1 text-xs text-stone-500"><Star size={12} /> Rating</p>
+                  {computedRating > 0 ? (
+                    <div className="mt-1 flex items-center gap-0.5">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <Star key={i} size={13} className={i < Math.round(computedRating) ? "fill-amber-400 text-amber-400" : "fill-stone-200 text-stone-200"} />
+                      ))}
+                      <span className="ml-1 text-xs font-semibold text-stone-700">{computedRating.toFixed(1)}</span>
+                    </div>
+                  ) : (
+                    <p className="mt-1 text-xs text-stone-400">No ratings</p>
+                  )}
                 </div>
               </div>
               <div className="rounded-lg bg-stone-50 p-4">
