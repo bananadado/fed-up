@@ -48,6 +48,28 @@ def fake_embed_texts(texts: list[str]) -> list[list[float]]:
     return [fake_embed_single(t) for t in texts]
 
 
+def _parse_vector(v) -> list[float] | None:
+    """Parse a pgvector value, which the API stores as ``str(list)``."""
+    if v is None:
+        return None
+    if isinstance(v, str):
+        try:
+            parsed = json.loads(v)
+        except (ValueError, TypeError):
+            return None
+        return parsed if isinstance(parsed, list) else None
+    return list(v)
+
+
+def _cosine(a: list[float], b: list[float]) -> float:
+    dot = sum(x * y for x, y in zip(a, b))
+    na = sum(x * x for x in a) ** 0.5
+    nb = sum(x * x for x in b) ** 0.5
+    if na == 0 or nb == 0:
+        return 0.0
+    return dot / (na * nb)
+
+
 @pytest.fixture(autouse=True)
 def mock_embeddings(monkeypatch):
     monkeypatch.setattr(embeddings_module, "embed_single", fake_embed_single)
@@ -134,6 +156,25 @@ class FakeSession:
                         user[col] = params[key]
             return FakeResult()
 
+        # ── /recommend pipeline ──
+        if "as sim from recipes" in low:
+            return FakeResult(rows=self._recommend_candidates(params))
+
+        if "from co_likes" in low:
+            return FakeResult(rows=self._co_like_rows(params))
+
+        if "recipe_id, score from trending" in low or "from trending order by score" in low:
+            rows = [{"recipe_id": rid, "score": sc} for rid, sc in self.store["trending"].items()]
+            rows.sort(key=lambda r: r["score"], reverse=True)
+            return FakeResult(rows=rows[:50])
+
+        if "select distinct recipe_id from interactions" in low:
+            uid = params.get("uid")
+            seen = sorted({
+                it["recipe_id"] for it in self.store["interactions"] if it.get("user_id") == uid
+            })
+            return FakeResult(rows=[{"recipe_id": rid} for rid in seen][:100])
+
         if "from interactions i" in low and "join recipes r" in low:
             uid = params.get("uid")
             rows = []
@@ -217,6 +258,67 @@ class FakeSession:
 
     def _recipe_row(self, r: dict) -> dict:
         return dict(r) if r else {}
+
+    def _recommend_candidates(self, params: dict) -> list[dict]:
+        """Emulate stage-1 hard filtering + embedding-ordered retrieval."""
+        allergens = set(params.get("allergens") or [])
+        dislikes = set(params.get("dislikes") or [])  # already lower-cased by the API
+        dietary = set(params.get("dietary") or [])
+        max_time = params.get("max_time")
+        meal_slot = params.get("meal_slot")
+        exclude = set(params.get("exclude_ids") or [])
+        taste = _parse_vector(params.get("taste_emb"))
+
+        out = []
+        for r in self.store["recipes"].values():
+            if taste is not None and not r.get("embedding"):
+                continue  # WHERE embedding IS NOT NULL
+            if allergens and (set(r.get("allergens") or []) & allergens):
+                continue
+            if dislikes:
+                names = {
+                    str(i.get("name", "")).lower()
+                    for i in (r.get("ingredients") or [])
+                    if isinstance(i, dict)
+                }
+                if names & dislikes:
+                    continue
+            if dietary and not dietary.issubset(set(r.get("dietary_tags") or [])):
+                continue
+            if max_time is not None and (r.get("prep_minutes") or 0) > max_time:
+                continue
+            if meal_slot and meal_slot not in (r.get("meal_slots") or []):
+                continue
+            if r["id"] in exclude:
+                continue
+
+            row = dict(r)
+            if taste is not None:
+                vec = _parse_vector(r.get("embedding"))
+                row["sim"] = _cosine(taste, vec) if vec else 0.0
+            else:
+                row["sim"] = 0.5
+            out.append(row)
+
+        if taste is not None:
+            out.sort(key=lambda x: x["sim"], reverse=True)
+        return out[:200]
+
+    def _co_like_rows(self, params: dict) -> list[dict]:
+        uid = params.get("uid")
+        positive = {"swipe_right", "cook", "complete", "save"}
+        likes = {
+            it["recipe_id"]
+            for it in self.store["interactions"]
+            if it.get("user_id") == uid and it.get("action") in positive
+        }
+        agg: dict[str, float] = {}
+        for cl in self.store["co_likes"]:
+            if cl["recipe_a"] in likes and cl["recipe_b"] not in likes:
+                agg[cl["recipe_b"]] = agg.get(cl["recipe_b"], 0.0) + cl["weight"]
+        rows = [{"recipe_id": rid, "score": sc} for rid, sc in agg.items()]
+        rows.sort(key=lambda r: r["score"], reverse=True)
+        return rows[:50]
 
 
 @pytest.fixture
