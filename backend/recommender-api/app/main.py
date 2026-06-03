@@ -10,7 +10,7 @@ from .auth import verify_cloud_function
 from .context import extract_context
 from .db import get_db
 from .difficulty import score_difficulty
-from .embeddings import embed_single, synthesize_recipe_text
+from .embeddings import embed_single, embed_texts, synthesize_recipe_text
 from .jobs import (
     NEGATIVE_ACTIONS,
     POSITIVE_ACTIONS,
@@ -248,7 +248,7 @@ async def context_deadlines(req: ContextRequest):
     """
     today = date.fromisoformat(req.today) if req.today else None
     events = [e.model_dump() for e in req.events]
-    return extract_context(events, today=today, horizon_days=req.horizon_days)
+    return extract_context(events, today=today, horizon_days=req.horizon_days, embed_fn=embed_texts)
 
 
 # ── Batch Jobs (triggered via API) ─────────────────────────────────────────
