@@ -4,11 +4,12 @@ import { useState, type Dispatch, type SetStateAction } from "react";
 import type { Deadline, Meal, Preferences } from "../types";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { AppButton, Badge } from "../components/primitives";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { formatIngredient } from "../ingredients";
 import { money } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 import { DiscoverScreen } from "./DiscoverScreen";
-import { createRecommenderRecipe } from "../recommenderApi";
+import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
 
 type Tab = "saved" | "discover" | "add";
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
@@ -44,6 +45,7 @@ export function RecipesHubScreen({
 }) {
   const [tab, setTab] = useState<Tab>("saved");
   const [savedSortBy, setSavedSortBy] = useState<"default" | "time" | "price" | "health">("default");
+  const [confirmAction, setConfirmAction] = useState<{ recipeId: string; isOwn: boolean } | null>(null);
 
   function handleCreateRecipe(output: RecipeEditorOutput, photoUrl: string | undefined) {
     const instructions =
@@ -162,27 +164,40 @@ export function RecipesHubScreen({
               {sortedSaved.map((recipe) => {
                 const isOwn = recipe.isUserCreated === true;
                 return (
-                  <button
+                  <div
                     key={recipe.id}
-                    type="button"
-                    onClick={() => onSelectMeal(recipe.id)}
-                    className="rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-emerald-300 hover:bg-emerald-50"
+                    className="flex flex-col rounded-xl border border-stone-200 bg-white p-4 transition hover:border-emerald-300 hover:bg-emerald-50"
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      {recipe.photoUrl ? (
-                        <img src={recipe.photoUrl} alt={recipe.name} className="h-12 w-12 rounded-md object-cover" />
-                      ) : (
-                        <span className="text-3xl">{recipe.image}</span>
-                      )}
-                      <Badge tone={isOwn ? "green" : "blue"}>{isOwn ? "Your recipe" : "Saved"}</Badge>
+                    <button
+                      type="button"
+                      onClick={() => onSelectMeal(recipe.id)}
+                      className="block w-full flex-1 text-left"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        {recipe.photoUrl ? (
+                          <img src={recipe.photoUrl} alt={recipe.name} className="h-12 w-12 rounded-md object-cover" />
+                        ) : (
+                          <span className="text-3xl">{recipe.image}</span>
+                        )}
+                        <Badge tone={isOwn ? "green" : "blue"}>{isOwn ? "Your recipe" : "Saved"}</Badge>
+                      </div>
+                      <p className="mt-2 break-words font-semibold leading-snug">{recipe.name}</p>
+                      <p className="mt-1 text-sm font-medium text-emerald-700">{money(recipe.price)}</p>
+                      <p className="mt-1 text-xs text-stone-400">
+                        {recipe.time} min · {recipe.ingredients.map(formatIngredient).slice(0, 3).join(", ")}
+                        {recipe.ingredients.length > 3 ? ` +${recipe.ingredients.length - 3}` : ""}
+                      </p>
+                    </button>
+                    <div className="mt-3 border-t border-stone-100 pt-3">
+                      <AppButton
+                        variant="ghost"
+                        className="w-full text-sm text-stone-400 hover:text-rose-600"
+                        onClick={() => setConfirmAction({ recipeId: recipe.id, isOwn })}
+                      >
+                        {isOwn ? "Delete recipe" : "Unsave"}
+                      </AppButton>
                     </div>
-                    <p className="mt-2 break-words font-semibold leading-snug">{recipe.name}</p>
-                    <p className="mt-1 text-sm font-medium text-emerald-700">{money(recipe.price)}</p>
-                    <p className="mt-1 text-xs text-stone-400">
-                      {recipe.time} min · {recipe.ingredients.map(formatIngredient).slice(0, 3).join(", ")}
-                      {recipe.ingredients.length > 3 ? ` +${recipe.ingredients.length - 3}` : ""}
-                    </p>
-                  </button>
+                  </div>
                 );
               })}
               <button
@@ -221,6 +236,30 @@ export function RecipesHubScreen({
           title="New recipe"
           onSubmit={handleCreateRecipe}
           track={track}
+        />
+      )}
+
+      {confirmAction && (
+        <ConfirmDialog
+          title={confirmAction.isOwn ? "Delete recipe?" : "Unsave recipe?"}
+          message={
+            confirmAction.isOwn
+              ? "This will permanently remove your recipe from your library."
+              : "This recipe will be removed from your saved list. You can save it again from Discover."
+          }
+          confirmLabel={confirmAction.isOwn ? "Delete" : "Unsave"}
+          onConfirm={() => {
+            if (confirmAction.isOwn) {
+              setCustomRecipes((prev) => prev.filter((r) => r.id !== confirmAction.recipeId));
+              deleteRecommenderRecipe(confirmAction.recipeId).catch((error) => {
+                console.warn("Recipe could not be deleted from backend.", error);
+              });
+            } else {
+              setDiscoverSaved((prev) => prev.filter((r) => r.id !== confirmAction.recipeId));
+            }
+            setConfirmAction(null);
+          }}
+          onCancel={() => setConfirmAction(null)}
         />
       )}
     </div>

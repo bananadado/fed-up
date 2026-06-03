@@ -21,6 +21,7 @@ agent
 agents
 aggregate
 aliases
+aligned
 all
 allergens
 allow
@@ -29,6 +30,8 @@ also
 always
 analytics
 analyze
+anchor
+anchors
 and
 animate
 annotations
@@ -48,6 +51,7 @@ are
 areas
 args
 artifacts
+assisted
 assumptions
 ast
 async
@@ -70,11 +74,15 @@ based
 baseline
 bash
 basic
+bat
+batch
 bean
 beats
+become
 behaviour
 behavioural
 behaviours
+below
 benchmark
 between
 blank
@@ -119,6 +127,7 @@ case
 cases
 cat
 catalogue
+categories
 category
 cautions
 cell
@@ -137,6 +146,7 @@ clamp
 clamped
 class
 classes
+classification
 classified
 classify
 claude
@@ -241,6 +251,7 @@ descriptions
 descriptor
 design
 desirable
+desktop
 detail
 details
 detect
@@ -250,6 +261,7 @@ deterministic
 dev
 development
 dicts
+didn
 diet
 dietary
 diff
@@ -291,6 +303,7 @@ editing
 editor
 effort
 egg
+embe
 embed
 embedded
 embedding
@@ -309,6 +322,7 @@ endpoints
 engineering
 engines
 enhancements
+enrich
 ensure
 enter
 entities
@@ -373,6 +387,7 @@ filtering
 filters
 final
 find
+fine
 firebase
 firestore
 first
@@ -410,10 +425,12 @@ gaps
 gates
 gcloud
 genera
+general
 generate
 generated
 generation
 generator
+generic
 get
 gets
 gis
@@ -423,6 +440,7 @@ globals
 goals
 google
 gpu
+grained
 grams
 graph
 graphify
@@ -456,6 +474,7 @@ horizon
 host
 hot
 hour
+hours
 html
 http
 https
@@ -477,6 +496,7 @@ importing
 improve
 include
 includes
+incompatible
 increase
 increased
 increases
@@ -486,6 +506,7 @@ indexed
 indexes
 indicators
 inference
+info
 information
 ingestion
 ingredient
@@ -504,6 +525,7 @@ instrumentation
 instrumented
 int
 integration
+intensity
 intent
 interaction
 interactions
@@ -589,6 +611,7 @@ management
 manifest
 manual
 map
+mapped
 mappings
 maps
 match
@@ -633,8 +656,10 @@ name
 names
 native
 natural
+nav
 navigation
 near
+nearest
 needed
 negative
 neo
@@ -676,7 +701,6 @@ outfile
 outlook
 output
 outputs
-over
 override
 overrides
 overview
@@ -713,6 +737,7 @@ pick
 pipeline
 pitfalls
 pkce
+place
 plan
 planned
 planner
@@ -755,6 +780,7 @@ profiles
 progress
 project
 projects
+promotes
 prompt
 properties
 property
@@ -816,6 +842,7 @@ reducer
 reduces
 reduction
 ref
+refines
 refresh
 refreshed
 regex
@@ -841,6 +868,7 @@ requires
 rescue
 rescued
 resolution
+resolve
 response
 responsible
 restart
@@ -970,6 +998,7 @@ state
 statement
 stats
 status
+stays
 step
 steps
 stop
@@ -983,6 +1012,8 @@ stress
 strict
 string
 structural
+structure
+stub
 student
 study
 style
@@ -1042,6 +1073,7 @@ the
 their
 then
 this
+threshold
 tight
 tightens
 time
@@ -1050,6 +1082,7 @@ timepicker
 timestamp
 timezone
 title
+titles
 today
 toggle
 token
@@ -1140,6 +1173,7 @@ view
 visual
 visualiser
 wait
+warning
 watch
 webcal
 week
