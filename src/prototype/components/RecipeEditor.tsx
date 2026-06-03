@@ -1,11 +1,11 @@
-import { Camera, RefreshCcw, X } from "lucide-react";
-import { useRef, useState, type FormEvent } from "react";
+import { Camera, Plus, RefreshCcw, X } from "lucide-react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { uploadRecipePhoto } from "@/adapters/deadlineFoodApi";
 
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchOpenFoodFactsNutrition } from "../nutritionApi";
-import type { Meal, NutritionSource, RecipeIngredient } from "../types";
+import type { Meal, MealSlot, NutritionSource, RecipeIngredient } from "../types";
 import { AppButton, Field } from "./primitives";
 import { IngredientEditor } from "./IngredientEditor";
 import {
@@ -17,6 +17,27 @@ import {
 import { money, nutritionSourceSummary } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
+const MEAL_SLOT_OPTIONS: readonly MealSlot[] = ["breakfast", "lunch", "dinner"];
+const MEAL_SLOT_SET = new Set<string>(MEAL_SLOT_OPTIONS);
+
+const TAG_OPTIONS: string[] = [
+  "breakfast",
+  "lunch",
+  "dinner",
+  "batch-friendly",
+  "high protein",
+  "hot meal",
+  "low effort",
+  "microwave",
+  "near campus",
+  "near halls",
+  "near library",
+  "no cooking",
+  "quick",
+  "vegan",
+  "vegetarian",
+];
+
 type EditorForm = {
   name: string;
   time: number;
@@ -24,7 +45,7 @@ type EditorForm = {
   totalCost: number;
   servings: number;
   ingredients: IngredientDraft[];
-  tags: string;
+  tags: string[];
   allergens: string;
   calories: number;
   protein: number;
@@ -41,6 +62,7 @@ export type RecipeEditorOutput = {
   price: number;
   totalCost: number;
   servings: number;
+  mealSlots: MealSlot[];
   ingredients: RecipeIngredient[];
   tags: string[];
   allergens: string[];
@@ -63,7 +85,7 @@ function mealToForm(meal: Meal): EditorForm {
     totalCost: meal.price,
     servings: 1,
     ingredients: ingredientDraftsFromIngredients(meal.ingredients),
-    tags: meal.tags.join(", "),
+    tags: [...meal.mealSlots, ...meal.tags],
     allergens: meal.allergens.join(", "),
     calories: meal.nutrition.calories,
     protein: meal.nutrition.protein,
@@ -83,7 +105,7 @@ function defaultForm(): EditorForm {
     totalCost: 5,
     servings: 2,
     ingredients: [createIngredientDraft()],
-    tags: "",
+    tags: ["breakfast", "lunch", "dinner"],
     allergens: "",
     calories: 500,
     protein: 20,
@@ -105,6 +127,174 @@ function splitList(value: string) {
 function positiveNumber(value: number, fallback: number) {
   return Number.isFinite(value) && value > 0 ? value : fallback;
 }
+
+// ── Tag chip picker ──────────────────────────────────────────────────────────
+
+function TagEditor({
+  values,
+  onChange,
+  options,
+  placeholder = "Add a tag…",
+}: {
+  values: string[];
+  onChange: (values: string[]) => void;
+  options: string[];
+  placeholder?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  const available = options.filter((opt) => !values.includes(opt));
+  const filtered = query
+    ? available.filter((opt) => opt.toLowerCase().includes(query.toLowerCase()))
+    : available;
+
+  const isExactMatch =
+    options.some((opt) => opt.toLowerCase() === query.toLowerCase()) ||
+    values.some((v) => v.toLowerCase() === query.toLowerCase());
+  const showCustom = query.trim().length > 0 && !isExactMatch;
+  const customOffset = showCustom ? 1 : 0;
+  const totalOptions = customOffset + filtered.length;
+
+  function addTag(tag: string) {
+    if (!values.includes(tag)) {
+      onChange([...values, tag]);
+    }
+    setQuery("");
+    setOpen(false);
+    setFocusedIndex(-1);
+    inputRef.current?.focus();
+  }
+
+  function removeTag(tag: string) {
+    onChange(values.filter((v) => v !== tag));
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Backspace" && !query && values.length > 0) {
+      removeTag(values[values.length - 1]!);
+      return;
+    }
+    if (!open) {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        setOpen(true);
+      }
+      return;
+    }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setFocusedIndex((i) => Math.min(i + 1, totalOptions - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setFocusedIndex((i) => Math.max(i - 1, -1));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (focusedIndex === 0 && showCustom) {
+        addTag(query.trim());
+      } else if (focusedIndex >= 0) {
+        const opt = filtered[focusedIndex - customOffset];
+        if (opt !== undefined) addTag(opt);
+      } else if (query.trim()) {
+        addTag(query.trim());
+      }
+    } else if (e.key === "Escape") {
+      setOpen(false);
+      setFocusedIndex(-1);
+    }
+  }
+
+  useEffect(() => {
+    if (focusedIndex >= 0 && listRef.current) {
+      const items = listRef.current.querySelectorAll<HTMLElement>("[data-tag-option]");
+      items[focusedIndex]?.scrollIntoView({ block: "nearest" });
+    }
+  }, [focusedIndex]);
+
+  useEffect(() => {
+    function handleMouseDown(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleMouseDown);
+    return () => document.removeEventListener("mousedown", handleMouseDown);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      <div
+        className="flex min-h-[40px] cursor-text flex-wrap gap-1.5 rounded-lg border border-stone-200 bg-white p-2 focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-600/20"
+        onClick={() => inputRef.current?.focus()}
+      >
+        {values.map((tag) => (
+          <span
+            key={tag}
+            className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800"
+          >
+            {tag}
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); removeTag(tag); }}
+              className="text-emerald-600 hover:text-emerald-900"
+              aria-label={`Remove ${tag}`}
+            >
+              <X size={11} />
+            </button>
+          </span>
+        ))}
+        <input
+          ref={inputRef}
+          value={query}
+          onChange={(e) => { setQuery(e.target.value); setOpen(true); setFocusedIndex(-1); }}
+          onFocus={() => setOpen(true)}
+          onKeyDown={handleKeyDown}
+          placeholder={values.length === 0 ? placeholder : ""}
+          className="min-w-[120px] flex-1 border-none bg-transparent text-sm outline-none placeholder:text-stone-400"
+          autoComplete="off"
+        />
+      </div>
+      {open && (filtered.length > 0 || showCustom) && (
+        <div
+          ref={listRef}
+          className="absolute z-50 mt-1 max-h-48 w-full overflow-auto rounded-lg border border-stone-200 bg-white shadow-lg"
+        >
+          {showCustom && (
+            <button
+              type="button"
+              data-tag-option
+              onMouseDown={(e) => { e.preventDefault(); addTag(query.trim()); }}
+              className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-medium text-emerald-700 ${focusedIndex === 0 ? "bg-emerald-50" : "hover:bg-emerald-50"}`}
+            >
+              <Plus size={14} className="shrink-0" />
+              Add &ldquo;{query.trim()}&rdquo; as tag
+            </button>
+          )}
+          {showCustom && filtered.length > 0 && <div className="mx-3 border-t border-stone-100" />}
+          {filtered.map((opt, i) => {
+            const idx = i + customOffset;
+            return (
+              <button
+                key={opt}
+                type="button"
+                data-tag-option
+                onMouseDown={(e) => { e.preventDefault(); addTag(opt); }}
+                className={`w-full px-3 py-2 text-left text-sm ${focusedIndex === idx ? "bg-stone-100" : "hover:bg-stone-50"} text-stone-700`}
+              >
+                {opt}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Main component ───────────────────────────────────────────────────────────
 
 export function RecipeEditor({
   mode,
@@ -227,6 +417,8 @@ export function RecipeEditor({
 
     const nextServings = Math.max(1, Math.round(servings));
     const nextTotalCost = Number(totalCost.toFixed(2));
+    const mealSlots = form.tags.filter((t): t is MealSlot => MEAL_SLOT_SET.has(t));
+    const tags = form.tags.filter((t) => !MEAL_SLOT_SET.has(t));
     const output: RecipeEditorOutput = {
       name: form.name.trim(),
       time: Math.max(0, Math.round(Number(form.time) || 0)),
@@ -236,8 +428,9 @@ export function RecipeEditor({
           : Number(form.price) || 0,
       totalCost: nextTotalCost,
       servings: nextServings,
+      mealSlots: mealSlots.length > 0 ? mealSlots : ["breakfast", "lunch", "dinner"],
       ingredients,
-      tags: splitList(form.tags),
+      tags,
       allergens: splitList(form.allergens),
       nutrition: {
         calories: Math.max(0, Math.round(Number(form.calories) || 0)),
@@ -374,12 +567,17 @@ export function RecipeEditor({
           )}
         </div>
 
-        <Field
-          label="Tags"
-          value={form.tags}
-          onChange={(tags) => setForm({ ...form, tags })}
-          placeholder="vegetarian, microwave"
-        />
+        <div>
+          <p className="mb-2 text-sm font-semibold">
+            Tags <span className="font-normal text-stone-400">(optional)</span>
+          </p>
+          <TagEditor
+            values={form.tags}
+            onChange={(tags) => setForm({ ...form, tags })}
+            options={TAG_OPTIONS}
+            placeholder="Search or add tags…"
+          />
+        </div>
 
         <Field
           label="Allergens"

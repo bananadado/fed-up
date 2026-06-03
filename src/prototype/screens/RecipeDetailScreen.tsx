@@ -32,6 +32,7 @@ export function RecipeDetailScreen({
   setCustomRecipes,
   setScreen,
   backTo,
+  onSelectMeal,
   track,
 }: {
   mealId: string;
@@ -39,6 +40,7 @@ export function RecipeDetailScreen({
   setCustomRecipes: StateSetter<Meal[]>;
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
+  onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
   const meal = mealById(mealId, customRecipes);
@@ -102,11 +104,11 @@ export function RecipeDetailScreen({
   }
 
   function handleEditSubmit(output: RecipeEditorOutput, photoUrl: string | undefined) {
-    saveMeal({
-      ...selectedMeal,
+    const updatedFields = {
       name: output.name || selectedMeal.name,
       time: output.time,
       price: output.price,
+      mealSlots: output.mealSlots,
       ingredients: output.ingredients,
       tags: output.tags,
       allergens: output.allergens,
@@ -114,15 +116,41 @@ export function RecipeDetailScreen({
       instructions: output.instructions,
       note: output.note,
       ...(photoUrl !== undefined ? { photoUrl } : {}),
-    });
-    track("recipe_saved", {
-      meal_id: selectedMeal.id,
-      minutes: output.time,
-      price: output.price,
-      ingredient_count: output.ingredients.length,
-      tag_count: output.tags.length,
-    });
-    setIsEditing(false);
+    };
+
+    if (selectedMeal.isUserCreated) {
+      // User owns this recipe — edit in place, keep same ID and reviews
+      saveMeal({ ...selectedMeal, ...updatedFields });
+      track("recipe_saved", {
+        meal_id: selectedMeal.id,
+        minutes: output.time,
+        price: output.price,
+        ingredient_count: output.ingredients.length,
+        tag_count: output.tags.length,
+      });
+      setIsEditing(false);
+    } else {
+      // Seed or borrowed recipe — fork into a new user-owned copy
+      const newRecipe: Meal = {
+        ...selectedMeal,
+        ...updatedFields,
+        id: `custom-${Date.now()}`,
+        isUserCreated: true,
+        rating: 0,
+        reviews: [],
+      };
+      setCustomRecipes((recipes) => [newRecipe, ...recipes]);
+      track("recipe_created_from_edit", {
+        original_meal_id: selectedMeal.id,
+        new_meal_id: newRecipe.id,
+        minutes: newRecipe.time,
+        price: newRecipe.price,
+        ingredient_count: newRecipe.ingredients.length,
+        tag_count: newRecipe.tags.length,
+      });
+      setIsEditing(false);
+      onSelectMeal(newRecipe.id);
+    }
   }
 
   function cancelEdit() {
