@@ -4,12 +4,22 @@ Projects recipe and user taste embeddings (384-dim) down to 2D with PCA and
 serves an interactive scatter plot. Read-only: it never writes to the database.
 """
 
+import json
+import logging
 import os
+import time
+import uuid
 
 import asyncpg
 import numpy as np
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
+
+logging.basicConfig(
+    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    format="%(asctime)s %(levelname)s %(name)s %(message)s",
+)
+logger = logging.getLogger("embedding_viz")
 
 app = FastAPI(title="Recommender Embedding Visualiser")
 
@@ -17,6 +27,42 @@ DATABASE_URL = os.environ.get(
     "DATABASE_URL",
     "postgresql://recommender:changeme_in_production@db:5432/recommender",
 )
+
+
+def log_event(level: int, event: str, **fields: object) -> None:
+    logger.log(level, "%s %s", event, json.dumps(fields, default=str, sort_keys=True))
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start = time.perf_counter()
+    request_id = request.headers.get("X-Request-Id", uuid.uuid4().hex[:12])
+    try:
+        response = await call_next(request)
+    except Exception as exc:
+        log_event(
+            logging.ERROR,
+            "request_failed",
+            method=request.method,
+            path=request.url.path,
+            request_id=request_id,
+            duration_ms=round((time.perf_counter() - start) * 1000, 2),
+            error=str(exc),
+        )
+        logger.exception("request_failed_trace")
+        raise
+
+    response.headers["X-Request-Id"] = request_id
+    log_event(
+        logging.INFO,
+        "request_completed",
+        method=request.method,
+        path=request.url.path,
+        request_id=request_id,
+        status_code=response.status_code,
+        duration_ms=round((time.perf_counter() - start) * 1000, 2),
+    )
+    return response
 
 
 def parse_vector(raw: str | None) -> list[float] | None:
@@ -82,6 +128,7 @@ async def health() -> dict[str, str]:
 async def points() -> JSONResponse:
     labels, kinds, vectors = await fetch_vectors()
     if not vectors:
+        log_event(logging.INFO, "embedding_points_loaded", points=0)
         return JSONResponse({"points": []})
 
     coords = pca_2d(vectors)
@@ -89,6 +136,7 @@ async def points() -> JSONResponse:
         {"x": coords[i][0], "y": coords[i][1], "label": labels[i], "kind": kinds[i]}
         for i in range(len(labels))
     ]
+    log_event(logging.INFO, "embedding_points_loaded", points=len(payload))
     return JSONResponse({"points": payload})
 
 
