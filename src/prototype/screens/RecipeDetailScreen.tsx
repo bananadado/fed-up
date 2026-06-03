@@ -1,4 +1,4 @@
-import { ArrowLeft, Clock3, MessageSquare, Pencil, Star } from "lucide-react";
+import { ArrowLeft, Clock3, Heart, MessageSquare, Pencil, Star } from "lucide-react";
 import { useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -33,6 +33,8 @@ export function RecipeDetailScreen({
   setScreen,
   backTo,
   onSelectMeal,
+  savedRecipes,
+  setSavedRecipes,
   track,
 }: {
   mealId: string;
@@ -41,6 +43,8 @@ export function RecipeDetailScreen({
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
   onSelectMeal: (mealId: string) => void;
+  savedRecipes: Meal[];
+  setSavedRecipes: StateSetter<Meal[]>;
   track: TrackPrototypeEvent;
 }) {
   const meal = mealById(mealId, customRecipes);
@@ -224,6 +228,18 @@ export function RecipeDetailScreen({
         </AppButton>
         {!isEditing && (
           <div className="flex flex-wrap gap-3">
+            {savedRecipes.some((r) => r.id === selectedMeal.id) ? (
+              <AppButton variant="secondary" disabled>
+                <Heart size={16} className="fill-emerald-700 text-emerald-700" /> Saved
+              </AppButton>
+            ) : (
+              <AppButton variant="secondary" onClick={() => {
+                setSavedRecipes((recipes) => recipes.some((r) => r.id === selectedMeal.id) ? recipes : [...recipes, selectedMeal]);
+                track("recipe_saved_from_detail", { meal_id: selectedMeal.id });
+              }}>
+                <Heart size={16} /> Save recipe
+              </AppButton>
+            )}
             <AppButton variant="secondary" onClick={() => { track("recipe_edit_started", { meal_id: selectedMeal.id }); setIsEditing(true); }}>
               <Pencil size={16} /> Edit recipe
             </AppButton>
