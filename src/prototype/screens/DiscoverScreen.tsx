@@ -57,10 +57,8 @@ export function DiscoverScreen({
     ...saved.map((meal) => meal.id),
     ...rejected.map((meal) => meal.id),
   ]);
-  const candidateRecipes = [
-    ...customRecipes,
-    ...(recommendedRecipes ?? []).filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id)),
-  ];
+  const ownRecipeIds = new Set(customRecipes.map((meal) => meal.id));
+  const candidateRecipes = (recommendedRecipes ?? []).filter((meal) => !ownRecipeIds.has(meal.id));
 
   useEffect(() => {
     let cancelled = false;
@@ -73,6 +71,7 @@ export function DiscoverScreen({
         ...reviewedRecipeIds,
         ...saved.map((meal) => meal.id),
         ...rejected.map((meal) => meal.id),
+        ...customRecipes.map((meal) => meal.id),
       ],
     })
       .then((recipes) => {
@@ -90,7 +89,7 @@ export function DiscoverScreen({
     return () => {
       cancelled = true;
     };
-  }, [deadlines, prefs, reviewedRecipeIds, saved, rejected, sessionId]);
+  }, [deadlines, prefs, reviewedRecipeIds, saved, rejected, customRecipes, sessionId]);
 
   const sortedQueue = candidateRecipes
     .filter((meal) => !reviewedRecipeIdSet.has(meal.id))
