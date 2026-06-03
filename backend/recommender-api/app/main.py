@@ -14,7 +14,7 @@ from .auth import verify_cloud_function
 from .context import extract_context
 from .db import get_db
 from .difficulty import score_difficulty
-from .embeddings import embed_single, synthesize_recipe_text
+from .embeddings import embed_single, embed_texts, synthesize_recipe_text
 from .jobs import (
     NEGATIVE_ACTIONS,
     POSITIVE_ACTIONS,

@@ -798,6 +798,99 @@ async function proxyRecommenderRequest(
   }
 }
 
+async function enrichRecommendedRecipes(body: unknown): Promise<unknown> {
+  if (!Array.isArray(body)) {
+    return body;
+  }
+
+  const recipeIds = body
+    .map((item) => {
+      const scoredRecipe = asRecord(item);
+      const recipe = asRecord(scoredRecipe?.recipe);
+      return typeof recipe?.id === "string" && recipeIdPattern.test(recipe.id) ? recipe.id : null;
+    })
+    .filter((id): id is string => id !== null);
+
+  if (recipeIds.length === 0) {
+    return body;
+  }
+
+  const uniqueIds = [...new Set(recipeIds)];
+  const snapshots = await firestore.getAll(...uniqueIds.map((id) => recipesRef.doc(id)));
+  const photosByRecipeId = new Map<string, string>();
+
+  snapshots.forEach((snapshot) => {
+    const photoUrl = snapshot.data()?.photoUrl;
+    if (snapshot.exists && typeof photoUrl === "string" && photoUrl.trim()) {
+      photosByRecipeId.set(snapshot.id, photoUrl);
+    }
+  });
+
+  return body.map((item) => {
+    const scoredRecipe = asRecord(item);
+    const recipe = asRecord(scoredRecipe?.recipe);
+    const recipeId = typeof recipe?.id === "string" ? recipe.id : "";
+    const photoUrl = photosByRecipeId.get(recipeId);
+
+    if (!scoredRecipe || !recipe || !photoUrl) {
+      return item;
+    }
+
+    return {
+      ...scoredRecipe,
+      recipe: {
+        ...recipe,
+        photoUrl,
+      },
+    };
+  });
+}
+
+async function proxyRecommenderRecommendations(
+  request: HttpRequest,
+  response: HttpResponse,
+): Promise<void> {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  try {
+    const url = new URL("/recommend", recommenderApiUrl.value().replace(/\/$/, ""));
+    const upstream = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "X-Deadline-Food-API-Key": recommenderApiKey.value(),
+      },
+      body: JSON.stringify(request.body ?? {}),
+      signal: AbortSignal.timeout(30_000),
+    });
+    const contentType = upstream.headers.get("content-type") ?? "application/json";
+    const bodyText = await upstream.text();
+
+    response.set("Cache-Control", "private, max-age=0, no-store");
+    response.set("Content-Type", contentType);
+
+    if (!upstream.ok || !contentType.includes("application/json")) {
+      response.status(upstream.status).send(bodyText);
+      return;
+    }
+
+    const body = JSON.parse(bodyText) as unknown;
+    let responseBody = body;
+
+    try {
+      responseBody = await enrichRecommendedRecipes(body);
+    } catch (error) {
+      logger.error("Recommendation recipe enrichment failed", {error});
+    }
+
+    response.status(upstream.status).json(responseBody);
+  } catch (error) {
+    logger.error("Recommender recommendations request failed", {error});
+    response.status(502).json({error: "Recommender API could not be reached"});
+  }
+}
+
 function rejectUnsupportedNutritionMethod(
   request: HttpRequest,
   response: HttpResponse,
@@ -1329,7 +1422,7 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
 });
 
 export const deadlineFoodRecommendations = onRequest(recommenderHttpOptions, async (request, response) => {
-  await proxyRecommenderRequest(request, response, "/recommend");
+  await proxyRecommenderRecommendations(request, response);
 });
 
 export const deadlineFoodInteraction = onRequest(recommenderHttpOptions, async (request, response) => {

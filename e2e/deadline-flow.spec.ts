@@ -9,13 +9,15 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.goto("/");
 
   await expect(page.getByRole("heading", { name: /healthy meals that fit around coursework/i })).toBeVisible();
-  await expect(page.getByText(/meal planning for busy study weeks/i)).toBeVisible();
   await page.getByRole("button", { name: /build my meal plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /sign in with google/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /upload \.ics file/i })).toBeVisible();
-  await page.getByRole("button", { name: /continue/i }).click();
+  await page.getByRole("button", { name: /skip for now/i }).click();
+  const calendarWarning = page.getByRole("dialog", { name: /continue without a calendar/i });
+  await expect(calendarWarning).toBeVisible();
+  await page.getByRole("button", { name: /continue anyway/i }).click();
 
   await expect(page.getByRole("heading", { name: /about you/i })).toBeVisible();
   await page.getByLabel("Current cooking ability").click();
@@ -37,6 +39,15 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
 
   await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
   await expect(page.getByText(/planned spend/i)).toBeVisible();
+  const desktopNav = page.locator("header nav");
+  await desktopNav.getByRole("button", { name: "Calendar", exact: true }).click();
+  await expect(page.getByRole("heading", { name: /deadline calendar/i })).toBeVisible();
+  await expect(page.getByText(/no calendar has been imported/i)).toBeVisible();
+  await expect(page.getByText("Algorithms coursework")).toHaveCount(0);
+  await expect(page.getByText("Design review")).toHaveCount(0);
+  await expect(page.getByText("Databases quiz")).toHaveCount(0);
+  await desktopNav.getByRole("button", { name: "Today", exact: true }).click();
+  await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
   await page.getByRole("button", { name: /view full plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
@@ -58,9 +69,9 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
   await page.getByRole("button", { name: /change meal/i }).first().click();
   await expect(page.getByRole("heading", { name: /change this meal/i })).toBeVisible();
-  await expect(page.getByText(/suggested suitable option/i)).toBeVisible();
-  await expect(page.getByText(/after best fit/i)).toBeVisible();
-  await page.getByRole("button", { name: /use suggested meal/i }).click();
+  await expect(page.getByRole("button", { name: /use selected/i })).toBeVisible();
+  await expect(page.getByText(/after/i)).toBeVisible();
+  await page.getByRole("button", { name: /use selected/i }).click();
   await expect(page.getByText("Rescued")).toBeVisible();
 
   await page.getByRole("button", { name: "Recipes", exact: true }).click();
@@ -85,6 +96,16 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await page.getByRole("button", { name: "Add recipe", exact: true }).click();
   await expect(page.getByText("Microwave bean burrito")).toBeVisible();
   await expect(page.getByText("10 min · 100g mixed beans, 1 wrap tortilla wrap, 50g tomato")).toBeVisible();
+});
+
+test("onboarding 'skip for now' shows confirmation dialog then advances to 'About you'", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /build my meal plan/i }).click();
+  await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
+  await page.getByRole("button", { name: /skip for now/i }).click();
+  await expect(page.getByRole("dialog", { name: /continue without a calendar/i })).toBeVisible();
+  await page.getByRole("button", { name: /continue anyway/i }).click();
+  await expect(page.getByRole("heading", { name: /about you/i })).toBeVisible();
 });
 
 test("returning users land on dashboard, not the landing or onboarding page", async ({ page }) => {
@@ -224,8 +245,8 @@ test("dashboard meal cards have swap action that opens the swap modal", async ({
 
   await page.getByRole("button", { name: /change meal/i }).first().click();
   await expect(page.getByRole("heading", { name: /change this meal/i })).toBeVisible();
-  await expect(page.getByText(/suggested suitable option/i)).toBeVisible();
-  await page.getByRole("button", { name: /use suggested meal/i }).click();
+  await expect(page.getByRole("button", { name: /use selected/i })).toBeVisible();
+  await page.getByRole("button", { name: /use selected/i }).click();
   await expect(page.getByRole("heading", { name: /change this meal/i })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
 });

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePostHog } from "@posthog/react";
 
 import { capturePostHogEvent, registerPostHogContext, registerPostHogSession, type AnalyticsProperties } from "@/lib/posthog";
-import { defaultDeadlines, initialPlan, initialPreferences } from "./data";
+import { initialPlan, initialPreferences } from "./data";
 import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences, Screen } from "./types";
 import {
   getOrCreateAnonymousSessionId,
@@ -72,7 +72,7 @@ export function DeadlineFoodPrototype() {
   const [previousScreen, setPreviousScreen] = useState<Screen | null>(null);
   const [onboarded, setOnboarded] = useState(false);
   const [calendarProvider, setCalendarProvider] = useState<CalendarProvider>("google");
-  const [deadlines, setDeadlines] = useState<Deadline[]>(defaultDeadlines);
+  const [deadlines, setDeadlines] = useState<Deadline[]>([]);
   const [prefs, setPrefs] = useState<Preferences>(initialPreferences);
   const [selectedSources, setSelectedSources] = useState(["budget", "bbc", "own", "campus"]);
   const [plan, setPlan] = useState<PlanEntry[]>(initialPlan);
@@ -387,8 +387,8 @@ export function DeadlineFoodPrototype() {
         setScreen={navigateScreen}
         prefs={prefs}
         setPrefs={setPrefs}
-        deadlines={deadlines}
         setDeadlines={setDeadlines}
+        calendarEvents={calendarEvents}
         setCalendarEvents={setCalendarEvents}
         selectedSources={selectedSources}
         setSelectedSources={setSelectedSources}
@@ -407,9 +407,9 @@ export function DeadlineFoodPrototype() {
   return (
     <Shell screen={activeScreen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
       {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} setScreen={navigateScreen} track={track} />}
+      {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} setScreen={navigateScreen} onSelectMeal={openRecipe} track={track} />}
-      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} plan={plan} setPlan={setPlan} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} track={track} />}
+      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} />}
     </Shell>

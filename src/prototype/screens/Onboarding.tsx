@@ -1,26 +1,28 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions, universities } from "../data";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
-  calendarEventsToDeadlines,
   icsSubscriptionHints,
   importFromSubscriptionUrl,
   importGoogleCalendar,
   importOutlookCalendar,
   isSubscriptionUrl,
   parseICSText,
+  resolveDeadlinesFromEvents,
 } from "../calendarImport";
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
+import { filterFoodPreferenceOptions } from "../preferenceOptions";
 
 function Progress({ step }: { step: number }) {
   const labels = ["Calendar", "About you", "Preferences"];
@@ -67,13 +69,36 @@ function PreferenceSection({
   );
 }
 
+function InfoTooltip({ children }: { children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative flex shrink-0 items-center">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        onBlur={() => setOpen(false)}
+        aria-label="More information"
+        aria-expanded={open}
+        className="flex h-5 w-5 items-center justify-center rounded-full border border-stone-300 bg-white text-[11px] font-bold text-stone-400 hover:border-emerald-400 hover:text-emerald-700"
+      >
+        ?
+      </button>
+      {open && (
+        <div className="absolute bottom-full left-0 z-10 mb-2 w-64 rounded-lg border border-stone-200 bg-white p-3 text-xs leading-5 text-stone-600 shadow-lg">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Onboarding({
   setOnboarded,
   setScreen,
   prefs,
   setPrefs,
-  deadlines,
   setDeadlines,
+  calendarEvents,
   setCalendarEvents,
   selectedSources,
   setSelectedSources,
@@ -90,8 +115,8 @@ export function Onboarding({
   setScreen: (screen: Screen) => void;
   prefs: Preferences;
   setPrefs: (prefs: Preferences) => void;
-  deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
+  calendarEvents: CalendarEvent[];
   setCalendarEvents: (events: CalendarEvent[]) => void;
   selectedSources: string[];
   setSelectedSources: (sources: string[]) => void;
@@ -110,11 +135,16 @@ export function Onboarding({
   const step1Ref = useRef<HTMLDivElement>(null);
   const step2Ref = useRef<HTMLDivElement>(null);
   const [importMessage, setImportMessage] = useState("");
+  const [importError, setImportError] = useState(false);
   const [importing, setImporting] = useState(false);
+  const [importedDeadlines, setImportedDeadlines] = useState<Deadline[]>([]);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
   const [step1Attempted, setStep1Attempted] = useState(false);
   const [step2Attempted, setStep2Attempted] = useState(false);
+  const [showCalendarSkipConfirm, setShowCalendarSkipConfirm] = useState(false);
+  const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
+  const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
 
   function goToStep(nextStep: number) {
     setStep(nextStep);
@@ -125,14 +155,15 @@ export function Onboarding({
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
 
-  function handleImportedEvents(events: CalendarEvent[], source: string) {
+  async function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
-    const asDeadlines = calendarEventsToDeadlines(events);
+    const asDeadlines = await resolveDeadlinesFromEvents(events);
+    setImportedDeadlines(asDeadlines);
     if (asDeadlines.length > 0) {
       setDeadlines(asDeadlines);
       setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
     } else {
-      setImportMessage("No events found. Showing the example deadline week instead.");
+      setImportMessage("No calendar events were found in that import.");
     }
     track("calendar_imported", { source, event_count: events.length });
   }
@@ -144,7 +175,7 @@ export function Onboarding({
     const reader = new FileReader();
     reader.onload = () => {
       const events = parseICSText(String(reader.result));
-      handleImportedEvents(events, "ics");
+      void handleImportedEvents(events, "ics");
     };
     reader.readAsText(file);
   }
@@ -158,7 +189,8 @@ export function Onboarding({
       const result = calendarProvider === "google"
         ? await importGoogleCalendar(sessionId)
         : await importOutlookCalendar(sessionId);
-      handleImportedEvents(result.events, calendarProvider);
+      setImportError(false);
+      await handleImportedEvents(result.events, calendarProvider);
       if (result.refreshToken) {
         const provider = calendarProvider as "google" | "outlook";
         const newToken: CalendarToken = {
@@ -170,9 +202,10 @@ export function Onboarding({
         setCalendarTokens([...calendarTokens.filter((t) => t.provider !== provider), newToken]);
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Import failed";
-      setImportMessage(message);
-      track("calendar_import_error", { provider: calendarProvider, error: message });
+      const rawMessage = error instanceof Error ? error.message : "Import failed";
+      setImportError(true);
+      setImportMessage("We couldn't connect — you can set this up later in Settings.");
+      track("calendar_import_error", { provider: calendarProvider, error: rawMessage });
     } finally {
       setImporting(false);
     }
@@ -189,13 +222,15 @@ export function Onboarding({
 
     try {
       const events = await importFromSubscriptionUrl(subscriptionUrl, calendarProvider);
-      handleImportedEvents(events, calendarProvider);
+      setImportError(false);
+      await handleImportedEvents(events, calendarProvider);
       const newSub: IcsSubscription = { url: subscriptionUrl.trim(), source: calendarProvider, addedAt: new Date().toISOString() };
       setIcsSubscriptions([...icsSubscriptions.filter((s) => s.url !== newSub.url), newSub]);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Import failed";
-      setImportMessage(message);
-      track("calendar_import_error", { provider: calendarProvider, error: message });
+      const rawMessage = error instanceof Error ? error.message : "Import failed";
+      setImportError(true);
+      setImportMessage("We couldn't connect — you can set this up later in Settings.");
+      track("calendar_import_error", { provider: calendarProvider, error: rawMessage });
     } finally {
       setImporting(false);
     }
@@ -246,6 +281,23 @@ export function Onboarding({
     setScreen("dashboard");
   }
 
+  function continueFromCalendarStep() {
+    if (calendarEvents.length === 0) {
+      track("calendar_skip_confirmation_shown", { provider: calendarProvider });
+      setShowCalendarSkipConfirm(true);
+      return;
+    }
+    track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider });
+    goToStep(1);
+  }
+
+  function confirmCalendarSkip() {
+    track("calendar_skip_confirmed", { provider: calendarProvider });
+    setShowCalendarSkipConfirm(false);
+    track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider, calendar_skipped: true });
+    goToStep(1);
+  }
+
   return (
     <div className="min-h-screen bg-[#faf9f5] px-4 py-7 sm:px-6">
       <div className="mx-auto max-w-3xl">
@@ -258,7 +310,7 @@ export function Onboarding({
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 1 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
-            <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days and lower cooking effort around them.</p>
+            <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days. This is optional — you can connect later in Settings.</p>
             <div className="mt-7 grid grid-cols-2 gap-3">
               {calendarProviders.map((provider) => (
                 <button
@@ -295,66 +347,137 @@ export function Onboarding({
                   </div>
                 </>
               )}
-              <div className="flex gap-2">
-                <Input
-                  value={subscriptionUrl}
-                  onChange={(e) => setSubscriptionUrl(e.target.value)}
-                  placeholder="webcal://… or https://…"
-                  className="h-auto flex-1 rounded-lg border-stone-200 bg-white p-3 text-sm"
-                />
-                <AppButton type="button" variant="secondary" onClick={connectSubscriptionUrl} disabled={importing || !subscriptionUrl.trim()}>
-                  {importing ? "Fetching…" : "Import"}
-                </AppButton>
+              <div className="flex items-center gap-2">
+                <InfoTooltip>
+                  <p className="font-semibold text-stone-700">Calendar subscription link</p>
+                  <p className="mt-1">A <span className="font-medium">webcal://</span> or <span className="font-medium">https://</span> URL your calendar app provides so other apps can sync your events.</p>
+                  <p className="mt-1.5 font-medium text-stone-500">Where to find it:</p>
+                  <ul className="mt-0.5 space-y-0.5 text-stone-500">
+                    <li><span className="font-medium">Google:</span> Settings → your calendar → "Secret address in iCal format"</li>
+                    <li><span className="font-medium">Outlook:</span> Calendar settings → Share → Get a link</li>
+                    <li><span className="font-medium">University:</span> check your timetable portal for a "subscribe" or "iCal" option</li>
+                  </ul>
+                </InfoTooltip>
+                <div className="flex flex-1 gap-2">
+                  <Input
+                    value={subscriptionUrl}
+                    onChange={(e) => setSubscriptionUrl(e.target.value)}
+                    placeholder="webcal://… or https://…"
+                    className="h-auto flex-1 rounded-lg border-stone-200 bg-white p-3 text-sm"
+                  />
+                  <AppButton type="button" variant="secondary" onClick={connectSubscriptionUrl} disabled={importing || !subscriptionUrl.trim()}>
+                    {importing ? "Fetching…" : "Import"}
+                  </AppButton>
+                </div>
               </div>
               <p className="mt-2 text-xs text-stone-400">{icsSubscriptionHints[calendarProvider]}</p>
-              <div className="mt-3 flex items-center gap-3">
-                <div className="h-px flex-1 bg-stone-200" />
-                <span className="text-xs font-medium text-stone-400">or upload a file</span>
-                <div className="h-px flex-1 bg-stone-200" />
+              <div className="mt-4 flex items-center gap-2">
+                <InfoTooltip>
+                  <p className="font-semibold text-stone-700">ICS / .ics file</p>
+                  <p className="mt-1">A standard calendar export file. Download one from:</p>
+                  <ul className="mt-0.5 space-y-0.5 text-stone-500">
+                    <li><span className="font-medium">Google:</span> Settings → Import &amp; export → Export</li>
+                    <li><span className="font-medium">Outlook:</span> File → Save calendar</li>
+                    <li><span className="font-medium">University timetable:</span> look for "Export" or "Download"</li>
+                  </ul>
+                  <p className="mt-1.5 text-stone-400">Note: a one-off snapshot — it won't stay in sync. Use a subscription link above for live updates.</p>
+                </InfoTooltip>
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  className="flex items-center gap-1.5 text-sm text-stone-400 hover:text-stone-600"
+                >
+                  <Import size={14} /> Upload .ics file
+                </button>
               </div>
-              <AppButton type="button" variant="secondary" onClick={() => fileRef.current?.click()} className="w-full justify-center py-3 text-base">
-                <Import size={18} /> Upload .ics file
-              </AppButton>
               <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
             </div>
-            {importMessage && <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
-            <div className="mt-7 rounded-lg bg-stone-50 p-4">
-              {(() => {
-                const today = new Date().toISOString().slice(0, 10);
-                const futureEvents = deadlines
-                  .filter((d) => d.rawDate ? d.rawDate >= today : true)
-                  .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""));
-                const shown = futureEvents.slice(0, 5);
-                return (
-                  <>
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold">Detected study-load signals</p>
-                      <Badge tone="amber">{futureEvents.length} found</Badge>
-                    </div>
-                    {futureEvents.length > 5 && (
-                      <p className="mb-2 text-xs text-stone-500">Showing the next 5 closest events</p>
-                    )}
-                    <div className="space-y-2">
-                      {shown.map((deadline) => (
-                        <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
-                          <div>
-                            <p className="font-medium">{deadline.title}</p>
-                            <p className="text-stone-500">{deadline.date}</p>
+            {importMessage && (
+              <p className={cn("mt-4 rounded-lg p-3 text-sm", importError ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800")}>
+                {importMessage}
+              </p>
+            )}
+            <p className="mt-4 text-sm text-stone-500">
+              Adding a calendar is optional. You can import calendar events any time through Settings or the Calendar menu.
+            </p>
+            {calendarEvents.length > 0 && (
+              <div className="mt-7 rounded-lg bg-stone-50 p-4">
+                {(() => {
+                  const today = new Date().toISOString().slice(0, 10);
+                  const futureEvents = importedDeadlines
+                    .filter((d) => d.rawDate ? d.rawDate >= today : true)
+                    .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""));
+                  const shown = futureEvents.slice(0, 5);
+                  return (
+                    <>
+                      <div className="mb-3 flex items-center justify-between">
+                        <p className="text-sm font-semibold">Detected study-load signals</p>
+                        <Badge tone="amber">{futureEvents.length} found</Badge>
+                      </div>
+                      {futureEvents.length > 5 && (
+                        <p className="mb-2 text-xs text-stone-500">Showing the next 5 closest events</p>
+                      )}
+                      <div className="space-y-2">
+                        {shown.map((deadline) => (
+                          <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
+                            <div>
+                              <p className="font-medium">{deadline.title}</p>
+                              <p className="text-stone-500">{deadline.date}</p>
+                            </div>
+                            <span className="text-stone-500">{deadline.time}</span>
                           </div>
-                          <span className="text-stone-500">{deadline.time}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                );
-              })()}
-            </div>
-            <div className="mt-7 flex justify-end">
-              <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); goToStep(1); }}>
+                        ))}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            )}
+            <div className="mt-7 flex items-center justify-between">
+              {calendarEvents.length === 0 && (
+                <button
+                  type="button"
+                  className="text-sm text-stone-500 hover:text-stone-700"
+                  onClick={() => { track("calendar_skip_button_clicked", { provider: calendarProvider }); setShowCalendarSkipConfirm(true); }}
+                >
+                  Skip for now
+                </button>
+              )}
+              <AppButton disabled={calendarEvents.length === 0} onClick={continueFromCalendarStep} className="ml-auto">
                 Continue <ArrowRight size={16} />
               </AppButton>
             </div>
           </Card>
+        )}
+        {showCalendarSkipConfirm && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="calendar-skip-title"
+            className="fixed inset-0 z-50 grid place-items-center bg-stone-950/45 px-4"
+          >
+            <div className="w-full max-w-md rounded-lg border border-amber-200 bg-white p-6 shadow-xl">
+              <div className="flex gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+                  <AlertTriangle size={20} />
+                </div>
+                <div>
+                  <h3 id="calendar-skip-title" className="text-lg font-bold text-stone-950">Continue without a calendar?</h3>
+                  <p className="mt-2 text-sm leading-6 text-stone-600">
+                    No calendar has been imported, so Autopilot will not adapt meals around your real events yet. You can import calendar events any time through Settings or the Calendar menu.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <AppButton type="button" variant="secondary" className="justify-center" onClick={() => setShowCalendarSkipConfirm(false)}>
+                  Go back
+                </AppButton>
+                <AppButton type="button" className="justify-center" onClick={confirmCalendarSkip}>
+                  Continue anyway
+                </AppButton>
+              </div>
+            </div>
+          </div>
         )}
         {step === 1 && (
           <Card key={animationKey} ref={step1Ref} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
@@ -377,13 +500,34 @@ export function Onboarding({
                   errorMessage="Please select your cooking ability"
                 />
               </PreferenceSection>
+              <PreferenceSection title="Dietary safety" description="Restrictions and allergens are treated as hard filters before recipes are suggested.">
+                <div className="grid gap-5">
+                  <ChoiceGroup
+                    title="Dietary requirements (leave blank if none)"
+                    options={dietary}
+                    selected={prefs.dietary}
+                    onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    addPlaceholder="Add a dietary requirement"
+                  />
+                  <ChoiceGroup
+                    title="Allergic to / cannot eat"
+                    options={allergens}
+                    selected={prefs.allergens}
+                    onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    addPlaceholder="Add an allergy or avoided ingredient"
+                    danger
+                  />
+                </div>
+              </PreferenceSection>
               <PreferenceSection
                 title="What do you usually eat?"
                 description="Pick the meals you reach for most. This helps us suggest things you'll actually make — not recipes that require skills you don't need."
               >
                 <ChoiceGroup
                   title=""
-                  options={likes}
+                  options={filteredLikes}
                   selected={prefs.likes}
                   onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
                   onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
@@ -396,7 +540,7 @@ export function Onboarding({
               >
                 <ChoiceGroup
                   title=""
-                  options={dislikes}
+                  options={filteredDislikes}
                   selected={prefs.dislikes}
                   onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
                   onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
@@ -523,11 +667,10 @@ export function Onboarding({
                     error={step2Attempted && !prefs.kitchen}
                     errorMessage="Please select your kitchen access"
                   />
-                  <SelectField
+                  <UniversityField
                     label="Your university"
                     value={prefs.university}
                     onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
-                    options={universities.map((university) => ({ value: university, label: university }))}
                     required
                     error={step2Attempted && !prefs.university}
                     errorMessage="Please select your university"
@@ -546,27 +689,6 @@ export function Onboarding({
               </button>
             </div>
             <div className="mt-4 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
-              <PreferenceSection title="Dietary safety" description="Restrictions and allergens are treated as hard filters before recipes are suggested.">
-                <div className="grid gap-5">
-                  <ChoiceGroup
-                    title="Dietary requirements (leave blank if none)"
-                    options={dietary}
-                    selected={prefs.dietary}
-                    onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                    addPlaceholder="Add a dietary requirement"
-                  />
-                  <ChoiceGroup
-                    title="Allergic to / cannot eat"
-                    options={allergens}
-                    selected={prefs.allergens}
-                    onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                    addPlaceholder="Add an allergy or avoided ingredient"
-                    danger
-                  />
-                </div>
-              </PreferenceSection>
               <PreferenceSection
                 title="Planning Priorities"
                 description="What should we optimise for? You can change this later."
@@ -596,7 +718,6 @@ export function Onboarding({
                 </div>
               </PreferenceSection>
             </div>
-            <div className="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">Campus/provider options and prices in this prototype are illustrative rather than live availability.</div>
             {step2Attempted && (!prefs.kitchen || !prefs.university) && (
               <p className="mt-5 text-center text-sm font-medium text-red-600">
                 Please fill in all required fields

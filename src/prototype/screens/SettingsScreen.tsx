@@ -4,23 +4,25 @@ import { Import, RotateCcw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, universities } from "../data";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
-  calendarEventsToDeadlines,
   icsSubscriptionHints,
   importFromSubscriptionUrl,
   importGoogleCalendar,
   importOutlookCalendar,
   isSubscriptionUrl,
   parseICSText,
+  resolveDeadlinesFromEvents,
 } from "../calendarImport";
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
+import { filterFoodPreferenceOptions } from "../preferenceOptions";
 
 export function SettingsScreen({
   prefs,
@@ -58,10 +60,12 @@ export function SettingsScreen({
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
+  const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
+  const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
 
-  function handleImportedEvents(events: CalendarEvent[], source: string) {
+  async function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
-    const asDeadlines = calendarEventsToDeadlines(events);
+    const asDeadlines = await resolveDeadlinesFromEvents(events);
     if (asDeadlines.length > 0) {
       setDeadlines(asDeadlines);
       setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
@@ -77,7 +81,7 @@ export function SettingsScreen({
     const reader = new FileReader();
     reader.onload = () => {
       const events = parseICSText(String(reader.result));
-      handleImportedEvents(events, "ics");
+      void handleImportedEvents(events, "ics");
     };
     reader.readAsText(file);
   }
@@ -91,7 +95,7 @@ export function SettingsScreen({
       const result = calendarProvider === "google"
         ? await importGoogleCalendar(sessionId)
         : await importOutlookCalendar(sessionId);
-      handleImportedEvents(result.events, calendarProvider);
+      await handleImportedEvents(result.events, calendarProvider);
       if (result.refreshToken) {
         const provider = calendarProvider as "google" | "outlook";
         const newToken: CalendarToken = {
@@ -122,7 +126,7 @@ export function SettingsScreen({
 
     try {
       const events = await importFromSubscriptionUrl(subscriptionUrl, calendarProvider);
-      handleImportedEvents(events, calendarProvider);
+      await handleImportedEvents(events, calendarProvider);
       const newSub: IcsSubscription = { url: subscriptionUrl.trim(), source: calendarProvider, addedAt: new Date().toISOString() };
       setIcsSubscriptions([...icsSubscriptions.filter((s) => s.url !== newSub.url), newSub]);
     } catch (error) {
@@ -199,11 +203,10 @@ export function SettingsScreen({
             </div>
           </label>
           <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("settings_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
-          <SelectField
+          <UniversityField
             label="Your university"
             value={prefs.university}
             onChange={(university) => { track("settings_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
-            options={universities.map((university) => ({ value: university, label: university }))}
           />
           <SelectField
             label="Cooking ability"
@@ -242,7 +245,7 @@ export function SettingsScreen({
           />
           <ChoiceGroup
             title="What do you usually eat?"
-            options={likes}
+            options={filteredLikes}
             selected={prefs.likes}
             onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
             onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
@@ -250,7 +253,7 @@ export function SettingsScreen({
           />
           <ChoiceGroup
             title="Ingredients I dislike"
-            options={dislikes}
+            options={filteredDislikes}
             selected={prefs.dislikes}
             onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
             onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}

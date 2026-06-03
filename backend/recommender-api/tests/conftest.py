@@ -76,6 +76,7 @@ def mock_embeddings(monkeypatch):
     monkeypatch.setattr(embeddings_module, "embed_texts", fake_embed_texts)
     monkeypatch.setattr(embeddings_module, "get_model", lambda: None)
     monkeypatch.setattr(main_module, "embed_single", fake_embed_single)
+    monkeypatch.setattr(main_module, "embed_texts", fake_embed_texts)
     monkeypatch.setattr(jobs_module, "embed_texts", fake_embed_texts)
     yield
 
