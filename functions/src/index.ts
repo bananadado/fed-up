@@ -785,7 +785,15 @@ async function proxyRecommenderRequest(
     response.set("Content-Type", upstream.headers.get("content-type") ?? "application/json");
     response.status(upstream.status).send(body);
   } catch (error) {
-    logger.error("Recommender API request failed", {path, error});
+    const errorCause =
+      typeof error === "object" && error !== null && "cause" in error ?
+        (error as {cause?: unknown}).cause :
+        "";
+    logger.error("Recommender API request failed", {
+      path,
+      error: String(error instanceof Error ? error.message : error),
+      cause: String(errorCause ?? ""),
+    });
     response.status(502).json({error: "Recommender API could not be reached"});
   }
 }

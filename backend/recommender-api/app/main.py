@@ -1,8 +1,12 @@
 import json
+import logging
+import os
+import time
+import uuid
 from contextlib import asynccontextmanager
 from datetime import date
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -35,11 +39,23 @@ from .recommend import recommend
 
 from prometheus_fastapi_instrumentator import Instrumentator
 
+logging.basicConfig(
+    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    format="%(asctime)s %(levelname)s %(name)s %(message)s",
+)
+logger = logging.getLogger("recommender_api")
+
+
+def log_event(level: int, event: str, **fields: object) -> None:
+    logger.log(level, "%s %s", event, json.dumps(fields, default=str, sort_keys=True))
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from .embeddings import get_model
+    log_event(logging.INFO, "model_load_started")
     get_model()
+    log_event(logging.INFO, "model_load_completed")
     yield
 
 
@@ -56,6 +72,39 @@ Instrumentator(
     should_group_untemplated=True,
     excluded_handlers=["/metrics"],
 ).instrument(app).expose(app, endpoint="/metrics")
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start = time.perf_counter()
+    request_id = request.headers.get("X-Request-Id", uuid.uuid4().hex[:12])
+    try:
+        response = await call_next(request)
+    except Exception as exc:
+        log_event(
+            logging.ERROR,
+            "request_failed",
+            method=request.method,
+            path=request.url.path,
+            request_id=request_id,
+            duration_ms=round((time.perf_counter() - start) * 1000, 2),
+            error=str(exc),
+        )
+        logger.exception("request_failed_trace")
+        raise
+
+    response.headers["X-Request-Id"] = request_id
+    if request.url.path != "/metrics":
+        log_event(
+            logging.INFO,
+            "request_completed",
+            method=request.method,
+            path=request.url.path,
+            request_id=request_id,
+            status_code=response.status_code,
+            duration_ms=round((time.perf_counter() - start) * 1000, 2),
+        )
+    return response
 
 
 # ── Health ──────────────────────────────────────────────────────────────────
@@ -107,6 +156,12 @@ async def create_recipe(recipe: RecipeIn, db: AsyncSession = Depends(get_db)):
         },
     )
     await db.commit()
+    log_event(
+        logging.INFO,
+        "recipe_upserted",
+        recipe_id=recipe.id,
+        difficulty=round(difficulty, 3),
+    )
     return RecipeOut(**recipe_dict, difficulty=difficulty, embedding_text=synth)
 
 
@@ -161,6 +216,7 @@ async def create_user(user: UserIn, db: AsyncSession = Depends(get_db)):
     # created user is embedded on creation (taste embedding fills in once
     # interactions arrive).
     await recompute_user_profile(db, user.id)
+    log_event(logging.INFO, "user_upserted", user_id=user.id)
     return {"status": "ok", "user_id": user.id}
 
 
@@ -212,6 +268,13 @@ async def record_interaction(interaction: InteractionIn, db: AsyncSession = Depe
     if interaction.action in POSITIVE_ACTIONS or interaction.action in NEGATIVE_ACTIONS:
         await recompute_user_profile(db, interaction.user_id)
 
+    log_event(
+        logging.INFO,
+        "interaction_recorded",
+        user_id=interaction.user_id,
+        recipe_id=interaction.recipe_id,
+        action=interaction.action,
+    )
     return {"status": "ok"}
 
 
@@ -228,6 +291,15 @@ async def get_recommendations(req: RecommendRequest, db: AsyncSession = Depends(
         exclude_ids=req.exclude_ids,
         exploration_rate=req.exploration_rate,
         temperature=req.temperature,
+    )
+    log_event(
+        logging.INFO,
+        "recommendations_generated",
+        user_id=req.user_id,
+        meal_slot=req.meal_slot,
+        requested=req.n,
+        returned=len(results),
+        deadline_stress=req.deadline_stress,
     )
     return [
         ScoredRecipe(
@@ -250,6 +322,12 @@ async def context_deadlines(req: ContextRequest):
     """
     today = date.fromisoformat(req.today) if req.today else None
     events = [e.model_dump() for e in req.events]
+    log_event(
+        logging.INFO,
+        "deadline_context_requested",
+        events=len(events),
+        horizon_days=req.horizon_days,
+    )
     return extract_context(events, today=today, horizon_days=req.horizon_days)
 
 
@@ -258,30 +336,35 @@ async def context_deadlines(req: ContextRequest):
 @app.post("/jobs/embed-recipes")
 async def job_embed_recipes(db: AsyncSession = Depends(get_db)):
     count = await embed_unembedded_recipes(db)
+    log_event(logging.INFO, "job_completed", job="embed_recipes", count=count)
     return {"embedded": count}
 
 
 @app.post("/jobs/recompute-user-embeddings")
 async def job_recompute_users(db: AsyncSession = Depends(get_db)):
     count = await recompute_all_user_embeddings(db)
+    log_event(logging.INFO, "job_completed", job="recompute_user_embeddings", count=count)
     return {"updated": count}
 
 
 @app.post("/jobs/recompute-user-profiles")
 async def job_recompute_user_profiles(db: AsyncSession = Depends(get_db)):
     count = await recompute_all_user_profiles(db)
+    log_event(logging.INFO, "job_completed", job="recompute_user_profiles", count=count)
     return {"updated": count}
 
 
 @app.post("/jobs/recompute-co-likes")
 async def job_recompute_colikes(db: AsyncSession = Depends(get_db)):
     count = await recompute_co_likes(db)
+    log_event(logging.INFO, "job_completed", job="recompute_co_likes", count=count)
     return {"pairs": count}
 
 
 @app.post("/jobs/recompute-trending")
 async def job_recompute_trending(db: AsyncSession = Depends(get_db)):
     count = await recompute_trending(db)
+    log_event(logging.INFO, "job_completed", job="recompute_trending", count=count)
     return {"recipes": count}
 
 
@@ -291,6 +374,15 @@ async def job_recompute_all(db: AsyncSession = Depends(get_db)):
     users = await recompute_all_user_profiles(db)
     colikes = await recompute_co_likes(db)
     trending = await recompute_trending(db)
+    log_event(
+        logging.INFO,
+        "job_completed",
+        job="recompute_all",
+        embedded=embedded,
+        user_profiles=users,
+        co_likes=colikes,
+        trending=trending,
+    )
     return {"embedded": embedded, "user_profiles": users, "co_likes": colikes, "trending": trending}
 
 
