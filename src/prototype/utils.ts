@@ -19,6 +19,29 @@ export function money(n: number) {
   return `£${n.toFixed(2)}`;
 }
 
+/**
+ * Returns the source as a normalised http(s) URL if it looks like one,
+ * otherwise null. Used to decide whether a recipe source should render as a
+ * clickable link (issue #146) or as plain text (e.g. "Budget Bytes").
+ */
+export function sourceUrl(source: string | undefined | null): string | null {
+  if (!source) return null;
+
+  const trimmed = source.trim();
+  if (!trimmed) return null;
+
+  try {
+    const url = new URL(trimmed);
+    if (url.protocol === "http:" || url.protocol === "https:") {
+      return url.href;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
 export function formatCookingLimit(minutes: number | null) {
   if (minutes === null) {
     return "Unlimited";
