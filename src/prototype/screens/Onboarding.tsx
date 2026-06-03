@@ -73,8 +73,8 @@ export function Onboarding({
   setScreen,
   prefs,
   setPrefs,
-  deadlines,
   setDeadlines,
+  calendarEvents,
   setCalendarEvents,
   selectedSources,
   setSelectedSources,
@@ -91,8 +91,8 @@ export function Onboarding({
   setScreen: (screen: Screen) => void;
   prefs: Preferences;
   setPrefs: (prefs: Preferences) => void;
-  deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
+  calendarEvents: CalendarEvent[];
   setCalendarEvents: (events: CalendarEvent[]) => void;
   selectedSources: string[];
   setSelectedSources: (sources: string[]) => void;
@@ -118,7 +118,6 @@ export function Onboarding({
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
   const [step1Attempted, setStep1Attempted] = useState(false);
   const [step2Attempted, setStep2Attempted] = useState(false);
-
   function goToStep(nextStep: number) {
     setStep(nextStep);
     setAnimationKey(k => k + 1);
@@ -136,7 +135,7 @@ export function Onboarding({
       setDeadlines(asDeadlines);
       setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
     } else {
-      setImportMessage("No events found. Showing the example deadline week instead.");
+      setImportMessage("No calendar events were found in that import.");
     }
     track("calendar_imported", { source, event_count: events.length });
   }
@@ -330,37 +329,42 @@ export function Onboarding({
                 {importMessage}
               </p>
             )}
-            <div className="mt-7 rounded-lg bg-stone-50 p-4">
-              {(() => {
-                const today = new Date().toISOString().slice(0, 10);
-                const futureEvents = deadlines
-                  .filter((d) => d.rawDate ? d.rawDate >= today : true)
-                  .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""));
-                const shown = futureEvents.slice(0, 5);
-                return (
-                  <>
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold">Detected study-load signals</p>
-                      <Badge tone="amber">{futureEvents.length} found</Badge>
-                    </div>
-                    {futureEvents.length > 5 && (
-                      <p className="mb-2 text-xs text-stone-500">Showing the next 5 closest events</p>
-                    )}
-                    <div className="space-y-2">
-                      {shown.map((deadline) => (
-                        <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
-                          <div>
-                            <p className="font-medium">{deadline.title}</p>
-                            <p className="text-stone-500">{deadline.date}</p>
+            <p className="mt-4 text-sm text-stone-500">
+              Adding a calendar is optional. You can import calendar events any time through Settings or the Calendar menu.
+            </p>
+            {calendarEvents.length > 0 && (
+              <div className="mt-7 rounded-lg bg-stone-50 p-4">
+                {(() => {
+                  const today = new Date().toISOString().slice(0, 10);
+                  const futureEvents = calendarEventsToDeadlines(calendarEvents)
+                    .filter((d) => d.rawDate ? d.rawDate >= today : true)
+                    .sort((a, b) => (a.rawDate ?? "").localeCompare(b.rawDate ?? ""));
+                  const shown = futureEvents.slice(0, 5);
+                  return (
+                    <>
+                      <div className="mb-3 flex items-center justify-between">
+                        <p className="text-sm font-semibold">Detected study-load signals</p>
+                        <Badge tone="amber">{futureEvents.length} found</Badge>
+                      </div>
+                      {futureEvents.length > 5 && (
+                        <p className="mb-2 text-xs text-stone-500">Showing the next 5 closest events</p>
+                      )}
+                      <div className="space-y-2">
+                        {shown.map((deadline) => (
+                          <div key={deadline.id} className="flex items-center justify-between rounded-lg bg-white p-3 text-sm">
+                            <div>
+                              <p className="font-medium">{deadline.title}</p>
+                              <p className="text-stone-500">{deadline.date}</p>
+                            </div>
+                            <span className="text-stone-500">{deadline.time}</span>
                           </div>
-                          <span className="text-stone-500">{deadline.time}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                );
-              })()}
-            </div>
+                        ))}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            )}
             <div className="mt-7 flex items-center justify-between">
               <button
                 type="button"
