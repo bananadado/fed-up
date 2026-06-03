@@ -1,4 +1,4 @@
-import { Clock3, Heart, RefreshCcw, ShoppingBasket, X } from "lucide-react";
+import { Clock3, Flame, Heart, Layers, RefreshCcw, ShoppingBag, ShoppingBasket, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -10,7 +10,7 @@ import { AppButton, Badge } from "../components/primitives";
 import { SwapModal, slotLabels } from "../components/SwapModal";
 import { groceryVendorById, groceryVendors, ingredientsFromPlan } from "../shopping";
 import { getMealById, money } from "../utils";
-import { mealHealthSignals, weeklyBalanceSummary } from "../healthSignals";
+import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
 type RescueChoice = {
@@ -35,7 +35,16 @@ export function PlanScreen({
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
-  const [rescueChoice, setRescueChoice] = useState<RescueChoice>(null);
+  const [rescueChoice, setRescueChoice] = useState<RescueChoice>(() => {
+    try {
+      const saved = sessionStorage.getItem("deadlineFood:pendingRescueChoice");
+      if (saved) {
+        sessionStorage.removeItem("deadlineFood:pendingRescueChoice");
+        return JSON.parse(saved) as RescueChoice;
+      }
+    } catch { /* sessionStorage unavailable */ }
+    return null;
+  });
   const [shoppingOpen, setShoppingOpen] = useState(false);
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
@@ -66,7 +75,6 @@ export function PlanScreen({
               <div key={entry.day} className="grid grid-cols-[minmax(100px,0.55fr)_repeat(3,minmax(0,1fr))] border-b border-stone-200 last:border-b-0">
                 <div className="bg-stone-50 px-4 py-4">
                   <p className="font-bold">{entry.day}</p>
-                  <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>
                 </div>
                 {mealSlots.map((slot) => {
                   const planMeal = entry.meals.find((meal) => meal.slot === slot);
@@ -83,7 +91,7 @@ export function PlanScreen({
                           <div className="flex flex-wrap items-center gap-2">
                             {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
                             <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
-                              {meal.type === "fallback" ? "Fallback" : meal.type === "cook" ? "Cook" : "Remix"}
+                              {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Fallback</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
                             </Badge>
                           </div>
                           <p className="mt-3 break-words text-sm font-semibold leading-5">
@@ -120,7 +128,6 @@ export function PlanScreen({
               <Card key={entry.day} className="gap-0 rounded-lg border-stone-200 bg-white p-4">
                 <div className="mb-4">
                   <p className="font-bold">{entry.day}</p>
-                  <p className="mt-1 text-sm text-stone-500">{entry.context}</p>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-3">
                   {mealSlots.map((slot) => {
@@ -151,10 +158,6 @@ export function PlanScreen({
         </div>
         <div className="space-y-4">
           <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />
-          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4">
-            <p className="font-semibold">Weekly balance</p>
-            <p className="mt-2 text-sm text-stone-500">{weeklyBalanceSummary(plan, customRecipes)} Signals are broad checks, not calorie targets.</p>
-          </Card>
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4">
             <div className="flex items-center gap-3">
               <span className="rounded-lg bg-emerald-50 p-2 text-emerald-700">
@@ -217,7 +220,7 @@ export function PlanScreen({
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
-          setScreen={setScreen}
+          onSelectMeal={onSelectMeal}
           track={track}
         />
       )}
