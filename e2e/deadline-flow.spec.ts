@@ -87,6 +87,14 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await expect(page.getByText("10 min · 100g mixed beans, 1 wrap tortilla wrap, 50g tomato")).toBeVisible();
 });
 
+test("onboarding calendar skip path advances to 'About you'", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /build my meal plan/i }).click();
+  await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
+  await page.getByRole("button", { name: /skip for now/i }).click();
+  await expect(page.getByRole("heading", { name: /about you/i })).toBeVisible();
+});
+
 test("returning users land on dashboard, not the landing or onboarding page", async ({ page }) => {
   const sessionId = "returning-session-39";
 

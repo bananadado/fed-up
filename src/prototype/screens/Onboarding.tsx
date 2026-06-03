@@ -111,6 +111,7 @@ export function Onboarding({
   const step1Ref = useRef<HTMLDivElement>(null);
   const step2Ref = useRef<HTMLDivElement>(null);
   const [importMessage, setImportMessage] = useState("");
+  const [importError, setImportError] = useState(false);
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
@@ -159,6 +160,7 @@ export function Onboarding({
       const result = calendarProvider === "google"
         ? await importGoogleCalendar(sessionId)
         : await importOutlookCalendar(sessionId);
+      setImportError(false);
       handleImportedEvents(result.events, calendarProvider);
       if (result.refreshToken) {
         const provider = calendarProvider as "google" | "outlook";
@@ -171,9 +173,10 @@ export function Onboarding({
         setCalendarTokens([...calendarTokens.filter((t) => t.provider !== provider), newToken]);
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Import failed";
-      setImportMessage(message);
-      track("calendar_import_error", { provider: calendarProvider, error: message });
+      const rawMessage = error instanceof Error ? error.message : "Import failed";
+      setImportError(true);
+      setImportMessage("We couldn't connect — you can set this up later in Settings.");
+      track("calendar_import_error", { provider: calendarProvider, error: rawMessage });
     } finally {
       setImporting(false);
     }
@@ -190,13 +193,15 @@ export function Onboarding({
 
     try {
       const events = await importFromSubscriptionUrl(subscriptionUrl, calendarProvider);
+      setImportError(false);
       handleImportedEvents(events, calendarProvider);
       const newSub: IcsSubscription = { url: subscriptionUrl.trim(), source: calendarProvider, addedAt: new Date().toISOString() };
       setIcsSubscriptions([...icsSubscriptions.filter((s) => s.url !== newSub.url), newSub]);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Import failed";
-      setImportMessage(message);
-      track("calendar_import_error", { provider: calendarProvider, error: message });
+      const rawMessage = error instanceof Error ? error.message : "Import failed";
+      setImportError(true);
+      setImportMessage("We couldn't connect — you can set this up later in Settings.");
+      track("calendar_import_error", { provider: calendarProvider, error: rawMessage });
     } finally {
       setImporting(false);
     }
@@ -259,7 +264,7 @@ export function Onboarding({
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 1 of 3</Badge>
             <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
-            <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days and lower cooking effort around them.</p>
+            <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days. This is optional — you can connect later in Settings.</p>
             <div className="mt-7 grid grid-cols-2 gap-3">
               {calendarProviders.map((provider) => (
                 <button
@@ -318,7 +323,11 @@ export function Onboarding({
               </AppButton>
               <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
             </div>
-            {importMessage && <p className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{importMessage}</p>}
+            {importMessage && (
+              <p className={cn("mt-4 rounded-lg p-3 text-sm", importError ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800")}>
+                {importMessage}
+              </p>
+            )}
             <div className="mt-7 rounded-lg bg-stone-50 p-4">
               {(() => {
                 const today = new Date().toISOString().slice(0, 10);
@@ -350,7 +359,14 @@ export function Onboarding({
                 );
               })()}
             </div>
-            <div className="mt-7 flex justify-end">
+            <div className="mt-7 flex items-center justify-between">
+              <button
+                type="button"
+                className="text-sm text-stone-500 hover:text-stone-700"
+                onClick={() => { track("calendar_skipped", {}); goToStep(1); }}
+              >
+                Skip for now
+              </button>
               <AppButton onClick={() => { track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider }); goToStep(1); }}>
                 Continue <ArrowRight size={16} />
               </AppButton>
