@@ -69,6 +69,29 @@ function PreferenceSection({
   );
 }
 
+function InfoTooltip({ children }: { children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative flex shrink-0 items-center">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        onBlur={() => setOpen(false)}
+        aria-label="More information"
+        aria-expanded={open}
+        className="flex h-5 w-5 items-center justify-center rounded-full border border-stone-300 bg-white text-[11px] font-bold text-stone-400 hover:border-emerald-400 hover:text-emerald-700"
+      >
+        ?
+      </button>
+      {open && (
+        <div className="absolute bottom-full left-0 z-10 mb-2 w-64 rounded-lg border border-stone-200 bg-white p-3 text-xs leading-5 text-stone-600 shadow-lg">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Onboarding({
   setOnboarded,
   setScreen,
@@ -324,26 +347,49 @@ export function Onboarding({
                   </div>
                 </>
               )}
-              <div className="flex gap-2">
-                <Input
-                  value={subscriptionUrl}
-                  onChange={(e) => setSubscriptionUrl(e.target.value)}
-                  placeholder="webcal://… or https://…"
-                  className="h-auto flex-1 rounded-lg border-stone-200 bg-white p-3 text-sm"
-                />
-                <AppButton type="button" variant="secondary" onClick={connectSubscriptionUrl} disabled={importing || !subscriptionUrl.trim()}>
-                  {importing ? "Fetching…" : "Import"}
-                </AppButton>
+              <div className="flex items-center gap-2">
+                <InfoTooltip>
+                  <p className="font-semibold text-stone-700">Calendar subscription link</p>
+                  <p className="mt-1">A <span className="font-medium">webcal://</span> or <span className="font-medium">https://</span> URL your calendar app provides so other apps can sync your events.</p>
+                  <p className="mt-1.5 font-medium text-stone-500">Where to find it:</p>
+                  <ul className="mt-0.5 space-y-0.5 text-stone-500">
+                    <li><span className="font-medium">Google:</span> Settings → your calendar → "Secret address in iCal format"</li>
+                    <li><span className="font-medium">Outlook:</span> Calendar settings → Share → Get a link</li>
+                    <li><span className="font-medium">University:</span> check your timetable portal for a "subscribe" or "iCal" option</li>
+                  </ul>
+                </InfoTooltip>
+                <div className="flex flex-1 gap-2">
+                  <Input
+                    value={subscriptionUrl}
+                    onChange={(e) => setSubscriptionUrl(e.target.value)}
+                    placeholder="webcal://… or https://…"
+                    className="h-auto flex-1 rounded-lg border-stone-200 bg-white p-3 text-sm"
+                  />
+                  <AppButton type="button" variant="secondary" onClick={connectSubscriptionUrl} disabled={importing || !subscriptionUrl.trim()}>
+                    {importing ? "Fetching…" : "Import"}
+                  </AppButton>
+                </div>
               </div>
               <p className="mt-2 text-xs text-stone-400">{icsSubscriptionHints[calendarProvider]}</p>
-              <div className="mt-3 flex items-center gap-3">
-                <div className="h-px flex-1 bg-stone-200" />
-                <span className="text-xs font-medium text-stone-400">or upload a file</span>
-                <div className="h-px flex-1 bg-stone-200" />
+              <div className="mt-4 flex items-center gap-2">
+                <InfoTooltip>
+                  <p className="font-semibold text-stone-700">ICS / .ics file</p>
+                  <p className="mt-1">A standard calendar export file. Download one from:</p>
+                  <ul className="mt-0.5 space-y-0.5 text-stone-500">
+                    <li><span className="font-medium">Google:</span> Settings → Import &amp; export → Export</li>
+                    <li><span className="font-medium">Outlook:</span> File → Save calendar</li>
+                    <li><span className="font-medium">University timetable:</span> look for "Export" or "Download"</li>
+                  </ul>
+                  <p className="mt-1.5 text-stone-400">Note: a one-off snapshot — it won't stay in sync. Use a subscription link above for live updates.</p>
+                </InfoTooltip>
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  className="flex items-center gap-1.5 text-sm text-stone-400 hover:text-stone-600"
+                >
+                  <Import size={14} /> Upload .ics file
+                </button>
               </div>
-              <AppButton type="button" variant="secondary" onClick={() => fileRef.current?.click()} className="w-full justify-center py-3 text-base">
-                <Import size={18} /> Upload .ics file
-              </AppButton>
               <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
             </div>
             {importMessage && (
