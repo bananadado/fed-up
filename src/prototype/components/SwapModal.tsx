@@ -1,4 +1,4 @@
-import { ArrowRight, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, TrendingDown, TrendingUp, X } from "lucide-react";
+import { ArrowRight, ArrowUpDown, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, TrendingDown, TrendingUp, X } from "lucide-react";
 import { useState } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -20,6 +20,16 @@ export const mealTypeIcon: Record<string, React.ElementType> = {
   fallback: ShoppingBag,
   remix: Layers,
 };
+
+type SortOption = "match" | "quickest" | "cheapest";
+
+const sortLabels: Record<SortOption, string> = {
+  match: "Best match",
+  quickest: "Quickest",
+  cheapest: "Cheapest",
+};
+
+const allSlots: MealSlot[] = ["breakfast", "lunch", "dinner"];
 
 function priceDiff(newPrice: number, oldPrice: number) {
   const diff = newPrice - oldPrice;
@@ -50,23 +60,47 @@ export function SwapModal({
 }) {
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<SortOption>("match");
+  const [selectedSlots, setSelectedSlots] = useState<MealSlot[]>([rescueChoice.slot]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [customTagInput, setCustomTagInput] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [showSort, setShowSort] = useState(false);
 
   const originalDay = plan.find((entry) => entry.day === rescueChoice.day);
   const originalPlanMeal = originalDay?.meals.find((meal) => meal.slot === rescueChoice.slot);
   const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
 
-  const allOptions = [...customRecipes, ...getRecipeCatalogue().filter((m) => !customRecipes.some((c) => c.id === m.id))]
-    .filter((meal) => meal.mealSlots.includes(rescueChoice.slot))
+  // Full candidate pool — allergen/dislike safe, not the current meal
+  const candidatePool = [...customRecipes, ...getRecipeCatalogue().filter((m) => !customRecipes.some((c) => c.id === m.id))]
     .filter((meal) => meal.id !== originalPlanMeal?.mealId)
     .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
-    .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
-    .sort((a, b) => {
-      const aScore = a.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
-      const bScore = b.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
-      return bScore - aScore || a.time - b.time || a.price - b.price;
-    });
+    .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())));
 
+  // Tags available across the full pool (shown in filter panel)
+  const availableTags = [...new Set(candidatePool.flatMap((m) => m.tags))].sort();
+
+  // Apply slot filter (empty selectedSlots = show all)
+  const slotFiltered = selectedSlots.length > 0
+    ? candidatePool.filter((m) => m.mealSlots.some((s) => selectedSlots.includes(s as MealSlot)))
+    : candidatePool;
+
+  // Apply tag filter (all selected tags must match)
+  const tagFiltered = selectedTags.length > 0
+    ? slotFiltered.filter((m) => selectedTags.every((tag) => m.tags.includes(tag)))
+    : slotFiltered;
+
+  // Sort
+  const allOptions = [...tagFiltered].sort((a, b) => {
+    if (sortBy === "quickest") return a.time - b.time;
+    if (sortBy === "cheapest") return a.price - b.price;
+    const aScore = a.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
+    const bScore = b.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
+    return bScore - aScore || a.time - b.time || a.price - b.price;
+  });
+
+  // Apply search
   const filteredOptions = search.trim()
     ? allOptions.filter((m) => m.name.toLowerCase().includes(search.toLowerCase()))
     : allOptions;
@@ -81,10 +115,43 @@ export function SwapModal({
   );
   const newTotal = originalMeal && selectedMeal ? total - originalMeal.price + selectedMeal.price : total;
 
+  const isDefaultSlots = selectedSlots.length === 1 && selectedSlots[0] === rescueChoice.slot;
+  const activeFilterCount = selectedTags.length + (isDefaultSlots ? 0 : 1);
+
   if (!originalMeal) return null;
 
   function closeAndReset() {
     onClose();
+  }
+
+  function toggleSlot(slot: MealSlot) {
+    setSelectedId(null);
+    setSelectedSlots((prev) =>
+      prev.includes(slot) ? prev.filter((s) => s !== slot) : [...prev, slot],
+    );
+  }
+
+  function toggleTag(tag: string) {
+    setSelectedId(null);
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
+    );
+  }
+
+  function addCustomTag() {
+    const tag = customTagInput.trim().toLowerCase();
+    if (tag && !selectedTags.includes(tag)) {
+      setSelectedTags((prev) => [...prev, tag]);
+      setSelectedId(null);
+    }
+    setCustomTagInput("");
+  }
+
+  function resetFilters() {
+    setSelectedSlots([rescueChoice.slot]);
+    setSelectedTags([]);
+    setCustomTagInput("");
+    setSelectedId(null);
   }
 
   function confirmSwapWith(meal: Meal) {
@@ -153,16 +220,130 @@ export function SwapModal({
             </div>
           </div>
 
-          {/* Search */}
-          <div className="relative mt-3">
-            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search meals…"
-              className="w-full rounded-lg border border-stone-200 bg-white py-2.5 pl-8 pr-3 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20"
-            />
+          {/* Search + Sort + Filter */}
+          <div className="mt-3 flex gap-2">
+            <div className="relative flex-1">
+              <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search meals…"
+                className="w-full rounded-lg border border-stone-200 bg-white py-2.5 pl-8 pr-3 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20"
+              />
+            </div>
+            {/* Sort button */}
+            <button
+              type="button"
+              onClick={() => { setShowSort((s) => !s); setShowFilters(false); }}
+              aria-label="Sort options"
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-2.5 text-xs font-medium transition ${sortBy !== "match" ? "border-emerald-400 bg-emerald-50 text-emerald-700" : showSort ? "border-stone-300 bg-stone-100 text-stone-600" : "border-stone-200 text-stone-500 hover:border-stone-300"}`}
+            >
+              <ArrowUpDown size={14} />
+              <span>{sortLabels[sortBy]}</span>
+            </button>
+            {/* Filter button */}
+            <button
+              type="button"
+              onClick={() => { setShowFilters((f) => !f); setShowSort(false); }}
+              aria-label="Filter options"
+              className={`relative flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-2.5 text-xs font-medium transition ${activeFilterCount > 0 ? "border-emerald-400 bg-emerald-50 text-emerald-700" : showFilters ? "border-stone-300 bg-stone-100 text-stone-600" : "border-stone-200 text-stone-500 hover:border-stone-300"}`}
+            >
+              <SlidersHorizontal size={14} />
+              <span>Filter</span>
+              {activeFilterCount > 0 && (
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-700 text-[10px] font-bold text-white">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
           </div>
+
+          {/* Sort panel */}
+          {showSort && (
+            <div className="mt-2 rounded-lg border border-stone-200 bg-stone-50 p-3">
+              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Sort by</p>
+              <div className="flex flex-wrap gap-2">
+                {(["match", "quickest", "cheapest"] as SortOption[]).map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => { setSortBy(opt); setShowSort(false); track("meal_swap_sort_changed", { sort_by: opt }); }}
+                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${sortBy === opt ? "border-emerald-600 bg-emerald-100 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                  >
+                    {sortLabels[opt]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Filter panel */}
+          {showFilters && (
+            <div className="mt-2 rounded-lg border border-stone-200 bg-stone-50 p-3">
+              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Meal type</p>
+              <div className="flex flex-wrap gap-2">
+                {allSlots.map((slot) => (
+                  <button
+                    key={slot}
+                    type="button"
+                    onClick={() => toggleSlot(slot)}
+                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${selectedSlots.includes(slot) ? "border-emerald-600 bg-emerald-100 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                  >
+                    {slotLabels[slot]}
+                  </button>
+                ))}
+              </div>
+
+              <p className="mb-2 mt-3 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Tags</p>
+              {/* All chips: custom-selected tags first, then catalogue tags */}
+              <div className="max-h-28 overflow-y-auto">
+                <div className="flex flex-wrap gap-2 pb-1">
+                  {[
+                    ...selectedTags.filter((t) => !availableTags.includes(t)),
+                    ...availableTags,
+                  ].map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => toggleTag(tag)}
+                      className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize transition ${selectedTags.includes(tag) ? "border-emerald-600 bg-emerald-100 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {/* Custom tag input */}
+              <div className="mt-2 flex gap-2">
+                <input
+                  type="text"
+                  value={customTagInput}
+                  onChange={(e) => setCustomTagInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } }}
+                  placeholder="Add a tag…"
+                  className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20"
+                />
+                <button
+                  type="button"
+                  onClick={addCustomTag}
+                  disabled={!customTagInput.trim()}
+                  className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-600 transition hover:border-emerald-300 hover:text-emerald-700 disabled:opacity-40"
+                >
+                  Add
+                </button>
+              </div>
+
+              {activeFilterCount > 0 && (
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="mt-3 text-sm font-medium text-stone-400 hover:text-stone-600"
+                >
+                  Reset filters
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Scrollable options list only */}
