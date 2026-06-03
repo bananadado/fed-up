@@ -63,9 +63,13 @@ export function Dashboard({
             </div>
             {nextMeal ? (
               <>
-                <p className="mt-4 break-words text-xl font-bold">
+                <button
+                  type="button"
+                  onClick={() => { track("dashboard_next_meal_clicked", { meal_id: nextMeal.mealId }); onSelectMeal(nextMeal.mealId); }}
+                  className="mt-4 break-words text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                >
                   {nextMeal.meal.image} {nextMeal.meal.name}
-                </p>
+                </button>
                 <p className="mt-2 text-sm text-stone-500">
                   {nextMeal.day} {nextMeal.slot} - {nextMeal.context}
                 </p>
