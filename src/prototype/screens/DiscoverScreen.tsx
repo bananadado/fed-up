@@ -1,4 +1,4 @@
-import { LoaderCircle, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Clock3, LoaderCircle, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useMemo, useRef, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -202,7 +202,7 @@ export function DiscoverScreen({
                 )}
               </button>
               <div className="p-6">
-                <div className="flex justify-between gap-3">
+                <div className="flex items-start justify-between gap-3">
                   <button
                     type="button"
                     onClick={() => onSelectMeal(current.id)}
@@ -210,8 +210,13 @@ export function DiscoverScreen({
                   >
                     {current.name}
                   </button>
-                  <span className="whitespace-nowrap font-semibold text-emerald-700">{money(current.price)}</span>
                   <StarRating rating={current.rating} reviews={current.reviews.length} />
+                </div>
+                <div className="mt-2 flex items-center gap-4">
+                  <span className="flex items-center gap-1 text-sm font-semibold text-stone-700">
+                    <Clock3 size={14} />{current.time} mins
+                  </span>
+                  <span className="text-sm font-semibold text-emerald-700">{money(current.price)}</span>
                 </div>
                 <p className="mt-1 text-sm text-stone-400">
                   {sourceUrl(current.source) ? (
