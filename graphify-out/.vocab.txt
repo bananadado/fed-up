@@ -24,6 +24,7 @@ aggregate
 aliases
 aligned
 all
+allergen
 allergens
 allow
 allowed
@@ -53,6 +54,7 @@ are
 areas
 args
 artifacts
+assign
 assisted
 assumptions
 ast
@@ -315,6 +317,7 @@ draft
 drafts
 drives
 drp
+dry
 duration
 dynamic
 each
@@ -333,6 +336,7 @@ embedded
 embedding
 embeddings
 emit
+emoji
 emp
 empty
 emulate
@@ -427,6 +431,8 @@ fiscal
 fixed
 fixtures
 flag
+flavor
+flavors
 flavour
 float
 flow
@@ -517,6 +523,7 @@ http
 https
 hub
 hummus
+hundred
 icon
 ics
 idempotent
@@ -543,6 +550,7 @@ index
 indexed
 indexes
 indicators
+infer
 inference
 info
 information
@@ -666,6 +674,7 @@ mcp
 meal
 meals
 means
+measure
 mechanisms
 memory
 merge
@@ -774,6 +783,7 @@ part
 past
 path
 paths
+patterns
 payload
 pca
 peanut
@@ -828,6 +838,7 @@ present
 pressing
 pressure
 price
+prices
 primary
 primitives
 principle
@@ -1109,6 +1120,7 @@ success
 sudo
 suggested
 suggestions
+suitability
 suite
 summary
 supported
@@ -1158,6 +1170,7 @@ than
 that
 the
 their
+themealdb
 then
 these
 this
