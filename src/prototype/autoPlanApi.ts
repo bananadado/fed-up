@@ -92,6 +92,7 @@ export async function generateAutoPlan(
     body: JSON.stringify({
       user_id: input.sessionId,
       horizonDays: input.prefs.planningHorizonDays,
+      budget: input.prefs.budget,
       contextEvents: contextEvents(input.calendarEvents, input.deadlines),
       savedRecipes: input.savedRecipes,
       excludeIds: input.excludeIds ?? [],

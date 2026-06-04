@@ -978,6 +978,7 @@ function mealToAllocator(meal: UnknownRecord): AutoPlan.AllocatorMeal {
     type: toMealType(meal.type),
     mealSlots: toMealSlots(meal.mealSlots),
     time: boundedNumber(meal.time, 20, 0, 600),
+    pricePence: Math.round(boundedNumber(meal.price, 0, 0, 100000) * 100),
     tags: Array.isArray(meal.tags) ? meal.tags.filter((t): t is string => typeof t === "string") : [],
     allergens: Array.isArray(meal.allergens) ? meal.allergens.filter((a): a is string => typeof a === "string") : [],
     ingredients,
@@ -1034,6 +1035,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const excludeIds = boundedStringList(body.excludeIds, 250, 80);
   const dislikes = boundedStringList(body.dislikes, 40, 80);
   const allergens = boundedStringList(body.allergens, 40, 80);
+  const weeklyBudgetPence = Math.round(boundedNumber(body.budget, 48, 0, 1000) * 100);
 
   // 1. Per-day calendar context across the horizon (#65). horizon_days produces
   // horizon_days+1 entries (incl. today), so request one fewer than we need.
@@ -1065,6 +1067,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
       user_id: userId,
       n: 60,
       deadline_stress: avgStress,
+      budget_pence: weeklyBudgetPence,
       exclude_ids: excludeIds,
     });
     if (Array.isArray(fill)) {
@@ -1084,6 +1087,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     days,
     pool: [...savedAlloc, ...fillAlloc],
     avoided: [...dislikes, ...allergens],
+    weeklyBudgetPence,
   });
 
   // 3. Return only the meals actually placed, so the client can resolve them.

@@ -26,6 +26,7 @@ export interface AllocatorMeal {
   type: MealType;
   mealSlots: MealSlot[];
   time: number;
+  pricePence: number;
   tags: string[];
   allergens: string[];
   ingredients: { name: string }[];
@@ -60,6 +61,8 @@ export interface BuildPlanInput {
   pool: AllocatorMeal[];
   /** Lower-cased dislikes + allergens — hard filters. */
   avoided: string[];
+  /** Weekly budget cap in pence. Omit for legacy/no-budget allocation. */
+  weeklyBudgetPence?: number;
 }
 
 type Effort = "minimal" | "batch" | "cook";
@@ -106,6 +109,10 @@ function contextLabel(day: DayContext, b: Band): string {
 
 type Leftover = {meal: AllocatorMeal; expiresDayIndex: number};
 
+function mealCostPence(meal: AllocatorMeal): number {
+  return Math.max(0, Math.round(meal.pricePence));
+}
+
 // Rank candidates for a slot by how well their effort suits the day's band.
 function effortRank(effort: Effort, b: Band, slot: MealSlot): number {
   if (b === "high") {
@@ -123,40 +130,88 @@ function effortRank(effort: Effort, b: Band, slot: MealSlot): number {
 export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
   const avoided = new Set(input.avoided.map((v) => v.toLowerCase()));
   const safePool = input.pool.filter((m) => isSafe(m, avoided));
+  const weeklyBudgetPence =
+    input.weeklyBudgetPence === undefined || !Number.isFinite(input.weeklyBudgetPence) ?
+      null :
+      Math.max(0, Math.round(input.weeklyBudgetPence));
 
   const leftovers: Leftover[] = [];
   // Last day index a meal was used in a given slot, to avoid back-to-back repeats.
   const lastUsed = new Map<string, number>(); // `${slot}:${mealId}` -> dayIndex
+  const mealUseCounts = new Map<string, number>();
+  const slotUseCounts = new Map<string, number>();
+  const spentByWeek = new Map<number, number>();
   const entries: PlanEntryOut[] = [];
 
   input.days.forEach((day, dayIndex) => {
     const b = band(day.stress);
     const maxPrep = day.recommended_constraints?.max_prep_minutes ?? 60;
     const meals: PlanMealOut[] = [];
+    const usedToday = new Set<string>();
+    const weekIndex = Math.floor(dayIndex / 7);
 
     for (const slot of SLOTS) {
+      const remainingBudgetPence =
+        weeklyBudgetPence === null ?
+          Number.POSITIVE_INFINITY :
+          Math.max(0, weeklyBudgetPence - (spentByWeek.get(weekIndex) ?? 0));
+
       // 1. On busy/moderate non-breakfast slots, spend a fresh leftover first.
       if (slot !== "breakfast" && b !== "low") {
         const idx = leftovers.findIndex(
-          (l) => l.expiresDayIndex >= dayIndex && l.meal.mealSlots.includes(slot),
+          (l) =>
+            l.expiresDayIndex >= dayIndex &&
+            l.meal.mealSlots.includes(slot) &&
+            mealCostPence(l.meal) <= remainingBudgetPence,
         );
         if (idx !== -1) {
           const [used] = leftovers.splice(idx, 1);
           meals.push({slot, mealId: used.meal.id, leftoverOf: used.meal.id});
-          lastUsed.set(`${slot}:${used.meal.id}`, dayIndex);
+          recordUse({
+            meal: used.meal,
+            slot,
+            dayIndex,
+            weekIndex,
+            lastUsed,
+            mealUseCounts,
+            slotUseCounts,
+            spentByWeek,
+            usedToday,
+          });
           continue;
         }
       }
 
       const candidates = safePool.filter((m) => m.mealSlots.includes(slot));
-      const picked = pickForSlot(candidates, b, slot, maxPrep, lastUsed, dayIndex);
+      const picked = pickForSlot(
+        candidates,
+        b,
+        slot,
+        maxPrep,
+        remainingBudgetPence,
+        lastUsed,
+        mealUseCounts,
+        slotUseCounts,
+        usedToday,
+        dayIndex,
+      );
 
       if (!picked) continue; // pool has nothing for this slot — leave it unfilled
 
       const effort = classifyEffort(picked);
       const isBatch = effort === "batch" && b === "low" && slot !== "breakfast";
       meals.push({slot, mealId: picked.id, ...(isBatch ? {batchCook: true} : {})});
-      lastUsed.set(`${slot}:${picked.id}`, dayIndex);
+      recordUse({
+        meal: picked,
+        slot,
+        dayIndex,
+        weekIndex,
+        lastUsed,
+        mealUseCounts,
+        slotUseCounts,
+        spentByWeek,
+        usedToday,
+      });
 
       if (isBatch) {
         for (let p = 0; p < LEFTOVER_PORTIONS; p += 1) {
@@ -176,12 +231,46 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
   return entries;
 }
 
+function recordUse({
+  meal,
+  slot,
+  dayIndex,
+  weekIndex,
+  lastUsed,
+  mealUseCounts,
+  slotUseCounts,
+  spentByWeek,
+  usedToday,
+}: {
+  meal: AllocatorMeal;
+  slot: MealSlot;
+  dayIndex: number;
+  weekIndex: number;
+  lastUsed: Map<string, number>;
+  mealUseCounts: Map<string, number>;
+  slotUseCounts: Map<string, number>;
+  spentByWeek: Map<number, number>;
+  usedToday: Set<string>;
+}): void {
+  const slotKey = `${slot}:${meal.id}`;
+  lastUsed.set(slotKey, dayIndex);
+  lastUsed.set(`any:${meal.id}`, dayIndex);
+  mealUseCounts.set(meal.id, (mealUseCounts.get(meal.id) ?? 0) + 1);
+  slotUseCounts.set(slotKey, (slotUseCounts.get(slotKey) ?? 0) + 1);
+  spentByWeek.set(weekIndex, (spentByWeek.get(weekIndex) ?? 0) + mealCostPence(meal));
+  usedToday.add(meal.id);
+}
+
 function pickForSlot(
   candidates: AllocatorMeal[],
   b: Band,
   slot: MealSlot,
   maxPrep: number,
+  remainingBudgetPence: number,
   lastUsed: Map<string, number>,
+  mealUseCounts: Map<string, number>,
+  slotUseCounts: Map<string, number>,
+  usedToday: Set<string>,
   dayIndex: number,
 ): AllocatorMeal | null {
   if (candidates.length === 0) return null;
@@ -189,14 +278,35 @@ function pickForSlot(
   const withinPrep = candidates.filter((m) => m.time <= maxPrep);
   // Relax the prep cap only if nothing fits — prefer the lightest options then.
   const usable = withinPrep.length > 0 ? withinPrep : candidates;
+  const affordable = usable.filter((m) => mealCostPence(m) <= remainingBudgetPence);
+  if (affordable.length === 0) return null;
 
-  const ranked = [...usable].sort((a, c) => {
+  const notUsedToday = affordable.filter((m) => !usedToday.has(m.id));
+  const rotationPool = notUsedToday.length > 0 ? notUsedToday : affordable;
+
+  const ranked = [...rotationPool].sort((a, c) => {
     const byEffort = effortRank(classifyEffort(a), b, slot) - effortRank(classifyEffort(c), b, slot);
     if (byEffort !== 0) return byEffort;
-    // Then prefer meals not used in this slot yesterday, then shorter prep.
-    const aRecent = (lastUsed.get(`${slot}:${a.id}`) ?? -99) === dayIndex - 1 ? 1 : 0;
-    const cRecent = (lastUsed.get(`${slot}:${c.id}`) ?? -99) === dayIndex - 1 ? 1 : 0;
-    if (aRecent !== cRecent) return aRecent - cRecent;
+
+    // Rotate similarly suitable meals before falling back to cost/prep tie-breaks.
+    const aSlotUses = slotUseCounts.get(`${slot}:${a.id}`) ?? 0;
+    const cSlotUses = slotUseCounts.get(`${slot}:${c.id}`) ?? 0;
+    if (aSlotUses !== cSlotUses) return aSlotUses - cSlotUses;
+
+    const aUses = mealUseCounts.get(a.id) ?? 0;
+    const cUses = mealUseCounts.get(c.id) ?? 0;
+    if (aUses !== cUses) return aUses - cUses;
+
+    const aLastSlot = lastUsed.get(`${slot}:${a.id}`) ?? -99;
+    const cLastSlot = lastUsed.get(`${slot}:${c.id}`) ?? -99;
+    if (aLastSlot !== cLastSlot) return aLastSlot - cLastSlot;
+
+    const aLastAny = lastUsed.get(`any:${a.id}`) ?? -99;
+    const cLastAny = lastUsed.get(`any:${c.id}`) ?? -99;
+    if (aLastAny !== cLastAny) return aLastAny - cLastAny;
+
+    const byPrice = mealCostPence(a) - mealCostPence(c);
+    if (byPrice !== 0) return byPrice;
     return a.time - c.time;
   });
 

@@ -7,6 +7,7 @@ function meal(partial: Partial<AllocatorMeal> & { id: string }): AllocatorMeal {
     type: "cook",
     mealSlots: ["breakfast", "lunch", "dinner"],
     time: 20,
+    pricePence: 200,
     tags: [],
     allergens: [],
     ingredients: [],
@@ -105,5 +106,47 @@ describe("buildPlan", () => {
       avoided: [],
     });
     expect(plan[0].meals.map((m) => m.slot)).toEqual(["breakfast"]);
+  });
+
+  it("does not allocate meals that would exceed the weekly budget", () => {
+    const expensive = meal({ id: "expensive", type: "fallback", time: 4, pricePence: 600, mealSlots: ["dinner"] });
+    const cheap = meal({ id: "cheap", type: "fallback", time: 6, pricePence: 250, mealSlots: ["dinner"] });
+    const plan = buildPlan({
+      days: [
+        day({ date: "2026-06-01", stress: 0.8 }),
+        day({ date: "2026-06-02", stress: 0.8 }),
+        day({ date: "2026-06-03", stress: 0.8 }),
+      ],
+      pool: [expensive, cheap],
+      avoided: [],
+      weeklyBudgetPence: 500,
+    });
+
+    const dinners = plan.flatMap((entry) => entry.meals.filter((m) => m.slot === "dinner"));
+    expect(dinners.map((m) => m.mealId)).toEqual(["cheap", "cheap"]);
+  });
+
+  it("rotates similarly suitable meals instead of repeating one meal across the horizon", () => {
+    const days = Array.from({ length: 9 }, (_, i) =>
+      day({
+        date: `2026-06-${String(i + 1).padStart(2, "0")}`,
+        stress: 0.8,
+        recommended_constraints: { max_prep_minutes: 15 },
+      }),
+    );
+    const quickA = meal({ id: "quick-a", type: "fallback", time: 5, pricePence: 120 });
+    const quickB = meal({ id: "quick-b", type: "fallback", time: 6, pricePence: 130 });
+    const quickC = meal({ id: "quick-c", type: "fallback", time: 7, pricePence: 140 });
+
+    const plan = buildPlan({
+      days,
+      pool: [quickA, quickB, quickC],
+      avoided: [],
+      weeklyBudgetPence: 5000,
+    });
+
+    expect(plan[0].meals.map((m) => m.mealId)).toEqual(["quick-a", "quick-b", "quick-c"]);
+    const dinnerIds = plan.map((entry) => entry.meals.find((m) => m.slot === "dinner")?.mealId);
+    expect(new Set(dinnerIds)).toEqual(new Set(["quick-a", "quick-b", "quick-c"]));
   });
 });

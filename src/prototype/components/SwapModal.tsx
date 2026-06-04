@@ -130,6 +130,8 @@ export function SwapModal({
     0,
   );
   const newTotal = originalMeal && selectedMeal ? total - originalMeal.price + selectedMeal.price : total;
+  const weekCount = Math.max(1, Math.ceil(plan.length / 7));
+  const horizonBudget = prefs.budget * weekCount;
 
   const isDefaultSlots = selectedSlots.length === 1 && selectedSlots[0] === rescueChoice.slot;
   const activeFilterCount = selectedTags.length + (isDefaultSlots ? 0 : 1);
@@ -204,7 +206,7 @@ export function SwapModal({
     onSelectMeal(mealId);
   }
 
-  const budgetAfter = prefs.budget - newTotal;
+  const budgetAfter = horizonBudget - newTotal;
 
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-center bg-stone-950/40 p-0 sm:items-center sm:p-5" onClick={() => { track("meal_swap_cancelled", { action: "backdrop", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }}>

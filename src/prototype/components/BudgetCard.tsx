@@ -15,8 +15,11 @@ export function BudgetCard({
     (sum, entry) => sum + entry.meals.reduce((daySum, meal) => daySum + getMealById(meal.mealId, customRecipes).price, 0),
     0,
   );
-  const remaining = budget - total;
-  const percent = Math.min(100, Math.round((total / Math.max(budget, 1)) * 100));
+  const weekCount = Math.max(1, Math.ceil(plan.length / 7));
+  const horizonBudget = budget * weekCount;
+  const remaining = horizonBudget - total;
+  const percent = Math.min(100, Math.round((total / Math.max(horizonBudget, 1)) * 100));
+  const budgetLabel = weekCount === 1 ? `your £${budget.toFixed(0)} weekly budget` : `${weekCount} weeks at £${budget.toFixed(0)}/week`;
 
   return (
     <div className="rounded-lg bg-emerald-800 p-5 text-white">
@@ -28,7 +31,7 @@ export function BudgetCard({
         <div className={cn("h-full rounded-full", remaining >= 0 ? "bg-emerald-200" : "bg-rose-300")} style={{ width: `${percent}%` }} />
       </div>
       <p className="mt-3 text-sm text-emerald-100">
-        {remaining >= 0 ? `${money(remaining)} remaining from your £${budget.toFixed(0)} budget` : `${money(Math.abs(remaining))} over budget - see cheaper swaps`}
+        {remaining >= 0 ? `${money(remaining)} remaining from ${budgetLabel}` : `${money(Math.abs(remaining))} over ${budgetLabel} - see cheaper swaps`}
       </p>
     </div>
   );
