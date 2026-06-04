@@ -117,7 +117,7 @@ export function PlanScreen({
                           <p className="mt-2 line-clamp-2 text-sm text-stone-500">{meal.source}</p>
                         </button>
                         <div className="mt-4 flex flex-wrap gap-2">
-                          <AppButton variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
+                          <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
                             <RefreshCcw size={15} /> Change
                           </AppButton>
                           <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
@@ -155,7 +155,7 @@ export function PlanScreen({
                           </p>
                         </button>
                         <div className="mt-3 flex flex-wrap gap-2">
-                          <AppButton variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
+                          <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
                             <RefreshCcw size={15} /> Change
                           </AppButton>
                           <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
