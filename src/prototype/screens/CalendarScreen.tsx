@@ -1,12 +1,20 @@
 import { useState, useMemo } from "react";
-import { AlertTriangle, CalendarPlus, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight } from "lucide-react";
-import type { CalendarEvent, Deadline, Screen } from "../types";
+import { AlertTriangle, CalendarPlus, CalendarClock, ChevronDown, Download, ExternalLink, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight, ChefHat } from "lucide-react";
+import type { CalendarEvent, Deadline, Meal, PlanEntry, Screen } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { clockTimeInputPattern } from "@/lib/timeInput";
 import { cookingEffortReason, workloadLabel } from "../workloadModel";
 import type { TrackPrototypeEvent } from "../analytics";
+import { getMealById } from "../utils";
+import {
+  buildCookingIcs,
+  buildGoogleCalendarUrl,
+  buildShoppingGoogleCalendarUrl,
+  cookingIcsFilename,
+  type CookingCalendarBlock,
+} from "../cookingCalendar";
 
 const urgencyLevels: Deadline["urgency"][] = ["low", "medium", "high"];
 const urgencyLabel: Record<Deadline["urgency"], string> = { low: "Low", medium: "Medium", high: "High" };
@@ -228,18 +236,273 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
   );
 }
 
+// --- CookingScheduler ---
+
+// Trigger a client-side download of the generated .ics file. Guarded for SSR /
+// non-browser environments so the module stays import-safe.
+function downloadIcs(filename: string, contents: string) {
+  if (typeof document === "undefined" || typeof URL.createObjectURL !== "function") return;
+  const blob = new Blob([contents], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+function formatIngredient(i: { name: string; quantity: number; unit: string; preparation?: string }): string {
+  const qty = Number.isInteger(i.quantity) ? String(i.quantity) : i.quantity.toFixed(1);
+  const prep = i.preparation ? ` (${i.preparation})` : "";
+  return `${qty} ${i.unit} ${i.name}${prep}`;
+}
+
+function CookingScheduler({
+  plan,
+  customRecipes,
+  defaultDateIso,
+  track,
+}: {
+  plan: PlanEntry[];
+  customRecipes: Meal[];
+  defaultDateIso: string;
+  track: TrackPrototypeEvent;
+}) {
+  // Distinct meals from the current plan, plus any saved custom recipes, so the
+  // user schedules cooking for something they actually intend to make.
+  const schedulableMeals = useMemo(() => {
+    const byId = new Map<string, Meal>();
+    plan.forEach((entry) => {
+      entry.meals.forEach((planMeal) => {
+        const meal = getMealById(planMeal.mealId, customRecipes);
+        if (meal && !byId.has(meal.id)) byId.set(meal.id, meal);
+      });
+    });
+    customRecipes.forEach((meal) => {
+      if (!byId.has(meal.id)) byId.set(meal.id, meal);
+    });
+    return [...byId.values()].filter((meal) => meal.type !== "fallback");
+  }, [plan, customRecipes]);
+
+  const [mealId, setMealId] = useState<string>(() => schedulableMeals[0]?.id ?? "");
+  const [dateIso, setDateIso] = useState(defaultDateIso);
+  const [time, setTime] = useState("18:00");
+  // null = no reminder; number = minutes before the cooking block
+  const [reminderMinutes, setReminderMinutes] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [exportedMethod, setExportedMethod] = useState<"ics" | "google" | null>(null);
+
+  const selectedMeal = schedulableMeals.find((meal) => meal.id === mealId) ?? null;
+
+  function buildBlock(): CookingCalendarBlock | null {
+    if (!selectedMeal) {
+      setError("Pick a meal to schedule.");
+      return null;
+    }
+    if (!clockTimeInputPattern.test(time.trim())) {
+      setError("Choose a valid cooking time.");
+      return null;
+    }
+    setError(null);
+    return {
+      mealName: selectedMeal.name,
+      cookMinutes: selectedMeal.time,
+      dateIso,
+      time: time.trim(),
+      shoppingReminder: reminderMinutes !== null,
+      shoppingReminderLeadMinutes: reminderMinutes ?? undefined,
+      ingredients: selectedMeal.ingredients.map(formatIngredient),
+    };
+  }
+
+  function handleDownload() {
+    const block = buildBlock();
+    if (!block) return;
+    downloadIcs(cookingIcsFilename(block), buildCookingIcs(block));
+    setExportedMethod("ics");
+    track("cooking_block_exported", {
+      meal_id: selectedMeal!.id,
+      cook_minutes: selectedMeal!.time,
+      date: block.dateIso,
+      shopping_reminder: reminderMinutes !== null,
+      method: "ics",
+    });
+  }
+
+  function handleGoogle() {
+    const block = buildBlock();
+    if (!block) return;
+    if (typeof window !== "undefined") {
+      window.open(buildGoogleCalendarUrl(block), "_blank", "noopener,noreferrer");
+      if (reminderMinutes !== null) {
+        window.open(buildShoppingGoogleCalendarUrl(block), "_blank", "noopener,noreferrer");
+      }
+    }
+    setExportedMethod("google");
+    track("cooking_block_exported", {
+      meal_id: selectedMeal!.id,
+      cook_minutes: selectedMeal!.time,
+      date: block.dateIso,
+      shopping_reminder: reminderMinutes !== null,
+      method: "google",
+    });
+  }
+
+  return (
+    <div className="mt-6 rounded-xl border border-emerald-200 bg-white p-6 shadow-sm">
+      <div className="mb-4 flex items-start gap-3">
+        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+          <CalendarClock size={18} />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold text-stone-900">Schedule cooking time</h2>
+          <p className="mt-1 text-sm text-stone-600">
+            Block out time to cook a meal and export it to your calendar (Google, Apple or Outlook).
+            No account linking needed.
+          </p>
+        </div>
+      </div>
+
+      {schedulableMeals.length === 0 ? (
+        <p className="rounded-lg border border-dashed border-stone-300 bg-stone-50 p-4 text-sm text-stone-500">
+          Add meals to your plan or save a recipe first, then schedule cooking time here.
+        </p>
+      ) : (
+        <>
+          <div className="grid gap-5 sm:grid-cols-[minmax(0,1fr)_150px_140px]">
+            <div>
+              <label className="block">
+                <span className="text-sm font-semibold text-stone-700">Meal</span>
+                <div className="relative mt-2">
+                  <select
+                    value={mealId}
+                    onChange={(e) => { setMealId(e.target.value); setError(null); setExportedMethod(null); }}
+                    className="h-auto w-full appearance-none rounded-lg border border-stone-200 bg-white p-3 pr-9 text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                  >
+                    {schedulableMeals.map((meal) => (
+                      <option key={meal.id} value={meal.id}>
+                        {meal.name} · {meal.time} min
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={15} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-stone-400" />
+                </div>
+              </label>
+            </div>
+            <div>
+              <label className="block">
+                <span className="text-sm font-semibold text-stone-700">Date</span>
+                <Input
+                  type="date"
+                  value={dateIso}
+                  onChange={(e) => { setDateIso(e.target.value); setExportedMethod(null); }}
+                  className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
+                />
+              </label>
+            </div>
+            <div>
+              <label className="block">
+                <span className="text-sm font-semibold text-stone-700">Start time</span>
+                <Input
+                  type="time"
+                  step="60"
+                  value={time}
+                  onChange={(e) => { setTime(e.target.value); setError(null); setExportedMethod(null); }}
+                  className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
+                />
+              </label>
+            </div>
+          </div>
+
+          {selectedMeal && (
+            <p className="mt-3 flex items-center gap-1.5 text-sm text-stone-500">
+              <ChefHat size={14} className="text-emerald-600" />
+              Blocks {selectedMeal.time} min for cooking.
+            </p>
+          )}
+
+          <div className="mt-4">
+            <p className="mb-2 text-sm font-semibold text-stone-700">Shopping reminder</p>
+            <div className="flex flex-wrap gap-2">
+              {([
+                { label: "None", minutes: null },
+                { label: "4 hours before", minutes: 240 },
+                { label: "1 day before", minutes: 1440 },
+                { label: "2 days before", minutes: 2880 },
+              ] as const).map(({ label, minutes }) => (
+                <button
+                  key={label}
+                  type="button"
+                  onClick={() => { setReminderMinutes(minutes); setExportedMethod(null); }}
+                  className={cn(
+                    "rounded-lg border px-3 py-2 text-sm font-medium transition",
+                    reminderMinutes === minutes
+                      ? minutes === null
+                        ? "border-stone-400 bg-stone-100 text-stone-800"
+                        : "border-emerald-400 bg-emerald-50 text-emerald-800"
+                      : "border-stone-200 bg-white text-stone-500 hover:bg-stone-50",
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {error && <p className="mt-3 text-sm text-rose-600">{error}</p>}
+
+          <div className="mt-5 flex flex-wrap gap-3">
+            <AppButton variant="primary" onClick={handleDownload} className="justify-center">
+              <Download size={15} /> Add to calendar (.ics)
+            </AppButton>
+            <AppButton variant="secondary" onClick={handleGoogle} className="justify-center">
+              <ExternalLink size={15} /> Google Calendar
+            </AppButton>
+          </div>
+          {reminderMinutes !== null && (
+            <p className="mt-2 text-xs text-stone-400">
+              Google Calendar will open 2 tabs — one for the cooking event, one for the shopping reminder.
+            </p>
+          )}
+
+          {exportedMethod === "ics" && (
+            <p className="mt-3 text-sm text-emerald-700">
+              Cooking block downloaded — open the .ics file to add it to your calendar.
+            </p>
+          )}
+          {exportedMethod === "google" && (
+            <p className="mt-3 text-sm text-emerald-700">
+              Google Calendar opened{reminderMinutes !== null ? " — both events ready to add" : ""}.
+            </p>
+          )}
+
+          <p className="mt-4 text-xs text-stone-400">
+            Adjust times in your calendar app as needed.
+          </p>
+        </>
+      )}
+    </div>
+  );
+}
+
 // --- CalendarScreen ---
 
 export function CalendarScreen({
   deadlines,
   setDeadlines,
   calendarEvents,
+  plan,
+  customRecipes,
   setScreen,
   track,
 }: {
   deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
   calendarEvents: CalendarEvent[];
+  plan: PlanEntry[];
+  customRecipes: Meal[];
   setScreen: (screen: Screen) => void;
   track: TrackPrototypeEvent;
 }) {
@@ -700,6 +963,13 @@ export function CalendarScreen({
           onClose={() => setSelectedId(null)}
         />
       )}
+
+      <CookingScheduler
+        plan={plan}
+        customRecipes={customRecipes}
+        defaultDateIso={toLocalIso(new Date())}
+        track={track}
+      />
 
     </div>
   );

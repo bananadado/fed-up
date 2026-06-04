@@ -98,7 +98,7 @@ test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe"
   await expect(page.getByText("10 min · 100g mixed beans, 1 wrap tortilla wrap, 50g tomato")).toBeVisible();
 });
 
-test("onboarding 'skip for now' shows confirmation dialog then advances to 'About you'", async ({ page }) => {
+test("onboarding continue without calendar shows confirmation dialog then advances to 'About you'", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: /build my meal plan/i }).click();
   await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
