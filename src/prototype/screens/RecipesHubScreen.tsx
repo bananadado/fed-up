@@ -78,6 +78,7 @@ export function RecipesHubScreen({
       mealSlots: output.mealSlots,
       time: output.time,
       price: output.price,
+      servings: output.servings,
       ingredients: output.ingredients,
       tags: output.tags,
       allergens: output.allergens,

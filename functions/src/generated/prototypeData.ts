@@ -873,6 +873,7 @@ export const prototypeRecipes = [
       "carbs": 74,
       "fat": 14
     },
+    "servings": 2,
     "instructions": [
       "Chop the vegetables and spread them on a tray.",
       "Add chickpeas, oil and seasoning, then roast until tender.",
