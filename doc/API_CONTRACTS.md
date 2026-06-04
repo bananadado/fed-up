@@ -28,6 +28,7 @@ Local Bun paths:
 | `nutrition` | `/api/deadline-food/nutrition/openfoodfacts` |
 | `recipes` | `/api/deadline-food/recipes` |
 | `recipe-reviews` | `/api/deadline-food/recipe-reviews` |
+| `auto-plan` | `/api/deadline-food/auto-plan` |
 
 Firebase function names:
 
@@ -40,6 +41,7 @@ Firebase function names:
 | `nutrition` | `deadlineFoodNutrition` |
 | `recipes` | `deadlineFoodRecipes` |
 | `recipe-reviews` | `deadlineFoodRecipeReviews` |
+| `auto-plan` | `deadlineFoodAutoPlan` |
 
 Selection rules:
 
@@ -64,6 +66,14 @@ The browser never calls `backend/recommender-api` directly. Discover requests us
 | Load ranked recipes | `/api/recommender/recommendations` | `deadlineFoodRecommendations` | `POST /recommend` |
 | Record save/pass feedback | `/api/recommender/interaction` | `deadlineFoodInteraction` | `POST /interactions` |
 | Extract deadline context | `/api/recommender/deadline-context` | `deadlineFoodDeadlineContext` | `POST /context/deadlines` |
+| Auto-plan the food calendar | `/api/deadline-food/auto-plan` | `deadlineFoodAutoPlan` | `POST /context/deadlines` + `POST /recommend` |
+
+`deadlineFoodAutoPlan` (issue #66) orchestrates auto-planning: it requests per-day
+calendar context and recommender ranking, then runs a deterministic allocator
+(`functions/src/autoPlan.ts`) that lays saved recipes (recommender gap-fill after)
+across the planning horizon — batch cooks on relaxed days seed leftovers onto busy
+days. Request: `{user_id, horizonDays, contextEvents[], savedRecipes[], excludeIds[],
+dislikes[], allergens[]}`. Response: `{plan: PlanEntry[], meals: Meal[], generatedAt}`.
 
 Firebase Functions attach `X-Deadline-Food-API-Key` when calling FastAPI. The shared
 `RECOMMENDER_API_KEY` must be configured in both Firebase Secret Manager and the

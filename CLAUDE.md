@@ -171,6 +171,7 @@ Never manually edit `functions/src/generated/prototypeData.ts` — always regene
 | Scenario | `GET /api/deadline-food/scenario` | `deadlineFoodScenario` |
 | Session | `GET/PUT /api/deadline-food/session` | `deadlineFoodSession` |
 | Nutrition | `POST /api/deadline-food/nutrition/openfoodfacts` | `deadlineFoodNutrition` |
+| Auto-plan | `POST /api/deadline-food/auto-plan` | `deadlineFoodAutoPlan` |
 
 When adding/changing an endpoint: update `src/adapters/deadlineFoodApi.ts`, local route in `src/index.ts`, Firebase function in `functions/src/index.ts`, and keep response shapes aligned.
 

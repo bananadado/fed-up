@@ -170,6 +170,12 @@ const server = serve({
       },
     },
 
+    "/api/deadline-food/auto-plan": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodAutoPlan", req);
+      },
+    },
+
     "/api/calendar/fetch-ics": {
       async POST(req) {
         const body = await req.json().catch(() => null) as { url?: string } | null;

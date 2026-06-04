@@ -366,4 +366,6 @@ export const initialPreferences: Preferences = {
   dislikes: [],
   likes: [],
   availableIngredients: [],
+  planningHorizonDays: 21,
+  planRegenMode: "prompt",
 };
