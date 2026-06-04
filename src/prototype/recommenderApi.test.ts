@@ -83,6 +83,7 @@ describe("recommender API helpers", () => {
         availableIngredients: [],
         planningHorizonDays: 21,
         planRegenMode: "prompt",
+        prepReminderTime: "22:00",
       },
       deadlines: [deadline("medium")],
       excludeIds: ["recipe-1"],
