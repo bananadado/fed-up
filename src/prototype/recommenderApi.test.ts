@@ -81,6 +81,8 @@ describe("recommender API helpers", () => {
         university: "",
         postcode: "",
         availableIngredients: [],
+        planningHorizonDays: 21,
+        planRegenMode: "prompt",
       },
       deadlines: [deadline("medium")],
       excludeIds: ["recipe-1"],

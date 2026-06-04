@@ -7,6 +7,8 @@ import {setGlobalOptions} from "firebase-functions/v2/options";
 import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import {randomUUID} from "crypto";
+import {buildPlan} from "./autoPlan";
+import type * as AutoPlan from "./autoPlan";
 import {parseICSText} from "./icsParser";
 import {
   calendarEventsToDeadlines,
@@ -41,7 +43,9 @@ const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
-const prototypeSessionSettingsVersion = 2;
+const prototypeSessionSettingsVersion = 3;
+// Versions whose payloads we can read & migrate forward to the current schema.
+const supportedSessionSettingsVersions = new Set([1, 2, 3]);
 const publicHttpOptions = {cors: true, invoker: "public"} as const;
 // USDA FoodData Central key for live nutrition lookups. Set in production with
 // `firebase functions:secrets:set USDA_API_KEY`; falls back to the heavily
@@ -219,6 +223,8 @@ type PrototypeSessionSettings = {
     dislikes: string[];
     likes: string[];
     availableIngredients: RecipeIngredient[];
+    planningHorizonDays: number;
+    planRegenMode: "prompt" | "auto";
   };
   deadlines: {
     id: string;
@@ -242,6 +248,8 @@ type PrototypeSessionSettings = {
   calendarEvents: CalendarEvent[];
   icsSubscriptions: IcsSubscription[];
   calendarTokens: CalendarToken[];
+  planSignature?: string;
+  planGeneratedAt?: string;
 };
 
 const servingGrams: Record<string, number> = {
@@ -653,7 +661,7 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     throw new Error("Session settings must be an object.");
   }
 
-  if (settings.settingsVersion !== 1 && settings.settingsVersion !== prototypeSessionSettingsVersion) {
+  if (typeof settings.settingsVersion !== "number" || !supportedSessionSettingsVersions.has(settings.settingsVersion)) {
     throw new Error("Unsupported session settings version.");
   }
 
@@ -680,6 +688,8 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
       dislikes: boundedStringList(preferences.dislikes),
       likes: boundedStringList(preferences.likes),
       availableIngredients: normalizeRecipeIngredientList(preferences.availableIngredients),
+      planningHorizonDays: Math.round(boundedNumber(preferences.planningHorizonDays, 21, 1, 28)),
+      planRegenMode: preferences.planRegenMode === "auto" ? "auto" : "prompt",
     },
     deadlines: Array.isArray(settings.deadlines) ?
       settings.deadlines
@@ -693,7 +703,9 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     discoverSaved: normalizeRecipeList(settings.discoverSaved),
     discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
     discoverReviewedRecipeIds: boundedStringList(settings.discoverReviewedRecipeIds, 250, 120),
-    plan: normalizeRecipeList(settings.plan, 30),
+    plan: normalizeRecipeList(settings.plan, 31),
+    ...(typeof settings.planSignature === "string" ? {planSignature: settings.planSignature.slice(0, 200)} : {}),
+    ...(typeof settings.planGeneratedAt === "string" ? {planGeneratedAt: settings.planGeneratedAt.slice(0, 40)} : {}),
     calendarEvents: Array.isArray(settings.calendarEvents) ?
       settings.calendarEvents
         .map(normalizeCalendarEvent)
@@ -891,6 +903,216 @@ async function proxyRecommenderRecommendations(
     logger.error("Recommender recommendations request failed", {error});
     response.status(502).json({error: "Recommender API could not be reached"});
   }
+}
+
+// ── Recipe auto-planning (issue #66) ─────────────────────────────────────────
+
+// POST a payload to the recommender and return parsed JSON, or null on failure.
+async function callRecommenderJson(path: string, payload: unknown): Promise<unknown | null> {
+  try {
+    const url = new URL(path, recommenderApiUrl.value().replace(/\/$/, ""));
+    const upstream = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "X-Deadline-Food-API-Key": recommenderApiKey.value(),
+      },
+      body: JSON.stringify(payload ?? {}),
+      signal: AbortSignal.timeout(30_000),
+    });
+    if (!upstream.ok) return null;
+    return (await upstream.json()) as unknown;
+  } catch (error) {
+    logger.warn("Recommender call failed during auto-plan", {path, error: String(error)});
+    return null;
+  }
+}
+
+const PLAN_SLOTS: AutoPlan.MealSlot[] = ["breakfast", "lunch", "dinner"];
+
+function toMealSlots(value: unknown): AutoPlan.MealSlot[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((s): s is AutoPlan.MealSlot => PLAN_SLOTS.includes(s as AutoPlan.MealSlot));
+}
+
+function toMealType(value: unknown): AutoPlan.MealType {
+  return value === "fallback" ? "fallback" : value === "remix" ? "remix" : "cook";
+}
+
+// Map a recommender recipe row to the prototype `Meal` shape the frontend renders.
+function recommenderRecipeToMeal(recipe: UnknownRecord): UnknownRecord {
+  const dietary = Array.isArray(recipe.dietary_tags) ? recipe.dietary_tags : [];
+  const suitability = Array.isArray(recipe.suitability_tags) ?
+    recipe.suitability_tags : [];
+  return {
+    id: boundedString(recipe.id, "", 80),
+    name: boundedString(recipe.name, "Recipe", 200),
+    type: toMealType(recipe.meal_type),
+    mealSlots: toMealSlots(recipe.meal_slots),
+    time: boundedNumber(recipe.prep_minutes, 20, 0, 600),
+    price: boundedNumber(recipe.price_pence, 0, 0, 100000) / 100,
+    tags: [...new Set([...dietary, ...suitability].filter((t): t is string => typeof t === "string"))],
+    allergens: Array.isArray(recipe.allergens) ?
+      recipe.allergens.filter((a): a is string => typeof a === "string") : [],
+    ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
+    instructions: Array.isArray(recipe.instructions) ? recipe.instructions : [],
+    nutrition: asRecord(recipe.nutrition) ?? {calories: 0, protein: 0, carbs: 0, fat: 0},
+    rating: 0,
+    reviews: [],
+    source: boundedString(recipe.source, "Recommender", 200),
+    note: boundedString(recipe.note, "", 400),
+    image: "🍽️",
+    ...(typeof recipe.photoUrl === "string" ? {photoUrl: recipe.photoUrl} : {}),
+  };
+}
+
+// Extract the allocator-relevant subset from a prototype Meal record.
+function mealToAllocator(meal: UnknownRecord): AutoPlan.AllocatorMeal {
+  const ingredients = Array.isArray(meal.ingredients) ?
+    meal.ingredients
+      .map((i) => asRecord(i))
+      .filter((i): i is UnknownRecord => i !== null)
+      .map((i) => ({name: boundedString(i.name, "", 120)})) :
+    [];
+  return {
+    id: boundedString(meal.id, "", 80),
+    type: toMealType(meal.type),
+    mealSlots: toMealSlots(meal.mealSlots),
+    time: boundedNumber(meal.time, 20, 0, 600),
+    pricePence: Math.round(boundedNumber(meal.price, 0, 0, 100000) * 100),
+    tags: Array.isArray(meal.tags) ? meal.tags.filter((t): t is string => typeof t === "string") : [],
+    allergens: Array.isArray(meal.allergens) ? meal.allergens.filter((a): a is string => typeof a === "string") : [],
+    ingredients,
+  };
+}
+
+// A neutral, lightly-pressured horizon used when no calendar context exists.
+function syntheticDays(horizonDays: number): AutoPlan.DayContext[] {
+  const today = new Date();
+  const days: AutoPlan.DayContext[] = [];
+  for (let i = 0; i < horizonDays; i += 1) {
+    const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+    days.push({
+      date: d.toISOString().slice(0, 10),
+      stress: 0.3,
+      free_evening: true,
+      hard_deadlines: 0,
+      recommended_constraints: {max_prep_minutes: 60},
+    });
+  }
+  return days;
+}
+
+function normalizeDayContext(value: unknown): AutoPlan.DayContext | null {
+  const day = asRecord(value);
+  if (day === null || typeof day.date !== "string") return null;
+  const constraints = asRecord(day.recommended_constraints);
+  return {
+    date: day.date.slice(0, 10),
+    stress: boundedNumber(day.stress, 0.3, 0, 1),
+    free_evening: day.free_evening !== false,
+    hard_deadlines: boundedNumber(day.hard_deadlines, 0, 0, 20),
+    recommended_constraints: {
+      max_prep_minutes: boundedNumber(constraints?.max_prep_minutes, 60, 0, 600),
+    },
+  };
+}
+
+async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Promise<void> {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = readRequestBody(request);
+  if (body === null) {
+    response.status(400).json({error: "A JSON body is required."});
+    return;
+  }
+
+  const userId = boundedString(body.user_id, "", 80);
+  const horizonDays = Math.round(boundedNumber(body.horizonDays, 21, 1, 28));
+  const contextEvents = Array.isArray(body.contextEvents) ? body.contextEvents.slice(0, 250) : [];
+  const savedRecipes = Array.isArray(body.savedRecipes) ?
+    body.savedRecipes.map((m) => asRecord(m)).filter((m): m is UnknownRecord => m !== null).slice(0, 200) :
+    [];
+  const excludeIds = boundedStringList(body.excludeIds, 250, 80);
+  const excludedIds = new Set(excludeIds);
+  const dislikes = boundedStringList(body.dislikes, 40, 80);
+  const allergens = boundedStringList(body.allergens, 40, 80);
+  const weeklyBudgetPence = Math.round(boundedNumber(body.budget, 48, 0, 1000) * 100);
+
+  // 1. Per-day calendar context across the horizon (#65). horizon_days produces
+  // horizon_days+1 entries (incl. today), so request one fewer than we need.
+  let days: AutoPlan.DayContext[] = [];
+  if (contextEvents.length > 0) {
+    const context = asRecord(
+      await callRecommenderJson("/context/deadlines", {events: contextEvents, horizon_days: horizonDays - 1}),
+    );
+    const rawDays = Array.isArray(context?.days) ? context.days : [];
+    days = rawDays.map(normalizeDayContext).filter((d): d is AutoPlan.DayContext => d !== null);
+  }
+  if (days.length === 0) {
+    days = syntheticDays(horizonDays);
+  }
+  days = days.slice(0, horizonDays);
+
+  // 2. Candidate pool: saved recipes first, recommender gap-fill after.
+  const mealsById = new Map<string, UnknownRecord>();
+  for (const meal of savedRecipes) {
+    const id = boundedString(meal.id, "", 80);
+    if (id) mealsById.set(id, meal);
+  }
+  const savedAlloc = savedRecipes.map(mealToAllocator).filter((m) => m.id);
+
+  const avgStress = days.reduce((sum, d) => sum + d.stress, 0) / (days.length || 1);
+  const fillAlloc: AutoPlan.AllocatorMeal[] = [];
+  if (userId) {
+    const fill = await callRecommenderJson("/recommend", {
+      user_id: userId,
+      n: 60,
+      deadline_stress: avgStress,
+      budget_pence: weeklyBudgetPence,
+      exclude_ids: excludeIds,
+    });
+    if (Array.isArray(fill)) {
+      for (const item of fill) {
+        const recipe = asRecord(asRecord(item)?.recipe);
+        if (recipe === null) continue;
+        const id = boundedString(recipe.id, "", 80);
+        if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
+        const meal = recommenderRecipeToMeal(recipe);
+        mealsById.set(id, meal);
+        fillAlloc.push(mealToAllocator(meal));
+      }
+    }
+  }
+
+  // Deterministic final fallback: if the user has few/no saved recipes and the
+  // recommender is empty or unavailable, still plan from the canonical catalogue.
+  const fallbackAlloc: AutoPlan.AllocatorMeal[] = [];
+  for (const recipe of prototypeRecipes) {
+    const meal = recipe as unknown as UnknownRecord;
+    const id = boundedString(meal.id, "", 80);
+    if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
+    mealsById.set(id, meal);
+    fallbackAlloc.push(mealToAllocator(meal));
+  }
+
+  const plan = buildPlan({
+    days,
+    pool: [...savedAlloc, ...fillAlloc, ...fallbackAlloc],
+    avoided: [...dislikes, ...allergens],
+    weeklyBudgetPence,
+  });
+
+  // 3. Return only the meals actually placed, so the client can resolve them.
+  const usedIds = new Set<string>();
+  for (const entry of plan) {
+    for (const meal of entry.meals) usedIds.add(meal.mealId);
+  }
+  const meals = [...usedIds].map((id) => mealsById.get(id)).filter((m): m is UnknownRecord => m !== undefined);
+
+  response.set("Cache-Control", "private, max-age=0, no-store");
+  response.status(200).json({plan, meals, generatedAt: new Date().toISOString()});
 }
 
 function rejectUnsupportedNutritionMethod(
@@ -1494,6 +1716,10 @@ export const deadlineFoodInteraction = onRequest(recommenderHttpOptions, async (
 
 export const deadlineFoodDeadlineContext = onRequest(recommenderHttpOptions, async (request, response) => {
   await proxyRecommenderRequest(request, response, "/context/deadlines");
+});
+
+export const deadlineFoodAutoPlan = onRequest(recommenderHttpOptions, async (request, response) => {
+  await handleAutoPlan(request, response);
 });
 
 export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (request, response) => {

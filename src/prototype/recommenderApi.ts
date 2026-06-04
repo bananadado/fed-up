@@ -1,6 +1,6 @@
 import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
-import { requestDeadlineContext, type ContextEventInput } from "./calendarImport";
+import { deadlineToContextEvent, requestDeadlineContext, type ContextEventInput } from "./calendarImport";
 import type { Deadline, Meal, MealSlot, Preferences, RecipeIngredient } from "./types";
 
 type RecommenderRecipe = {
@@ -55,18 +55,6 @@ export function deadlineStressFromDeadlines(deadlines: Deadline[]): number {
     }, 0);
 
   return Math.min(1, total / 3);
-}
-
-/** Reconstruct a minimal context event from a deadline so the backend pipeline
- * can re-score it. Deadlines without a concrete date can't be placed. */
-function deadlineToContextEvent(deadline: Deadline): ContextEventInput | null {
-  if (!deadline.rawDate) return null;
-  const hasClockTime = /^\d{2}:\d{2}$/.test(deadline.time);
-  return {
-    title: deadline.title,
-    start: hasClockTime ? `${deadline.rawDate}T${deadline.time}:00` : deadline.rawDate,
-    all_day: !hasClockTime,
-  };
 }
 
 /**

@@ -9,6 +9,7 @@ export {
   requestDeadlineContext,
   resolveDeadlinesFromEvents,
   deadlinesFromContext,
+  deadlineToContextEvent,
   type DeadlineContextResponse,
   type ClassifiedEvent,
   type DailyContext,
