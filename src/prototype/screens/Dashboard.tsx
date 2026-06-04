@@ -15,6 +15,7 @@ export function Dashboard({
   plan,
   setPlan,
   customRecipes,
+  discoverSaved,
   setScreen,
   onSelectMeal,
   openDiscover,
@@ -24,6 +25,7 @@ export function Dashboard({
   plan: PlanEntry[];
   setPlan: (plan: PlanEntry[]) => void;
   customRecipes: Meal[];
+  discoverSaved: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
   openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
@@ -167,6 +169,7 @@ export function Dashboard({
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
+          savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           track={track}
         />

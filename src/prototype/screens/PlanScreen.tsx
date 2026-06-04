@@ -23,6 +23,7 @@ export function PlanScreen({
   setPlan,
   prefs,
   customRecipes,
+  discoverSaved,
   setScreen,
   onSelectMeal,
   openDiscover,
@@ -32,6 +33,7 @@ export function PlanScreen({
   setPlan: (plan: PlanEntry[]) => void;
   prefs: Preferences;
   customRecipes: Meal[];
+  discoverSaved: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
   openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
@@ -232,6 +234,7 @@ export function PlanScreen({
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
+          savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           track={track}
         />

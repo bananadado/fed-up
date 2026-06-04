@@ -79,7 +79,9 @@ export function DiscoverScreen({
     [context, reviewedRecipeIds, saved, rejected],
   );
   const reviewedRecipeIdSet = useMemo(() => new Set(excludedRecipeIds), [excludedRecipeIds]);
-  const candidateRecipes = recommendedRecipes.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id));
+  const candidateRecipes = recommendedRecipes
+    .filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))
+    .filter((meal) => !context || meal.mealSlots.includes(context.slot));
 
   const sortedQueue = candidateRecipes
     .filter((meal) => !reviewedRecipeIdSet.has(meal.id))

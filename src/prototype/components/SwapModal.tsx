@@ -1,5 +1,5 @@
 import { ArrowRight, ArrowUpDown, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, TrendingDown, TrendingUp, X } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import { getRecipeCatalogue } from "../recipeCatalogue";
@@ -46,6 +46,7 @@ export function SwapModal({
   setPlan,
   prefs,
   customRecipes,
+  savedRecipes,
   onSelectMeal,
   track,
 }: {
@@ -55,6 +56,7 @@ export function SwapModal({
   setPlan: (plan: PlanEntry[]) => void;
   prefs: Preferences;
   customRecipes: Meal[];
+  savedRecipes?: Meal[];
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
@@ -87,9 +89,15 @@ export function SwapModal({
   const originalPlanMeal = originalDay?.meals.find((meal) => meal.slot === rescueChoice.slot);
   const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
+  const savedSet = useMemo(() => new Set((savedRecipes ?? []).map((m) => m.id)), [savedRecipes]);
 
   // Full candidate pool — allergen/dislike safe, not the current meal
-  const candidatePool = [...customRecipes, ...getRecipeCatalogue().filter((m) => !customRecipes.some((c) => c.id === m.id))]
+  const savedNotInCustom = (savedRecipes ?? []).filter((m) => !customRecipes.some((c) => c.id === m.id));
+  const candidatePool = [
+    ...customRecipes,
+    ...savedNotInCustom,
+    ...getRecipeCatalogue().filter((m) => !customRecipes.some((c) => c.id === m.id) && !savedNotInCustom.some((s) => s.id === m.id)),
+  ]
     .filter((meal) => meal.id !== originalPlanMeal?.mealId)
     .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
     .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())));
@@ -111,6 +119,9 @@ export function SwapModal({
   const allOptions = [...tagFiltered].sort((a, b) => {
     if (sortBy === "quickest") return a.time - b.time;
     if (sortBy === "cheapest") return a.price - b.price;
+    const aSaved = savedSet.has(a.id) ? 1 : 0;
+    const bSaved = savedSet.has(b.id) ? 1 : 0;
+    if (aSaved !== bSaved) return bSaved - aSaved;
     const aScore = a.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
     const bScore = b.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
     return bScore - aScore || a.time - b.time || a.price - b.price;
@@ -396,7 +407,10 @@ export function SwapModal({
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1">
-                        <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
+                          {savedSet.has(meal.id) && <Badge tone="blue">Saved</Badge>}
+                        </div>
                         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
                           <span className="flex items-center gap-1"><Clock3 size={11} /> {meal.time} min</span>
                           <span>{money(meal.price)}</span>
