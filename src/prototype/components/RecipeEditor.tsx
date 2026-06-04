@@ -109,7 +109,7 @@ function mealToForm(meal: Meal): EditorForm {
     time: meal.time,
     price: meal.price,
     totalCost: portion?.totalCost ?? meal.price,
-    servings: portion?.servings ?? 1,
+    servings: meal.servings ?? portion?.servings ?? 1,
     ingredients: ingredientDraftsFromIngredients(meal.ingredients),
     tags: [...meal.mealSlots, ...meal.tags],
     allergens: meal.allergens.join(", "),
@@ -636,7 +636,7 @@ export function RecipeEditor({
             onClick={estimateNutrition}
             disabled={nutritionLoading}
           >
-            <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Pull from OpenFoodFacts"}
+            <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Estimate from USDA"}
           </AppButton>
         </div>
 
