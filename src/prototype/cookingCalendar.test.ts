@@ -3,6 +3,7 @@ import { describe, expect, test } from "bun:test";
 import {
   buildCookingIcs,
   buildGoogleCalendarUrl,
+  buildShoppingGoogleCalendarUrl,
   cookingIcsFilename,
   escapeIcsText,
   parseLocalDateTime,
@@ -17,6 +18,11 @@ const baseBlock: CookingCalendarBlock = {
   cookMinutes: 25,
   dateIso: "2026-06-10",
   time: "18:00",
+};
+
+const blockWithIngredients: CookingCalendarBlock = {
+  ...baseBlock,
+  ingredients: ["200g red lentils", "1 can coconut milk"],
 };
 
 describe("parseLocalDateTime", () => {
@@ -67,21 +73,38 @@ describe("buildCookingIcs", () => {
     expect(ics).toContain("DTEND:20260610T181500"); // bumped to 15 min
   });
 
-  test("omits a VALARM when no shopping reminder is requested", () => {
-    expect(buildCookingIcs(baseBlock, NOW)).not.toContain("BEGIN:VALARM");
+  test("includes ingredients list in description when provided", () => {
+    const ics = buildCookingIcs(blockWithIngredients, NOW);
+    expect(ics).toContain("- 200g red lentils");
+    expect(ics).toContain("- 1 can coconut milk");
   });
 
-  test("adds a VALARM with the configured lead time for a shopping reminder", () => {
-    const ics = buildCookingIcs({ ...baseBlock, shoppingReminder: true, shoppingReminderLeadMinutes: 90 }, NOW);
-    expect(ics).toContain("BEGIN:VALARM");
-    expect(ics).toContain("ACTION:DISPLAY");
-    expect(ics).toContain("TRIGGER:-PT90M");
-    expect(ics).toContain("Shopping reminder: ingredients for Lentil dahl");
+  test("omits a second VEVENT when no shopping reminder is requested", () => {
+    const ics = buildCookingIcs(baseBlock, NOW);
+    const veventCount = (ics.match(/BEGIN:VEVENT/g) ?? []).length;
+    expect(veventCount).toBe(1);
+    expect(ics).not.toContain("BEGIN:VALARM");
   });
 
-  test("defaults the shopping reminder lead to 120 minutes", () => {
-    const ics = buildCookingIcs({ ...baseBlock, shoppingReminder: true }, NOW);
-    expect(ics).toContain("TRIGGER:-PT120M");
+  test("adds a second VEVENT for the shopping reminder instead of a VALARM", () => {
+    const ics = buildCookingIcs({ ...baseBlock, shoppingReminder: true, shoppingReminderLeadMinutes: 1440 }, NOW);
+    const veventCount = (ics.match(/BEGIN:VEVENT/g) ?? []).length;
+    expect(veventCount).toBe(2);
+    expect(ics).not.toContain("BEGIN:VALARM");
+    expect(ics).toContain("SUMMARY:Buy ingredients: Lentil dahl");
+    // 18:00 on 2026-06-10 minus 1440 min = 18:00 on 2026-06-09
+    expect(ics).toContain("DTSTART:20260609T180000");
+  });
+
+  test("uses the configured lead time for the shopping event offset", () => {
+    const ics = buildCookingIcs({ ...baseBlock, shoppingReminder: true, shoppingReminderLeadMinutes: 240 }, NOW);
+    // 18:00 minus 240 min = 14:00
+    expect(ics).toContain("DTSTART:20260610T140000");
+  });
+
+  test("description includes reminder timing label", () => {
+    const ics = buildCookingIcs({ ...baseBlock, shoppingReminder: true, shoppingReminderLeadMinutes: 2880 }, NOW);
+    expect(ics).toContain("Shopping reminder: buy ingredients 2 days before cooking.");
   });
 
   test("throws on invalid date/time", () => {
@@ -96,6 +119,22 @@ describe("buildGoogleCalendarUrl", () => {
     expect(url).toContain("action=TEMPLATE");
     expect(url).toContain("dates=20260610T180000%2F20260610T182500");
     expect(url).toContain("text=Cook%3A+Lentil+dahl");
+  });
+});
+
+describe("buildShoppingGoogleCalendarUrl", () => {
+  test("builds a Google Calendar URL for the shopping event offset by lead time", () => {
+    const url = buildShoppingGoogleCalendarUrl({ ...baseBlock, shoppingReminderLeadMinutes: 1440 });
+    expect(url.startsWith("https://calendar.google.com/calendar/render?")).toBe(true);
+    expect(url).toContain("action=TEMPLATE");
+    expect(url).toContain("text=Buy+ingredients%3A+Lentil+dahl");
+    // 18:00 on 2026-06-10 minus 1440 min = 18:00 on 2026-06-09
+    expect(url).toContain("20260609T180000");
+  });
+
+  test("includes ingredients in the shopping event description", () => {
+    const url = buildShoppingGoogleCalendarUrl({ ...baseBlock, shoppingReminderLeadMinutes: 240, ingredients: ["200g lentils"] });
+    expect(url).toContain("200g+lentils");
   });
 });
 

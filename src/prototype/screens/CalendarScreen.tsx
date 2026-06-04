@@ -11,6 +11,7 @@ import { getMealById } from "../utils";
 import {
   buildCookingIcs,
   buildGoogleCalendarUrl,
+  buildShoppingGoogleCalendarUrl,
   cookingIcsFilename,
   type CookingCalendarBlock,
 } from "../cookingCalendar";
@@ -252,6 +253,12 @@ function downloadIcs(filename: string, contents: string) {
   URL.revokeObjectURL(url);
 }
 
+function formatIngredient(i: { name: string; quantity: number; unit: string; preparation?: string }): string {
+  const qty = Number.isInteger(i.quantity) ? String(i.quantity) : i.quantity.toFixed(1);
+  const prep = i.preparation ? ` (${i.preparation})` : "";
+  return `${qty} ${i.unit} ${i.name}${prep}`;
+}
+
 function CookingScheduler({
   plan,
   customRecipes,
@@ -285,7 +292,7 @@ function CookingScheduler({
   // null = no reminder; number = minutes before the cooking block
   const [reminderMinutes, setReminderMinutes] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [exported, setExported] = useState(false);
+  const [exportedMethod, setExportedMethod] = useState<"ics" | "google" | null>(null);
 
   const selectedMeal = schedulableMeals.find((meal) => meal.id === mealId) ?? null;
 
@@ -306,6 +313,7 @@ function CookingScheduler({
       time: time.trim(),
       shoppingReminder: reminderMinutes !== null,
       shoppingReminderLeadMinutes: reminderMinutes ?? undefined,
+      ingredients: selectedMeal.ingredients.map(formatIngredient),
     };
   }
 
@@ -313,7 +321,7 @@ function CookingScheduler({
     const block = buildBlock();
     if (!block) return;
     downloadIcs(cookingIcsFilename(block), buildCookingIcs(block));
-    setExported(true);
+    setExportedMethod("ics");
     track("cooking_block_exported", {
       meal_id: selectedMeal!.id,
       cook_minutes: selectedMeal!.time,
@@ -328,8 +336,11 @@ function CookingScheduler({
     if (!block) return;
     if (typeof window !== "undefined") {
       window.open(buildGoogleCalendarUrl(block), "_blank", "noopener,noreferrer");
+      if (reminderMinutes !== null) {
+        window.open(buildShoppingGoogleCalendarUrl(block), "_blank", "noopener,noreferrer");
+      }
     }
-    setExported(true);
+    setExportedMethod("google");
     track("cooking_block_exported", {
       meal_id: selectedMeal!.id,
       cook_minutes: selectedMeal!.time,
@@ -348,8 +359,8 @@ function CookingScheduler({
         <div>
           <h2 className="text-lg font-bold text-stone-900">Schedule cooking time</h2>
           <p className="mt-1 text-sm text-stone-600">
-            Block out time to cook a meal and add it to your own calendar (Google, Apple or Outlook).
-            We create a downloadable calendar file — no account linking needed.
+            Block out time to cook a meal and export it to your calendar (Google, Apple or Outlook).
+            No account linking needed.
           </p>
         </div>
       </div>
@@ -367,7 +378,7 @@ function CookingScheduler({
                 <div className="relative mt-2">
                   <select
                     value={mealId}
-                    onChange={(e) => { setMealId(e.target.value); setError(null); setExported(false); }}
+                    onChange={(e) => { setMealId(e.target.value); setError(null); setExportedMethod(null); }}
                     className="h-auto w-full appearance-none rounded-lg border border-stone-200 bg-white p-3 pr-9 text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                   >
                     {schedulableMeals.map((meal) => (
@@ -386,7 +397,7 @@ function CookingScheduler({
                 <Input
                   type="date"
                   value={dateIso}
-                  onChange={(e) => { setDateIso(e.target.value); setExported(false); }}
+                  onChange={(e) => { setDateIso(e.target.value); setExportedMethod(null); }}
                   className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
                 />
               </label>
@@ -398,7 +409,7 @@ function CookingScheduler({
                   type="time"
                   step="60"
                   value={time}
-                  onChange={(e) => { setTime(e.target.value); setError(null); setExported(false); }}
+                  onChange={(e) => { setTime(e.target.value); setError(null); setExportedMethod(null); }}
                   className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
                 />
               </label>
@@ -408,7 +419,7 @@ function CookingScheduler({
           {selectedMeal && (
             <p className="mt-3 flex items-center gap-1.5 text-sm text-stone-500">
               <ChefHat size={14} className="text-emerald-600" />
-              Reserves about {selectedMeal.time} min of cooking time.
+              Blocks {selectedMeal.time} min for cooking.
             </p>
           )}
 
@@ -424,7 +435,7 @@ function CookingScheduler({
                 <button
                   key={label}
                   type="button"
-                  onClick={() => { setReminderMinutes(minutes); setExported(false); }}
+                  onClick={() => { setReminderMinutes(minutes); setExportedMethod(null); }}
                   className={cn(
                     "rounded-lg border px-3 py-2 text-sm font-medium transition",
                     reminderMinutes === minutes
@@ -450,15 +461,25 @@ function CookingScheduler({
               <ExternalLink size={15} /> Google Calendar
             </AppButton>
           </div>
+          {reminderMinutes !== null && (
+            <p className="mt-2 text-xs text-stone-400">
+              Google Calendar will open 2 tabs — one for the cooking event, one for the shopping reminder.
+            </p>
+          )}
 
-          {exported && (
+          {exportedMethod === "ics" && (
             <p className="mt-3 text-sm text-emerald-700">
-              Cooking block ready — open the file or link to add it to your calendar.
+              Cooking block downloaded — open the .ics file to add it to your calendar.
+            </p>
+          )}
+          {exportedMethod === "google" && (
+            <p className="mt-3 text-sm text-emerald-700">
+              Google Calendar opened{reminderMinutes !== null ? " — both events ready to add" : ""}.
             </p>
           )}
 
           <p className="mt-4 text-xs text-stone-400">
-            Times and cook estimates are illustrative. Adjust the event in your calendar app as needed.
+            Adjust times in your calendar app as needed.
           </p>
         </>
       )}

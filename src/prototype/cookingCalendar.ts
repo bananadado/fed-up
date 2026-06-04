@@ -18,10 +18,12 @@ export type CookingCalendarBlock = {
   dateIso: string;
   /** Local start time, 24h `HH:MM`. */
   time: string;
-  /** When true, attach a shopping reminder alarm ahead of the block. */
+  /** When true, add a shopping-reminder event ahead of the cooking block. */
   shoppingReminder?: boolean;
-  /** Minutes before the cooking block the shopping reminder fires. Default 120. */
+  /** Minutes before the cooking block the shopping reminder event starts. Default 120. */
   shoppingReminderLeadMinutes?: number;
+  /** Pre-formatted ingredient strings shown in the event description, e.g. "200g red lentils". */
+  ingredients?: string[];
 };
 
 const DEFAULT_SHOPPING_LEAD_MINUTES = 120;
@@ -83,41 +85,30 @@ function eventSummary(block: CookingCalendarBlock): string {
   return `Cook: ${block.mealName}`;
 }
 
+function reminderLabel(leadMinutes: number | undefined): string {
+  if (leadMinutes === 2880) return "2 days";
+  if (leadMinutes === 1440) return "1 day";
+  if (leadMinutes === 240) return "4 hours";
+  return `${leadMinutes ?? DEFAULT_SHOPPING_LEAD_MINUTES} minutes`;
+}
+
 function eventDescription(block: CookingCalendarBlock): string {
-  const minutes = blockMinutes(block.cookMinutes);
-  const lines = [
-    `Estimated cook time: ${minutes} min.`,
-    "Scheduled from Deadline Food Autopilot (illustrative prototype).",
-  ];
+  const lines = [`Estimated cook time: ${blockMinutes(block.cookMinutes)} min.`];
+  if (block.ingredients?.length) {
+    lines.push("", "Ingredients:", ...block.ingredients.map((i) => `- ${i}`));
+  }
   if (block.shoppingReminder) {
-    lines.push("Reminder: pick up ingredients before you start.");
+    lines.push("", `Shopping reminder: buy ingredients ${reminderLabel(block.shoppingReminderLeadMinutes)} before cooking.`);
   }
   return lines.join("\n");
 }
 
-/**
- * Build an RFC 5545 iCalendar document for a single cooking block. The event
- * uses floating local time so it lands at the chosen wall-clock time in any
- * calendar app. A VALARM is added when a shopping reminder is requested.
- *
- * `now` is injectable for deterministic tests (DTSTAMP / UID).
- */
-export function buildCookingIcs(block: CookingCalendarBlock, now: Date = new Date()): string {
+function buildCookingVEvent(block: CookingCalendarBlock, now: Date): string[] {
   const start = parseLocalDateTime(block.dateIso, block.time);
-  if (!start) {
-    throw new Error(`Invalid cooking block date/time: ${block.dateIso} ${block.time}`);
-  }
-  const minutes = blockMinutes(block.cookMinutes);
-  const end = new Date(start.getTime() + minutes * 60_000);
-  const lead = block.shoppingReminderLeadMinutes ?? DEFAULT_SHOPPING_LEAD_MINUTES;
+  if (!start) throw new Error(`Invalid cooking block date/time: ${block.dateIso} ${block.time}`);
+  const end = new Date(start.getTime() + blockMinutes(block.cookMinutes) * 60_000);
   const uid = `cook-${toIcsLocalStamp(start)}-${Math.abs(hashString(block.mealName))}@deadline-food-autopilot`;
-
-  const lines = [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Deadline Food Autopilot//Cooking Schedule//EN",
-    "CALSCALE:GREGORIAN",
-    "METHOD:PUBLISH",
+  return [
     "BEGIN:VEVENT",
     `UID:${uid}`,
     `DTSTAMP:${toIcsUtcStamp(now)}`,
@@ -125,19 +116,52 @@ export function buildCookingIcs(block: CookingCalendarBlock, now: Date = new Dat
     `DTEND:${toIcsLocalStamp(end)}`,
     `SUMMARY:${escapeIcsText(eventSummary(block))}`,
     `DESCRIPTION:${escapeIcsText(eventDescription(block))}`,
+    "END:VEVENT",
   ];
+}
 
-  if (block.shoppingReminder) {
-    lines.push(
-      "BEGIN:VALARM",
-      "ACTION:DISPLAY",
-      `DESCRIPTION:${escapeIcsText(`Shopping reminder: ingredients for ${block.mealName}`)}`,
-      `TRIGGER:-PT${lead}M`,
-      "END:VALARM",
-    );
+function buildShoppingVEvent(block: CookingCalendarBlock, cookStart: Date, now: Date): string[] {
+  const lead = block.shoppingReminderLeadMinutes ?? DEFAULT_SHOPPING_LEAD_MINUTES;
+  const start = new Date(cookStart.getTime() - lead * 60_000);
+  const end = new Date(start.getTime() + 30 * 60_000);
+  const uid = `shop-${toIcsLocalStamp(start)}-${Math.abs(hashString(block.mealName))}@deadline-food-autopilot`;
+  const descLines = [`Pick up ingredients for ${block.mealName}.`];
+  if (block.ingredients?.length) {
+    descLines.push("", ...block.ingredients.map((i) => `- ${i}`));
   }
+  return [
+    "BEGIN:VEVENT",
+    `UID:${uid}`,
+    `DTSTAMP:${toIcsUtcStamp(now)}`,
+    `DTSTART:${toIcsLocalStamp(start)}`,
+    `DTEND:${toIcsLocalStamp(end)}`,
+    `SUMMARY:${escapeIcsText(`Buy ingredients: ${block.mealName}`)}`,
+    `DESCRIPTION:${escapeIcsText(descLines.join("\n"))}`,
+    "END:VEVENT",
+  ];
+}
 
-  lines.push("END:VEVENT", "END:VCALENDAR");
+/**
+ * Build an RFC 5545 iCalendar document for a cooking block. When a shopping
+ * reminder is requested a second VEVENT ("Buy ingredients") is added at the
+ * reminder time — a full calendar event that works in every app including
+ * Google Calendar (which ignores VALARMs).
+ *
+ * `now` is injectable for deterministic tests (DTSTAMP / UID).
+ */
+export function buildCookingIcs(block: CookingCalendarBlock, now: Date = new Date()): string {
+  const cookStart = parseLocalDateTime(block.dateIso, block.time);
+  if (!cookStart) throw new Error(`Invalid cooking block date/time: ${block.dateIso} ${block.time}`);
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Deadline Food Autopilot//Cooking Schedule//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    ...buildCookingVEvent(block, now),
+    ...(block.shoppingReminder ? buildShoppingVEvent(block, cookStart, now) : []),
+    "END:VCALENDAR",
+  ];
   // iCalendar lines are CRLF-terminated.
   return lines.join("\r\n") + "\r\n";
 }
@@ -159,6 +183,30 @@ export function buildGoogleCalendarUrl(block: CookingCalendarBlock): string {
     text: eventSummary(block),
     dates: `${toIcsLocalStamp(start)}/${toIcsLocalStamp(end)}`,
     details: eventDescription(block),
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+/**
+ * Build a Google Calendar template URL for the shopping-reminder event
+ * ("Buy ingredients: {meal}") that precedes a cooking block by the configured
+ * lead time. Opens as a second tab alongside `buildGoogleCalendarUrl`.
+ */
+export function buildShoppingGoogleCalendarUrl(block: CookingCalendarBlock): string {
+  const cookStart = parseLocalDateTime(block.dateIso, block.time);
+  if (!cookStart) throw new Error(`Invalid cooking block date/time: ${block.dateIso} ${block.time}`);
+  const lead = block.shoppingReminderLeadMinutes ?? DEFAULT_SHOPPING_LEAD_MINUTES;
+  const start = new Date(cookStart.getTime() - lead * 60_000);
+  const end = new Date(start.getTime() + 30 * 60_000);
+  const descLines = [`Pick up ingredients for ${block.mealName}.`];
+  if (block.ingredients?.length) {
+    descLines.push("", ...block.ingredients.map((i) => `- ${i}`));
+  }
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: `Buy ingredients: ${block.mealName}`,
+    dates: `${toIcsLocalStamp(start)}/${toIcsLocalStamp(end)}`,
+    details: descLines.join("\n"),
   });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
