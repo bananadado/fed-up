@@ -1,4 +1,4 @@
-import { getRecipeCatalogue } from "./recipeCatalogue";
+import { getPlanMeal, getRecipeCatalogue } from "./recipeCatalogue";
 import type { Deadline, Meal, NutritionSource, RecipeIngredient } from "./types";
 import { formatIngredient, ingredientName } from "./ingredients";
 
@@ -57,7 +57,10 @@ export function formatCookingLimit(minutes: number | null) {
 }
 
 export function mealById(id: string, customRecipes: Meal[]) {
-  return [...customRecipes, ...getRecipeCatalogue()].find((meal) => meal.id === id);
+  return (
+    [...customRecipes, ...getRecipeCatalogue()].find((meal) => meal.id === id) ??
+    getPlanMeal(id)
+  );
 }
 
 export function getMealById(id: string, customRecipes: Meal[]) {

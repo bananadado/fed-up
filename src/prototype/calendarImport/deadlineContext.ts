@@ -74,6 +74,18 @@ function toContextEvent(event: CalendarEvent): ContextEventInput {
   return { title: event.title, start: event.start, end: event.end || null, all_day: event.allDay };
 }
 
+/** Reconstruct a minimal context event from a deadline so the backend pipeline
+ * can re-score it. Deadlines without a concrete date can't be placed. */
+export function deadlineToContextEvent(deadline: Deadline): ContextEventInput | null {
+  if (!deadline.rawDate) return null;
+  const hasClockTime = /^\d{2}:\d{2}$/.test(deadline.time);
+  return {
+    title: deadline.title,
+    start: hasClockTime ? `${deadline.rawDate}T${deadline.time}:00` : deadline.rawDate,
+    all_day: !hasClockTime,
+  };
+}
+
 export async function fetchDeadlineContext(events: CalendarEvent[]): Promise<DeadlineContextResponse> {
   return requestDeadlineContext(events.map(toContextEvent));
 }

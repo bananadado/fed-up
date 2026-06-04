@@ -1,11 +1,21 @@
 import { expect, test } from "@playwright/test";
-import { defaultDeadlines, initialPreferences, seedMeals } from "../src/prototype/data";
+import { defaultDeadlines, initialPlan, initialPreferences, seedMeals } from "../src/prototype/data";
 import {
   ANONYMOUS_SESSION_STORAGE_KEY,
   createPrototypeSessionSettings,
 } from "../src/prototype/sessionPersistence";
 
 test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe", async ({ page }) => {
+  // Auto-planning regenerates the plan after onboarding; pin it to the seed plan
+  // so this flow stays deterministic regardless of recommender availability.
+  await page.route("**/api/deadline-food/auto-plan**", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ plan: initialPlan, meals: [], generatedAt: "2026-06-01T00:00:00.000Z" }),
+    });
+  });
+
   await page.goto("/");
 
   await expect(page.getByRole("heading", { name: /healthy meals that fit around coursework/i })).toBeVisible();
@@ -203,6 +213,14 @@ test("direct plan refresh restores nav and seeded timetable for returning users 
     { key: ANONYMOUS_SESSION_STORAGE_KEY, value: sessionId },
   );
 
+  await page.route("**/api/deadline-food/auto-plan**", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ plan: initialPlan, meals: [], generatedAt: "2026-06-01T00:00:00.000Z" }),
+    });
+  });
+
   await page.goto("/#/plan");
 
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
@@ -239,6 +257,14 @@ test("dashboard meal cards have swap action that opens the swap modal", async ({
       response.request().method() === "GET" &&
       response.status() === 200,
   );
+
+  await page.route("**/api/deadline-food/auto-plan**", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ plan: initialPlan, meals: [], generatedAt: "2026-06-01T00:00:00.000Z" }),
+    });
+  });
 
   await page.goto("/");
   await sessionLoaded;
@@ -296,4 +322,86 @@ test("missing session load does not overwrite the session with default onboardin
   await page.waitForTimeout(900);
 
   expect(saveRequests).toBe(0);
+});
+
+test("auto-planning generates a multi-week plan and flags it stale when settings change", async ({ page }) => {
+  const sessionId = "auto-plan-session-66";
+
+  await page.request.put("/api/deadline-food/session", {
+    data: {
+      sessionId,
+      settings: createPrototypeSessionSettings({
+        preferences: initialPreferences,
+        deadlines: defaultDeadlines,
+        selectedSources: ["budget", "bbc", "own", "campus"],
+        onboarded: true,
+      }),
+    },
+  });
+
+  await page.addInitScript(
+    ({ key, value }) => {
+      window.localStorage.setItem(key, value);
+    },
+    { key: ANONYMOUS_SESSION_STORAGE_KEY, value: sessionId },
+  );
+
+  // Deterministic auto-plan: 8 days (so two week groups render), with a batch
+  // cook on day 1 dinner seeding leftovers on day 2.
+  const chilli = {
+    id: "auto-chilli",
+    name: "Mega Batch Chilli",
+    type: "cook",
+    mealSlots: ["lunch", "dinner"],
+    time: 35,
+    price: 2.4,
+    tags: ["batch-friendly", "high protein"],
+    ingredients: [{ name: "kidney beans", quantity: 200, unit: "g" }],
+    allergens: [],
+    nutrition: { calories: 600, protein: 30, carbs: 70, fat: 15 },
+    rating: 0,
+    reviews: [],
+    instructions: ["Cook a big pot of chilli."],
+    source: "Recommender",
+    note: "",
+    image: "🌶️",
+  };
+  const planDays = Array.from({ length: 8 }, (_unused, i) => {
+    const dateIso = `2026-06-${String(i + 1).padStart(2, "0")}`;
+    return {
+      day: `Day ${i + 1}`,
+      dateIso,
+      context: i === 0 ? "Lighter day — good for batch cooking" : "Busy day — minimal prep",
+      meals: [
+        { slot: "dinner", mealId: "auto-chilli", ...(i === 0 ? { batchCook: true } : { leftoverOf: "auto-chilli" }) },
+      ],
+    };
+  });
+
+  await page.route("**/api/deadline-food/auto-plan**", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ plan: planDays, meals: [chilli], generatedAt: "2026-06-01T00:00:00.000Z" }),
+    });
+  });
+
+  await page.goto("/#/plan");
+
+  await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
+  // Generated meal from the mocked endpoint replaces the seed plan.
+  await expect(page.getByText("Mega Batch Chilli").first()).toBeVisible();
+  // Two week groups => collapsible week headers appear.
+  await expect(page.getByRole("button", { name: /week 1/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /week 2/i })).toBeVisible();
+  // Batch-cook and leftover chaining are surfaced.
+  await expect(page.getByText("Batch cook").first()).toBeVisible();
+  await expect(page.getByText("Leftovers").first()).toBeVisible();
+
+  // Changing the planning window in Settings marks the plan stale.
+  await page.getByRole("button", { name: /open settings/i }).first().click();
+  await expect(page.getByRole("heading", { name: /^preferences$/i })).toBeVisible();
+  await page.getByRole("button", { name: "2w", exact: true }).click();
+  await page.locator("header nav").getByRole("button", { name: "Meals", exact: true }).click();
+  await expect(page.getByText(/regenerate to keep this plan in step/i)).toBeVisible();
 });

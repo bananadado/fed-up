@@ -9,7 +9,7 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" build.ts bun-env.d.ts eslint.config.js playwright.config.ts",
     "typecheck": "tsc --noEmit",
     "test:domain": "bun test src/domain --pass-with-no-tests",
-    "test:unit": "bun test src --pass-with-no-tests",
+    "test:unit": "bun test src functions/src/autoPlan.test.ts --pass-with-no-tests",
     "test:e2e": "playwright test --pass-with-no-tests",
     "test:all": "sh scripts/verify-local.sh",
     "verify": "sh scripts/verify-local.sh",

@@ -11,12 +11,28 @@ import type { Meal, MealSlot, RecipeIngredient } from "./types";
 
 let catalogue: Meal[] = seedMeals;
 
+// Meals placed in an auto-generated plan (issue #66) that may not be in the
+// hydrated catalogue — e.g. recommender gap-fill recipes. Registered so the
+// synchronous mealById/getMealById lookups resolve plan slots without threading
+// an extra lookup through every screen.
+const planMeals = new Map<string, Meal>();
+
 export function getRecipeCatalogue(): Meal[] {
   return catalogue;
 }
 
 export function setRecipeCatalogue(recipes: Meal[]): void {
   catalogue = recipes.length > 0 ? recipes : seedMeals;
+}
+
+export function registerPlanMeals(meals: Meal[]): void {
+  for (const meal of meals) {
+    if (meal && typeof meal.id === "string" && meal.id) planMeals.set(meal.id, meal);
+  }
+}
+
+export function getPlanMeal(id: string): Meal | undefined {
+  return planMeals.get(id);
 }
 
 // Firestore documents may be missing array fields if written by a partial-update
