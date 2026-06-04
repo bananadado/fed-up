@@ -1,3 +1,4 @@
+aafa
 abilities
 ability
 academic
@@ -13,6 +14,7 @@ active
 add
 adjectives
 admin
+adminsdk
 advanced
 adventurousness
 afte
@@ -146,6 +148,7 @@ category
 causes
 cautions
 cell
+cert
 change
 changes
 cheapest
@@ -167,6 +170,7 @@ classify
 claude
 clean
 cleanup
+clear
 clearing
 cli
 client
@@ -250,6 +254,7 @@ date
 datetime
 day
 days
+deaccent
 deadline
 deadlines
 debounce
@@ -260,6 +265,7 @@ default
 defaults
 deferred
 definition
+delay
 delete
 deliberately
 demands
@@ -337,6 +343,7 @@ editing
 editor
 effort
 egg
+email
 embe
 embed
 embedded
@@ -416,6 +423,8 @@ falls
 fallthrough
 fast
 favours
+fbsvc
+fdc
 feasibility
 features
 feed
@@ -447,6 +456,7 @@ float
 flow
 flows
 food
+foods
 footer
 for
 force
@@ -511,6 +521,7 @@ has
 hash
 have
 header
+headers
 health
 hello
 helpers
@@ -749,10 +760,12 @@ note
 notes
 now
 number
+nutrient
 nutrition
 nvidia
 object
 obsidian
+off
 omits
 omitted
 onboarding
@@ -833,6 +846,7 @@ plugin
 pluralise
 point
 points
+populate
 popup
 port
 portion
@@ -914,6 +928,7 @@ real
 realism
 reality
 reason
+recalc
 recent
 recently
 recipe
@@ -962,6 +977,7 @@ rescued
 reserved
 resolution
 resolve
+resolved
 respects
 response
 responsible
@@ -1225,6 +1241,7 @@ toward
 track
 tracker
 transcribe
+transient
 trending
 trigger
 troubleshooting
@@ -1255,6 +1272,7 @@ uninstall
 unique
 unit
 units
+universe
 universities
 university
 unknown
@@ -1267,8 +1285,10 @@ updates
 upload
 upsert
 urgency
+uri
 url
 usage
+usda
 use
 used
 user
