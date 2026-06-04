@@ -2,7 +2,6 @@ import { ArrowUpDown, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, Shopp
 import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
-import { getRecipeCatalogue } from "../recipeCatalogue";
 import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
 import { ingredientName } from "../ingredients";
 import { getMealById, money } from "../utils";
@@ -96,7 +95,6 @@ export function SwapModal({
   const candidatePool = [
     ...customRecipes,
     ...savedNotInCustom,
-    ...getRecipeCatalogue().filter((m) => !customRecipes.some((c) => c.id === m.id) && !savedNotInCustom.some((s) => s.id === m.id)),
   ]
     .filter((meal) => meal.id !== originalPlanMeal?.mealId)
     .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
