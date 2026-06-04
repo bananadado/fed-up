@@ -1,13 +1,17 @@
 #!/usr/bin/env bun
 /**
- * Populate the OpenFoodFacts nutrition cache for every ingredient used by any
- * recipe.
+ * Populate the nutrition cache for every ingredient used by any recipe.
  *
  * Reads the recipe list from the recommender, de-duplicates ingredient names,
- * looks each one up on OpenFoodFacts, and writes the result into the Firestore
- * `openFoodFactsNutritionCache` collection (the same cache the live
- * `deadlineFoodNutrition` function reads). Ingredients with no usable match are
- * cached as misses and listed in a .txt report.
+ * looks each one up on USDA FoodData Central, and writes the result into the
+ * Firestore `openFoodFactsNutritionCache` collection (the same cache the live
+ * `deadlineFoodNutrition` function reads). Each cached product is tagged with
+ * its `provider`. Ingredients USDA cannot match are cached as misses and listed
+ * in a .txt report.
+ *
+ * OpenFoodFacts is OFF by default — its category search returns nonsense for
+ * plain ingredients. Pass --openfoodfacts to re-enable it as a fallback for
+ * USDA misses.
  *
  * Run this BEFORE `recalc-nutrition.ts`.
  *
@@ -16,8 +20,12 @@
  *
  * Options:
  *   --recommender-url <url>   Override RECOMMENDER_API_URL
+ *   --openfoodfacts           Fall back to OpenFoodFacts for USDA misses (noisy;
+ *                             off by default)
  *   --delay <ms>              Delay between OpenFoodFacts requests (default 6500;
- *                             the search API is rate limited to ~10 req/min)
+ *                             only used with --openfoodfacts)
+ *   --usda-delay <ms>         Delay between USDA requests (default 1100; the FDC
+ *                             gateway throttles to ~1 req/sec)
  *   --ttl-days <n>            Cache freshness for matches (default 90)
  *   --miss-ttl-days <n>       Cache freshness for misses (default 14)
  *   --unmatched-out <path>    Where to write the unmatched list
@@ -27,6 +35,7 @@
  *
  * Environment variables:
  *   RECOMMENDER_API_URL, RECOMMENDER_API_KEY
+ *   USDA_API_KEY (signed key recommended; DEMO_KEY is ~10 req/hour)
  *   FIREBASE_SERVICE_ACCOUNT_KEY_B64 | GOOGLE_APPLICATION_CREDENTIALS
  *   FIREBASE_PROJECT_ID, OPENFOODFACTS_BASE_URL, OPENFOODFACTS_USER_AGENT
  */
@@ -34,11 +43,12 @@
 import { initFirebase, getFirestore } from "./ingest/firebase.ts";
 import {
   cacheKeyForName,
-  findProductForIngredient,
   readCachedProduct,
   writeCachedProduct,
 } from "./ingest/openfoodfacts.ts";
 import { listRecipes, recommenderUrl } from "./ingest/recommender.ts";
+import { resolveIngredientProduct } from "./ingest/resolve.ts";
+import { USDA_API_KEY } from "./ingest/usda.ts";
 
 // ── CLI args ───────────────────────────────────────────────────────────────
 
@@ -53,15 +63,13 @@ function option(name: string): string | undefined {
 
 const isDryRun = flag("--dry-run");
 const force = flag("--force");
+const useOpenFoodFacts = flag("--openfoodfacts");
 const delayMs = Number(option("--delay") ?? 6500);
+const usdaDelayMs = Number(option("--usda-delay") ?? 1100);
 const ttlMs = Number(option("--ttl-days") ?? 90) * 24 * 60 * 60 * 1000;
 const missTtlMs = Number(option("--miss-ttl-days") ?? 14) * 24 * 60 * 60 * 1000;
 const unmatchedOut = option("--unmatched-out") ?? "scripts/ingest/unmatched-ingredients.txt";
 const baseUrl = recommenderUrl(option("--recommender-url"));
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((r) => setTimeout(r, Math.max(0, ms)));
-}
 
 function progress(done: number, total: number, name: string) {
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
@@ -75,8 +83,16 @@ function progress(done: number, total: number, name: string) {
 // ── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log("=== Nutrition Cache Population ===");
+  console.log(
+    `=== Nutrition Cache Population (${useOpenFoodFacts ? "USDA → OpenFoodFacts" : "USDA only"}) ===`,
+  );
   if (isDryRun) console.log("DRY RUN — cache will not be written");
+  if (USDA_API_KEY === "DEMO_KEY") {
+    console.warn(
+      "⚠ USDA_API_KEY is unset — using DEMO_KEY (~10 req/hour). " +
+        "Set a signed key (https://fdc.nal.usda.gov/api-key-signup.html) before a bulk run.",
+    );
+  }
 
   initFirebase();
   const db = getFirestore();
@@ -99,9 +115,11 @@ async function main() {
   const unique = [...byKey.values()].sort((a, b) => a.localeCompare(b));
   console.log(`Found ${unique.length} unique ingredients\n`);
 
-  let matched = 0;
+  let matchedUsda = 0;
+  let matchedOff = 0;
   let cachedHits = 0;
   const unmatched: string[] = [];
+  const errors: string[] = [];
   let done = 0;
 
   for (const name of unique) {
@@ -112,26 +130,40 @@ async function main() {
       if (cached !== undefined) {
         cachedHits++;
         if (cached === null) unmatched.push(name);
-        else matched++;
+        else if (cached.provider === "USDA") matchedUsda++;
+        else matchedOff++;
         progress(++done, unique.length, name);
         continue;
       }
     }
 
     let product = null;
+    let errored = false;
     try {
-      product = await findProductForIngredient(name, async () => {
-        await sleep(delayMs);
-      });
+      ({ product } = await resolveIngredientProduct(name, {
+        usdaMs: usdaDelayMs,
+        offMs: delayMs,
+        useOpenFoodFacts,
+      }));
     } catch (err) {
-      console.error(`\n  [error] ${name}: ${(err as Error).message}`);
+      // Transient upstream failure — leave the ingredient uncached so a re-run
+      // retries it, rather than poisoning the cache with a false miss.
+      errored = true;
+      errors.push(name);
+      console.error(`\n  [retry-later] ${name}: ${(err as Error).message}`);
+    }
+
+    if (errored) {
+      progress(++done, unique.length, name);
+      continue;
     }
 
     if (!isDryRun) {
       await writeCachedProduct(db, cacheKey, product, product ? ttlMs : missTtlMs);
     }
 
-    if (product) matched++;
+    if (product?.provider === "USDA") matchedUsda++;
+    else if (product) matchedOff++;
     else unmatched.push(name);
 
     progress(++done, unique.length, name);
@@ -140,14 +172,17 @@ async function main() {
   process.stdout.write("\n");
 
   // Write the unmatched report.
-  const header = `# ${unmatched.length} ingredient(s) with no OpenFoodFacts match — ${new Date().toISOString()}\n`;
+  const sources = useOpenFoodFacts ? "USDA/OpenFoodFacts" : "USDA";
+  const header = `# ${unmatched.length} ingredient(s) with no ${sources} match — ${new Date().toISOString()}\n`;
   const body = unmatched.map((n) => n).sort((a, b) => a.localeCompare(b)).join("\n");
   await Bun.write(unmatchedOut, unmatched.length ? `${header}${body}\n` : header);
 
   console.log("\n=== Summary ===");
   console.log(`  unique ingredients   ${unique.length}`);
-  console.log(`  matched              ${matched}`);
+  console.log(`  matched (USDA)       ${matchedUsda}`);
+  if (useOpenFoodFacts) console.log(`  matched (OFF)        ${matchedOff}`);
   console.log(`  unmatched            ${unmatched.length}`);
+  console.log(`  errors (uncached)    ${errors.length}${errors.length ? " — re-run to retry" : ""}`);
   console.log(`  already cached       ${cachedHits}${force ? " (ignored, --force)" : " (skipped)"}`);
   console.log(`  unmatched report     ${unmatchedOut}`);
   if (isDryRun) console.log("\nDry run complete — no cache written.");

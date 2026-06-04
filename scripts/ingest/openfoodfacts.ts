@@ -31,11 +31,23 @@ const OFF_TIMEOUT_MS = 6000;
 
 const CACHE_COLLECTION = "openFoodFactsNutritionCache";
 
+// ── Nutrition provider ───────────────────────────────────────────────────────
+
+/** Which upstream database a cached product came from. */
+export type NutritionProvider = "USDA" | "OpenFoodFacts";
+
 // ── OpenFoodFacts wire types ─────────────────────────────────────────────────
 
+/**
+ * Per-100g product shape. Originally the OpenFoodFacts wire shape, now the
+ * common shape every nutrition source normalises into (USDA results are mapped
+ * onto the same `nutriments` keys so the live function reads them unchanged).
+ * `provider` records which database it came from; the live function ignores it.
+ */
 export type OpenFoodFactsProduct = {
   code?: string;
   product_name?: string;
+  provider?: NutritionProvider;
   nutriments?: {
     "energy-kcal_100g"?: number;
     energy_100g?: number;
@@ -54,6 +66,7 @@ type OpenFoodFactsSearchResponse = {
 export type IngredientNutritionEstimate = {
   ingredient: Ingredient;
   productName: string;
+  provider: NutritionProvider;
   grams: number;
   calories: number;
   protein: number;
@@ -64,7 +77,7 @@ export type IngredientNutritionEstimate = {
 /** Nutrition enriched with provenance — written to Firestore recipes/{id}. */
 export type NutritionWithSource = Nutrition & {
   source: {
-    provider: "OpenFoodFacts";
+    provider: NutritionProvider | "USDA + OpenFoodFacts";
     label: string;
     fetchedAt: string;
     matchedIngredients: { ingredient: string; productName: string; grams: number }[];
@@ -190,6 +203,7 @@ export function estimateIngredientNutrition(
   return {
     ingredient,
     productName: product.product_name?.trim() || ingredient.name,
+    provider: product.provider ?? "OpenFoodFacts",
     grams,
     calories: caloriesPer100g * multiplier,
     protein: nutriments.proteins_100g * multiplier,
@@ -206,14 +220,19 @@ export function totalNutritionFromEstimates(
   estimates: IngredientNutritionEstimate[],
   missingIngredients: string[],
 ): NutritionWithSource {
+  const usedUsda = estimates.some((e) => e.provider === "USDA");
+  const usedOff = estimates.some((e) => e.provider === "OpenFoodFacts");
+  const provider =
+    usedUsda && usedOff ? "USDA + OpenFoodFacts" : usedUsda ? "USDA" : "OpenFoodFacts";
+
   return {
     calories: roundMacro(estimates.reduce((sum, e) => sum + e.calories, 0)),
     protein: roundMacro(estimates.reduce((sum, e) => sum + e.protein, 0)),
     carbs: roundMacro(estimates.reduce((sum, e) => sum + e.carbs, 0)),
     fat: roundMacro(estimates.reduce((sum, e) => sum + e.fat, 0)),
     source: {
-      provider: "OpenFoodFacts",
-      label: "OpenFoodFacts estimate",
+      provider,
+      label: `${provider} estimate`,
       fetchedAt: new Date().toISOString(),
       matchedIngredients: estimates.map((e) => ({
         ingredient: e.ingredient.name,
@@ -230,6 +249,7 @@ function compactProduct(product: OpenFoodFactsProduct): OpenFoodFactsProduct {
   return {
     ...(product.code ? { code: product.code } : {}),
     ...(product.product_name ? { product_name: product.product_name } : {}),
+    ...(product.provider ? { provider: product.provider } : {}),
     nutriments: {
       ...(typeof n?.["energy-kcal_100g"] === "number" ? { "energy-kcal_100g": n["energy-kcal_100g"] } : {}),
       ...(typeof n?.energy_100g === "number" ? { energy_100g: n.energy_100g } : {}),
@@ -278,7 +298,7 @@ export async function findProductForIngredient(
     await onSearch?.(tag);
     const products = await searchProducts(tag);
     const match = products.find((p) => estimateIngredientNutrition(probe, p) !== null);
-    if (match) return compactProduct(match);
+    if (match) return compactProduct({ ...match, provider: "OpenFoodFacts" });
   }
 
   return null;
