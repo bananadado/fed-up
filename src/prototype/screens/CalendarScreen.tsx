@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { AlertTriangle, CalendarPlus, CalendarClock, Download, ExternalLink, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight, ChefHat } from "lucide-react";
+import { AlertTriangle, CalendarPlus, CalendarClock, ChevronDown, Download, ExternalLink, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight, ChefHat } from "lucide-react";
 import type { CalendarEvent, Deadline, Meal, PlanEntry, Screen } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { Input } from "@/components/ui/input";
@@ -282,7 +282,8 @@ function CookingScheduler({
   const [mealId, setMealId] = useState<string>(() => schedulableMeals[0]?.id ?? "");
   const [dateIso, setDateIso] = useState(defaultDateIso);
   const [time, setTime] = useState("18:00");
-  const [shoppingReminder, setShoppingReminder] = useState(false);
+  // null = no reminder; number = minutes before the cooking block
+  const [reminderMinutes, setReminderMinutes] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [exported, setExported] = useState(false);
 
@@ -303,7 +304,8 @@ function CookingScheduler({
       cookMinutes: selectedMeal.time,
       dateIso,
       time: time.trim(),
-      shoppingReminder,
+      shoppingReminder: reminderMinutes !== null,
+      shoppingReminderLeadMinutes: reminderMinutes ?? undefined,
     };
   }
 
@@ -316,7 +318,7 @@ function CookingScheduler({
       meal_id: selectedMeal!.id,
       cook_minutes: selectedMeal!.time,
       date: block.dateIso,
-      shopping_reminder: shoppingReminder,
+      shopping_reminder: reminderMinutes !== null,
       method: "ics",
     });
   }
@@ -332,7 +334,7 @@ function CookingScheduler({
       meal_id: selectedMeal!.id,
       cook_minutes: selectedMeal!.time,
       date: block.dateIso,
-      shopping_reminder: shoppingReminder,
+      shopping_reminder: reminderMinutes !== null,
       method: "google",
     });
   }
@@ -362,17 +364,20 @@ function CookingScheduler({
             <div>
               <label className="block">
                 <span className="text-sm font-semibold text-stone-700">Meal</span>
-                <select
-                  value={mealId}
-                  onChange={(e) => { setMealId(e.target.value); setError(null); setExported(false); }}
-                  className="mt-2 h-auto w-full rounded-lg border border-stone-200 bg-white p-3 text-sm text-stone-800"
-                >
-                  {schedulableMeals.map((meal) => (
-                    <option key={meal.id} value={meal.id}>
-                      {meal.name} · {meal.time} min
-                    </option>
-                  ))}
-                </select>
+                <div className="relative mt-2">
+                  <select
+                    value={mealId}
+                    onChange={(e) => { setMealId(e.target.value); setError(null); setExported(false); }}
+                    className="h-auto w-full appearance-none rounded-lg border border-stone-200 bg-white p-3 pr-9 text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                  >
+                    {schedulableMeals.map((meal) => (
+                      <option key={meal.id} value={meal.id}>
+                        {meal.name} · {meal.time} min
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={15} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-stone-400" />
+                </div>
               </label>
             </div>
             <div>
@@ -407,15 +412,33 @@ function CookingScheduler({
             </p>
           )}
 
-          <label className="mt-4 flex cursor-pointer items-center gap-2.5 text-sm text-stone-700">
-            <input
-              type="checkbox"
-              checked={shoppingReminder}
-              onChange={(e) => { setShoppingReminder(e.target.checked); setExported(false); }}
-              className="h-4 w-4 rounded border-stone-300 text-emerald-600 focus:ring-emerald-500"
-            />
-            Add a shopping reminder 2 hours before
-          </label>
+          <div className="mt-4">
+            <p className="mb-2 text-sm font-semibold text-stone-700">Shopping reminder</p>
+            <div className="flex flex-wrap gap-2">
+              {([
+                { label: "None", minutes: null },
+                { label: "4 hours before", minutes: 240 },
+                { label: "1 day before", minutes: 1440 },
+                { label: "2 days before", minutes: 2880 },
+              ] as const).map(({ label, minutes }) => (
+                <button
+                  key={label}
+                  type="button"
+                  onClick={() => { setReminderMinutes(minutes); setExported(false); }}
+                  className={cn(
+                    "rounded-lg border px-3 py-2 text-sm font-medium transition",
+                    reminderMinutes === minutes
+                      ? minutes === null
+                        ? "border-stone-400 bg-stone-100 text-stone-800"
+                        : "border-emerald-400 bg-emerald-50 text-emerald-800"
+                      : "border-stone-200 bg-white text-stone-500 hover:bg-stone-50",
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
 
           {error && <p className="mt-3 text-sm text-rose-600">{error}</p>}
 
