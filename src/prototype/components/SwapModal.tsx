@@ -219,7 +219,7 @@ export function SwapModal({
 
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-center bg-stone-950/40 p-0 sm:items-center sm:p-5" onClick={() => { track("meal_swap_cancelled", { action: "backdrop", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }}>
-      <Card className="flex max-h-[92dvh] w-full max-w-lg flex-col gap-0 rounded-t-2xl bg-white shadow-2xl sm:rounded-lg" onClick={(e) => e.stopPropagation()}>
+      <Card className="flex h-[92dvh] w-full max-w-lg flex-col gap-0 rounded-t-2xl bg-white shadow-2xl sm:rounded-lg" onClick={(e) => e.stopPropagation()}>
 
         {/* Drag handle — mobile affordance */}
         <div className="mx-auto mt-3 h-1 w-10 shrink-0 rounded-full bg-stone-200 sm:hidden" />
@@ -292,12 +292,10 @@ export function SwapModal({
           </div>
         </div>
 
-        {/* Scrollable options list + filter/sort panels */}
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-3 pt-3">
-
-          {/* Sort panel */}
-          {showSort && (
-            <div className="mb-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+        {/* Sort panel — fixed, never scrolls */}
+        {showSort && (
+          <div className="shrink-0 border-t border-stone-100 px-5 py-3">
+            <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Sort by</p>
               <div className="flex flex-wrap gap-2">
                 {(["match", "quickest", "cheapest"] as SortOption[]).map((opt) => (
@@ -312,11 +310,13 @@ export function SwapModal({
                 ))}
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Filter panel */}
-          {showFilters && (
-            <div className="mb-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+        {/* Filter panel — fixed, never scrolls */}
+        {showFilters && (
+          <div className="shrink-0 border-t border-stone-100 px-5 py-3">
+            <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Meal type</p>
               <div className="flex flex-wrap gap-2">
                 {allSlots.map((slot) => (
@@ -332,8 +332,7 @@ export function SwapModal({
               </div>
 
               <p className="mb-2 mt-3 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Tags</p>
-              {/* All chips: custom-selected tags first, then catalogue tags */}
-              <div className="max-h-28 overflow-y-auto">
+              <div className="max-h-24 overflow-y-auto">
                 <div className="flex flex-wrap gap-2 pb-1">
                   {[
                     ...selectedTags.filter((t) => !availableTags.includes(t)),
@@ -350,7 +349,6 @@ export function SwapModal({
                   ))}
                 </div>
               </div>
-              {/* Custom tag input */}
               <div className="mt-2 flex gap-2">
                 <input
                   type="text"
@@ -380,8 +378,11 @@ export function SwapModal({
                 </button>
               )}
             </div>
-          )}
+          </div>
+        )}
 
+        {/* Scrollable meal list */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-3 pt-3">
           <div className="space-y-2">
             {filteredOptions.length === 0 ? (
               <p className="py-6 text-center text-sm text-stone-400">No matching meals found</p>
