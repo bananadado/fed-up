@@ -372,10 +372,12 @@ export function RecipeDetailScreen({
                   <h2 className="text-xl font-bold">Method</h2>
                   <ol className="mt-4 space-y-3">
                     {meal.instructions.map((step, index) => (
-                      <li key={step} className="flex items-center gap-3 rounded-lg bg-stone-50 px-3 py-3 text-stone-700">
+                      <li key={step} className="overflow-hidden rounded-lg bg-stone-50 text-stone-700">
                         <StepAnimation {...classifyStep(step, meal.ingredients)} />
-                        <span className="font-semibold text-stone-950">{index + 1}.</span>
-                        <span>{step}</span>
+                        <div className="flex gap-3 px-3 py-3">
+                          <span className="font-semibold text-stone-950">{index + 1}.</span>
+                          <span>{step}</span>
+                        </div>
                       </li>
                     ))}
                   </ol>

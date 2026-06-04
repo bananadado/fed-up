@@ -1,8 +1,12 @@
 # Cooking animation pipeline (local AI generation)
 
-Generates short, looping **cooking how-to animations** locally on the GPU box and
-emits transparent **animated WebP** files named so the frontend can reference them
-**procedurally**. No external runtime services, no per-recipe authoring.
+Generates short, looping **high-fidelity 3D/CGI cooking how-to animations** locally
+on the GPU box with a **text-to-video diffusion model**, and emits looping
+**animated WebP** banners named so the frontend can reference them **procedurally**.
+No external runtime services, no per-recipe authoring.
+
+> Fidelity: this uses real text-to-video models (CogVideoX / LTX-Video), not the
+> earlier AnimateDiff-SD1.5 tier. Output is a full-width banner per step.
 
 ```
 method text ──(frontend classifier)──► {action, object}
@@ -66,34 +70,41 @@ pip install -r requirements.txt
 ```
 
 Models are pulled automatically from Hugging Face on first run (all public —
-no token needed) and cached in `~/.cache/huggingface`:
-- base checkpoint `Lykon/dreamshaper-8` (SD1.5, ~2 GB)
-- `ByteDance/AnimateDiff-Lightning` motion module (fast, 4/8-step)
-- `rembg` `u2net` model (background removal, ~170 MB, cached in `~/.u2net`)
+no token needed) and cached in `~/.cache/huggingface`. Default backend
+`cogvideox2b` downloads `THUDM/CogVideoX-2b` (~12 GB of weights, one-time).
 
-**VRAM:** the default (AnimateDiff-Lightning, SD1.5, 256², 16 gen frames) runs in
-~6–8 GB. `enable_model_cpu_offload()` is on by default, so it also works on smaller
-cards (slower). For OOM, see Troubleshooting.
+**Backends** (pick with `--backend`):
+
+| backend | model | res | notes |
+| --- | --- | --- | --- |
+| `cogvideox2b` (default) | THUDM/CogVideoX-2b | 720×480 | reliable on ≤12 GB with offload |
+| `cogvideox5b` | THUDM/CogVideoX-5b | 720×480 | higher fidelity, wants ≥16–24 GB |
+| `ltx` | Lightricks/LTX-Video | 768×512 | faster, higher res |
+
+**VRAM:** `enable_sequential_cpu_offload()` + VAE tiling are **on by default**, so the
+default backend fits well under 12 GB (it streams weights from system RAM). The trade
+is speed — expect **minutes per clip** on a small GPU. You said that's fine; run the
+smoke test first, then the full set overnight. For OOM, see Troubleshooting.
 
 ---
 
 ## 2. Generate + sync
 
 ```bash
-# Everything missing, then copy into the frontend:
+# Smoke test 3 clips first (recommended — confirms the look before the long run):
+./run.sh --only chop_onion,fry_tofu,boil_noodles --force
+
+# Everything missing, then copy into the frontend (long; run overnight):
 ./run.sh
 
 # Tuning via env vars:
-FPS=3 FRAMES=6 SIZE=256 ./run.sh
-
-# Only specific ids (fast iteration while dialling in the look):
-./run.sh --only chop_onion,fry_tofu,boil_noodles --force
+FPS=12 FRAMES=24 WIDTH=640 ./run.sh
 ```
 
 `run.sh` does two steps you can also run directly:
 
 ```bash
-python generate.py            # AnimateDiff -> dist/<id>.webp (+ .poster.webp)
+python generate.py            # text-to-video -> dist/<id>.webp (+ .poster.webp)
 python sync_frontend.py       # copy dist/*.webp -> frontend + write index.ts
 ```
 
@@ -104,15 +115,14 @@ Key `generate.py` flags:
 
 | flag | default | meaning |
 | --- | --- | --- |
-| `--fps` | `4` | playback fps (3–4 gives the flipbook look) |
-| `--frames` | `8` | frames kept in the final webp |
-| `--gen-frames` | `16` | frames AnimateDiff renders before subsampling |
-| `--size` | `256` | output square px |
-| `--lightning` | `8` | AnimateDiff-Lightning step count (`1`,`2`,`4`,`8`) |
-| `--no-lightning` | off | use standard AnimateDiff (~25 steps, slower, sometimes smoother) |
-| `--steps` | auto | override inference steps |
-| `--guidance` | `1.8` | CFG (≈1.8 for Lightning, ≈7 for standard) |
-| `--base` | `Lykon/dreamshaper-8` | SD1.5 base checkpoint (swap to restyle) |
+| `--backend` | `cogvideox2b` | `cogvideox2b` / `cogvideox5b` / `ltx` |
+| `--steps` | `50` | inference steps (higher = better/slower) |
+| `--guidance` | `6.0` | classifier-free guidance |
+| `--gen-frames` | `49` | frames the model renders |
+| `--gen-width`/`--gen-height` | — | LTX render dims (÷32) |
+| `--frames` | `24` | frames kept in the final webp |
+| `--fps` | `12` | playback fps |
+| `--width` | `640` | output banner width px (height keeps aspect) |
 | `--only` / `--force` | — | subset / overwrite |
 
 ---
@@ -142,26 +152,23 @@ show no icon — nothing breaks.
 
 ## 4. Dialling in quality
 
-- **Frame count vs smoothness:** start `--frames 8 --fps 4` (2 s loop). For a snappier
-  flipbook use `--frames 6 --fps 3`; for smoother motion `--gen-frames 24 --frames 12 --fps 8`.
+- **Smoothness vs size:** default `--frames 24 --fps 12` (2 s loop). Smoother =
+  `--gen-frames 65 --frames 32 --fps 16` (bigger files); cheaper = `--frames 16 --fps 8`.
+- **More fidelity:** raise `--steps` (e.g. 60–80), or switch `--backend cogvideox5b`
+  / `--backend ltx` if VRAM allows. Bigger on-screen = `--width 768`.
 - **Consistent art style:** every prompt shares `STYLE` in `prompts.py`. Change it once
-  and `--force` regenerate. For a stronger, uniform style add a style **LoRA**
-  (`pipe.load_lora_weights(...)`) in `load_pipeline`, or switch `--base` to a flat/cartoon
-  SD1.5 checkpoint (e.g. a "flat illustration" or "toon" model on HF).
-- **Per-action motion wording** lives in `ACTION_MOTION` (`prompts.py`) — tweak phrasing
-  if an action reads wrong (e.g. make "chop" emphasise the knife).
-- **Cleaner cut-outs:** prompts force a plain white background so `rembg` keys cleanly.
-  If edges are rough, raise `--size`, or try a different rembg model
-  (`new_session("isnet-general-use")` in `generate.py`).
+  and `--force` regenerate. Tweak per-action wording in `ACTION_MOTION` if an action
+  reads wrong (e.g. make "chop" emphasise the knife).
 - **Reproducibility:** each id has a fixed seed (`seed_for`), so regenerating one clip is
-  deterministic. Change the prompt or `STYLE` to get a different result.
+  deterministic. Change the prompt or `STYLE` to get a different result; if one clip comes
+  out bad, append something to its prompt (or temporarily tweak `seed_for`) and
+  `--only <id> --force`.
 
-### Higher-quality / alternative models
-AnimateDiff-Lightning is the fast default. If you want more realistic motion and have
-the VRAM, swap the generator in `load_pipeline` for a text-to-video model — e.g.
-**LTX-Video** (fast, ~12 GB) or **CogVideoX-2B/5B** via their diffusers pipelines —
-then sample/subsample frames the same way before `cut_out`/`save_webp`. The rest of the
-pipeline (naming, alpha, webp, sync) is model-agnostic.
+### Alternative models
+The backends are interchangeable (`--backend`). To plug in another diffusers
+text-to-video model (e.g. HunyuanVideo, Wan2.1) add a branch in `Backend._load` and,
+if it needs explicit dims, in `Backend.render`. Everything downstream (naming, webp,
+sync, frontend) is model-agnostic.
 
 ---
 
@@ -169,12 +176,12 @@ pipeline (naming, alpha, webp, sync) is model-agnostic.
 
 | symptom | fix |
 | --- | --- |
-| CUDA out of memory | lower `--size 192`, `--gen-frames 12`; cpu-offload is already on; close other GPU jobs |
+| CUDA out of memory | lower `--gen-frames 25`; for `ltx` shrink `--gen-width/--gen-height`; offload+tiling already on; close other GPU jobs |
 | `torch` can't see GPU | install the CUDA-matched torch wheel (step 1), check `nvidia-smi` |
-| blank/black frames | raise `--guidance` (Lightning ≈2.0), try `--no-lightning`, or a different `--base` |
-| rough/halo edges on cut-out | increase `--size`; try `isnet-general-use` rembg model |
-| first run slow | model downloads; subsequent runs hit the HF cache |
-| onnxruntime GPU error | `pip install onnxruntime` (CPU) if `onnxruntime-gpu` mismatches CUDA — rembg still works |
+| very slow | expected with offload on small VRAM — fewer `--gen-frames`/`--steps`, or use a bigger GPU / `--backend ltx` |
+| blank/black or warped frames | raise `--steps`, adjust `--guidance` (5–8), tweak the prompt and `--only <id> --force` |
+| `sentencepiece`/T5 tokenizer error | `pip install sentencepiece protobuf` (in requirements) |
+| first run slow / large download | one-time model download (~12 GB for CogVideoX-2b); later runs hit the HF cache |
 
 ---
 
@@ -184,7 +191,7 @@ pipeline (naming, alpha, webp, sync) is model-agnostic.
 | --- | --- |
 | `pipeline/manifest.py` | which ids to generate (actions + `COMBOS`) — the naming source of truth |
 | `pipeline/prompts.py` | prompt templates + shared `STYLE`/`NEGATIVE` |
-| `generate.py` | AnimateDiff → frames → alpha → animated WebP in `dist/` |
+| `generate.py` | text-to-video → frames → animated WebP banners in `dist/` |
 | `sync_frontend.py` | copy `dist/*.webp` into the frontend + write `generated/index.ts` |
 | `run.sh` | generate-missing + sync, one command |
 | `requirements.txt` | Python deps (install torch separately) |

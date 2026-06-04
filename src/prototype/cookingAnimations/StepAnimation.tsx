@@ -70,11 +70,9 @@ export function StepAnimation({ action, object, objectLabel, className }: StepAn
       src={reducedMotion ? animation.poster : animation.src}
       alt={label}
       title={label}
-      width={56}
-      height={56}
       loading="lazy"
       decoding="async"
-      className={cn("h-14 w-14 shrink-0 rounded-lg bg-white object-contain", className)}
+      className={cn("aspect-[3/2] w-full bg-stone-100 object-cover", className)}
     />
   );
 }

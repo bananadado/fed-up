@@ -3,45 +3,48 @@
 Every prompt = action motion phrase + object noun + a fixed STYLE suffix, so the
 whole set shares one consistent art style. Edit STYLE / NEGATIVE / the motion
 phrases here to restyle the entire library in one place, then regenerate.
+
+Tuned for a polished 3D/CGI cooking look from a text-to-video model.
 """
 
 from __future__ import annotations
 
 from .manifest import OBJECT_NOUNS
 
-# Shared style — keep this identical across every clip for a coherent set.
-# A plain, solid background makes the alpha cut-out (rembg) clean.
+# Shared style — keep identical across every clip for a coherent set.
 STYLE = (
-    "flat 2d vector illustration, thick clean black outlines, bright flat colors, "
-    "simple cooking step icon, centered single subject, top-down or 3/4 view, "
-    "plain solid white background, minimal, no text, smooth looping animation"
+    "polished 3D animated cooking scene, Pixar-style stylized CGI render, "
+    "cinematic soft studio lighting, shallow depth of field, vibrant appetising "
+    "colors, high detail, glossy surfaces, centered single subject, clean modern "
+    "kitchen background, smooth fluid motion, 4k, high quality"
 )
 
 NEGATIVE = (
-    "photo, photorealistic, 3d render, realistic, text, words, letters, watermark, "
-    "logo, signature, blurry, low quality, jpeg artifacts, cluttered background, "
-    "busy scene, multiple subjects, hands, fingers, people, extra objects, frame, border"
+    "text, words, letters, captions, subtitles, watermark, logo, signature, "
+    "blurry, low quality, low resolution, jpeg artifacts, distorted, deformed, "
+    "flickering, glitch, warping, melting, extra limbs, people, human, hands, "
+    "fingers, ugly, grainy, oversaturated, cluttered"
 )
 
 # Motion phrase per action. "{food}" is filled with the object noun (or a generic
-# noun for action-level clips). Phrase the motion so the action is the focus.
+# noun for action-level clips). Phrase so the action is the clear focus.
 ACTION_MOTION: dict[str, str] = {
-    "boil": "{food} cooking in a pot of bubbling boiling water, rising steam",
-    "fry": "{food} sizzling and being tossed in a hot frying pan, steam rising",
-    "chop": "a kitchen knife rhythmically chopping {food} on a wooden cutting board, pieces falling apart",
-    "pour": "{food} being poured from above into a bowl",
-    "mix": "{food} being stirred and mixed in a bowl with a spoon going in circles",
-    "bake": "{food} baking inside an oven, heat glow and rising steam",
-    "season": "salt and herbs being sprinkled over {food}, falling seasoning",
-    "drain": "{food} being drained in a colander, water streaming out",
-    "microwave": "{food} heating inside a microwave, spinning plate and glow",
-    "assemble": "{food} being layered and assembled together step by step",
-    "serve": "{food} plated and served on a dish, gentle steam",
-    "generic": "{food} being cooked, gentle motion and rising steam",
+    "boil": "{food} gently cooking in a pot of bubbling boiling water, bubbles rising and steam swirling",
+    "fry": "{food} sizzling and being tossed in a hot frying pan, oil shimmering and steam rising",
+    "chop": "a kitchen knife rhythmically chopping {food} into pieces on a wooden cutting board",
+    "pour": "{food} being poured smoothly from above into a bowl",
+    "mix": "{food} being stirred and folded together in a bowl with a spoon moving in circles",
+    "bake": "{food} baking inside an oven, golden and glowing with warm heat and rising steam",
+    "season": "salt and herbs being sprinkled over {food}, seasoning falling in slow motion",
+    "drain": "{food} being drained in a colander, water streaming away as steam rises",
+    "microwave": "{food} heating inside a microwave, the plate slowly rotating with a warm glow",
+    "assemble": "{food} being layered and assembled together piece by piece",
+    "serve": "{food} plated and served on a dish, gentle steam rising",
+    "generic": "{food} being cooked in a pan, gentle motion with rising steam",
 }
 
 # Generic noun for action-level clips (no specific food).
-GENERIC_FOOD = "food"
+GENERIC_FOOD = "a tasty dish"
 
 
 def build_prompt(action: str, object_key: str | None) -> str:

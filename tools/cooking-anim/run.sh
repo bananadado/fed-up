@@ -11,12 +11,12 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 PYTHON="${PYTHON:-python3}"
-FPS="${FPS:-4}"
-FRAMES="${FRAMES:-8}"
-SIZE="${SIZE:-256}"
+FPS="${FPS:-12}"
+FRAMES="${FRAMES:-24}"
+WIDTH="${WIDTH:-640}"
 
-echo ">> Generating animations (fps=$FPS frames=$FRAMES size=$SIZE)"
-"$PYTHON" generate.py --fps "$FPS" --frames "$FRAMES" --size "$SIZE" "$@"
+echo ">> Generating animations (fps=$FPS frames=$FRAMES width=$WIDTH)"
+"$PYTHON" generate.py --fps "$FPS" --frames "$FRAMES" --width "$WIDTH" "$@"
 
 echo ">> Syncing into frontend"
 "$PYTHON" sync_frontend.py
