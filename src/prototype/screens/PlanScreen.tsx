@@ -1,9 +1,9 @@
-import { Clock3, Flame, Heart, Layers, RefreshCcw, ShoppingBag, ShoppingBasket, X } from "lucide-react";
+import { ChevronDown, Clock3, Flame, Heart, Layers, RefreshCcw, ShoppingBag, ShoppingBasket, Sparkles, Soup, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
-import type { MealSlot, PlanEntry, Preferences, Screen, Meal } from "../types";
+import type { Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { AppButton, Badge } from "../components/primitives";
@@ -26,6 +26,11 @@ export function PlanScreen({
   discoverSaved,
   setScreen,
   onSelectMeal,
+  planStale,
+  planGenerated,
+  regenerating,
+  onRegenerate,
+  regenMode,
   openDiscover,
   track,
 }: {
@@ -36,6 +41,11 @@ export function PlanScreen({
   discoverSaved: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
+  planStale: boolean;
+  planGenerated: boolean;
+  regenerating: boolean;
+  onRegenerate: () => void;
+  regenMode: PlanRegenMode;
   openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
@@ -53,122 +63,222 @@ export function PlanScreen({
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
 
+  const weeks = useMemo(() => {
+    const chunks: PlanEntry[][] = [];
+    for (let i = 0; i < plan.length; i += 7) chunks.push(plan.slice(i, i + 7));
+    return chunks;
+  }, [plan]);
+  const [collapsedWeeks, setCollapsedWeeks] = useState<Set<number>>(new Set());
+  const toggleWeek = (index: number) =>
+    setCollapsedWeeks((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index); else next.add(index);
+      return next;
+    });
+
+  function handleRegenerate() {
+    track("auto_plan_regenerate_clicked", { source: "plan", stale: planStale });
+    onRegenerate();
+  }
+
   return (
     <div>
-      <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <div className="mb-5 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <h1 className="text-3xl font-bold">Planned meals</h1>
-          <p className="mt-2 text-stone-600">A practical plan for your deadline-heavy week.</p>
+          <p className="mt-2 text-stone-600">Built from your saved recipes and how busy your calendar looks.</p>
         </div>
-        <AppButton variant="secondary" onClick={() => { track("find_alternatives_clicked", { source_screen: "plan" }); setScreen("recipes"); }}>
-          <Heart size={16} /> Find alternatives
-        </AppButton>
+        <div className="flex flex-wrap gap-2">
+          <AppButton variant="secondary" onClick={() => { track("find_alternatives_clicked", { source_screen: "plan" }); setScreen("recipes"); }}>
+            <Heart size={16} /> Find alternatives
+          </AppButton>
+          <AppButton onClick={handleRegenerate} disabled={regenerating}>
+            <Sparkles size={16} /> {regenerating ? "Building plan…" : planGenerated ? "Regenerate plan" : "Generate plan"}
+          </AppButton>
+        </div>
       </div>
+
+      {planStale && regenMode === "prompt" && (
+        <div className="mb-6 flex flex-col gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 rounded-lg bg-emerald-100 p-1.5 text-emerald-700">
+              <Sparkles size={16} />
+            </span>
+            <p className="text-sm leading-6 text-emerald-900">
+              {planGenerated
+                ? "Your calendar, saved recipes or settings changed. Regenerate to keep this plan in step with your week."
+                : "Generate a plan from your saved recipes and calendar to replace these sample meals."}
+            </p>
+          </div>
+          <AppButton className="shrink-0 justify-center" onClick={handleRegenerate} disabled={regenerating}>
+            <Sparkles size={16} /> {regenerating ? "Building plan…" : planGenerated ? "Regenerate plan" : "Generate plan"}
+          </AppButton>
+        </div>
+      )}
+
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_280px]">
-        <div className="space-y-4">
-          <div className="hidden overflow-hidden rounded-lg border border-stone-200 bg-white md:block">
-            <div className="grid grid-cols-[minmax(100px,0.55fr)_repeat(3,minmax(0,1fr))] border-b border-stone-200 bg-stone-50 text-sm font-semibold text-stone-600">
-              <div className="px-4 py-3">Day</div>
-              {mealSlots.map((slot) => (
-                <div key={slot} className="border-l border-stone-200 px-4 py-3">
-                  {slotLabels[slot]}
-                </div>
-              ))}
-            </div>
-            {plan.map((entry) => (
-              <div key={entry.day} className="grid grid-cols-[minmax(100px,0.55fr)_repeat(3,minmax(0,1fr))] border-b border-stone-200 last:border-b-0">
-                <div className="bg-stone-50 px-4 py-4">
-                  <p className="font-bold">{entry.day}</p>
-                </div>
-                {mealSlots.map((slot) => {
-                  const planMeal = entry.meals.find((meal) => meal.slot === slot);
-                  const meal = getMealById(planMeal?.mealId ?? "m1", customRecipes);
+        <div className="space-y-6">
+          {weeks.map((weekEntries, weekIndex) => {
+            const collapsed = collapsedWeeks.has(weekIndex);
+            const rangeStart = weekEntries[0]?.day;
+            const rangeEnd = weekEntries[weekEntries.length - 1]?.day;
+            const showWeekHeader = weeks.length > 1;
 
-                  return (
-                    <div key={slot} className="border-l border-stone-200 p-3">
-                      <div className="flex h-full min-h-[178px] flex-col justify-between rounded-lg bg-stone-50 p-3">
-                        <button
-                          type="button"
-                          onClick={() => onSelectMeal(meal.id)}
-                          className="text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
-                        >
-                          <div className="flex flex-wrap items-center gap-2">
-                            {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
-                            <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
-                              {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Fallback</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
-                            </Badge>
-                          </div>
-                          <p className="mt-3 break-words text-sm font-semibold leading-5">
-                            {meal.image} {meal.name}
-                          </p>
-                          <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-600">
-                            <span className="flex items-center gap-1">
-                              <Clock3 size={14} /> {meal.time} mins
-                            </span>
-                            <span>{money(meal.price)}</span>
-                          </div>
-                          <div className="mt-3 flex flex-wrap gap-1.5">
-                            {mealHealthSignals(meal).map((signal) => (
-                              <Badge key={signal} tone="blue">
-                                {signal}
-                              </Badge>
-                            ))}
-                          </div>
-                          <p className="mt-2 line-clamp-2 text-sm text-stone-500">{meal.source}</p>
-                        </button>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
-                            <RefreshCcw size={15} /> Change
-                          </AppButton>
-                          <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
-                            Find something else
-                          </AppButton>
-                        </div>
-                      </div>
+            return (
+              <div key={weekIndex} className="space-y-3">
+                {showWeekHeader && (
+                  <button
+                    type="button"
+                    onClick={() => { track("plan_week_toggled", { week: weekIndex + 1, collapsed: !collapsed }); toggleWeek(weekIndex); }}
+                    className="flex w-full items-center justify-between rounded-lg border border-stone-200 bg-white px-4 py-3 text-left transition hover:border-stone-300"
+                  >
+                    <div>
+                      <p className="font-bold">Week {weekIndex + 1}</p>
+                      <p className="text-sm text-stone-500">{rangeStart}{rangeEnd && rangeEnd !== rangeStart ? ` – ${rangeEnd}` : ""}</p>
                     </div>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
+                    <ChevronDown size={18} className={`text-stone-400 transition ${collapsed ? "-rotate-90" : ""}`} />
+                  </button>
+                )}
 
-          <div className="space-y-4 md:hidden">
-            {plan.map((entry) => (
-              <Card key={entry.day} className="gap-0 rounded-lg border-stone-200 bg-white p-4">
-                <div className="mb-4">
-                  <p className="font-bold">{entry.day}</p>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {mealSlots.map((slot) => {
-                    const planMeal = entry.meals.find((meal) => meal.slot === slot);
-                    const meal = getMealById(planMeal?.mealId ?? "m1", customRecipes);
-
-                    return (
-                      <div key={slot} className="rounded-lg bg-stone-50 p-3">
-                        <p className="text-xs font-semibold uppercase text-stone-500">{slotLabels[slot]}</p>
-                        <button type="button" onClick={() => onSelectMeal(meal.id)} className="mt-2 w-full text-left">
-                          <p className="break-words font-semibold leading-5">
-                            {meal.image} {meal.name}
-                          </p>
-                          <p className="mt-1 text-sm text-stone-500">
-                            {meal.time} mins - {money(meal.price)}
-                          </p>
-                        </button>
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
-                            <RefreshCcw size={15} /> Change
-                          </AppButton>
-                          <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
-                            Find alt.
-                          </AppButton>
-                        </div>
+                {!collapsed && (
+                  <>
+                    <div className="hidden overflow-hidden rounded-lg border border-stone-200 bg-white md:block">
+                      <div className="grid grid-cols-[minmax(100px,0.55fr)_repeat(3,minmax(0,1fr))] border-b border-stone-200 bg-stone-50 text-sm font-semibold text-stone-600">
+                        <div className="px-4 py-3">Day</div>
+                        {mealSlots.map((slot) => (
+                          <div key={slot} className="border-l border-stone-200 px-4 py-3">
+                            {slotLabels[slot]}
+                          </div>
+                        ))}
                       </div>
-                    );
-                  })}
-                </div>
-              </Card>
-            ))}
-          </div>
+                      {weekEntries.map((entry) => (
+                        <div key={entry.day} className="grid grid-cols-[minmax(100px,0.55fr)_repeat(3,minmax(0,1fr))] border-b border-stone-200 last:border-b-0">
+                          <div className="bg-stone-50 px-4 py-4">
+                            <p className="font-bold">{entry.day}</p>
+                            {entry.context && <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>}
+                          </div>
+                          {mealSlots.map((slot) => {
+                            const planMeal = entry.meals.find((meal) => meal.slot === slot);
+                            const meal = planMeal ? getMealById(planMeal.mealId, customRecipes) : null;
+
+                            return (
+                              <div key={slot} className="border-l border-stone-200 p-3">
+                                <div className="flex h-full min-h-[178px] flex-col justify-between rounded-lg bg-stone-50 p-3">
+                                  {meal ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_desktop" }); onSelectMeal(meal.id); }}
+                                      className="text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                                    >
+                                      <div className="flex flex-wrap items-center gap-2">
+                                        {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
+                                        {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
+                                        {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
+                                        <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
+                                          {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Fallback</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
+                                        </Badge>
+                                      </div>
+                                      <p className="mt-3 break-words text-sm font-semibold leading-5">
+                                        {meal.image} {meal.name}
+                                      </p>
+                                      <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-600">
+                                        <span className="flex items-center gap-1">
+                                          <Clock3 size={14} /> {meal.time} mins
+                                        </span>
+                                        <span>{money(meal.price)}</span>
+                                      </div>
+                                      <div className="mt-3 flex flex-wrap gap-1.5">
+                                        {mealHealthSignals(meal).map((signal) => (
+                                          <Badge key={signal} tone="blue">
+                                            {signal}
+                                          </Badge>
+                                        ))}
+                                      </div>
+                                      <p className="mt-2 line-clamp-2 text-sm text-stone-500">{meal.source}</p>
+                                    </button>
+                                  ) : (
+                                    <div>
+                                      <Badge tone="amber">Unfilled</Badge>
+                                      <p className="mt-3 text-sm font-semibold leading-5 text-stone-700">No meal allocated</p>
+                                      <p className="mt-2 text-sm text-stone-500">Choose a meal for this slot.</p>
+                                    </div>
+                                  )}
+                                  <div className="mt-4 flex flex-wrap gap-2">
+                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                      <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
+                                    </AppButton>
+                                    {meal && (
+                                      <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
+                                        Find something else
+                                      </AppButton>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="space-y-4 md:hidden">
+                      {weekEntries.map((entry) => (
+                        <Card key={entry.day} className="gap-0 rounded-lg border-stone-200 bg-white p-4">
+                          <div className="mb-4">
+                            <p className="font-bold">{entry.day}</p>
+                            {entry.context && <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>}
+                          </div>
+                          <div className="grid gap-3 sm:grid-cols-3">
+                            {mealSlots.map((slot) => {
+                              const planMeal = entry.meals.find((meal) => meal.slot === slot);
+                              const meal = planMeal ? getMealById(planMeal.mealId, customRecipes) : null;
+
+                              return (
+                                <div key={slot} className="rounded-lg bg-stone-50 p-3">
+                                  <p className="text-xs font-semibold uppercase text-stone-500">{slotLabels[slot]}</p>
+                                  {meal ? (
+                                    <button type="button" onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); onSelectMeal(meal.id); }} className="mt-2 w-full text-left">
+                                      <p className="break-words font-semibold leading-5">
+                                        {meal.image} {meal.name}
+                                      </p>
+                                      <p className="mt-1 text-sm text-stone-500">
+                                        {meal.time} mins - {money(meal.price)}
+                                      </p>
+                                    </button>
+                                  ) : (
+                                    <div className="mt-2">
+                                      <p className="break-words font-semibold leading-5 text-stone-700">No meal allocated</p>
+                                      <p className="mt-1 text-sm text-stone-500">Choose a meal for this slot.</p>
+                                    </div>
+                                  )}
+                                  {(planMeal?.batchCook || planMeal?.leftoverOf) && (
+                                    <div className="mt-2 flex flex-wrap gap-1.5">
+                                      {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
+                                      {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
+                                    </div>
+                                  )}
+                                  <div className="mt-3 flex flex-wrap gap-2">
+                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                      <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
+                                    </AppButton>
+                                    {meal && (
+                                      <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
+                                        Find alt.
+                                      </AppButton>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })}
         </div>
         <div className="space-y-4">
           <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />

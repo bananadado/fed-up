@@ -748,6 +748,27 @@ export function Onboarding({
             </div>
             <div className="mt-4 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
               <PreferenceSection
+                title="Planning window"
+                description="How far ahead should Autopilot plan your meals? You can change this later."
+              >
+                <div className="grid grid-cols-4 gap-2">
+                  {[7, 14, 21, 28].map((days) => {
+                    const active = prefs.planningHorizonDays === days;
+                    const wk = days / 7;
+                    return (
+                      <button
+                        key={days}
+                        type="button"
+                        onClick={() => { track("onboarding_preference_changed", { field: "planning_horizon_days", value: days }); setPrefs({ ...prefs, planningHorizonDays: days }); }}
+                        className={cn("rounded-lg border px-2 py-2.5 text-sm font-medium transition", active ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300")}
+                      >
+                        {wk} {wk === 1 ? "week" : "weeks"}
+                      </button>
+                    );
+                  })}
+                </div>
+              </PreferenceSection>
+              <PreferenceSection
                 title="Planning Priorities"
                 description="What should we optimise for? You can change this later."
               >

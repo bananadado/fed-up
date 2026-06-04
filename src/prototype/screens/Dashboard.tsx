@@ -18,6 +18,10 @@ export function Dashboard({
   discoverSaved,
   setScreen,
   onSelectMeal,
+  planStale,
+  planGenerated,
+  regenerating,
+  onRegenerate,
   openDiscover,
   track,
 }: {
@@ -28,6 +32,10 @@ export function Dashboard({
   discoverSaved: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
+  planStale: boolean;
+  planGenerated: boolean;
+  regenerating: boolean;
+  onRegenerate: () => void;
   openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
@@ -55,6 +63,27 @@ export function Dashboard({
           View full plan <ChevronRight size={16} />
         </AppButton>
       </div>
+      {planStale && (
+        <div className="mb-6 flex flex-col gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 rounded-lg bg-emerald-100 p-1.5 text-emerald-700">
+              <Sparkles size={16} />
+            </span>
+            <p className="text-sm leading-6 text-emerald-900">
+              {planGenerated
+                ? "Your calendar or recipes changed. Regenerate your plan to keep it in step with your week."
+                : "Generate a plan from your saved recipes and calendar to get started."}
+            </p>
+          </div>
+          <AppButton
+            className="shrink-0 justify-center"
+            disabled={regenerating}
+            onClick={() => { track("auto_plan_regenerate_clicked", { source: "dashboard", stale: planStale }); onRegenerate(); }}
+          >
+            <Sparkles size={16} /> {regenerating ? "Building plan…" : planGenerated ? "Regenerate plan" : "Generate plan"}
+          </AppButton>
+        </div>
+      )}
       <div className="grid gap-5 lg:grid-cols-[.9fr_1.1fr]">
         <div className="space-y-5">
           <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />
