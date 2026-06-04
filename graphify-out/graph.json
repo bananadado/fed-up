@@ -4,76 +4,319 @@
   "graph": {},
   "nodes": [
     {
+      "label": "DeadlineFoodPrototype.tsx",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L1",
+      "id": "src_prototype_deadlinefoodprototype_tsx",
+      "community": 94,
+      "norm_label": "deadlinefoodprototype.tsx"
+    },
+    {
+      "label": "screens",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L26",
+      "id": "prototype_deadlinefoodprototype_screens",
+      "community": 94,
+      "norm_label": "screens"
+    },
+    {
+      "label": "onboardingScreens",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L27",
+      "id": "prototype_deadlinefoodprototype_onboardingscreens",
+      "community": 94,
+      "norm_label": "onboardingscreens"
+    },
+    {
+      "label": "screenFromHash()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L29",
+      "id": "prototype_deadlinefoodprototype_screenfromhash",
+      "community": 94,
+      "norm_label": "screenfromhash()"
+    },
+    {
+      "label": "isAppScreen()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L36",
+      "id": "prototype_deadlinefoodprototype_isappscreen",
+      "community": 94,
+      "norm_label": "isappscreen()"
+    },
+    {
+      "label": "LoadingScreen()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L40",
+      "id": "prototype_deadlinefoodprototype_loadingscreen",
+      "community": 94,
+      "norm_label": "loadingscreen()"
+    },
+    {
+      "label": "budgetBand()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L50",
+      "id": "prototype_deadlinefoodprototype_budgetband",
+      "community": 94,
+      "norm_label": "budgetband()"
+    },
+    {
+      "label": "maxTimeBucket()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L57",
+      "id": "prototype_deadlinefoodprototype_maxtimebucket",
+      "community": 94,
+      "norm_label": "maxtimebucket()"
+    },
+    {
+      "label": "DeadlineFoodPrototype()",
+      "file_type": "code",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L65",
+      "id": "prototype_deadlinefoodprototype_deadlinefoodprototype",
+      "community": 94,
+      "norm_label": "deadlinefoodprototype()"
+    },
+    {
+      "label": "Dashboard.tsx",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L1",
+      "id": "src_prototype_screens_dashboard_tsx",
+      "community": 6,
+      "norm_label": "dashboard.tsx"
+    },
+    {
+      "label": "Dashboard()",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L13",
+      "id": "screens_dashboard_dashboard",
+      "community": 6,
+      "norm_label": "dashboard()"
+    },
+    {
+      "label": "Onboarding.tsx",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L1",
+      "id": "src_prototype_screens_onboarding_tsx",
+      "community": 4,
+      "norm_label": "onboarding.tsx"
+    },
+    {
+      "label": "Progress()",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L27",
+      "id": "screens_onboarding_progress",
+      "community": 4,
+      "norm_label": "progress()"
+    },
+    {
+      "label": "PreferenceSection()",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L50",
+      "id": "screens_onboarding_preferencesection",
+      "community": 9,
+      "norm_label": "preferencesection()"
+    },
+    {
+      "label": "InfoTooltip()",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L72",
+      "id": "screens_onboarding_infotooltip",
+      "community": 4,
+      "norm_label": "infotooltip()"
+    },
+    {
+      "label": "Onboarding()",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L95",
+      "id": "screens_onboarding_onboarding",
+      "community": 4,
+      "norm_label": "onboarding()"
+    },
+    {
+      "label": "sessionPersistence.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L1",
+      "id": "src_prototype_sessionpersistence_ts",
+      "community": 4,
+      "norm_label": "sessionpersistence.ts"
+    },
+    {
+      "label": "IcsSubscription",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L7",
+      "id": "prototype_sessionpersistence_icssubscription",
+      "community": 4,
+      "norm_label": "icssubscription"
+    },
+    {
+      "label": "CalendarToken",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L13",
+      "id": "prototype_sessionpersistence_calendartoken",
+      "community": 4,
+      "norm_label": "calendartoken"
+    },
+    {
+      "label": "PrototypeSessionSettings",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L20",
+      "id": "prototype_sessionpersistence_prototypesessionsettings",
+      "community": 3,
+      "norm_label": "prototypesessionsettings"
+    },
+    {
+      "label": "normalizePreferences()",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L47",
+      "id": "prototype_sessionpersistence_normalizepreferences",
+      "community": 94,
+      "norm_label": "normalizepreferences()"
+    },
+    {
+      "label": "isAnonymousSessionId()",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L58",
+      "id": "prototype_sessionpersistence_isanonymoussessionid",
+      "community": 3,
+      "norm_label": "isanonymoussessionid()"
+    },
+    {
+      "label": "createAnonymousSessionId()",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L62",
+      "id": "prototype_sessionpersistence_createanonymoussessionid",
+      "community": 3,
+      "norm_label": "createanonymoussessionid()"
+    },
+    {
+      "label": "createPrototypeSessionSettings()",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L70",
+      "id": "prototype_sessionpersistence_createprototypesessionsettings",
+      "community": 4,
+      "norm_label": "createprototypesessionsettings()"
+    },
+    {
+      "label": "mealSlots",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L109",
+      "id": "prototype_sessionpersistence_mealslots",
+      "community": 4,
+      "norm_label": "mealslots"
+    },
+    {
+      "label": "isPlanEntry()",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L111",
+      "id": "prototype_sessionpersistence_isplanentry",
+      "community": 4,
+      "norm_label": "isplanentry()"
+    },
+    {
+      "label": "restorePrototypePlan()",
+      "file_type": "code",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L133",
+      "id": "prototype_sessionpersistence_restoreprototypeplan",
+      "community": 4,
+      "norm_label": "restoreprototypeplan()"
+    },
+    {
       "label": "SwapModal.tsx",
       "file_type": "code",
       "source_file": "src/prototype/components/SwapModal.tsx",
       "source_location": "L1",
-      "id": "src_prototype_components_swapmodal_tsx",
       "community": 6,
-      "norm_label": "swapmodal.tsx"
+      "norm_label": "swapmodal.tsx",
+      "id": "src_prototype_components_swapmodal_tsx"
     },
     {
       "label": "slotLabels",
       "file_type": "code",
       "source_file": "src/prototype/components/SwapModal.tsx",
       "source_location": "L11",
-      "id": "components_swapmodal_slotlabels",
       "community": 6,
-      "norm_label": "slotlabels"
+      "norm_label": "slotlabels",
+      "id": "components_swapmodal_slotlabels"
     },
     {
       "label": "mealTypeIcon",
       "file_type": "code",
       "source_file": "src/prototype/components/SwapModal.tsx",
       "source_location": "L17",
-      "id": "components_swapmodal_mealtypeicon",
       "community": 6,
-      "norm_label": "mealtypeicon"
+      "norm_label": "mealtypeicon",
+      "id": "components_swapmodal_mealtypeicon"
     },
     {
       "label": "SortOption",
       "file_type": "code",
       "source_file": "src/prototype/components/SwapModal.tsx",
       "source_location": "L23",
-      "id": "components_swapmodal_sortoption",
       "community": 6,
-      "norm_label": "sortoption"
+      "norm_label": "sortoption",
+      "id": "components_swapmodal_sortoption"
     },
     {
       "label": "sortLabels",
       "file_type": "code",
       "source_file": "src/prototype/components/SwapModal.tsx",
       "source_location": "L25",
-      "id": "components_swapmodal_sortlabels",
       "community": 6,
-      "norm_label": "sortlabels"
+      "norm_label": "sortlabels",
+      "id": "components_swapmodal_sortlabels"
     },
     {
       "label": "allSlots",
       "file_type": "code",
       "source_file": "src/prototype/components/SwapModal.tsx",
       "source_location": "L33",
-      "id": "components_swapmodal_allslots",
       "community": 6,
-      "norm_label": "allslots"
+      "norm_label": "allslots",
+      "id": "components_swapmodal_allslots"
     },
     {
       "label": "priceDiff()",
       "file_type": "code",
       "source_file": "src/prototype/components/SwapModal.tsx",
       "source_location": "L35",
-      "id": "components_swapmodal_pricediff",
       "community": 6,
-      "norm_label": "pricediff()"
+      "norm_label": "pricediff()",
+      "id": "components_swapmodal_pricediff"
     },
     {
       "label": "SwapModal()",
       "file_type": "code",
       "source_file": "src/prototype/components/SwapModal.tsx",
       "source_location": "L43",
-      "id": "components_swapmodal_swapmodal",
       "community": 6,
-      "norm_label": "swapmodal()"
+      "norm_label": "swapmodal()",
+      "id": "components_swapmodal_swapmodal"
     },
     {
       "label": "vercel.json",
@@ -3694,87 +3937,6 @@
       "id": "prototype_workloadmodel_cookingeffortreason"
     },
     {
-      "label": "DeadlineFoodPrototype.tsx",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L1",
-      "community": 94,
-      "norm_label": "deadlinefoodprototype.tsx",
-      "id": "src_prototype_deadlinefoodprototype_tsx"
-    },
-    {
-      "label": "screens",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L26",
-      "community": 94,
-      "norm_label": "screens",
-      "id": "prototype_deadlinefoodprototype_screens"
-    },
-    {
-      "label": "onboardingScreens",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L27",
-      "community": 94,
-      "norm_label": "onboardingscreens",
-      "id": "prototype_deadlinefoodprototype_onboardingscreens"
-    },
-    {
-      "label": "screenFromHash()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L29",
-      "community": 94,
-      "norm_label": "screenfromhash()",
-      "id": "prototype_deadlinefoodprototype_screenfromhash"
-    },
-    {
-      "label": "isAppScreen()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L36",
-      "community": 94,
-      "norm_label": "isappscreen()",
-      "id": "prototype_deadlinefoodprototype_isappscreen"
-    },
-    {
-      "label": "LoadingScreen()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L40",
-      "community": 94,
-      "norm_label": "loadingscreen()",
-      "id": "prototype_deadlinefoodprototype_loadingscreen"
-    },
-    {
-      "label": "budgetBand()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L50",
-      "community": 94,
-      "norm_label": "budgetband()",
-      "id": "prototype_deadlinefoodprototype_budgetband"
-    },
-    {
-      "label": "maxTimeBucket()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L57",
-      "community": 94,
-      "norm_label": "maxtimebucket()",
-      "id": "prototype_deadlinefoodprototype_maxtimebucket"
-    },
-    {
-      "label": "DeadlineFoodPrototype()",
-      "file_type": "code",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L65",
-      "community": 94,
-      "norm_label": "deadlinefoodprototype()",
-      "id": "prototype_deadlinefoodprototype_deadlinefoodprototype"
-    },
-    {
       "label": "utils.ts",
       "file_type": "code",
       "source_file": "src/prototype/utils.ts",
@@ -4801,105 +4963,6 @@
       "id": "prototype_anonymoussessionapi_saveanonymoussessionsettings"
     },
     {
-      "label": "sessionPersistence.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L1",
-      "community": 4,
-      "norm_label": "sessionpersistence.ts",
-      "id": "src_prototype_sessionpersistence_ts"
-    },
-    {
-      "label": "IcsSubscription",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L7",
-      "community": 4,
-      "norm_label": "icssubscription",
-      "id": "prototype_sessionpersistence_icssubscription"
-    },
-    {
-      "label": "CalendarToken",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L13",
-      "community": 4,
-      "norm_label": "calendartoken",
-      "id": "prototype_sessionpersistence_calendartoken"
-    },
-    {
-      "label": "PrototypeSessionSettings",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L20",
-      "community": 3,
-      "norm_label": "prototypesessionsettings",
-      "id": "prototype_sessionpersistence_prototypesessionsettings"
-    },
-    {
-      "label": "normalizePreferences()",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L45",
-      "community": 94,
-      "norm_label": "normalizepreferences()",
-      "id": "prototype_sessionpersistence_normalizepreferences"
-    },
-    {
-      "label": "isAnonymousSessionId()",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L56",
-      "community": 3,
-      "norm_label": "isanonymoussessionid()",
-      "id": "prototype_sessionpersistence_isanonymoussessionid"
-    },
-    {
-      "label": "createAnonymousSessionId()",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L60",
-      "community": 3,
-      "norm_label": "createanonymoussessionid()",
-      "id": "prototype_sessionpersistence_createanonymoussessionid"
-    },
-    {
-      "label": "createPrototypeSessionSettings()",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L68",
-      "community": 4,
-      "norm_label": "createprototypesessionsettings()",
-      "id": "prototype_sessionpersistence_createprototypesessionsettings"
-    },
-    {
-      "label": "mealSlots",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L105",
-      "community": 4,
-      "norm_label": "mealslots",
-      "id": "prototype_sessionpersistence_mealslots"
-    },
-    {
-      "label": "isPlanEntry()",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L107",
-      "community": 4,
-      "norm_label": "isplanentry()",
-      "id": "prototype_sessionpersistence_isplanentry"
-    },
-    {
-      "label": "restorePrototypePlan()",
-      "file_type": "code",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L129",
-      "community": 4,
-      "norm_label": "restoreprototypeplan()",
-      "id": "prototype_sessionpersistence_restoreprototypeplan"
-    },
-    {
       "label": "utils.test.ts",
       "file_type": "code",
       "source_file": "src/prototype/utils.test.ts",
@@ -5321,69 +5384,6 @@
       "community": 94,
       "norm_label": "landing()",
       "id": "screens_landing_landing"
-    },
-    {
-      "label": "Onboarding.tsx",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L1",
-      "community": 4,
-      "norm_label": "onboarding.tsx",
-      "id": "src_prototype_screens_onboarding_tsx"
-    },
-    {
-      "label": "Progress()",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L27",
-      "community": 4,
-      "norm_label": "progress()",
-      "id": "screens_onboarding_progress"
-    },
-    {
-      "label": "PreferenceSection()",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L50",
-      "community": 9,
-      "norm_label": "preferencesection()",
-      "id": "screens_onboarding_preferencesection"
-    },
-    {
-      "label": "InfoTooltip()",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L72",
-      "community": 4,
-      "norm_label": "infotooltip()",
-      "id": "screens_onboarding_infotooltip"
-    },
-    {
-      "label": "Onboarding()",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L95",
-      "community": 4,
-      "norm_label": "onboarding()",
-      "id": "screens_onboarding_onboarding"
-    },
-    {
-      "label": "Dashboard.tsx",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L1",
-      "community": 6,
-      "norm_label": "dashboard.tsx",
-      "id": "src_prototype_screens_dashboard_tsx"
-    },
-    {
-      "label": "Dashboard()",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L13",
-      "community": 6,
-      "norm_label": "dashboard()",
-      "id": "screens_dashboard_dashboard"
     },
     {
       "label": "IngredientEditor.tsx",
@@ -23607,6 +23607,1996 @@
   ],
   "links": [
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_tsx",
+      "target": "src_prototype_deadlinefoodprototype_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "calendarimport_types_calendarevent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "components_shell_shell"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "lib_posthog_analyticsproperties"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "lib_posthog_captureposthogevent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "lib_posthog_registerposthogcontext"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "lib_posthog_registerposthogsession"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_anonymoussessionapi_getorcreateanonymoussessionid"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_anonymoussessionapi_loadanonymoussessionsettings"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_anonymoussessionapi_saveanonymoussessionsettings"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_autoplanapi_computeplansignature"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_autoplanapi_generateautoplan"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_data_initialplan"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_data_initialpreferences"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L50",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_deadlinefoodprototype_budgetband"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L65",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_deadlinefoodprototype_deadlinefoodprototype"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_deadlinefoodprototype_isappscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_deadlinefoodprototype_loadingscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_deadlinefoodprototype_maxtimebucket"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_deadlinefoodprototype_onboardingscreens"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_deadlinefoodprototype_screenfromhash"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_deadlinefoodprototype_screens"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_recipecatalogue_fetchrecipecatalogue"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_recipecatalogue_setrecipecatalogue"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_recommenderapi_syncrecommenderuser"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_sessionpersistence_calendartoken"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_sessionpersistence_createprototypesessionsettings"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_sessionpersistence_icssubscription"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_sessionpersistence_normalizepreferences"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_sessionpersistence_restoreprototypeplan"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_types_calendarprovider"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_types_deadline"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_types_discoverrecommendationstate"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_types_meal"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_types_mealslot"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_types_planentry"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_types_preferences"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "prototype_types_screen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_calendarscreen_calendarscreen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_dashboard_dashboard"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_landing_landing"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_onboarding_onboarding"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_planscreen_planscreen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_recipedetailscreen_recipedetailscreen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_recipeshubscreen_recipeshubscreen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "screens_settingsscreen_settingsscreen"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_lib_posthog_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_anonymoussessionapi_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_autoplanapi_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_components_shell_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_data_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_recipecatalogue_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_recommenderapi_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_calendarscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_dashboard_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_landing_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_onboarding_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_planscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_recipedetailscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_recipeshubscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_screens_settingsscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_sessionpersistence_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_deadlinefoodprototype_tsx",
+      "target": "src_prototype_types_ts"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
+      "source_location": "L502",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "prototype_deadlinefoodprototype_deadlinefoodprototype",
+      "target": "prototype_deadlinefoodprototype_isappscreen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_app_tsx",
+      "target": "prototype_deadlinefoodprototype_deadlinefoodprototype"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "components_budgetcard_budgetcard"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "components_primitives_appbutton"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "components_primitives_badge"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "components_swapmodal_swapmodal"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "prototype_analytics_trackprototypeevent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "prototype_healthsignals_mealhealthsignals"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "prototype_types_meal"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "prototype_types_mealslot"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "prototype_types_planentry"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "prototype_types_preferences"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "prototype_types_screen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "prototype_utils_getmealbyid"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "prototype_utils_money"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "screens_dashboard_dashboard"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "src_components_ui_card_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "src_prototype_analytics_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "src_prototype_components_budgetcard_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "src_prototype_components_primitives_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "src_prototype_components_swapmodal_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "src_prototype_healthsignals_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "src_prototype_types_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "src_prototype_utils_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_dashboard_tsx",
+      "target": "ui_card_card"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "screens_dashboard_dashboard",
+      "target": "prototype_healthsignals_mealhealthsignals"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Dashboard.tsx",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "screens_dashboard_dashboard",
+      "target": "prototype_utils_money"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_applecalendar_icssubscriptionhints"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_applecalendar_importfromsubscriptionurl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_applecalendar_issubscriptionurl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_deadlinecontext_resolvedeadlinesfromevents"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_googlecalendar_importgooglecalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_icsparser_parseicstext"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "calendarimport_types_calendarevent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_ingredienteditor_ingredienteditor"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_appbutton"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_badge"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_choicegroup"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_field"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_primitives_selectfield"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "components_universityfield_universityfield"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_analytics_trackprototypeevent"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_allergens"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_calendarproviders"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_cookingabilities"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_dietary"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_dislikes"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_likes"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_data_sourceoptions"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_ingredients_ingredientdraft"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_ingredients_ingredientdraftsfromingredients"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_ingredients_sanitiseingredientdrafts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_preferenceoptions_filterfoodpreferenceoptions"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_sessionpersistence_calendartoken"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_sessionpersistence_icssubscription"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_types_calendarprovider"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_types_deadline"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_types_preferences"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_types_screen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "prototype_utils_formatcookinglimit"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L72",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "screens_onboarding_infotooltip"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L95",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "screens_onboarding_onboarding"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L50",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "screens_onboarding_preferencesection"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "screens_onboarding_progress"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_components_ui_card_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_components_ui_input_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_lib_utils_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_analytics_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_calendarimport_index_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_components_ingredienteditor_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_components_primitives_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_components_universityfield_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_data_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_ingredients_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_preferenceoptions_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_sessionpersistence_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_types_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "src_prototype_utils_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "ui_card_card"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_onboarding_tsx",
+      "target": "ui_input_input"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "screens_onboarding_preferencesection",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L394",
+      "weight": 1.0,
+      "source": "screens_onboarding_onboarding",
+      "target": "lib_utils_cn"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L152",
+      "weight": 1.0,
+      "source": "screens_onboarding_onboarding",
+      "target": "prototype_preferenceoptions_filterfoodpreferenceoptions"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/Onboarding.tsx",
+      "source_location": "L673",
+      "weight": 1.0,
+      "source": "screens_onboarding_onboarding",
+      "target": "prototype_utils_formatcookinglimit"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "e2e_deadline_flow_spec_ts",
+      "target": "src_prototype_sessionpersistence_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/anonymousSessionApi.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_anonymoussessionapi_ts",
+      "target": "src_prototype_sessionpersistence_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "src_prototype_sessionpersistence_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_test_ts",
+      "target": "src_prototype_sessionpersistence_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "calendarimport_types_calendarevent"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_calendartoken"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_createanonymoussessionid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_createprototypesessionsettings"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_icssubscription"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_isanonymoussessionid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L107",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_isplanentry"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L105",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_mealslots"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_normalizepreferences"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_prototypesessionsettings"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L129",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_sessionpersistence_restoreprototypeplan"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_types_calendarprovider"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_types_deadline"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_types_meal"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_types_planentry"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "prototype_types_preferences"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_ts",
+      "target": "src_prototype_types_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_sessionpersistence_icssubscription"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/SettingsScreen.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_screens_settingsscreen_tsx",
+      "target": "prototype_sessionpersistence_calendartoken"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/anonymousSessionApi.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_anonymoussessionapi_ts",
+      "target": "prototype_sessionpersistence_prototypesessionsettings"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/anonymousSessionApi.ts",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "prototype_anonymoussessionapi_loadanonymoussessionsettings",
+      "target": "prototype_sessionpersistence_isanonymoussessionid"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/anonymousSessionApi.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "prototype_anonymoussessionapi_readstoredsessionid",
+      "target": "prototype_sessionpersistence_isanonymoussessionid"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/anonymousSessionApi.ts",
+      "source_location": "L95",
+      "weight": 1.0,
+      "source": "prototype_anonymoussessionapi_saveanonymoussessionsettings",
+      "target": "prototype_sessionpersistence_isanonymoussessionid"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/anonymousSessionApi.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_anonymoussessionapi_ts",
+      "target": "prototype_sessionpersistence_isanonymoussessionid"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_test_ts",
+      "target": "prototype_sessionpersistence_isanonymoussessionid"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/anonymousSessionApi.ts",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "prototype_anonymoussessionapi_getorcreateanonymoussessionid",
+      "target": "prototype_sessionpersistence_createanonymoussessionid"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/anonymousSessionApi.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_anonymoussessionapi_ts",
+      "target": "prototype_sessionpersistence_createanonymoussessionid"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "e2e_deadline_flow_spec_ts",
+      "target": "prototype_sessionpersistence_createprototypesessionsettings"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_test_ts",
+      "target": "prototype_sessionpersistence_createprototypesessionsettings"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/sessionPersistence.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_prototype_sessionpersistence_test_ts",
+      "target": "prototype_sessionpersistence_restoreprototypeplan"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -23867,17 +25857,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "src_prototype_components_swapmodal_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/PlanScreen.tsx",
       "source_location": "L10",
       "weight": 1.0,
@@ -23928,17 +25907,6 @@
       "weight": 1.0,
       "source": "components_swapmodal_swapmodal",
       "target": "prototype_utils_money"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "components_swapmodal_swapmodal"
     },
     {
       "relation": "imports",
@@ -25729,17 +27697,6 @@
       "target": "src_prototype_anonymoussessionapi_ts"
     },
     {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/App.tsx",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_tsx",
-      "target": "prototype_deadlinefoodprototype_deadlinefoodprototype"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/App.tsx",
@@ -25748,17 +27705,6 @@
       "confidence_score": 1.0,
       "source": "src_app_tsx",
       "target": "src_app_app"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/App.tsx",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_app_tsx",
-      "target": "src_prototype_deadlinefoodprototype_tsx"
     },
     {
       "relation": "contains",
@@ -31878,17 +33824,6 @@
       "target": "src_prototype_recipecatalogue_ts"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_recipecatalogue_ts"
-    },
-    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -32058,17 +33993,6 @@
       "target": "prototype_recipecatalogue_getrecipecatalogue"
     },
     {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_recipecatalogue_setrecipecatalogue"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -32111,17 +34035,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_utils_ts",
       "target": "prototype_recipecatalogue_getplanmeal"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_recipecatalogue_fetchrecipecatalogue"
     },
     {
       "relation": "imports_from",
@@ -32989,33 +34902,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_data_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/preferenceOptions.test.ts",
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_preferenceoptions_test_ts",
-      "target": "src_prototype_data_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "src_prototype_data_ts"
     },
     {
@@ -33050,17 +34941,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_sessionpersistence_test_ts",
       "target": "src_prototype_data_ts"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_calendarproviders"
     },
     {
       "relation": "imports",
@@ -33132,39 +35012,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_data_initialplan"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_sourceoptions"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_allergens"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L7",
       "weight": 1.0,
@@ -33181,17 +35028,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_preferenceoptions_test_ts",
-      "target": "prototype_data_dislikes"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "prototype_data_dislikes"
     },
     {
@@ -33220,17 +35056,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_likes"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L7",
       "weight": 1.0,
@@ -33242,34 +35067,12 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_dietary"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L7",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
       "target": "prototype_data_dietary"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_data_cookingabilities"
     },
     {
       "relation": "imports",
@@ -33291,17 +35094,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "e2e_deadline_flow_spec_ts",
-      "target": "prototype_data_initialpreferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
       "target": "prototype_data_initialpreferences"
     },
     {
@@ -33404,17 +35196,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "src_prototype_analytics_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L9",
       "weight": 1.0,
@@ -33431,17 +35212,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_landing_tsx",
-      "target": "src_prototype_analytics_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "src_prototype_analytics_ts"
     },
     {
@@ -33525,17 +35295,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "prototype_analytics_trackprototypeevent"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L9",
       "weight": 1.0,
@@ -33552,17 +35311,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_landing_tsx",
-      "target": "prototype_analytics_trackprototypeevent"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "prototype_analytics_trackprototypeevent"
     },
     {
@@ -33752,17 +35500,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "src_prototype_healthsignals_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L8",
       "weight": 1.0,
@@ -33786,32 +35523,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L117",
-      "weight": 1.0,
-      "source": "screens_dashboard_dashboard",
-      "target": "prototype_healthsignals_mealhealthsignals"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L258",
       "weight": 1.0,
       "source": "screens_discoverscreen_discoverscreen",
-      "target": "prototype_healthsignals_mealhealthsignals"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
       "target": "prototype_healthsignals_mealhealthsignals"
     },
     {
@@ -34164,17 +35879,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_ingredients_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L10",
       "weight": 1.0,
@@ -34279,17 +35983,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_ingredients_ingredientdraft"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "prototype_ingredients_ingredientdraft"
     },
     {
@@ -34527,17 +36220,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_ingredients_ingredientdraftsfromingredients"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L13",
       "weight": 1.0,
@@ -34576,17 +36258,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_ingredients_test_ts",
-      "target": "prototype_ingredients_sanitiseingredientdrafts"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "prototype_ingredients_sanitiseingredientdrafts"
     },
     {
@@ -34850,625 +36521,6 @@
       "target": "prototype_workloadmodel_cookingeffortreason"
     },
     {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "calendarimport_types_calendarevent"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "components_shell_shell"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "lib_posthog_analyticsproperties"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "lib_posthog_captureposthogevent"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "lib_posthog_registerposthogcontext"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "lib_posthog_registerposthogsession"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_anonymoussessionapi_getorcreateanonymoussessionid"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_anonymoussessionapi_loadanonymoussessionsettings"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_anonymoussessionapi_saveanonymoussessionsettings"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_autoplanapi_computeplansignature"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_autoplanapi_generateautoplan"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L50",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_deadlinefoodprototype_budgetband"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L65",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_deadlinefoodprototype_deadlinefoodprototype"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L36",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_deadlinefoodprototype_isappscreen"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L40",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_deadlinefoodprototype_loadingscreen"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L57",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_deadlinefoodprototype_maxtimebucket"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_deadlinefoodprototype_onboardingscreens"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_deadlinefoodprototype_screenfromhash"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L26",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_deadlinefoodprototype_screens"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_recommenderapi_syncrecommenderuser"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_sessionpersistence_calendartoken"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_sessionpersistence_createprototypesessionsettings"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_sessionpersistence_icssubscription"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_sessionpersistence_normalizepreferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_sessionpersistence_restoreprototypeplan"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_types_calendarprovider"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_types_deadline"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_types_discoverrecommendationstate"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_types_meal"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_types_mealslot"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_types_planentry"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_types_preferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "prototype_types_screen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L17",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_calendarscreen_calendarscreen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L18",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_dashboard_dashboard"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L19",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_landing_landing"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L20",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_onboarding_onboarding"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L21",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_planscreen_planscreen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L22",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_recipedetailscreen_recipedetailscreen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_recipeshubscreen_recipeshubscreen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "screens_settingsscreen_settingsscreen"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_lib_posthog_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_anonymoussessionapi_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_autoplanapi_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_components_shell_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_recommenderapi_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L17",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_calendarscreen_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L18",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_dashboard_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L19",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_landing_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L20",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_onboarding_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L21",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_planscreen_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L22",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_recipedetailscreen_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_recipeshubscreen_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_screens_settingsscreen_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_sessionpersistence_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_deadlinefoodprototype_tsx",
-      "target": "src_prototype_types_ts"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/DeadlineFoodPrototype.tsx",
-      "source_location": "L502",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "prototype_deadlinefoodprototype_deadlinefoodprototype",
-      "target": "prototype_deadlinefoodprototype_isappscreen"
-    },
-    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -35505,33 +36557,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "src_prototype_utils_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L7",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_discoverscreen_tsx",
-      "target": "src_prototype_utils_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "src_prototype_utils_ts"
     },
     {
@@ -35782,17 +36812,6 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L116",
-      "weight": 1.0,
-      "source": "screens_dashboard_dashboard",
-      "target": "prototype_utils_money"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L230",
       "weight": 1.0,
@@ -35830,17 +36849,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_components_recipeeditor_tsx",
-      "target": "prototype_utils_money"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
       "target": "prototype_utils_money"
     },
     {
@@ -35958,17 +36966,6 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L673",
-      "weight": 1.0,
-      "source": "screens_onboarding_onboarding",
-      "target": "prototype_utils_formatcookinglimit"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L184",
       "weight": 1.0,
@@ -35984,17 +36981,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_discoverscreen_tsx",
-      "target": "prototype_utils_formatcookinglimit"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "prototype_utils_formatcookinglimit"
     },
     {
@@ -36072,17 +37058,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_calendarscreen_tsx",
-      "target": "prototype_utils_getmealbyid"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
       "target": "prototype_utils_getmealbyid"
     },
     {
@@ -37268,33 +38243,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "src_prototype_types_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_discoverscreen_tsx",
-      "target": "src_prototype_types_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "src_prototype_types_ts"
     },
     {
@@ -37350,17 +38303,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_sessionpersistence_test_ts",
-      "target": "src_prototype_types_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
       "target": "src_prototype_types_ts"
     },
     {
@@ -37571,17 +38513,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "prototype_types_mealslot"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -37692,17 +38623,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "prototype_types_meal"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -37747,17 +38667,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_types_meal"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/shopping.ts",
       "source_location": "L1",
       "weight": 1.0,
@@ -37791,17 +38700,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "prototype_types_planentry"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/PlanScreen.tsx",
       "source_location": "L6",
       "weight": 1.0,
@@ -37818,17 +38716,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_sessionpersistence_test_ts",
-      "target": "prototype_types_planentry"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
       "target": "prototype_types_planentry"
     },
     {
@@ -37890,17 +38777,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_types_deadline"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L4",
       "weight": 1.0,
@@ -37917,17 +38793,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_types_deadline"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
       "target": "prototype_types_deadline"
     },
     {
@@ -37945,33 +38810,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "prototype_types_preferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_discoverscreen_tsx",
-      "target": "prototype_types_preferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "prototype_types_preferences"
     },
     {
@@ -38005,17 +38848,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_types_preferences"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
       "target": "prototype_types_preferences"
     },
     {
@@ -38060,28 +38892,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_calendarscreen_tsx",
-      "target": "prototype_types_screen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "prototype_types_screen"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "prototype_types_screen"
     },
     {
@@ -38154,33 +38964,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_types_calendarprovider"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L8",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_types_calendarprovider"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
       "target": "prototype_types_calendarprovider"
     },
     {
@@ -38435,17 +39223,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L25",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_preferenceoptions_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L25",
       "weight": 1.0,
@@ -38458,32 +39235,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L152",
-      "weight": 1.0,
-      "source": "screens_onboarding_onboarding",
-      "target": "prototype_preferenceoptions_filterfoodpreferenceoptions"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "src/prototype/screens/SettingsScreen.tsx",
       "source_location": "L63",
       "weight": 1.0,
       "source": "screens_settingsscreen_settingsscreen",
-      "target": "prototype_preferenceoptions_filterfoodpreferenceoptions"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L25",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
       "target": "prototype_preferenceoptions_filterfoodpreferenceoptions"
     },
     {
@@ -39098,50 +39853,6 @@
       "target": "prototype_anonymoussessionapi_storesessionid"
     },
     {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/anonymousSessionApi.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_anonymoussessionapi_ts",
-      "target": "prototype_sessionpersistence_createanonymoussessionid"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/anonymousSessionApi.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_anonymoussessionapi_ts",
-      "target": "prototype_sessionpersistence_isanonymoussessionid"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/anonymousSessionApi.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_anonymoussessionapi_ts",
-      "target": "prototype_sessionpersistence_prototypesessionsettings"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/anonymousSessionApi.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_anonymoussessionapi_ts",
-      "target": "src_prototype_sessionpersistence_ts"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -39151,17 +39862,6 @@
       "confidence_score": 1.0,
       "source": "prototype_anonymoussessionapi_getorcreateanonymoussessionid",
       "target": "prototype_anonymoussessionapi_readstoredsessionid"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/anonymousSessionApi.ts",
-      "source_location": "L25",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "prototype_anonymoussessionapi_readstoredsessionid",
-      "target": "prototype_sessionpersistence_isanonymoussessionid"
     },
     {
       "relation": "calls",
@@ -39200,17 +39900,6 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/anonymousSessionApi.ts",
-      "source_location": "L51",
-      "weight": 1.0,
-      "source": "prototype_anonymoussessionapi_getorcreateanonymoussessionid",
-      "target": "prototype_sessionpersistence_createanonymoussessionid"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
       "source_file": "src/prototype/anonymousSessionApi.ts",
       "source_location": "L68",
       "weight": 1.0,
@@ -39228,271 +39917,6 @@
       "confidence_score": 1.0,
       "source": "prototype_anonymoussessionapi_saveanonymoussessionsettings",
       "target": "prototype_anonymoussessionapi_readjson"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/anonymousSessionApi.ts",
-      "source_location": "L70",
-      "weight": 1.0,
-      "source": "prototype_anonymoussessionapi_loadanonymoussessionsettings",
-      "target": "prototype_sessionpersistence_isanonymoussessionid"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/anonymousSessionApi.ts",
-      "source_location": "L95",
-      "weight": 1.0,
-      "source": "prototype_anonymoussessionapi_saveanonymoussessionsettings",
-      "target": "prototype_sessionpersistence_isanonymoussessionid"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "e2e_deadline_flow_spec_ts",
-      "target": "src_prototype_sessionpersistence_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_sessionpersistence_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "src_prototype_sessionpersistence_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_test_ts",
-      "target": "src_prototype_sessionpersistence_ts"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "calendarimport_types_calendarevent"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_calendartoken"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L60",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_createanonymoussessionid"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L68",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_createprototypesessionsettings"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_icssubscription"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L56",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_isanonymoussessionid"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L107",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_isplanentry"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L105",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_mealslots"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L45",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_normalizepreferences"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L20",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_prototypesessionsettings"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.ts",
-      "source_location": "L129",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_ts",
-      "target": "prototype_sessionpersistence_restoreprototypeplan"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_sessionpersistence_icssubscription"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_sessionpersistence_icssubscription"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "prototype_sessionpersistence_calendartoken"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/SettingsScreen.tsx",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_settingsscreen_tsx",
-      "target": "prototype_sessionpersistence_calendartoken"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_test_ts",
-      "target": "prototype_sessionpersistence_isanonymoussessionid"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "e2e_deadline_flow_spec_ts",
-      "target": "prototype_sessionpersistence_createprototypesessionsettings"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_test_ts",
-      "target": "prototype_sessionpersistence_createprototypesessionsettings"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/sessionPersistence.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_sessionpersistence_test_ts",
-      "target": "prototype_sessionpersistence_restoreprototypeplan"
     },
     {
       "relation": "contains",
@@ -40797,430 +41221,6 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_landing_tsx",
       "target": "src_prototype_components_primitives_tsx"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_applecalendar_icssubscriptionhints"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_applecalendar_importfromsubscriptionurl"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_applecalendar_issubscriptionurl"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_deadlinecontext_resolvedeadlinesfromevents"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_googlecalendar_importgooglecalendar"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_icsparser_parseicstext"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_outlookcalendar_importoutlookcalendar"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "calendarimport_types_calendarevent"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_ingredienteditor_ingredienteditor"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_appbutton"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_badge"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_choicegroup"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_field"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_primitives_selectfield"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "components_universityfield_universityfield"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "lib_utils_cn"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L72",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "screens_onboarding_infotooltip"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L95",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "screens_onboarding_onboarding"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L50",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "screens_onboarding_preferencesection"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "screens_onboarding_progress"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_components_ui_card_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_components_ui_input_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_lib_utils_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_calendarimport_index_ts"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_components_ingredienteditor_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_components_primitives_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "src_prototype_components_universityfield_tsx"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "ui_card_card"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_onboarding_tsx",
-      "target": "ui_input_input"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L62",
-      "weight": 1.0,
-      "source": "screens_onboarding_preferencesection",
-      "target": "lib_utils_cn"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/prototype/screens/Onboarding.tsx",
-      "source_location": "L394",
-      "weight": 1.0,
-      "source": "screens_onboarding_onboarding",
-      "target": "lib_utils_cn"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "components_budgetcard_budgetcard"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "components_primitives_appbutton"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "components_primitives_badge"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "screens_dashboard_dashboard"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "src_components_ui_card_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "src_prototype_components_budgetcard_tsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "src_prototype_components_primitives_tsx"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/prototype/screens/Dashboard.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_prototype_screens_dashboard_tsx",
-      "target": "ui_card_card"
     },
     {
       "relation": "contains",
@@ -72474,5 +72474,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "e4f040d260252ddb1b19ce40dd853d9f2fb31516"
+  "built_at_commit": "7c40a1448596795dda0f0a27121aaf7ad0076c25"
 }

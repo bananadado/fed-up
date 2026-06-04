@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-06-04)
 
 ## Corpus Check
-- 215 files · ~159,060 words
+- 215 files · ~159,335 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e4f040d2`
+- Built from commit: `7c40a144`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -708,7 +708,7 @@ Cohesion: 0.50
 Nodes (4): enrichRecommendedRecipes(), proxyRecommenderRecommendations(), proxyRecommenderRequest(), rejectUnsupportedRecommenderMethod()
 
 ## Knowledge Gaps
-- **1013 isolated node(s):** `mealTypeIcon`, `SortOption`, `sortLabels`, `allSlots`, `$schema` (+1008 more)
+- **1013 isolated node(s):** `screens`, `onboardingScreens`, `mealSlots`, `mealTypeIcon`, `SortOption` (+1008 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **25 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -721,7 +721,7 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `test_taste_embedding_likes_minus_dislikes()` connect `Community 64` to `Community 8`, `Community 82`, `Community 117`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **What connects `mealTypeIcon`, `SortOption`, `sortLabels` to the rest of the system?**
+- **What connects `screens`, `onboardingScreens`, `mealSlots` to the rest of the system?**
   _1063 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.017059842729574837 - nodes in this community are weakly interconnected._
