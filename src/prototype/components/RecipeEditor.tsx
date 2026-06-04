@@ -351,6 +351,9 @@ export function RecipeEditor({
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const autoNutritionTimerRef = useRef<number | null>(null);
+  const estimateNutritionRef = useRef<() => Promise<void>>(() => Promise.resolve());
+  const prevIngredientKeyRef = useRef("");
 
   const ingredients = sanitiseIngredientDrafts(form.ingredients);
   const servings = positiveNumber(Number(form.servings), 1);
@@ -402,6 +405,31 @@ export function RecipeEditor({
       setNutritionLoading(false);
     }
   }
+
+  estimateNutritionRef.current = estimateNutrition;
+
+  useEffect(() => {
+    const sanitised = sanitiseIngredientDrafts(form.ingredients);
+    const key = sanitised.map((i) => `${i.name}:${i.quantity}:${i.unit}`).join("|");
+    if (key === "" || key === prevIngredientKeyRef.current) return;
+    prevIngredientKeyRef.current = key;
+
+    if (autoNutritionTimerRef.current !== null) window.clearTimeout(autoNutritionTimerRef.current);
+    autoNutritionTimerRef.current = window.setTimeout(() => {
+      autoNutritionTimerRef.current = null;
+      void estimateNutritionRef.current();
+    }, 1500);
+
+    return () => {
+      if (autoNutritionTimerRef.current !== null) {
+        window.clearTimeout(autoNutritionTimerRef.current);
+        autoNutritionTimerRef.current = null;
+      }
+    };
+  // form.ingredients is the stable state dep; sanitising inside the effect avoids
+  // a stale-closure on ingredients while keeping the dep array minimal.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.ingredients]);
 
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null;
