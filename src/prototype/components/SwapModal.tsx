@@ -405,8 +405,8 @@ export function SwapModal({
                         : "border border-stone-200 bg-stone-50 hover:border-stone-300 hover:bg-white"
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
+                    <div className="flex items-stretch">
+                      <div className="min-w-0 flex-1 p-3">
                         <div className="flex flex-wrap items-center gap-1.5">
                           <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
                           {savedSet.has(meal.id) && <Badge tone="blue">Saved</Badge>}
