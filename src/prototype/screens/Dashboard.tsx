@@ -1,4 +1,4 @@
-import { ChevronRight, Clock3, RefreshCcw, Utensils } from "lucide-react";
+import { ChevronRight, Clock3, RefreshCcw, Sparkles, Utensils } from "lucide-react";
 import { useState } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -97,6 +97,23 @@ export function Dashboard({
             ) : (
               <p className="mt-3 text-stone-500">No meals planned this week.</p>
             )}
+          </Card>
+          <Card className="gap-0 rounded-lg border-emerald-100 bg-emerald-50 p-5">
+            <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
+              <Sparkles size={17} /> Discover new recipes
+            </div>
+            <p className="mt-2 text-sm text-stone-600">Find personalised meal ideas matched to your taste and budget.</p>
+            <AppButton
+              variant="secondary"
+              className="mt-4 w-full justify-center px-3 py-2 text-xs"
+              onClick={() => {
+                track("dashboard_discover_clicked");
+                try { sessionStorage.setItem("deadlineFood:recipesTab", "discover"); } catch { /* ignore */ }
+                setScreen("recipes");
+              }}
+            >
+              Browse recipes <Sparkles size={13} />
+            </AppButton>
           </Card>
         </div>
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-5 sm:p-6">
