@@ -632,40 +632,31 @@ export function RecipeEditor({
           )}
         </div>
 
-        <div>
-          <p className="mb-2 text-sm font-semibold">
-            Tags <span className="font-normal text-stone-400">(optional)</span>
-          </p>
-          <TagEditor
-            values={form.tags}
-            onChange={(tags) => setForm({ ...form, tags })}
-            options={TAG_OPTIONS}
-            placeholder="Search or add tags…"
-          />
-        </div>
-
-        <Field
-          label="Allergens"
-          value={form.allergens}
-          onChange={(allergens) => setForm({ ...form, allergens })}
-          placeholder="gluten, dairy"
-        />
-
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-stone-50 p-3">
-          <div>
-            <p className="text-sm font-semibold">Nutrition data</p>
-            <p className="mt-1 text-xs text-stone-500">
-              {nutritionStatus ?? nutritionSourceSummary(form.nutritionSource)}
-            </p>
+        <div className="rounded-lg bg-emerald-50 p-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-emerald-900">Nutrition</p>
+              <p className="mt-0.5 text-xs text-emerald-700">
+                {nutritionLoading
+                  ? "Auto-filling from ingredients…"
+                  : (nutritionStatus
+                      ?? (form.nutritionSource
+                          ? nutritionSourceSummary(form.nutritionSource)
+                          : ingredients.length > 0
+                          ? "Will auto-fill when you stop editing ingredients"
+                          : "Add ingredients to auto-fill nutrition"))}
+              </p>
+            </div>
+            <AppButton
+              type="button"
+              variant="secondary"
+              onClick={estimateNutrition}
+              disabled={nutritionLoading || ingredients.length === 0}
+              className="shrink-0 px-3 py-1.5 text-xs"
+            >
+              <RefreshCcw size={13} /> {nutritionLoading ? "Filling…" : "Refresh"}
+            </AppButton>
           </div>
-          <AppButton
-            type="button"
-            variant="secondary"
-            onClick={estimateNutrition}
-            disabled={nutritionLoading}
-          >
-            <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Estimate from USDA"}
-          </AppButton>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -694,6 +685,25 @@ export function RecipeEditor({
             onChange={(fat) => setForm({ ...form, fat: +fat })}
           />
         </div>
+
+        <div>
+          <p className="mb-2 text-sm font-semibold">
+            Tags <span className="font-normal text-stone-400">(optional)</span>
+          </p>
+          <TagEditor
+            values={form.tags}
+            onChange={(tags) => setForm({ ...form, tags })}
+            options={TAG_OPTIONS}
+            placeholder="Search or add tags…"
+          />
+        </div>
+
+        <Field
+          label="Allergens"
+          value={form.allergens}
+          onChange={(allergens) => setForm({ ...form, allergens })}
+          placeholder="gluten, dairy"
+        />
 
         <label className="block">
           <span className="text-sm font-semibold">Method</span>
