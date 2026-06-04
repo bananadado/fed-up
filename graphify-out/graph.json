@@ -4,339 +4,6 @@
   "graph": {},
   "nodes": [
     {
-      "label": "bun-env.d.ts",
-      "file_type": "code",
-      "source_file": "bun-env.d.ts",
-      "source_location": "L1",
-      "id": "bun_env_d_ts",
-      "community": 121,
-      "norm_label": "bun-env.d.ts"
-    },
-    {
-      "label": "StepAnimation.tsx",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
-      "source_location": "L1",
-      "id": "src_prototype_cookinganimations_stepanimation_tsx",
-      "community": 81,
-      "norm_label": "stepanimation.tsx"
-    },
-    {
-      "label": "ACTION_VERBS",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
-      "source_location": "L14",
-      "id": "cookinganimations_stepanimation_action_verbs",
-      "community": 81,
-      "norm_label": "action_verbs"
-    },
-    {
-      "label": "resolveAnimationId()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
-      "source_location": "L30",
-      "id": "cookinganimations_stepanimation_resolveanimationid",
-      "community": 81,
-      "norm_label": "resolveanimationid()"
-    },
-    {
-      "label": "prefersReducedMotion()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
-      "source_location": "L35",
-      "id": "cookinganimations_stepanimation_prefersreducedmotion",
-      "community": 81,
-      "norm_label": "prefersreducedmotion()"
-    },
-    {
-      "label": "usePrefersReducedMotion()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
-      "source_location": "L43",
-      "id": "cookinganimations_stepanimation_useprefersreducedmotion",
-      "community": 81,
-      "norm_label": "useprefersreducedmotion()"
-    },
-    {
-      "label": "StepAnimationProps",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
-      "source_location": "L55",
-      "id": "cookinganimations_stepanimation_stepanimationprops",
-      "community": 81,
-      "norm_label": "stepanimationprops"
-    },
-    {
-      "label": "StepAnimation()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
-      "source_location": "L59",
-      "id": "cookinganimations_stepanimation_stepanimation",
-      "community": 81,
-      "norm_label": "stepanimation()"
-    },
-    {
-      "label": "classifyStep.test.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.test.ts",
-      "source_location": "L1",
-      "id": "src_prototype_cookinganimations_classifystep_test_ts",
-      "community": 81,
-      "norm_label": "classifystep.test.ts"
-    },
-    {
-      "label": "ingredients",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.test.ts",
-      "source_location": "L41",
-      "id": "cookinganimations_classifystep_test_ingredients",
-      "community": 81,
-      "norm_label": "ingredients"
-    },
-    {
-      "label": "result",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.test.ts",
-      "source_location": "L42",
-      "id": "cookinganimations_classifystep_test_result",
-      "community": 81,
-      "norm_label": "result"
-    },
-    {
-      "label": "validActions",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.test.ts",
-      "source_location": "L76",
-      "id": "cookinganimations_classifystep_test_validactions",
-      "community": 81,
-      "norm_label": "validactions"
-    },
-    {
-      "label": "classifyStep.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
-      "source_location": "L1",
-      "id": "src_prototype_cookinganimations_classifystep_ts",
-      "community": 81,
-      "norm_label": "classifystep.ts"
-    },
-    {
-      "label": "CookingActionType",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
-      "source_location": "L15",
-      "id": "cookinganimations_classifystep_cookingactiontype",
-      "community": 81,
-      "norm_label": "cookingactiontype"
-    },
-    {
-      "label": "StepClassification",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
-      "source_location": "L29",
-      "id": "cookinganimations_classifystep_stepclassification",
-      "community": 81,
-      "norm_label": "stepclassification"
-    },
-    {
-      "label": "ACTION_KEYWORDS",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
-      "source_location": "L43",
-      "id": "cookinganimations_classifystep_action_keywords",
-      "community": 81,
-      "norm_label": "action_keywords"
-    },
-    {
-      "label": "detectAction()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
-      "source_location": "L57",
-      "id": "cookinganimations_classifystep_detectaction",
-      "community": 81,
-      "norm_label": "detectaction()"
-    },
-    {
-      "label": "detectObject()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
-      "source_location": "L66",
-      "id": "cookinganimations_classifystep_detectobject",
-      "community": 81,
-      "norm_label": "detectobject()"
-    },
-    {
-      "label": "classifyStep()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
-      "source_location": "L99",
-      "id": "cookinganimations_classifystep_classifystep",
-      "community": 81,
-      "norm_label": "classifystep()"
-    },
-    {
-      "label": "foodGlyphs.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L1",
-      "id": "src_prototype_cookinganimations_foodglyphs_ts",
-      "community": 81,
-      "norm_label": "foodglyphs.ts"
-    },
-    {
-      "label": "FoodGlyphKey",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L8",
-      "id": "cookinganimations_foodglyphs_foodglyphkey",
-      "community": 81,
-      "norm_label": "foodglyphkey"
-    },
-    {
-      "label": "FOOD_GLYPHS",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L37",
-      "id": "cookinganimations_foodglyphs_food_glyphs",
-      "community": 81,
-      "norm_label": "food_glyphs"
-    },
-    {
-      "label": "FILLER_FOODS",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L67",
-      "id": "cookinganimations_foodglyphs_filler_foods",
-      "community": 81,
-      "norm_label": "filler_foods"
-    },
-    {
-      "label": "FOOD_KEYWORDS",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L87",
-      "id": "cookinganimations_foodglyphs_food_keywords",
-      "community": 81,
-      "norm_label": "food_keywords"
-    },
-    {
-      "label": "wordRegexCache",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L114",
-      "id": "cookinganimations_foodglyphs_wordregexcache",
-      "community": 81,
-      "norm_label": "wordregexcache"
-    },
-    {
-      "label": "wordRegex()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L116",
-      "id": "cookinganimations_foodglyphs_wordregex",
-      "community": 81,
-      "norm_label": "wordregex()"
-    },
-    {
-      "label": "indexOfWord()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L127",
-      "id": "cookinganimations_foodglyphs_indexofword",
-      "community": 81,
-      "norm_label": "indexofword()"
-    },
-    {
-      "label": "matchFoodInText()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L136",
-      "id": "cookinganimations_foodglyphs_matchfoodintext",
-      "community": 81,
-      "norm_label": "matchfoodintext()"
-    },
-    {
-      "label": "glyphKeyForName()",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
-      "source_location": "L152",
-      "id": "cookinganimations_foodglyphs_glyphkeyforname",
-      "community": 81,
-      "norm_label": "glyphkeyforname()"
-    },
-    {
-      "label": "index.ts",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/generated/index.ts",
-      "source_location": "L1",
-      "id": "src_prototype_cookinganimations_generated_index_ts",
-      "community": 81,
-      "norm_label": "index.ts"
-    },
-    {
-      "label": "GeneratedAnimation",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/generated/index.ts",
-      "source_location": "L8",
-      "id": "generated_index_generatedanimation",
-      "community": 81,
-      "norm_label": "generatedanimation"
-    },
-    {
-      "label": "ANIMATIONS",
-      "file_type": "code",
-      "source_file": "src/prototype/cookingAnimations/generated/index.ts",
-      "source_location": "L10",
-      "id": "generated_index_animations",
-      "community": 81,
-      "norm_label": "animations"
-    },
-    {
-      "label": "RecipeDetailScreen.tsx",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
-      "source_location": "L1",
-      "id": "src_prototype_screens_recipedetailscreen_tsx",
-      "community": 39,
-      "norm_label": "recipedetailscreen.tsx"
-    },
-    {
-      "label": "StateSetter",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
-      "source_location": "L20",
-      "id": "screens_recipedetailscreen_statesetter",
-      "community": 39,
-      "norm_label": "statesetter"
-    },
-    {
-      "label": "ratingLabel()",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
-      "source_location": "L22",
-      "id": "screens_recipedetailscreen_ratinglabel",
-      "community": 39,
-      "norm_label": "ratinglabel()"
-    },
-    {
-      "label": "backLabel()",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
-      "source_location": "L27",
-      "id": "screens_recipedetailscreen_backlabel",
-      "community": 39,
-      "norm_label": "backlabel()"
-    },
-    {
-      "label": "RecipeDetailScreen()",
-      "file_type": "code",
-      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
-      "source_location": "L32",
-      "id": "screens_recipedetailscreen_recipedetailscreen",
-      "community": 39,
-      "norm_label": "recipedetailscreen()"
-    },
-    {
       "label": "README.md",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
@@ -403,7 +70,7 @@
       "label": "2. Generate + sync",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L78",
+      "source_location": "L80",
       "id": "cooking_anim_readme_2_generate_sync",
       "community": 74,
       "norm_label": "2. generate + sync"
@@ -412,7 +79,7 @@
       "label": "code:bash (# Everything missing, then copy into the frontend:)",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L80",
+      "source_location": "L82",
       "id": "cooking_anim_readme_codeblock_4",
       "community": 74,
       "norm_label": "code:bash (# everything missing, then copy into the frontend:)"
@@ -421,7 +88,7 @@
       "label": "code:bash (python generate.py            # AnimateDiff -> dist/<id>.web)",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L93",
+      "source_location": "L95",
       "id": "cooking_anim_readme_codeblock_5",
       "community": 74,
       "norm_label": "code:bash (python generate.py            # animatediff -> dist/<id>.web)"
@@ -430,7 +97,7 @@
       "label": "3. Review, commit, deploy",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L118",
+      "source_location": "L120",
       "id": "cooking_anim_readme_3_review_commit_deploy",
       "community": 74,
       "norm_label": "3. review, commit, deploy"
@@ -439,7 +106,7 @@
       "label": "code:bash (ls src/prototype/cookingAnimations/generated/        # *.web)",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L120",
+      "source_location": "L122",
       "id": "cooking_anim_readme_codeblock_6",
       "community": 74,
       "norm_label": "code:bash (ls src/prototype/cookinganimations/generated/        # *.web)"
@@ -448,7 +115,7 @@
       "label": "code:bash (git add src/prototype/cookingAnimations/generated tools/cook)",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L128",
+      "source_location": "L130",
       "id": "cooking_anim_readme_codeblock_7",
       "community": 74,
       "norm_label": "code:bash (git add src/prototype/cookinganimations/generated tools/cook)"
@@ -457,7 +124,7 @@
       "label": "4. Dialling in quality",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L141",
+      "source_location": "L143",
       "id": "cooking_anim_readme_4_dialling_in_quality",
       "community": 74,
       "norm_label": "4. dialling in quality"
@@ -466,7 +133,7 @@
       "label": "Higher-quality / alternative models",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L157",
+      "source_location": "L159",
       "id": "cooking_anim_readme_higher_quality_alternative_models",
       "community": 74,
       "norm_label": "higher-quality / alternative models"
@@ -475,7 +142,7 @@
       "label": "5. Troubleshooting",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L166",
+      "source_location": "L168",
       "id": "cooking_anim_readme_5_troubleshooting",
       "community": 74,
       "norm_label": "5. troubleshooting"
@@ -484,235 +151,568 @@
       "label": "Files",
       "file_type": "document",
       "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L179",
+      "source_location": "L181",
       "id": "cooking_anim_readme_files",
       "community": 74,
       "norm_label": "files"
+    },
+    {
+      "label": "bun-env.d.ts",
+      "file_type": "code",
+      "source_file": "bun-env.d.ts",
+      "source_location": "L1",
+      "community": 121,
+      "norm_label": "bun-env.d.ts",
+      "id": "bun_env_d_ts"
+    },
+    {
+      "label": "StepAnimation.tsx",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
+      "source_location": "L1",
+      "community": 81,
+      "norm_label": "stepanimation.tsx",
+      "id": "src_prototype_cookinganimations_stepanimation_tsx"
+    },
+    {
+      "label": "ACTION_VERBS",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
+      "source_location": "L14",
+      "community": 81,
+      "norm_label": "action_verbs",
+      "id": "cookinganimations_stepanimation_action_verbs"
+    },
+    {
+      "label": "resolveAnimationId()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
+      "source_location": "L30",
+      "community": 81,
+      "norm_label": "resolveanimationid()",
+      "id": "cookinganimations_stepanimation_resolveanimationid"
+    },
+    {
+      "label": "prefersReducedMotion()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
+      "source_location": "L35",
+      "community": 81,
+      "norm_label": "prefersreducedmotion()",
+      "id": "cookinganimations_stepanimation_prefersreducedmotion"
+    },
+    {
+      "label": "usePrefersReducedMotion()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
+      "source_location": "L43",
+      "community": 81,
+      "norm_label": "useprefersreducedmotion()",
+      "id": "cookinganimations_stepanimation_useprefersreducedmotion"
+    },
+    {
+      "label": "StepAnimationProps",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
+      "source_location": "L55",
+      "community": 81,
+      "norm_label": "stepanimationprops",
+      "id": "cookinganimations_stepanimation_stepanimationprops"
+    },
+    {
+      "label": "StepAnimation()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/StepAnimation.tsx",
+      "source_location": "L59",
+      "community": 81,
+      "norm_label": "stepanimation()",
+      "id": "cookinganimations_stepanimation_stepanimation"
+    },
+    {
+      "label": "classifyStep.test.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.test.ts",
+      "source_location": "L1",
+      "community": 81,
+      "norm_label": "classifystep.test.ts",
+      "id": "src_prototype_cookinganimations_classifystep_test_ts"
+    },
+    {
+      "label": "ingredients",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.test.ts",
+      "source_location": "L41",
+      "community": 81,
+      "norm_label": "ingredients",
+      "id": "cookinganimations_classifystep_test_ingredients"
+    },
+    {
+      "label": "result",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.test.ts",
+      "source_location": "L42",
+      "community": 81,
+      "norm_label": "result",
+      "id": "cookinganimations_classifystep_test_result"
+    },
+    {
+      "label": "validActions",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.test.ts",
+      "source_location": "L76",
+      "community": 81,
+      "norm_label": "validactions",
+      "id": "cookinganimations_classifystep_test_validactions"
+    },
+    {
+      "label": "classifyStep.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
+      "source_location": "L1",
+      "community": 81,
+      "norm_label": "classifystep.ts",
+      "id": "src_prototype_cookinganimations_classifystep_ts"
+    },
+    {
+      "label": "CookingActionType",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
+      "source_location": "L15",
+      "community": 81,
+      "norm_label": "cookingactiontype",
+      "id": "cookinganimations_classifystep_cookingactiontype"
+    },
+    {
+      "label": "StepClassification",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
+      "source_location": "L29",
+      "community": 81,
+      "norm_label": "stepclassification",
+      "id": "cookinganimations_classifystep_stepclassification"
+    },
+    {
+      "label": "ACTION_KEYWORDS",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
+      "source_location": "L43",
+      "community": 81,
+      "norm_label": "action_keywords",
+      "id": "cookinganimations_classifystep_action_keywords"
+    },
+    {
+      "label": "detectAction()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
+      "source_location": "L57",
+      "community": 81,
+      "norm_label": "detectaction()",
+      "id": "cookinganimations_classifystep_detectaction"
+    },
+    {
+      "label": "detectObject()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
+      "source_location": "L66",
+      "community": 81,
+      "norm_label": "detectobject()",
+      "id": "cookinganimations_classifystep_detectobject"
+    },
+    {
+      "label": "classifyStep()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/classifyStep.ts",
+      "source_location": "L99",
+      "community": 81,
+      "norm_label": "classifystep()",
+      "id": "cookinganimations_classifystep_classifystep"
+    },
+    {
+      "label": "foodGlyphs.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L1",
+      "community": 81,
+      "norm_label": "foodglyphs.ts",
+      "id": "src_prototype_cookinganimations_foodglyphs_ts"
+    },
+    {
+      "label": "FoodGlyphKey",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L8",
+      "community": 81,
+      "norm_label": "foodglyphkey",
+      "id": "cookinganimations_foodglyphs_foodglyphkey"
+    },
+    {
+      "label": "FOOD_GLYPHS",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L37",
+      "community": 81,
+      "norm_label": "food_glyphs",
+      "id": "cookinganimations_foodglyphs_food_glyphs"
+    },
+    {
+      "label": "FILLER_FOODS",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L67",
+      "community": 81,
+      "norm_label": "filler_foods",
+      "id": "cookinganimations_foodglyphs_filler_foods"
+    },
+    {
+      "label": "FOOD_KEYWORDS",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L87",
+      "community": 81,
+      "norm_label": "food_keywords",
+      "id": "cookinganimations_foodglyphs_food_keywords"
+    },
+    {
+      "label": "wordRegexCache",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L114",
+      "community": 81,
+      "norm_label": "wordregexcache",
+      "id": "cookinganimations_foodglyphs_wordregexcache"
+    },
+    {
+      "label": "wordRegex()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L116",
+      "community": 81,
+      "norm_label": "wordregex()",
+      "id": "cookinganimations_foodglyphs_wordregex"
+    },
+    {
+      "label": "indexOfWord()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L127",
+      "community": 81,
+      "norm_label": "indexofword()",
+      "id": "cookinganimations_foodglyphs_indexofword"
+    },
+    {
+      "label": "matchFoodInText()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L136",
+      "community": 81,
+      "norm_label": "matchfoodintext()",
+      "id": "cookinganimations_foodglyphs_matchfoodintext"
+    },
+    {
+      "label": "glyphKeyForName()",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/foodGlyphs.ts",
+      "source_location": "L152",
+      "community": 81,
+      "norm_label": "glyphkeyforname()",
+      "id": "cookinganimations_foodglyphs_glyphkeyforname"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/generated/index.ts",
+      "source_location": "L1",
+      "community": 81,
+      "norm_label": "index.ts",
+      "id": "src_prototype_cookinganimations_generated_index_ts"
+    },
+    {
+      "label": "GeneratedAnimation",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/generated/index.ts",
+      "source_location": "L8",
+      "community": 81,
+      "norm_label": "generatedanimation",
+      "id": "generated_index_generatedanimation"
+    },
+    {
+      "label": "ANIMATIONS",
+      "file_type": "code",
+      "source_file": "src/prototype/cookingAnimations/generated/index.ts",
+      "source_location": "L10",
+      "community": 81,
+      "norm_label": "animations",
+      "id": "generated_index_animations"
+    },
+    {
+      "label": "RecipeDetailScreen.tsx",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
+      "source_location": "L1",
+      "community": 39,
+      "norm_label": "recipedetailscreen.tsx",
+      "id": "src_prototype_screens_recipedetailscreen_tsx"
+    },
+    {
+      "label": "StateSetter",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
+      "source_location": "L20",
+      "community": 39,
+      "norm_label": "statesetter",
+      "id": "screens_recipedetailscreen_statesetter"
+    },
+    {
+      "label": "ratingLabel()",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
+      "source_location": "L22",
+      "community": 39,
+      "norm_label": "ratinglabel()",
+      "id": "screens_recipedetailscreen_ratinglabel"
+    },
+    {
+      "label": "backLabel()",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
+      "source_location": "L27",
+      "community": 39,
+      "norm_label": "backlabel()",
+      "id": "screens_recipedetailscreen_backlabel"
+    },
+    {
+      "label": "RecipeDetailScreen()",
+      "file_type": "code",
+      "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
+      "source_location": "L32",
+      "community": 39,
+      "norm_label": "recipedetailscreen()",
+      "id": "screens_recipedetailscreen_recipedetailscreen"
     },
     {
       "label": "generate.py",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L1",
-      "id": "tools_cooking_anim_generate_py",
       "community": 34,
-      "norm_label": "generate.py"
+      "norm_label": "generate.py",
+      "id": "tools_cooking_anim_generate_py"
     },
     {
       "label": "seed_for()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L45",
-      "id": "cooking_anim_generate_seed_for",
       "community": 34,
-      "norm_label": "seed_for()"
+      "norm_label": "seed_for()",
+      "id": "cooking_anim_generate_seed_for"
     },
     {
       "label": "str",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L45",
-      "id": "tools_cooking_anim_generate_py_str",
       "community": 34,
-      "norm_label": "str"
+      "norm_label": "str",
+      "id": "tools_cooking_anim_generate_py_str"
     },
     {
       "label": "int",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L45",
-      "id": "int",
       "community": 34,
-      "norm_label": "int"
+      "norm_label": "int",
+      "id": "int"
     },
     {
       "label": "load_pipeline()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L50",
-      "id": "cooking_anim_generate_load_pipeline",
       "community": 34,
-      "norm_label": "load_pipeline()"
+      "norm_label": "load_pipeline()",
+      "id": "cooking_anim_generate_load_pipeline"
     },
     {
       "label": "AnimateDiffPipeline",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L50",
-      "id": "animatediffpipeline",
       "community": 34,
-      "norm_label": "animatediffpipeline"
+      "norm_label": "animatediffpipeline",
+      "id": "animatediffpipeline"
     },
     {
       "label": "subsample()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L85",
-      "id": "cooking_anim_generate_subsample",
       "community": 34,
-      "norm_label": "subsample()"
+      "norm_label": "subsample()",
+      "id": "cooking_anim_generate_subsample"
     },
     {
       "label": "Image",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L85",
-      "id": "image",
       "community": 34,
-      "norm_label": "image"
+      "norm_label": "image",
+      "id": "image"
     },
     {
       "label": "cut_out()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L92",
-      "id": "cooking_anim_generate_cut_out",
       "community": 34,
-      "norm_label": "cut_out()"
+      "norm_label": "cut_out()",
+      "id": "cooking_anim_generate_cut_out"
     },
     {
       "label": "save_webp()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L120",
-      "id": "cooking_anim_generate_save_webp",
       "community": 34,
-      "norm_label": "save_webp()"
+      "norm_label": "save_webp()",
+      "id": "cooking_anim_generate_save_webp"
     },
     {
       "label": "Path",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L120",
-      "id": "path",
       "community": 34,
-      "norm_label": "path"
+      "norm_label": "path",
+      "id": "path"
     },
     {
       "label": "main()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L135",
-      "id": "cooking_anim_generate_main",
       "community": 34,
-      "norm_label": "main()"
+      "norm_label": "main()",
+      "id": "cooking_anim_generate_main"
     },
     {
       "label": "Stable per-id seed so regenerating one clip is reproducible.",
       "file_type": "rationale",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L46",
-      "id": "cooking_anim_generate_rationale_46",
       "community": 34,
-      "norm_label": "stable per-id seed so regenerating one clip is reproducible."
+      "norm_label": "stable per-id seed so regenerating one clip is reproducible.",
+      "id": "cooking_anim_generate_rationale_46"
     },
     {
       "label": "Load AnimateDiff. With --lightning N uses ByteDance AnimateDiff-Lightning     (4",
       "file_type": "rationale",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L51",
-      "id": "cooking_anim_generate_rationale_51",
       "community": 34,
-      "norm_label": "load animatediff. with --lightning n uses bytedance animatediff-lightning     (4"
+      "norm_label": "load animatediff. with --lightning n uses bytedance animatediff-lightning     (4",
+      "id": "cooking_anim_generate_rationale_51"
     },
     {
       "label": "Remove the plain background to alpha, crop to the union bbox across all     fram",
       "file_type": "rationale",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L93",
-      "id": "cooking_anim_generate_rationale_93",
       "community": 34,
-      "norm_label": "remove the plain background to alpha, crop to the union bbox across all     fram"
+      "norm_label": "remove the plain background to alpha, crop to the union bbox across all     fram",
+      "id": "cooking_anim_generate_rationale_93"
     },
     {
       "label": "__init__.py",
       "file_type": "code",
       "source_file": "tools/cooking-anim/pipeline/__init__.py",
       "source_location": "L1",
-      "id": "tools_cooking_anim_pipeline_init_py",
       "community": 133,
-      "norm_label": "__init__.py"
+      "norm_label": "__init__.py",
+      "id": "tools_cooking_anim_pipeline_init_py"
     },
     {
       "label": "manifest.py",
       "file_type": "code",
       "source_file": "tools/cooking-anim/pipeline/manifest.py",
       "source_location": "L1",
-      "id": "tools_cooking_anim_pipeline_manifest_py",
       "community": 34,
-      "norm_label": "manifest.py"
+      "norm_label": "manifest.py",
+      "id": "tools_cooking_anim_pipeline_manifest_py"
     },
     {
       "label": "AnimSpec",
       "file_type": "code",
       "source_file": "tools/cooking-anim/pipeline/manifest.py",
       "source_location": "L88",
-      "id": "pipeline_manifest_animspec",
       "community": 34,
-      "norm_label": "animspec"
+      "norm_label": "animspec",
+      "id": "pipeline_manifest_animspec"
     },
     {
       "label": "build_manifest()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/pipeline/manifest.py",
       "source_location": "L94",
-      "id": "pipeline_manifest_build_manifest",
       "community": 34,
-      "norm_label": "build_manifest()"
+      "norm_label": "build_manifest()",
+      "id": "pipeline_manifest_build_manifest"
     },
     {
       "label": "Single source of truth for which animations the pipeline generates and how they",
       "file_type": "rationale",
       "source_file": "tools/cooking-anim/pipeline/manifest.py",
       "source_location": "L1",
-      "id": "pipeline_manifest_rationale_1",
       "community": 34,
-      "norm_label": "single source of truth for which animations the pipeline generates and how they"
+      "norm_label": "single source of truth for which animations the pipeline generates and how they",
+      "id": "pipeline_manifest_rationale_1"
     },
     {
       "label": "Return every animation to generate: one per action + the curated combos.",
       "file_type": "rationale",
       "source_file": "tools/cooking-anim/pipeline/manifest.py",
       "source_location": "L95",
-      "id": "pipeline_manifest_rationale_95",
       "community": 34,
-      "norm_label": "return every animation to generate: one per action + the curated combos."
+      "norm_label": "return every animation to generate: one per action + the curated combos.",
+      "id": "pipeline_manifest_rationale_95"
     },
     {
       "label": "prompts.py",
       "file_type": "code",
       "source_file": "tools/cooking-anim/pipeline/prompts.py",
       "source_location": "L1",
-      "id": "tools_cooking_anim_pipeline_prompts_py",
       "community": 34,
-      "norm_label": "prompts.py"
+      "norm_label": "prompts.py",
+      "id": "tools_cooking_anim_pipeline_prompts_py"
     },
     {
       "label": "build_prompt()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/pipeline/prompts.py",
       "source_location": "L47",
-      "id": "pipeline_prompts_build_prompt",
       "community": 34,
-      "norm_label": "build_prompt()"
+      "norm_label": "build_prompt()",
+      "id": "pipeline_prompts_build_prompt"
     },
     {
       "label": "str",
       "file_type": "code",
       "source_file": "tools/cooking-anim/pipeline/prompts.py",
       "source_location": "L47",
-      "id": "tools_cooking_anim_pipeline_prompts_py_str",
       "community": 34,
-      "norm_label": "str"
+      "norm_label": "str",
+      "id": "tools_cooking_anim_pipeline_prompts_py_str"
     },
     {
       "label": "Deterministic prompt construction for each animation spec.  Every prompt = actio",
       "file_type": "rationale",
       "source_file": "tools/cooking-anim/pipeline/prompts.py",
       "source_location": "L1",
-      "id": "pipeline_prompts_rationale_1",
       "community": 34,
-      "norm_label": "deterministic prompt construction for each animation spec.  every prompt = actio"
+      "norm_label": "deterministic prompt construction for each animation spec.  every prompt = actio",
+      "id": "pipeline_prompts_rationale_1"
     },
     {
       "label": "run.sh",
@@ -723,9 +723,9 @@
         "language": "bash",
         "kind": "file"
       },
-      "id": "tools_cooking_anim_run_sh",
       "community": 131,
-      "norm_label": "run.sh"
+      "norm_label": "run.sh",
+      "id": "tools_cooking_anim_run_sh"
     },
     {
       "label": "run.sh script",
@@ -736,45 +736,45 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "id": "home_kolesniii_uni_drp03_tools_cooking_anim_run_sh__entry",
       "community": 131,
-      "norm_label": "run.sh script"
+      "norm_label": "run.sh script",
+      "id": "home_kolesniii_uni_drp03_tools_cooking_anim_run_sh__entry"
     },
     {
       "label": "sync_frontend.py",
       "file_type": "code",
       "source_file": "tools/cooking-anim/sync_frontend.py",
       "source_location": "L1",
-      "id": "tools_cooking_anim_sync_frontend_py",
       "community": 109,
-      "norm_label": "sync_frontend.py"
+      "norm_label": "sync_frontend.py",
+      "id": "tools_cooking_anim_sync_frontend_py"
     },
     {
       "label": "ident()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/sync_frontend.py",
       "source_location": "L23",
-      "id": "cooking_anim_sync_frontend_ident",
       "community": 109,
-      "norm_label": "ident()"
+      "norm_label": "ident()",
+      "id": "cooking_anim_sync_frontend_ident"
     },
     {
       "label": "str",
       "file_type": "code",
       "source_file": "tools/cooking-anim/sync_frontend.py",
       "source_location": "L23",
-      "id": "tools_cooking_anim_sync_frontend_py_str",
       "community": 109,
-      "norm_label": "str"
+      "norm_label": "str",
+      "id": "tools_cooking_anim_sync_frontend_py_str"
     },
     {
       "label": "main()",
       "file_type": "code",
       "source_file": "tools/cooking-anim/sync_frontend.py",
       "source_location": "L27",
-      "id": "cooking_anim_sync_frontend_main",
       "community": 109,
-      "norm_label": "main()"
+      "norm_label": "main()",
+      "id": "cooking_anim_sync_frontend_main"
     },
     {
       "label": "vercel.json",
@@ -21570,6 +21570,166 @@
   ],
   "links": [
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tools_cooking_anim_readme_md",
+      "target": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
+      "target": "cooking_anim_readme_0_naming_scheme_the_contract"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
+      "target": "cooking_anim_readme_1_one_time_setup_on_the_gru_gpu_server"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L78",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
+      "target": "cooking_anim_readme_2_generate_sync"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L118",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
+      "target": "cooking_anim_readme_3_review_commit_deploy"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L141",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
+      "target": "cooking_anim_readme_4_dialling_in_quality"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L166",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
+      "target": "cooking_anim_readme_5_troubleshooting"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
+      "target": "cooking_anim_readme_codeblock_1"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L179",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
+      "target": "cooking_anim_readme_files"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_0_naming_scheme_the_contract",
+      "target": "cooking_anim_readme_codeblock_2"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L50",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_1_one_time_setup_on_the_gru_gpu_server",
+      "target": "cooking_anim_readme_codeblock_3"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L80",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_2_generate_sync",
+      "target": "cooking_anim_readme_codeblock_4"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L93",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_2_generate_sync",
+      "target": "cooking_anim_readme_codeblock_5"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L120",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_3_review_commit_deploy",
+      "target": "cooking_anim_readme_codeblock_6"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L128",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_3_review_commit_deploy",
+      "target": "cooking_anim_readme_codeblock_7"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/cooking-anim/README.md",
+      "source_location": "L157",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "cooking_anim_readme_4_dialling_in_quality",
+      "target": "cooking_anim_readme_higher_quality_alternative_models"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -22853,166 +23013,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "tools_cooking_anim_readme_md",
-      "target": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
-      "target": "cooking_anim_readme_0_naming_scheme_the_contract"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L48",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
-      "target": "cooking_anim_readme_1_one_time_setup_on_the_gru_gpu_server"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L78",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
-      "target": "cooking_anim_readme_2_generate_sync"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L118",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
-      "target": "cooking_anim_readme_3_review_commit_deploy"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L141",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
-      "target": "cooking_anim_readme_4_dialling_in_quality"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L166",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
-      "target": "cooking_anim_readme_5_troubleshooting"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
-      "target": "cooking_anim_readme_codeblock_1"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L179",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_cooking_animation_pipeline_local_ai_generation",
-      "target": "cooking_anim_readme_files"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L42",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_0_naming_scheme_the_contract",
-      "target": "cooking_anim_readme_codeblock_2"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L50",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_1_one_time_setup_on_the_gru_gpu_server",
-      "target": "cooking_anim_readme_codeblock_3"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L80",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_2_generate_sync",
-      "target": "cooking_anim_readme_codeblock_4"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L93",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_2_generate_sync",
-      "target": "cooking_anim_readme_codeblock_5"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L120",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_3_review_commit_deploy",
-      "target": "cooking_anim_readme_codeblock_6"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L128",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_3_review_commit_deploy",
-      "target": "cooking_anim_readme_codeblock_7"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tools/cooking-anim/README.md",
-      "source_location": "L157",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "cooking_anim_readme_4_dialling_in_quality",
-      "target": "cooking_anim_readme_higher_quality_alternative_models"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L92",
       "weight": 1.0,
@@ -23098,9 +23098,9 @@
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "cooking_anim_generate_seed_for",
-      "target": "int",
-      "confidence_score": 1.0
+      "target": "int"
     },
     {
       "relation": "references",
@@ -23131,9 +23131,9 @@
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "cooking_anim_generate_cut_out",
-      "target": "int",
-      "confidence_score": 1.0
+      "target": "int"
     },
     {
       "relation": "references",
@@ -23142,9 +23142,9 @@
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "cooking_anim_generate_load_pipeline",
-      "target": "int",
-      "confidence_score": 1.0
+      "target": "int"
     },
     {
       "relation": "references",
@@ -23153,9 +23153,9 @@
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L120",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "cooking_anim_generate_save_webp",
-      "target": "int",
-      "confidence_score": 1.0
+      "target": "int"
     },
     {
       "relation": "references",
@@ -23164,9 +23164,9 @@
       "source_file": "tools/cooking-anim/generate.py",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "cooking_anim_generate_subsample",
-      "target": "int",
-      "confidence_score": 1.0
+      "target": "int"
     },
     {
       "relation": "references",
@@ -78710,5 +78710,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "03ca344c18080fb9f60dc9cda098ebb5bd9e19cb"
+  "built_at_commit": "edd34c3d0708ae2602ab602f3016bfe3a2e6171a"
 }

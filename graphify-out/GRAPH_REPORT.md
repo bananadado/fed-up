@@ -1,7 +1,7 @@
-# Graph Report - drp03  (2026-06-04)
+# Graph Report - drp03  (2026-06-05)
 
 ## Corpus Check
-- 209 files · ~135,551 words
+- 209 files · ~135,568 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `03ca344c`
+- Built from commit: `edd34c3d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -627,7 +627,7 @@ Cohesion: 0.67
 Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block27 (Graph complete. Outputs in PATH_TO_DIR/graphify-out/), Step 9 - Save manifest, update cost tracker, clean up, and report
 
 ## Knowledge Gaps
-- **680 isolated node(s):** `ACTION_VERBS`, `StepAnimationProps`, `ingredients`, `result`, `validActions` (+675 more)
+- **680 isolated node(s):** `code:block1 (method text ──(frontend classifier)──► {action, object})`, `code:bash (python3 pipeline/manifest.py     # prints every id that will)`, `code:bash (# Check the GPU + driver/CUDA first — pick the torch build t)`, `code:bash (# Everything missing, then copy into the frontend:)`, `code:bash (python generate.py            # AnimateDiff -> dist/<id>.web)` (+675 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -639,8 +639,8 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `listRecipes()` connect `GPU Recommender Backend` to `Firebase Functions Lib`?**
   _High betweenness centrality (0.095) - this node is a cross-community bridge._
 - **Why does `recommenderApiUrl` connect `Recommender API Client` to `Firebase Session Helpers`, `Firebase Functions Lib`, `UI Primitives + E2E`, `Shopping List Card`, `Swap + Budget UI`, `Community 15`, `Recommender API Integration Tests`?**
-  _High betweenness centrality (0.084) - this node is a cross-community bridge._
-- **What connects `ACTION_VERBS`, `StepAnimationProps`, `ingredients` to the rest of the system?**
+  _High betweenness centrality (0.082) - this node is a cross-community bridge._
+- **What connects `code:block1 (method text ──(frontend classifier)──► {action, object})`, `code:bash (python3 pipeline/manifest.py     # prints every id that will)`, `code:bash (# Check the GPU + driver/CUDA first — pick the torch build t)` to the rest of the system?**
   _719 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `GPU Recommender Backend` be split into smaller, more focused modules?**
   _Cohesion score 0.06129476584022039 - nodes in this community are weakly interconnected._
