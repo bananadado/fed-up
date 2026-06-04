@@ -290,10 +290,14 @@ export function SwapModal({
               )}
             </button>
           </div>
+        </div>
+
+        {/* Scrollable options list + filter/sort panels */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-3 pt-3">
 
           {/* Sort panel */}
           {showSort && (
-            <div className="mt-2 rounded-lg border border-stone-200 bg-stone-50 p-3">
+            <div className="mb-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Sort by</p>
               <div className="flex flex-wrap gap-2">
                 {(["match", "quickest", "cheapest"] as SortOption[]).map((opt) => (
@@ -312,7 +316,7 @@ export function SwapModal({
 
           {/* Filter panel */}
           {showFilters && (
-            <div className="mt-2 rounded-lg border border-stone-200 bg-stone-50 p-3">
+            <div className="mb-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Meal type</p>
               <div className="flex flex-wrap gap-2">
                 {allSlots.map((slot) => (
@@ -377,10 +381,7 @@ export function SwapModal({
               )}
             </div>
           )}
-        </div>
 
-        {/* Scrollable options list only */}
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-3 pt-3">
           <div className="space-y-2">
             {filteredOptions.length === 0 ? (
               <p className="py-6 text-center text-sm text-stone-400">No matching meals found</p>
