@@ -42,6 +42,7 @@ export type Meal = {
   mealSlots: MealSlot[];
   time: number;
   price: number;
+  servings?: number;
   tags: string[];
   ingredients: RecipeIngredient[];
   allergens: string[];
