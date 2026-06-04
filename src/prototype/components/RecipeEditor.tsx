@@ -24,6 +24,7 @@ const MEAL_SLOT_SET = new Set<string>(MEAL_SLOT_OPTIONS);
 // the creator leaves the Notes field blank, and regenerated on every save so it
 // stays in sync when the price or servings change.
 export function formatPortionNote(servings: number, totalCost: number): string {
+  if (!Number.isFinite(totalCost) || totalCost >= 1e21) return "";
   return `${servings} portions from about ${money(totalCost)} total`;
 }
 
