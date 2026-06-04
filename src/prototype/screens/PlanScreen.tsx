@@ -23,16 +23,20 @@ export function PlanScreen({
   setPlan,
   prefs,
   customRecipes,
+  discoverSaved,
   setScreen,
   onSelectMeal,
+  openDiscover,
   track,
 }: {
   plan: PlanEntry[];
   setPlan: (plan: PlanEntry[]) => void;
   prefs: Preferences;
   customRecipes: Meal[];
+  discoverSaved: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
+  openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
   const [rescueChoice, setRescueChoice] = useState<RescueChoice>(() => {
@@ -112,9 +116,14 @@ export function PlanScreen({
                           </div>
                           <p className="mt-2 line-clamp-2 text-sm text-stone-500">{meal.source}</p>
                         </button>
-                        <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
-                          <RefreshCcw size={15} /> Change meal
-                        </AppButton>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
+                            <RefreshCcw size={15} /> Change
+                          </AppButton>
+                          <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
+                            Find something else
+                          </AppButton>
+                        </div>
                       </div>
                     </div>
                   );
@@ -145,9 +154,14 @@ export function PlanScreen({
                             {meal.time} mins - {money(meal.price)}
                           </p>
                         </button>
-                        <AppButton variant="secondary" className="mt-3 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
-                          <RefreshCcw size={15} /> Change meal
-                        </AppButton>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
+                            <RefreshCcw size={15} /> Change
+                          </AppButton>
+                          <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
+                            Find alt.
+                          </AppButton>
+                        </div>
                       </div>
                     );
                   })}
@@ -220,6 +234,7 @@ export function PlanScreen({
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
+          savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           track={track}
         />

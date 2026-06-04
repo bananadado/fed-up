@@ -2,7 +2,7 @@ import { LoaderCircle, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react
 import { useEffect, useMemo, useRef, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Deadline, DiscoverRecommendationState, Meal, Preferences } from "../types";
+import type { Deadline, DiscoverRecommendationState, Meal, MealSlot, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, money, ingredientNames, sourceUrl } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
@@ -40,6 +40,7 @@ export function DiscoverScreen({
   recommendationState,
   setRecommendationState,
   onSelectMeal,
+  context,
   track,
 }: {
   prefs: Preferences;
@@ -55,6 +56,7 @@ export function DiscoverScreen({
   recommendationState: DiscoverRecommendationState;
   setRecommendationState: StateSetter<DiscoverRecommendationState>;
   onSelectMeal: (mealId: string) => void;
+  context?: { day: string; slot: MealSlot; mealId: string } | null;
   track: TrackPrototypeEvent;
 }) {
   const latestRecommendationRequestId = useRef(0);
@@ -69,14 +71,17 @@ export function DiscoverScreen({
   const recommendationStatus = recommendationState.contextKey === recommendationContextKey ? recommendationState.status : "idle";
   const excludedRecipeIds = useMemo(
     () => [...new Set([
+      ...(context?.mealId ? [context.mealId] : []),
       ...reviewedRecipeIds,
       ...saved.map((meal) => meal.id),
       ...rejected.map((meal) => meal.id),
     ])],
-    [reviewedRecipeIds, saved, rejected],
+    [context, reviewedRecipeIds, saved, rejected],
   );
   const reviewedRecipeIdSet = useMemo(() => new Set(excludedRecipeIds), [excludedRecipeIds]);
-  const candidateRecipes = recommendedRecipes.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id));
+  const candidateRecipes = recommendedRecipes
+    .filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))
+    .filter((meal) => !context || meal.mealSlots.includes(context.slot));
 
   const sortedQueue = candidateRecipes
     .filter((meal) => !reviewedRecipeIdSet.has(meal.id))
@@ -172,6 +177,12 @@ export function DiscoverScreen({
 
   return (
     <div>
+      {context && (
+        <div className="mb-5 flex items-center gap-2 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          <Sparkles size={15} className="shrink-0" />
+          <span>Finding alternatives for <strong>{context.day} {context.slot}</strong></span>
+        </div>
+      )}
       <div className="mb-7">
         <h1 className="text-3xl font-bold">Discover recipes</h1>
         <p className="mt-2 text-stone-600">
