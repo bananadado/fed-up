@@ -110,6 +110,7 @@ browser
 bucket
 buckets
 budget
+buffer
 build
 built
 bulk
@@ -231,10 +232,12 @@ creation
 criteria
 critical
 crunch
+crypto
 css
 cuisine
 curl
 current
+cutoff
 daily
 dashboard
 data
@@ -445,6 +448,7 @@ forwarded
 fraction
 framework
 free
+fresh
 fried
 fro
 from
@@ -641,6 +645,7 @@ locals
 location
 lock
 log
+logger
 logic
 login
 logs
@@ -727,7 +732,6 @@ normalise
 normalised
 normalize
 not
-note
 notes
 now
 number
@@ -770,7 +774,9 @@ panel
 panels
 parallel
 parameters
+params
 parse
+parsed
 parser
 parses
 part
@@ -814,7 +820,6 @@ point
 points
 popup
 port
-portion
 pos
 positive
 post
@@ -847,6 +852,7 @@ profile
 profiles
 progress
 project
+projects
 promotes
 prompt
 properties
@@ -893,6 +899,7 @@ real
 realism
 reality
 reason
+recent
 recently
 recipe
 recipes
@@ -912,6 +919,7 @@ reduction
 ref
 refines
 refresh
+refreshed
 regex
 region
 register
@@ -981,6 +989,7 @@ save
 scalar
 scales
 scenario
+scheduler
 schema
 scope
 score
@@ -1180,6 +1189,7 @@ titles
 today
 toggle
 token
+tokens
 tolerance
 tone
 tones
@@ -1233,6 +1243,7 @@ unsupported
 untitled
 unused
 update
+updated
 updates
 upload
 upsert
