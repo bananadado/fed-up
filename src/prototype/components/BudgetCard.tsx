@@ -32,8 +32,9 @@ export function BudgetCard({
   return (
     <div className="rounded-lg bg-emerald-800 p-5 text-white">
       <div>
-        <p className="text-sm text-emerald-100">Weekly budget</p>
+        <p className="text-sm text-emerald-100">Planned spend</p>
         <p className="mt-1 text-3xl font-bold">{money(budget)}</p>
+        <p className="mt-1 text-sm text-emerald-100">Weekly budget limit</p>
         {firstWeek && (
           <p className="mt-1 text-sm text-emerald-100">
             Week 1 planned: {money(firstWeek.total)}
