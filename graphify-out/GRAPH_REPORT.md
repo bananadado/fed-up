@@ -5,12 +5,12 @@
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2367 nodes · 5440 edges · 137 communities (128 shown, 9 thin omitted)
+- 2360 nodes · 5419 edges · 132 communities (123 shown, 9 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 157 edges (avg confidence: 0.64)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2394bd91`
+- Built from commit: `931a7ed0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -140,18 +140,13 @@
 - [[_COMMUNITY_Community 129|Community 129]]
 - [[_COMMUNITY_Community 130|Community 130]]
 - [[_COMMUNITY_Community 131|Community 131]]
-- [[_COMMUNITY_Community 132|Community 132]]
-- [[_COMMUNITY_Community 133|Community 133]]
-- [[_COMMUNITY_Community 134|Community 134]]
-- [[_COMMUNITY_Community 135|Community 135]]
-- [[_COMMUNITY_Community 136|Community 136]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 49 edges
 2. `CalendarScreen()` - 47 edges
 3. `RecipeEditor()` - 44 edges
 4. `Deadline Food Autopilot — Product and Implementation Specification` - 41 edges
-5. `recommenderApiUrl` - 34 edges
+5. `recommenderApiUrl` - 33 edges
 6. `ingredients` - 33 edges
 7. `PlanScreen()` - 32 edges
 8. `Card()` - 28 edges
@@ -161,16 +156,16 @@
 ## Surprising Connections (you probably didn't know these)
 - `calendarFetchIcs` --calls--> `firebaseFunctionsBaseUrl`  [EXTRACTED]
   functions/src/index.ts → src/index.ts
-- `calendarGoogleExchange` --calls--> `firebaseFunctionsBaseUrl`  [EXTRACTED]
-  functions/src/index.ts → src/index.ts
-- `calendarOutlookExchange` --calls--> `firebaseFunctionsBaseUrl`  [EXTRACTED]
-  functions/src/index.ts → src/index.ts
 - `get_recommendations()` --calls--> `recommend()`  [EXTRACTED]
   /home/dorian/Documents/drp03/backend/recommender-api/app/main.py → backend/recommender-api/app/recommend.py
 - `job_recompute_users()` --calls--> `recompute_all_user_embeddings()`  [INFERRED]
   /home/dorian/Documents/drp03/backend/recommender-api/app/main.py → backend/recommender-api/app/jobs.py
+- `FastAPI` --uses--> `ContextRequest`  [INFERRED]
+  /home/dorian/Documents/drp03/backend/recommender-api/app/main.py → backend/recommender-api/app/models.py
+- `FastAPI` --uses--> `InteractionIn`  [INFERRED]
+  /home/dorian/Documents/drp03/backend/recommender-api/app/main.py → backend/recommender-api/app/models.py
 
-## Communities (137 total, 9 thin omitted)
+## Communities (132 total, 9 thin omitted)
 
 ### Community 0 - "GPU Recommender Backend"
 Cohesion: 0.06
@@ -178,15 +173,15 @@ Nodes (107): Shared-key verification for requests forwarded by Firebase Function
 
 ### Community 1 - "Deadline Mode State"
 Cohesion: 0.13
-Nodes (37): canCook(), canPrepareBase(), createPlannedMealId(), dayLabels, formatDayLabel(), formatMealSlotLabel(), formatPlanItemLabel(), getContextTags() (+29 more)
+Nodes (36): canCook(), canPrepareBase(), createPlannedMealId(), dayLabels, formatDayLabel(), formatMealSlotLabel(), formatPlanItemLabel(), getContextTags() (+28 more)
 
 ### Community 2 - "Firebase Functions (main)"
 Cohesion: 0.03
 Nodes (62): allowedPhotoMimeTypes, anonymousSessionsRef, calendarOAuthSecrets, calendarSubscriptionRefresh, CalendarToken, cookingAdjectives, deadlineFoodAutoPlan, deadlineFoodBootstrap (+54 more)
 
 ### Community 3 - "App Router + Event Bus"
-Cohesion: 0.09
-Nodes (52): BootstrapBoundary(), createDeadlineModeCommands(), DeadlineModeCommands, DeadlineModeState, initialDeadlineModeState, createEventBus(), EventBus, BudgetSummary() (+44 more)
+Cohesion: 0.27
+Nodes (20): BudgetSummary(), DailyPlanCard(), EventLog(), FallbackMealCard(), eventLabel(), formatPence(), mealTypeLabel(), strategyName() (+12 more)
 
 ### Community 4 - "Context Embedding Classifier"
 Cohesion: 0.09
@@ -201,16 +196,16 @@ Cohesion: 0.06
 Nodes (72): float, str, float, str, client(), _cosine(), fake_embed_single(), fake_embed_texts() (+64 more)
 
 ### Community 7 - "UI Primitives + E2E"
-Cohesion: 0.13
-Nodes (34): icsSubscriptionHints, IngredientCombobox(), IngredientEditor(), appButtonClasses, AppButtonVariant, badgeTones, ChoiceGroup(), Field() (+26 more)
+Cohesion: 0.11
+Nodes (36): icsSubscriptionHints, importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), calendarFetchIcsUrl(), parseICSText(), ConfirmDialog(), IngredientCombobox() (+28 more)
 
 ### Community 8 - "Calendar Import (Apple/iCal)"
-Cohesion: 0.20
-Nodes (16): ClassifiedEvent, DailyContext, DeadlineContextResponse, deadlinesFromContext(), fetchDeadlineContext(), resolveDeadlinesFromEvents(), classified(), context (+8 more)
+Cohesion: 0.05
+Nodes (74): appNodeEnv(), configuredBackend(), DeadlineEndpoint, deadlineFoodEndpointUrl(), fetchCanonicalScenario(), fetchDeadlineBootstrap(), fetchSeededMeals(), firebaseFunctionNames (+66 more)
 
 ### Community 9 - "Cooking Calendar ICS"
-Cohesion: 0.11
-Nodes (28): parseICSText(), unfoldLines(), CalendarEvent, minutesToTimeInputValue(), timeInputValueToMinutes(), classifyImportedEvent(), cookingEffortReason(), workloadLabel() (+20 more)
+Cohesion: 0.16
+Nodes (24): minutesToTimeInputValue(), timeInputValueToMinutes(), cookingEffortReason(), workloadLabel(), workloadScore(), CalendarScreen(), CookingScheduler(), DayCell (+16 more)
 
 ### Community 10 - "Graphify Skill"
 Cohesion: 0.12
@@ -225,16 +220,16 @@ Cohesion: 0.18
 Nodes (39): Any, float, int, object, Request, str, bucket_difficulty(), bucket_prep() (+31 more)
 
 ### Community 13 - "Swap + Budget UI"
-Cohesion: 0.14
-Nodes (40): BudgetCard(), ConfirmDialog(), AppButton(), Badge(), allSlots, mealTypeIcon, priceDiff(), slotLabels (+32 more)
+Cohesion: 0.15
+Nodes (30): BudgetCard(), allSlots, mealTypeIcon, priceDiff(), slotLabels, sortLabels, SortOption, SwapModal() (+22 more)
 
 ### Community 14 - "Dev + Testing Docs"
-Cohesion: 0.06
-Nodes (46): App calls local API but you expected Firebase, Backend Deployment, Build, CI Pipeline, code:sh (bun install), code:sh (bun run test:unit), code:sh (bun test src/prototype/shopping.test.ts), code:sh (bun run test:domain) (+38 more)
+Cohesion: 0.14
+Nodes (21): Build, CI Pipeline, code:sh (bun install), code:sh (bun run test:unit), code:sh (bun test src/prototype/shopping.test.ts), code:sh (bun run test:domain), code:sh (bun run audit), code:sh (cd functions) (+13 more)
 
 ### Community 15 - "Dialog + Button Primitives"
-Cohesion: 0.07
-Nodes (35): Shell(), Analytics, calendarWarning, chilli, desktopNav, planDays, sessionLoaded, AnalyticsProperties (+27 more)
+Cohesion: 0.12
+Nodes (21): calendarWarning, chilli, desktopNav, planDays, sessionLoaded, defaultDeadlines, dislikes, initialPlan (+13 more)
 
 ### Community 16 - "Recommender Unit Tests"
 Cohesion: 0.10
@@ -246,7 +241,7 @@ Nodes (34): behavioural_profile(), _clamp(), derive_ability_profile(), onboardin
 
 ### Community 18 - "Firebase Generated Lib"
 Cohesion: 0.13
-Nodes (27): formatIngredient(), ingredientKey(), recipeIngredients(), MealOption, ingredientCost(), measureToGrams(), parseFraction(), PER_ITEM (+19 more)
+Nodes (28): formatIngredient(), ingredientKey(), recipeIngredients(), MealOption, estimatePricePence(), ingredientCost(), measureToGrams(), parseFraction() (+20 more)
 
 ### Community 19 - "Recommendation Scoring"
 Cohesion: 0.25
@@ -257,12 +252,12 @@ Cohesion: 0.10
 Nodes (39): defaultForm(), EditorForm, formatPortionNote(), MEAL_SLOT_OPTIONS, MEAL_SLOT_SET, mealToForm(), parsePortionNote(), positiveNumber() (+31 more)
 
 ### Community 21 - "Recommender API Integration Tests"
-Cohesion: 0.19
-Nodes (12): DeadlineModeAction, DeadlineModeInternalAction, deadlineModeReducer(), withEvent(), validateConstraints(), rankStrategies(), strategyLabels, MealType (+4 more)
+Cohesion: 0.12
+Nodes (21): createDeadlineModeCommands(), DeadlineModeAction, DeadlineModeCommands, DeadlineModeInternalAction, deadlineModeReducer(), DeadlineModeState, initialDeadlineModeState, withEvent() (+13 more)
 
 ### Community 22 - "Firebase Backend Docs"
-Cohesion: 0.12
-Nodes (15): Backend Security Notes, code:rules (match /{document=**} {), code:sh (cd functions), code:sh (cd functions), code:ts (initializeApp();), code:ts (const publicHttpOptions = { cors: true, invoker: "public" } ), code:ts (timeoutSeconds: 300), Firebase Backend Documentation (+7 more)
+Cohesion: 0.09
+Nodes (19): Backend Security Notes, code:rules (match /{document=**} {), code:json ({), code:sh (cd functions), code:sh (cd functions), code:ts (initializeApp();), code:ts (const publicHttpOptions = { cors: true, invoker: "public" } ), code:ts (timeoutSeconds: 300) (+11 more)
 
 ### Community 23 - "TypeScript Config"
 Cohesion: 0.09
@@ -273,15 +268,15 @@ Cohesion: 0.12
 Nodes (24): Active Surface: Prototype, Architectural Risk Areas, Architecture, Backend Surfaces, Browser Entry, Build Architecture, code:sh (bun --hot src/index.ts), code:html (<script type="module" src="./frontend.tsx" async></script>) (+16 more)
 
 ### Community 25 - "Cloudflared Tunnel Docs"
-Cohesion: 0.12
-Nodes (16): 1. Install `cloudflared` on `gru`, 2. Authenticate and create the tunnel, 3. Configure ingress, 4. Create the DNS route, 5. Run it as a system service, 6. Validate the public endpoint, Cloudflare Tunnel for the Recommender on `gru`, code:sh (cd /opt/drp03-backend) (+8 more)
+Cohesion: 0.09
+Nodes (22): 1. Install `cloudflared` on `gru`, 2. Authenticate and create the tunnel, 3. Configure ingress, 4. Create the DNS route, 5. Run it as a system service, 6. Validate the public endpoint, 7. Point Firebase Functions at the tunnel, Cloudflare Tunnel for the Recommender on `gru` (+14 more)
 
 ### Community 26 - "API Contracts Docs"
-Cohesion: 0.39
-Nodes (8): code:ts (PlanningConstraints), code:json ({), code:http (GET /deadlineFoodBootstrap), code:ts (type DeadlineBootstrap = {), code:http (GET /deadlineFoodScenario), Firebase, Firebase, Firebase
+Cohesion: 0.16
+Nodes (18): Canonical Scenario, code:ts (PlanningConstraints), code:json ({), code:http (GET /api/deadline-food/bootstrap), code:http (GET /deadlineFoodBootstrap), code:ts (type DeadlineBootstrap = {), code:http (GET /api/deadline-food/meals), code:http (GET /deadlineFoodMeals) (+10 more)
 
 ### Community 27 - "Recipe Ingest Normalizer"
-Cohesion: 0.11
+Cohesion: 0.10
 Nodes (28): ALLERGEN_KEYWORDS, CATEGORY_FALLBACK_MINUTES, CATEGORY_NUTRITION, CUISINE_FLAVORS, DEFAULT_NUTRITION, detectAllergens(), detectDietaryTags(), detectSuitabilityTags() (+20 more)
 
 ### Community 28 - "Grafana Dashboard"
@@ -293,8 +288,8 @@ Cohesion: 0.17
 Nodes (20): calendarEventsToDeadlines(), exchangeGoogleCode(), exchangeOutlookCode(), fetchGoogleEvents(), fetchOutlookEvents(), filterFutureEvents(), refreshGoogleToken(), refreshOutlookToken() (+12 more)
 
 ### Community 30 - "PostHog Analytics"
-Cohesion: 0.36
-Nodes (10): AnonymousSessionResponse, getOrCreateAnonymousSessionId(), loadAnonymousSessionSettings(), readJson(), readStoredSessionId(), saveAnonymousSessionSettings(), storeSessionId(), createAnonymousSessionId() (+2 more)
+Cohesion: 0.10
+Nodes (25): AnalyticsProperty, capturePostHogEvent(), compactProperties(), host, posthog, registerPostHogContext(), registerPostHogSession(), token (+17 more)
 
 ### Community 31 - "Component Aliases"
 Cohesion: 0.14
@@ -313,8 +308,8 @@ Cohesion: 0.07
 Nodes (21): AllocatorMeal, Band, BuildPlanInput, classifyEffort(), DayContext, Effort, Leftover, MealSlot (+13 more)
 
 ### Community 35 - "Recommender API Client"
-Cohesion: 0.23
-Nodes (21): ContextEventInput, requestDeadlineContext(), recommenderApiUrl, cookingAbility(), createRecommenderRecipe(), deadlineStressFromDeadlines(), deadlineToContextEvent(), deleteRecommenderRecipe() (+13 more)
+Cohesion: 0.18
+Nodes (30): Badge(), recommenderApiUrl, cookingAbilities, cookingAbility(), createRecommenderRecipe(), deadlineStressFromDeadlines(), deleteRecommenderRecipe(), fetchRecommenderRecommendations() (+22 more)
 
 ### Community 36 - "Difficulty Scoring"
 Cohesion: 0.24
@@ -329,8 +324,8 @@ Cohesion: 0.25
 Nodes (9): dependencies, firebase-admin, firebase-functions, @google-cloud/functions-framework, engines, node, main, name (+1 more)
 
 ### Community 39 - "Shopping List Card"
-Cohesion: 0.13
-Nodes (26): currentItemKeys(), readStoredCheckedItems(), ShoppingListCard(), writeClipboardText(), writeStoredCheckedItems(), getPlanMeal(), aggregateIngredients(), formatShoppingList() (+18 more)
+Cohesion: 0.15
+Nodes (24): currentItemKeys(), readStoredCheckedItems(), ShoppingListCard(), writeClipboardText(), writeStoredCheckedItems(), aggregateIngredients(), formatShoppingList(), GroceryVendor (+16 more)
 
 ### Community 40 - "Functions TypeScript Config"
 Cohesion: 0.12
@@ -341,8 +336,8 @@ Cohesion: 0.17
 Nodes (16): cacheOpenFoodFactsProduct(), compactOpenFoodFactsProduct(), fetchOpenFoodFactsProductForIngredient(), fetchOpenFoodFactsProducts(), findOpenFoodFactsProductForIngredient(), normalizeIngredientKey(), openFoodFactsCacheDocId(), openFoodFactsCategoryTerms() (+8 more)
 
 ### Community 42 - "Recipe Ingest Scripts"
-Cohesion: 0.15
-Nodes (13): FirestoreMeal, Ingredient, Nutrition, RecipeIn, args, categoryFilter, initFirebase(), isDryRun (+5 more)
+Cohesion: 0.16
+Nodes (12): FirestoreMeal, Ingredient, RecipeIn, args, categoryFilter, initFirebase(), isDryRun, main() (+4 more)
 
 ### Community 43 - "Dev Dependencies"
 Cohesion: 0.12
@@ -469,8 +464,8 @@ Cohesion: 0.29
 Nodes (7): 8.1 Deadline setup, 8.2 Strategy selection, 8.3 Plan generation and display, 8.4 Dynamic rescue, 8.5 Fallback catalogue, 8.6 Authentication and persistence, 8. Functional Requirements
 
 ### Community 74 - "Ingredient Price Estimator"
-Cohesion: 0.23
-Nodes (19): appNodeEnv(), configuredBackend(), DeadlineEndpoint, deadlineFoodEndpointUrl(), fetchCanonicalScenario(), fetchDeadlineBootstrap(), fetchSeededMeals(), firebaseFunctionNames (+11 more)
+Cohesion: 0.15
+Nodes (17): mealSlots, planningWeekDays, KitchenAccess, MealSlot, cn(), CardAction(), CardDescription(), CardFooter() (+9 more)
 
 ### Community 75 - "Backend Auth Tests"
 Cohesion: 0.53
@@ -485,12 +480,12 @@ Cohesion: 0.33
 Nodes (6): 1. Prep Once, 2. Mixed Mode, 3. No-Cook Rescue, 7.2 Flow B — Select a Deadline Strategy, Required information per strategy, Required strategies
 
 ### Community 78 - "Package Meta"
-Cohesion: 0.53
+Cohesion: 0.40
 Nodes (4): name, private, type, version
 
 ### Community 79 - "Firebase OFX Cache Helpers"
-Cohesion: 0.21
-Nodes (14): importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), calendarFetchIcsUrl(), calendarGoogleExchangeUrl(), exchangeCodeOnServer(), GoogleExchangeResult, importGoogleCalendar() (+6 more)
+Cohesion: 0.14
+Nodes (14): App calls local API but you expected Firebase, code:text (?deadlineFoodApiBackend=firebase&firebaseFunctionsBaseUrl=ht), code:sh (bun run firebase:dev), code:sh (bunx playwright install chromium), code:sh (PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/path/to/chromium), code:sh (bun run verify), code:sh (bunx playwright install chromium), E2E cannot find browser executable (+6 more)
 
 ### Community 80 - "Generated Prototype Data"
 Cohesion: 0.48
@@ -533,8 +528,8 @@ Cohesion: 0.20
 Nodes (14): API Change Checklist, API Contracts, Bootstrap, code:ts (type DeadlineEndpoint =), code:http (POST /api/deadline-food/nutrition/openfoodfacts), code:http (POST /deadlineFoodNutrition), code:ts (type Nutrition = {), code:http (GET /api/hello) (+6 more)
 
 ### Community 91 - "Firestore Indexes Config"
-Cohesion: 0.22
-Nodes (9): Backend Change Checklist, code:sh (bun run firebase:data), code:sh (bun run firebase:dev), code:sh (FIREBASE_DEV_BACKEND=remote bun run firebase:dev), code:sh (bun run firebase:data), code:sh (bun run verify), Generated Prototype Data, Local Firebase Emulator Flow (+1 more)
+Cohesion: 0.15
+Nodes (13): Backend Deployment, code:sh (bun run firebase:deploy), Backend Change Checklist, Backend Deploy, code:sh (bun run firebase:data), code:sh (bun run firebase:dev), code:sh (FIREBASE_DEV_BACKEND=remote bun run firebase:dev), code:sh (bun run firebase:deploy) (+5 more)
 
 ### Community 92 - "Spec Domain Logic"
 Cohesion: 0.50
@@ -605,20 +600,20 @@ Cohesion: 0.25
 Nodes (8): code:block10 (You are a graphify extraction subagent. Read the files liste), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:block8 (spawn_agent(agent_type="worker", message="Your task is to pe), code:block9 (result = wait_agent(handle); close_agent(handle)   # repeat ), Part B - Semantic extraction (parallel subagents)
 
 ### Community 116 - "Nutrition Gram Estimates (lib)"
-Cohesion: 0.16
-Nodes (11): seededMeals, canonicalConstraints, deadlineBootstrap, prototypeMeta, DeadlineBootstrap, PrototypeMeta, seedMeals, outdir (+3 more)
+Cohesion: 0.17
+Nodes (10): seededMeals, canonicalConstraints, deadlineBootstrap, prototypeMeta, PrototypeMeta, seedMeals, outdir, outfile (+2 more)
 
 ### Community 117 - "Nutrition Round + Total (lib)"
-Cohesion: 0.17
-Nodes (12): firebaseFunctionUrl(), deadlineContextUrl(), deadlineToContextEvent(), AutoPlanResponse, computePlanSignature(), contextEvents(), generateAutoPlan(), GenerateAutoPlanInput (+4 more)
+Cohesion: 0.18
+Nodes (10): Shell(), Analytics, AnalyticsProperties, TrackPrototypeEvent, DeadlineFoodPrototype(), isAppScreen(), onboardingScreens, screens (+2 more)
 
 ### Community 118 - "Session Send + Timestamp"
-Cohesion: 0.33
-Nodes (9): calendarOutlookExchangeUrl(), base64UrlEncode(), exchangeCodeOnServer(), generatePKCE(), importOutlookCalendar(), isOutlookConfigured(), OutlookExchangeResult, waitForPopupRedirect() (+1 more)
+Cohesion: 0.28
+Nodes (9): BootstrapBoundary(), DeadlineSetupPage(), FallbackBrowsePage(), LandingPage(), PlanDashboardPage(), RecipePage(), RescuePage(), StrategySelectionPage() (+1 more)
 
 ### Community 119 - "Nutrition Gram Estimates (compiled)"
-Cohesion: 0.36
-Nodes (8): code:http (GET /api/deadline-food/meals), code:http (GET /deadlineFoodMeals), code:ts (MealOption[]), Firebase, Firebase, Local, Local, Meals
+Cohesion: 0.29
+Nodes (7): code:sh (bun run test:e2e), code:sh (bun run dev), code:sh (bun run dev), code:sh (bun --hot src/index.ts), code:text (http://localhost:3000/), E2E Tests, Local App Development
 
 ### Community 120 - "Nutrition Round + Total (compiled)"
 Cohesion: 0.33
@@ -636,45 +631,25 @@ Nodes (3): code:bash (python3 -m graphify.serve graphify-out/graph.json), code:j
 Cohesion: 0.67
 Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block27 (Graph complete. Outputs in PATH_TO_DIR/graphify-out/), Step 9 - Save manifest, update cost tracker, clean up, and report
 
-### Community 132 - "Community 132"
-Cohesion: 0.43
-Nodes (6): createPostHogConfig(), personalDataProperties, client, config, LoadedPostHog, startSessionRecordingCalls
-
-### Community 133 - "Community 133"
-Cohesion: 0.48
-Nodes (6): fetchRecipeReviews(), readJson(), RecipeReviewsResult, reviewsUrl(), submitRecipeReview(), RecipeReview
-
-### Community 134 - "Community 134"
-Cohesion: 0.47
-Nodes (6): Canonical Scenario, code:http (GET /api/deadline-food/bootstrap), code:http (GET /api/deadline-food/scenario), Local, Local, Local
-
-### Community 135 - "Community 135"
-Cohesion: 0.33
-Nodes (6): 7. Point Firebase Functions at the tunnel, code:sh (firebase functions:secrets:set RECOMMENDER_API_URL --project), code:sh (firebase functions:log --project drp03-50059 --only deadline), code:sh (firebase functions:secrets:set RECOMMENDER_API_URL), code:dotenv (RECOMMENDER_API_KEY=<same-secret-value>), GPU Recommender Proxy
-
-### Community 136 - "Community 136"
-Cohesion: 0.40
-Nodes (4): code:json ({), Firestore Indexes, fieldOverrides, indexes
-
 ## Knowledge Gaps
-- **680 isolated node(s):** `deploymentEnabled`, `BuildConfigOverrides`, `NestedBuildConfig`, `cliConfig`, `start` (+675 more)
+- **685 isolated node(s):** `1. Active Prototype (what users see)`, `2. Dormant React Router Slice (not mounted)`, `code:sh (bun install                  # install dependencies)`, `Firebase (frontend data APIs)`, `GPU Recommender Server (`backend/`)` (+680 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ingredients` connect `Firebase Generated Lib` to `GPU Recommender Backend`, `App Router + Event Bus`, `Firebase Functions Lib`, `Recipe Ingest Scripts`, `Swap + Budget UI`, `Recipe Editor + Ingredients`, `Recommender API Integration Tests`, `Recipe Ingest Normalizer`?**
-  _High betweenness centrality (0.145) - this node is a cross-community bridge._
+- **Why does `ingredients` connect `Firebase Generated Lib` to `GPU Recommender Backend`, `Recommender API Client`, `App Router + Event Bus`, `Firebase Functions Lib`, `Recipe Ingest Scripts`, `Recipe Editor + Ingredients`, `Recommender API Integration Tests`, `Recipe Ingest Normalizer`?**
+  _High betweenness centrality (0.172) - this node is a cross-community bridge._
+- **Why does `recommenderApiUrl` connect `Recommender API Client` to `Firebase Functions Lib`, `Shopping List Card`, `Calendar Import (Apple/iCal)`, `Swap + Budget UI`, `Recipe Editor + Ingredients`, `Nutrition Round + Total (lib)`?**
+  _High betweenness centrality (0.088) - this node is a cross-community bridge._
 - **Why does `listRecipes()` connect `GPU Recommender Backend` to `Firebase Functions Lib`?**
-  _High betweenness centrality (0.107) - this node is a cross-community bridge._
-- **Why does `recommenderApiUrl` connect `Recommender API Client` to `Firebase Functions Lib`, `UI Primitives + E2E`, `Calendar Import (Apple/iCal)`, `Shopping List Card`, `Ingredient Price Estimator`, `Swap + Budget UI`, `Dialog + Button Primitives`, `Recipe Editor + Ingredients`?**
-  _High betweenness centrality (0.083) - this node is a cross-community bridge._
-- **What connects `deploymentEnabled`, `BuildConfigOverrides`, `NestedBuildConfig` to the rest of the system?**
-  _713 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.078) - this node is a cross-community bridge._
+- **What connects `1. Active Prototype (what users see)`, `2. Dormant React Router Slice (not mounted)`, `code:sh (bun install                  # install dependencies)` to the rest of the system?**
+  _718 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `GPU Recommender Backend` be split into smaller, more focused modules?**
   _Cohesion score 0.0603305785123967 - nodes in this community are weakly interconnected._
 - **Should `Deadline Mode State` be split into smaller, more focused modules?**
-  _Cohesion score 0.12560975609756098 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1282051282051282 - nodes in this community are weakly interconnected._
 - **Should `Firebase Functions (main)` be split into smaller, more focused modules?**
   _Cohesion score 0.02846846846846847 - nodes in this community are weakly interconnected._
