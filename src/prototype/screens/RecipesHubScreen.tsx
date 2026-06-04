@@ -83,7 +83,7 @@ export function RecipesHubScreen({
       reviews: [],
       instructions,
       source: "My recipes",
-      note: output.note || `${output.servings} portions from about ${money(output.totalCost)} total`,
+      note: output.note,
       image: "🍽️",
       ...(photoUrl ? { photoUrl } : {}),
       isUserCreated: true,
