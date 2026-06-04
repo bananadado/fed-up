@@ -5,12 +5,12 @@
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2250 nodes · 4213 edges · 141 communities (119 shown, 22 thin omitted)
+- 2250 nodes · 4214 edges · 143 communities (121 shown, 22 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 151 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `95c2049a`
+- Built from commit: `41e3a019`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -150,6 +150,8 @@
 - [[_COMMUNITY_Community 133|Community 133]]
 - [[_COMMUNITY_Community 134|Community 134]]
 - [[_COMMUNITY_Community 140|Community 140]]
+- [[_COMMUNITY_Community 141|Community 141]]
+- [[_COMMUNITY_Community 142|Community 142]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 48 edges
@@ -175,7 +177,7 @@
 - `test_event_type_academic_vs_general()` --calls--> `event_type()`  [INFERRED]
   backend/recommender-api/tests/test_context_classify.py → backend/recommender-api/app/context.py
 
-## Communities (141 total, 22 thin omitted)
+## Communities (143 total, 22 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.07
@@ -214,8 +216,8 @@ Cohesion: 0.08
 Nodes (38): icsSubscriptionHints, IngredientEditor(), ChoiceGroup(), Field(), SelectField(), UniversityField(), calendarWarning, desktopNav (+30 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.07
-Nodes (38): defaultForm(), EditorForm, formatPortionNote(), MEAL_SLOT_OPTIONS, MEAL_SLOT_SET, mealToForm(), parsePortionNote(), positiveNumber() (+30 more)
+Cohesion: 0.08
+Nodes (35): defaultForm(), EditorForm, formatPortionNote(), MEAL_SLOT_OPTIONS, MEAL_SLOT_SET, mealToForm(), parsePortionNote(), positiveNumber() (+27 more)
 
 ### Community 10 - "Community 10"
 Cohesion: 0.04
@@ -230,8 +232,8 @@ Cohesion: 0.05
 Nodes (43): `anonymousSessions/{sessionId}`, Backend Change Checklist, Backend Deploy, Backend Security Notes, code:rules (match /{document=**} {), code:ts ({), code:ts ({), code:ts ({) (+35 more)
 
 ### Community 13 - "Community 13"
-Cohesion: 0.12
-Nodes (30): BudgetCard(), Badge(), allSlots, mealTypeIcon, priceDiff(), slotLabels, sortLabels, SortOption (+22 more)
+Cohesion: 0.14
+Nodes (25): BudgetCard(), Badge(), allSlots, mealTypeIcon, priceDiff(), slotLabels, sortLabels, SortOption (+17 more)
 
 ### Community 14 - "Community 14"
 Cohesion: 0.05
@@ -242,12 +244,12 @@ Cohesion: 0.08
 Nodes (30): createDeadlineModeCommands(), DeadlineModeAction, DeadlineModeCommands, DeadlineModeInternalAction, deadlineModeReducer(), DeadlineModeState, initialDeadlineModeState, withEvent() (+22 more)
 
 ### Community 16 - "Community 16"
-Cohesion: 0.10
-Nodes (30): RecipeEditor(), currentItemKeys(), readStoredCheckedItems(), ShoppingListCard(), writeStoredCheckedItems(), fetchRecipeReviews(), readJson(), RecipeReviewsResult (+22 more)
+Cohesion: 0.12
+Nodes (24): RecipeEditor(), currentItemKeys(), readStoredCheckedItems(), ShoppingListCard(), writeStoredCheckedItems(), aggregateIngredients(), formatShoppingList(), GroceryVendor (+16 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.09
-Nodes (25): ConfirmDialog(), AppButton(), RecipeEditorOutput, Shell(), AnalyticsProperties, AnalyticsProperty, capturePostHogEvent(), compactProperties() (+17 more)
+Cohesion: 0.11
+Nodes (19): Shell(), AnalyticsProperties, AnalyticsProperty, capturePostHogEvent(), compactProperties(), host, registerPostHogContext(), registerPostHogSession() (+11 more)
 
 ### Community 18 - "Community 18"
 Cohesion: 0.07
@@ -629,8 +631,16 @@ Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block27 (
 Cohesion: 0.67
 Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block4 (Corpus: X files · ~Y words), Step 2 - Detect files
 
+### Community 141 - "Community 141"
+Cohesion: 0.18
+Nodes (13): RecipeIngredient, fetchOpenFoodFactsNutrition(), fetchRecipeReviews(), readJson(), RecipeReviewsResult, reviewsUrl(), submitRecipeReview(), DiscoverRecommendationStatus (+5 more)
+
+### Community 142 - "Community 142"
+Cohesion: 0.28
+Nodes (7): ConfirmDialog(), AppButton(), RecipeEditorOutput, DiscoverRecommendationState, RecipesHubScreen(), StateSetter, Tab
+
 ## Knowledge Gaps
-- **841 isolated node(s):** `$schema`, `buildCommand`, `installCommand`, `outputDirectory`, `deploymentEnabled` (+836 more)
+- **841 isolated node(s):** `screens`, `onboardingScreens`, `MEAL_SLOT_OPTIONS`, `MEAL_SLOT_SET`, `TAG_OPTIONS` (+836 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **22 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -641,11 +651,11 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Why does `recompute_user_profile()` connect `Community 0` to `Community 6`, `Community 55`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
-- **Why does `embed_unembedded_recipes()` connect `Community 0` to `Community 48`, `Community 49`?**
+- **Why does `FakeSession` connect `Community 69` to `Community 65`, `Community 55`, `Community 49`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **Are the 7 inferred relationships involving `AsyncSession` (e.g. with `ContextRequest` and `InteractionIn`) actually correct?**
   _`AsyncSession` has 7 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `$schema`, `buildCommand`, `installCommand` to the rest of the system?**
+- **What connects `screens`, `onboardingScreens`, `MEAL_SLOT_OPTIONS` to the rest of the system?**
   _891 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.06550687285223368 - nodes in this community are weakly interconnected._
