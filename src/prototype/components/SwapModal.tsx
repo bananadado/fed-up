@@ -388,14 +388,14 @@ export function SwapModal({
                     tabIndex={0}
                     onClick={() => setSelectedId(meal.id)}
                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setSelectedId(meal.id); }}
-                    className={`cursor-pointer rounded-xl p-3 transition ${
+                    className={`cursor-pointer overflow-hidden rounded-xl transition ${
                       isSelected
                         ? "border-2 border-emerald-400 bg-emerald-50"
                         : "border border-stone-200 bg-stone-50 hover:border-stone-300 hover:bg-white"
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
+                    <div className="flex items-stretch">
+                      <div className="min-w-0 flex-1 p-3">
                         <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
                         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
                           <span className="flex items-center gap-1"><Clock3 size={11} /> {meal.time} min</span>
@@ -413,10 +413,10 @@ export function SwapModal({
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); viewRecipe(meal.id); }}
-                        className="shrink-0 rounded-lg border border-stone-200 bg-white p-1.5 text-stone-400 transition hover:border-emerald-300 hover:text-emerald-700"
+                        className="flex shrink-0 items-center justify-center border-l border-stone-200 px-4 text-stone-400 transition hover:bg-stone-100 hover:text-emerald-700"
                         aria-label={`View ${meal.name} recipe`}
                       >
-                        <Eye size={14} />
+                        <Eye size={16} />
                       </button>
                     </div>
                   </div>
