@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
 import type { Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
+import { DailyMacroSummary } from "../components/DailyMacroSummary";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal, slotLabels } from "../components/SwapModal";
@@ -304,6 +305,7 @@ export function PlanScreen({
               </AppButton>
             </div>
           </Card>
+          <DailyMacroSummary plan={plan} customRecipes={customRecipes} />
         </div>
       </div>
       {shoppingOpen && (
