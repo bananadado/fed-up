@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 2617 nodes, 4657 edges, 159 communities. Commit: 481c7ed</p>
+<p class="subtitle">Generated from graphify knowledge graph: 2617 nodes, 4657 edges, 159 communities. Commit: e4f040d</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -121,14 +121,14 @@ flowchart LR
     COMMUNITY_0_B056AD3D -->|contains x88| OTHER_D0941E68
     TESTS_FIXTURES_B84B1DCC -->|imports x62| SERVE_API_35EC8E86
     COMMUNITY_1_3073A0DB -->|contains x55| OTHER_D0941E68
+    COMMUNITY_6_7D637A07 -->|imports x48| TESTS_FIXTURES_B84B1DCC
     COMMUNITY_2_8C8DF7B9 -->|contains x46| OTHER_D0941E68
-    COMMUNITY_6_7D637A07 -->|imports x42| TESTS_FIXTURES_B84B1DCC
     COMMUNITY_94_0AE67AB2 -->|imports x40| TESTS_FIXTURES_B84B1DCC
     TESTS_FIXTURES_B84B1DCC -->|imports x39| OTHER_D0941E68
     OTHER_D0941E68 -->|imports x39| TESTS_FIXTURES_B84B1DCC
-    TESTS_FIXTURES_B84B1DCC -->|imports x26| COMMUNITY_6_7D637A07
     SERVE_API_35EC8E86 -->|imports x25| TESTS_FIXTURES_B84B1DCC
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
+    TESTS_FIXTURES_B84B1DCC -->|imports x20| COMMUNITY_6_7D637A07
     TESTS_FIXTURES_B84B1DCC -->|imports x18| COMMUNITY_94_0AE67AB2
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
@@ -4276,17 +4276,19 @@ flowchart LR
         prototype_utils_mealbyid_f9367acb("mealById()<br/><small>src/prototype/utils.ts</small>")
         src_prototype_utils_ts_ab166376("utils.ts")
     end
+    subgraph community_6_prototype_components_SwapModal_tsx_4b3ca5e8["prototype/components/SwapModal.tsx"]
+        src_prototype_components_swapmodal_tsx_977c1c5c("SwapModal.tsx")
+        components_swapmodal_swapmodal_74975f69("SwapModal()<br/><small>prototype/components/SwapModal.tsx</small>")
+        components_swapmodal_pricediff_2cbb16eb("priceDiff()<br/><small>prototype/components/SwapModal.tsx</small>")
+    end
+    subgraph community_6_src_prototype_types_ts_bd7fae97["src/prototype/types.ts"]
+        prototype_types_meal_69e1b6d5("Meal<br/><small>src/prototype/types.ts</small>")
+        prototype_types_mealslot_f4068e82("MealSlot<br/><small>src/prototype/types.ts</small>")
+        prototype_types_planentry_ad9bab6d("PlanEntry<br/><small>src/prototype/types.ts</small>")
+    end
     subgraph community_6_prototype_components_BudgetCard_tsx_ac017e2f["prototype/components/BudgetCard.tsx"]
         components_budgetcard_budgetcard_941d8857("BudgetCard()<br/><small>prototype/components/BudgetCard.tsx</small>")
         components_budgetcard_entrytotal_ea129935("entryTotal()<br/><small>prototype/components/BudgetCard.tsx</small>")
-    end
-    subgraph community_6_prototype_components_SwapModal_tsx_4b3ca5e8["prototype/components/SwapModal.tsx"]
-        components_swapmodal_pricediff_2cbb16eb("priceDiff()<br/><small>prototype/components/SwapModal.tsx</small>")
-        components_swapmodal_swapmodal_74975f69("SwapModal()<br/><small>prototype/components/SwapModal.tsx</small>")
-    end
-    subgraph community_6_prototype_screens_Dashboard_tsx_81e3d013["prototype/screens/Dashboard.tsx"]
-        screens_dashboard_dashboard_0262bc7c("Dashboard()<br/><small>prototype/screens/Dashboard.tsx</small>")
-        src_prototype_screens_dashboard_tsx_f2b78264("Dashboard.tsx")
     end
     subgraph community_6_src_prototype_healthSignals_ts_2a30cac1["src/prototype/healthSignals.ts"]
         src_prototype_healthsignals_ts_9973a2cc("healthSignals.ts")
@@ -4296,54 +4298,50 @@ flowchart LR
         prototype_recipecatalogue_getrecipecatalogue_74de026a("getRecipeCatalogue()<br/><small>src/prototype/recipeCatalogue.ts</small>")
         prototype_recipecatalogue_getplanmeal_24d7d811("getPlanMeal()<br/><small>src/prototype/recipeCatalogue.ts</small>")
     end
-    subgraph community_6_src_prototype_types_ts_bd7fae97["src/prototype/types.ts"]
-        prototype_types_planentry_ad9bab6d("PlanEntry<br/><small>src/prototype/types.ts</small>")
-        prototype_types_meal_69e1b6d5("Meal<br/><small>src/prototype/types.ts</small>")
-    end
-    src_prototype_screens_planscreen_tsx_e1c00613("PlanScreen.tsx")
+    screens_dashboard_dashboard_0262bc7c("Dashboard()<br/><small>prototype/screens/Dashboard.tsx</small>")
     prototype_ingredients_ingredientname_242c654e("ingredientName()<br/><small>src/prototype/ingredients.ts</small>")
+    components_swapmodal_pricediff_2cbb16eb -->|calls| prototype_utils_money_e5ae07fe
+    components_swapmodal_swapmodal_74975f69 -->|calls| prototype_utils_getmealbyid_0a8b6bcc
+    components_swapmodal_swapmodal_74975f69 -->|calls| prototype_utils_money_e5ae07fe
     prototype_recipecatalogue_getrecipecatalogue_74de026a -->|calls| prototype_utils_getmealbyid_0a8b6bcc
     prototype_recipecatalogue_getrecipecatalogue_74de026a -->|calls| prototype_utils_mealbyid_f9367acb
     prototype_recipecatalogue_getplanmeal_24d7d811 -->|calls| prototype_utils_mealbyid_f9367acb
     prototype_healthsignals_mealhealthsignals_3c9bea53 -->|calls| screens_dashboard_dashboard_0262bc7c
     prototype_utils_money_e5ae07fe -->|calls| components_budgetcard_budgetcard_941d8857
-    prototype_utils_money_e5ae07fe -->|calls| components_swapmodal_pricediff_2cbb16eb
-    prototype_utils_money_e5ae07fe -->|calls| components_swapmodal_swapmodal_74975f69
     prototype_utils_money_e5ae07fe -->|calls| screens_dashboard_dashboard_0262bc7c
     prototype_utils_mealbyid_f9367acb -->|calls| prototype_utils_getmealbyid_0a8b6bcc
     prototype_utils_getmealbyid_0a8b6bcc -->|calls| components_budgetcard_entrytotal_ea129935
-    prototype_utils_getmealbyid_0a8b6bcc -->|calls| components_swapmodal_swapmodal_74975f69
+    src_prototype_components_swapmodal_tsx_977c1c5c -->|imports| prototype_ingredients_ingredientname_242c654e
+    src_prototype_components_swapmodal_tsx_977c1c5c -->|imports| prototype_types_meal_69e1b6d5
+    src_prototype_components_swapmodal_tsx_977c1c5c -->|imports| prototype_types_mealslot_f4068e82
+    src_prototype_components_swapmodal_tsx_977c1c5c -->|imports| prototype_types_planentry_ad9bab6d
+    src_prototype_components_swapmodal_tsx_977c1c5c -->|imports| prototype_utils_getmealbyid_0a8b6bcc
+    src_prototype_components_swapmodal_tsx_977c1c5c -->|imports| prototype_utils_money_e5ae07fe
+    src_prototype_components_swapmodal_tsx_977c1c5c -->|imports| src_prototype_utils_ts_ab166376
     prototype_recipecatalogue_getrecipecatalogue_74de026a -->|imports| src_prototype_utils_ts_ab166376
     prototype_recipecatalogue_getplanmeal_24d7d811 -->|imports| src_prototype_utils_ts_ab166376
     src_prototype_healthsignals_ts_9973a2cc -->|imports| prototype_ingredients_ingredientname_242c654e
     src_prototype_healthsignals_ts_9973a2cc -->|imports| prototype_types_meal_69e1b6d5
     src_prototype_healthsignals_ts_9973a2cc -->|imports| prototype_types_planentry_ad9bab6d
     src_prototype_healthsignals_ts_9973a2cc -->|imports| prototype_utils_getmealbyid_0a8b6bcc
-    src_prototype_healthsignals_ts_9973a2cc -->|imports| src_prototype_utils_ts_ab166376
-    src_prototype_healthsignals_ts_9973a2cc -->|imports| src_prototype_screens_dashboard_tsx_f2b78264
-    src_prototype_healthsignals_ts_9973a2cc -->|imports| src_prototype_screens_planscreen_tsx_e1c00613
-    prototype_healthsignals_mealhealthsignals_3c9bea53 -->|imports| src_prototype_screens_dashboard_tsx_f2b78264
-    prototype_healthsignals_mealhealthsignals_3c9bea53 -->|imports| src_prototype_screens_planscreen_tsx_e1c00613
-    prototype_ingredients_ingredientname_242c654e -->|imports| src_prototype_utils_ts_ab166376
-    src_prototype_utils_ts_ab166376 -->|imports| src_prototype_screens_dashboard_tsx_f2b78264
-    %% Omitted for readability: 13 nodes, 14 edges
+    %% Omitted for readability: 13 nodes, 3 edges
     class prototype_utils_money_e5ae07fe function;
     class prototype_utils_getmealbyid_0a8b6bcc function;
     class prototype_utils_mealbyid_f9367acb function;
     class src_prototype_utils_ts_ab166376 module;
+    class src_prototype_components_swapmodal_tsx_977c1c5c ui;
+    class components_swapmodal_swapmodal_74975f69 ui;
+    class components_swapmodal_pricediff_2cbb16eb ui;
+    class prototype_types_meal_69e1b6d5 klass;
+    class prototype_types_mealslot_f4068e82 klass;
+    class prototype_types_planentry_ad9bab6d klass;
     class components_budgetcard_budgetcard_941d8857 ui;
     class components_budgetcard_entrytotal_ea129935 ui;
-    class components_swapmodal_pricediff_2cbb16eb ui;
-    class components_swapmodal_swapmodal_74975f69 ui;
-    class screens_dashboard_dashboard_0262bc7c ui;
-    class src_prototype_screens_dashboard_tsx_f2b78264 ui;
     class src_prototype_healthsignals_ts_9973a2cc module;
     class prototype_healthsignals_mealhealthsignals_3c9bea53 function;
     class prototype_recipecatalogue_getrecipecatalogue_74de026a function;
     class prototype_recipecatalogue_getplanmeal_24d7d811 function;
-    class prototype_types_planentry_ad9bab6d klass;
-    class prototype_types_meal_69e1b6d5 klass;
-    class src_prototype_screens_planscreen_tsx_e1c00613 ui;
+    class screens_dashboard_dashboard_0262bc7c ui;
     class prototype_ingredients_ingredientname_242c654e function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
@@ -4368,206 +4366,22 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>mealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td>getRecipeCatalogue() node in src/prototype/recipeCatalogue.ts.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>getPlanMeal()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>mealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td>getPlanMeal() node in src/prototype/recipeCatalogue.ts.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>ingredientName()</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small><br>+4 more</td>
-  <td>Module file in src/prototype/healthSignals.ts.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>vegetableWords</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>vegetableWords node in src/prototype/healthSignals.ts.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>mealHealthSignals()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Dashboard()</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
-  <td>mealHealthSignals() node in src/prototype/healthSignals.ts.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>weeklyBalanceSummary()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>weeklyBalanceSummary() node in src/prototype/healthSignals.ts.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>ingredientName()</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
-  <td><code>SwapModal.tsx</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td>ingredientName() node in src/prototype/ingredients.ts.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>getPlanMeal()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br>+1 more</td>
-  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+2 more</td>
-  <td>Module file in src/prototype/utils.ts.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>parseICS()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>parseICS() node in src/prototype/utils.ts.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>money()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>BudgetCard()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard()</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br>+5 more</td>
-  <td>money() node in src/prototype/utils.ts.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>mealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>getPlanMeal()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td>mealById() node in src/prototype/utils.ts.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>mealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>entryTotal()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br>+3 more</td>
-  <td>getMealById() node in src/prototype/utils.ts.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>NAME_STOPWORDS</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>NAME_STOPWORDS node in src/prototype/utils.ts.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>MealSlot</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small><br><code>SwapModal.tsx</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
-  <td>MealSlot node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small><br>+1 more</td>
-  <td>Meal node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>PlanEntry</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
-  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small><br>+1 more</td>
-  <td>PlanEntry node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+5 more</td>
-  <td><code>BudgetCard()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>slotLabels</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small><br>+2 more</td>
-  <td>Module file in prototype/screens/PlanScreen.tsx.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>RescueChoice</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>RescueChoice node in prototype/screens/PlanScreen.tsx.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+5 more</td>
-  <td><code>BudgetCard()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>SwapModal()</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small><br>+1 more</td>
-  <td>Module file in prototype/screens/Dashboard.tsx.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>Dashboard()</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>mealHealthSignals()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>money()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>Dashboard() node in prototype/screens/Dashboard.tsx.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+4 more</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in prototype/components/BudgetCard.tsx.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>entryTotal()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>entryTotal() node in prototype/components/BudgetCard.tsx.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>BudgetCard()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>money()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>BudgetCard() node in prototype/components/BudgetCard.tsx.</td>
-</tr>
-<tr>
-  <td>24</td>
   <td><code>SwapModal.tsx</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>ingredientName()</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small><br>+6 more</td>
-  <td>No direct outbound edge</td>
   <td>Module file in prototype/components/SwapModal.tsx.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>2</td>
   <td><code>slotLabels</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
-  <td>No direct outbound edge</td>
   <td>slotLabels node in prototype/components/SwapModal.tsx.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>3</td>
   <td><code>mealTypeIcon</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4575,7 +4389,7 @@ flowchart LR
   <td>mealTypeIcon node in prototype/components/SwapModal.tsx.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>4</td>
   <td><code>SortOption</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4583,7 +4397,7 @@ flowchart LR
   <td>SortOption node in prototype/components/SwapModal.tsx.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>5</td>
   <td><code>sortLabels</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4591,7 +4405,7 @@ flowchart LR
   <td>sortLabels node in prototype/components/SwapModal.tsx.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>6</td>
   <td><code>allSlots</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4599,12 +4413,196 @@ flowchart LR
   <td>allSlots node in prototype/components/SwapModal.tsx.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>7</td>
   <td><code>priceDiff()</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td><code>money()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
-  <td>No direct outbound edge</td>
   <td>priceDiff() node in prototype/components/SwapModal.tsx.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>SwapModal()</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>money()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br>+1 more</td>
+  <td>SwapModal() node in prototype/components/SwapModal.tsx.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>mealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>getRecipeCatalogue() node in src/prototype/recipeCatalogue.ts.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>getPlanMeal()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>mealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>getPlanMeal() node in src/prototype/recipeCatalogue.ts.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>ingredientName()</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small><br>+4 more</td>
+  <td>Module file in src/prototype/healthSignals.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>vegetableWords</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>vegetableWords node in src/prototype/healthSignals.ts.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>mealHealthSignals()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Dashboard()</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
+  <td>mealHealthSignals() node in src/prototype/healthSignals.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>weeklyBalanceSummary()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>weeklyBalanceSummary() node in src/prototype/healthSignals.ts.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>ingredientName()</code><br><small style="color:var(--muted)">src/prototype/ingredients.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>SwapModal.tsx</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
+  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>ingredientName() node in src/prototype/ingredients.ts.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>getPlanMeal()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br>+2 more</td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+1 more</td>
+  <td>Module file in src/prototype/utils.ts.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>parseICS()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>parseICS() node in src/prototype/utils.ts.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>money()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>priceDiff()</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small><br><code>SwapModal()</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small><br><code>SwapModal.tsx</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
+  <td><code>BudgetCard()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard()</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br>+2 more</td>
+  <td>money() node in src/prototype/utils.ts.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>mealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>getPlanMeal()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
+  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>mealById() node in src/prototype/utils.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>mealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br>+2 more</td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>entryTotal()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br>+1 more</td>
+  <td>getMealById() node in src/prototype/utils.ts.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>NAME_STOPWORDS</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>NAME_STOPWORDS node in src/prototype/utils.ts.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>MealSlot</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>SwapModal.tsx</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
+  <td>MealSlot node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>SwapModal.tsx</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
+  <td>Meal node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>PlanEntry</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>SwapModal.tsx</code><br><small style="color:var(--muted)">prototype/components/SwapModal.tsx</small></td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
+  <td>PlanEntry node in src/prototype/types.ts.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>PlanScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+8 more</td>
+  <td><code>BudgetCard()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small></td>
+  <td>Module file in prototype/screens/PlanScreen.tsx.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>RescueChoice</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>RescueChoice node in prototype/screens/PlanScreen.tsx.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+7 more</td>
+  <td><code>BudgetCard()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small></td>
+  <td>Module file in prototype/screens/Dashboard.tsx.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>Dashboard()</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>mealHealthSignals()</code><br><small style="color:var(--muted)">src/prototype/healthSignals.ts</small><br><code>money()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>Dashboard() node in prototype/screens/Dashboard.tsx.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">prototype/screens/Dashboard.tsx</small><br><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small><br><code>Meal</code><br><small style="color:var(--muted)">src/prototype/types.ts</small><br>+4 more</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in prototype/components/BudgetCard.tsx.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>entryTotal()</code><br><small style="color:var(--muted)">prototype/components/BudgetCard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>getMealById()</code><br><small style="color:var(--muted)">src/prototype/utils.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>entryTotal() node in prototype/components/BudgetCard.tsx.</td>
 </tr>
 </table>
 
@@ -4625,7 +4623,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x35, contains x19, calls x11, imports x11. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x35, contains x19, imports x11, calls x11. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5350,7 +5348,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-04 20:45 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-04 20:59 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
