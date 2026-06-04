@@ -94,7 +94,7 @@ export async function resolveDeadlineStress(deadlines: Deadline[]): Promise<numb
   }
 }
 
-export async function syncRecommenderUser(sessionId: string, prefs: Preferences): Promise<void> {
+export async function syncRecommenderUser(sessionId: string, prefs: Preferences, signal?: AbortSignal): Promise<void> {
   const response = await fetch(functionUrl("deadlineFoodRecommenderUser", "/api/recommender/user"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -111,6 +111,7 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences)
       university: prefs.university || null,
       postcode: prefs.postcode || null,
     }),
+    signal,
   });
 
   await readJson(response, "Recommender user sync");
@@ -172,8 +173,10 @@ export async function fetchRecommenderRecommendations(input: {
   prefs: Preferences;
   deadlines: Deadline[];
   excludeIds: string[];
+  count?: number;
+  signal?: AbortSignal;
 }): Promise<Meal[]> {
-  await syncRecommenderUser(input.sessionId, input.prefs);
+  await syncRecommenderUser(input.sessionId, input.prefs, input.signal);
 
   const deadlineStress = await resolveDeadlineStress(input.deadlines);
 
@@ -182,10 +185,11 @@ export async function fetchRecommenderRecommendations(input: {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       user_id: input.sessionId,
-      n: 100,
+      n: input.count ?? 100,
       deadline_stress: deadlineStress,
       exclude_ids: input.excludeIds,
     }),
+    signal: input.signal,
   });
   const recipes = await readJson<ScoredRecipe[]>(response, "Recommendations");
 

@@ -58,11 +58,27 @@ export function SwapModal({
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
-  const [search, setSearch] = useState("");
+  const [savedFilters] = useState(() => {
+    try {
+      const raw = sessionStorage.getItem("deadlineFood:swapFilters");
+      if (raw) {
+        sessionStorage.removeItem("deadlineFood:swapFilters");
+        return JSON.parse(raw) as {
+          search: string;
+          sortBy: SortOption;
+          selectedSlots: MealSlot[];
+          selectedTags: string[];
+        };
+      }
+    } catch { /* sessionStorage unavailable */ }
+    return null;
+  });
+
+  const [search, setSearch] = useState(savedFilters?.search ?? "");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<SortOption>("match");
-  const [selectedSlots, setSelectedSlots] = useState<MealSlot[]>([rescueChoice.slot]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<SortOption>(savedFilters?.sortBy ?? "match");
+  const [selectedSlots, setSelectedSlots] = useState<MealSlot[]>(savedFilters?.selectedSlots ?? [rescueChoice.slot]);
+  const [selectedTags, setSelectedTags] = useState<string[]>(savedFilters?.selectedTags ?? []);
   const [customTagInput, setCustomTagInput] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [showSort, setShowSort] = useState(false);
@@ -178,6 +194,12 @@ export function SwapModal({
   function viewRecipe(mealId: string) {
     track("meal_swap_recipe_viewed", { meal_id: mealId, day: rescueChoice.day, meal_slot: rescueChoice.slot });
     sessionStorage.setItem("deadlineFood:pendingRescueChoice", JSON.stringify(rescueChoice));
+    sessionStorage.setItem("deadlineFood:swapFilters", JSON.stringify({
+      search,
+      sortBy,
+      selectedSlots,
+      selectedTags,
+    }));
     closeAndReset();
     onSelectMeal(mealId);
   }
