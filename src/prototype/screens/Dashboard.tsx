@@ -1,5 +1,5 @@
-import { ChevronRight, Clock3, RefreshCcw, Sparkles, Utensils } from "lucide-react";
-import { useState } from "react";
+import { ChevronRight, Clock3, RefreshCcw, ShoppingBasket, Sparkles, Utensils } from "lucide-react";
+import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
@@ -7,6 +7,7 @@ import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal } from "../components/SwapModal";
 import { getMealById, money } from "../utils";
+import { ingredientsFromPlan } from "../shopping";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -40,6 +41,7 @@ export function Dashboard({
   track: TrackPrototypeEvent;
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
+  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
   const nextMeal = plan
     .flatMap((entry) =>
       entry.meals.map((planMeal) => ({
@@ -126,6 +128,31 @@ export function Dashboard({
             ) : (
               <p className="mt-3 text-stone-500">No meals planned this week.</p>
             )}
+          </Card>
+          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4">
+            <div className="flex items-center gap-3">
+              <span className="rounded-lg bg-emerald-50 p-2 text-emerald-700">
+                <ShoppingBasket size={18} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">Shopping list</p>
+                <p className="mt-0.5 text-sm text-stone-500">
+                  {shoppingItems.length === 0 ? "No items yet" : `${shoppingItems.length} items to buy this week`}
+                </p>
+              </div>
+              <AppButton
+                variant="secondary"
+                className="shrink-0 px-3 py-1.5 text-xs"
+                disabled={shoppingItems.length === 0}
+                onClick={() => {
+                  track("dashboard_shopping_list_clicked", { item_count: shoppingItems.length });
+                  try { sessionStorage.setItem("deadlineFood:openShopping", "1"); } catch { /* ignore */ }
+                  setScreen("plan");
+                }}
+              >
+                View list
+              </AppButton>
+            </div>
           </Card>
           <Card className="gap-0 rounded-lg border-emerald-100 bg-emerald-50 p-5">
             <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
