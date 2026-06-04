@@ -876,6 +876,7 @@ proposal
 proposition
 prototype
 provider
+providers
 proxy
 pseudo
 public
@@ -935,6 +936,7 @@ refines
 refresh
 refreshed
 regex
+region
 register
 reject
 rejects
@@ -1289,6 +1291,7 @@ vectors
 vegetable
 vegetarian
 vendor
+vendors
 verbatim
 vercel
 verification
