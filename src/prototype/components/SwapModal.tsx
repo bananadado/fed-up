@@ -83,7 +83,8 @@ export function SwapModal({
   const [showFilters, setShowFilters] = useState(false);
   const [showSort, setShowSort] = useState(false);
 
-  const originalDay = plan.find((entry) => entry.day === rescueChoice.day);
+  const originalDayIndex = plan.findIndex((entry) => entry.day === rescueChoice.day);
+  const originalDay = originalDayIndex >= 0 ? plan[originalDayIndex] : undefined;
   const originalPlanMeal = originalDay?.meals.find((meal) => meal.slot === rescueChoice.slot);
   const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
@@ -125,18 +126,16 @@ export function SwapModal({
   const effectiveId = selectedId ?? allOptions[0]?.id ?? null;
   const selectedMeal = allOptions.find((m) => m.id === effectiveId) ?? allOptions[0] ?? null;
 
-  const total = plan.reduce(
+  const weekStartIndex = originalDayIndex >= 0 ? Math.floor(originalDayIndex / 7) * 7 : 0;
+  const affectedWeekEntries = plan.slice(weekStartIndex, weekStartIndex + 7);
+  const total = affectedWeekEntries.reduce(
     (sum, entry) => sum + entry.meals.reduce((daySum, meal) => daySum + getMealById(meal.mealId, customRecipes).price, 0),
     0,
   );
-  const newTotal = originalMeal && selectedMeal ? total - originalMeal.price + selectedMeal.price : total;
-  const weekCount = Math.max(1, Math.ceil(plan.length / 7));
-  const horizonBudget = prefs.budget * weekCount;
+  const newTotal = selectedMeal ? total - (originalMeal?.price ?? 0) + selectedMeal.price : total;
 
   const isDefaultSlots = selectedSlots.length === 1 && selectedSlots[0] === rescueChoice.slot;
   const activeFilterCount = selectedTags.length + (isDefaultSlots ? 0 : 1);
-
-  if (!originalMeal) return null;
 
   function closeAndReset() {
     onClose();
@@ -178,7 +177,9 @@ export function SwapModal({
         entry.day === rescueChoice.day
           ? {
               ...entry,
-              meals: entry.meals.map((m) => (m.slot === rescueChoice.slot ? { ...m, mealId: meal.id, rescued: true } : m)),
+              meals: originalPlanMeal ?
+                entry.meals.map((m) => (m.slot === rescueChoice.slot ? { ...m, mealId: meal.id, rescued: true } : m)) :
+                [...entry.meals, { slot: rescueChoice.slot, mealId: meal.id, rescued: true }],
             }
           : entry,
       ),
@@ -206,7 +207,7 @@ export function SwapModal({
     onSelectMeal(mealId);
   }
 
-  const budgetAfter = horizonBudget - newTotal;
+  const budgetAfter = prefs.budget - newTotal;
 
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-center bg-stone-950/40 p-0 sm:items-center sm:p-5" onClick={() => { track("meal_swap_cancelled", { action: "backdrop", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }}>
@@ -222,7 +223,7 @@ export function SwapModal({
           <div className="flex items-start justify-between gap-3">
             <div>
               <Badge tone="amber">{slotLabels[rescueChoice.slot]}</Badge>
-              <h2 className="mt-2 text-xl font-bold">Change this meal</h2>
+              <h2 className="mt-2 text-xl font-bold">{originalMeal ? "Change this meal" : "Choose a meal"}</h2>
             </div>
             <button
               type="button"
@@ -237,11 +238,17 @@ export function SwapModal({
           {/* Current meal */}
           <div className="mt-4 rounded-lg bg-stone-50 px-3 py-2.5">
             <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Current</p>
-            <p className="break-words font-semibold text-stone-800">{originalMeal.image} {originalMeal.name}</p>
-            <div className="mt-1 flex items-center gap-3 text-xs text-stone-500">
-              <span className="flex items-center gap-1"><Clock3 size={12} /> {originalMeal.time} min</span>
-              <span>{money(originalMeal.price)}</span>
-            </div>
+            {originalMeal ? (
+              <>
+                <p className="break-words font-semibold text-stone-800">{originalMeal.image} {originalMeal.name}</p>
+                <div className="mt-1 flex items-center gap-3 text-xs text-stone-500">
+                  <span className="flex items-center gap-1"><Clock3 size={12} /> {originalMeal.time} min</span>
+                  <span>{money(originalMeal.price)}</span>
+                </div>
+              </>
+            ) : (
+              <p className="break-words font-semibold text-stone-800">No meal allocated</p>
+            )}
           </div>
 
           {/* Search + Sort + Filter */}
@@ -378,10 +385,10 @@ export function SwapModal({
             ) : (
               filteredOptions.map((meal) => {
                 const isSelected = meal.id === effectiveId;
-                const diff = priceDiff(meal.price, originalMeal.price);
+                const diff = originalMeal ? priceDiff(meal.price, originalMeal.price) : { label: `adds ${money(meal.price)}`, sign: "extra" as const };
                 const DiffIcon = diff.sign === "saving" ? TrendingDown : diff.sign === "extra" ? TrendingUp : null;
                 const diffColor = diff.sign === "saving" ? "text-emerald-700" : diff.sign === "extra" ? "text-rose-600" : "text-stone-400";
-                const timeDiff = originalMeal.time - meal.time;
+                const timeDiff = originalMeal ? originalMeal.time - meal.time : null;
 
                 return (
                   <div
@@ -407,9 +414,11 @@ export function SwapModal({
                               <DiffIcon size={11} /> {diff.label}
                             </span>
                           )}
-                          <span className={`flex items-center gap-0.5 font-medium ${timeDiff > 0 ? "text-emerald-700" : timeDiff < 0 ? "text-rose-600" : "text-stone-400"}`}>
-                            <Clock3 size={11} /> {timeDiff >= 0 ? `saves ${timeDiff} min` : `${Math.abs(timeDiff)} min longer`}
-                          </span>
+                          {timeDiff !== null && (
+                            <span className={`flex items-center gap-0.5 font-medium ${timeDiff > 0 ? "text-emerald-700" : timeDiff < 0 ? "text-rose-600" : "text-stone-400"}`}>
+                              <Clock3 size={11} /> {timeDiff >= 0 ? `saves ${timeDiff} min` : `${Math.abs(timeDiff)} min longer`}
+                            </span>
+                          )}
                         </div>
                       </div>
                       <button
@@ -433,15 +442,15 @@ export function SwapModal({
 
           {/* Before / after summary */}
           {selectedMeal && (() => {
-            const timeDiff = originalMeal.time - selectedMeal.time;
-            const pDiff = priceDiff(selectedMeal.price, originalMeal.price);
+            const timeDiff = originalMeal ? originalMeal.time - selectedMeal.time : null;
+            const pDiff = originalMeal ? priceDiff(selectedMeal.price, originalMeal.price) : { label: `adds ${money(selectedMeal.price)}`, sign: "extra" as const };
             return (
               <div className="mb-3 rounded-xl bg-emerald-900 p-4 text-white">
                 {/* Now → After + Budget left */}
                 <div className="flex items-end gap-3">
                   <div>
                     <p className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
-                      <ShoppingCart size={10} /> Now
+                      <ShoppingCart size={10} /> Week now
                     </p>
                     <p className="mt-1 text-xl font-bold">{money(total)}</p>
                   </div>
@@ -465,17 +474,15 @@ export function SwapModal({
                 </div>
                 {/* Time & price pills */}
                 <div className="mt-3 flex flex-wrap gap-2 border-t border-emerald-700/50 pt-3">
-                  <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${timeDiff > 0 ? "bg-emerald-700 text-emerald-100" : timeDiff < 0 ? "bg-rose-800/70 text-rose-200" : "bg-emerald-800 text-emerald-300"}`}>
-                    <Clock3 size={11} />
-                    {timeDiff >= 0 ? `saves ${timeDiff} min` : `${Math.abs(timeDiff)} min longer`}
-                  </span>
+                  {timeDiff !== null && (
+                    <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${timeDiff > 0 ? "bg-emerald-700 text-emerald-100" : timeDiff < 0 ? "bg-rose-800/70 text-rose-200" : "bg-emerald-800 text-emerald-300"}`}>
+                      <Clock3 size={11} />
+                      {timeDiff >= 0 ? `saves ${timeDiff} min` : `${Math.abs(timeDiff)} min longer`}
+                    </span>
+                  )}
                   <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${pDiff.sign === "saving" ? "bg-emerald-700 text-emerald-100" : pDiff.sign === "extra" ? "bg-rose-800/70 text-rose-200" : "bg-emerald-800 text-emerald-300"}`}>
                     {pDiff.sign === "saving" ? <TrendingDown size={11} /> : pDiff.sign === "extra" ? <TrendingUp size={11} /> : null}
-                    {pDiff.sign === "saving"
-                      ? `saves ${money(Math.abs(selectedMeal.price - originalMeal.price))}`
-                      : pDiff.sign === "extra"
-                        ? `costs ${money(selectedMeal.price - originalMeal.price)} more`
-                        : "same price"}
+                    {pDiff.label}
                   </span>
                 </div>
               </div>

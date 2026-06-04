@@ -1033,6 +1033,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     body.savedRecipes.map((m) => asRecord(m)).filter((m): m is UnknownRecord => m !== null).slice(0, 200) :
     [];
   const excludeIds = boundedStringList(body.excludeIds, 250, 80);
+  const excludedIds = new Set(excludeIds);
   const dislikes = boundedStringList(body.dislikes, 40, 80);
   const allergens = boundedStringList(body.allergens, 40, 80);
   const weeklyBudgetPence = Math.round(boundedNumber(body.budget, 48, 0, 1000) * 100);
@@ -1075,7 +1076,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
         const recipe = asRecord(asRecord(item)?.recipe);
         if (recipe === null) continue;
         const id = boundedString(recipe.id, "", 80);
-        if (!id || mealsById.has(id)) continue;
+        if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
         const meal = recommenderRecipeToMeal(recipe);
         mealsById.set(id, meal);
         fillAlloc.push(mealToAllocator(meal));
@@ -1083,9 +1084,20 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     }
   }
 
+  // Deterministic final fallback: if the user has few/no saved recipes and the
+  // recommender is empty or unavailable, still plan from the canonical catalogue.
+  const fallbackAlloc: AutoPlan.AllocatorMeal[] = [];
+  for (const recipe of prototypeRecipes) {
+    const meal = recipe as unknown as UnknownRecord;
+    const id = boundedString(meal.id, "", 80);
+    if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
+    mealsById.set(id, meal);
+    fallbackAlloc.push(mealToAllocator(meal));
+  }
+
   const plan = buildPlan({
     days,
-    pool: [...savedAlloc, ...fillAlloc],
+    pool: [...savedAlloc, ...fillAlloc, ...fallbackAlloc],
     avoided: [...dislikes, ...allergens],
     weeklyBudgetPence,
   });

@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 2576 nodes, 4925 edges, 148 communities. Commit: a6d099a</p>
+<p class="subtitle">Generated from graphify knowledge graph: 2588 nodes, 4940 edges, 150 communities. Commit: 464672d</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -75,9 +75,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#community-21">Community 21</a>
     <a href="#community-4">Community 4</a>
     <a href="#community-36">Community 36</a>
-    <a href="#community-46">Community 46</a>
+    <a href="#community-130">Community 130</a>
     <a href="#community-23">Community 23</a>
-    <a href="#community-14">Community 14</a>
+    <a href="#community-25">Community 25</a>
     <a href="#other">Other</a>
 </div>
 
@@ -96,9 +96,9 @@ flowchart LR
     class CLI_SKILLS_9964CBB8 module;
     INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>62 nodes</small>")
     class INGEST_CACHE_UPDATE_FF457338 module;
-    SERVE_API_35EC8E86("Serving API<br/><small>366 nodes</small>")
+    SERVE_API_35EC8E86("Serving API<br/><small>365 nodes</small>")
     class SERVE_API_35EC8E86 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>766 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>740 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
     COMMUNITY_2_8C8DF7B9("Community 2<br/><small>124 nodes</small>")
     class COMMUNITY_2_8C8DF7B9 module;
@@ -106,30 +106,30 @@ flowchart LR
     class COMMUNITY_0_B056AD3D module;
     COMMUNITY_21_47BA4108("Community 21<br/><small>75 nodes</small>")
     class COMMUNITY_21_47BA4108 module;
-    COMMUNITY_4_AC2DC2A9("Community 4<br/><small>39 nodes</small>")
+    COMMUNITY_4_AC2DC2A9("Community 4<br/><small>44 nodes</small>")
     class COMMUNITY_4_AC2DC2A9 module;
-    COMMUNITY_36_F6473446("Community 36<br/><small>36 nodes</small>")
+    COMMUNITY_36_F6473446("Community 36<br/><small>37 nodes</small>")
     class COMMUNITY_36_F6473446 module;
-    COMMUNITY_46_B899AE41("Community 46<br/><small>32 nodes</small>")
-    class COMMUNITY_46_B899AE41 module;
+    COMMUNITY_130_A0E76FCE("Community 130<br/><small>31 nodes</small>")
+    class COMMUNITY_130_A0E76FCE module;
     COMMUNITY_23_58D9DE5D("Community 23<br/><small>30 nodes</small>")
     class COMMUNITY_23_58D9DE5D module;
-    COMMUNITY_14_21BC55C3("Community 14<br/><small>29 nodes</small>")
-    class COMMUNITY_14_21BC55C3 module;
-    OTHER_D0941E68("Other<br/><small>510 nodes</small>")
+    COMMUNITY_25_B1CFFD78("Community 25<br/><small>29 nodes</small>")
+    class COMMUNITY_25_B1CFFD78 module;
+    OTHER_D0941E68("Other<br/><small>544 nodes</small>")
     class OTHER_D0941E68 module;
-    COMMUNITY_14_21BC55C3 -->|imports x56| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x82| OTHER_D0941E68
     COMMUNITY_0_B056AD3D -->|contains x55| OTHER_D0941E68
-    TESTS_FIXTURES_B84B1DCC -->|imports x49| SERVE_API_35EC8E86
     COMMUNITY_2_8C8DF7B9 -->|contains x49| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x47| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x46| SERVE_API_35EC8E86
     COMMUNITY_21_47BA4108 -->|contains x46| OTHER_D0941E68
+    TESTS_FIXTURES_B84B1DCC -->|imports x42| COMMUNITY_130_A0E76FCE
     COMMUNITY_2_8C8DF7B9 -->|contains x36| COMMUNITY_36_F6473446
-    TESTS_FIXTURES_B84B1DCC -->|imports x34| OTHER_D0941E68
-    TESTS_FIXTURES_B84B1DCC -->|imports x33| COMMUNITY_46_B899AE41
-    COMMUNITY_46_B899AE41 -->|imports x29| SERVE_API_35EC8E86
-    OTHER_D0941E68 -->|imports x27| TESTS_FIXTURES_B84B1DCC
     CLI_SKILLS_9964CBB8 -->|contains x24| OTHER_D0941E68
-    COMMUNITY_46_B899AE41 -->|imports x17| TESTS_FIXTURES_B84B1DCC
+    COMMUNITY_130_A0E76FCE -->|calls x22| SERVE_API_35EC8E86
+    COMMUNITY_4_AC2DC2A9 -->|imports x19| TESTS_FIXTURES_B84B1DCC
+    COMMUNITY_4_AC2DC2A9 -->|imports x16| SERVE_API_35EC8E86
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,19 +146,19 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>215</td><td><code>27, 34, 37, 39, 40, 45, 48, 49, 53, 61, 70, 88, 113, 139, 120</code></td></tr><tr><td>Outputs &amp; Docs</td><td>25</td><td><code>57, 87</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>177</td><td><code>22, 31, 42, 33, 38, 47, 63, 77, 96, 97, 98, 111, 138</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>62</td><td><code>5</code></td></tr><tr><td>Serving API</td><td>366</td><td><code>1, 20, 12, 11, 13, 32, 29, 41, 60, 116</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>766</td><td><code>28, 6, 8, 9, 26, 10, 17, 24, 19, 15, 7, 18, 16, 112, 30, 3, 44, 56, 130, 59, 64, 69, 79, 90</code></td></tr><tr><td>Community 2</td><td>124</td><td><code>2</code></td></tr><tr><td>Community 0</td><td>90</td><td><code>0</code></td></tr><tr><td>Community 21</td><td>75</td><td><code>21</code></td></tr><tr><td>Community 4</td><td>39</td><td><code>4</code></td></tr><tr><td>Community 36</td><td>36</td><td><code>36</code></td></tr><tr><td>Community 46</td><td>32</td><td><code>46</code></td></tr><tr><td>Community 23</td><td>30</td><td><code>23</code></td></tr><tr><td>Community 14</td><td>29</td><td><code>14</code></td></tr><tr><td>Other</td><td>510</td><td><code>25, 52, 35, 129, 43, 54, 50, 51, 55, 58, 65, 62, 146, 147, 105, 66, 67, 119, 131, 68, 71, 78, 132, 133, 72, 73, 74, 75, 76, 134, 80, 81, 82, 83, 84, 85, 86, 99, 100, 135, 136, 137, 89, 91, 92, 93, 94, 95, 101, 102, 103, 104, 106, 107, 108, 109, 110, 114, 115, 117, 118, 121, 122, 140, 141, 142, 143, 123, 124, 125, 126, 127, 128, 144, 145</code></td></tr>
+      <tr><td>Graph Build</td><td>215</td><td><code>27, 34, 37, 39, 40, 45, 48, 49, 53, 61, 70, 88, 113, 139, 120</code></td></tr><tr><td>Outputs &amp; Docs</td><td>25</td><td><code>57, 87</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>177</td><td><code>22, 31, 42, 33, 38, 47, 63, 77, 96, 97, 98, 111, 138</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>62</td><td><code>5</code></td></tr><tr><td>Serving API</td><td>365</td><td><code>1, 20, 12, 11, 13, 14, 29, 41, 60, 116</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>740</td><td><code>28, 6, 8, 17, 24, 10, 26, 15, 19, 7, 18, 30, 9, 44, 16, 56, 59, 64, 69, 3, 79, 129, 90</code></td></tr><tr><td>Community 2</td><td>124</td><td><code>2</code></td></tr><tr><td>Community 0</td><td>90</td><td><code>0</code></td></tr><tr><td>Community 21</td><td>75</td><td><code>21</code></td></tr><tr><td>Community 4</td><td>44</td><td><code>4</code></td></tr><tr><td>Community 36</td><td>37</td><td><code>36</code></td></tr><tr><td>Community 130</td><td>31</td><td><code>130</code></td></tr><tr><td>Community 23</td><td>30</td><td><code>23</code></td></tr><tr><td>Community 25</td><td>29</td><td><code>25</code></td></tr><tr><td>Other</td><td>544</td><td><code>67, 52, 35, 54, 43, 32, 50, 51, 105, 55, 146, 58, 65, 62, 147, 46, 66, 112, 119, 131, 148, 149, 68, 132, 71, 78, 133, 72, 73, 74, 75, 76, 134, 80, 81, 82, 83, 84, 85, 86, 99, 100, 135, 136, 137, 89, 91, 92, 93, 94, 95, 101, 102, 103, 104, 106, 107, 108, 109, 110, 114, 115, 117, 118, 121, 122, 140, 141, 142, 143, 123, 124, 125, 126, 127, 128, 144, 145</code></td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Core Flow</h4>
-    <div class="arrow-chain">CLI &amp; Skill Installers -&gt; Other -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Community 46 -&gt; Graph Build -&gt; Outputs &amp; Docs</div>
+    <div class="arrow-chain">CLI &amp; Skill Installers -&gt; Other -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Community 130 -&gt; Graph Build -&gt; Outputs &amp; Docs</div>
   </div>
 </div>
 <div class="grid">
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>2576 nodes · 4925 edges · 148 communities (129 shown, 19 thin omitted)</li>
+      <li>2588 nodes · 4940 edges · 150 communities (130 shown, 20 thin omitted)</li>
       <li>Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 85 edges (avg confidence: 0.8)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `cn()` - 48 edges</li>
@@ -1519,12 +1519,12 @@ flowchart LR
 
 <!-- ====== 6. Serving API ====== -->
 <h2 id="serve-api">6. Serving API</h2>
-<p>Serving API groups implementation around home, drp03, kolesniii, uni, mostly in drp03/doc/FIREBASE_BACKEND.md, drp03/doc/API_CONTRACTS.md, recommender-api/app/main.py. This section covers 366 nodes and 832 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Serving API groups implementation around home, drp03, kolesniii, uni, mostly in drp03/doc/FIREBASE_BACKEND.md, drp03/doc/API_CONTRACTS.md, recommender-api/app/main.py. This section covers 365 nodes and 840 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Serving API (366 nodes, 832 edges)
+    %% Section: Serving API (365 nodes, 840 edges)
     subgraph serve_api_components_deadline_food_format_ts_84065df9["components/deadline-food/format.ts"]
         deadline_food_format_formatpence_1be05546("formatPence()<br/><small>components/deadline-food/format.ts</small>")
         deadline_food_format_mealtypelabel_48067464("mealTypeLabel()<br/><small>components/deadline-food/format.ts</small>")
@@ -1571,7 +1571,7 @@ flowchart LR
     src_pages_recipepage_tsx_a5da0078 -->|imports| deadline_food_format_mealtypelabel_48067464
     src_pages_rescuepage_tsx_934ae23d -->|imports| deadline_food_format_formatpence_1be05546
     src_pages_plandashboardpage_tsx_89a95277 -->|imports| deadline_food_format_strategyname_421e9aa7
-    %% Omitted for readability: 348 nodes, 0 edges
+    %% Omitted for readability: 347 nodes, 0 edges
     class deadline_food_format_formatpence_1be05546 function;
     class deadline_food_format_mealtypelabel_48067464 function;
     class deadline_food_format_strategyname_421e9aa7 function;
@@ -1870,19 +1870,19 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x329, references x229, calls x86, imports x80. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x332, references x229, calls x87, imports x85. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 7. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">7. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around test, home, kolesniii, uni, mostly in drp03/doc/DEVELOPMENT_AND_TESTING.md, recommender-api/tests/test_recommend_unit.py, recommender-api/tests/conftest.py. This section covers 766 nodes and 1713 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around test, home, kolesniii, uni, mostly in drp03/doc/DEVELOPMENT_AND_TESTING.md, recommender-api/tests/test_recommend_unit.py, recommender-api/tests/conftest.py. This section covers 740 nodes and 1643 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (766 nodes, 1713 edges)
+    %% Section: Tests &amp; Fixtures (740 nodes, 1643 edges)
     subgraph tests_fixtures_src_prototype_nutrition_ts_5c24a940["src/prototype/nutrition.ts"]
         prototype_nutrition_roundmacro_f349ffbb("roundMacro()<br/><small>src/prototype/nutrition.ts</small>")
         prototype_nutrition_totalnutritionfromestimates_617c1ad8("totalNutritionFromEstimates()<br/><small>src/prototype/nutrition.ts</small>")
@@ -1894,33 +1894,32 @@ flowchart LR
         tests_test_recommend_api_recommend_1bfbc378("_recommend()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
         tests_test_recommend_api_seed_recipe_4ae5d63f("_seed_recipe()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
     end
+    subgraph tests_fixtures_src_domain_constraints_ts_2a3a959a["src/domain/constraints.ts"]
+        domain_constraints_sortbypreferredfallback_38c880cc("sortByPreferredFallback()<br/><small>src/domain/constraints.ts</small>")
+        domain_constraints_validateconstraints_5917bf9d("validateConstraints()<br/><small>src/domain/constraints.ts</small>")
+    end
     subgraph tests_fixtures_src_prototype_utils_ts_1a67a27f["src/prototype/utils.ts"]
         prototype_utils_money_e5ae07fe("money()<br/><small>src/prototype/utils.ts</small>")
         prototype_utils_getmealbyid_0a8b6bcc("getMealById()<br/><small>src/prototype/utils.ts</small>")
-        prototype_utils_mealbyid_f9367acb("mealById()<br/><small>src/prototype/utils.ts</small>")
-    end
-    subgraph tests_fixtures_src_prototype_recipeCatalogue_ts_a19f4870["src/prototype/recipeCatalogue.ts"]
-        prototype_recipecatalogue_getrecipecatalogue_74de026a("getRecipeCatalogue()<br/><small>src/prototype/recipeCatalogue.ts</small>")
-        prototype_recipecatalogue_getplanmeal_24d7d811("getPlanMeal()<br/><small>src/prototype/recipeCatalogue.ts</small>")
     end
     components_swapmodal_swapmodal_74975f69("SwapModal()<br/><small>prototype/components/SwapModal.tsx</small>")
     application_deadlinemode_deadlinemodereducer_7430197f("deadlineModeReducer()<br/><small>src/application/deadlineMode.ts</small>")
-    domain_constraints_validateconstraints_5917bf9d("validateConstraints()<br/><small>src/domain/constraints.ts</small>")
     domain_recommendationrules_rankstrategies_2a9948a8("rankStrategies()<br/><small>src/domain/recommendationRules.ts</small>")
+    domain_rescueplanner_findrescueoptions_e7090f48("findRescueOptions()<br/><small>src/domain/rescuePlanner.ts</small>")
+    src_prototype_deadlinefoodprototype_tsx_f5893eb1("DeadlineFoodPrototype.tsx")
     src_prototype_data_ts_961d4457("data.ts")
-    src_prototype_recommenderapi_ts_218e3c4b("recommenderApi.ts")
+    prototype_recipecatalogue_getrecipecatalogue_74de026a("getRecipeCatalogue()<br/><small>src/prototype/recipeCatalogue.ts</small>")
+    domain_rescueplanner_findrescueoptions_e7090f48 -->|calls| domain_constraints_sortbypreferredfallback_38c880cc
     domain_recommendationrules_rankstrategies_2a9948a8 -->|calls| application_deadlinemode_deadlinemodereducer_7430197f
     domain_constraints_validateconstraints_5917bf9d -->|calls| application_deadlinemode_deadlinemodereducer_7430197f
     prototype_nutrition_roundmacro_f349ffbb -->|calls| prototype_nutrition_totalnutritionfromestimates_617c1ad8
     prototype_nutrition_gramsforingredient_1b4740a6 -->|calls| prototype_nutrition_estimateingredientnutrition_3255dd8d
     prototype_recipecatalogue_getrecipecatalogue_74de026a -->|calls| components_swapmodal_swapmodal_74975f69
     prototype_recipecatalogue_getrecipecatalogue_74de026a -->|calls| prototype_utils_getmealbyid_0a8b6bcc
-    prototype_recipecatalogue_getrecipecatalogue_74de026a -->|calls| prototype_utils_mealbyid_f9367acb
-    prototype_recipecatalogue_getplanmeal_24d7d811 -->|calls| prototype_utils_mealbyid_f9367acb
     prototype_utils_money_e5ae07fe -->|calls| components_swapmodal_swapmodal_74975f69
-    prototype_utils_mealbyid_f9367acb -->|calls| prototype_utils_getmealbyid_0a8b6bcc
     prototype_utils_getmealbyid_0a8b6bcc -->|calls| components_swapmodal_swapmodal_74975f69
-    %% Omitted for readability: 748 nodes, 0 edges
+    src_prototype_data_ts_961d4457 -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
+    %% Omitted for readability: 722 nodes, 0 edges
     class prototype_nutrition_roundmacro_f349ffbb function;
     class prototype_nutrition_totalnutritionfromestimates_617c1ad8 function;
     class prototype_nutrition_gramsforingredient_1b4740a6 function;
@@ -1928,17 +1927,17 @@ flowchart LR
     class tests_test_recommend_api_seed_user_20dec82f test;
     class tests_test_recommend_api_recommend_1bfbc378 test;
     class tests_test_recommend_api_seed_recipe_4ae5d63f test;
+    class domain_constraints_sortbypreferredfallback_38c880cc function;
+    class domain_constraints_validateconstraints_5917bf9d function;
     class prototype_utils_money_e5ae07fe function;
     class prototype_utils_getmealbyid_0a8b6bcc function;
-    class prototype_utils_mealbyid_f9367acb function;
-    class prototype_recipecatalogue_getrecipecatalogue_74de026a function;
-    class prototype_recipecatalogue_getplanmeal_24d7d811 function;
     class components_swapmodal_swapmodal_74975f69 ui;
     class application_deadlinemode_deadlinemodereducer_7430197f function;
-    class domain_constraints_validateconstraints_5917bf9d function;
     class domain_recommendationrules_rankstrategies_2a9948a8 function;
+    class domain_rescueplanner_findrescueoptions_e7090f48 function;
+    class src_prototype_deadlinefoodprototype_tsx_f5893eb1 ui;
     class src_prototype_data_ts_961d4457 module;
-    class src_prototype_recommenderapi_ts_218e3c4b api;
+    class prototype_recipecatalogue_getrecipecatalogue_74de026a function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -1962,6 +1961,214 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
+  <td><code>test_recommend_api.py</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>conftest.py</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
+  <td>Module file in recommender-api/tests/test_recommend_api.py.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>after positive interaction()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>are hard filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>are hard filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br>+14 more</td>
+  <td>_seed_user() node in recommender-api/tests/test_recommend_api.py.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>after positive interaction()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>are hard filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>are hard filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br>+10 more</td>
+  <td>_seed_recipe() node in recommender-api/tests/test_recommend_api.py.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>after positive interaction()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>are hard filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>are hard filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br>+11 more</td>
+  <td>_recommend() node in recommender-api/tests/test_recommend_api.py.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>test_recommend_unknown_user_returns_empty()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>test_recommend_no_recipes_returns_empty()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>test_recommend_returns_scored_recipes_with_full_breakdown()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>test_recommend_respects_n_limit()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>test_recommend_results_sorted_by_score()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>test_allergens_are_hard_filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>test_disliked_ingredients_are_hard_filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>test_dietary_tags_are_required()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>test_max_time_is_hard_filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>test_meal_slot_is_hard_filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>test_exclude_ids_are_filtered()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>test_deadline_stress_favours_simpler_recipes()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>test_taste_path_used_after_positive_interaction()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>test_collaborative_and_trending_feed_into_breakdown()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_recommend()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small><br><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>test_recommend_validates_n_bounds()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>test_recommend_validates_deadline_stress_bounds()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>test_recommend_validates_exploration_controls()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td><code>_seed_user()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>test_recommend_requires_user_id()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>test_recommend_rejects_missing_api_key()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>Endpoint tests for the reactive recommendation engine (issue #61).  Drives ``POS</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for Endpoint tests for the reactive recommendation engine (issue #61).  Drives ``POS.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>Under crunch, an easy recipe should out-rank an ambitious one for a     beginner</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for Under crunch, an easy recipe should out-rank an ambitious one for a     beginner.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>A swipe_right recomputes the user&#x27;s taste embedding, after which the     candida</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Design note for A swipe_right recomputes the user&#x27;s taste embedding, after which the     candida.</td>
+</tr>
+<tr>
+  <td>27</td>
   <td><code>test_recipes_api.py</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -1969,7 +2176,7 @@ flowchart LR
   <td>Module file in recommender-api/tests/test_recipes_api.py.</td>
 </tr>
 <tr>
-  <td>2</td>
+  <td>28</td>
   <td><code>test_health_ok()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -1977,7 +2184,7 @@ flowchart LR
   <td>Verifies imports, entry points, or version behavior.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>29</td>
   <td><code>test_create_recipe_computes_difficulty_and_embedding_text()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -1985,220 +2192,12 @@ flowchart LR
   <td>Verifies imports, entry points, or version behavior.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>30</td>
   <td><code>test_create_recipe_is_idempotent_upsert()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
   <td><code>sample_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
   <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>test_create_recipe_rejects_missing_required_fields()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>test_bulk_create_recipes()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>sample_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>test_list_recipes_sorted_by_name()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>sample_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>test_get_recipe_roundtrip()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>sample_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>test_get_recipe_404()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>test_similar_recipes()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>sample_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>test_similar_recipes_404_when_not_embedded()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>test_stats_counts()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>sample_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>test_embed_unembedded_recipes_job()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>FakeSession</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small><br><code>sample_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>test_embed_unembedded_recipes_noop_when_all_embedded()</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>FakeSession</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small><br><code>sample_recipe()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>Endpoint tests for recipe ingestion, retrieval and the embedding job (issue #60)</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Design note for Endpoint tests for recipe ingestion, retrieval and the embedding job (issue #60).</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>conftest.py</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td><code>test_recipes_api.py</code><br><small style="color:var(--muted)">recommender-api/tests/test_recipes_api.py</small><br><code>test_recommend_api.py</code><br><small style="color:var(--muted)">recommender-api/tests/test_recommend_api.py</small></td>
-  <td><code>test_users_api.py</code><br><small style="color:var(--muted)">recommender-api/tests/test_users_api.py</small></td>
-  <td>Module file in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>fake_embed_single()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>fake_embed_texts()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>fake_embed_single() node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>str</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>str node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>float</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>float node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>fake_embed_texts()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td><code>fake_embed_single()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>No direct outbound edge</td>
-  <td>fake_embed_texts() node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>_parse_vector()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>_recommend_candidates()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>_parse_vector() node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>_cosine()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>_recommend_candidates()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>_cosine() node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>mock_embeddings()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>mock_embeddings() node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>_Mappings</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>__init__()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small><br><code>all()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small><br><code>first()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>_Mappings node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>.__init__()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td><code>_Mappings</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>No direct outbound edge</td>
-  <td>.__init__() node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>.all()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td><code>_Mappings</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>No direct outbound edge</td>
-  <td>.all() node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>.first()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td><code>_Mappings</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>No direct outbound edge</td>
-  <td>.first() node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>FakeResult</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>__init__()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small><br><code>all()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small><br><code>execute()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small><br>+2 more</td>
-  <td>FakeResult node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>.__init__()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td><code>FakeResult</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>No direct outbound edge</td>
-  <td>.__init__() node in recommender-api/tests/conftest.py.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>.mappings()</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td><code>FakeResult</code><br><small style="color:var(--muted)">recommender-api/tests/conftest.py</small></td>
-  <td>No direct outbound edge</td>
-  <td>.mappings() node in recommender-api/tests/conftest.py.</td>
 </tr>
 </table>
 
@@ -2212,14 +2211,14 @@ flowchart LR
 <tr><td><code>recommender-api/tests/conftest.py</code></td><td>34 nodes</td></tr>
 <tr><td><code>recommender-api/app/context.py</code></td><td>30 nodes</td></tr>
 <tr><td><code>src/prototype/ingredients.ts</code></td><td>29 nodes</td></tr>
+<tr><td><code>functions/src/autoPlan.test.ts</code></td><td>27 nodes</td></tr>
 <tr><td><code>recommender-api/tests/test_recommend_api.py</code></td><td>26 nodes</td></tr>
 <tr><td><code>drp03/doc/DATA_AND_DOMAIN.md</code></td><td>24 nodes</td></tr>
-<tr><td><code>functions/src/autoPlan.ts</code></td><td>21 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x750, imports x342, calls x254, imports x147. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x732, imports x327, calls x245, imports x136. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3216,12 +3215,12 @@ flowchart LR
 
 <!-- ====== 11. Community 4 ====== -->
 <h2 id="community-4">11. Community 4</h2>
-<p>Community 4 groups implementation around data, meals, domain, ingredientsts, mostly in src/domain/ingredients.ts, src/domain/types.ts, data/meals/remixChickenSaladBox.ts. This section covers 39 nodes and 112 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Community 4 groups implementation around data, meals, domain, typests, mostly in src/domain/types.ts, src/domain/ingredients.ts, data/meals/remixChickenSaladBox.ts. This section covers 44 nodes and 118 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 4 (39 nodes, 112 edges)
+    %% Section: Community 4 (44 nodes, 118 edges)
     subgraph community_4_data_meals_fallbackCampusHummusBox_t_7a284223["data/meals/fallbackCampusHummusBox.ts"]
         src_data_meals_fallbackcampushummusbox_ts_04d9b7db("fallbackCampusHummusBox.ts")
         meals_fallbackcampushummusbox_fallbackcampushumm_079781f9("fallbackCampusHummusBox<br/><small>data/meals/fallbackCampusHummusBox.ts</small>")
@@ -3267,7 +3266,7 @@ flowchart LR
     src_data_seededmeals_ts_204303a7 -->|imports| src_data_meals_fallbackcampussushisnack_ts_ad3a7dba
     src_data_seededmeals_ts_204303a7 -->|imports| src_data_meals_fallbackhallsjacketpotato_ts_dec8457b
     src_data_seededmeals_ts_204303a7 -->|imports| src_data_meals_fallbacklibrarybeanwrap_ts_e57e77ce
-    %% Omitted for readability: 21 nodes, 0 edges
+    %% Omitted for readability: 26 nodes, 0 edges
     class src_data_meals_fallbackcampushummusbox_ts_04d9b7db module;
     class meals_fallbackcampushummusbox_fallbackcampushumm_079781f9 function;
     class src_data_meals_fallbackcampusricebowl_ts_bbb1ebd1 module;
@@ -3554,8 +3553,8 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/domain/ingredients.ts</code></td><td>4 nodes</td></tr>
-<tr><td><code>src/domain/types.ts</code></td><td>4 nodes</td></tr>
+      <tr><td><code>src/domain/types.ts</code></td><td>7 nodes</td></tr>
+<tr><td><code>src/domain/ingredients.ts</code></td><td>6 nodes</td></tr>
 <tr><td><code>data/meals/fallbackCampusHummusBox.ts</code></td><td>2 nodes</td></tr>
 <tr><td><code>data/meals/fallbackCampusRiceBowl.ts</code></td><td>2 nodes</td></tr>
 <tr><td><code>data/meals/fallbackCampusSushiSnack.ts</code></td><td>2 nodes</td></tr>
@@ -3566,37 +3565,40 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x46, imports x45, contains x21. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x46, imports x46, contains x26. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 12. Community 36 ====== -->
 <h2 id="community-36">12. Community 36</h2>
-<p>Community 36 groups implementation around functions, indexts, torecommenderrecipepayload, asrecord, mostly in functions/src/index.ts. This section covers 36 nodes and 72 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Community 36 groups implementation around functions, indexts, torecommenderrecipepayload, asrecord, mostly in functions/src/index.ts, functions/src/autoPlan.ts. This section covers 37 nodes and 73 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 36 (36 nodes, 72 edges)
-    functions_src_index_ts_src_index_asrecord_f7655683("asRecord()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_boundedstring_6b684933("boundedString()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_boundednumber_6701066e("boundedNumber()<br/><small>functions/src/index.ts</small>")
-    src_index_asrecord_128d572b("asRecord()<br/><small>functions/src/index.ts</small>")
-    src_index_boundedstring_dceb72f0("boundedString()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_boundedstringli_30793dbe("boundedStringList()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_torecommenderre_0b5c4036("toRecommenderRecipePayload()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_normalizecalend_6b0d2fbd("normalizeCalendarEvent()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_normalizecalend_52089cc9("normalizeCalendarToken()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_normalizedeadli_e5b7da03("normalizeDeadline()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_normalizeicssub_74c356ee("normalizeIcsSubscription()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_normalizeprotot_e6200406("normalizePrototypeSessionSettings()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_normalizerecipe_8d7f8e8c("normalizeRecipeIngredient()<br/><small>functions/src/index.ts</small>")
-    functions_src_index_ts_src_index_readrequestbody_ef4a0edb("readRequestBody()<br/><small>functions/src/index.ts</small>")
-    src_index_handleautoplan_3619a350("handleAutoPlan()<br/><small>functions/src/index.ts</small>")
-    src_index_normalizedaycontext_9fa3b50d("normalizeDayContext()<br/><small>functions/src/index.ts</small>")
-    src_index_recommenderrecipetomeal_14267872("recommenderRecipeToMeal()<br/><small>functions/src/index.ts</small>")
-    src_index_mealtoallocator_8cfa60e9("mealToAllocator()<br/><small>functions/src/index.ts</small>")
+    %% Section: Community 36 (37 nodes, 73 edges)
+    subgraph community_36_functions_src_index_ts_38f898cf["functions/src/index.ts"]
+        functions_src_index_ts_src_index_asrecord_f7655683("asRecord()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_boundedstring_6b684933("boundedString()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_boundednumber_6701066e("boundedNumber()<br/><small>functions/src/index.ts</small>")
+        src_index_asrecord_128d572b("asRecord()<br/><small>functions/src/index.ts</small>")
+        src_index_boundedstring_dceb72f0("boundedString()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_boundedstringli_30793dbe("boundedStringList()<br/><small>functions/src/index.ts</small>")
+        src_index_handleautoplan_3619a350("handleAutoPlan()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_torecommenderre_0b5c4036("toRecommenderRecipePayload()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_normalizecalend_6b0d2fbd("normalizeCalendarEvent()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_normalizecalend_52089cc9("normalizeCalendarToken()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_normalizedeadli_e5b7da03("normalizeDeadline()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_normalizeicssub_74c356ee("normalizeIcsSubscription()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_normalizeprotot_e6200406("normalizePrototypeSessionSettings()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_normalizerecipe_8d7f8e8c("normalizeRecipeIngredient()<br/><small>functions/src/index.ts</small>")
+        functions_src_index_ts_src_index_readrequestbody_ef4a0edb("readRequestBody()<br/><small>functions/src/index.ts</small>")
+        src_index_normalizedaycontext_9fa3b50d("normalizeDayContext()<br/><small>functions/src/index.ts</small>")
+        src_index_recommenderrecipetomeal_14267872("recommenderRecipeToMeal()<br/><small>functions/src/index.ts</small>")
+    end
+    src_autoplan_buildplan_a851cd58("buildPlan()<br/><small>functions/src/autoPlan.ts</small>")
+    src_autoplan_buildplan_a851cd58 -->|calls| src_index_handleautoplan_3619a350
     functions_src_index_ts_src_index_torecommenderre_0b5c4036 -->|calls| functions_src_index_ts_src_index_asrecord_f7655683
     functions_src_index_ts_src_index_asrecord_f7655683 -->|calls| functions_src_index_ts_src_index_normalizecalend_6b0d2fbd
     functions_src_index_ts_src_index_asrecord_f7655683 -->|calls| functions_src_index_ts_src_index_normalizecalend_52089cc9
@@ -3615,19 +3617,19 @@ flowchart LR
     functions_src_index_ts_src_index_boundedstring_6b684933 -->|calls| functions_src_index_ts_src_index_normalizeprotot_e6200406
     functions_src_index_ts_src_index_boundedstring_6b684933 -->|calls| functions_src_index_ts_src_index_normalizerecipe_8d7f8e8c
     functions_src_index_ts_src_index_boundedstring_6b684933 -->|calls| src_index_handleautoplan_3619a350
-    functions_src_index_ts_src_index_boundedstring_6b684933 -->|calls| src_index_mealtoallocator_8cfa60e9
     functions_src_index_ts_src_index_boundedstring_6b684933 -->|calls| src_index_recommenderrecipetomeal_14267872
     functions_src_index_ts_src_index_boundednumber_6701066e -->|calls| functions_src_index_ts_src_index_normalizedeadli_e5b7da03
     functions_src_index_ts_src_index_boundednumber_6701066e -->|calls| functions_src_index_ts_src_index_normalizeprotot_e6200406
     functions_src_index_ts_src_index_boundednumber_6701066e -->|calls| functions_src_index_ts_src_index_normalizerecipe_8d7f8e8c
     functions_src_index_ts_src_index_boundednumber_6701066e -->|calls| src_index_handleautoplan_3619a350
-    %% Omitted for readability: 18 nodes, 14 edges
+    %% Omitted for readability: 19 nodes, 11 edges
     class functions_src_index_ts_src_index_asrecord_f7655683 function;
     class functions_src_index_ts_src_index_boundedstring_6b684933 function;
     class functions_src_index_ts_src_index_boundednumber_6701066e function;
     class src_index_asrecord_128d572b function;
     class src_index_boundedstring_dceb72f0 function;
     class functions_src_index_ts_src_index_boundedstringli_30793dbe function;
+    class src_index_handleautoplan_3619a350 function;
     class functions_src_index_ts_src_index_torecommenderre_0b5c4036 function;
     class functions_src_index_ts_src_index_normalizecalend_6b0d2fbd function;
     class functions_src_index_ts_src_index_normalizecalend_52089cc9 function;
@@ -3636,10 +3638,9 @@ flowchart LR
     class functions_src_index_ts_src_index_normalizeprotot_e6200406 function;
     class functions_src_index_ts_src_index_normalizerecipe_8d7f8e8c function;
     class functions_src_index_ts_src_index_readrequestbody_ef4a0edb function;
-    class src_index_handleautoplan_3619a350 function;
     class src_index_normalizedaycontext_9fa3b50d function;
     class src_index_recommenderrecipetomeal_14267872 function;
-    class src_index_mealtoallocator_8cfa60e9 function;
+    class src_autoplan_buildplan_a851cd58 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -3663,6 +3664,14 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
+  <td><code>buildPlan()</code><br><small style="color:var(--muted)">functions/src/autoPlan.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>handleAutoPlan()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>buildPlan() node in functions/src/autoPlan.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
   <td><code>toRecommenderRecipePayload()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3670,7 +3679,7 @@ flowchart LR
   <td>toRecommenderRecipePayload() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>2</td>
+  <td>3</td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>toRecommenderRecipePayload()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3678,7 +3687,7 @@ flowchart LR
   <td>asRecord() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>4</td>
   <td><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3686,7 +3695,7 @@ flowchart LR
   <td>boundedString() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>5</td>
   <td><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3694,7 +3703,7 @@ flowchart LR
   <td>boundedNumber() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>5</td>
+  <td>6</td>
   <td><code>boundedStringList()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3702,7 +3711,7 @@ flowchart LR
   <td>boundedStringList() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>7</td>
   <td><code>normalizeRecipeList()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3710,7 +3719,7 @@ flowchart LR
   <td>normalizeRecipeList() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>8</td>
   <td><code>normalizeDeadline()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3718,7 +3727,7 @@ flowchart LR
   <td>normalizeDeadline() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>9</td>
   <td><code>normalizeIcsSubscription()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3726,7 +3735,7 @@ flowchart LR
   <td>normalizeIcsSubscription() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>10</td>
   <td><code>normalizeCalendarToken()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3734,7 +3743,7 @@ flowchart LR
   <td>normalizeCalendarToken() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>11</td>
   <td><code>normalizeCalendarEvent()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3742,7 +3751,7 @@ flowchart LR
   <td>normalizeCalendarEvent() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>12</td>
   <td><code>normalizeRecipeIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3750,7 +3759,7 @@ flowchart LR
   <td>normalizeRecipeIngredient() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>13</td>
   <td><code>normalizeRecipeIngredientList()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3758,7 +3767,7 @@ flowchart LR
   <td>normalizeRecipeIngredientList() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>14</td>
   <td><code>normalizePrototypeSessionSettings()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+3 more</td>
@@ -3766,7 +3775,7 @@ flowchart LR
   <td>normalizePrototypeSessionSettings() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>15</td>
   <td><code>readRequestBody()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3774,7 +3783,7 @@ flowchart LR
   <td>readRequestBody() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>16</td>
   <td><code>callRecommenderJson()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3782,7 +3791,7 @@ flowchart LR
   <td>callRecommenderJson() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>17</td>
   <td><code>toMealSlots()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3790,7 +3799,7 @@ flowchart LR
   <td>toMealSlots() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>18</td>
   <td><code>toMealType()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3798,7 +3807,7 @@ flowchart LR
   <td>toMealType() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>19</td>
   <td><code>recommenderRecipeToMeal()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+2 more</td>
@@ -3806,7 +3815,7 @@ flowchart LR
   <td>recommenderRecipeToMeal() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>20</td>
   <td><code>mealToAllocator()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>toMealSlots()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+1 more</td>
@@ -3814,7 +3823,7 @@ flowchart LR
   <td>mealToAllocator() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>21</td>
   <td><code>syntheticDays()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3822,7 +3831,7 @@ flowchart LR
   <td>syntheticDays() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>22</td>
   <td><code>normalizeDayContext()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3830,15 +3839,15 @@ flowchart LR
   <td>normalizeDayContext() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>23</td>
   <td><code>handleAutoPlan()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+6 more</td>
+  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+7 more</td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+2 more</td>
   <td>handleAutoPlan() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>24</td>
   <td><code>toRecommenderRecipePayload()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3846,7 +3855,7 @@ flowchart LR
   <td>toRecommenderRecipePayload() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>25</td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>handleAutoPlan()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>normalizeDayContext()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>recommenderRecipeToMeal()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+1 more</td>
@@ -3854,7 +3863,7 @@ flowchart LR
   <td>asRecord() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>26</td>
   <td><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>handleAutoPlan()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>mealToAllocator()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>recommenderRecipeToMeal()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3862,7 +3871,7 @@ flowchart LR
   <td>boundedString() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>27</td>
   <td><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>handleAutoPlan()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>mealToAllocator()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>normalizeDayContext()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+1 more</td>
@@ -3870,7 +3879,7 @@ flowchart LR
   <td>boundedNumber() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>28</td>
   <td><code>boundedStringList()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>handleAutoPlan()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
@@ -3878,7 +3887,7 @@ flowchart LR
   <td>boundedStringList() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>29</td>
   <td><code>normalizeRecipeList()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3886,20 +3895,12 @@ flowchart LR
   <td>normalizeRecipeList() node in functions/src/index.ts.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>30</td>
   <td><code>normalizeDeadline()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedNumber()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td>No direct outbound edge</td>
   <td>normalizeDeadline() node in functions/src/index.ts.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>normalizeIcsSubscription()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>asRecord()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>boundedString()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>normalizeIcsSubscription() node in functions/src/index.ts.</td>
 </tr>
 </table>
 
@@ -3909,24 +3910,25 @@ flowchart LR
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
       <tr><td><code>functions/src/index.ts</code></td><td>36 nodes</td></tr>
+<tr><td><code>functions/src/autoPlan.ts</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: calls x72. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x73. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
-<!-- ====== 13. Community 46 ====== -->
-<h2 id="community-46">13. Community 46</h2>
-<p>Community 46 groups implementation around components, selecttsx, primitivestsx, prototype, mostly in components/ui/select.tsx, prototype/components/primitives.tsx, components/ui/card.tsx. This section covers 32 nodes and 64 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 13. Community 130 ====== -->
+<h2 id="community-130">13. Community 130</h2>
+<p>Community 130 groups implementation around components, selecttsx, prototype, primitivestsx, mostly in components/ui/select.tsx, prototype/components/primitives.tsx, components/ui/card.tsx. This section covers 31 nodes and 71 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 46 (32 nodes, 64 edges)
-    subgraph community_46_components_ui_select_tsx_ce45d4a0["components/ui/select.tsx"]
+    %% Section: Community 130 (31 nodes, 71 edges)
+    subgraph community_130_components_ui_select_tsx_964e8f09["components/ui/select.tsx"]
         ui_select_selectcontent_0e8c3125("SelectContent()<br/><small>components/ui/select.tsx</small>")
         ui_select_selectitem_6d771bd5("SelectItem()<br/><small>components/ui/select.tsx</small>")
         ui_select_selectlabel_5e9f580d("SelectLabel()<br/><small>components/ui/select.tsx</small>")
@@ -3935,25 +3937,26 @@ flowchart LR
         ui_select_selectseparator_f89fbdcb("SelectSeparator()<br/><small>components/ui/select.tsx</small>")
         ui_select_selecttrigger_ba3dba52("SelectTrigger()<br/><small>components/ui/select.tsx</small>")
     end
-    subgraph community_46_components_ui_card_tsx_55a2ac31["components/ui/card.tsx"]
+    subgraph community_130_components_ui_card_tsx_6714f782["components/ui/card.tsx"]
         ui_card_cardaction_a1a717ff("CardAction()<br/><small>components/ui/card.tsx</small>")
         ui_card_carddescription_40d0a254("CardDescription()<br/><small>components/ui/card.tsx</small>")
         ui_card_cardfooter_2f80e30f("CardFooter()<br/><small>components/ui/card.tsx</small>")
     end
-    subgraph community_46_src_domain_constraints_ts_fb490797["src/domain/constraints.ts"]
-        domain_constraints_mealslots_4e8f126b("mealSlots<br/><small>src/domain/constraints.ts</small>")
-        domain_constraints_planningweekdays_516faf95("planningWeekDays<br/><small>src/domain/constraints.ts</small>")
+    subgraph community_130_src_lib_utils_ts_001832a1["src/lib/utils.ts"]
+        lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
+        src_lib_utils_ts_0eb4cd5d("utils.ts")
     end
-    deadline_food_strategycard_strategycard_8742e0ba("StrategyCard()<br/><small>components/deadline-food/StrategyCard.tsx</small>")
+    ui_input_input_54fb3925("Input()<br/><small>components/ui/input.tsx</small>")
     ui_label_label_def6cab4("Label()<br/><small>components/ui/label.tsx</small>")
+    src_prototype_components_universityfield_tsx_8d7104f0("UniversityField.tsx")
     src_prototype_components_primitives_tsx_84931f01("primitives.tsx")
+    screens_onboarding_preferencesection_5c73c125("PreferenceSection()<br/><small>prototype/screens/Onboarding.tsx</small>")
     src_apitester_tsx_e67681e5("APITester.tsx")
-    lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
-    src_pages_deadlinesetuppage_tsx_e932c009("DeadlineSetupPage.tsx")
-    lib_utils_cn_b8743bb6 -->|calls| deadline_food_strategycard_strategycard_8742e0ba
+    screens_onboarding_preferencesection_5c73c125 -->|calls| lib_utils_cn_b8743bb6
     lib_utils_cn_b8743bb6 -->|calls| ui_card_cardaction_a1a717ff
     lib_utils_cn_b8743bb6 -->|calls| ui_card_carddescription_40d0a254
     lib_utils_cn_b8743bb6 -->|calls| ui_card_cardfooter_2f80e30f
+    lib_utils_cn_b8743bb6 -->|calls| ui_input_input_54fb3925
     lib_utils_cn_b8743bb6 -->|calls| ui_label_label_def6cab4
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectcontent_0e8c3125
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectitem_6d771bd5
@@ -3962,19 +3965,18 @@ flowchart LR
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectscrollupbutton_603e1a1a
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectseparator_f89fbdcb
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selecttrigger_ba3dba52
+    src_apitester_tsx_e67681e5 -->|imports| ui_input_input_54fb3925
     src_apitester_tsx_e67681e5 -->|imports| ui_label_label_def6cab4
     src_apitester_tsx_e67681e5 -->|imports| ui_select_selectcontent_0e8c3125
     src_apitester_tsx_e67681e5 -->|imports| ui_select_selectitem_6d771bd5
     src_apitester_tsx_e67681e5 -->|imports| ui_select_selecttrigger_ba3dba52
-    domain_constraints_planningweekdays_516faf95 -->|imports| src_pages_deadlinesetuppage_tsx_e932c009
-    domain_constraints_mealslots_4e8f126b -->|imports| src_pages_deadlinesetuppage_tsx_e932c009
-    src_pages_deadlinesetuppage_tsx_e932c009 -->|imports| ui_label_label_def6cab4
-    src_pages_deadlinesetuppage_tsx_e932c009 -->|imports| ui_select_selectcontent_0e8c3125
-    src_pages_deadlinesetuppage_tsx_e932c009 -->|imports| ui_select_selectitem_6d771bd5
-    src_pages_deadlinesetuppage_tsx_e932c009 -->|imports| ui_select_selecttrigger_ba3dba52
     src_prototype_components_primitives_tsx_84931f01 -->|imports| lib_utils_cn_b8743bb6
+    src_prototype_components_primitives_tsx_84931f01 -->|imports| src_lib_utils_ts_0eb4cd5d
+    src_prototype_components_primitives_tsx_84931f01 -->|imports| ui_input_input_54fb3925
     src_prototype_components_primitives_tsx_84931f01 -->|imports| ui_label_label_def6cab4
-    %% Omitted for readability: 14 nodes, 3 edges
+    src_prototype_components_primitives_tsx_84931f01 -->|imports| ui_select_selectcontent_0e8c3125
+    src_prototype_components_primitives_tsx_84931f01 -->|imports| ui_select_selectitem_6d771bd5
+    %% Omitted for readability: 13 nodes, 5 edges
     class ui_select_selectcontent_0e8c3125 ui;
     class ui_select_selectitem_6d771bd5 ui;
     class ui_select_selectlabel_5e9f580d ui;
@@ -3985,14 +3987,14 @@ flowchart LR
     class ui_card_cardaction_a1a717ff ui;
     class ui_card_carddescription_40d0a254 ui;
     class ui_card_cardfooter_2f80e30f ui;
-    class domain_constraints_mealslots_4e8f126b function;
-    class domain_constraints_planningweekdays_516faf95 function;
-    class deadline_food_strategycard_strategycard_8742e0ba ui;
-    class ui_label_label_def6cab4 ui;
-    class src_prototype_components_primitives_tsx_84931f01 ui;
-    class src_apitester_tsx_e67681e5 test;
     class lib_utils_cn_b8743bb6 function;
-    class src_pages_deadlinesetuppage_tsx_e932c009 ui;
+    class src_lib_utils_ts_0eb4cd5d module;
+    class ui_input_input_54fb3925 ui;
+    class ui_label_label_def6cab4 ui;
+    class src_prototype_components_universityfield_tsx_8d7104f0 ui;
+    class src_prototype_components_primitives_tsx_84931f01 ui;
+    class screens_onboarding_preferencesection_5c73c125 ui;
+    class src_apitester_tsx_e67681e5 test;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -4019,7 +4021,7 @@ flowchart LR
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br><code>Select()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small><br>+7 more</td>
+  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br>+9 more</td>
   <td>Module file in src/APITester.tsx.</td>
 </tr>
 <tr>
@@ -4032,54 +4034,22 @@ flowchart LR
 </tr>
 <tr>
   <td>3</td>
-  <td><code>KitchenAccess</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
+  <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
-  <td>KitchenAccess node in src/domain/types.ts.</td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>PreferenceSection() node in prototype/screens/Onboarding.tsx.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>planningWeekDays</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
-  <td>planningWeekDays node in src/domain/constraints.ts.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>mealSlots</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
-  <td>mealSlots node in src/domain/constraints.ts.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>KitchenAccess</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>mealSlots</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>planningWeekDays</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
-  <td><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br><code>Select()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small><br>+5 more</td>
-  <td>Module file in src/pages/DeadlineSetupPage.tsx.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>toggleValue()</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>toggleValue() node in src/pages/DeadlineSetupPage.tsx.</td>
-</tr>
-<tr>
-  <td>8</td>
   <td><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br>+6 more</td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br>+9 more</td>
   <td>Module file in prototype/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>5</td>
   <td><code>Tone</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4087,7 +4057,7 @@ flowchart LR
   <td>Tone node in prototype/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>6</td>
   <td><code>badgeTones</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4095,7 +4065,7 @@ flowchart LR
   <td>badgeTones node in prototype/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>7</td>
   <td><code>AppButtonVariant</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4103,7 +4073,7 @@ flowchart LR
   <td>AppButtonVariant node in prototype/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>8</td>
   <td><code>appButtonClasses</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td><span class="tag tag-async">Async</span></td>
   <td>External entry / no inbound edge</td>
@@ -4111,39 +4081,47 @@ flowchart LR
   <td>appButtonClasses node in prototype/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>9</td>
+  <td><code>UniversityField.tsx</code><br><small style="color:var(--muted)">prototype/components/UniversityField.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br>+3 more</td>
+  <td>Module file in prototype/components/UniversityField.tsx.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br><code>UniversityField.tsx</code><br><small style="color:var(--muted)">prototype/components/UniversityField.tsx</small></td>
+  <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small><br>+1 more</td>
+  <td>Module file in src/lib/utils.ts.</td>
+</tr>
+<tr>
+  <td>11</td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+13 more</td>
+  <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br><code>UniversityField.tsx</code><br><small style="color:var(--muted)">prototype/components/UniversityField.tsx</small></td>
+  <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+14 more</td>
   <td>cn() node in src/lib/utils.ts.</td>
 </tr>
 <tr>
-  <td>14</td>
-  <td><code>StrategyCard()</code><br><small style="color:var(--muted)">components/deadline-food/StrategyCard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>StrategyCard() node in components/deadline-food/StrategyCard.tsx.</td>
-</tr>
-<tr>
-  <td>15</td>
+  <td>12</td>
   <td><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+1 more</td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+1 more</td>
   <td>No direct outbound edge</td>
   <td>Module file in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>13</td>
   <td><code>Select()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td>No direct outbound edge</td>
   <td>Select() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>14</td>
   <td><code>SelectGroup()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4151,31 +4129,31 @@ flowchart LR
   <td>SelectGroup() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>15</td>
   <td><code>SelectValue()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td>No direct outbound edge</td>
   <td>SelectValue() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>16</td>
   <td><code>SelectTrigger()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+1 more</td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td>No direct outbound edge</td>
   <td>SelectTrigger() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>17</td>
   <td><code>SelectContent()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+1 more</td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td>No direct outbound edge</td>
   <td>SelectContent() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>18</td>
   <td><code>SelectLabel()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4183,15 +4161,15 @@ flowchart LR
   <td>SelectLabel() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>19</td>
   <td><code>SelectItem()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+1 more</td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
   <td>No direct outbound edge</td>
   <td>SelectItem() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>20</td>
   <td><code>SelectSeparator()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4199,7 +4177,7 @@ flowchart LR
   <td>SelectSeparator() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>21</td>
   <td><code>SelectScrollUpButton()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4207,7 +4185,7 @@ flowchart LR
   <td>SelectScrollUpButton() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>22</td>
   <td><code>SelectScrollDownButton()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4215,7 +4193,7 @@ flowchart LR
   <td>SelectScrollDownButton() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>23</td>
   <td><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4223,7 +4201,7 @@ flowchart LR
   <td>CardDescription() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>24</td>
   <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4231,7 +4209,7 @@ flowchart LR
   <td>CardAction() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>25</td>
   <td><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4239,20 +4217,44 @@ flowchart LR
   <td>CardFooter() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>26</td>
   <td><code>textarea.tsx</code><br><small style="color:var(--muted)">components/ui/textarea.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td>No direct outbound edge</td>
   <td>Module file in components/ui/textarea.tsx.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>27</td>
   <td><code>Textarea()</code><br><small style="color:var(--muted)">components/ui/textarea.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td>No direct outbound edge</td>
   <td>Textarea() node in components/ui/textarea.tsx.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+2 more</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in components/ui/label.tsx.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+1 more</td>
+  <td>No direct outbound edge</td>
+  <td>Label() node in components/ui/label.tsx.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+2 more</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in components/ui/input.tsx.</td>
 </tr>
 </table>
 
@@ -4265,27 +4267,27 @@ flowchart LR
 <tr><td><code>prototype/components/primitives.tsx</code></td><td>5 nodes</td></tr>
 <tr><td><code>components/ui/card.tsx</code></td><td>3 nodes</td></tr>
 <tr><td><code>src/APITester.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>components/ui/input.tsx</code></td><td>2 nodes</td></tr>
 <tr><td><code>components/ui/label.tsx</code></td><td>2 nodes</td></tr>
 <tr><td><code>components/ui/textarea.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/domain/constraints.ts</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/pages/DeadlineSetupPage.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/lib/utils.ts</code></td><td>2 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x26, contains x18, calls x13, imports x7. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x23, contains x19, imports x15, calls x14. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 14. Community 23 ====== -->
 <h2 id="community-23">14. Community 23</h2>
-<p>Community 23 groups implementation around domain, plangeneratorts, constraintsts, typests, mostly in src/domain/planGenerator.ts, src/domain/constraints.ts, src/domain/types.ts. This section covers 30 nodes and 75 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Community 23 groups implementation around domain, plangeneratorts, constraintsts, typests, mostly in src/domain/planGenerator.ts, src/domain/constraints.ts, src/domain/types.ts. This section covers 30 nodes and 72 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 23 (30 nodes, 75 edges)
+    %% Section: Community 23 (30 nodes, 72 edges)
     subgraph community_23_src_domain_planGenerator_ts_35ef9f1d["src/domain/planGenerator.ts"]
         src_domain_plangenerator_ts_2aee0cb5("planGenerator.ts")
         domain_plangenerator_buildplanmeal_45c2b1f3("buildPlanMeal()<br/><small>src/domain/planGenerator.ts</small>")
@@ -4304,9 +4306,9 @@ flowchart LR
         domain_constraints_getmealslotsforconstraints_ff9d403d("getMealSlotsForConstraints()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_getplanningdayids_9e7d9cb7("getPlanningDayIds()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_matchesdietarytags_2ab3caaf("matchesDietaryTags()<br/><small>src/domain/constraints.ts</small>")
-        domain_constraints_sortbypreferredfallback_38c880cc("sortByPreferredFallback()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_createplannedmealid_3ee3e50d("createPlannedMealId()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_formatdaylabel_d297a48d("formatDayLabel()<br/><small>src/domain/constraints.ts</small>")
+        domain_constraints_formatmealslotlabel_4178208e("formatMealSlotLabel()<br/><small>src/domain/constraints.ts</small>")
     end
     domain_plangenerator_cheapest_71b6b1af -->|calls| domain_plangenerator_buildmixedplan_dce6b48f
     domain_plangenerator_cheapest_71b6b1af -->|calls| domain_plangenerator_buildpreponceplan_7f45a509
@@ -4324,14 +4326,14 @@ flowchart LR
     domain_plangenerator_compatiblemeals_5fca7da1 -->|calls| domain_plangenerator_pickfallback_50168c3d
     domain_plangenerator_compatiblemeals_5fca7da1 -->|calls| domain_plangenerator_pickquickcook_89b945c9
     domain_plangenerator_compatiblemeals_5fca7da1 -->|calls| domain_plangenerator_pickremix_8e8340fd
-    domain_plangenerator_pickfallback_50168c3d -->|calls| domain_constraints_sortbypreferredfallback_38c880cc
     domain_plangenerator_buildplanmeal_45c2b1f3 -->|calls| domain_constraints_createplannedmealid_3ee3e50d
     domain_plangenerator_buildplanmeal_45c2b1f3 -->|calls| domain_constraints_formatdaylabel_d297a48d
+    domain_plangenerator_buildplanmeal_45c2b1f3 -->|calls| domain_constraints_formatmealslotlabel_4178208e
     domain_plangenerator_buildplanmeal_45c2b1f3 -->|calls| domain_constraints_getmealslotsforconstraints_ff9d403d
     domain_constraints_getmealslotsforconstraints_ff9d403d -->|calls| domain_constraints_createplannedmealid_3ee3e50d
     src_domain_plangenerator_ts_2aee0cb5 -->|imports| domain_constraints_createplannedmealid_3ee3e50d
     src_domain_plangenerator_ts_2aee0cb5 -->|imports| domain_constraints_formatdaylabel_d297a48d
-    src_domain_plangenerator_ts_2aee0cb5 -->|imports| domain_constraints_getmealslotsforconstraints_ff9d403d
+    src_domain_plangenerator_ts_2aee0cb5 -->|imports| domain_constraints_formatmealslotlabel_4178208e
     %% Omitted for readability: 12 nodes, 3 edges
     class src_domain_plangenerator_ts_2aee0cb5 module;
     class domain_plangenerator_buildplanmeal_45c2b1f3 function;
@@ -4348,9 +4350,9 @@ flowchart LR
     class domain_constraints_getmealslotsforconstraints_ff9d403d function;
     class domain_constraints_getplanningdayids_9e7d9cb7 function;
     class domain_constraints_matchesdietarytags_2ab3caaf function;
-    class domain_constraints_sortbypreferredfallback_38c880cc function;
     class domain_constraints_createplannedmealid_3ee3e50d function;
     class domain_constraints_formatdaylabel_d297a48d function;
+    class domain_constraints_formatmealslotlabel_4178208e function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -4377,7 +4379,7 @@ flowchart LR
   <td><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>canCook()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>canPrepareBase()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>constraints.ts</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br>+11 more</td>
+  <td><code>canCook()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>canPrepareBase()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>constraints.ts</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br>+9 more</td>
   <td>Module file in src/domain/planGenerator.ts.</td>
 </tr>
 <tr>
@@ -4417,7 +4419,7 @@ flowchart LR
   <td><code>pickFallback()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>cheapest()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>compatibleMeals()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
-  <td><code>sortByPreferredFallback()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
+  <td>No direct outbound edge</td>
   <td>pickFallback() node in src/domain/planGenerator.ts.</td>
 </tr>
 <tr>
@@ -4494,14 +4496,6 @@ flowchart LR
 </tr>
 <tr>
   <td>16</td>
-  <td><code>PlanningConstraints</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
-  <td><code>constraints.ts</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
-  <td>PlanningConstraints node in src/domain/types.ts.</td>
-</tr>
-<tr>
-  <td>17</td>
   <td><code>ValidationResult</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4509,15 +4503,31 @@ flowchart LR
   <td>ValidationResult node in src/domain/types.ts.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>17</td>
   <td><code>constraints.ts</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
-  <td><code>MealSlot</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>PlanningConstraints</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br>+1 more</td>
+  <td><code>MealSlot</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>ValidationResult</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
   <td>No direct outbound edge</td>
   <td>Module file in src/domain/constraints.ts.</td>
 </tr>
 <tr>
+  <td>18</td>
+  <td><code>planningWeekDays</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>planningWeekDays node in src/domain/constraints.ts.</td>
+</tr>
+<tr>
   <td>19</td>
+  <td><code>mealSlots</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>mealSlots node in src/domain/constraints.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
   <td><code>dayLabels</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4525,7 +4535,7 @@ flowchart LR
   <td>dayLabels node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>21</td>
   <td><code>getPlanningDayIds()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>getPlanItems()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4533,7 +4543,7 @@ flowchart LR
   <td>getPlanningDayIds() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>22</td>
   <td><code>formatDayLabel()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildPlanMeal()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4541,7 +4551,7 @@ flowchart LR
   <td>formatDayLabel() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>23</td>
   <td><code>formatMealSlotLabel()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildPlanMeal()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4549,7 +4559,7 @@ flowchart LR
   <td>formatMealSlotLabel() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>24</td>
   <td><code>formatPlanItemLabel()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildPlanMeal()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>formatDayLabel()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>formatMealSlotLabel()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br>+1 more</td>
@@ -4557,7 +4567,7 @@ flowchart LR
   <td>formatPlanItemLabel() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>25</td>
   <td><code>getContextTags()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildPlanMeal()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4565,7 +4575,7 @@ flowchart LR
   <td>getContextTags() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>26</td>
   <td><code>matchesDietaryTags()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>compatibleMeals()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4573,7 +4583,7 @@ flowchart LR
   <td>matchesDietaryTags() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>27</td>
   <td><code>canCook()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildMixedPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4581,7 +4591,7 @@ flowchart LR
   <td>canCook() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>28</td>
   <td><code>canPrepareBase()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildMixedPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>buildPrepOncePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4589,7 +4599,7 @@ flowchart LR
   <td>canPrepareBase() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>29</td>
   <td><code>getMealSlotsForConstraints()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildPlanMeal()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>getPlanItems()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4597,21 +4607,13 @@ flowchart LR
   <td>getMealSlotsForConstraints() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>30</td>
   <td><code>createPlannedMealId()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildPlanMeal()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>getMealSlotsForConstraints()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td>No direct outbound edge</td>
   <td>createPlannedMealId() node in src/domain/constraints.ts.</td>
 </tr>
-<tr>
-  <td>30</td>
-  <td><code>sortByPreferredFallback()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>pickFallback()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>sortByPreferredFallback() node in src/domain/constraints.ts.</td>
-</tr>
 </table>
 
 <div class="grid">
@@ -4619,436 +4621,82 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/domain/planGenerator.ts</code></td><td>14 nodes</td></tr>
-<tr><td><code>src/domain/constraints.ts</code></td><td>13 nodes</td></tr>
-<tr><td><code>src/domain/types.ts</code></td><td>3 nodes</td></tr>
+      <tr><td><code>src/domain/constraints.ts</code></td><td>14 nodes</td></tr>
+<tr><td><code>src/domain/planGenerator.ts</code></td><td>14 nodes</td></tr>
+<tr><td><code>src/domain/types.ts</code></td><td>2 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: calls x33, contains x25, imports x16, imports x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x32, contains x26, imports x13, imports x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
-<!-- ====== 15. Community 14 ====== -->
-<h2 id="community-14">15. Community 14</h2>
-<p>Community 14 groups implementation around prototype, deadlinefoodprototypetsx, autoplanapits, recipecataloguets, mostly in src/prototype/DeadlineFoodPrototype.tsx, src/prototype/autoPlanApi.ts, src/prototype/recipeCatalogue.ts. This section covers 29 nodes and 39 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 15. Community 25 ====== -->
+<h2 id="community-25">15. Community 25</h2>
+<p>Community 25 groups implementation around frontendmd, doc, home, kolesniii, mostly in drp03/doc/FRONTEND.md, doc/FRONTEND.md. This section covers 29 nodes and 28 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 14 (29 nodes, 39 edges)
-    subgraph community_14_src_prototype_autoPlanApi_ts_d650ba8c["src/prototype/autoPlanApi.ts"]
-        prototype_autoplanapi_contextevents_8cdf9327("contextEvents()<br/><small>src/prototype/autoPlanApi.ts</small>")
-        prototype_autoplanapi_generateautoplan_4da9da6c("generateAutoPlan()<br/><small>src/prototype/autoPlanApi.ts</small>")
-        src_prototype_autoplanapi_ts_1a9f8224("autoPlanApi.ts")
-        prototype_autoplanapi_computeplansignature_7b339d98("computePlanSignature()<br/><small>src/prototype/autoPlanApi.ts</small>")
+    %% Section: Community 25 (29 nodes, 28 edges)
+    subgraph community_25_drp03_doc_FRONTEND_md_e842058a["drp03/doc/FRONTEND.md"]
+        doc_frontend_frontend_documentation_12cf8961("Frontend Documentation<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_active_prototype_screens_432b98c5("Active Prototype Screens<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_active_prototype_data_model_1accb26b("Active Prototype Data Model<br/><small>drp03/doc/FRONTEND.md</small>")
+        home_kolesniii_uni_drp03_doc_frontend_md_89e45a0b("FRONTEND.md")
+        doc_frontend_active_prototype_navigation_d6b556db("Active Prototype Navigation<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_frontend_testing_6aef7816("Frontend Testing<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_active_components_0bf15ce8("Active Components<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_active_frontend_3147d84b("Active Frontend<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_active_prototype_helpers_7aa87358("Active Prototype Helpers<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_active_prototype_state_572bd19b("Active Prototype State<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_analytics_05bcc37c("Analytics<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_browser_boot_10905dff("Browser Boot<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_calendar_acb0c15f("Calendar<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_dashboard_aff2e893("Dashboard<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_discover_9eafb783("Discover<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_dormant_react_router_frontend_302a9bfa("Dormant React Router Frontend<br/><small>drp03/doc/FRONTEND.md</small>")
+        doc_frontend_frontend_change_checklist_63193414("Frontend Change Checklist<br/><small>drp03/doc/FRONTEND.md</small>")
     end
-    subgraph community_14_src_prototype_recipeCatalogue_ts_265fdfab["src/prototype/recipeCatalogue.ts"]
-        prototype_recipecatalogue_registerplanmeals_ea67cd00("registerPlanMeals()<br/><small>src/prototype/recipeCatalogue.ts</small>")
-        src_prototype_recipecatalogue_ts_734df160("recipeCatalogue.ts")
-        prototype_recipecatalogue_fetchrecipecatalogue_5ba1ee79("fetchRecipeCatalogue()<br/><small>src/prototype/recipeCatalogue.ts</small>")
-        prototype_recipecatalogue_setrecipecatalogue_b8ecb350("setRecipeCatalogue()<br/><small>src/prototype/recipeCatalogue.ts</small>")
-    end
-    subgraph community_14_src_prototype_DeadlineFoodPrototype_87ffdd41["src/prototype/DeadlineFoodPrototype.tsx"]
-        src_prototype_deadlinefoodprototype_tsx_f5893eb1("DeadlineFoodPrototype.tsx")
-        prototype_deadlinefoodprototype_isappscreen_5a02a2aa("isAppScreen()<br/><small>src/prototype/DeadlineFoodPrototype.tsx</small>")
-        prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4("DeadlineFoodPrototype()<br/><small>src/prototype/DeadlineFoodPrototype.tsx</small>")
-    end
-    subgraph community_14_prototype_components_Shell_tsx_71675b43["prototype/components/Shell.tsx"]
-        components_shell_shell_90a82b12("Shell()<br/><small>prototype/components/Shell.tsx</small>")
-        src_prototype_components_shell_tsx_d614f256("Shell.tsx")
-    end
-    screens_landing_landing_3c505c27("Landing()<br/><small>prototype/screens/Landing.tsx</small>")
-    screens_planscreen_planscreen_84e89dc0("PlanScreen()<br/><small>prototype/screens/PlanScreen.tsx</small>")
-    lib_posthog_analyticsproperties_afe56a65("AnalyticsProperties<br/><small>src/lib/posthog.ts</small>")
-    prototype_sessionpersistence_normalizepreference_3a1d86f8("normalizePreferences()<br/><small>src/prototype/sessionPersistence.ts</small>")
-    prototype_types_screen_f980f89e("Screen<br/><small>src/prototype/types.ts</small>")
-    prototype_recipecatalogue_registerplanmeals_ea67cd00 -->|calls| prototype_autoplanapi_generateautoplan_4da9da6c
-    prototype_deadlinefoodprototype_isappscreen_5a02a2aa -->|calls| prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4
-    prototype_autoplanapi_contextevents_8cdf9327 -->|calls| prototype_autoplanapi_generateautoplan_4da9da6c
-    src_prototype_recipecatalogue_ts_734df160 -->|imports| src_prototype_autoplanapi_ts_1a9f8224
-    src_prototype_recipecatalogue_ts_734df160 -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
-    prototype_recipecatalogue_setrecipecatalogue_b8ecb350 -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
-    prototype_recipecatalogue_registerplanmeals_ea67cd00 -->|imports| src_prototype_autoplanapi_ts_1a9f8224
-    prototype_recipecatalogue_fetchrecipecatalogue_5ba1ee79 -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| components_shell_shell_90a82b12
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| lib_posthog_analyticsproperties_afe56a65
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| prototype_autoplanapi_computeplansignature_7b339d98
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| prototype_autoplanapi_generateautoplan_4da9da6c
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| prototype_sessionpersistence_normalizepreference_3a1d86f8
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| prototype_types_screen_f980f89e
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| screens_landing_landing_3c505c27
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| screens_planscreen_planscreen_84e89dc0
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| src_prototype_autoplanapi_ts_1a9f8224
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| src_prototype_components_shell_tsx_d614f256
-    prototype_types_screen_f980f89e -->|imports| src_prototype_components_shell_tsx_d614f256
+    doc_frontend_md_66a5fd44("FRONTEND.md")
+    home_kolesniii_uni_drp03_doc_frontend_md_89e45a0b -->|contains| doc_frontend_frontend_documentation_12cf8961
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_components_0bf15ce8
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_frontend_3147d84b
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_data_model_1accb26b
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_helpers_7aa87358
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_navigation_d6b556db
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_screens_432b98c5
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_active_prototype_state_572bd19b
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_analytics_05bcc37c
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_browser_boot_10905dff
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_dormant_react_router_frontend_302a9bfa
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_frontend_change_checklist_63193414
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_frontend_testing_6aef7816
+    doc_frontend_frontend_documentation_12cf8961 -->|contains| doc_frontend_md_66a5fd44
+    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_calendar_acb0c15f
+    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_dashboard_aff2e893
+    doc_frontend_active_prototype_screens_432b98c5 -->|contains| doc_frontend_discover_9eafb783
     %% Omitted for readability: 11 nodes, 0 edges
-    class prototype_autoplanapi_contextevents_8cdf9327 function;
-    class prototype_autoplanapi_generateautoplan_4da9da6c function;
-    class src_prototype_autoplanapi_ts_1a9f8224 api;
-    class prototype_autoplanapi_computeplansignature_7b339d98 function;
-    class prototype_recipecatalogue_registerplanmeals_ea67cd00 function;
-    class src_prototype_recipecatalogue_ts_734df160 module;
-    class prototype_recipecatalogue_fetchrecipecatalogue_5ba1ee79 function;
-    class prototype_recipecatalogue_setrecipecatalogue_b8ecb350 function;
-    class src_prototype_deadlinefoodprototype_tsx_f5893eb1 ui;
-    class prototype_deadlinefoodprototype_isappscreen_5a02a2aa ui;
-    class prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4 ui;
-    class components_shell_shell_90a82b12 ui;
-    class src_prototype_components_shell_tsx_d614f256 ui;
-    class screens_landing_landing_3c505c27 ui;
-    class screens_planscreen_planscreen_84e89dc0 ui;
-    class lib_posthog_analyticsproperties_afe56a65 klass;
-    class prototype_sessionpersistence_normalizepreference_3a1d86f8 function;
-    class prototype_types_screen_f980f89e klass;
-    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
-    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
-    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
-    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
-    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
-    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
-    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
-    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
-    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
-</div>
-
-<h3>Call Details</h3>
-<table class="call-table">
-<tr>
-  <th style="width:5%">#</th>
-  <th style="width:28%">Node</th>
-  <th style="width:10%">Type</th>
-  <th style="width:17%">Caller</th>
-  <th style="width:20%">Callees</th>
-  <th style="width:20%">Description</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>recipeCatalogue.ts</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small><br><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>Module file in src/prototype/recipeCatalogue.ts.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>planMeals</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>planMeals node in src/prototype/recipeCatalogue.ts.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>setRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>setRecipeCatalogue() node in src/prototype/recipeCatalogue.ts.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>registerPlanMeals()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small><br><code>generateAutoPlan()</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
-  <td>registerPlanMeals() node in src/prototype/recipeCatalogue.ts.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>normalizeRecipe()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>normalizeRecipe() node in src/prototype/recipeCatalogue.ts.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>fetchRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>fetchRecipeCatalogue() node in src/prototype/recipeCatalogue.ts.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>fetchRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>recipeCatalogue.ts</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>setRecipeCatalogue()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small><br><code>computePlanSignature()</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small><br>+7 more</td>
-  <td>Module file in src/prototype/DeadlineFoodPrototype.tsx.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>screens</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>screens node in src/prototype/DeadlineFoodPrototype.tsx.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>onboardingScreens</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>onboardingScreens node in src/prototype/DeadlineFoodPrototype.tsx.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>screenFromHash()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Caches analysis results or computes cache keys.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>isAppScreen()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>DeadlineFoodPrototype()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>isAppScreen() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>LoadingScreen()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>LoadingScreen() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>budgetBand()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>budgetBand() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>maxTimeBucket()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>maxTimeBucket() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>DeadlineFoodPrototype()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>isAppScreen()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>DeadlineFoodPrototype() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
-  <td><span class="tag tag-endpoint">API</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small><br><code>recipeCatalogue.ts</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small><br><code>registerPlanMeals()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>Module file in src/prototype/autoPlanApi.ts.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>GenerateAutoPlanInput</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>GenerateAutoPlanInput node in src/prototype/autoPlanApi.ts.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>hash()</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Caches analysis results or computes cache keys.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>computePlanSignature()</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>computePlanSignature() node in src/prototype/autoPlanApi.ts.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>AutoPlanResponse</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>AutoPlanResponse node in src/prototype/autoPlanApi.ts.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>contextEvents()</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>generateAutoPlan()</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
-  <td>contextEvents() node in src/prototype/autoPlanApi.ts.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>generateAutoPlan()</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>contextEvents()</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small><br><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small><br><code>registerPlanMeals()</code><br><small style="color:var(--muted)">src/prototype/recipeCatalogue.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>generateAutoPlan() node in src/prototype/autoPlanApi.ts.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>Screen</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td><code>Shell.tsx</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
-  <td>Screen node in src/prototype/types.ts.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>normalizePreferences()</code><br><small style="color:var(--muted)">src/prototype/sessionPersistence.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>normalizePreferences() node in src/prototype/sessionPersistence.ts.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>PlanScreen()</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>PlanScreen() node in prototype/screens/PlanScreen.tsx.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>Landing()</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Landing() node in prototype/screens/Landing.tsx.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>Shell.tsx</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small><br><code>Screen</code><br><small style="color:var(--muted)">src/prototype/types.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>Module file in prototype/components/Shell.tsx.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>Shell()</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Shell() node in prototype/components/Shell.tsx.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Orchestrates analysis and returns structured documentation data.</td>
-</tr>
-</table>
-
-<div class="grid">
-  <div class="card">
-    <h4>Key Files</h4>
-    <table style="width:100%;font-size:0.85rem;">
-      <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/prototype/DeadlineFoodPrototype.tsx</code></td><td>9 nodes</td></tr>
-<tr><td><code>src/prototype/autoPlanApi.ts</code></td><td>7 nodes</td></tr>
-<tr><td><code>src/prototype/recipeCatalogue.ts</code></td><td>6 nodes</td></tr>
-<tr><td><code>prototype/components/Shell.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/lib/posthog.ts</code></td><td>1 nodes</td></tr>
-<tr><td><code>prototype/screens/Landing.tsx</code></td><td>1 nodes</td></tr>
-<tr><td><code>prototype/screens/PlanScreen.tsx</code></td><td>1 nodes</td></tr>
-<tr><td><code>src/prototype/sessionPersistence.ts</code></td><td>1 nodes</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x20, imports x12, imports x4, calls x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
-  </div>
-</div>
-<hr>
-
-<!-- ====== 16. Other ====== -->
-<h2 id="other">16. Other</h2>
-<p>Other groups implementation around functions, home, drp03, kolesniii, mostly in uni/drp03/DEADLINE_FOOD_AUTOPILOT_SPEC.md, functions/lib/index.js, lib/src/index.js. This section covers 510 nodes and 580 internal edges; the diagram shows only representative relationships to stay readable.</p>
-
-<div class="mermaid">
-%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
-flowchart LR
-    %% Section: Other (510 nodes, 580 edges)
-    subgraph other_src_adapters_deadlineFoodApi_ts_df6f9e2e["src/adapters/deadlineFoodApi.ts"]
-        adapters_deadlinefoodapi_firebasefunctionurl_609ca870("firebaseFunctionUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_readruntimeenv_ec472788("readRuntimeEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_readpublicenv_69f47266("readPublicEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_appnodeenv_bee3fb4c("appNodeEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_configuredbackend_0b76ddbe("configuredBackend()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc("firebaseFunctionsBaseUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_firebasefunctionsregion_5834e133("firebaseFunctionsRegion()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_firebaseprojectid_c6c6f171("firebaseProjectId()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_readbrowseroverride_cce3c953("readBrowserOverride()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79("shouldUseFirebaseBackend()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0("deadlineFoodEndpointUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f("fetchCanonicalScenario()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-        adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099("fetchDeadlineBootstrap()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-    end
-    subgraph other_functions_lib_index_js_c34dee45["functions/lib/index.js"]
-        lib_index_asrecord_ee234b0f("asRecord()<br/><small>functions/lib/index.js</small>")
-        lib_index_boundedstring_8bbbb209("boundedString()<br/><small>functions/lib/index.js</small>")
-        lib_index_boundednumber_fb360176("boundedNumber()<br/><small>functions/lib/index.js</small>")
-    end
-    subgraph other_lib_src_index_js_0b4529b6["lib/src/index.js"]
-        functions_lib_src_index_js_src_index_asrecord_130c7602("asRecord()<br/><small>lib/src/index.js</small>")
-        functions_lib_src_index_js_src_index_boundedstri_e758e8ce("boundedString()<br/><small>lib/src/index.js</small>")
-    end
-    adapters_deadlinefoodapi_readruntimeenv_ec472788 -->|calls| adapters_deadlinefoodapi_readpublicenv_69f47266
-    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_appnodeenv_bee3fb4c
-    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_configuredbackend_0b76ddbe
-    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
-    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebasefunctionsregion_5834e133
-    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebaseprojectid_c6c6f171
-    adapters_deadlinefoodapi_readbrowseroverride_cce3c953 -->|calls| adapters_deadlinefoodapi_configuredbackend_0b76ddbe
-    adapters_deadlinefoodapi_readbrowseroverride_cce3c953 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
-    adapters_deadlinefoodapi_configuredbackend_0b76ddbe -->|calls| adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79
-    adapters_deadlinefoodapi_appnodeenv_bee3fb4c -->|calls| adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79
-    adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 -->|calls| adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0
-    adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 -->|calls| adapters_deadlinefoodapi_firebasefunctionurl_609ca870
-    adapters_deadlinefoodapi_firebaseprojectid_c6c6f171 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
-    adapters_deadlinefoodapi_firebasefunctionsregion_5834e133 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
-    adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc -->|calls| adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0
-    adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc -->|calls| adapters_deadlinefoodapi_firebasefunctionurl_609ca870
-    adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 -->|calls| adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f
-    adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 -->|calls| adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099
-    %% Omitted for readability: 492 nodes, 0 edges
-    class adapters_deadlinefoodapi_firebasefunctionurl_609ca870 function;
-    class adapters_deadlinefoodapi_readruntimeenv_ec472788 function;
-    class adapters_deadlinefoodapi_readpublicenv_69f47266 function;
-    class adapters_deadlinefoodapi_appnodeenv_bee3fb4c function;
-    class adapters_deadlinefoodapi_configuredbackend_0b76ddbe function;
-    class adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc function;
-    class adapters_deadlinefoodapi_firebasefunctionsregion_5834e133 function;
-    class adapters_deadlinefoodapi_firebaseprojectid_c6c6f171 function;
-    class adapters_deadlinefoodapi_readbrowseroverride_cce3c953 function;
-    class adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 function;
-    class adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 api;
-    class adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f function;
-    class adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099 function;
-    class lib_index_asrecord_ee234b0f function;
-    class lib_index_boundedstring_8bbbb209 function;
-    class lib_index_boundednumber_fb360176 function;
-    class functions_lib_src_index_js_src_index_asrecord_130c7602 function;
-    class functions_lib_src_index_js_src_index_boundedstri_e758e8ce function;
+    class doc_frontend_frontend_documentation_12cf8961 concept;
+    class doc_frontend_active_prototype_screens_432b98c5 concept;
+    class doc_frontend_active_prototype_data_model_1accb26b concept;
+    class home_kolesniii_uni_drp03_doc_frontend_md_89e45a0b concept;
+    class doc_frontend_active_prototype_navigation_d6b556db concept;
+    class doc_frontend_frontend_testing_6aef7816 concept;
+    class doc_frontend_active_components_0bf15ce8 concept;
+    class doc_frontend_active_frontend_3147d84b concept;
+    class doc_frontend_active_prototype_helpers_7aa87358 concept;
+    class doc_frontend_active_prototype_state_572bd19b concept;
+    class doc_frontend_analytics_05bcc37c concept;
+    class doc_frontend_browser_boot_10905dff concept;
+    class doc_frontend_calendar_acb0c15f concept;
+    class doc_frontend_dashboard_aff2e893 concept;
+    class doc_frontend_discover_9eafb783 concept;
+    class doc_frontend_dormant_react_router_frontend_302a9bfa concept;
+    class doc_frontend_frontend_change_checklist_63193414 concept;
+    class doc_frontend_md_66a5fd44 concept;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -5302,13 +4950,351 @@ flowchart LR
   <td>No direct outbound edge</td>
   <td>Documentation node describing FRONTEND.md.</td>
 </tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>drp03/doc/FRONTEND.md</code></td><td>28 nodes</td></tr>
+<tr><td><code>doc/FRONTEND.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x28. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 16. Other ====== -->
+<h2 id="other">16. Other</h2>
+<p>Other groups implementation around functions, home, drp03, kolesniii, mostly in uni/drp03/DEADLINE_FOOD_AUTOPILOT_SPEC.md, functions/lib/index.js, lib/src/index.js. This section covers 544 nodes and 668 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Other (544 nodes, 668 edges)
+    subgraph other_src_adapters_deadlineFoodApi_ts_df6f9e2e["src/adapters/deadlineFoodApi.ts"]
+        adapters_deadlinefoodapi_firebasefunctionurl_609ca870("firebaseFunctionUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_readruntimeenv_ec472788("readRuntimeEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_readpublicenv_69f47266("readPublicEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_appnodeenv_bee3fb4c("appNodeEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_configuredbackend_0b76ddbe("configuredBackend()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc("firebaseFunctionsBaseUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_firebasefunctionsregion_5834e133("firebaseFunctionsRegion()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_firebaseprojectid_c6c6f171("firebaseProjectId()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_readbrowseroverride_cce3c953("readBrowserOverride()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79("shouldUseFirebaseBackend()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0("deadlineFoodEndpointUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f("fetchCanonicalScenario()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099("fetchDeadlineBootstrap()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+    end
+    subgraph other_functions_lib_index_js_c34dee45["functions/lib/index.js"]
+        lib_index_asrecord_ee234b0f("asRecord()<br/><small>functions/lib/index.js</small>")
+        lib_index_boundedstring_8bbbb209("boundedString()<br/><small>functions/lib/index.js</small>")
+        lib_index_boundednumber_fb360176("boundedNumber()<br/><small>functions/lib/index.js</small>")
+    end
+    functions_lib_src_index_js_src_index_asrecord_130c7602("asRecord()<br/><small>lib/src/index.js</small>")
+    src_frontend_tsx_befdbdc9("frontend.tsx")
+    adapters_deadlinefoodapi_readruntimeenv_ec472788 -->|calls| adapters_deadlinefoodapi_readpublicenv_69f47266
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_appnodeenv_bee3fb4c
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_configuredbackend_0b76ddbe
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebasefunctionsregion_5834e133
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebaseprojectid_c6c6f171
+    adapters_deadlinefoodapi_readbrowseroverride_cce3c953 -->|calls| adapters_deadlinefoodapi_configuredbackend_0b76ddbe
+    adapters_deadlinefoodapi_readbrowseroverride_cce3c953 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_configuredbackend_0b76ddbe -->|calls| adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79
+    adapters_deadlinefoodapi_appnodeenv_bee3fb4c -->|calls| adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79
+    adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 -->|calls| adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0
+    adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 -->|calls| adapters_deadlinefoodapi_firebasefunctionurl_609ca870
+    adapters_deadlinefoodapi_firebaseprojectid_c6c6f171 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_firebasefunctionsregion_5834e133 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc -->|calls| adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0
+    adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc -->|calls| adapters_deadlinefoodapi_firebasefunctionurl_609ca870
+    adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 -->|calls| adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f
+    adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 -->|calls| adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099
+    %% Omitted for readability: 526 nodes, 0 edges
+    class adapters_deadlinefoodapi_firebasefunctionurl_609ca870 function;
+    class adapters_deadlinefoodapi_readruntimeenv_ec472788 function;
+    class adapters_deadlinefoodapi_readpublicenv_69f47266 function;
+    class adapters_deadlinefoodapi_appnodeenv_bee3fb4c function;
+    class adapters_deadlinefoodapi_configuredbackend_0b76ddbe function;
+    class adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc function;
+    class adapters_deadlinefoodapi_firebasefunctionsregion_5834e133 function;
+    class adapters_deadlinefoodapi_firebaseprojectid_c6c6f171 function;
+    class adapters_deadlinefoodapi_readbrowseroverride_cce3c953 function;
+    class adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 function;
+    class adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 api;
+    class adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f function;
+    class adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099 function;
+    class lib_index_asrecord_ee234b0f function;
+    class lib_index_boundedstring_8bbbb209 function;
+    class lib_index_boundednumber_fb360176 function;
+    class functions_lib_src_index_js_src_index_asrecord_130c7602 function;
+    class src_frontend_tsx_befdbdc9 ui;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
 <tr>
-  <td>30</td>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>firebaseFunctionUrl()</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>firebaseFunctionsBaseUrl()</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small><br><code>shouldUseFirebaseBackend()</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small></td>
+  <td><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small><br><code>calendarApi.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br><code>calendarFetchIcsUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br>+6 more</td>
+  <td>firebaseFunctionUrl() node in src/adapters/deadlineFoodApi.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>index.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/index.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>Module file in prototype/calendarImport/index.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>calendarApi.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td><code>deadlineFoodApi.ts</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small><br><code>firebaseFunctionUrl()</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small></td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>googleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>outlookCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/outlookCalendar.ts</small></td>
+  <td>Module file in prototype/calendarImport/calendarApi.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>calendarFetchIcsUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>firebaseFunctionUrl()</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small></td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>importFromSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td>calendarFetchIcsUrl() node in prototype/calendarImport/calendarApi.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>calendarGoogleExchangeUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>firebaseFunctionUrl()</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small></td>
+  <td><code>exchangeCodeOnServer()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>googleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td>calendarGoogleExchangeUrl() node in prototype/calendarImport/calendarApi.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>googleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>calendarApi.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br><code>calendarGoogleExchangeUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small></td>
+  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small></td>
+  <td>Module file in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Window</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Window node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>loadGIS()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td>loadGIS() node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>requestCode()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td>requestCode() node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>GoogleExchangeResult</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>GoogleExchangeResult node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>exchangeCodeOnServer()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>calendarGoogleExchangeUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small></td>
+  <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td>exchangeCodeOnServer() node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>isGoogleConfigured()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>importGoogleCalendar()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>exchangeCodeOnServer()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>loadGIS()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>requestCode()</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>importGoogleCalendar() node in prototype/calendarImport/googleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>calendarApi.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br><code>calendarFetchIcsUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small></td>
+  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small><br><code>parseICSText()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small><br>+1 more</td>
+  <td>Module file in prototype/calendarImport/appleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>normalizeWebcalUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>importFromSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>isSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td>normalizeWebcalUrl() node in prototype/calendarImport/appleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>isSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalizeWebcalUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>isSubscriptionUrl() node in prototype/calendarImport/appleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>importFromSubscriptionUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>calendarFetchIcsUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/calendarApi.ts</small><br><code>normalizeWebcalUrl()</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>importFromSubscriptionUrl() node in prototype/calendarImport/appleCalendar.ts.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small></td>
+  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small></td>
+  <td>Module file in prototype/calendarImport/icsParser.ts.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>unfoldLines()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>parseICSText()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td>unfoldLines() node in prototype/calendarImport/icsParser.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>extractField()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>extractField() node in prototype/calendarImport/icsParser.ts.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>parseICSDateTime()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>parseICSDateTime() node in prototype/calendarImport/icsParser.ts.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>unescapeICSValue()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>unescapeICSValue() node in prototype/calendarImport/icsParser.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>parseICSText()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>unfoldLines()</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>parseICSText() node in prototype/calendarImport/icsParser.ts.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>types.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>googleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/googleCalendar.ts</small><br><code>icsParser.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/icsParser.ts</small><br>+1 more</td>
+  <td><code>eventsToDeadlines.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/eventsToDeadlines.ts</small></td>
+  <td>Module file in prototype/calendarImport/types.ts.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>CalendarEvent</code><br><small style="color:var(--muted)">prototype/calendarImport/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>appleCalendar.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/appleCalendar.ts</small><br><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/prototype/autoPlanApi.ts</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">prototype/screens/CalendarScreen.tsx</small><br>+3 more</td>
+  <td><code>eventsToDeadlines.ts</code><br><small style="color:var(--muted)">prototype/calendarImport/eventsToDeadlines.ts</small></td>
+  <td>CalendarEvent node in prototype/calendarImport/types.ts.</td>
+</tr>
+<tr>
+  <td>26</td>
   <td><code>normalizeIngredientKey()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td><code>findOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>openFoodFactsCategoryTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>toCategoryTag()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
   <td>normalizeIngredientKey() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>openFoodFactsCacheDocId()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>cacheOpenFoodFactsProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>findOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>readOpenFoodFactsCachedProduct()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br>+1 more</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>toCategoryTag()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalizeIngredientKey()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><code>normalizeIngredientKey()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>toCategoryTag() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>uniqueTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>openFoodFactsCategoryTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>uniqueTerms() node in functions/src/index.ts.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>openFoodFactsCategoryTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalizeIngredientKey()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>uniqueTerms()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td><code>fetchOpenFoodFactsProductForIngredient()</code><br><small style="color:var(--muted)">functions/src/index.ts</small><br><code>normalizeIngredientKey()</code><br><small style="color:var(--muted)">functions/src/index.ts</small></td>
+  <td>openFoodFactsCategoryTerms() node in functions/src/index.ts.</td>
 </tr>
 </table>
 
@@ -5321,15 +5307,15 @@ flowchart LR
 <tr><td><code>functions/lib/index.js</code></td><td>52 nodes</td></tr>
 <tr><td><code>lib/src/index.js</code></td><td>44 nodes</td></tr>
 <tr><td><code>functions/src/index.ts</code></td><td>32 nodes</td></tr>
-<tr><td><code>drp03/doc/FRONTEND.md</code></td><td>28 nodes</td></tr>
 <tr><td><code>functions/src/calendarUtils.ts</code></td><td>20 nodes</td></tr>
 <tr><td><code>src/adapters/deadlineFoodApi.ts</code></td><td>20 nodes</td></tr>
+<tr><td><code>prototype/screens/CalendarScreen.tsx</code></td><td>20 nodes</td></tr>
 <tr><td><code>drp03/doc/PROJECT_SUMMARY.md</code></td><td>16 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x311, calls x240, imports x11, imports x8. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x328, calls x257, imports x33, imports x21. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5340,17 +5326,17 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>2576</td></tr>
-      <tr><td>Edges</td><td>4925</td></tr>
+      <tr><td>Nodes</td><td>2588</td></tr>
+      <tr><td>Edges</td><td>4940</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>148</td></tr>
+      <tr><td>Communities</td><td>150</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>4840</td></tr>
+      <tr><td>EXTRACTED</td><td>4855</td></tr>
       <tr><td>INFERRED</td><td>85</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -5359,7 +5345,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-04 17:25 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-04 18:14 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

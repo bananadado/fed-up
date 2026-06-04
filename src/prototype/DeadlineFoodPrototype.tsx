@@ -284,29 +284,51 @@ export function DeadlineFoodPrototype() {
   const saveSettingsDebounceRef = useRef<number | null>(null);
   const saveSettingsCooldownRef = useRef(false);
 
+  const buildSessionSettings = useCallback((overrides: {
+    plan?: PlanEntry[];
+    planGeneratedAt?: string;
+    planSignature?: string;
+  } = {}) => createPrototypeSessionSettings({
+    preferences: prefs,
+    deadlines,
+    selectedSources,
+    onboarded,
+    calendarProvider,
+    customRecipes,
+    discoverSaved,
+    discoverRejected,
+    discoverReviewedRecipeIds,
+    plan: overrides.plan ?? plan,
+    calendarEvents,
+    icsSubscriptions,
+    calendarTokens,
+    planSignature: overrides.planSignature ?? planSignature,
+    planGeneratedAt: overrides.planGeneratedAt ?? planGeneratedAt,
+  }), [
+    calendarEvents,
+    calendarProvider,
+    calendarTokens,
+    customRecipes,
+    deadlines,
+    discoverRejected,
+    discoverReviewedRecipeIds,
+    discoverSaved,
+    icsSubscriptions,
+    onboarded,
+    plan,
+    planGeneratedAt,
+    planSignature,
+    prefs,
+    selectedSources,
+  ]);
+
   useEffect(() => {
     if (!sessionLoaded || !canPersistSession) return;
 
     const doSave = () => {
       saveAnonymousSessionSettings(
         sessionId,
-        createPrototypeSessionSettings({
-          preferences: prefs,
-          deadlines,
-          selectedSources,
-          onboarded,
-          calendarProvider,
-          customRecipes,
-          discoverSaved,
-          discoverRejected,
-          discoverReviewedRecipeIds,
-          plan,
-          calendarEvents,
-          icsSubscriptions,
-          calendarTokens,
-          planSignature,
-          planGeneratedAt,
-        }),
+        buildSessionSettings(),
       ).catch(error => {
         console.warn("Anonymous session settings could not be saved.", error);
       });
@@ -335,7 +357,7 @@ export function DeadlineFoodPrototype() {
         window.clearTimeout(saveSettingsDebounceRef.current);
       }
     };
-  }, [calendarEvents, calendarProvider, calendarTokens, canPersistSession, customRecipes, deadlines, discoverRejected, discoverReviewedRecipeIds, discoverSaved, icsSubscriptions, onboarded, plan, planGeneratedAt, planSignature, prefs, selectedSources, sessionId, sessionLoaded]);
+  }, [buildSessionSettings, canPersistSession, sessionId, sessionLoaded]);
 
   useEffect(() => {
     if (!sessionLoaded) {
@@ -404,11 +426,31 @@ export function DeadlineFoodPrototype() {
         deadlines,
         excludeIds: discoverRejected.map((meal) => meal.id),
       });
-      if (result.plan.length > 0) {
-        setPlan(result.plan);
+      if (result.plan.length === 0) {
+        throw new Error("Auto-plan generation returned an empty plan.");
       }
+      setPlan(result.plan);
       setPlanGeneratedAt(result.generatedAt);
       setPlanSignature(currentPlanSignature);
+      setCanPersistSession(true);
+      if (saveSettingsDebounceRef.current !== null) {
+        window.clearTimeout(saveSettingsDebounceRef.current);
+        saveSettingsDebounceRef.current = null;
+      }
+      saveSettingsCooldownRef.current = false;
+      try {
+        await saveAnonymousSessionSettings(
+          sessionId,
+          buildSessionSettings({
+            plan: result.plan,
+            planGeneratedAt: result.generatedAt,
+            planSignature: currentPlanSignature,
+          }),
+        );
+      } catch (error) {
+        console.warn("Generated auto-plan could not be saved immediately.", error);
+        track("auto_plan_persistence_failed", {});
+      }
       track("auto_plan_generated", {
         horizon_days: prefs.planningHorizonDays,
         day_count: result.plan.length,
@@ -420,7 +462,7 @@ export function DeadlineFoodPrototype() {
     } finally {
       setPlanGenerating(false);
     }
-  }, [sessionId, prefs, savedRecipes, calendarEvents, deadlines, discoverRejected, currentPlanSignature, track]);
+  }, [sessionId, prefs, savedRecipes, calendarEvents, deadlines, discoverRejected, currentPlanSignature, buildSessionSettings, track]);
 
   // Generate the first plan automatically once onboarded (also upgrades existing
   // users off the seed/mock plan). Thereafter "prompt" mode shows a banner and

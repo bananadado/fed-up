@@ -71,6 +71,7 @@ type Band = "high" | "medium" | "low";
 const SLOTS: MealSlot[] = ["breakfast", "lunch", "dinner"];
 const LEFTOVER_PORTIONS = 2;
 const LEFTOVER_SHELF_DAYS = 3;
+const RECENT_REPEAT_DAYS = 3;
 
 export function classifyEffort(meal: AllocatorMeal): Effort {
   if (meal.type === "fallback") return "minimal";
@@ -111,6 +112,29 @@ type Leftover = {meal: AllocatorMeal; expiresDayIndex: number};
 
 function mealCostPence(meal: AllocatorMeal): number {
   return Math.max(0, Math.round(meal.pricePence));
+}
+
+function remainingFillableSlotsInWeek(
+  daysLength: number,
+  dayIndex: number,
+  slot: MealSlot,
+  pool: AllocatorMeal[],
+): number {
+  const slotIndex = SLOTS.indexOf(slot);
+  const weekEndIndex = Math.min(daysLength, Math.floor(dayIndex / 7) * 7 + 7);
+  let count = 0;
+
+  for (let d = dayIndex; d < weekEndIndex; d += 1) {
+    const startSlot = d === dayIndex ? slotIndex : 0;
+    for (let s = startSlot; s < SLOTS.length; s += 1) {
+      const candidateSlot = SLOTS[s];
+      if (candidateSlot && pool.some((meal) => meal.mealSlots.includes(candidateSlot))) {
+        count += 1;
+      }
+    }
+  }
+
+  return Math.max(1, count);
 }
 
 // Rank candidates for a slot by how well their effort suits the day's band.
@@ -155,6 +179,10 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
         weeklyBudgetPence === null ?
           Number.POSITIVE_INFINITY :
           Math.max(0, weeklyBudgetPence - (spentByWeek.get(weekIndex) ?? 0));
+      const pacedBudgetPence =
+        weeklyBudgetPence === null ?
+          Number.POSITIVE_INFINITY :
+          Math.floor(remainingBudgetPence / remainingFillableSlotsInWeek(input.days.length, dayIndex, slot, safePool));
 
       // 1. On busy/moderate non-breakfast slots, spend a fresh leftover first.
       if (slot !== "breakfast" && b !== "low") {
@@ -162,7 +190,9 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
           (l) =>
             l.expiresDayIndex >= dayIndex &&
             l.meal.mealSlots.includes(slot) &&
-            mealCostPence(l.meal) <= remainingBudgetPence,
+            mealCostPence(l.meal) <= remainingBudgetPence &&
+            mealCostPence(l.meal) <= pacedBudgetPence &&
+            !usedToday.has(l.meal.id),
         );
         if (idx !== -1) {
           const [used] = leftovers.splice(idx, 1);
@@ -189,6 +219,7 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
         slot,
         maxPrep,
         remainingBudgetPence,
+        pacedBudgetPence,
         lastUsed,
         mealUseCounts,
         slotUseCounts,
@@ -267,6 +298,7 @@ function pickForSlot(
   slot: MealSlot,
   maxPrep: number,
   remainingBudgetPence: number,
+  pacedBudgetPence: number,
   lastUsed: Map<string, number>,
   mealUseCounts: Map<string, number>,
   slotUseCounts: Map<string, number>,
@@ -281,10 +313,32 @@ function pickForSlot(
   const affordable = usable.filter((m) => mealCostPence(m) <= remainingBudgetPence);
   if (affordable.length === 0) return null;
 
-  const notUsedToday = affordable.filter((m) => !usedToday.has(m.id));
-  const rotationPool = notUsedToday.length > 0 ? notUsedToday : affordable;
+  const paced = affordable.filter((m) => mealCostPence(m) <= pacedBudgetPence);
+  const budgetPool = paced.length > 0 ? paced : affordable;
+  const notUsedToday = budgetPool.filter((m) => !usedToday.has(m.id));
+  const rotationPool = notUsedToday.length > 0 ? notUsedToday : budgetPool;
+  const hasPacedOptions = paced.length > 0;
 
   const ranked = [...rotationPool].sort((a, c) => {
+    if (!hasPacedOptions) {
+      const byPrice = mealCostPence(a) - mealCostPence(c);
+      if (byPrice !== 0) return byPrice;
+    }
+
+    const aRecent = dayIndex - (lastUsed.get(`any:${a.id}`) ?? -99) <= RECENT_REPEAT_DAYS ? 1 : 0;
+    const cRecent = dayIndex - (lastUsed.get(`any:${c.id}`) ?? -99) <= RECENT_REPEAT_DAYS ? 1 : 0;
+    if (aRecent !== cRecent) return aRecent - cRecent;
+
+    if (b === "low" && slot !== "breakfast") {
+      const aSlotUses = slotUseCounts.get(`${slot}:${a.id}`) ?? 0;
+      const cSlotUses = slotUseCounts.get(`${slot}:${c.id}`) ?? 0;
+      if (aSlotUses !== cSlotUses) return aSlotUses - cSlotUses;
+
+      const aUses = mealUseCounts.get(a.id) ?? 0;
+      const cUses = mealUseCounts.get(c.id) ?? 0;
+      if (aUses !== cUses) return aUses - cUses;
+    }
+
     const byEffort = effortRank(classifyEffort(a), b, slot) - effortRank(classifyEffort(c), b, slot);
     if (byEffort !== 0) return byEffort;
 

@@ -156,44 +156,52 @@ export function PlanScreen({
                           </div>
                           {mealSlots.map((slot) => {
                             const planMeal = entry.meals.find((meal) => meal.slot === slot);
-                            const meal = getMealById(planMeal?.mealId ?? "m1", customRecipes);
+                            const meal = planMeal ? getMealById(planMeal.mealId, customRecipes) : null;
 
                             return (
                               <div key={slot} className="border-l border-stone-200 p-3">
                                 <div className="flex h-full min-h-[178px] flex-col justify-between rounded-lg bg-stone-50 p-3">
-                                  <button
-                                    type="button"
-                                    onClick={() => onSelectMeal(meal.id)}
-                                    className="text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
-                                  >
-                                    <div className="flex flex-wrap items-center gap-2">
-                                      {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
-                                      {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
-                                      {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
-                                      <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
-                                        {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Fallback</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
-                                      </Badge>
-                                    </div>
-                                    <p className="mt-3 break-words text-sm font-semibold leading-5">
-                                      {meal.image} {meal.name}
-                                    </p>
-                                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-600">
-                                      <span className="flex items-center gap-1">
-                                        <Clock3 size={14} /> {meal.time} mins
-                                      </span>
-                                      <span>{money(meal.price)}</span>
-                                    </div>
-                                    <div className="mt-3 flex flex-wrap gap-1.5">
-                                      {mealHealthSignals(meal).map((signal) => (
-                                        <Badge key={signal} tone="blue">
-                                          {signal}
+                                  {meal ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => onSelectMeal(meal.id)}
+                                      className="text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                                    >
+                                      <div className="flex flex-wrap items-center gap-2">
+                                        {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
+                                        {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
+                                        {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
+                                        <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
+                                          {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Fallback</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
                                         </Badge>
-                                      ))}
+                                      </div>
+                                      <p className="mt-3 break-words text-sm font-semibold leading-5">
+                                        {meal.image} {meal.name}
+                                      </p>
+                                      <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-600">
+                                        <span className="flex items-center gap-1">
+                                          <Clock3 size={14} /> {meal.time} mins
+                                        </span>
+                                        <span>{money(meal.price)}</span>
+                                      </div>
+                                      <div className="mt-3 flex flex-wrap gap-1.5">
+                                        {mealHealthSignals(meal).map((signal) => (
+                                          <Badge key={signal} tone="blue">
+                                            {signal}
+                                          </Badge>
+                                        ))}
+                                      </div>
+                                      <p className="mt-2 line-clamp-2 text-sm text-stone-500">{meal.source}</p>
+                                    </button>
+                                  ) : (
+                                    <div>
+                                      <Badge tone="amber">Unfilled</Badge>
+                                      <p className="mt-3 text-sm font-semibold leading-5 text-stone-700">No meal allocated</p>
+                                      <p className="mt-2 text-sm text-stone-500">Choose a meal for this slot.</p>
                                     </div>
-                                    <p className="mt-2 line-clamp-2 text-sm text-stone-500">{meal.source}</p>
-                                  </button>
-                                  <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
-                                    <RefreshCcw size={15} /> Change meal
+                                  )}
+                                  <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                    <RefreshCcw size={15} /> {meal ? "Change meal" : "Choose meal"}
                                   </AppButton>
                                 </div>
                               </div>
@@ -213,27 +221,34 @@ export function PlanScreen({
                           <div className="grid gap-3 sm:grid-cols-3">
                             {mealSlots.map((slot) => {
                               const planMeal = entry.meals.find((meal) => meal.slot === slot);
-                              const meal = getMealById(planMeal?.mealId ?? "m1", customRecipes);
+                              const meal = planMeal ? getMealById(planMeal.mealId, customRecipes) : null;
 
                               return (
                                 <div key={slot} className="rounded-lg bg-stone-50 p-3">
                                   <p className="text-xs font-semibold uppercase text-stone-500">{slotLabels[slot]}</p>
-                                  <button type="button" onClick={() => onSelectMeal(meal.id)} className="mt-2 w-full text-left">
-                                    <p className="break-words font-semibold leading-5">
-                                      {meal.image} {meal.name}
-                                    </p>
-                                    <p className="mt-1 text-sm text-stone-500">
-                                      {meal.time} mins - {money(meal.price)}
-                                    </p>
-                                  </button>
+                                  {meal ? (
+                                    <button type="button" onClick={() => onSelectMeal(meal.id)} className="mt-2 w-full text-left">
+                                      <p className="break-words font-semibold leading-5">
+                                        {meal.image} {meal.name}
+                                      </p>
+                                      <p className="mt-1 text-sm text-stone-500">
+                                        {meal.time} mins - {money(meal.price)}
+                                      </p>
+                                    </button>
+                                  ) : (
+                                    <div className="mt-2">
+                                      <p className="break-words font-semibold leading-5 text-stone-700">No meal allocated</p>
+                                      <p className="mt-1 text-sm text-stone-500">Choose a meal for this slot.</p>
+                                    </div>
+                                  )}
                                   {(planMeal?.batchCook || planMeal?.leftoverOf) && (
                                     <div className="mt-2 flex flex-wrap gap-1.5">
                                       {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
                                       {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                     </div>
                                   )}
-                                  <AppButton variant="secondary" className="mt-3 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal.id, layout: "mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
-                                    <RefreshCcw size={15} /> Change meal
+                                  <AppButton variant="secondary" className="mt-3 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                    <RefreshCcw size={15} /> {meal ? "Change meal" : "Choose meal"}
                                   </AppButton>
                                 </div>
                               );

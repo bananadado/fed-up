@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 
 import { buildPlan, classifyEffort, type AllocatorMeal, type DayContext } from "./autoPlan";
+import { prototypeRecipes } from "./generated/prototypeData";
 
 function meal(partial: Partial<AllocatorMeal> & { id: string }): AllocatorMeal {
   return {
@@ -22,6 +23,19 @@ function day(partial: Partial<DayContext> & { date: string }): DayContext {
     hard_deadlines: 0,
     recommended_constraints: { max_prep_minutes: 60 },
     ...partial,
+  };
+}
+
+function prototypeMealToAllocator(meal: (typeof prototypeRecipes)[number]): AllocatorMeal {
+  return {
+    id: meal.id,
+    type: meal.type,
+    mealSlots: [...meal.mealSlots],
+    time: meal.time,
+    pricePence: Math.round(meal.price * 100),
+    tags: [...meal.tags],
+    allergens: [...meal.allergens],
+    ingredients: meal.ingredients.map((ingredient) => ({ name: ingredient.name })),
   };
 }
 
@@ -124,6 +138,70 @@ describe("buildPlan", () => {
 
     const dinners = plan.flatMap((entry) => entry.meals.filter((m) => m.slot === "dinner"));
     expect(dinners.map((m) => m.mealId)).toEqual(["cheap", "cheap"]);
+  });
+
+  it("paces spend across the week instead of blowing the budget on the first days", () => {
+    const costly = meal({ id: "costly", type: "fallback", time: 4, pricePence: 400, mealSlots: ["dinner"] });
+    const paced = meal({ id: "paced", type: "fallback", time: 6, pricePence: 100, mealSlots: ["dinner"] });
+    const plan = buildPlan({
+      days: Array.from({ length: 7 }, (_, i) =>
+        day({ date: `2026-06-${String(i + 1).padStart(2, "0")}`, stress: 0.8 }),
+      ),
+      pool: [costly, paced],
+      avoided: [],
+      weeklyBudgetPence: 700,
+    });
+
+    const dinners = plan.flatMap((entry) => entry.meals.filter((m) => m.slot === "dinner"));
+    expect(dinners).toHaveLength(7);
+    expect(dinners.every((m) => m.mealId === "paced")).toBe(true);
+  });
+
+  it("paces across slots that can actually be filled", () => {
+    const dinnerOnly = meal({ id: "dinner-only", pricePence: 285, mealSlots: ["dinner"] });
+    const plan = buildPlan({
+      days: Array.from({ length: 7 }, (_, i) =>
+        day({ date: `2026-06-${String(i + 1).padStart(2, "0")}`, stress: 0.8 }),
+      ),
+      pool: [dinnerOnly],
+      avoided: [],
+      weeklyBudgetPence: 2100,
+    });
+
+    const dinners = plan.flatMap((entry) => entry.meals.filter((m) => m.slot === "dinner"));
+    expect(dinners).toHaveLength(7);
+    expect(dinners.every((m) => m.mealId === "dinner-only")).toBe(true);
+  });
+
+  it("allocates from the canonical catalogue when recommender and saved recipes are absent", () => {
+    const plan = buildPlan({
+      days: Array.from({ length: 7 }, (_, i) =>
+        day({ date: `2026-06-${String(i + 1).padStart(2, "0")}`, stress: 0.3 }),
+      ),
+      pool: prototypeRecipes.map(prototypeMealToAllocator),
+      avoided: [],
+      weeklyBudgetPence: 4800,
+    });
+
+    expect(plan.flatMap((entry) => entry.meals)).toHaveLength(21);
+  });
+
+  it("does not keep choosing the same relaxed-day batch cook when alternatives exist", () => {
+    const traybake = meal({ id: "traybake", tags: ["batch-friendly"], time: 20, pricePence: 120, mealSlots: ["dinner"] });
+    const pasta = meal({ id: "pasta", time: 18, pricePence: 130, mealSlots: ["dinner"] });
+    const noodles = meal({ id: "noodles", time: 16, pricePence: 140, mealSlots: ["dinner"] });
+    const plan = buildPlan({
+      days: Array.from({ length: 6 }, (_, i) =>
+        day({ date: `2026-06-${String(i + 1).padStart(2, "0")}`, stress: 0.2 }),
+      ),
+      pool: [traybake, pasta, noodles],
+      avoided: [],
+      weeklyBudgetPence: 2000,
+    });
+
+    const dinnerIds = plan.map((entry) => entry.meals.find((m) => m.slot === "dinner")?.mealId);
+    expect(dinnerIds.slice(0, 3)).toEqual(["traybake", "pasta", "noodles"]);
+    expect(dinnerIds.filter((id) => id === "traybake")).toHaveLength(2);
   });
 
   it("rotates similarly suitable meals instead of repeating one meal across the horizon", () => {
