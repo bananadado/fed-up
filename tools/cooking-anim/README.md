@@ -56,8 +56,10 @@ cd tools/cooking-anim
 python3 -m venv .venv && source .venv/bin/activate
 pip install --upgrade pip
 
-# Install torch matched to the server CUDA (example: CUDA 12.1).
-pip install torch --index-url https://download.pytorch.org/whl/cu121
+# Install torch + torchvision matched to the server CUDA (example: CUDA 12.1).
+# (torchvision is optional but silences transformers warnings and avoids
+#  edge-case image-transform fallbacks.)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 
 # Rest of the deps.
 pip install -r requirements.txt
