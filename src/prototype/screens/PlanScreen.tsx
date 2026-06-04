@@ -1,5 +1,5 @@
 import { ChevronDown, Clock3, Flame, Heart, Layers, RefreshCcw, ShoppingBag, ShoppingBasket, Sparkles, Soup, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
@@ -61,6 +61,15 @@ export function PlanScreen({
   });
   const [shoppingOpen, setShoppingOpen] = useState(false);
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem("deadlineFood:openShopping") === "1") {
+        sessionStorage.removeItem("deadlineFood:openShopping");
+        setShoppingOpen(true);
+      }
+    } catch { /* sessionStorage unavailable */ }
+  }, []);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
 
   const weeks = useMemo(() => {
