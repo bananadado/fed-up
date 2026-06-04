@@ -5,7 +5,6 @@ import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
 import type { Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
-import { DailyMacroSummary } from "../components/DailyMacroSummary";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal, slotLabels } from "../components/SwapModal";
@@ -18,6 +17,21 @@ type RescueChoice = {
   day: string;
   slot: MealSlot;
 } | null;
+
+function dailyTotals(entry: PlanEntry, customRecipes: Meal[]) {
+  return entry.meals.reduce(
+    (sum, planMeal) => {
+      const { nutrition } = getMealById(planMeal.mealId, customRecipes);
+      return {
+        calories: sum.calories + nutrition.calories,
+        protein: sum.protein + nutrition.protein,
+        carbs: sum.carbs + nutrition.carbs,
+        fat: sum.fat + nutrition.fat,
+      };
+    },
+    { calories: 0, protein: 0, carbs: 0, fat: 0 },
+  );
+}
 
 export function PlanScreen({
   plan,
@@ -145,7 +159,10 @@ export function PlanScreen({
                   <>
                     <div className="hidden overflow-hidden rounded-lg border border-stone-200 bg-white md:block">
                       <div className="grid grid-cols-[minmax(100px,0.55fr)_repeat(3,minmax(0,1fr))] border-b border-stone-200 bg-stone-50 text-sm font-semibold text-stone-600">
-                        <div className="px-4 py-3">Day</div>
+                        <div className="px-4 py-3">
+                          <span>Day</span>
+                          <p className="mt-0.5 text-[10px] font-normal text-stone-400">broad nutrition signal</p>
+                        </div>
                         {mealSlots.map((slot) => (
                           <div key={slot} className="border-l border-stone-200 px-4 py-3">
                             {slotLabels[slot]}
@@ -157,6 +174,13 @@ export function PlanScreen({
                           <div className="bg-stone-50 px-4 py-4">
                             <p className="font-bold">{entry.day}</p>
                             {entry.context && <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>}
+                            {(() => { const t = dailyTotals(entry, customRecipes); return (
+                              <div className="mt-3 space-y-0.5">
+                                <p className="text-xs font-semibold text-stone-700">{t.calories} kcal</p>
+                                <p className="text-xs text-stone-500">{t.protein}g protein</p>
+                                <p className="text-[11px] text-stone-400">{t.carbs}g carbs · {t.fat}g fat</p>
+                              </div>
+                            ); })()}
                           </div>
                           {mealSlots.map((slot) => {
                             const planMeal = entry.meals.find((meal) => meal.slot === slot);
@@ -225,10 +249,19 @@ export function PlanScreen({
                     <div className="space-y-4 md:hidden">
                       {weekEntries.map((entry) => (
                         <Card key={entry.day} className="gap-0 rounded-lg border-stone-200 bg-white p-4">
-                          <div className="mb-4">
-                            <p className="font-bold">{entry.day}</p>
-                            {entry.context && <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>}
-                          </div>
+                          {(() => { const t = dailyTotals(entry, customRecipes); return (
+                            <div className="mb-4 flex items-start justify-between gap-3">
+                              <div>
+                                <p className="font-bold">{entry.day}</p>
+                                {entry.context && <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>}
+                              </div>
+                              <div className="shrink-0 text-right">
+                                <p className="text-xs font-semibold text-stone-700">{t.calories} kcal</p>
+                                <p className="text-xs text-stone-500">{t.protein}g protein</p>
+                                <p className="text-[11px] text-stone-400">{t.carbs}g carbs · {t.fat}g fat</p>
+                              </div>
+                            </div>
+                          ); })()}
                           <div className="grid gap-3 sm:grid-cols-3">
                             {mealSlots.map((slot) => {
                               const planMeal = entry.meals.find((meal) => meal.slot === slot);
@@ -305,7 +338,6 @@ export function PlanScreen({
               </AppButton>
             </div>
           </Card>
-          <DailyMacroSummary plan={plan} customRecipes={customRecipes} />
         </div>
       </div>
       {shoppingOpen && (
