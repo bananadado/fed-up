@@ -8,7 +8,7 @@ import { AppButton, Badge, Field } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { formatIngredient } from "../ingredients";
-import { mealById, money, nutritionSourceSummary } from "../utils";
+import { mealById, money, nutritionSourceSummary, sourceUrl } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
 import { fetchRecipeReviews, submitRecipeReview } from "../reviewsApi";
@@ -421,7 +421,21 @@ export function RecipeDetailScreen({
             <dl className="mt-4 space-y-3 text-sm">
               <div className="flex justify-between gap-3">
                 <dt className="text-stone-500">Source</dt>
-                <dd className="font-semibold text-right">{meal.source}</dd>
+                <dd className="font-semibold text-right">
+                  {sourceUrl(meal.source) ? (
+                    <a
+                      href={sourceUrl(meal.source) as string}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="break-all text-emerald-700 underline underline-offset-2 hover:text-emerald-800"
+                      onClick={() => track("recipe_source_link_clicked", { meal_id: selectedMeal.id })}
+                    >
+                      {meal.source}
+                    </a>
+                  ) : (
+                    meal.source
+                  )}
+                </dd>
               </div>
               <div className="flex justify-between gap-3">
                 <dt className="text-stone-500">Cost</dt>
