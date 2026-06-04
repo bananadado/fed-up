@@ -24,6 +24,8 @@ export type CookingCalendarBlock = {
   shoppingReminderLeadMinutes?: number;
   /** Pre-formatted ingredient strings shown in the event description, e.g. "200g red lentils". */
   ingredients?: string[];
+  /** Overrides the default "Cook: {mealName}" calendar event title when set. */
+  eventTitle?: string;
 };
 
 const DEFAULT_SHOPPING_LEAD_MINUTES = 120;
@@ -82,7 +84,7 @@ function blockMinutes(cookMinutes: number): number {
 }
 
 function eventSummary(block: CookingCalendarBlock): string {
-  return `Cook: ${block.mealName}`;
+  return block.eventTitle ?? `Cook: ${block.mealName}`;
 }
 
 function reminderLabel(leadMinutes: number | undefined): string {
