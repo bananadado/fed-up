@@ -227,6 +227,17 @@ export function SettingsScreen({
         </div>
         <div className="mt-6 grid gap-5 sm:grid-cols-2">
           <div>
+            <span className="text-sm font-semibold">Evening prep reminder</span>
+            <p className="mt-1 text-sm text-stone-500">When to be reminded to prep overnight meals.</p>
+            <Input
+              type="time"
+              step="60"
+              value={prefs.prepReminderTime}
+              onChange={(e) => { track("settings_preference_changed", { field: "prep_reminder_time", value: e.target.value }); setPrefs({ ...prefs, prepReminderTime: e.target.value }); }}
+              className="mt-3 h-auto rounded-lg border-stone-200 bg-white p-3"
+            />
+          </div>
+          <div>
             <span className="text-sm font-semibold">Planning window</span>
             <p className="mt-1 text-sm text-stone-500">How far ahead Autopilot fills your plan.</p>
             <div className="mt-3 grid grid-cols-4 gap-2">
