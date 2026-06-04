@@ -352,7 +352,6 @@ export function RecipeEditor({
   const [uploading, setUploading] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const autoNutritionTimerRef = useRef<number | null>(null);
-  const estimateNutritionRef = useRef<() => Promise<void>>(() => Promise.resolve());
   const prevIngredientKeyRef = useRef("");
 
   const ingredients = sanitiseIngredientDrafts(form.ingredients);
@@ -406,8 +405,6 @@ export function RecipeEditor({
     }
   }
 
-  estimateNutritionRef.current = estimateNutrition;
-
   useEffect(() => {
     const sanitised = sanitiseIngredientDrafts(form.ingredients);
     const key = sanitised.map((i) => `${i.name}:${i.quantity}:${i.unit}`).join("|");
@@ -417,7 +414,26 @@ export function RecipeEditor({
     if (autoNutritionTimerRef.current !== null) window.clearTimeout(autoNutritionTimerRef.current);
     autoNutritionTimerRef.current = window.setTimeout(() => {
       autoNutritionTimerRef.current = null;
-      void estimateNutritionRef.current();
+      if (sanitised.length === 0) return;
+      setNutritionLoading(true);
+      setNutritionStatus(null);
+      fetchOpenFoodFactsNutrition(sanitised)
+        .then((nutrition) => {
+          setForm((prev) => ({
+            ...prev,
+            calories: nutrition.calories,
+            protein: nutrition.protein,
+            carbs: nutrition.carbs,
+            fat: nutrition.fat,
+            nutritionSource: nutrition.source,
+          }));
+          const missing = nutrition.source?.missingIngredients ?? [];
+          setNutritionStatus(missing.length > 0 ? `Couldn't find: ${missing.join(", ")}` : "All ingredients matched");
+        })
+        .catch((error: unknown) => {
+          setNutritionStatus(error instanceof Error ? error.message : "Nutrition data could not be loaded.");
+        })
+        .finally(() => setNutritionLoading(false));
     }, 1500);
 
     return () => {
@@ -426,9 +442,6 @@ export function RecipeEditor({
         autoNutritionTimerRef.current = null;
       }
     };
-  // form.ingredients is the stable state dep; sanitising inside the effect avoids
-  // a stale-closure on ingredients while keeping the dep array minimal.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.ingredients]);
 
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
