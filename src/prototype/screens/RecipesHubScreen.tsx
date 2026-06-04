@@ -1,7 +1,7 @@
 import { Plus, RotateCcw, Sparkles, UtensilsCrossed } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
-import type { Deadline, DiscoverRecommendationState, Meal, Preferences } from "../types";
+import type { Deadline, DiscoverRecommendationState, Meal, MealSlot, Preferences } from "../types";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { AppButton, Badge } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
@@ -29,6 +29,7 @@ export function RecipesHubScreen({
   deadlines,
   sessionId,
   onSelectMeal,
+  discoverContext,
   track,
 }: {
   customRecipes: Meal[];
@@ -45,9 +46,11 @@ export function RecipesHubScreen({
   deadlines: Deadline[];
   sessionId: string;
   onSelectMeal: (mealId: string) => void;
+  discoverContext?: { day: string; slot: MealSlot; mealId: string } | null;
   track: TrackPrototypeEvent;
 }) {
   const [tab, setTab] = useState<Tab>(() => {
+    if (discoverContext) return "discover";
     try {
       const stored = sessionStorage.getItem("deadlineFood:recipesTab");
       if (stored === "discover" || stored === "saved" || stored === "add") return stored;
@@ -334,6 +337,7 @@ export function RecipesHubScreen({
           recommendationState={discoverRecommendationState}
           setRecommendationState={setDiscoverRecommendationState}
           onSelectMeal={onSelectMeal}
+          context={discoverContext}
           track={track}
         />
       )}

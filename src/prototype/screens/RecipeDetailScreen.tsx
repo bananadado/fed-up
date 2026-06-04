@@ -1,4 +1,4 @@
-import { ArrowLeft, Bookmark, BookmarkCheck, Clock3, MessageSquare, Pencil, Star, Trash2 } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, Clock3, MessageSquare, Pencil, Star, Trash2 } from "lucide-react";
 import { useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -52,6 +52,22 @@ export function RecipeDetailScreen({
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [showScrollHint, setShowScrollHint] = useState(false);
+
+  useEffect(() => {
+    function check() {
+      const scrollable = document.documentElement.scrollHeight > window.innerHeight + 10;
+      const nearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
+      setShowScrollHint(scrollable && !nearBottom);
+    }
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
+  }, []);
 
   const isOwn = meal?.isUserCreated === true;
   const isSaved = isOwn || discoverSaved.some((r) => r.id === mealId);
@@ -457,6 +473,16 @@ export function RecipeDetailScreen({
           </Card>
         </div>
       </div>
+
+      {showScrollHint && !isEditing && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed bottom-20 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-0.5 md:bottom-8"
+        >
+          <span className="text-[10px] font-medium uppercase tracking-widest text-stone-500/80">scroll</span>
+          <ChevronDown size={16} className="animate-bounce text-stone-500/80" />
+        </div>
+      )}
 
       {confirmDelete && (
         <ConfirmDialog
