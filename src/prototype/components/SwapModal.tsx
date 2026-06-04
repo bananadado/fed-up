@@ -1,8 +1,7 @@
-import { ArrowRight, ArrowUpDown, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, TrendingDown, TrendingUp, X } from "lucide-react";
-import { useState } from "react";
+import { ArrowUpDown, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, TrendingDown, TrendingUp, X } from "lucide-react";
+import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
-import { getRecipeCatalogue } from "../recipeCatalogue";
 import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
 import { ingredientName } from "../ingredients";
 import { getMealById, money } from "../utils";
@@ -46,6 +45,7 @@ export function SwapModal({
   setPlan,
   prefs,
   customRecipes,
+  savedRecipes,
   onSelectMeal,
   track,
 }: {
@@ -55,6 +55,7 @@ export function SwapModal({
   setPlan: (plan: PlanEntry[]) => void;
   prefs: Preferences;
   customRecipes: Meal[];
+  savedRecipes?: Meal[];
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
@@ -88,9 +89,14 @@ export function SwapModal({
   const originalPlanMeal = originalDay?.meals.find((meal) => meal.slot === rescueChoice.slot);
   const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
+  const savedSet = useMemo(() => new Set((savedRecipes ?? []).map((m) => m.id)), [savedRecipes]);
 
   // Full candidate pool — allergen/dislike safe, not the current meal
-  const candidatePool = [...customRecipes, ...getRecipeCatalogue().filter((m) => !customRecipes.some((c) => c.id === m.id))]
+  const savedNotInCustom = (savedRecipes ?? []).filter((m) => !customRecipes.some((c) => c.id === m.id));
+  const candidatePool = [
+    ...customRecipes,
+    ...savedNotInCustom,
+  ]
     .filter((meal) => meal.id !== originalPlanMeal?.mealId)
     .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
     .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())));
@@ -112,6 +118,9 @@ export function SwapModal({
   const allOptions = [...tagFiltered].sort((a, b) => {
     if (sortBy === "quickest") return a.time - b.time;
     if (sortBy === "cheapest") return a.price - b.price;
+    const aSaved = savedSet.has(a.id) ? 1 : 0;
+    const bSaved = savedSet.has(b.id) ? 1 : 0;
+    if (aSaved !== bSaved) return bSaved - aSaved;
     const aScore = a.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
     const bScore = b.tags.filter((tag) => prefs.likes.some((like) => like.toLowerCase() === tag.toLowerCase())).length;
     return bScore - aScore || a.time - b.time || a.price - b.price;
@@ -211,7 +220,7 @@ export function SwapModal({
 
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-center bg-stone-950/40 p-0 sm:items-center sm:p-5" onClick={() => { track("meal_swap_cancelled", { action: "backdrop", day: rescueChoice.day, meal_slot: rescueChoice.slot }); closeAndReset(); }}>
-      <Card className="flex max-h-[92dvh] w-full max-w-lg flex-col gap-0 rounded-t-2xl bg-white shadow-2xl sm:rounded-lg" onClick={(e) => e.stopPropagation()}>
+      <Card className="flex h-[100dvh] w-full max-w-lg flex-col gap-0 !py-0 rounded-t-2xl bg-white shadow-2xl sm:h-auto sm:max-h-[92dvh] sm:rounded-lg" onClick={(e) => e.stopPropagation()}>
 
         {/* Drag handle — mobile affordance */}
         <div className="mx-auto mt-3 h-1 w-10 shrink-0 rounded-full bg-stone-200 sm:hidden" />
@@ -288,10 +297,12 @@ export function SwapModal({
               )}
             </button>
           </div>
+        </div>
 
-          {/* Sort panel */}
-          {showSort && (
-            <div className="mt-2 rounded-lg border border-stone-200 bg-stone-50 p-3">
+        {/* Sort panel — fixed, never scrolls */}
+        {showSort && (
+          <div className="shrink-0 border-t border-stone-100 px-5 py-3">
+            <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Sort by</p>
               <div className="flex flex-wrap gap-2">
                 {(["match", "quickest", "cheapest"] as SortOption[]).map((opt) => (
@@ -306,29 +317,27 @@ export function SwapModal({
                 ))}
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Filter panel */}
-          {showFilters && (
-            <div className="mt-2 rounded-lg border border-stone-200 bg-stone-50 p-3">
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Meal type</p>
-              <div className="flex flex-wrap gap-2">
-                {allSlots.map((slot) => (
-                  <button
-                    key={slot}
-                    type="button"
-                    onClick={() => toggleSlot(slot)}
-                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${selectedSlots.includes(slot) ? "border-emerald-600 bg-emerald-100 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
-                  >
-                    {slotLabels[slot]}
-                  </button>
-                ))}
-              </div>
-
-              <p className="mb-2 mt-3 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Tags</p>
-              {/* All chips: custom-selected tags first, then catalogue tags */}
-              <div className="max-h-28 overflow-y-auto">
-                <div className="flex flex-wrap gap-2 pb-1">
+        {/* Filter panel — fixed, never scrolls */}
+        {showFilters && (
+          <div className="shrink-0 border-t border-stone-100 px-5 pb-2 pt-2">
+            <div className="rounded-lg border border-stone-200 bg-stone-50 p-2">
+              {/* Slot chips + tag chips in one compact scrollable area */}
+              <div className="max-h-[4.5rem] overflow-y-auto">
+                <div className="flex flex-wrap gap-1.5 pb-0.5">
+                  {allSlots.map((slot) => (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => toggleSlot(slot)}
+                      className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${selectedSlots.includes(slot) ? "border-emerald-600 bg-emerald-100 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                    >
+                      {slotLabels[slot]}
+                    </button>
+                  ))}
+                  <span className="mx-0.5 self-center text-stone-300">|</span>
                   {[
                     ...selectedTags.filter((t) => !availableTags.includes(t)),
                     ...availableTags,
@@ -337,47 +346,46 @@ export function SwapModal({
                       key={tag}
                       type="button"
                       onClick={() => toggleTag(tag)}
-                      className={`rounded-full border px-3 py-1.5 text-sm font-medium capitalize transition ${selectedTags.includes(tag) ? "border-emerald-600 bg-emerald-100 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
+                      className={`rounded-full border px-2.5 py-1 text-xs font-medium capitalize transition ${selectedTags.includes(tag) ? "border-emerald-600 bg-emerald-100 text-emerald-800" : "border-stone-200 bg-white text-stone-600 hover:border-stone-300"}`}
                     >
                       {tag}
                     </button>
                   ))}
                 </div>
               </div>
-              {/* Custom tag input */}
-              <div className="mt-2 flex gap-2">
+              {/* Custom tag input + reset */}
+              <div className="mt-1.5 flex items-center gap-1.5">
                 <input
                   type="text"
                   value={customTagInput}
                   onChange={(e) => setCustomTagInput(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } }}
                   placeholder="Add a tag…"
-                  className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20"
+                  className="min-w-0 flex-1 rounded-md border border-stone-200 bg-white px-2.5 py-1 text-xs outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20"
                 />
                 <button
                   type="button"
                   onClick={addCustomTag}
                   disabled={!customTagInput.trim()}
-                  className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-600 transition hover:border-emerald-300 hover:text-emerald-700 disabled:opacity-40"
+                  className="rounded-md border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-600 transition hover:border-emerald-300 hover:text-emerald-700 disabled:opacity-40"
                 >
                   Add
                 </button>
+                {activeFilterCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    className="shrink-0 text-xs font-medium text-stone-400 hover:text-stone-600"
+                  >
+                    Reset
+                  </button>
+                )}
               </div>
-
-              {activeFilterCount > 0 && (
-                <button
-                  type="button"
-                  onClick={resetFilters}
-                  className="mt-3 text-sm font-medium text-stone-400 hover:text-stone-600"
-                >
-                  Reset filters
-                </button>
-              )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Scrollable options list only */}
+        {/* Scrollable meal list */}
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-3 pt-3">
           <div className="space-y-2">
             {filteredOptions.length === 0 ? (
@@ -405,7 +413,10 @@ export function SwapModal({
                   >
                     <div className="flex items-stretch">
                       <div className="min-w-0 flex-1 p-3">
-                        <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
+                          {savedSet.has(meal.id) && <Badge tone="blue">Saved</Badge>}
+                        </div>
                         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
                           <span className="flex items-center gap-1"><Clock3 size={11} /> {meal.time} min</span>
                           <span>{money(meal.price)}</span>
@@ -445,29 +456,25 @@ export function SwapModal({
             const timeDiff = originalMeal ? originalMeal.time - selectedMeal.time : null;
             const pDiff = originalMeal ? priceDiff(selectedMeal.price, originalMeal.price) : { label: `adds ${money(selectedMeal.price)}`, sign: "extra" as const };
             return (
-              <div className="mb-3 rounded-xl bg-emerald-900 p-4 text-white">
-                {/* Now → After + Budget left */}
-                <div className="flex items-end gap-3">
+              <div className="mb-3 rounded-xl bg-emerald-900 px-4 py-3 text-white">
+                <div className="grid grid-cols-3 gap-2">
                   <div>
                     <p className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
                       <ShoppingCart size={10} /> Week now
                     </p>
-                    <p className="mt-1 text-xl font-bold">{money(total)}</p>
+                    <p className="mt-1 text-base font-bold">{money(total)}</p>
                   </div>
-                  <ArrowRight size={16} className="mb-1 shrink-0 text-emerald-500" />
                   <div>
-                    <p className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
-                      After
-                    </p>
-                    <p className={`mt-1 text-xl font-bold ${newTotal < total ? "text-emerald-300" : newTotal > total ? "text-rose-300" : "text-white"}`}>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-emerald-400">After</p>
+                    <p className={`mt-1 text-base font-bold ${newTotal < total ? "text-emerald-300" : newTotal > total ? "text-rose-300" : "text-white"}`}>
                       {money(newTotal)}
                     </p>
                   </div>
-                  <div className="ml-auto text-right">
+                  <div className="text-right">
                     <p className="flex items-center justify-end gap-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
-                      <PiggyBank size={10} /> Budget left
+                      <PiggyBank size={10} /> Left
                     </p>
-                    <p className={`mt-1 text-xl font-bold ${budgetAfter >= 0 ? "text-emerald-300" : "text-rose-300"}`}>
+                    <p className={`mt-1 text-base font-bold ${budgetAfter >= 0 ? "text-emerald-300" : "text-rose-300"}`}>
                       {budgetAfter >= 0 ? money(budgetAfter) : `${money(Math.abs(budgetAfter))} over`}
                     </p>
                   </div>

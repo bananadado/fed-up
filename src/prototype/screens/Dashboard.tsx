@@ -15,24 +15,28 @@ export function Dashboard({
   plan,
   setPlan,
   customRecipes,
+  discoverSaved,
   setScreen,
   onSelectMeal,
   planStale,
   planGenerated,
   regenerating,
   onRegenerate,
+  openDiscover,
   track,
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
   setPlan: (plan: PlanEntry[]) => void;
   customRecipes: Meal[];
+  discoverSaved: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
   planStale: boolean;
   planGenerated: boolean;
   regenerating: boolean;
   onRegenerate: () => void;
+  openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
@@ -91,7 +95,7 @@ export function Dashboard({
               <>
                 <button
                   type="button"
-                  onClick={() => { track("dashboard_next_meal_clicked", { meal_id: nextMeal.mealId }); onSelectMeal(nextMeal.mealId); }}
+                  onClick={() => { track("dashboard_next_meal_clicked", { meal_id: nextMeal.mealId }); track("meal_card_view_clicked", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, source: "dashboard_next_meal" }); onSelectMeal(nextMeal.mealId); }}
                   className="mt-4 break-words text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                 >
                   {nextMeal.meal.image} {nextMeal.meal.name}
@@ -110,9 +114,14 @@ export function Dashboard({
                     </Badge>
                   ))}
                 </div>
-                <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, layout: "dashboard_next_meal" }); setRescueChoice({ day: nextMeal.day, slot: nextMeal.slot }); }}>
-                  <RefreshCcw size={13} /> Change meal
-                </AppButton>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <AppButton variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, layout: "dashboard_next_meal" }); track("meal_card_swap_clicked", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, source: "dashboard_next_meal" }); setRescueChoice({ day: nextMeal.day, slot: nextMeal.slot }); }}>
+                    <RefreshCcw size={13} /> Change
+                  </AppButton>
+                  <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(nextMeal.day, nextMeal.slot, nextMeal.mealId)}>
+                    Find something else
+                  </AppButton>
+                </div>
               </>
             ) : (
               <p className="mt-3 text-stone-500">No meals planned this week.</p>
@@ -159,25 +168,34 @@ export function Dashboard({
                         const meal = getMealById(planMeal.mealId, customRecipes);
 
                         return (
-                          <div key={planMeal.slot} className="relative min-w-0 rounded-lg bg-white px-3 py-2">
+                          <div key={planMeal.slot} className="min-w-0 rounded-lg bg-white px-3 py-2">
                             <button
                               type="button"
-                              onClick={() => onSelectMeal(planMeal.mealId)}
+                              onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, source: "dashboard_upcoming" }); onSelectMeal(planMeal.mealId); }}
                               className="block w-full text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                             >
                               <p className="text-[11px] font-semibold uppercase text-stone-500">{planMeal.slot}</p>
-                              <p className="mt-1 truncate pr-5 text-sm font-medium">
+                              <p className="mt-1 truncate text-sm font-medium">
                                 {meal.image} {meal.name}
                               </p>
                             </button>
-                            <button
-                              type="button"
-                              aria-label="Change meal"
-                              onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, layout: "dashboard" }); setRescueChoice({ day: entry.day, slot: planMeal.slot }); }}
-                              className="absolute right-1.5 top-1.5 rounded p-1 text-stone-400 hover:bg-stone-100 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
-                            >
-                              <RefreshCcw size={13} />
-                            </button>
+                            <div className="mt-2 flex flex-wrap gap-1">
+                              <button
+                                type="button"
+                                aria-label="Change meal"
+                                onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, layout: "dashboard" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, source: "dashboard_upcoming" }); setRescueChoice({ day: entry.day, slot: planMeal.slot }); }}
+                                className="flex items-center gap-1 rounded px-1.5 py-1 text-[11px] font-medium text-stone-500 hover:bg-stone-100 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                              >
+                                <RefreshCcw size={11} /> Change
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => openDiscover(entry.day, planMeal.slot, planMeal.mealId)}
+                                className="flex items-center rounded px-1.5 py-1 text-[11px] font-medium text-stone-500 hover:bg-stone-100 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                              >
+                                Find
+                              </button>
+                            </div>
                           </div>
                         );
                       })}
@@ -197,6 +215,7 @@ export function Dashboard({
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
+          savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           track={track}
         />

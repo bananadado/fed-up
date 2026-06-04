@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { defaultDeadlines, initialPlan, initialPreferences } from "../src/prototype/data";
+import { defaultDeadlines, initialPlan, initialPreferences, seedMeals } from "../src/prototype/data";
 import {
   ANONYMOUS_SESSION_STORAGE_KEY,
   createPrototypeSessionSettings,
@@ -239,6 +239,7 @@ test("dashboard meal cards have swap action that opens the swap modal", async ({
         deadlines: defaultDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
+        discoverSaved: seedMeals,
       }),
     },
   });

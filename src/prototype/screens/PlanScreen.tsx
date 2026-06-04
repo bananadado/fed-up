@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
-import type { MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen, Meal } from "../types";
+import type { Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { AppButton, Badge } from "../components/primitives";
@@ -23,6 +23,7 @@ export function PlanScreen({
   setPlan,
   prefs,
   customRecipes,
+  discoverSaved,
   setScreen,
   onSelectMeal,
   planStale,
@@ -30,12 +31,14 @@ export function PlanScreen({
   regenerating,
   onRegenerate,
   regenMode,
+  openDiscover,
   track,
 }: {
   plan: PlanEntry[];
   setPlan: (plan: PlanEntry[]) => void;
   prefs: Preferences;
   customRecipes: Meal[];
+  discoverSaved: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
   planStale: boolean;
@@ -43,6 +46,7 @@ export function PlanScreen({
   regenerating: boolean;
   onRegenerate: () => void;
   regenMode: PlanRegenMode;
+  openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
 }) {
   const [rescueChoice, setRescueChoice] = useState<RescueChoice>(() => {
@@ -59,8 +63,6 @@ export function PlanScreen({
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
 
-  // Group the (up to 3-week) plan into weeks; later weeks collapse to keep the
-  // page scannable. The current week stays open by default.
   const weeks = useMemo(() => {
     const chunks: PlanEntry[][] = [];
     for (let i = 0; i < plan.length; i += 7) chunks.push(plan.slice(i, i + 7));
@@ -113,6 +115,7 @@ export function PlanScreen({
           </AppButton>
         </div>
       )}
+
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_280px]">
         <div className="space-y-6">
           {weeks.map((weekEntries, weekIndex) => {
@@ -164,7 +167,7 @@ export function PlanScreen({
                                   {meal ? (
                                     <button
                                       type="button"
-                                      onClick={() => onSelectMeal(meal.id)}
+                                      onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_desktop" }); onSelectMeal(meal.id); }}
                                       className="text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                                     >
                                       <div className="flex flex-wrap items-center gap-2">
@@ -200,9 +203,16 @@ export function PlanScreen({
                                       <p className="mt-2 text-sm text-stone-500">Choose a meal for this slot.</p>
                                     </div>
                                   )}
-                                  <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
-                                    <RefreshCcw size={15} /> {meal ? "Change meal" : "Choose meal"}
-                                  </AppButton>
+                                  <div className="mt-4 flex flex-wrap gap-2">
+                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                      <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
+                                    </AppButton>
+                                    {meal && (
+                                      <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
+                                        Find something else
+                                      </AppButton>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             );
@@ -227,7 +237,7 @@ export function PlanScreen({
                                 <div key={slot} className="rounded-lg bg-stone-50 p-3">
                                   <p className="text-xs font-semibold uppercase text-stone-500">{slotLabels[slot]}</p>
                                   {meal ? (
-                                    <button type="button" onClick={() => onSelectMeal(meal.id)} className="mt-2 w-full text-left">
+                                    <button type="button" onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); onSelectMeal(meal.id); }} className="mt-2 w-full text-left">
                                       <p className="break-words font-semibold leading-5">
                                         {meal.image} {meal.name}
                                       </p>
@@ -247,9 +257,16 @@ export function PlanScreen({
                                       {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                     </div>
                                   )}
-                                  <AppButton variant="secondary" className="mt-3 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
-                                    <RefreshCcw size={15} /> {meal ? "Change meal" : "Choose meal"}
-                                  </AppButton>
+                                  <div className="mt-3 flex flex-wrap gap-2">
+                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                      <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
+                                    </AppButton>
+                                    {meal && (
+                                      <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
+                                        Find alt.
+                                      </AppButton>
+                                    )}
+                                  </div>
                                 </div>
                               );
                             })}
@@ -327,6 +344,7 @@ export function PlanScreen({
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
+          savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           track={track}
         />

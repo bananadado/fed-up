@@ -133,6 +133,7 @@ export function RecipeDetailScreen({
       name: output.name || selectedMeal.name,
       time: output.time,
       price: output.price,
+      servings: output.servings,
       mealSlots: output.mealSlots,
       ingredients: output.ingredients,
       tags: output.tags,
@@ -320,12 +321,15 @@ export function RecipeDetailScreen({
               </div>
               <div className="rounded-lg bg-stone-50 p-4">
                 <h2 className="font-bold">Nutrition</h2>
-                <p className="mt-1 text-xs text-stone-500">{nutritionSourceSummary(meal.nutrition.source)}</p>
+                <p className="mt-1 text-xs text-stone-500">per portion{(meal.servings ?? 1) > 1 ? ` · ${meal.servings} portions` : ""}</p>
+                <p className="mt-0.5 text-xs text-stone-400">{nutritionSourceSummary(meal.nutrition.source)}</p>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                  <p>{meal.nutrition.calories} kcal</p>
-                  <p>{meal.nutrition.protein}g protein</p>
-                  <p>{meal.nutrition.carbs}g carbs</p>
-                  <p>{meal.nutrition.fat}g fat</p>
+                  {(() => { const s = meal.servings ?? 1; return (<>
+                    <p>{Math.round(meal.nutrition.calories / s)} kcal</p>
+                    <p>{Math.round(meal.nutrition.protein / s)}g protein</p>
+                    <p>{Math.round(meal.nutrition.carbs / s)}g carbs</p>
+                    <p>{Math.round(meal.nutrition.fat / s)}g fat</p>
+                  </>); })()}
                 </div>
               </div>
               <div>
