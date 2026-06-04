@@ -13,6 +13,14 @@ declare module "*.css" {
   export = path;
 }
 
+declare module "*.webp" {
+  /**
+   * A path to the WebP asset (resolved to a URL by the bundler)
+   */
+  const path: `${string}.webp`;
+  export default path;
+}
+
 declare module "*.module.css" {
   /**
    * A record of class names to their corresponding CSS module classes

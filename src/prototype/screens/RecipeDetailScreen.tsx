@@ -10,6 +10,8 @@ import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEdito
 import { formatIngredient } from "../ingredients";
 import { mealById, money, nutritionSourceSummary, sourceUrl } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
+import { classifyStep } from "../cookingAnimations/classifyStep";
+import { StepAnimation } from "../cookingAnimations/StepAnimation";
 import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
 import { fetchRecipeReviews, submitRecipeReview } from "../reviewsApi";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
@@ -370,7 +372,8 @@ export function RecipeDetailScreen({
                   <h2 className="text-xl font-bold">Method</h2>
                   <ol className="mt-4 space-y-3">
                     {meal.instructions.map((step, index) => (
-                      <li key={step} className="flex gap-3 rounded-lg bg-stone-50 px-3 py-3 text-stone-700">
+                      <li key={step} className="flex items-center gap-3 rounded-lg bg-stone-50 px-3 py-3 text-stone-700">
+                        <StepAnimation {...classifyStep(step, meal.ingredients)} />
                         <span className="font-semibold text-stone-950">{index + 1}.</span>
                         <span>{step}</span>
                       </li>

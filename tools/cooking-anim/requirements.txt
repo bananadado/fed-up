@@ -1,0 +1,12 @@
+# Install torch separately first, matched to the server's CUDA (see README).
+# These are the rest of the pipeline deps.
+diffusers>=0.30.0
+transformers>=4.44.0
+accelerate>=0.33.0
+safetensors>=0.4.3
+huggingface_hub>=0.24.0
+peft>=0.12.0
+Pillow>=10.4.0
+rembg>=2.0.59
+onnxruntime-gpu>=1.18.0
+imageio>=2.34.0
