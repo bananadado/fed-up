@@ -61,17 +61,32 @@ bun run firebase:dev
 
 This:
 
-1. Runs `bun run firebase:data`.
-2. Builds Functions.
-3. Starts Functions and Firestore emulators.
-4. Waits for `deadlineFoodBootstrap`.
-5. Starts the Bun app configured to call the Firebase emulator.
+1. Starts `backend/docker-compose.yml` under the isolated `drp03-firebase-dev` compose project when an NVIDIA Docker runtime is available.
+2. Waits for the recommender API health endpoint.
+3. Runs `bun run firebase:data`.
+4. Builds Functions.
+5. Starts Functions, Firestore, and Storage emulators.
+6. Waits for `deadlineFoodBootstrap`.
+7. Starts the Bun app configured to call the Firebase emulator.
+
+Emulated Functions receive:
+
+- `RECOMMENDER_API_URL=http://127.0.0.1:8100` for local compose, or `https://recommender.timkolesnichenko.me` when falling back remotely
+- `RECOMMENDER_API_KEY=local-firebase-dev-recommender-key` for local compose unless overridden
+
+On Ctrl+C or normal exit, the Firebase emulator is stopped and the compose
+project is brought down. `FIREBASE_DEV_BACKEND=auto` is the default: machines
+with NVIDIA Docker use the local stack, and other machines use the remote
+recommender URL. Set `FIREBASE_DEV_BACKEND=local` to require local compose,
+or `FIREBASE_DEV_BACKEND=remote` to skip Docker. Remote recommender endpoints
+still require the real `RECOMMENDER_API_KEY` in your environment.
 
 URLs:
 
 - App: `http://localhost:3000/`
 - Emulator UI: `http://127.0.0.1:4000`
 - Functions base: `http://127.0.0.1:5001/drp03-50059/europe-west2`
+- Recommender API: `http://127.0.0.1:8100`
 
 ## Build
 
@@ -386,4 +401,3 @@ PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/path/to/chromium
 ### E2E selectors fail after copy changes
 
 The Playwright tests target visible headings and button text. Update `e2e/deadline-flow.spec.ts` if product copy intentionally changes.
-

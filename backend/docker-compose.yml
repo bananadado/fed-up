@@ -32,7 +32,8 @@ services:
       BATCH_SIZE: 64
       EXPLORATION_RATE: 0.2
       EXPLORATION_TEMPERATURE: 0.15
-      RECOMMENDER_API_KEY: ${RECOMMENDER_API_KEY:?RECOMMENDER_API_KEY is required}
+      RECOMMENDER_API_KEY: ${RECOMMENDER_API_KEY:-local-firebase-dev-recommender-key}
+      PHOENIX_COLLECTOR_ENDPOINT: http://phoenix:6006/v1/traces
     ports:
       - "8100:8000"
     volumes:
@@ -70,8 +71,29 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://recommender:${POSTGRES_PASSWORD:-changeme_in_production}@db:5432/recommender
+      DEVICE: cuda
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
     ports:
       - "8102:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  phoenix:
+    image: arizephoenix/phoenix:version-17.1.0
+    restart: unless-stopped
+    environment:
+      PHOENIX_WORKING_DIR: /var/lib/phoenix
+    volumes:
+      - phoenix-data:/var/lib/phoenix
+    ports:
+      - "6006:6006"
+      - "4317:4317"
 
   # ── Monitoring ──────────────────────────────────────────────────────────
 
@@ -124,6 +146,7 @@ services:
     volumes:
       - ./monitoring/promtail/promtail.yml:/etc/promtail/promtail.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - promtail-data:/var/lib/promtail
     depends_on:
       - loki
@@ -170,3 +193,4 @@ volumes:
   prometheus-data:
   loki-data:
   promtail-data:
+  phoenix-data:

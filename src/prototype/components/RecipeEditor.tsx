@@ -20,6 +20,29 @@ import type { TrackPrototypeEvent } from "../analytics";
 const MEAL_SLOT_OPTIONS: readonly MealSlot[] = ["breakfast", "lunch", "dinner"];
 const MEAL_SLOT_SET = new Set<string>(MEAL_SLOT_OPTIONS);
 
+// Auto-generated note describing servings and total cost. Stored on the meal when
+// the creator leaves the Notes field blank, and regenerated on every save so it
+// stays in sync when the price or servings change.
+export function formatPortionNote(servings: number, totalCost: number): string {
+  if (!Number.isFinite(totalCost) || totalCost >= 1e21) return "";
+  return `${servings} portions from about ${money(totalCost)} total`;
+}
+
+const PORTION_NOTE_PATTERN = /^(\d+) portions from about £(\d+(?:\.\d+)?) total$/;
+
+function parsePortionNote(note: string): { servings: number; totalCost: number } | null {
+  const match = PORTION_NOTE_PATTERN.exec(note.trim());
+  if (!match) {
+    return null;
+  }
+  const servings = Number(match[1]);
+  const totalCost = Number(match[2]);
+  if (!Number.isFinite(servings) || !Number.isFinite(totalCost)) {
+    return null;
+  }
+  return { servings, totalCost };
+}
+
 const TAG_OPTIONS: string[] = [
   "breakfast",
   "lunch",
@@ -78,12 +101,15 @@ export type RecipeEditorOutput = {
 };
 
 function mealToForm(meal: Meal): EditorForm {
+  // Recover the original servings/total cost from an auto-generated note so the
+  // note can be rebuilt from the edited price on save.
+  const portion = parsePortionNote(meal.note);
   return {
     name: meal.name,
     time: meal.time,
     price: meal.price,
-    totalCost: meal.price,
-    servings: 1,
+    totalCost: portion?.totalCost ?? meal.price,
+    servings: portion?.servings ?? 1,
     ingredients: ingredientDraftsFromIngredients(meal.ingredients),
     tags: [...meal.mealSlots, ...meal.tags],
     allergens: meal.allergens.join(", "),
@@ -93,7 +119,9 @@ function mealToForm(meal: Meal): EditorForm {
     fat: meal.nutrition.fat,
     nutritionSource: meal.nutrition.source,
     instructions: meal.instructions.join("\n"),
-    note: meal.note,
+    // Auto-generated portion notes are derived, not user content — keep the Notes
+    // field empty so they regenerate from the current price on save.
+    note: portion ? "" : meal.note,
   };
 }
 
@@ -416,16 +444,25 @@ export function RecipeEditor({
     }
 
     const nextServings = Math.max(1, Math.round(servings));
-    const nextTotalCost = Number(totalCost.toFixed(2));
+    // In edit mode the user adjusts the per-portion price directly, so derive the
+    // total from it; in create mode the total is the source of truth.
+    const nextPrice =
+      mode === "create"
+        ? Number((totalCost / nextServings).toFixed(2))
+        : Number(form.price) || 0;
+    const nextTotalCost =
+      mode === "create"
+        ? Number(totalCost.toFixed(2))
+        : Number((nextPrice * nextServings).toFixed(2));
+    // Use the creator's note if they wrote one, otherwise (re)generate the portion
+    // note so it reflects the current price/servings.
+    const note = form.note.trim() || formatPortionNote(nextServings, nextTotalCost);
     const mealSlots = form.tags.filter((t): t is MealSlot => MEAL_SLOT_SET.has(t));
     const tags = form.tags.filter((t) => !MEAL_SLOT_SET.has(t));
     const output: RecipeEditorOutput = {
       name: form.name.trim(),
       time: Math.max(0, Math.round(Number(form.time) || 0)),
-      price:
-        mode === "create"
-          ? Number((nextTotalCost / nextServings).toFixed(2))
-          : Number(form.price) || 0,
+      price: nextPrice,
       totalCost: nextTotalCost,
       servings: nextServings,
       mealSlots: mealSlots.length > 0 ? mealSlots : ["breakfast", "lunch", "dinner"],
@@ -443,7 +480,7 @@ export function RecipeEditor({
         .split("\n")
         .map((s) => s.trim())
         .filter(Boolean),
-      note: form.note.trim(),
+      note,
     };
 
     onSubmit(output, photoUrl);

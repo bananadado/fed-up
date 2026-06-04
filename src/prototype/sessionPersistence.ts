@@ -23,6 +23,7 @@ export type PrototypeSessionSettings = {
   deadlines: Deadline[];
   selectedSources: string[];
   onboarded: boolean;
+  calendarProvider?: CalendarProvider;
   customRecipes?: Meal[];
   discoverSaved?: Meal[];
   discoverRejected?: Meal[];
@@ -52,6 +53,7 @@ export function createPrototypeSessionSettings(input: {
   deadlines: Deadline[];
   selectedSources: string[];
   onboarded: boolean;
+  calendarProvider?: CalendarProvider;
   customRecipes?: Meal[];
   discoverSaved?: Meal[];
   discoverRejected?: Meal[];
@@ -67,6 +69,7 @@ export function createPrototypeSessionSettings(input: {
     deadlines: input.deadlines,
     selectedSources: input.selectedSources,
     onboarded: input.onboarded,
+    calendarProvider: input.calendarProvider,
     customRecipes: input.customRecipes,
     discoverSaved: input.discoverSaved,
     discoverRejected: input.discoverRejected,

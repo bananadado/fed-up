@@ -11,7 +11,8 @@ RUN pip install --no-cache-dir \
     sentence-transformers==4.1.0 \
     pydantic==2.11.4 \
     numpy==2.3.0 \
-    prometheus-fastapi-instrumentator==7.1.0
+    prometheus-fastapi-instrumentator==7.1.0 \
+    arize-phoenix-otel==0.16.1
 
 COPY app/ /app/app/
 

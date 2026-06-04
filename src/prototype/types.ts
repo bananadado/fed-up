@@ -95,6 +95,14 @@ export type Preferences = {
   availableIngredients: RecipeIngredient[];
 };
 
+export type DiscoverRecommendationStatus = "idle" | "ready" | "exhausted";
+
+export type DiscoverRecommendationState = {
+  contextKey: string;
+  recipes: Meal[];
+  status: DiscoverRecommendationStatus;
+};
+
 export type Screen = "landing" | "onboarding" | "dashboard" | "calendar" | "plan" | "recipes" | "settings" | "recipe-detail";
 
 export type CalendarProvider = "google" | "outlook" | "apple" | "other";
