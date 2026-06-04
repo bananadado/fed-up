@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, type Dispatch, type SetStateAction } from "
 import { Card } from "@/components/ui/card";
 import type { Deadline, DiscoverRecommendationState, Meal, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
-import { formatCookingLimit, money, ingredientNames, sourceUrl } from "../utils";
+import { formatCookingLimit, money, keyIngredients, sourceUrl } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 import { fetchRecommenderRecommendations, recordRecommenderInteraction } from "../recommenderApi";
@@ -235,7 +235,7 @@ export function DiscoverScreen({
                 </p>
                 <div className="mt-4 rounded-lg bg-stone-50 p-3">
                   <p className="text-xs font-semibold uppercase text-stone-500">Key ingredients</p>
-                  <p className="mt-1 text-sm text-stone-700">{ingredientNames(current.ingredients, 5)}</p>
+                  <p className="mt-1 text-sm text-stone-700">{keyIngredients(current.name, current.ingredients, 5)}</p>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {current.mealSlots.map((slot) => (

@@ -1,6 +1,43 @@
 import { describe, expect, test } from "bun:test";
 
-import { sourceUrl } from "./utils";
+import { keyIngredients, sourceUrl } from "./utils";
+
+describe("keyIngredients", () => {
+  const serving = (name: string) => ({ name, quantity: 1, unit: "serving" as const });
+
+  test("promotes ingredients matching words in the dish name", () => {
+    const ingredients = [
+      serving("soy sauce"),
+      serving("black pepper"),
+      serving("chicken"),
+      serving("rice"),
+    ];
+    expect(keyIngredients("Chicken Rice Bowl", ingredients, 2)).toBe("chicken, rice");
+  });
+
+  test("falls back to original order when no ingredient matches the name", () => {
+    const ingredients = [serving("noodles"), serving("soy sauce"), serving("sesame oil")];
+    expect(keyIngredients("Spicy Stir Fry", ingredients, 2)).toBe("noodles, soy sauce");
+  });
+
+  test("stopwords in the dish name are not treated as ingredient matches", () => {
+    // "with" and "and" are stopwords — ingredients named "with" or "and" would
+    // otherwise falsely score a match
+    const ingredients = [serving("garlic"), serving("onion"), serving("tomato"), serving("pasta")];
+    // title words (non-stop): ["pasta", "tomato", "sauce"] → tomato and pasta score 1, others score 0
+    expect(keyIngredients("Pasta with Tomato Sauce", ingredients, 2)).toBe("tomato, pasta");
+  });
+
+  test("partial word matches work (e.g. 'lemon' matches 'lemon juice')", () => {
+    const ingredients = [serving("olive oil"), serving("lemon juice"), serving("garlic")];
+    expect(keyIngredients("Lemon Garlic Pasta", ingredients, 2)).toBe("lemon juice, garlic");
+  });
+
+  test("respects the limit", () => {
+    const ingredients = [serving("a"), serving("b"), serving("c"), serving("d"), serving("e")];
+    expect(keyIngredients("A B Dish", ingredients, 3)).toBe("a, b, c");
+  });
+});
 
 describe("sourceUrl", () => {
   test("returns the URL for http(s) sources", () => {
