@@ -1449,7 +1449,7 @@
       "source_file": "src/frontend.tsx",
       "source_location": "L1",
       "id": "src_frontend_tsx",
-      "community": 94,
+      "community": 3,
       "norm_label": "frontend.tsx"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_file": "src/App.tsx",
       "source_location": "L1",
       "id": "src_app_tsx",
-      "community": 94,
+      "community": 3,
       "norm_label": "app.tsx"
     },
     {
@@ -1467,7 +1467,7 @@
       "source_file": "src/App.tsx",
       "source_location": "L4",
       "id": "src_app_app",
-      "community": 94,
+      "community": 3,
       "norm_label": "app()"
     },
     {
@@ -1476,7 +1476,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L1",
       "id": "src_adapters_deadlinefoodapi_ts",
-      "community": 3,
+      "community": 33,
       "norm_label": "deadlinefoodapi.ts"
     },
     {
@@ -1485,7 +1485,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L12",
       "id": "adapters_deadlinefoodapi_deadlineendpoint",
-      "community": 3,
+      "community": 33,
       "norm_label": "deadlineendpoint"
     },
     {
@@ -1494,7 +1494,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L14",
       "id": "adapters_deadlinefoodapi_firebasefunctionnames",
-      "community": 3,
+      "community": 33,
       "norm_label": "firebasefunctionnames"
     },
     {
@@ -1503,7 +1503,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L22",
       "id": "adapters_deadlinefoodapi_localapipaths",
-      "community": 3,
+      "community": 33,
       "norm_label": "localapipaths"
     },
     {
@@ -1512,7 +1512,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L30",
       "id": "adapters_deadlinefoodapi_readruntimeenv",
-      "community": 3,
+      "community": 33,
       "norm_label": "readruntimeenv()"
     },
     {
@@ -1521,7 +1521,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L38",
       "id": "adapters_deadlinefoodapi_readpublicenv",
-      "community": 3,
+      "community": 33,
       "norm_label": "readpublicenv()"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L46",
       "id": "adapters_deadlinefoodapi_readbrowseroverride",
-      "community": 3,
+      "community": 33,
       "norm_label": "readbrowseroverride()"
     },
     {
@@ -1539,7 +1539,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L60",
       "id": "adapters_deadlinefoodapi_configuredbackend",
-      "community": 3,
+      "community": 33,
       "norm_label": "configuredbackend()"
     },
     {
@@ -1548,7 +1548,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L72",
       "id": "adapters_deadlinefoodapi_appnodeenv",
-      "community": 3,
+      "community": 33,
       "norm_label": "appnodeenv()"
     },
     {
@@ -1557,7 +1557,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L79",
       "id": "adapters_deadlinefoodapi_shouldusefirebasebackend",
-      "community": 3,
+      "community": 33,
       "norm_label": "shouldusefirebasebackend()"
     },
     {
@@ -1566,7 +1566,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L88",
       "id": "adapters_deadlinefoodapi_firebaseprojectid",
-      "community": 3,
+      "community": 33,
       "norm_label": "firebaseprojectid()"
     },
     {
@@ -1575,7 +1575,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L95",
       "id": "adapters_deadlinefoodapi_firebasefunctionsregion",
-      "community": 3,
+      "community": 33,
       "norm_label": "firebasefunctionsregion()"
     },
     {
@@ -1584,7 +1584,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L104",
       "id": "adapters_deadlinefoodapi_firebasefunctionsbaseurl",
-      "community": 3,
+      "community": 33,
       "norm_label": "firebasefunctionsbaseurl()"
     },
     {
@@ -1593,7 +1593,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L122",
       "id": "adapters_deadlinefoodapi_deadlinefoodendpointurl",
-      "community": 3,
+      "community": 33,
       "norm_label": "deadlinefoodendpointurl()"
     },
     {
@@ -1611,7 +1611,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L138",
       "id": "adapters_deadlinefoodapi_uploadrecipephoto",
-      "community": 3,
+      "community": 33,
       "norm_label": "uploadrecipephoto()"
     },
     {
@@ -1620,7 +1620,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L157",
       "id": "adapters_deadlinefoodapi_readjson",
-      "community": 3,
+      "community": 33,
       "norm_label": "readjson()"
     },
     {
@@ -1629,7 +1629,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L171",
       "id": "adapters_deadlinefoodapi_fetchdeadlinebootstrap",
-      "community": 3,
+      "community": 33,
       "norm_label": "fetchdeadlinebootstrap()"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L177",
       "id": "adapters_deadlinefoodapi_fetchseededmeals",
-      "community": 3,
+      "community": 33,
       "norm_label": "fetchseededmeals()"
     },
     {
@@ -1647,7 +1647,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L183",
       "id": "adapters_deadlinefoodapi_fetchcanonicalscenario",
-      "community": 3,
+      "community": 33,
       "norm_label": "fetchcanonicalscenario()"
     },
     {
@@ -2268,7 +2268,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L7",
       "id": "domain_types_planstrategy",
-      "community": 9,
+      "community": 13,
       "norm_label": "planstrategy"
     },
     {
@@ -2286,7 +2286,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L20",
       "id": "domain_types_recipeingredient",
-      "community": 6,
+      "community": 38,
       "norm_label": "recipeingredient"
     },
     {
@@ -2313,7 +2313,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L52",
       "id": "domain_types_plannedmeal",
-      "community": 12,
+      "community": 20,
       "norm_label": "plannedmeal"
     },
     {
@@ -2871,7 +2871,7 @@
       "source_file": "src/prototype/recipeCatalogue.ts",
       "source_location": "L1",
       "id": "src_prototype_recipecatalogue_ts",
-      "community": 6,
+      "community": 94,
       "norm_label": "recipecatalogue.ts"
     },
     {
@@ -2880,7 +2880,7 @@
       "source_file": "src/prototype/recipeCatalogue.ts",
       "source_location": "L18",
       "id": "prototype_recipecatalogue_planmeals",
-      "community": 6,
+      "community": 94,
       "norm_label": "planmeals"
     },
     {
@@ -2898,7 +2898,7 @@
       "source_file": "src/prototype/recipeCatalogue.ts",
       "source_location": "L24",
       "id": "prototype_recipecatalogue_setrecipecatalogue",
-      "community": 6,
+      "community": 94,
       "norm_label": "setrecipecatalogue()"
     },
     {
@@ -2907,7 +2907,7 @@
       "source_file": "src/prototype/recipeCatalogue.ts",
       "source_location": "L28",
       "id": "prototype_recipecatalogue_registerplanmeals",
-      "community": 33,
+      "community": 94,
       "norm_label": "registerplanmeals()"
     },
     {
@@ -2925,7 +2925,7 @@
       "source_file": "src/prototype/recipeCatalogue.ts",
       "source_location": "L42",
       "id": "prototype_recipecatalogue_normalizerecipe",
-      "community": 6,
+      "community": 94,
       "norm_label": "normalizerecipe()"
     },
     {
@@ -2934,7 +2934,7 @@
       "source_file": "src/prototype/recipeCatalogue.ts",
       "source_location": "L58",
       "id": "prototype_recipecatalogue_fetchrecipecatalogue",
-      "community": 6,
+      "community": 94,
       "norm_label": "fetchrecipecatalogue()"
     },
     {
@@ -3123,7 +3123,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L11",
       "id": "prototype_data_mealslots",
-      "community": 6,
+      "community": 4,
       "norm_label": "mealslots"
     },
     {
@@ -3141,7 +3141,7 @@
       "source_file": "src/prototype/data.ts",
       "source_location": "L19",
       "id": "prototype_data_seedmeals",
-      "community": 4,
+      "community": 51,
       "norm_label": "seedmeals"
     },
     {
@@ -3249,7 +3249,7 @@
       "source_file": "src/prototype/analytics.ts",
       "source_location": "L1",
       "id": "src_prototype_analytics_ts",
-      "community": 38,
+      "community": 47,
       "norm_label": "analytics.ts"
     },
     {
@@ -3258,7 +3258,7 @@
       "source_file": "src/prototype/analytics.ts",
       "source_location": "L3",
       "id": "prototype_analytics_trackprototypeevent",
-      "community": 38,
+      "community": 47,
       "norm_label": "trackprototypeevent"
     },
     {
@@ -3357,7 +3357,7 @@
       "source_file": "src/prototype/ingredients.ts",
       "source_location": "L85",
       "id": "prototype_ingredients_ingredientdraft",
-      "community": 22,
+      "community": 4,
       "norm_label": "ingredientdraft"
     },
     {
@@ -3519,7 +3519,7 @@
       "source_file": "src/prototype/ingredients.ts",
       "source_location": "L246",
       "id": "prototype_ingredients_sanitiseingredientdrafts",
-      "community": 22,
+      "community": 38,
       "norm_label": "sanitiseingredientdrafts()"
     },
     {
@@ -3528,7 +3528,7 @@
       "source_file": "src/prototype/ingredients.ts",
       "source_location": "L262",
       "id": "prototype_ingredients_ingredientname",
-      "community": 22,
+      "community": 6,
       "norm_label": "ingredientname()"
     },
     {
@@ -3582,7 +3582,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L1",
       "id": "src_prototype_workloadmodel_ts",
-      "community": 29,
+      "community": 28,
       "norm_label": "workloadmodel.ts"
     },
     {
@@ -3591,7 +3591,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L3",
       "id": "prototype_workloadmodel_classifyimportedevent",
-      "community": 29,
+      "community": 28,
       "norm_label": "classifyimportedevent()"
     },
     {
@@ -3600,7 +3600,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L7",
       "id": "prototype_workloadmodel_workloadscore",
-      "community": 29,
+      "community": 28,
       "norm_label": "workloadscore()"
     },
     {
@@ -3609,7 +3609,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L14",
       "id": "prototype_workloadmodel_workloadlabel",
-      "community": 29,
+      "community": 28,
       "norm_label": "workloadlabel()"
     },
     {
@@ -3618,7 +3618,7 @@
       "source_file": "src/prototype/workloadModel.ts",
       "source_location": "L23",
       "id": "prototype_workloadmodel_cookingeffortreason",
-      "community": 29,
+      "community": 28,
       "norm_label": "cookingeffortreason()"
     },
     {
@@ -3735,7 +3735,7 @@
       "source_file": "src/prototype/utils.ts",
       "source_location": "L27",
       "id": "prototype_utils_sourceurl",
-      "community": 6,
+      "community": 47,
       "norm_label": "sourceurl()"
     },
     {
@@ -3780,8 +3780,26 @@
       "source_file": "src/prototype/utils.ts",
       "source_location": "L94",
       "id": "prototype_utils_ingredientnames",
-      "community": 6,
+      "community": 47,
       "norm_label": "ingredientnames()"
+    },
+    {
+      "label": "NAME_STOPWORDS",
+      "file_type": "code",
+      "source_file": "src/prototype/utils.ts",
+      "source_location": "L104",
+      "id": "prototype_utils_name_stopwords",
+      "community": 6,
+      "norm_label": "name_stopwords"
+    },
+    {
+      "label": "keyIngredients()",
+      "file_type": "code",
+      "source_file": "src/prototype/utils.ts",
+      "source_location": "L114",
+      "id": "prototype_utils_keyingredients",
+      "community": 47,
+      "norm_label": "keyingredients()"
     },
     {
       "label": "recommenderApi.ts",
@@ -4050,7 +4068,7 @@
       "source_file": "src/prototype/autoPlanApi.ts",
       "source_location": "L1",
       "id": "src_prototype_autoplanapi_ts",
-      "community": 33,
+      "community": 94,
       "norm_label": "autoplanapi.ts"
     },
     {
@@ -4059,7 +4077,7 @@
       "source_file": "src/prototype/autoPlanApi.ts",
       "source_location": "L8",
       "id": "prototype_autoplanapi_generateautoplaninput",
-      "community": 33,
+      "community": 94,
       "norm_label": "generateautoplaninput"
     },
     {
@@ -4068,7 +4086,7 @@
       "source_file": "src/prototype/autoPlanApi.ts",
       "source_location": "L23",
       "id": "prototype_autoplanapi_hash",
-      "community": 33,
+      "community": 94,
       "norm_label": "hash()"
     },
     {
@@ -4077,7 +4095,7 @@
       "source_file": "src/prototype/autoPlanApi.ts",
       "source_location": "L36",
       "id": "prototype_autoplanapi_computeplansignature",
-      "community": 33,
+      "community": 94,
       "norm_label": "computeplansignature()"
     },
     {
@@ -4086,7 +4104,7 @@
       "source_file": "src/prototype/autoPlanApi.ts",
       "source_location": "L59",
       "id": "prototype_autoplanapi_autoplanresponse",
-      "community": 33,
+      "community": 94,
       "norm_label": "autoplanresponse"
     },
     {
@@ -4095,7 +4113,7 @@
       "source_file": "src/prototype/autoPlanApi.ts",
       "source_location": "L65",
       "id": "prototype_autoplanapi_contextevents",
-      "community": 33,
+      "community": 94,
       "norm_label": "contextevents()"
     },
     {
@@ -4104,7 +4122,7 @@
       "source_file": "src/prototype/autoPlanApi.ts",
       "source_location": "L86",
       "id": "prototype_autoplanapi_generateautoplan",
-      "community": 33,
+      "community": 94,
       "norm_label": "generateautoplan()"
     },
     {
@@ -4113,7 +4131,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L1",
       "id": "src_prototype_types_ts",
-      "community": 6,
+      "community": 38,
       "norm_label": "types.ts"
     },
     {
@@ -4122,7 +4140,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L1",
       "id": "prototype_types_mealtype",
-      "community": 6,
+      "community": 38,
       "norm_label": "mealtype"
     },
     {
@@ -4140,7 +4158,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L8",
       "id": "prototype_types_nutrition",
-      "community": 6,
+      "community": 38,
       "norm_label": "nutrition"
     },
     {
@@ -4167,7 +4185,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L30",
       "id": "prototype_types_recipereview",
-      "community": 78,
+      "community": 38,
       "norm_label": "recipereview"
     },
     {
@@ -4185,7 +4203,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L60",
       "id": "prototype_types_planmeal",
-      "community": 6,
+      "community": 38,
       "norm_label": "planmeal"
     },
     {
@@ -4212,7 +4230,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L92",
       "id": "prototype_types_planregenmode",
-      "community": 6,
+      "community": 38,
       "norm_label": "planregenmode"
     },
     {
@@ -4230,7 +4248,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L112",
       "id": "prototype_types_discoverrecommendationstatus",
-      "community": 6,
+      "community": 38,
       "norm_label": "discoverrecommendationstatus"
     },
     {
@@ -4239,7 +4257,7 @@
       "source_file": "src/prototype/types.ts",
       "source_location": "L114",
       "id": "prototype_types_discoverrecommendationstate",
-      "community": 6,
+      "community": 47,
       "norm_label": "discoverrecommendationstate"
     },
     {
@@ -4428,7 +4446,7 @@
       "source_file": "src/prototype/reviewsApi.ts",
       "source_location": "L1",
       "id": "src_prototype_reviewsapi_ts",
-      "community": 78,
+      "community": 33,
       "norm_label": "reviewsapi.ts"
     },
     {
@@ -4437,7 +4455,7 @@
       "source_file": "src/prototype/reviewsApi.ts",
       "source_location": "L8",
       "id": "prototype_reviewsapi_recipereviewsresult",
-      "community": 78,
+      "community": 33,
       "norm_label": "recipereviewsresult"
     },
     {
@@ -4446,7 +4464,7 @@
       "source_file": "src/prototype/reviewsApi.ts",
       "source_location": "L13",
       "id": "prototype_reviewsapi_reviewsurl",
-      "community": 78,
+      "community": 33,
       "norm_label": "reviewsurl()"
     },
     {
@@ -4455,7 +4473,7 @@
       "source_file": "src/prototype/reviewsApi.ts",
       "source_location": "L17",
       "id": "prototype_reviewsapi_readjson",
-      "community": 78,
+      "community": 33,
       "norm_label": "readjson()"
     },
     {
@@ -4464,7 +4482,7 @@
       "source_file": "src/prototype/reviewsApi.ts",
       "source_location": "L29",
       "id": "prototype_reviewsapi_fetchrecipereviews",
-      "community": 78,
+      "community": 33,
       "norm_label": "fetchrecipereviews()"
     },
     {
@@ -4473,7 +4491,7 @@
       "source_file": "src/prototype/reviewsApi.ts",
       "source_location": "L35",
       "id": "prototype_reviewsapi_submitrecipereview",
-      "community": 78,
+      "community": 33,
       "norm_label": "submitrecipereview()"
     },
     {
@@ -4626,7 +4644,7 @@
       "source_file": "src/prototype/nutritionApi.ts",
       "source_location": "L1",
       "id": "src_prototype_nutritionapi_ts",
-      "community": 6,
+      "community": 38,
       "norm_label": "nutritionapi.ts"
     },
     {
@@ -4815,8 +4833,26 @@
       "source_file": "src/prototype/utils.test.ts",
       "source_location": "L1",
       "id": "src_prototype_utils_test_ts",
-      "community": 6,
+      "community": 47,
       "norm_label": "utils.test.ts"
+    },
+    {
+      "label": "serving()",
+      "file_type": "code",
+      "source_file": "src/prototype/utils.test.ts",
+      "source_location": "L6",
+      "id": "prototype_utils_test_serving",
+      "community": 47,
+      "norm_label": "serving()"
+    },
+    {
+      "label": "ingredients",
+      "file_type": "code",
+      "source_file": "src/prototype/utils.test.ts",
+      "source_location": "L9",
+      "id": "prototype_utils_test_ingredients",
+      "community": 47,
+      "norm_label": "ingredients"
     },
     {
       "label": "sessionPersistence.test.ts",
@@ -4860,7 +4896,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_calendarscreen_tsx",
-      "community": 29,
+      "community": 28,
       "norm_label": "calendarscreen.tsx"
     },
     {
@@ -4869,7 +4905,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L19",
       "id": "screens_calendarscreen_urgencylevels",
-      "community": 29,
+      "community": 28,
       "norm_label": "urgencylevels"
     },
     {
@@ -4878,7 +4914,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L20",
       "id": "screens_calendarscreen_urgencylabel",
-      "community": 29,
+      "community": 28,
       "norm_label": "urgencylabel"
     },
     {
@@ -4887,7 +4923,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L22",
       "id": "screens_calendarscreen_workloaddraft",
-      "community": 29,
+      "community": 28,
       "norm_label": "workloaddraft"
     },
     {
@@ -4896,7 +4932,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L31",
       "id": "screens_calendarscreen_formerrors",
-      "community": 29,
+      "community": 28,
       "norm_label": "formerrors"
     },
     {
@@ -4905,7 +4941,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L37",
       "id": "screens_calendarscreen_viewmode",
-      "community": 29,
+      "community": 28,
       "norm_label": "viewmode"
     },
     {
@@ -4914,7 +4950,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L38",
       "id": "screens_calendarscreen_daycell",
-      "community": 29,
+      "community": 28,
       "norm_label": "daycell"
     },
     {
@@ -4923,7 +4959,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L39",
       "id": "screens_calendarscreen_monthcell",
-      "community": 29,
+      "community": 28,
       "norm_label": "monthcell"
     },
     {
@@ -4932,7 +4968,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L43",
       "id": "screens_calendarscreen_tolocaliso",
-      "community": 29,
+      "community": 28,
       "norm_label": "tolocaliso()"
     },
     {
@@ -4941,7 +4977,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L47",
       "id": "screens_calendarscreen_parseiso",
-      "community": 29,
+      "community": 28,
       "norm_label": "parseiso()"
     },
     {
@@ -4950,7 +4986,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L52",
       "id": "screens_calendarscreen_daylabel",
-      "community": 29,
+      "community": 28,
       "norm_label": "daylabel()"
     },
     {
@@ -4959,7 +4995,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L56",
       "id": "screens_calendarscreen_getweekdays",
-      "community": 29,
+      "community": 28,
       "norm_label": "getweekdays()"
     },
     {
@@ -4968,7 +5004,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L72",
       "id": "screens_calendarscreen_getmonthgrid",
-      "community": 29,
+      "community": 28,
       "norm_label": "getmonthgrid()"
     },
     {
@@ -4977,7 +5013,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L101",
       "id": "screens_calendarscreen_weekperiodlabel",
-      "community": 29,
+      "community": 28,
       "norm_label": "weekperiodlabel()"
     },
     {
@@ -4986,7 +5022,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L111",
       "id": "screens_calendarscreen_monthperiodlabel",
-      "community": 29,
+      "community": 28,
       "norm_label": "monthperiodlabel()"
     },
     {
@@ -4995,7 +5031,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L119",
       "id": "screens_calendarscreen_deadlineeditpanel",
-      "community": 29,
+      "community": 28,
       "norm_label": "deadlineeditpanel()"
     },
     {
@@ -5004,7 +5040,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L243",
       "id": "screens_calendarscreen_downloadics",
-      "community": 29,
+      "community": 28,
       "norm_label": "downloadics()"
     },
     {
@@ -5013,7 +5049,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L256",
       "id": "screens_calendarscreen_formatingredient",
-      "community": 29,
+      "community": 28,
       "norm_label": "formatingredient()"
     },
     {
@@ -5022,7 +5058,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L262",
       "id": "screens_calendarscreen_cookingscheduler",
-      "community": 29,
+      "community": 28,
       "norm_label": "cookingscheduler()"
     },
     {
@@ -5031,7 +5067,7 @@
       "source_file": "src/prototype/screens/CalendarScreen.tsx",
       "source_location": "L492",
       "id": "screens_calendarscreen_calendarscreen",
-      "community": 29,
+      "community": 28,
       "norm_label": "calendarscreen()"
     },
     {
@@ -5085,7 +5121,7 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_recipeshubscreen_tsx",
-      "community": 38,
+      "community": 47,
       "norm_label": "recipeshubscreen.tsx"
     },
     {
@@ -5094,7 +5130,7 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L14",
       "id": "screens_recipeshubscreen_tab",
-      "community": 38,
+      "community": 47,
       "norm_label": "tab"
     },
     {
@@ -5103,7 +5139,7 @@
       "source_file": "src/prototype/screens/RecipesHubScreen.tsx",
       "source_location": "L15",
       "id": "screens_recipeshubscreen_statesetter",
-      "community": 38,
+      "community": 47,
       "norm_label": "statesetter"
     },
     {
@@ -5121,7 +5157,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_recipedetailscreen_tsx",
-      "community": 38,
+      "community": 47,
       "norm_label": "recipedetailscreen.tsx"
     },
     {
@@ -5130,7 +5166,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L18",
       "id": "screens_recipedetailscreen_statesetter",
-      "community": 38,
+      "community": 47,
       "norm_label": "statesetter"
     },
     {
@@ -5139,7 +5175,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L20",
       "id": "screens_recipedetailscreen_ratinglabel",
-      "community": 38,
+      "community": 47,
       "norm_label": "ratinglabel()"
     },
     {
@@ -5148,7 +5184,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L25",
       "id": "screens_recipedetailscreen_backlabel",
-      "community": 38,
+      "community": 47,
       "norm_label": "backlabel()"
     },
     {
@@ -5157,7 +5193,7 @@
       "source_file": "src/prototype/screens/RecipeDetailScreen.tsx",
       "source_location": "L30",
       "id": "screens_recipedetailscreen_recipedetailscreen",
-      "community": 38,
+      "community": 47,
       "norm_label": "recipedetailscreen()"
     },
     {
@@ -5166,7 +5202,7 @@
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_discoverscreen_tsx",
-      "community": 6,
+      "community": 47,
       "norm_label": "discoverscreen.tsx"
     },
     {
@@ -5175,7 +5211,7 @@
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L12",
       "id": "screens_discoverscreen_statesetter",
-      "community": 6,
+      "community": 47,
       "norm_label": "statesetter"
     },
     {
@@ -5184,7 +5220,7 @@
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L16",
       "id": "screens_discoverscreen_starrating",
-      "community": 6,
+      "community": 47,
       "norm_label": "starrating()"
     },
     {
@@ -5193,7 +5229,7 @@
       "source_file": "src/prototype/screens/DiscoverScreen.tsx",
       "source_location": "L29",
       "id": "screens_discoverscreen_discoverscreen",
-      "community": 6,
+      "community": 47,
       "norm_label": "discoverscreen()"
     },
     {
@@ -5202,7 +5238,7 @@
       "source_file": "src/prototype/screens/Landing.tsx",
       "source_location": "L1",
       "id": "src_prototype_screens_landing_tsx",
-      "community": 38,
+      "community": 47,
       "norm_label": "landing.tsx"
     },
     {
@@ -5211,7 +5247,7 @@
       "source_file": "src/prototype/screens/Landing.tsx",
       "source_location": "L6",
       "id": "screens_landing_landing",
-      "community": 38,
+      "community": 94,
       "norm_label": "landing()"
     },
     {
@@ -5238,7 +5274,7 @@
       "source_file": "src/prototype/screens/Onboarding.tsx",
       "source_location": "L50",
       "id": "screens_onboarding_preferencesection",
-      "community": 4,
+      "community": 9,
       "norm_label": "preferencesection()"
     },
     {
@@ -5310,7 +5346,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L1",
       "id": "src_prototype_components_primitives_tsx",
-      "community": 38,
+      "community": 9,
       "norm_label": "primitives.tsx"
     },
     {
@@ -5319,7 +5355,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L9",
       "id": "components_primitives_tone",
-      "community": 38,
+      "community": 9,
       "norm_label": "tone"
     },
     {
@@ -5328,7 +5364,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L11",
       "id": "components_primitives_badgetones",
-      "community": 38,
+      "community": 9,
       "norm_label": "badgetones"
     },
     {
@@ -5337,7 +5373,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L19",
       "id": "components_primitives_appbuttonvariant",
-      "community": 38,
+      "community": 9,
       "norm_label": "appbuttonvariant"
     },
     {
@@ -5346,7 +5382,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L21",
       "id": "components_primitives_appbuttonclasses",
-      "community": 38,
+      "community": 9,
       "norm_label": "appbuttonclasses"
     },
     {
@@ -5355,7 +5391,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L28",
       "id": "components_primitives_badge",
-      "community": 38,
+      "community": 47,
       "norm_label": "badge()"
     },
     {
@@ -5364,7 +5400,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L36",
       "id": "components_primitives_appbutton",
-      "community": 38,
+      "community": 47,
       "norm_label": "appbutton()"
     },
     {
@@ -5382,7 +5418,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L130",
       "id": "components_primitives_field",
-      "community": 38,
+      "community": 9,
       "norm_label": "field()"
     },
     {
@@ -5391,7 +5427,7 @@
       "source_file": "src/prototype/components/primitives.tsx",
       "source_location": "L184",
       "id": "components_primitives_selectfield",
-      "community": 4,
+      "community": 9,
       "norm_label": "selectfield()"
     },
     {
@@ -5589,7 +5625,7 @@
       "source_file": "src/prototype/components/ConfirmDialog.tsx",
       "source_location": "L1",
       "id": "src_prototype_components_confirmdialog_tsx",
-      "community": 38,
+      "community": 47,
       "norm_label": "confirmdialog.tsx"
     },
     {
@@ -5598,7 +5634,7 @@
       "source_file": "src/prototype/components/ConfirmDialog.tsx",
       "source_location": "L3",
       "id": "components_confirmdialog_confirmdialog",
-      "community": 38,
+      "community": 47,
       "norm_label": "confirmdialog()"
     },
     {
@@ -5670,7 +5706,7 @@
       "source_file": "src/prototype/components/RecipeEditor.tsx",
       "source_location": "L82",
       "id": "components_recipeeditor_recipeeditoroutput",
-      "community": 38,
+      "community": 47,
       "norm_label": "recipeeditoroutput"
     },
     {
@@ -6300,7 +6336,7 @@
       "source_file": "src/lib/timeInput.ts",
       "source_location": "L1",
       "id": "src_lib_timeinput_ts",
-      "community": 29,
+      "community": 65,
       "norm_label": "timeinput.ts"
     },
     {
@@ -6309,7 +6345,7 @@
       "source_file": "src/lib/timeInput.ts",
       "source_location": "L5",
       "id": "lib_timeinput_minutestotimeinputvalue",
-      "community": 29,
+      "community": 65,
       "norm_label": "minutestotimeinputvalue()"
     },
     {
@@ -6318,7 +6354,7 @@
       "source_file": "src/lib/timeInput.ts",
       "source_location": "L17",
       "id": "lib_timeinput_timeinputvaluetominutes",
-      "community": 29,
+      "community": 65,
       "norm_label": "timeinputvaluetominutes()"
     },
     {
@@ -6327,7 +6363,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L1",
       "id": "src_lib_posthogconfig_ts",
-      "community": 123,
+      "community": 3,
       "norm_label": "posthogconfig.ts"
     },
     {
@@ -6336,7 +6372,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L3",
       "id": "lib_posthogconfig_personaldataproperties",
-      "community": 123,
+      "community": 3,
       "norm_label": "personaldataproperties"
     },
     {
@@ -6345,7 +6381,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L14",
       "id": "lib_posthogconfig_createposthogconfig",
-      "community": 123,
+      "community": 3,
       "norm_label": "createposthogconfig()"
     },
     {
@@ -6372,7 +6408,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L1",
       "id": "src_lib_posthog_ts",
-      "community": 94,
+      "community": 3,
       "norm_label": "posthog.ts"
     },
     {
@@ -6381,7 +6417,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L8",
       "id": "lib_posthog_readbunpublicenv",
-      "community": 94,
+      "community": 3,
       "norm_label": "readbunpublicenv()"
     },
     {
@@ -6390,7 +6426,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L14",
       "id": "lib_posthog_token",
-      "community": 94,
+      "community": 3,
       "norm_label": "token"
     },
     {
@@ -6399,7 +6435,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L19",
       "id": "lib_posthog_host",
-      "community": 94,
+      "community": 3,
       "norm_label": "host"
     },
     {
@@ -6408,7 +6444,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L28",
       "id": "lib_posthog_analyticsproperty",
-      "community": 94,
+      "community": 3,
       "norm_label": "analyticsproperty"
     },
     {
@@ -6426,7 +6462,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L31",
       "id": "lib_posthog_compactproperties",
-      "community": 94,
+      "community": 3,
       "norm_label": "compactproperties()"
     },
     {
@@ -6435,7 +6471,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L37",
       "id": "lib_posthog_registerposthogsession",
-      "community": 94,
+      "community": 3,
       "norm_label": "registerposthogsession()"
     },
     {
@@ -6444,7 +6480,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L42",
       "id": "lib_posthog_registerposthogcontext",
-      "community": 94,
+      "community": 3,
       "norm_label": "registerposthogcontext()"
     },
     {
@@ -6453,7 +6489,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L46",
       "id": "lib_posthog_captureposthogevent",
-      "community": 94,
+      "community": 3,
       "norm_label": "captureposthogevent()"
     },
     {
@@ -6462,7 +6498,7 @@
       "source_file": "src/lib/timeInput.test.ts",
       "source_location": "L1",
       "id": "src_lib_timeinput_test_ts",
-      "community": 29,
+      "community": 65,
       "norm_label": "timeinput.test.ts"
     },
     {
@@ -6471,7 +6507,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L1",
       "id": "src_lib_posthogconfig_test_ts",
-      "community": 123,
+      "community": 3,
       "norm_label": "posthogconfig.test.ts"
     },
     {
@@ -6480,7 +6516,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L7",
       "id": "lib_posthogconfig_test_startsessionrecordingcalls",
-      "community": 123,
+      "community": 3,
       "norm_label": "startsessionrecordingcalls"
     },
     {
@@ -6489,7 +6525,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L8",
       "id": "lib_posthogconfig_test_config",
-      "community": 123,
+      "community": 3,
       "norm_label": "config"
     },
     {
@@ -6498,7 +6534,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L10",
       "id": "lib_posthogconfig_test_loadedposthog",
-      "community": 123,
+      "community": 3,
       "norm_label": "loadedposthog"
     },
     {
@@ -6507,7 +6543,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L12",
       "id": "lib_posthogconfig_test_client",
-      "community": 123,
+      "community": 3,
       "norm_label": "client"
     },
     {
@@ -6552,7 +6588,7 @@
       "source_file": "src/application/deadlineMode.ts",
       "source_location": "L16",
       "id": "application_deadlinemode_deadlinemodestate",
-      "community": 9,
+      "community": 13,
       "norm_label": "deadlinemodestate"
     },
     {
@@ -6579,7 +6615,7 @@
       "source_file": "src/application/deadlineMode.ts",
       "source_location": "L39",
       "id": "application_deadlinemode_initialdeadlinemodestate",
-      "community": 9,
+      "community": 13,
       "norm_label": "initialdeadlinemodestate"
     },
     {
@@ -6606,7 +6642,7 @@
       "source_file": "src/application/deadlineMode.ts",
       "source_location": "L146",
       "id": "application_deadlinemode_deadlinemodecommands",
-      "community": 9,
+      "community": 13,
       "norm_label": "deadlinemodecommands"
     },
     {
@@ -6624,7 +6660,7 @@
       "source_file": "src/application/deadlineMode.ts",
       "source_location": "L160",
       "id": "application_deadlinemode_createdeadlinemodecommands",
-      "community": 9,
+      "community": 13,
       "norm_label": "createdeadlinemodecommands()"
     },
     {
@@ -6957,7 +6993,7 @@
       "source_file": "src/components/ui/textarea.tsx",
       "source_location": "L1",
       "id": "src_components_ui_textarea_tsx",
-      "community": 38,
+      "community": 9,
       "norm_label": "textarea.tsx"
     },
     {
@@ -6966,7 +7002,7 @@
       "source_file": "src/components/ui/textarea.tsx",
       "source_location": "L5",
       "id": "ui_textarea_textarea",
-      "community": 38,
+      "community": 9,
       "norm_label": "textarea()"
     },
     {
@@ -7986,7 +8022,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L96",
       "id": "tests_test_recipes_api_test_embed_unembedded_recipes_job",
-      "community": 117,
+      "community": 82,
       "norm_label": "test_embed_unembedded_recipes_job()"
     },
     {
@@ -7995,7 +8031,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L106",
       "id": "tests_test_recipes_api_test_embed_unembedded_recipes_noop_when_all_embedded",
-      "community": 117,
+      "community": 82,
       "norm_label": "test_embed_unembedded_recipes_noop_when_all_embedded()"
     },
     {
@@ -8220,7 +8256,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L262",
       "id": "tests_conftest_fakesession_recommend_candidates",
-      "community": 63,
+      "community": 117,
       "norm_label": "._recommend_candidates()"
     },
     {
@@ -8310,7 +8346,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/conftest.py",
       "source_location": "L263",
       "id": "tests_conftest_rationale_263",
-      "community": 63,
+      "community": 117,
       "norm_label": "emulate stage-1 hard filtering + embedding-ordered retrieval."
     },
     {
@@ -9093,7 +9129,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L1",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_tests_test_difficulty_py",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_difficulty.py"
     },
     {
@@ -9102,7 +9138,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L6",
       "id": "tests_test_difficulty_test_score_is_clamped_between_zero_and_one",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_score_is_clamped_between_zero_and_one()"
     },
     {
@@ -9111,7 +9147,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L20",
       "id": "tests_test_difficulty_test_more_techniques_increase_difficulty",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_more_techniques_increase_difficulty()"
     },
     {
@@ -9120,7 +9156,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L26",
       "id": "tests_test_difficulty_test_uncommon_equipment_increases_difficulty",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_uncommon_equipment_increases_difficulty()"
     },
     {
@@ -9129,7 +9165,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L32",
       "id": "tests_test_difficulty_test_more_ingredients_increase_difficulty",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_more_ingredients_increase_difficulty()"
     },
     {
@@ -9138,7 +9174,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L38",
       "id": "tests_test_difficulty_test_longer_prep_increases_difficulty",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_longer_prep_increases_difficulty()"
     },
     {
@@ -9147,7 +9183,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L44",
       "id": "tests_test_difficulty_test_fallback_meal_type_reduces_difficulty",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_fallback_meal_type_reduces_difficulty()"
     },
     {
@@ -9156,7 +9192,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L51",
       "id": "tests_test_difficulty_test_unknown_technique_uses_default_weight",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_unknown_technique_uses_default_weight()"
     },
     {
@@ -9165,7 +9201,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L58",
       "id": "tests_test_difficulty_test_case_insensitive_technique_matching",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_case_insensitive_technique_matching()"
     },
     {
@@ -9174,7 +9210,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L64",
       "id": "tests_test_difficulty_test_legacy_keys_steps_and_type_are_supported",
-      "community": 65,
+      "community": 8,
       "norm_label": "test_legacy_keys_steps_and_type_are_supported()"
     },
     {
@@ -9183,7 +9219,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/tests/test_difficulty.py",
       "source_location": "L1",
       "id": "tests_test_difficulty_rationale_1",
-      "community": 65,
+      "community": 8,
       "norm_label": "tests for the heuristic recipe difficulty scorer."
     },
     {
@@ -9552,7 +9588,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L1",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_recommend_py",
-      "community": 28,
+      "community": 19,
       "norm_label": "recommend.py"
     },
     {
@@ -9561,7 +9597,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L41",
       "id": "app_recommend_recommend",
-      "community": 28,
+      "community": 19,
       "norm_label": "recommend()"
     },
     {
@@ -9570,7 +9606,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L41",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_recommend_py_asyncsession",
-      "community": 28,
+      "community": 19,
       "norm_label": "asyncsession"
     },
     {
@@ -9579,7 +9615,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L41",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_recommend_py_str",
-      "community": 28,
+      "community": 19,
       "norm_label": "str"
     },
     {
@@ -9588,7 +9624,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L41",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_recommend_py_int",
-      "community": 28,
+      "community": 19,
       "norm_label": "int"
     },
     {
@@ -9597,7 +9633,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L41",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_recommend_py_float",
-      "community": 28,
+      "community": 19,
       "norm_label": "float"
     },
     {
@@ -9606,7 +9642,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L41",
       "id": "random",
-      "community": 28,
+      "community": 19,
       "norm_label": "random"
     },
     {
@@ -9615,7 +9651,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L100",
       "id": "app_recommend_apply_exploration",
-      "community": 28,
+      "community": 19,
       "norm_label": "_apply_exploration()"
     },
     {
@@ -9624,7 +9660,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L138",
       "id": "app_recommend_get_user",
-      "community": 28,
+      "community": 19,
       "norm_label": "_get_user()"
     },
     {
@@ -9633,7 +9669,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L149",
       "id": "app_recommend_stage1_filter_and_retrieve",
-      "community": 28,
+      "community": 19,
       "norm_label": "_stage1_filter_and_retrieve()"
     },
     {
@@ -9642,7 +9678,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L215",
       "id": "app_recommend_collaborative_scores",
-      "community": 28,
+      "community": 19,
       "norm_label": "_collaborative_scores()"
     },
     {
@@ -9651,7 +9687,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L241",
       "id": "app_recommend_trending_scores",
-      "community": 28,
+      "community": 19,
       "norm_label": "_trending_scores()"
     },
     {
@@ -9660,7 +9696,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L250",
       "id": "app_recommend_recently_seen",
-      "community": 28,
+      "community": 19,
       "norm_label": "_recently_seen()"
     },
     {
@@ -9669,7 +9705,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L263",
       "id": "app_recommend_ability_profile",
-      "community": 28,
+      "community": 19,
       "norm_label": "_ability_profile()"
     },
     {
@@ -9678,7 +9714,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L276",
       "id": "app_recommend_taste_similarity",
-      "community": 28,
+      "community": 19,
       "norm_label": "_taste_similarity()"
     },
     {
@@ -9687,7 +9723,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L284",
       "id": "app_recommend_ability_match",
-      "community": 28,
+      "community": 19,
       "norm_label": "_ability_match()"
     },
     {
@@ -9696,7 +9732,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L301",
       "id": "app_recommend_as_vector",
-      "community": 28,
+      "community": 19,
       "norm_label": "_as_vector()"
     },
     {
@@ -9705,7 +9741,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L313",
       "id": "app_recommend_cosine_sim",
-      "community": 28,
+      "community": 19,
       "norm_label": "_cosine_sim()"
     },
     {
@@ -9714,7 +9750,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L321",
       "id": "app_recommend_health_score",
-      "community": 28,
+      "community": 19,
       "norm_label": "_health_score()"
     },
     {
@@ -9723,7 +9759,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L328",
       "id": "app_recommend_budget_score",
-      "community": 28,
+      "community": 19,
       "norm_label": "_budget_score()"
     },
     {
@@ -9732,7 +9768,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L341",
       "id": "app_recommend_blend_weights",
-      "community": 28,
+      "community": 19,
       "norm_label": "_blend_weights()"
     },
     {
@@ -9741,7 +9777,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L52",
       "id": "app_recommend_rationale_52",
-      "community": 28,
+      "community": 19,
       "norm_label": "reactive recommendation engine (issue #61).      multi-stage pipeline that, afte"
     },
     {
@@ -9750,7 +9786,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L107",
       "id": "app_recommend_rationale_107",
-      "community": 28,
+      "community": 19,
       "norm_label": "return the top-``n`` deck with the tail reserved for exploration.      the stron"
     },
     {
@@ -9759,7 +9795,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L264",
       "id": "app_recommend_rationale_264",
-      "community": 28,
+      "community": 19,
       "norm_label": "the user's 7-dimension cooking-ability & preference profile (issue #59).      us"
     },
     {
@@ -9768,7 +9804,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/recommend.py",
       "source_location": "L285",
       "id": "app_recommend_rationale_285",
-      "community": 28,
+      "community": 19,
       "norm_label": "match the user's profile (#59) against the recipe's implied demands (#60)."
     },
     {
@@ -9777,7 +9813,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L1",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_jobs_py",
-      "community": 53,
+      "community": 8,
       "norm_label": "jobs.py"
     },
     {
@@ -9786,7 +9822,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L21",
       "id": "app_jobs_parse_embedding",
-      "community": 53,
+      "community": 8,
       "norm_label": "_parse_embedding()"
     },
     {
@@ -9795,7 +9831,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L21",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_jobs_py_float",
-      "community": 53,
+      "community": 8,
       "norm_label": "float"
     },
     {
@@ -9804,7 +9840,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L32",
       "id": "app_jobs_recompute_user_profile",
-      "community": 53,
+      "community": 8,
       "norm_label": "recompute_user_profile()"
     },
     {
@@ -9813,7 +9849,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L32",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_jobs_py_asyncsession",
-      "community": 53,
+      "community": 8,
       "norm_label": "asyncsession"
     },
     {
@@ -9822,7 +9858,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L32",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_jobs_py_str",
-      "community": 53,
+      "community": 8,
       "norm_label": "str"
     },
     {
@@ -9831,7 +9867,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L32",
       "id": "bool",
-      "community": 53,
+      "community": 8,
       "norm_label": "bool"
     },
     {
@@ -9840,7 +9876,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L100",
       "id": "app_jobs_compute_taste_embedding",
-      "community": 53,
+      "community": 8,
       "norm_label": "_compute_taste_embedding()"
     },
     {
@@ -9849,7 +9885,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L125",
       "id": "app_jobs_recompute_all_user_profiles",
-      "community": 53,
+      "community": 8,
       "norm_label": "recompute_all_user_profiles()"
     },
     {
@@ -9858,7 +9894,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L125",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_jobs_py_int",
-      "community": 53,
+      "community": 8,
       "norm_label": "int"
     },
     {
@@ -9867,7 +9903,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L135",
       "id": "app_jobs_recompute_user_embedding",
-      "community": 53,
+      "community": 8,
       "norm_label": "recompute_user_embedding()"
     },
     {
@@ -9876,7 +9912,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L181",
       "id": "app_jobs_recompute_co_likes",
-      "community": 53,
+      "community": 8,
       "norm_label": "recompute_co_likes()"
     },
     {
@@ -9885,7 +9921,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L201",
       "id": "app_jobs_recompute_trending",
-      "community": 53,
+      "community": 8,
       "norm_label": "recompute_trending()"
     },
     {
@@ -9894,7 +9930,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L230",
       "id": "app_jobs_recompute_all_user_embeddings",
-      "community": 53,
+      "community": 8,
       "norm_label": "recompute_all_user_embeddings()"
     },
     {
@@ -9903,7 +9939,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L240",
       "id": "app_jobs_embed_unembedded_recipes",
-      "community": 53,
+      "community": 8,
       "norm_label": "embed_unembedded_recipes()"
     },
     {
@@ -9912,7 +9948,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/jobs.py",
       "source_location": "L33",
       "id": "app_jobs_rationale_33",
-      "community": 53,
+      "community": 8,
       "norm_label": "recompute a user's taste embedding *and* ability profile (issue #59).      pulls"
     },
     {
@@ -9939,7 +9975,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/auth.py",
       "source_location": "L12",
       "id": "app_auth_verify_cloud_function",
-      "community": 125,
+      "community": 8,
       "norm_label": "verify_cloud_function()"
     },
     {
@@ -9948,7 +9984,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/auth.py",
       "source_location": "L12",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_auth_py_request",
-      "community": 125,
+      "community": 8,
       "norm_label": "request"
     },
     {
@@ -9966,7 +10002,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/auth.py",
       "source_location": "L13",
       "id": "app_auth_rationale_13",
-      "community": 125,
+      "community": 8,
       "norm_label": "reject application api calls that were not forwarded by a trusted function."
     },
     {
@@ -10272,7 +10308,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/main.py",
       "source_location": "L381",
       "id": "app_main_job_recompute_all",
-      "community": 53,
+      "community": 8,
       "norm_label": "job_recompute_all()"
     },
     {
@@ -10488,7 +10524,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/difficulty.py",
       "source_location": "L1",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_difficulty_py",
-      "community": 65,
+      "community": 8,
       "norm_label": "difficulty.py"
     },
     {
@@ -10497,7 +10533,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/difficulty.py",
       "source_location": "L30",
       "id": "app_difficulty_score_difficulty",
-      "community": 65,
+      "community": 8,
       "norm_label": "score_difficulty()"
     },
     {
@@ -10506,7 +10542,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/difficulty.py",
       "source_location": "L30",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_difficulty_py_float",
-      "community": 65,
+      "community": 8,
       "norm_label": "float"
     },
     {
@@ -10902,7 +10938,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/embeddings.py",
       "source_location": "L1",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_embeddings_py",
-      "community": 39,
+      "community": 8,
       "norm_label": "embeddings.py"
     },
     {
@@ -10911,7 +10947,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/embeddings.py",
       "source_location": "L18",
       "id": "app_embeddings_get_model",
-      "community": 39,
+      "community": 8,
       "norm_label": "get_model()"
     },
     {
@@ -10920,7 +10956,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/embeddings.py",
       "source_location": "L27",
       "id": "app_embeddings_embed_texts",
-      "community": 39,
+      "community": 8,
       "norm_label": "embed_texts()"
     },
     {
@@ -10929,7 +10965,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/embeddings.py",
       "source_location": "L27",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_embeddings_py_str",
-      "community": 39,
+      "community": 8,
       "norm_label": "str"
     },
     {
@@ -10938,7 +10974,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/embeddings.py",
       "source_location": "L27",
       "id": "home_kolesniii_uni_drp03_backend_recommender_api_app_embeddings_py_float",
-      "community": 39,
+      "community": 8,
       "norm_label": "float"
     },
     {
@@ -10947,7 +10983,7 @@
       "source_file": "/home/kolesniii/uni/drp03/backend/recommender-api/app/embeddings.py",
       "source_location": "L33",
       "id": "app_embeddings_embed_single",
-      "community": 39,
+      "community": 8,
       "norm_label": "embed_single()"
     },
     {
@@ -11586,7 +11622,7 @@
       "source_file": "functions/src/autoPlan.ts",
       "source_location": "L154",
       "id": "src_autoplan_buildplan",
-      "community": 37,
+      "community": 25,
       "norm_label": "buildplan()"
     },
     {
@@ -11973,7 +12009,7 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L268",
       "id": "functions_src_index_ts_src_index_seedprototypedata",
-      "community": 0,
+      "community": 78,
       "norm_label": "seedprototypedata()"
     },
     {
@@ -11982,7 +12018,7 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L280",
       "id": "functions_src_index_ts_src_index_getprototypedata",
-      "community": 0,
+      "community": 78,
       "norm_label": "getprototypedata()"
     },
     {
@@ -12009,7 +12045,7 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L333",
       "id": "functions_src_index_ts_src_index_ensurerecipesseeded",
-      "community": 100,
+      "community": 0,
       "norm_label": "ensurerecipesseeded()"
     },
     {
@@ -12018,7 +12054,7 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L347",
       "id": "functions_src_index_ts_src_index_listrecipes",
-      "community": 100,
+      "community": 0,
       "norm_label": "listrecipes()"
     },
     {
@@ -12225,7 +12261,7 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L734",
       "id": "functions_src_index_ts_src_index_timestamptoiso",
-      "community": 0,
+      "community": 100,
       "norm_label": "timestamptoiso()"
     },
     {
@@ -12342,7 +12378,7 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1007",
       "id": "src_index_normalizedaycontext",
-      "community": 37,
+      "community": 53,
       "norm_label": "normalizedaycontext()"
     },
     {
@@ -12441,7 +12477,7 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1261",
       "id": "functions_src_index_ts_src_index_parsecachedproduct",
-      "community": 42,
+      "community": 37,
       "norm_label": "parsecachedproduct()"
     },
     {
@@ -12558,7 +12594,7 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1549",
       "id": "functions_src_index_ts_src_index_sendsessionjson",
-      "community": 0,
+      "community": 100,
       "norm_label": "sendsessionjson()"
     },
     {
@@ -22755,7 +22791,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L54",
       "id": "lib_posthog_posthog",
-      "community": 94,
+      "community": 3,
       "norm_label": "posthog"
     },
     {
@@ -22961,7 +22997,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L268",
-      "community": 160,
+      "community": 0,
       "norm_label": "seedprototypedata()",
       "id": "src_index_seedprototypedata"
     },
@@ -22970,7 +23006,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L280",
-      "community": 160,
+      "community": 0,
       "norm_label": "getprototypedata()",
       "id": "src_index_getprototypedata"
     },
@@ -22997,7 +23033,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L333",
-      "community": 0,
+      "community": 123,
       "norm_label": "ensurerecipesseeded()",
       "id": "src_index_ensurerecipesseeded"
     },
@@ -23006,7 +23042,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L347",
-      "community": 0,
+      "community": 123,
       "norm_label": "listrecipes()",
       "id": "src_index_listrecipes"
     },
@@ -23015,7 +23051,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L355",
-      "community": 37,
+      "community": 53,
       "norm_label": "torecommenderrecipepayload()",
       "id": "src_index_torecommenderrecipepayload"
     },
@@ -23087,7 +23123,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L484",
-      "community": 37,
+      "community": 53,
       "norm_label": "asrecord()",
       "id": "src_index_asrecord"
     },
@@ -23096,7 +23132,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L492",
-      "community": 37,
+      "community": 53,
       "norm_label": "boundedstring()",
       "id": "src_index_boundedstring"
     },
@@ -23105,7 +23141,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L500",
-      "community": 37,
+      "community": 53,
       "norm_label": "boundednumber()",
       "id": "src_index_boundednumber"
     },
@@ -23114,7 +23150,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L513",
-      "community": 37,
+      "community": 53,
       "norm_label": "boundedstringlist()",
       "id": "src_index_boundedstringlist"
     },
@@ -23123,7 +23159,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L529",
-      "community": 37,
+      "community": 53,
       "norm_label": "normalizerecipelist()",
       "id": "src_index_normalizerecipelist"
     },
@@ -23132,7 +23168,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L534",
-      "community": 37,
+      "community": 53,
       "norm_label": "normalizedeadline()",
       "id": "src_index_normalizedeadline"
     },
@@ -23141,7 +23177,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L557",
-      "community": 37,
+      "community": 53,
       "norm_label": "normalizeicssubscription()",
       "id": "src_index_normalizeicssubscription"
     },
@@ -23150,7 +23186,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L578",
-      "community": 37,
+      "community": 53,
       "norm_label": "normalizecalendartoken()",
       "id": "src_index_normalizecalendartoken"
     },
@@ -23159,7 +23195,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L596",
-      "community": 37,
+      "community": 53,
       "norm_label": "normalizecalendarevent()",
       "id": "src_index_normalizecalendarevent"
     },
@@ -23168,7 +23204,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L618",
-      "community": 37,
+      "community": 53,
       "norm_label": "normalizerecipeingredient()",
       "id": "src_index_normalizerecipeingredient"
     },
@@ -23177,7 +23213,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L646",
-      "community": 37,
+      "community": 53,
       "norm_label": "normalizerecipeingredientlist()",
       "id": "src_index_normalizerecipeingredientlist"
     },
@@ -23186,7 +23222,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L657",
-      "community": 37,
+      "community": 53,
       "norm_label": "normalizeprototypesessionsettings()",
       "id": "src_index_normalizeprototypesessionsettings"
     },
@@ -23204,7 +23240,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L734",
-      "community": 161,
+      "community": 0,
       "norm_label": "timestamptoiso()",
       "id": "src_index_timestamptoiso"
     },
@@ -23213,7 +23249,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L746",
-      "community": 37,
+      "community": 53,
       "norm_label": "readrequestbody()",
       "id": "src_index_readrequestbody"
     },
@@ -23456,7 +23492,7 @@
       "file_type": "code",
       "source_file": "functions/src/index.ts",
       "source_location": "L1549",
-      "community": 161,
+      "community": 0,
       "norm_label": "sendsessionjson()",
       "id": "src_index_sendsessionjson"
     },
@@ -35341,6 +35377,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/prototype/utils.ts",
+      "source_location": "L114",
+      "weight": 1.0,
+      "source": "src_prototype_utils_ts",
+      "target": "prototype_utils_keyingredients",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/utils.ts",
       "source_location": "L59",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -35356,6 +35402,16 @@
       "confidence_score": 1.0,
       "source": "src_prototype_utils_ts",
       "target": "prototype_utils_money"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/utils.ts",
+      "source_location": "L104",
+      "weight": 1.0,
+      "source": "src_prototype_utils_ts",
+      "target": "prototype_utils_name_stopwords",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -35861,6 +35917,17 @@
       "target": "prototype_utils_nutritionsourcesummary"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/utils.ts",
+      "source_location": "L126",
+      "weight": 1.0,
+      "source": "prototype_utils_keyingredients",
+      "target": "prototype_utils_ingredientnames",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -35870,6 +35937,39 @@
       "confidence_score": 1.0,
       "source": "src_prototype_screens_discoverscreen_tsx",
       "target": "prototype_utils_ingredientnames"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/prototype/screens/DiscoverScreen.tsx",
+      "source_location": "L249",
+      "weight": 1.0,
+      "source": "screens_discoverscreen_discoverscreen",
+      "target": "prototype_utils_keyingredients"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/screens/DiscoverScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_prototype_screens_discoverscreen_tsx",
+      "target": "prototype_utils_keyingredients",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/utils.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_prototype_utils_test_ts",
+      "target": "prototype_utils_keyingredients",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -39213,6 +39313,26 @@
       "confidence_score": 1.0,
       "source": "src_prototype_sessionpersistence_test_ts",
       "target": "prototype_sessionpersistence_restoreprototypeplan"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/utils.test.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "src_prototype_utils_test_ts",
+      "target": "prototype_utils_test_ingredients",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/prototype/utils.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_prototype_utils_test_ts",
+      "target": "prototype_utils_test_serving",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -55136,9 +55256,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_allowedphotomimetypes",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_allowedphotomimetypes"
     },
     {
       "relation": "contains",
@@ -55146,9 +55266,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_anonymoussessionsref",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_anonymoussessionsref"
     },
     {
       "relation": "contains",
@@ -55156,9 +55276,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L424",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_appendrecipereview",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_appendrecipereview"
     },
     {
       "relation": "contains",
@@ -55166,9 +55286,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L484",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "contains",
@@ -55176,9 +55296,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L413",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_averagerating",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_averagerating"
     },
     {
       "relation": "contains",
@@ -55186,9 +55306,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L500",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_boundednumber",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundednumber"
     },
     {
       "relation": "contains",
@@ -55196,9 +55316,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L492",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "contains",
@@ -55206,9 +55326,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L513",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_boundedstringlist",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstringlist"
     },
     {
       "relation": "contains",
@@ -55216,9 +55336,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1496",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_cacheopenfoodfactsproduct",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_cacheopenfoodfactsproduct"
     },
     {
       "relation": "contains",
@@ -55226,9 +55346,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_calendaroauthsecrets",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_calendaroauthsecrets"
     },
     {
       "relation": "contains",
@@ -55236,9 +55356,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1322",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_deaccent",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_deaccent"
     },
     {
       "relation": "contains",
@@ -55246,9 +55366,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L815",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_enrichrecommendedrecipes",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_enrichrecommendedrecipes"
     },
     {
       "relation": "contains",
@@ -55256,9 +55376,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L333",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_ensurerecipesseeded",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_ensurerecipesseeded"
     },
     {
       "relation": "contains",
@@ -55266,9 +55386,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1181",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_estimateingredientnutrition",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_estimateingredientnutrition"
     },
     {
       "relation": "contains",
@@ -55276,9 +55396,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1326",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_fdcnutrientvalue",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_fdcnutrientvalue"
     },
     {
       "relation": "contains",
@@ -55286,9 +55406,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1337",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_fdctoproduct",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_fdctoproduct"
     },
     {
       "relation": "contains",
@@ -55296,9 +55416,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1401",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_fetchusdaproductforingredient",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_fetchusdaproductforingredient"
     },
     {
       "relation": "contains",
@@ -55306,9 +55426,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1514",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_findnutritionproductforingredient",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_findnutritionproductforingredient"
     },
     {
       "relation": "contains",
@@ -55316,9 +55436,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_firestore",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_firestore"
     },
     {
       "relation": "contains",
@@ -55326,9 +55446,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L280",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_getprototypedata",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_getprototypedata"
     },
     {
       "relation": "contains",
@@ -55336,9 +55456,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_googleclientid",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_googleclientid"
     },
     {
       "relation": "contains",
@@ -55346,9 +55466,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_googleclientsecret",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_googleclientsecret"
     },
     {
       "relation": "contains",
@@ -55356,9 +55476,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_googleoauthhttpoptions",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_googleoauthhttpoptions"
     },
     {
       "relation": "contains",
@@ -55366,9 +55486,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1158",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_gramsforingredient",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_gramsforingredient"
     },
     {
       "relation": "contains",
@@ -55376,9 +55496,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1136",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_isrecipeingredient",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_isrecipeingredient"
     },
     {
       "relation": "contains",
@@ -55386,9 +55506,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L347",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_listrecipes",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_listrecipes"
     },
     {
       "relation": "contains",
@@ -55396,9 +55516,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_microsoftclientid",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_microsoftclientid"
     },
     {
       "relation": "contains",
@@ -55406,9 +55526,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_microsoftclientsecret",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_microsoftclientsecret"
     },
     {
       "relation": "contains",
@@ -55416,9 +55536,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_microsoftoauthhttpoptions",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_microsoftoauthhttpoptions"
     },
     {
       "relation": "contains",
@@ -55426,9 +55546,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L596",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_normalizecalendarevent",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizecalendarevent"
     },
     {
       "relation": "contains",
@@ -55436,9 +55556,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L578",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_normalizecalendartoken",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizecalendartoken"
     },
     {
       "relation": "contains",
@@ -55446,9 +55566,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L534",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_normalizedeadline",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizedeadline"
     },
     {
       "relation": "contains",
@@ -55456,9 +55576,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L557",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_normalizeicssubscription",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizeicssubscription"
     },
     {
       "relation": "contains",
@@ -55466,9 +55586,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1150",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_normalizeingredientkey",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizeingredientkey"
     },
     {
       "relation": "contains",
@@ -55476,9 +55596,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L657",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_normalizeprototypesessionsettings",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizeprototypesessionsettings"
     },
     {
       "relation": "contains",
@@ -55486,9 +55606,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L618",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_normalizerecipeingredient",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizerecipeingredient"
     },
     {
       "relation": "contains",
@@ -55496,9 +55616,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L646",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_normalizerecipeingredientlist",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizerecipeingredientlist"
     },
     {
       "relation": "contains",
@@ -55506,9 +55626,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L529",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_normalizerecipelist",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizerecipelist"
     },
     {
       "relation": "contains",
@@ -55516,9 +55636,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_nutritionhttpoptions",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_nutritionhttpoptions"
     },
     {
       "relation": "contains",
@@ -55526,9 +55646,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1154",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid"
     },
     {
       "relation": "contains",
@@ -55536,9 +55656,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_openfoodfactscacheref",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_openfoodfactscacheref"
     },
     {
       "relation": "contains",
@@ -55546,9 +55666,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1261",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_parsecachedproduct",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_parsecachedproduct"
     },
     {
       "relation": "contains",
@@ -55556,9 +55676,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_prototyperef",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_prototyperef"
     },
     {
       "relation": "contains",
@@ -55566,9 +55686,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L863",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_proxyrecommenderrecommendations",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_proxyrecommenderrecommendations"
     },
     {
       "relation": "contains",
@@ -55576,9 +55696,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L776",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_proxyrecommenderrequest",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_proxyrecommenderrequest"
     },
     {
       "relation": "contains",
@@ -55586,9 +55706,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_publichttpoptions",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_publichttpoptions"
     },
     {
       "relation": "contains",
@@ -55596,9 +55716,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1470",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_readopenfoodfactscachedproduct",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_readopenfoodfactscachedproduct"
     },
     {
       "relation": "contains",
@@ -55606,9 +55726,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L418",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_readrecipereviews",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_readrecipereviews"
     },
     {
       "relation": "contains",
@@ -55616,9 +55736,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L746",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_readrequestbody",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_readrequestbody"
     },
     {
       "relation": "contains",
@@ -55626,9 +55746,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_recipereviewsref",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_recipereviewsref"
     },
     {
       "relation": "contains",
@@ -55636,9 +55756,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_recipesref",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_recipesref"
     },
     {
       "relation": "contains",
@@ -55646,9 +55766,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_recommenderapikey",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_recommenderapikey"
     },
     {
       "relation": "contains",
@@ -55656,9 +55776,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_recommenderapiurl",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_recommenderapiurl"
     },
     {
       "relation": "contains",
@@ -55666,9 +55786,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_recommenderhttpoptions",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_recommenderhttpoptions"
     },
     {
       "relation": "contains",
@@ -55676,9 +55796,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L300",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_rejectunsupportedmethod",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_rejectunsupportedmethod"
     },
     {
       "relation": "contains",
@@ -55686,9 +55806,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1118",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_rejectunsupportednutritionmethod",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_rejectunsupportednutritionmethod"
     },
     {
       "relation": "contains",
@@ -55696,9 +55816,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L758",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_rejectunsupportedrecommendermethod",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_rejectunsupportedrecommendermethod"
     },
     {
       "relation": "contains",
@@ -55706,9 +55826,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L315",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_rejectunsupportedreviewmethod",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_rejectunsupportedreviewmethod"
     },
     {
       "relation": "contains",
@@ -55716,9 +55836,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L451",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_rejectunsupportedsessionmethod",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_rejectunsupportedsessionmethod"
     },
     {
       "relation": "contains",
@@ -55726,9 +55846,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1217",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_roundmacro",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_roundmacro"
     },
     {
       "relation": "contains",
@@ -55736,9 +55856,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L393",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_sanitizereviewinput",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_sanitizereviewinput"
     },
     {
       "relation": "contains",
@@ -55746,9 +55866,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1368",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_searchfdcfoods",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_searchfdcfoods"
     },
     {
       "relation": "contains",
@@ -55756,9 +55876,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L268",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_seedprototypedata",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_seedprototypedata"
     },
     {
       "relation": "contains",
@@ -55766,9 +55886,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L479",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_senderror",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_senderror"
     },
     {
       "relation": "contains",
@@ -55776,9 +55896,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L474",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_sendjson",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_sendjson"
     },
     {
       "relation": "contains",
@@ -55786,9 +55906,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1549",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_sendsessionjson",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_sendsessionjson"
     },
     {
       "relation": "contains",
@@ -55796,9 +55916,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L255",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_servinggrams",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_servinggrams"
     },
     {
       "relation": "contains",
@@ -55806,9 +55926,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L730",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_sessionexpirytimestamp",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_sessionexpirytimestamp"
     },
     {
       "relation": "contains",
@@ -55816,9 +55936,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1299",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_sleep",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_sleep"
     },
     {
       "relation": "contains",
@@ -55826,9 +55946,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1249",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_timestampmillis",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_timestampmillis"
     },
     {
       "relation": "contains",
@@ -55836,9 +55956,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L734",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_timestamptoiso",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_timestamptoiso"
     },
     {
       "relation": "contains",
@@ -55846,9 +55966,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L355",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_torecommenderrecipepayload",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_torecommenderrecipepayload"
     },
     {
       "relation": "contains",
@@ -55856,9 +55976,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1221",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_totalnutritionfromestimates",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_totalnutritionfromestimates"
     },
     {
       "relation": "contains",
@@ -55866,9 +55986,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1436",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_tryacquireopenfoodfactscachelock",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_tryacquireopenfoodfactscachelock"
     },
     {
       "relation": "contains",
@@ -55876,9 +55996,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_usdaapikey",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_usdaapikey"
     },
     {
       "relation": "contains",
@@ -55886,9 +56006,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_usdafdcbaseurl",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_usdafdcbaseurl"
     },
     {
       "relation": "contains",
@@ -55896,9 +56016,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1309",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_usdagenericdatatypes",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_usdagenericdatatypes"
     },
     {
       "relation": "contains",
@@ -55906,9 +56026,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1314",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts",
-      "target": "functions_src_index_ts_src_index_usdaingredientaliases",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_usdaingredientaliases"
     },
     {
       "relation": "imports",
@@ -57212,9 +57332,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L284",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_getprototypedata",
-      "target": "functions_src_index_ts_src_index_seedprototypedata",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_seedprototypedata"
     },
     {
       "relation": "calls",
@@ -57223,9 +57343,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L348",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_listrecipes",
-      "target": "functions_src_index_ts_src_index_ensurerecipesseeded",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_ensurerecipesseeded"
     },
     {
       "relation": "calls",
@@ -57234,9 +57354,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L360",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_torecommenderrecipepayload",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57245,9 +57365,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L597",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizecalendarevent",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57256,9 +57376,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L579",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizecalendartoken",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57267,9 +57387,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L535",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizedeadline",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57278,9 +57398,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L558",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizeicssubscription",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57289,9 +57409,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L658",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizeprototypesessionsettings",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57300,9 +57420,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L624",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizerecipeingredient",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57311,9 +57431,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1266",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_parsecachedproduct",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57322,9 +57442,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L749",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_readrequestbody",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57333,9 +57453,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1047",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_handleautoplan",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57344,9 +57464,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1008",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_normalizedaycontext",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57355,9 +57475,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L960",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_recommenderrecipetomeal",
-      "target": "functions_src_index_ts_src_index_asrecord",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_asrecord"
     },
     {
       "relation": "calls",
@@ -57366,9 +57486,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L600",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizecalendarevent",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -57377,9 +57497,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L585",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizecalendartoken",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -57388,9 +57508,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L542",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizedeadline",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -57399,9 +57519,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L561",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizeicssubscription",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -57410,9 +57530,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L682",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizeprototypesessionsettings",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -57421,9 +57541,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L620",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizerecipeingredient",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -57432,9 +57552,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1031",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_handleautoplan",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -57443,9 +57563,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L979",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_mealtoallocator",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -57454,9 +57574,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L949",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_recommenderrecipetomeal",
-      "target": "functions_src_index_ts_src_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -57465,9 +57585,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L548",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizedeadline",
-      "target": "functions_src_index_ts_src_index_boundednumber",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundednumber"
     },
     {
       "relation": "calls",
@@ -57476,9 +57596,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L680",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizeprototypesessionsettings",
-      "target": "functions_src_index_ts_src_index_boundednumber",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundednumber"
     },
     {
       "relation": "calls",
@@ -57487,9 +57607,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L640",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizerecipeingredient",
-      "target": "functions_src_index_ts_src_index_boundednumber",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundednumber"
     },
     {
       "relation": "calls",
@@ -57498,9 +57618,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1032",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_handleautoplan",
-      "target": "functions_src_index_ts_src_index_boundednumber",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundednumber"
     },
     {
       "relation": "calls",
@@ -57509,9 +57629,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L982",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_mealtoallocator",
-      "target": "functions_src_index_ts_src_index_boundednumber",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundednumber"
     },
     {
       "relation": "calls",
@@ -57520,9 +57640,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1013",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_normalizedaycontext",
-      "target": "functions_src_index_ts_src_index_boundednumber",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundednumber"
     },
     {
       "relation": "calls",
@@ -57531,9 +57651,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L953",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_recommenderrecipetomeal",
-      "target": "functions_src_index_ts_src_index_boundednumber",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundednumber"
     },
     {
       "relation": "calls",
@@ -57542,9 +57662,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L686",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizeprototypesessionsettings",
-      "target": "functions_src_index_ts_src_index_boundedstringlist",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstringlist"
     },
     {
       "relation": "calls",
@@ -57553,9 +57673,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1037",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_handleautoplan",
-      "target": "functions_src_index_ts_src_index_boundedstringlist",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_boundedstringlist"
     },
     {
       "relation": "calls",
@@ -57564,9 +57684,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L702",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizeprototypesessionsettings",
-      "target": "functions_src_index_ts_src_index_normalizerecipelist",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizerecipelist"
     },
     {
       "relation": "calls",
@@ -57575,9 +57695,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L690",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_normalizeprototypesessionsettings",
-      "target": "functions_src_index_ts_src_index_normalizerecipeingredientlist",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizerecipeingredientlist"
     },
     {
       "relation": "calls",
@@ -57586,9 +57706,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1559",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_sendsessionjson",
-      "target": "functions_src_index_ts_src_index_timestamptoiso",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_timestamptoiso"
     },
     {
       "relation": "calls",
@@ -57597,9 +57717,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1025",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_handleautoplan",
-      "target": "functions_src_index_ts_src_index_readrequestbody",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_readrequestbody"
     },
     {
       "relation": "calls",
@@ -57608,9 +57728,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L867",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_proxyrecommenderrecommendations",
-      "target": "functions_src_index_ts_src_index_rejectunsupportedrecommendermethod",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_rejectunsupportedrecommendermethod"
     },
     {
       "relation": "calls",
@@ -57619,9 +57739,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L782",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_proxyrecommenderrequest",
-      "target": "functions_src_index_ts_src_index_rejectunsupportedrecommendermethod",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_rejectunsupportedrecommendermethod"
     },
     {
       "relation": "calls",
@@ -57630,9 +57750,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1023",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_index_handleautoplan",
-      "target": "functions_src_index_ts_src_index_rejectunsupportedrecommendermethod",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_rejectunsupportedrecommendermethod"
     },
     {
       "relation": "calls",
@@ -57641,9 +57761,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L896",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_proxyrecommenderrecommendations",
-      "target": "functions_src_index_ts_src_index_enrichrecommendedrecipes",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_enrichrecommendedrecipes"
     },
     {
       "relation": "calls",
@@ -57883,9 +58003,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1517",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_findnutritionproductforingredient",
-      "target": "functions_src_index_ts_src_index_normalizeingredientkey",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_normalizeingredientkey"
     },
     {
       "relation": "calls",
@@ -57894,9 +58014,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1502",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_cacheopenfoodfactsproduct",
-      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid"
     },
     {
       "relation": "calls",
@@ -57905,9 +58025,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1537",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_findnutritionproductforingredient",
-      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid"
     },
     {
       "relation": "calls",
@@ -57916,9 +58036,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1474",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_readopenfoodfactscachedproduct",
-      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid"
     },
     {
       "relation": "calls",
@@ -57927,9 +58047,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1439",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_tryacquireopenfoodfactscachelock",
-      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_openfoodfactscachedocid"
     },
     {
       "relation": "calls",
@@ -57938,9 +58058,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1186",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_estimateingredientnutrition",
-      "target": "functions_src_index_ts_src_index_gramsforingredient",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_gramsforingredient"
     },
     {
       "relation": "calls",
@@ -57949,9 +58069,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1231",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_totalnutritionfromestimates",
-      "target": "functions_src_index_ts_src_index_roundmacro",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_roundmacro"
     },
     {
       "relation": "calls",
@@ -57960,9 +58080,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1487",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_readopenfoodfactscachedproduct",
-      "target": "functions_src_index_ts_src_index_timestampmillis",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_timestampmillis"
     },
     {
       "relation": "calls",
@@ -57971,9 +58091,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1481",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_readopenfoodfactscachedproduct",
-      "target": "functions_src_index_ts_src_index_parsecachedproduct",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_parsecachedproduct"
     },
     {
       "relation": "calls",
@@ -57982,9 +58102,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1527",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_findnutritionproductforingredient",
-      "target": "functions_src_index_ts_src_index_sleep",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_sleep"
     },
     {
       "relation": "calls",
@@ -57993,9 +58113,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1393",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_searchfdcfoods",
-      "target": "functions_src_index_ts_src_index_sleep",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_sleep"
     },
     {
       "relation": "calls",
@@ -58004,9 +58124,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1404",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_fetchusdaproductforingredient",
-      "target": "functions_src_index_ts_src_index_deaccent",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_deaccent"
     },
     {
       "relation": "calls",
@@ -58015,9 +58135,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1338",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_fdctoproduct",
-      "target": "functions_src_index_ts_src_index_fdcnutrientvalue",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_fdcnutrientvalue"
     },
     {
       "relation": "calls",
@@ -58026,9 +58146,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1419",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_fetchusdaproductforingredient",
-      "target": "functions_src_index_ts_src_index_fdctoproduct",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_fdctoproduct"
     },
     {
       "relation": "calls",
@@ -58037,9 +58157,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1408",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_fetchusdaproductforingredient",
-      "target": "functions_src_index_ts_src_index_searchfdcfoods",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_searchfdcfoods"
     },
     {
       "relation": "calls",
@@ -58048,9 +58168,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1532",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_findnutritionproductforingredient",
-      "target": "functions_src_index_ts_src_index_fetchusdaproductforingredient",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_fetchusdaproductforingredient"
     },
     {
       "relation": "calls",
@@ -58059,9 +58179,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1524",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_findnutritionproductforingredient",
-      "target": "functions_src_index_ts_src_index_tryacquireopenfoodfactscachelock",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_tryacquireopenfoodfactscachelock"
     },
     {
       "relation": "calls",
@@ -58070,9 +58190,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1518",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_findnutritionproductforingredient",
-      "target": "functions_src_index_ts_src_index_readopenfoodfactscachedproduct",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_readopenfoodfactscachedproduct"
     },
     {
       "relation": "calls",
@@ -58081,9 +58201,9 @@
       "source_file": "functions/src/index.ts",
       "source_location": "L1533",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_src_index_ts_src_index_findnutritionproductforingredient",
-      "target": "functions_src_index_ts_src_index_cacheopenfoodfactsproduct",
-      "confidence_score": 1.0
+      "target": "functions_src_index_ts_src_index_cacheopenfoodfactsproduct"
     },
     {
       "relation": "imports_from",
@@ -67756,9 +67876,9 @@
       "source_file": ".ai/policy.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_policy_md",
-      "target": "ai_policy_repository_policy",
-      "confidence_score": 1.0
+      "target": "ai_policy_repository_policy"
     },
     {
       "relation": "contains",
@@ -67766,9 +67886,9 @@
       "source_file": ".ai/policy.md",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_policy_repository_policy",
-      "target": "ai_policy_allowed_actions",
-      "confidence_score": 1.0
+      "target": "ai_policy_allowed_actions"
     },
     {
       "relation": "contains",
@@ -67776,9 +67896,9 @@
       "source_file": ".ai/policy.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_policy_repository_policy",
-      "target": "ai_policy_branches",
-      "confidence_score": 1.0
+      "target": "ai_policy_branches"
     },
     {
       "relation": "contains",
@@ -67786,9 +67906,9 @@
       "source_file": ".ai/policy.md",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_policy_repository_policy",
-      "target": "ai_policy_forbidden_actions",
-      "confidence_score": 1.0
+      "target": "ai_policy_forbidden_actions"
     },
     {
       "relation": "contains",
@@ -67796,9 +67916,9 @@
       "source_file": ".ai/policy.md",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_policy_repository_policy",
-      "target": "ai_policy_issue_requirement",
-      "confidence_score": 1.0
+      "target": "ai_policy_issue_requirement"
     },
     {
       "relation": "contains",
@@ -67806,9 +67926,9 @@
       "source_file": ".ai/policy.md",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_policy_repository_policy",
-      "target": "ai_policy_merge_requirement",
-      "confidence_score": 1.0
+      "target": "ai_policy_merge_requirement"
     },
     {
       "relation": "contains",
@@ -67816,9 +67936,9 @@
       "source_file": ".ai/workflow.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_workflow_md",
-      "target": "ai_workflow_agent_workflow",
-      "confidence_score": 1.0
+      "target": "ai_workflow_agent_workflow"
     },
     {
       "relation": "contains",
@@ -67826,9 +67946,9 @@
       "source_file": ".ai/workflow.md",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_workflow_agent_workflow",
-      "target": "ai_workflow_branch_naming",
-      "confidence_score": 1.0
+      "target": "ai_workflow_branch_naming"
     },
     {
       "relation": "contains",
@@ -67836,9 +67956,9 @@
       "source_file": ".ai/workflow.md",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_workflow_agent_workflow",
-      "target": "ai_workflow_commit_format",
-      "confidence_score": 1.0
+      "target": "ai_workflow_commit_format"
     },
     {
       "relation": "contains",
@@ -67846,9 +67966,9 @@
       "source_file": ".ai/workflow.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_workflow_agent_workflow",
-      "target": "ai_workflow_discovery",
-      "confidence_score": 1.0
+      "target": "ai_workflow_discovery"
     },
     {
       "relation": "contains",
@@ -67856,9 +67976,9 @@
       "source_file": ".ai/workflow.md",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_workflow_agent_workflow",
-      "target": "ai_workflow_merge_request_format",
-      "confidence_score": 1.0
+      "target": "ai_workflow_merge_request_format"
     },
     {
       "relation": "contains",
@@ -67866,9 +67986,9 @@
       "source_file": ".ai/workflow.md",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_workflow_agent_workflow",
-      "target": "ai_workflow_pipeline_handling",
-      "confidence_score": 1.0
+      "target": "ai_workflow_pipeline_handling"
     },
     {
       "relation": "contains",
@@ -67876,9 +67996,9 @@
       "source_file": ".ai/workflow.md",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_workflow_agent_workflow",
-      "target": "ai_workflow_retry_limit",
-      "confidence_score": 1.0
+      "target": "ai_workflow_retry_limit"
     },
     {
       "relation": "contains",
@@ -67886,9 +68006,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_md",
-      "target": "ai_systen_prompt_autonomous_software_engineering_agent",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_autonomous_software_engineering_agent"
     },
     {
       "relation": "contains",
@@ -67896,9 +68016,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L116",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_autonomous_software_engineering_agent",
-      "target": "ai_systen_prompt_communication",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_communication"
     },
     {
       "relation": "contains",
@@ -67906,9 +68026,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L108",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_autonomous_software_engineering_agent",
-      "target": "ai_systen_prompt_context_usage",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_context_usage"
     },
     {
       "relation": "contains",
@@ -67916,9 +68036,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_autonomous_software_engineering_agent",
-      "target": "ai_systen_prompt_core_principles",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_core_principles"
     },
     {
       "relation": "contains",
@@ -67926,9 +68046,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_autonomous_software_engineering_agent",
-      "target": "ai_systen_prompt_failure_handling",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_failure_handling"
     },
     {
       "relation": "contains",
@@ -67936,9 +68056,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L97",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_autonomous_software_engineering_agent",
-      "target": "ai_systen_prompt_merge_requests",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_merge_requests"
     },
     {
       "relation": "contains",
@@ -67946,9 +68066,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L72",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_autonomous_software_engineering_agent",
-      "target": "ai_systen_prompt_standard_execution_loop",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_standard_execution_loop"
     },
     {
       "relation": "contains",
@@ -67956,9 +68076,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L124",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_autonomous_software_engineering_agent",
-      "target": "ai_systen_prompt_success_metric",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_success_metric"
     },
     {
       "relation": "contains",
@@ -67966,9 +68086,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_core_principles",
-      "target": "ai_systen_prompt_atomic_progress",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_atomic_progress"
     },
     {
       "relation": "contains",
@@ -67976,9 +68096,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_core_principles",
-      "target": "ai_systen_prompt_idempotency",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_idempotency"
     },
     {
       "relation": "contains",
@@ -67986,9 +68106,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_core_principles",
-      "target": "ai_systen_prompt_repository_is_source_of_truth",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_repository_is_source_of_truth"
     },
     {
       "relation": "contains",
@@ -67996,9 +68116,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_core_principles",
-      "target": "ai_systen_prompt_safety_first",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_safety_first"
     },
     {
       "relation": "contains",
@@ -68006,9 +68126,9 @@
       "source_file": ".ai/systen-prompt.md",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ai_systen_prompt_core_principles",
-      "target": "ai_systen_prompt_small_changes_win",
-      "confidence_score": 1.0
+      "target": "ai_systen_prompt_small_changes_win"
     },
     {
       "relation": "contains",
@@ -72354,5 +72474,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9b64ff00bb86c8ffbf574af1bee8b55702b99241"
+  "built_at_commit": "481c7eded0fcbec19618bf55392b700aac9a2d72"
 }
