@@ -636,7 +636,7 @@ export function RecipeEditor({
             onClick={estimateNutrition}
             disabled={nutritionLoading}
           >
-            <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Pull from OpenFoodFacts"}
+            <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Estimate from USDA"}
           </AppButton>
         </div>
 
