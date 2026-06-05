@@ -78,6 +78,7 @@ class Backend:
 
         # Low-VRAM friendly: stream weights from CPU + tile the VAE.
         self.pipe.enable_sequential_cpu_offload()
+        #self.pipe.to("cuda")
         if hasattr(self.pipe, "vae"):
             if hasattr(self.pipe.vae, "enable_tiling"):
                 self.pipe.vae.enable_tiling()

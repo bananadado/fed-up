@@ -16,7 +16,7 @@ FRAMES="${FRAMES:-24}"
 WIDTH="${WIDTH:-640}"
 
 echo ">> Generating animations (fps=$FPS frames=$FRAMES width=$WIDTH)"
-"$PYTHON" generate.py --fps "$FPS" --frames "$FRAMES" --width "$WIDTH" "$@"
+"$PYTHON" generate.py --fps "$FPS" --frames "$FRAMES" --width "$WIDTH" --steps 25 --gen-frames 25  "$@"
 
 echo ">> Syncing into frontend"
 "$PYTHON" sync_frontend.py
