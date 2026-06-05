@@ -8,6 +8,7 @@ import { AppButton, Badge, Field } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { formatIngredient } from "../ingredients";
+import { briefInstructions, hasBriefVariant } from "../instructions";
 import { mealById, money, nutritionSourceSummary, sourceUrl } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
@@ -16,6 +17,10 @@ import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shop
 import type { TrackPrototypeEvent } from "../analytics";
 
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
+
+function createRecipeId() {
+  return `custom-${Date.now()}`;
+}
 
 function ratingLabel(rating: number) {
   return rating > 0 ? `${rating.toFixed(1)} / 5` : "No ratings yet";
@@ -53,6 +58,7 @@ export function RecipeDetailScreen({
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
+  const [instructionView, setInstructionView] = useState<"detailed" | "brief">("detailed");
 
   useEffect(() => {
     function check() {
@@ -116,6 +122,15 @@ export function RecipeDetailScreen({
   const selectedMeal = meal;
   const selectedVendor = groceryVendorById(selectedVendorId);
   const shoppingItems = aggregateIngredients(selectedMeal.ingredients);
+  const canBrief = hasBriefVariant(selectedMeal.instructions);
+  const displayInstructions =
+    canBrief && instructionView === "brief" ? briefInstructions(selectedMeal.instructions) : selectedMeal.instructions;
+
+  function selectInstructionView(view: "detailed" | "brief") {
+    if (view === instructionView) return;
+    setInstructionView(view);
+    track("recipe_instructions_view_changed", { meal_id: selectedMeal.id, view });
+  }
 
   function saveMeal(nextMeal: Meal) {
     setCustomRecipes((recipes) => [nextMeal, ...recipes.filter((recipe) => recipe.id !== nextMeal.id)]);
@@ -160,7 +175,7 @@ export function RecipeDetailScreen({
       const newRecipe: Meal = {
         ...selectedMeal,
         ...updatedFields,
-        id: `custom-${Date.now()}`,
+        id: createRecipeId(),
         isUserCreated: true,
         rating: 0,
         reviews: [],
@@ -371,10 +386,31 @@ export function RecipeDetailScreen({
                   </ul>
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold">Method</h2>
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <h2 className="text-xl font-bold">Method</h2>
+                    {canBrief && (
+                      <div className="inline-flex rounded-lg border border-stone-200 p-0.5 text-xs font-semibold" role="group" aria-label="Instruction detail">
+                        {(["detailed", "brief"] as const).map((view) => (
+                          <button
+                            key={view}
+                            type="button"
+                            aria-pressed={instructionView === view}
+                            onClick={() => selectInstructionView(view)}
+                            className={
+                              instructionView === view
+                                ? "rounded-md bg-emerald-600 px-3 py-1 text-white"
+                                : "rounded-md px-3 py-1 text-stone-600 hover:bg-stone-100"
+                            }
+                          >
+                            {view === "detailed" ? "Detailed steps" : "Brief method"}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <ol className="mt-4 space-y-3">
-                    {meal.instructions.map((step, index) => (
-                      <li key={step} className="flex gap-3 rounded-lg bg-stone-50 px-3 py-3 text-stone-700">
+                    {displayInstructions.map((step, index) => (
+                      <li key={index} className="flex gap-3 rounded-lg bg-stone-50 px-3 py-3 text-stone-700">
                         <span className="font-semibold text-stone-950">{index + 1}.</span>
                         <span>{step}</span>
                       </li>
