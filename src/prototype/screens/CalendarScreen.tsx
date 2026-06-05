@@ -493,10 +493,12 @@ function CookingScheduler({
 function PrepReminderSuggestions({
   suggestions,
   prepReminderTime,
+  onPrepReminderTimeChange,
   track,
 }: {
   suggestions: PrepSuggestion[];
   prepReminderTime: string;
+  onPrepReminderTimeChange: (t: string) => void;
   track: TrackPrototypeEvent;
 }) {
   const todayIso = toLocalIso(new Date());
@@ -533,16 +535,25 @@ function PrepReminderSuggestions({
 
   return (
     <div className="mt-6 rounded-xl border border-blue-200 bg-white p-6 shadow-sm">
-      <div className="mb-4 flex items-start gap-3">
+      <div className="mb-4 flex flex-wrap items-start gap-3">
         <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
           <Bell size={18} />
         </div>
-        <div>
+        <div className="flex-1">
           <h2 className="text-lg font-bold text-stone-900">Prep reminders</h2>
           <p className="mt-1 text-sm text-stone-600">
             These meals need advance prep. Add a reminder to your calendar the evening before.
           </p>
         </div>
+        <label className="flex items-center gap-2 self-center">
+          <span className="text-xs font-semibold text-stone-500">at</span>
+          <Input
+            type="time"
+            value={prepReminderTime}
+            onChange={(e) => onPrepReminderTimeChange(e.target.value)}
+            className="h-auto w-auto rounded-lg border-stone-200 bg-stone-50 p-2 text-sm"
+          />
+        </label>
       </div>
       <div className="space-y-4">
         {suggestions.map((s) => (
@@ -552,14 +563,10 @@ function PrepReminderSuggestions({
                 <p className="font-semibold text-stone-900">{s.meal.image} {s.meal.name}</p>
                 <p className="mt-0.5 text-xs text-stone-500">{s.prep.reason} · planned {s.entry.day}</p>
               </div>
-              <div className="flex items-center gap-2 text-xs text-stone-500">
-                <Bell size={12} className="text-blue-500" />
-                Remind at {prepReminderTime}
-              </div>
             </div>
             <div className="mt-3 flex flex-wrap items-end gap-3">
               <label className="block">
-                <span className="text-xs font-semibold text-stone-600">Evening before</span>
+                <span className="text-xs font-semibold text-stone-600">Reminder date</span>
                 <Input
                   type="date"
                   value={dateOverrides[s.meal.id] ?? todayIso}
@@ -585,9 +592,6 @@ function PrepReminderSuggestions({
           </div>
         ))}
       </div>
-      <p className="mt-4 text-xs text-stone-400">
-        Reminder time can be changed in Settings under Cooking schedule.
-      </p>
     </div>
   );
 }
@@ -601,6 +605,7 @@ export function CalendarScreen({
   plan,
   customRecipes,
   prefs,
+  setPrefs,
   setScreen,
   track,
 }: {
@@ -610,6 +615,7 @@ export function CalendarScreen({
   plan: PlanEntry[];
   customRecipes: Meal[];
   prefs: Preferences;
+  setPrefs: (prefs: Preferences) => void;
   setScreen: (screen: Screen) => void;
   track: TrackPrototypeEvent;
 }) {
@@ -1075,6 +1081,7 @@ export function CalendarScreen({
       <PrepReminderSuggestions
         suggestions={prepSuggestions}
         prepReminderTime={prefs.prepReminderTime}
+        onPrepReminderTimeChange={(t) => setPrefs({ ...prefs, prepReminderTime: t })}
         track={track}
       />
 
