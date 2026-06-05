@@ -3,15 +3,207 @@
 
 export type GeneratedAnimation = { src: string; poster: string };
 
+import a_assemble_src from "./assemble.webp";
+import a_assemble_poster from "./assemble.poster.webp";
+import a_assemble_beans_src from "./assemble_beans.webp";
+import a_assemble_beans_poster from "./assemble_beans.poster.webp";
+import a_assemble_bread_src from "./assemble_bread.webp";
+import a_assemble_bread_poster from "./assemble_bread.poster.webp";
+import a_assemble_cheese_src from "./assemble_cheese.webp";
+import a_assemble_cheese_poster from "./assemble_cheese.poster.webp";
+import a_assemble_veg_src from "./assemble_veg.webp";
+import a_assemble_veg_poster from "./assemble_veg.poster.webp";
+import a_bake_src from "./bake.webp";
+import a_bake_poster from "./bake.poster.webp";
+import a_bake_bread_src from "./bake_bread.webp";
+import a_bake_bread_poster from "./bake_bread.poster.webp";
+import a_bake_chicken_src from "./bake_chicken.webp";
+import a_bake_chicken_poster from "./bake_chicken.poster.webp";
+import a_bake_fish_src from "./bake_fish.webp";
+import a_bake_fish_poster from "./bake_fish.poster.webp";
+import a_bake_potato_src from "./bake_potato.webp";
+import a_bake_potato_poster from "./bake_potato.poster.webp";
+import a_bake_veg_src from "./bake_veg.webp";
+import a_bake_veg_poster from "./bake_veg.poster.webp";
+import a_boil_src from "./boil.webp";
+import a_boil_poster from "./boil.poster.webp";
+import a_boil_couscous_src from "./boil_couscous.webp";
+import a_boil_couscous_poster from "./boil_couscous.poster.webp";
+import a_boil_egg_src from "./boil_egg.webp";
+import a_boil_egg_poster from "./boil_egg.poster.webp";
 import a_boil_noodles_src from "./boil_noodles.webp";
 import a_boil_noodles_poster from "./boil_noodles.poster.webp";
+import a_boil_potato_src from "./boil_potato.webp";
+import a_boil_potato_poster from "./boil_potato.poster.webp";
+import a_boil_rice_src from "./boil_rice.webp";
+import a_boil_rice_poster from "./boil_rice.poster.webp";
+import a_boil_veg_src from "./boil_veg.webp";
+import a_boil_veg_poster from "./boil_veg.poster.webp";
+import a_chop_src from "./chop.webp";
+import a_chop_poster from "./chop.poster.webp";
+import a_chop_broccoli_src from "./chop_broccoli.webp";
+import a_chop_broccoli_poster from "./chop_broccoli.poster.webp";
+import a_chop_carrot_src from "./chop_carrot.webp";
+import a_chop_carrot_poster from "./chop_carrot.poster.webp";
+import a_chop_courgette_src from "./chop_courgette.webp";
+import a_chop_courgette_poster from "./chop_courgette.poster.webp";
+import a_chop_garlic_src from "./chop_garlic.webp";
+import a_chop_garlic_poster from "./chop_garlic.poster.webp";
+import a_chop_mushroom_src from "./chop_mushroom.webp";
+import a_chop_mushroom_poster from "./chop_mushroom.poster.webp";
 import a_chop_onion_src from "./chop_onion.webp";
 import a_chop_onion_poster from "./chop_onion.poster.webp";
+import a_chop_pepper_src from "./chop_pepper.webp";
+import a_chop_pepper_poster from "./chop_pepper.poster.webp";
+import a_chop_potato_src from "./chop_potato.webp";
+import a_chop_potato_poster from "./chop_potato.poster.webp";
+import a_chop_tomato_src from "./chop_tomato.webp";
+import a_chop_tomato_poster from "./chop_tomato.poster.webp";
+import a_chop_veg_src from "./chop_veg.webp";
+import a_chop_veg_poster from "./chop_veg.poster.webp";
+import a_drain_src from "./drain.webp";
+import a_drain_poster from "./drain.poster.webp";
+import a_drain_beans_src from "./drain_beans.webp";
+import a_drain_beans_poster from "./drain_beans.poster.webp";
+import a_drain_noodles_src from "./drain_noodles.webp";
+import a_drain_noodles_poster from "./drain_noodles.poster.webp";
+import a_drain_rice_src from "./drain_rice.webp";
+import a_drain_rice_poster from "./drain_rice.poster.webp";
+import a_fry_src from "./fry.webp";
+import a_fry_poster from "./fry.poster.webp";
+import a_fry_chicken_src from "./fry_chicken.webp";
+import a_fry_chicken_poster from "./fry_chicken.poster.webp";
+import a_fry_egg_src from "./fry_egg.webp";
+import a_fry_egg_poster from "./fry_egg.poster.webp";
+import a_fry_fish_src from "./fry_fish.webp";
+import a_fry_fish_poster from "./fry_fish.poster.webp";
+import a_fry_mushroom_src from "./fry_mushroom.webp";
+import a_fry_mushroom_poster from "./fry_mushroom.poster.webp";
+import a_fry_onion_src from "./fry_onion.webp";
+import a_fry_onion_poster from "./fry_onion.poster.webp";
+import a_fry_rice_src from "./fry_rice.webp";
+import a_fry_rice_poster from "./fry_rice.poster.webp";
 import a_fry_tofu_src from "./fry_tofu.webp";
 import a_fry_tofu_poster from "./fry_tofu.poster.webp";
+import a_fry_veg_src from "./fry_veg.webp";
+import a_fry_veg_poster from "./fry_veg.poster.webp";
+import a_generic_src from "./generic.webp";
+import a_generic_poster from "./generic.poster.webp";
+import a_microwave_src from "./microwave.webp";
+import a_microwave_poster from "./microwave.poster.webp";
+import a_microwave_beans_src from "./microwave_beans.webp";
+import a_microwave_beans_poster from "./microwave_beans.poster.webp";
+import a_microwave_rice_src from "./microwave_rice.webp";
+import a_microwave_rice_poster from "./microwave_rice.poster.webp";
+import a_microwave_veg_src from "./microwave_veg.webp";
+import a_microwave_veg_poster from "./microwave_veg.poster.webp";
+import a_mix_src from "./mix.webp";
+import a_mix_poster from "./mix.poster.webp";
+import a_mix_beans_src from "./mix_beans.webp";
+import a_mix_beans_poster from "./mix_beans.poster.webp";
+import a_mix_noodles_src from "./mix_noodles.webp";
+import a_mix_noodles_poster from "./mix_noodles.poster.webp";
+import a_mix_oats_src from "./mix_oats.webp";
+import a_mix_oats_poster from "./mix_oats.poster.webp";
+import a_mix_rice_src from "./mix_rice.webp";
+import a_mix_rice_poster from "./mix_rice.poster.webp";
+import a_mix_veg_src from "./mix_veg.webp";
+import a_mix_veg_poster from "./mix_veg.poster.webp";
+import a_pour_src from "./pour.webp";
+import a_pour_poster from "./pour.poster.webp";
+import a_pour_noodles_src from "./pour_noodles.webp";
+import a_pour_noodles_poster from "./pour_noodles.poster.webp";
+import a_pour_oats_src from "./pour_oats.webp";
+import a_pour_oats_poster from "./pour_oats.poster.webp";
+import a_pour_rice_src from "./pour_rice.webp";
+import a_pour_rice_poster from "./pour_rice.poster.webp";
+import a_season_src from "./season.webp";
+import a_season_poster from "./season.poster.webp";
+import a_season_chicken_src from "./season_chicken.webp";
+import a_season_chicken_poster from "./season_chicken.poster.webp";
+import a_season_fish_src from "./season_fish.webp";
+import a_season_fish_poster from "./season_fish.poster.webp";
+import a_season_tofu_src from "./season_tofu.webp";
+import a_season_tofu_poster from "./season_tofu.poster.webp";
+import a_season_veg_src from "./season_veg.webp";
+import a_season_veg_poster from "./season_veg.poster.webp";
+import a_serve_src from "./serve.webp";
+import a_serve_poster from "./serve.poster.webp";
+import a_serve_fruit_src from "./serve_fruit.webp";
+import a_serve_fruit_poster from "./serve_fruit.poster.webp";
+import a_serve_noodles_src from "./serve_noodles.webp";
+import a_serve_noodles_poster from "./serve_noodles.poster.webp";
+import a_serve_rice_src from "./serve_rice.webp";
+import a_serve_rice_poster from "./serve_rice.poster.webp";
+import a_serve_veg_src from "./serve_veg.webp";
+import a_serve_veg_poster from "./serve_veg.poster.webp";
 
 export const ANIMATIONS: Record<string, GeneratedAnimation> = {
+  "assemble": { src: a_assemble_src, poster: a_assemble_poster },
+  "assemble_beans": { src: a_assemble_beans_src, poster: a_assemble_beans_poster },
+  "assemble_bread": { src: a_assemble_bread_src, poster: a_assemble_bread_poster },
+  "assemble_cheese": { src: a_assemble_cheese_src, poster: a_assemble_cheese_poster },
+  "assemble_veg": { src: a_assemble_veg_src, poster: a_assemble_veg_poster },
+  "bake": { src: a_bake_src, poster: a_bake_poster },
+  "bake_bread": { src: a_bake_bread_src, poster: a_bake_bread_poster },
+  "bake_chicken": { src: a_bake_chicken_src, poster: a_bake_chicken_poster },
+  "bake_fish": { src: a_bake_fish_src, poster: a_bake_fish_poster },
+  "bake_potato": { src: a_bake_potato_src, poster: a_bake_potato_poster },
+  "bake_veg": { src: a_bake_veg_src, poster: a_bake_veg_poster },
+  "boil": { src: a_boil_src, poster: a_boil_poster },
+  "boil_couscous": { src: a_boil_couscous_src, poster: a_boil_couscous_poster },
+  "boil_egg": { src: a_boil_egg_src, poster: a_boil_egg_poster },
   "boil_noodles": { src: a_boil_noodles_src, poster: a_boil_noodles_poster },
+  "boil_potato": { src: a_boil_potato_src, poster: a_boil_potato_poster },
+  "boil_rice": { src: a_boil_rice_src, poster: a_boil_rice_poster },
+  "boil_veg": { src: a_boil_veg_src, poster: a_boil_veg_poster },
+  "chop": { src: a_chop_src, poster: a_chop_poster },
+  "chop_broccoli": { src: a_chop_broccoli_src, poster: a_chop_broccoli_poster },
+  "chop_carrot": { src: a_chop_carrot_src, poster: a_chop_carrot_poster },
+  "chop_courgette": { src: a_chop_courgette_src, poster: a_chop_courgette_poster },
+  "chop_garlic": { src: a_chop_garlic_src, poster: a_chop_garlic_poster },
+  "chop_mushroom": { src: a_chop_mushroom_src, poster: a_chop_mushroom_poster },
   "chop_onion": { src: a_chop_onion_src, poster: a_chop_onion_poster },
+  "chop_pepper": { src: a_chop_pepper_src, poster: a_chop_pepper_poster },
+  "chop_potato": { src: a_chop_potato_src, poster: a_chop_potato_poster },
+  "chop_tomato": { src: a_chop_tomato_src, poster: a_chop_tomato_poster },
+  "chop_veg": { src: a_chop_veg_src, poster: a_chop_veg_poster },
+  "drain": { src: a_drain_src, poster: a_drain_poster },
+  "drain_beans": { src: a_drain_beans_src, poster: a_drain_beans_poster },
+  "drain_noodles": { src: a_drain_noodles_src, poster: a_drain_noodles_poster },
+  "drain_rice": { src: a_drain_rice_src, poster: a_drain_rice_poster },
+  "fry": { src: a_fry_src, poster: a_fry_poster },
+  "fry_chicken": { src: a_fry_chicken_src, poster: a_fry_chicken_poster },
+  "fry_egg": { src: a_fry_egg_src, poster: a_fry_egg_poster },
+  "fry_fish": { src: a_fry_fish_src, poster: a_fry_fish_poster },
+  "fry_mushroom": { src: a_fry_mushroom_src, poster: a_fry_mushroom_poster },
+  "fry_onion": { src: a_fry_onion_src, poster: a_fry_onion_poster },
+  "fry_rice": { src: a_fry_rice_src, poster: a_fry_rice_poster },
   "fry_tofu": { src: a_fry_tofu_src, poster: a_fry_tofu_poster },
+  "fry_veg": { src: a_fry_veg_src, poster: a_fry_veg_poster },
+  "generic": { src: a_generic_src, poster: a_generic_poster },
+  "microwave": { src: a_microwave_src, poster: a_microwave_poster },
+  "microwave_beans": { src: a_microwave_beans_src, poster: a_microwave_beans_poster },
+  "microwave_rice": { src: a_microwave_rice_src, poster: a_microwave_rice_poster },
+  "microwave_veg": { src: a_microwave_veg_src, poster: a_microwave_veg_poster },
+  "mix": { src: a_mix_src, poster: a_mix_poster },
+  "mix_beans": { src: a_mix_beans_src, poster: a_mix_beans_poster },
+  "mix_noodles": { src: a_mix_noodles_src, poster: a_mix_noodles_poster },
+  "mix_oats": { src: a_mix_oats_src, poster: a_mix_oats_poster },
+  "mix_rice": { src: a_mix_rice_src, poster: a_mix_rice_poster },
+  "mix_veg": { src: a_mix_veg_src, poster: a_mix_veg_poster },
+  "pour": { src: a_pour_src, poster: a_pour_poster },
+  "pour_noodles": { src: a_pour_noodles_src, poster: a_pour_noodles_poster },
+  "pour_oats": { src: a_pour_oats_src, poster: a_pour_oats_poster },
+  "pour_rice": { src: a_pour_rice_src, poster: a_pour_rice_poster },
+  "season": { src: a_season_src, poster: a_season_poster },
+  "season_chicken": { src: a_season_chicken_src, poster: a_season_chicken_poster },
+  "season_fish": { src: a_season_fish_src, poster: a_season_fish_poster },
+  "season_tofu": { src: a_season_tofu_src, poster: a_season_tofu_poster },
+  "season_veg": { src: a_season_veg_src, poster: a_season_veg_poster },
+  "serve": { src: a_serve_src, poster: a_serve_poster },
+  "serve_fruit": { src: a_serve_fruit_src, poster: a_serve_fruit_poster },
+  "serve_noodles": { src: a_serve_noodles_src, poster: a_serve_noodles_poster },
+  "serve_rice": { src: a_serve_rice_src, poster: a_serve_rice_poster },
+  "serve_veg": { src: a_serve_veg_src, poster: a_serve_veg_poster },
 };
