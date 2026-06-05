@@ -718,7 +718,10 @@ export function Onboarding({
                     onChange={(kitchen) => { track("onboarding_preference_changed", { field: "kitchen", value: kitchen }); setPrefs({ ...prefs, kitchen }); }}
                     options={[
                       { value: "full", label: "Full kitchen" },
+                      { value: "shared", label: "Shared kitchen (often busy)" },
+                      { value: "hob", label: "Hob only (no oven)" },
                       { value: "limited", label: "Microwave / kettle only" },
+                      { value: "catered", label: "Catered hall" },
                       { value: "none", label: "No kitchen access" },
                     ]}
                     required
