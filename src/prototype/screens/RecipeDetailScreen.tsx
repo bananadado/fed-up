@@ -340,7 +340,9 @@ export function RecipeDetailScreen({
                       {slot}
                     </Badge>
                   ))}
-                  <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>{meal.type}</Badge>
+                  <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
+                    {meal.type === "fallback" ? "Easy option" : meal.type === "cook" ? "Cook" : "Remix"}
+                  </Badge>
                   {meal.tags.map((tag) => (
                     <Badge key={tag} tone="green">
                       {tag}
