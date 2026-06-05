@@ -8,7 +8,7 @@ export type AdvancePrepInfo = {
 
 const OVERNIGHT_RE = /\bovernight\b/i;
 const SOAK_RE = /\bsoak\b/i;
-const MARINATE_RE = /\bmarinат|marinate\b/i;
+const MARINATE_RE = /\bmarinate/i;
 
 export function detectAdvancePrep(meal: Meal): AdvancePrepInfo | null {
   const searchText = [meal.name, ...meal.tags, ...meal.instructions].join(" ");
