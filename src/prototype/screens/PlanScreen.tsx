@@ -316,8 +316,8 @@ export function PlanScreen({
       </div>
       {shoppingOpen && (
         <>
-          <div className="fixed inset-0 z-40 bg-stone-950/40" onClick={() => setShoppingOpen(false)} />
-          <div className="fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-white shadow-2xl sm:max-w-md">
+          <div className="animate-fade-in fixed inset-0 z-40 bg-stone-950/40" onClick={() => setShoppingOpen(false)} />
+          <div className="animate-slide-in-from-right fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-white shadow-2xl sm:max-w-md">
             <div className="flex items-center justify-between border-b border-stone-200 px-5 py-4">
               <h2 className="font-bold">Shopping list</h2>
               <button type="button" onClick={() => setShoppingOpen(false)} aria-label="Close shopping list" className="rounded-lg p-2 hover:bg-stone-100">
