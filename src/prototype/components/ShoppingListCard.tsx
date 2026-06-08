@@ -160,7 +160,7 @@ export function ShoppingListCard({
       <div className="mt-4 grid gap-2">
         {items.map((item) => (
           <div
-            key={item.name}
+            key={shoppingItemKey(item)}
             className={compact ? "flex items-center justify-between gap-3 rounded-lg bg-stone-50 px-3 py-2" : "grid gap-2 rounded-lg bg-stone-50 px-3 py-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center"}
           >
             <label className="flex min-w-0 items-center gap-2">

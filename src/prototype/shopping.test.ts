@@ -45,6 +45,36 @@ describe("shopping helpers", () => {
     expect(ingredientsFromPlan(plan, [], [{ name: "Oats", quantity: 50, unit: "g" }]).some((item) => item.name.toLowerCase() === "oats")).toBe(false);
   });
 
+  test("excludes water and variants from plan shopping lists", () => {
+    const meal = {
+      id: "water-meal",
+      name: "Test Meal",
+      type: "cook" as const,
+      mealSlots: ["dinner" as const],
+      time: 10,
+      price: 2,
+      tags: [],
+      ingredients: [
+        { name: "Pasta", quantity: 100, unit: "g" },
+        { name: "Water", quantity: 500, unit: "ml" },
+        { name: "Warm Water", quantity: 250, unit: "ml" },
+      ],
+      allergens: [],
+      nutrition: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+      rating: 0,
+      reviews: [],
+      instructions: [],
+      source: "",
+      note: "",
+      image: "",
+    };
+    const plan = [{ day: "Mon", context: "Test", meals: [{ slot: "dinner" as const, mealId: "water-meal" }] }];
+    const items = ingredientsFromPlan(plan, [meal]);
+
+    expect(items.some((item) => item.name.toLowerCase().includes("water"))).toBe(false);
+    expect(items.some((item) => item.name === "Pasta")).toBe(true);
+  });
+
   test("builds selected vendor search URLs for one ingredient at a time", () => {
     expect(groceryVendorById("asda").searchUrl("oat milk")).toBe("https://groceries.asda.com/search/oat%20milk");
     expect(groceryVendorById("morrisons").searchUrl("berries")).toBe("https://groceries.morrisons.com/search?q=berries");

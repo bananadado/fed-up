@@ -59,6 +59,8 @@ export const groceryVendors: [GroceryVendor, ...GroceryVendor[]] = [
   },
 ];
 
+const ALWAYS_AVAILABLE = new Set(["water", "warm water", "cold water", "hot water", "lukewarm water"]);
+
 type ShoppingIngredient = RecipeIngredient | string;
 
 function normaliseIngredient(value: string) {
@@ -160,5 +162,5 @@ export function ingredientsFromPlan(plan: PlanEntry[], customRecipes: Meal[], av
 
   return aggregateIngredients(
     plan.flatMap((entry) => entry.meals.flatMap((planMeal) => getMealById(planMeal.mealId, customRecipes).ingredients)),
-  ).filter((item) => !available.has(normaliseIngredient(item.name)));
+  ).filter((item) => !available.has(normaliseIngredient(item.name)) && !ALWAYS_AVAILABLE.has(normaliseIngredient(item.name)));
 }
