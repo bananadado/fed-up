@@ -113,6 +113,27 @@ describe("normalizeIngredientUnit", () => {
     expect(tbsp.unit).toBe("tbsp");
   });
 
+  test("splits compound unit into base unit and preparation", () => {
+    const result = normalizeIngredientUnit(
+      { name: "garlic", quantity: 3, unit: "cloves crushed" },
+      "metric",
+    );
+    expect(result.unit).toBe("clove");
+    expect(result.preparation).toBe("crushed");
+    expect(result.quantity).toBe(3);
+  });
+
+  test("does not split fl oz (oz is not a preparation word)", () => {
+    const result = normalizeIngredientUnit({ name: "milk", quantity: 1, unit: "fl oz" }, "metric");
+    expect(result.unit).toBe("ml");
+    expect(result.quantity).toBeCloseTo(29.6, 0);
+  });
+
+  test("canonicalises cloves to clove on passthrough", () => {
+    const result = normalizeIngredientUnit({ name: "garlic", quantity: 2, unit: "cloves" }, "metric");
+    expect(result.unit).toBe("clove");
+  });
+
   test("keeps oz/lb as-is in imperial mode", () => {
     const oz = normalizeIngredientUnit({ name: "cheese", quantity: 4, unit: "oz" }, "imperial");
     expect(oz.unit).toBe("oz");

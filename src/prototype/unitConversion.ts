@@ -10,6 +10,7 @@ const UNIT_ALIASES: Record<string, string> = {
   liter: "l", liters: "l", litre: "l", litres: "l",
   ounce: "oz", ounces: "oz",
   pound: "lb", pounds: "lb", lbs: "lb",
+  cloves: "clove",
   "fluid ounce": "fl oz", "fluid ounces": "fl oz",
   "fl. oz": "fl oz", "fl. oz.": "fl oz",
 };
@@ -70,6 +71,20 @@ function parseEmbeddedQty(s: string): number {
   return Number(s) || 1;
 }
 
+const PREPARATION_WORDS = new Set([
+  "crushed", "chopped", "minced", "diced", "sliced", "grated",
+  "mashed", "pressed", "peeled", "fresh", "dried", "frozen",
+  "cooked", "raw", "toasted", "roasted", "ground", "shredded",
+]);
+
+function splitCompoundUnit(ingredient: RecipeIngredient): RecipeIngredient {
+  const parts = ingredient.unit.trim().split(/\s+/);
+  if (parts.length <= 1) return ingredient;
+  const [baseUnit = "", ...rest] = parts;
+  if (!baseUnit || !PREPARATION_WORDS.has(rest[0]?.toLowerCase() ?? "")) return ingredient;
+  return { ...ingredient, unit: baseUnit, preparation: ingredient.preparation || rest.join(" ") };
+}
+
 const EMBEDDED_PATTERN =
   /^(\d+(?:\s+\d+\/\d+|\/\d+|\.\d+)?)\s+(fl\s+oz|tbsp|tsp|cups?|ml|l|kg|g|lbs?|oz)\s+(.+)$/i;
 
@@ -96,6 +111,11 @@ export function normalizeIngredientUnit(
   const cleaned = cleanEmbeddedIngredient(ingredient);
   if (cleaned !== ingredient) {
     return normalizeIngredientUnit(cleaned, unitSystem);
+  }
+
+  const split = splitCompoundUnit(ingredient);
+  if (split !== ingredient) {
+    return normalizeIngredientUnit(split, unitSystem);
   }
 
   const { quantity } = ingredient;
@@ -143,6 +163,6 @@ export function normalizeIngredientUnit(
     }
   }
 
-  // Count / non-convertible unit — return unchanged
-  return ingredient;
+  // Count / non-convertible unit — return with canonicalized unit
+  return unit !== ingredient.unit ? { ...ingredient, unit } : ingredient;
 }
