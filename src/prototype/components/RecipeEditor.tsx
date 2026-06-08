@@ -660,14 +660,18 @@ export function RecipeEditor({
           <div>
             <p className="text-sm font-semibold">Nutrition data</p>
             <p className="mt-1 text-xs text-stone-500">
-              {nutritionStatus ?? nutritionSourceSummary(form.nutritionSource)}
+              {nutritionStatus ??
+                (ingredients.length === 0
+                  ? "Add an ingredient to auto-fill nutrition, or enter the values yourself."
+                  : nutritionSourceSummary(form.nutritionSource))}
             </p>
           </div>
           <AppButton
             type="button"
             variant="secondary"
             onClick={estimateNutrition}
-            disabled={nutritionLoading}
+            disabled={nutritionLoading || ingredients.length === 0}
+            title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
           >
             <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Estimate from USDA"}
           </AppButton>
