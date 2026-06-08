@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Sparkles } from "lucide-react";
 
+import fedUpLogo from "@/assets/fed-up-logo.svg";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -302,9 +303,8 @@ export function Onboarding({
   return (
     <div className="min-h-screen bg-[#faf9f5] px-4 py-7 sm:px-6">
       <div className="mx-auto max-w-3xl">
-        <div className="mb-7 flex items-center gap-2 font-bold text-emerald-800">
-          <Leaf size={20} />
-          Deadline Food Autopilot
+        <div className="mb-7 flex items-center">
+          <img src={fedUpLogo} alt="Fed Up" className="h-8 w-auto" />
         </div>
         <Progress step={step} />
         {step === 0 && (
@@ -470,7 +470,7 @@ export function Onboarding({
                 <div>
                   <h3 id="calendar-skip-title" className="text-lg font-bold text-stone-950">Continue without a calendar?</h3>
                   <p className="mt-2 text-sm leading-6 text-stone-600">
-                    No calendar has been imported, so Autopilot will not adapt meals around your real events yet. You can import calendar events any time through Settings or the Calendar menu.
+                    No calendar has been imported, so Fed Up will not adapt meals around your real events yet. You can import calendar events any time through Settings or the Calendar menu.
                   </p>
                 </div>
               </div>
@@ -668,7 +668,7 @@ export function Onboarding({
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
               <PreferenceSection
                 title="Cooking time"
-                description="Set the maximum effort for a normal deadline-week meal. This is the control Autopilot uses before suggesting anything."
+                description="Set the maximum effort for a normal deadline-week meal. This is the control Fed Up uses before suggesting anything."
               >
                 <label className="block">
                   <span className="text-sm font-semibold">Maximum cooking time</span>
@@ -769,7 +769,7 @@ export function Onboarding({
             <div className="mt-4 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
               <PreferenceSection
                 title="Planning window"
-                description="How far ahead should Autopilot plan your meals? You can change this later."
+                description="How far ahead should Fed Up plan your meals? You can change this later."
               >
                 <div className="grid grid-cols-4 gap-2">
                   {[7, 14, 21, 28].map((days) => {

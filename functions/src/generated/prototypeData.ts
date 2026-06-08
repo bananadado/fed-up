@@ -1476,7 +1476,7 @@ export const canonicalConstraints = {
 } as const;
 
 export const prototypeMeta = {
-  "productName": "Deadline Food Autopilot",
+  "productName": "Fed Up",
   "scenarioName": "Steven's deadline week",
   "disclaimer": "Prototype meal options - availability and prices are illustrative."
 } as const;
@@ -2327,7 +2327,7 @@ export const deadlineBootstrap = {
     "preferredLocation": "library"
   },
   "prototype": {
-    "productName": "Deadline Food Autopilot",
+    "productName": "Fed Up",
     "scenarioName": "Steven's deadline week",
     "disclaimer": "Prototype meal options - availability and prices are illustrative."
   }

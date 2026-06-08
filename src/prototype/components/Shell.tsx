@@ -1,6 +1,7 @@
-import { ArrowLeft, BookOpen, CalendarDays, CookingPot, Leaf, Settings2, Sparkles } from "lucide-react";
+import { ArrowLeft, BookOpen, CalendarDays, CookingPot, Settings2, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
+import fedUpLogo from "@/assets/fed-up-logo.svg";
 import { cn } from "@/lib/utils";
 import type { TrackPrototypeEvent } from "../analytics";
 import type { Screen } from "../types";
@@ -61,13 +62,7 @@ export function Shell({
                   setScreen("dashboard");
                 }}
               >
-                <div className="rounded-lg bg-emerald-700 p-2 text-white">
-                  <Leaf size={18} />
-                </div>
-                <div className="text-left">
-                  <p className="text-sm font-bold">Deadline Food</p>
-                  <p className="text-xs text-stone-500">Autopilot</p>
-                </div>
+                <img src={fedUpLogo} alt="Fed Up" className="h-8 w-auto" />
               </button>
             </div>
             <nav className="hidden gap-1 md:flex">
