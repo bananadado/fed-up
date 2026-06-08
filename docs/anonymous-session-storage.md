@@ -12,9 +12,9 @@ Firestore.
 The current settings schema is versioned as `settingsVersion: 1` and stores:
 
 - `preferences`: cooking time, budget, kitchen, postcode, university, dietary
-  tags, allergens, likes, and dislikes.
+  tags, allergens, likes, dislikes, and planning priorities.
 - `deadlines`: the imported or edited deadline list used by onboarding.
-- `selectedSources`: selected recipe source toggles.
+- `selectedSources`: legacy source toggles retained for older sessions.
 - `onboarded`: whether the user has completed onboarding.
 
 Plans, rescue choices, custom recipe edits, and screen navigation are not part
@@ -36,7 +36,7 @@ Each document contains:
   settingsVersion: 1,
   settings: {
     settingsVersion: 1,
-    preferences: { ... },
+    preferences: { planningPriorities: { ... }, ... },
     deadlines: [ ... ],
     selectedSources: [ ... ],
     onboarded: true | false

@@ -5,6 +5,7 @@ import type { PlanEntry } from "./types";
 import {
   createPrototypeSessionSettings,
   isAnonymousSessionId,
+  normalizePreferences,
   PROTOTYPE_SESSION_SETTINGS_VERSION,
   restorePrototypePlan,
 } from "./sessionPersistence";
@@ -30,6 +31,19 @@ describe("anonymous prototype session persistence", () => {
     expect(settings.selectedSources).toEqual(["budget", "campus"]);
     expect(settings.onboarded).toBe(true);
     expect(settings.discoverReviewedRecipeIds).toEqual(["m1", "m2"]);
+  });
+
+  test("normalizes missing planning priorities for older sessions", () => {
+    const legacyPreferences = { ...initialPreferences };
+    delete (legacyPreferences as Partial<typeof initialPreferences>).planningPriorities;
+
+    expect(normalizePreferences(legacyPreferences).planningPriorities).toEqual({
+      batchCooking: "balanced",
+      breakfastRoutine: "repeat",
+      mealRepeats: "balanced",
+      ingredientReuse: "balanced",
+      campusFallbacks: "when-busy",
+    });
   });
 
   test("falls back when persisted plan data is empty or malformed", () => {

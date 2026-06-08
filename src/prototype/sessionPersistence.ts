@@ -1,4 +1,5 @@
-import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences } from "./types";
+import { defaultPlanningPriorities } from "./data";
+import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, PlanningPriorities, Preferences } from "./types";
 
 export const ANONYMOUS_SESSION_STORAGE_KEY = "deadlineFoodAnonymousSessionId";
 export const PROTOTYPE_SESSION_SETTINGS_VERSION = 3;
@@ -46,11 +47,27 @@ export type PrototypeSessionSettings = {
  */
 export function normalizePreferences(raw: Preferences): Preferences {
   const horizon = Number.isFinite(raw.planningHorizonDays) ? raw.planningHorizonDays : 21;
+  const priorities = raw.planningPriorities ?? defaultPlanningPriorities;
   return {
     ...raw,
     planningHorizonDays: Math.min(28, Math.max(1, Math.round(horizon))),
     planRegenMode: raw.planRegenMode === "auto" ? "auto" : "prompt",
+    planningPriorities: {
+      batchCooking: normalizePriority(priorities.batchCooking, ["off", "balanced", "high"], defaultPlanningPriorities.batchCooking),
+      breakfastRoutine: normalizePriority(priorities.breakfastRoutine, ["varied", "rotate", "repeat"], defaultPlanningPriorities.breakfastRoutine),
+      mealRepeats: normalizePriority(priorities.mealRepeats, ["varied", "balanced", "low-effort"], defaultPlanningPriorities.mealRepeats),
+      ingredientReuse: normalizePriority(priorities.ingredientReuse, ["low", "balanced", "high"], defaultPlanningPriorities.ingredientReuse),
+      campusFallbacks: normalizePriority(priorities.campusFallbacks, ["off", "when-busy", "allowed"], defaultPlanningPriorities.campusFallbacks),
+    },
   };
+}
+
+function normalizePriority<T extends PlanningPriorities[keyof PlanningPriorities]>(
+  value: unknown,
+  allowed: readonly T[],
+  fallback: T,
+): T {
+  return allowed.includes(value as T) ? (value as T) : fallback;
 }
 
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;

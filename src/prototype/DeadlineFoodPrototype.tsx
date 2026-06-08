@@ -96,6 +96,7 @@ export function DeadlineFoodPrototype() {
   const [planSignature, setPlanSignature] = useState<string | undefined>(undefined);
   const [planGeneratedAt, setPlanGeneratedAt] = useState<string | undefined>(undefined);
   const [planGenerating, setPlanGenerating] = useState(false);
+  const planVariantRef = useRef(0);
   const [discoverContext, setDiscoverContext] = useState<{ day: string; slot: MealSlot; mealId: string } | null>(null);
   // Bumped once the canonical recipe catalogue is hydrated from Firestore so
   // screens re-read it via mealById/getMealById (issue #123).
@@ -415,15 +416,22 @@ export function DeadlineFoodPrototype() {
   }, [customRecipes, discoverSaved]);
 
   const currentPlanSignature = useMemo(
-    () => computePlanSignature({ prefs, savedRecipes, calendarEvents, deadlines, selectedSources }),
-    [prefs, savedRecipes, calendarEvents, deadlines, selectedSources],
+    () => computePlanSignature({ prefs, savedRecipes, calendarEvents, deadlines }),
+    [prefs, savedRecipes, calendarEvents, deadlines],
   );
+  const hasImportedCalendar = calendarEvents.length > 0;
+  const calendarContextWarning = hasImportedCalendar
+    ? undefined
+    : deadlines.length > 0
+      ? "No external calendar is connected. Regeneration will still use your in-app workload entries."
+      : "No external calendar is connected. Regeneration will use a neutral week until you import a calendar or add workload entries.";
 
   // A plan is stale if it was never generated or its inputs have since changed.
   const planStale = planGeneratedAt === undefined || planSignature !== currentPlanSignature;
 
   const regeneratePlan = useCallback(async () => {
     setPlanGenerating(true);
+    planVariantRef.current += 1;
     try {
       const result = await generateAutoPlan({
         sessionId,
@@ -432,6 +440,7 @@ export function DeadlineFoodPrototype() {
         calendarEvents,
         deadlines,
         excludeIds: discoverRejected.map((meal) => meal.id),
+        planVariant: planVariantRef.current,
       });
       if (result.plan.length === 0) {
         throw new Error("Auto-plan generation returned an empty plan.");
@@ -439,6 +448,7 @@ export function DeadlineFoodPrototype() {
       setPlan(result.plan);
       setPlanGeneratedAt(result.generatedAt);
       setPlanSignature(currentPlanSignature);
+      setCalendarSkipped(!hasImportedCalendar);
       setCanPersistSession(true);
       if (saveSettingsDebounceRef.current !== null) {
         window.clearTimeout(saveSettingsDebounceRef.current);
@@ -452,6 +462,7 @@ export function DeadlineFoodPrototype() {
             plan: result.plan,
             planGeneratedAt: result.generatedAt,
             planSignature: currentPlanSignature,
+            calendarSkipped: !hasImportedCalendar,
           }),
         );
       } catch (error) {
@@ -462,6 +473,8 @@ export function DeadlineFoodPrototype() {
         horizon_days: prefs.planningHorizonDays,
         day_count: result.plan.length,
         saved_recipe_count: savedRecipes.length,
+        calendar_connected: hasImportedCalendar,
+        in_app_workload_count: deadlines.length,
       });
     } catch (error) {
       console.warn("Auto-plan generation failed.", error);
@@ -469,7 +482,7 @@ export function DeadlineFoodPrototype() {
     } finally {
       setPlanGenerating(false);
     }
-  }, [sessionId, prefs, savedRecipes, calendarEvents, deadlines, discoverRejected, currentPlanSignature, buildSessionSettings, track]);
+  }, [sessionId, prefs, savedRecipes, calendarEvents, deadlines, discoverRejected, currentPlanSignature, hasImportedCalendar, buildSessionSettings, track]);
 
   // Generate the first plan automatically once onboarded (also upgrades existing
   // users off the seed/mock plan). Thereafter "prompt" mode shows a banner and
@@ -538,8 +551,6 @@ export function DeadlineFoodPrototype() {
         setDeadlines={setDeadlines}
         calendarEvents={calendarEvents}
         setCalendarEvents={setCalendarEvents}
-        selectedSources={selectedSources}
-        setSelectedSources={setSelectedSources}
         calendarProvider={calendarProvider}
         setCalendarProvider={setCalendarProvider}
         icsSubscriptions={icsSubscriptions}
@@ -555,11 +566,11 @@ export function DeadlineFoodPrototype() {
 
   return (
     <Shell screen={activeScreen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
-      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarSkipped={calendarSkipped} />}
+      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarWarning={calendarContextWarning} />}
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} track={track} />}
-      {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
+      {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} calendarWarning={calendarContextWarning} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} track={track} />}
-      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} track={track} />}
+      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} setCalendarSkipped={setCalendarSkipped} sessionId={sessionId} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} />}
     </Shell>
   );

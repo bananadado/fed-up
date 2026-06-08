@@ -25,7 +25,7 @@ export function Dashboard({
   onRegenerate,
   openDiscover,
   track,
-  calendarSkipped,
+  calendarWarning,
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
@@ -40,7 +40,7 @@ export function Dashboard({
   onRegenerate: () => void;
   openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
-  calendarSkipped?: boolean;
+  calendarWarning?: string;
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
@@ -63,9 +63,16 @@ export function Dashboard({
           <h1 className="text-3xl font-bold">Your week is covered.</h1>
           <p className="mt-2 text-stone-600">Mixed Mode: quick preparation plus realistic campus fallbacks.</p>
         </div>
-        <AppButton variant="secondary" onClick={() => { track("dashboard_full_plan_clicked"); setScreen("plan"); }}>
-          View full plan <ChevronRight size={16} />
-        </AppButton>
+        <div className="flex flex-wrap gap-2">
+          <AppButton variant="secondary" onClick={() => { track("dashboard_full_plan_clicked"); setScreen("plan"); }}>
+            View full plan <ChevronRight size={16} />
+          </AppButton>
+          {!planStale && (
+            <AppButton onClick={() => { track("auto_plan_regenerate_clicked", { source: "dashboard", stale: planStale }); onRegenerate(); }} disabled={regenerating}>
+              <Sparkles size={16} /> {regenerating ? "Building plan…" : "Regenerate plan"}
+            </AppButton>
+          )}
+        </div>
       </div>
       {planStale && (
         <div className="mb-6 flex flex-col gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4 sm:flex-row sm:items-center sm:justify-between">
@@ -88,7 +95,7 @@ export function Dashboard({
           </AppButton>
         </div>
       )}
-      {calendarSkipped && !planStale && (
+      {calendarWarning && (
         <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
           <div className="flex items-start gap-3">
             <span className="mt-0.5 rounded-lg bg-amber-100 p-1.5 text-amber-700">
@@ -97,7 +104,7 @@ export function Dashboard({
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-amber-900">Calendar not connected</p>
               <p className="mt-1 text-sm text-amber-800">
-                Your plan was generated without calendar context. Adding a calendar lets Fed Up adapt cooking effort around your busy study days.
+                {calendarWarning}
               </p>
             </div>
             <AppButton

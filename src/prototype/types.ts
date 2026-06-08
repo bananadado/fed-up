@@ -1,5 +1,10 @@
 export type MealType = "cook" | "remix" | "fallback";
 export type MealSlot = "breakfast" | "lunch" | "dinner";
+export type BatchCookingPreference = "off" | "balanced" | "high";
+export type BreakfastRoutinePreference = "varied" | "rotate" | "repeat";
+export type MealRepeatsPreference = "varied" | "balanced" | "low-effort";
+export type IngredientReusePreference = "low" | "balanced" | "high";
+export type CampusFallbacksPreference = "off" | "when-busy" | "allowed";
 
 import type { RecipeIngredient } from "@/domain/types";
 
@@ -91,6 +96,14 @@ export type Deadline = {
 
 export type PlanRegenMode = "prompt" | "auto";
 
+export type PlanningPriorities = {
+  batchCooking: BatchCookingPreference;
+  breakfastRoutine: BreakfastRoutinePreference;
+  mealRepeats: MealRepeatsPreference;
+  ingredientReuse: IngredientReusePreference;
+  campusFallbacks: CampusFallbacksPreference;
+};
+
 export type Preferences = {
   maxTime: number | null;
   budget: number;
@@ -107,6 +120,8 @@ export type Preferences = {
   planningHorizonDays: number;
   /** Whether stale plans prompt the user ("prompt") or regenerate silently ("auto"). */
   planRegenMode: PlanRegenMode;
+  /** Behaviour preferences that reduce cooking and decision load during deadline weeks. */
+  planningPriorities: PlanningPriorities;
 };
 
 export type DiscoverRecommendationStatus = "idle" | "ready" | "exhausted";

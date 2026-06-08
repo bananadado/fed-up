@@ -15,6 +15,8 @@ export type GenerateAutoPlanInput = {
   deadlines: Deadline[];
   /** Recipe ids to keep out of the recommender gap-fill (e.g. rejected). */
   excludeIds?: string[];
+  /** Explicit regeneration variant; only affects backend tie-breaks. */
+  planVariant?: number;
   signal?: AbortSignal;
 };
 
@@ -38,8 +40,8 @@ export function computePlanSignature(input: {
   savedRecipes: Meal[];
   calendarEvents: CalendarEvent[];
   deadlines: Deadline[];
-  selectedSources: string[];
 }): string {
+  const priorities = input.prefs.planningPriorities;
   const parts = [
     `h:${input.prefs.planningHorizonDays}`,
     `t:${input.prefs.maxTime}`,
@@ -50,9 +52,13 @@ export function computePlanSignature(input: {
     `di:${[...input.prefs.dislikes].sort().join(",")}`,
     `al:${[...input.prefs.allergens].sort().join(",")}`,
     `sr:${input.savedRecipes.map((m) => m.id).sort().join(",")}`,
-    `ce:${input.calendarEvents.map((e) => `${e.start}|${e.title}`).sort().join(",")}`,
-    `dl:${input.deadlines.map((d) => `${d.rawDate ?? ""}|${d.urgency}`).sort().join(",")}`,
-    `ss:${[...input.selectedSources].sort().join(",")}`,
+    `ce:${input.calendarEvents.map((e) => `${e.start}|${e.end}|${e.allDay}|${e.title}`).sort().join(",")}`,
+    `dl:${input.deadlines.map((d) => `${d.rawDate ?? ""}|${d.time}|${d.title}|${d.eventType}|${d.urgency}|${d.effortHours}`).sort().join(",")}`,
+    `pc:${priorities.batchCooking}`,
+    `br:${priorities.breakfastRoutine}`,
+    `mr:${priorities.mealRepeats}`,
+    `ir:${priorities.ingredientReuse}`,
+    `cf:${priorities.campusFallbacks}`,
   ];
   return hash(parts.join(";"));
 }
@@ -63,18 +69,31 @@ type AutoPlanResponse = {
   generatedAt: string;
 };
 
-function contextEvents(calendarEvents: CalendarEvent[], deadlines: Deadline[]): ContextEventInput[] {
-  if (calendarEvents.length > 0) {
-    return calendarEvents.map((event) => ({
-      title: event.title,
-      start: event.start,
-      end: event.end || null,
-      all_day: event.allDay,
-    }));
-  }
-  return deadlines
+function contextEventKey(event: ContextEventInput): string {
+  return `${event.start}|${event.title.trim().toLowerCase()}`;
+}
+
+export function buildAutoPlanContextEvents(calendarEvents: CalendarEvent[], deadlines: Deadline[]): ContextEventInput[] {
+  const events: ContextEventInput[] = deadlines
     .map(deadlineToContextEvent)
     .filter((event): event is ContextEventInput => event !== null);
+
+  for (const event of calendarEvents) {
+    events.push({
+    title: event.title,
+    start: event.start,
+    end: event.end || null,
+    all_day: event.allDay,
+    });
+  }
+
+  const seen = new Set<string>();
+  return events.filter((event) => {
+    const key = contextEventKey(event);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 /**
@@ -94,12 +113,14 @@ export async function generateAutoPlan(
       user_id: input.sessionId,
       horizonDays: input.prefs.planningHorizonDays,
       budget: input.prefs.budget,
-      contextEvents: contextEvents(input.calendarEvents, input.deadlines),
+      contextEvents: buildAutoPlanContextEvents(input.calendarEvents, input.deadlines),
       savedRecipes: input.savedRecipes,
       excludeIds: input.excludeIds ?? [],
+      planVariant: input.planVariant,
       dietary: input.prefs.dietary,
       dislikes: input.prefs.dislikes,
       allergens: input.prefs.allergens,
+      planningPriorities: input.prefs.planningPriorities,
     }),
     signal: input.signal,
   });

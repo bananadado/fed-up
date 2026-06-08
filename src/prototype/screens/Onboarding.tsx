@@ -5,12 +5,13 @@ import fedUpLogo from "@/assets/fed-up-logo.svg";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions } from "../data";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
 import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
 import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
+import { PlanningPriorityControls } from "../components/PlanningPriorityControls";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
   icsSubscriptionHints,
@@ -101,8 +102,6 @@ export function Onboarding({
   setDeadlines,
   calendarEvents,
   setCalendarEvents,
-  selectedSources,
-  setSelectedSources,
   calendarProvider,
   setCalendarProvider,
   icsSubscriptions,
@@ -120,8 +119,6 @@ export function Onboarding({
   setDeadlines: (deadlines: Deadline[]) => void;
   calendarEvents: CalendarEvent[];
   setCalendarEvents: (events: CalendarEvent[]) => void;
-  selectedSources: string[];
-  setSelectedSources: (sources: string[]) => void;
   calendarProvider: CalendarProvider;
   setCalendarProvider: (provider: CalendarProvider) => void;
   icsSubscriptions: IcsSubscription[];
@@ -154,6 +151,17 @@ export function Onboarding({
   const [showStep2SkipConfirm, setShowStep2SkipConfirm] = useState(false);
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
+  const prefsRef = useRef(prefs);
+
+  useEffect(() => {
+    prefsRef.current = prefs;
+  }, [prefs]);
+
+  function updatePrefs(patch: Partial<Preferences>) {
+    const next = { ...prefsRef.current, ...patch };
+    prefsRef.current = next;
+    setPrefs(next);
+  }
 
   function goToStep(nextStep: number) {
     setStep(nextStep);
@@ -167,6 +175,7 @@ export function Onboarding({
 
   async function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
+    if (events.length > 0) setCalendarSkipped(false);
     const asDeadlines = await resolveDeadlinesFromEvents(events);
     setImportedDeadlines(asDeadlines);
     if (asDeadlines.length > 0) {
@@ -265,13 +274,12 @@ export function Onboarding({
 
   function updateAvailableIngredients(nextDrafts: IngredientDraft[]) {
     setAvailableIngredientDrafts(nextDrafts);
-    setPrefs({ ...prefs, availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
+    updatePrefs({ availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
   }
 
   function finish() {
     try { sessionStorage.removeItem("deadlineFood:onboardingStep"); } catch { /* ignore */ }
     track("onboarding_completed", {
-      recipe_sources: selectedSources,
       dietary_requirements: prefs.dietary,
       available_ingredient_count: prefs.availableIngredients.length,
       kitchen_access: prefs.kitchen,
@@ -572,7 +580,7 @@ export function Onboarding({
                 <SelectField
                   label="Current cooking ability"
                   value={prefs.cookingAbility}
-                  onChange={(cookingAbility) => { track("onboarding_preference_changed", { field: "cooking_ability", value: cookingAbility }); setPrefs({ ...prefs, cookingAbility }); }}
+                  onChange={(cookingAbility) => { track("onboarding_preference_changed", { field: "cooking_ability", value: cookingAbility }); updatePrefs({ cookingAbility }); }}
                   options={cookingAbilities.map((ability) => ({ value: ability.id, label: `${ability.name} - ${ability.description}` }))}
                   placeholder="Select cooking ability"
                   required
@@ -586,16 +594,16 @@ export function Onboarding({
                     title="Dietary requirements (leave blank if none)"
                     options={dietary}
                     selected={prefs.dietary}
-                    onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    onToggle={(value) => toggle(prefs.dietary, value, (next) => updatePrefs({ dietary: next }))}
+                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => updatePrefs({ dietary: next }))}
                     addPlaceholder="Add a dietary requirement"
                   />
                   <ChoiceGroup
                     title="Allergic to / cannot eat"
                     options={allergens}
                     selected={prefs.allergens}
-                    onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    onToggle={(value) => toggle(prefs.allergens, value, (next) => updatePrefs({ allergens: next }))}
+                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => updatePrefs({ allergens: next }))}
                     addPlaceholder="Add an allergy or avoided ingredient"
                     danger
                   />
@@ -609,8 +617,8 @@ export function Onboarding({
                   title=""
                   options={filteredLikes}
                   selected={prefs.likes}
-                  onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                  onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                  onToggle={(value) => toggle(prefs.likes, value, (next) => updatePrefs({ likes: next }))}
+                  onAdd={(value) => addSelection(prefs.likes, value, (next) => updatePrefs({ likes: next }))}
                   addPlaceholder="Add a meal you often eat"
                 />
               </PreferenceSection>
@@ -622,8 +630,8 @@ export function Onboarding({
                   title=""
                   options={filteredDislikes}
                   selected={prefs.dislikes}
-                  onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
-                  onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
+                  onToggle={(value) => toggle(prefs.dislikes, value, (next) => updatePrefs({ dislikes: next }))}
+                  onAdd={(value) => addSelection(prefs.dislikes, value, (next) => updatePrefs({ dislikes: next }))}
                   addPlaceholder="Add an ingredient you dislike"
                 />
               </PreferenceSection>
@@ -680,7 +688,7 @@ export function Onboarding({
                       step="15"
                       value={prefs.maxTime ?? 180}
                       disabled={prefs.maxTime === null}
-                      onChange={(event) => setPrefs({ ...prefs, maxTime: +event.target.value })}
+                      onChange={(event) => updatePrefs({ maxTime: +event.target.value })}
                       onMouseUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
                       onKeyUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
                       className="w-full"
@@ -693,7 +701,7 @@ export function Onboarding({
                         type="button"
                         role="switch"
                         aria-checked={prefs.maxTime === null}
-                        onClick={() => { const next = prefs.maxTime === null; track("onboarding_preference_changed", { field: "max_time_unlimited", value: next }); setPrefs({ ...prefs, maxTime: next ? 180 : null }); }}
+                        onClick={() => { const next = prefs.maxTime === null; track("onboarding_preference_changed", { field: "max_time_unlimited", value: next }); updatePrefs({ maxTime: next ? 180 : null }); }}
                         className="flex items-center gap-2 text-sm font-medium text-stone-700"
                       >
                         <span className={cn("relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200", prefs.maxTime === null ? "bg-emerald-600" : "bg-stone-200")}>
@@ -720,7 +728,7 @@ export function Onboarding({
                       <span className="text-stone-500">£</span>
                       <Input
                         value={prefs.budget === 0 ? "" : prefs.budget}
-                        onChange={(event) => setPrefs({ ...prefs, budget: event.target.value === "" ? 0 : Number(event.target.value) })}
+                        onChange={(event) => updatePrefs({ budget: event.target.value === "" ? 0 : Number(event.target.value) })}
                         onKeyDown={(event) => { if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault(); }}
                         onBlur={() => track("onboarding_preference_changed", { field: "budget", value: prefs.budget })}
                         type="number"
@@ -732,7 +740,7 @@ export function Onboarding({
                   <SelectField
                     label="Kitchen access"
                     value={prefs.kitchen}
-                    onChange={(kitchen) => { track("onboarding_preference_changed", { field: "kitchen", value: kitchen }); setPrefs({ ...prefs, kitchen }); }}
+                    onChange={(kitchen) => { track("onboarding_preference_changed", { field: "kitchen", value: kitchen }); updatePrefs({ kitchen }); }}
                     options={[
                       { value: "full", label: "Full kitchen" },
                       { value: "shared", label: "Shared kitchen (often busy)" },
@@ -748,12 +756,12 @@ export function Onboarding({
                   <UniversityField
                     label="Your university"
                     value={prefs.university}
-                    onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
+                    onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); updatePrefs({ university }); }}
                     required
                     error={step2Attempted && !prefs.university}
                     errorMessage="Please select your university"
                   />
-                  <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
+                  <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => updatePrefs({ postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
                 </div>
               </PreferenceSection>
             </div>
@@ -779,7 +787,7 @@ export function Onboarding({
                       <button
                         key={days}
                         type="button"
-                        onClick={() => { track("onboarding_preference_changed", { field: "planning_horizon_days", value: days }); setPrefs({ ...prefs, planningHorizonDays: days }); }}
+                        onClick={() => { track("onboarding_preference_changed", { field: "planning_horizon_days", value: days }); updatePrefs({ planningHorizonDays: days }); }}
                         className={cn("rounded-lg border px-2 py-2.5 text-sm font-medium transition", active ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300")}
                       >
                         {wk} {wk === 1 ? "week" : "weeks"}
@@ -792,29 +800,7 @@ export function Onboarding({
                 title="Planning Priorities"
                 description="What should we optimise for? You can change this later."
               >
-                <div className="space-y-3">
-                  {sourceOptions.map((source) => {
-                    const active = selectedSources.includes(source.id);
-
-                    return (
-                      <button
-                        key={source.id}
-                        type="button"
-                        onClick={() => {
-                          track("recipe_source_toggled", { source: source.id, selected: !active });
-                          setSelectedSources(active ? selectedSources.filter((value) => value !== source.id) : [...selectedSources, source.id]);
-                        }}
-                        className={cn("flex w-full items-center justify-between gap-4 rounded-lg border p-4 text-left", active ? "border-emerald-600 bg-emerald-50" : "border-stone-200")}
-                      >
-                        <div>
-                          <p className="font-semibold">{source.name}</p>
-                          <p className="text-sm text-stone-500">{source.desc}</p>
-                        </div>
-                        <div className={cn("flex h-6 w-6 shrink-0 items-center justify-center rounded-md border", active ? "border-emerald-700 bg-emerald-700 text-white" : "border-stone-300")}>{active && <Check size={14} />}</div>
-                      </button>
-                    );
-                  })}
-                </div>
+                <PlanningPriorityControls prefs={prefs} setPrefs={setPrefs} track={track} source="onboarding" />
               </PreferenceSection>
             </div>
             <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">

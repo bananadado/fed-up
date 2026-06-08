@@ -10,6 +10,7 @@ import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primit
 import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
+import { PlanningPriorityControls } from "../components/PlanningPriorityControls";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
   icsSubscriptionHints,
@@ -37,6 +38,7 @@ export function SettingsScreen({
   setIcsSubscriptions,
   calendarTokens,
   setCalendarTokens,
+  setCalendarSkipped,
   sessionId,
   track,
 }: {
@@ -52,6 +54,7 @@ export function SettingsScreen({
   setIcsSubscriptions: (subs: IcsSubscription[]) => void;
   calendarTokens: CalendarToken[];
   setCalendarTokens: (tokens: CalendarToken[]) => void;
+  setCalendarSkipped: (skipped: boolean) => void;
   sessionId: string;
   track: TrackPrototypeEvent;
 }) {
@@ -65,6 +68,7 @@ export function SettingsScreen({
 
   async function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
+    if (events.length > 0) setCalendarSkipped(false);
     const asDeadlines = await resolveDeadlinesFromEvents(events);
     if (asDeadlines.length > 0) {
       setDeadlines(asDeadlines);
@@ -268,6 +272,13 @@ export function SettingsScreen({
               })}
             </div>
           </div>
+        </div>
+        <div className="mt-6 rounded-lg border border-stone-200 px-4 py-5 sm:px-5">
+          <div className="mb-4">
+            <span className="text-sm font-semibold">Planning priorities</span>
+            <p className="mt-1 text-sm text-stone-500">Tune repeated meals, batch prep and fallbacks for deadline weeks.</p>
+          </div>
+          <PlanningPriorityControls prefs={prefs} setPrefs={setPrefs} track={track} source="settings" />
         </div>
         <div className="mt-6 space-y-5">
           <ChoiceGroup

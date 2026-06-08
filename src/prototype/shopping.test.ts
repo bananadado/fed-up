@@ -45,6 +45,22 @@ describe("shopping helpers", () => {
     expect(ingredientsFromPlan(plan, [], [{ name: "Oats", quantity: 50, unit: "g" }]).some((item) => item.name.toLowerCase() === "oats")).toBe(false);
   });
 
+  test("counts batch cook ingredients once when leftovers reuse the same meal", () => {
+    const batchOnly = [{ day: "Mon", context: "Batch day", meals: [{ slot: "dinner" as const, mealId: "m1", batchCook: true }] }];
+    const withLeftover = [
+      ...batchOnly,
+      { day: "Tue", context: "Busy day", meals: [{ slot: "dinner" as const, mealId: "m1", leftoverOf: "m1" }] },
+    ];
+
+    expect(ingredientsFromPlan(withLeftover, [])).toEqual(ingredientsFromPlan(batchOnly, []));
+  });
+
+  test("does not add shopping items for leftover-only slots", () => {
+    const plan = [{ day: "Tue", context: "Busy day", meals: [{ slot: "dinner" as const, mealId: "m1", leftoverOf: "m1" }] }];
+
+    expect(ingredientsFromPlan(plan, [])).toEqual([]);
+  });
+
   test("builds selected vendor search URLs for one ingredient at a time", () => {
     expect(groceryVendorById("asda").searchUrl("oat milk")).toBe("https://groceries.asda.com/search/oat%20milk");
     expect(groceryVendorById("morrisons").searchUrl("berries")).toBe("https://groceries.morrisons.com/search?q=berries");

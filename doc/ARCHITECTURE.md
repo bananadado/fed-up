@@ -82,7 +82,7 @@ High-level state owned by `DeadlineFoodPrototype`:
 - `calendarProvider`
 - `deadlines`
 - `prefs`
-- `selectedSources`
+- `selectedSources` (legacy persisted source toggles)
 - `plan`
 - `customRecipes`
 - `discoverSaved`
@@ -278,4 +278,3 @@ Backend:
 - Firebase functions are public HTTP functions; validation and rate limiting matter.
 - Firestore rules are locked down, so client SDK additions will fail unless rules/auth are designed.
 - The OpenFoodFacts integration duplicates some nutrition estimate logic between frontend tests and functions.
-

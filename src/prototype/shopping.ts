@@ -159,6 +159,10 @@ export function ingredientsFromPlan(plan: PlanEntry[], customRecipes: Meal[], av
   const available = new Set(availableIngredients.map((ingredient) => normaliseIngredient(ingredient.name)));
 
   return aggregateIngredients(
-    plan.flatMap((entry) => entry.meals.flatMap((planMeal) => getMealById(planMeal.mealId, customRecipes).ingredients)),
+    plan.flatMap((entry) =>
+      entry.meals.flatMap((planMeal) =>
+        planMeal.leftoverOf ? [] : getMealById(planMeal.mealId, customRecipes).ingredients,
+      ),
+    ),
   ).filter((item) => !available.has(normaliseIngredient(item.name)));
 }

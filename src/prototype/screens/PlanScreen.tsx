@@ -33,6 +33,13 @@ function dailyTotals(entry: PlanEntry, customRecipes: Meal[]) {
   );
 }
 
+function planMealReason(planMeal: PlanEntry["meals"][number], repeatedBreakfastIds: Set<string>) {
+  if (planMeal.batchCook) return "Batch cook: covers later busy meals.";
+  if (planMeal.leftoverOf) return "Leftovers from earlier batch cook.";
+  if (planMeal.slot === "breakfast" && repeatedBreakfastIds.has(planMeal.mealId)) return "Repeated breakfast to reduce decisions.";
+  return null;
+}
+
 export function PlanScreen({
   plan,
   setPlan,
@@ -48,6 +55,7 @@ export function PlanScreen({
   regenMode,
   openDiscover,
   track,
+  calendarWarning,
 }: {
   plan: PlanEntry[];
   setPlan: (plan: PlanEntry[]) => void;
@@ -63,6 +71,7 @@ export function PlanScreen({
   regenMode: PlanRegenMode;
   openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
+  calendarWarning?: string;
 }) {
   const [rescueChoice, setRescueChoice] = useState<RescueChoice>(() => {
     try {
@@ -93,6 +102,35 @@ export function PlanScreen({
   });
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
+  const planSummary = useMemo(() => {
+    const breakfastCounts = new Map<string, number>();
+    const ingredientCounts = new Map<string, number>();
+    let batchCooks = 0;
+    let leftoverMeals = 0;
+
+    for (const entry of plan) {
+      for (const planMeal of entry.meals) {
+        if (planMeal.batchCook) batchCooks += 1;
+        if (planMeal.leftoverOf) leftoverMeals += 1;
+        if (planMeal.slot === "breakfast") {
+          breakfastCounts.set(planMeal.mealId, (breakfastCounts.get(planMeal.mealId) ?? 0) + 1);
+        }
+        if (!planMeal.leftoverOf) {
+          const meal = getMealById(planMeal.mealId, customRecipes);
+          for (const ingredient of meal.ingredients) {
+            const key = ingredient.name.trim().toLowerCase();
+            if (key) ingredientCounts.set(key, (ingredientCounts.get(key) ?? 0) + 1);
+          }
+        }
+      }
+    }
+
+    const repeatedBreakfastIds = new Set([...breakfastCounts].filter(([, count]) => count > 1).map(([mealId]) => mealId));
+    const repeatedBreakfasts = [...breakfastCounts.values()].reduce((sum, count) => sum + Math.max(0, count - 1), 0);
+    const reusedIngredientGroups = [...ingredientCounts.values()].filter((count) => count > 1).length;
+
+    return { batchCooks, leftoverMeals, repeatedBreakfasts, reusedIngredientGroups, repeatedBreakfastIds };
+  }, [plan, customRecipes]);
 
   const weeks = useMemo(() => {
     const chunks: PlanEntry[][] = [];
@@ -146,6 +184,27 @@ export function PlanScreen({
           </AppButton>
         </div>
       )}
+
+      {calendarWarning && (
+        <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm font-semibold text-amber-900">Calendar not connected</p>
+          <p className="mt-1 text-sm text-amber-800">{calendarWarning}</p>
+        </div>
+      )}
+
+      <div className="mb-6 grid gap-3 sm:grid-cols-4">
+        {[
+          { label: "Batch cooks", value: planSummary.batchCooks },
+          { label: "Leftover meals", value: planSummary.leftoverMeals },
+          { label: "Repeated breakfasts", value: planSummary.repeatedBreakfasts },
+          { label: "Reused ingredients", value: planSummary.reusedIngredientGroups },
+        ].map((item) => (
+          <div key={item.label} className="rounded-lg border border-stone-200 bg-white px-4 py-3">
+            <p className="text-2xl font-bold text-stone-950">{item.value}</p>
+            <p className="mt-1 text-xs font-semibold uppercase text-stone-500">{item.label}</p>
+          </div>
+        ))}
+      </div>
 
       {addToPlanMealId && (() => {
         const meal = discoverSaved.find((m) => m.id === addToPlanMealId) ?? getMealById(addToPlanMealId, customRecipes);
@@ -251,6 +310,9 @@ export function PlanScreen({
                                         ))}
                                       </div>
                                       <p className="mt-2 line-clamp-2 text-sm text-stone-500">{meal.source}</p>
+                                      {planMeal && planMealReason(planMeal, planSummary.repeatedBreakfastIds) && (
+                                        <p className="mt-2 text-xs font-medium text-emerald-700">{planMealReason(planMeal, planSummary.repeatedBreakfastIds)}</p>
+                                      )}
                                     </button>
                                   ) : (
                                     <div>
@@ -321,6 +383,9 @@ export function PlanScreen({
                                       {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
                                       {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                     </div>
+                                  )}
+                                  {planMeal && planMealReason(planMeal, planSummary.repeatedBreakfastIds) && (
+                                    <p className="mt-2 text-xs font-medium text-emerald-700">{planMealReason(planMeal, planSummary.repeatedBreakfastIds)}</p>
                                   )}
                                   <div className="mt-3 flex flex-wrap gap-2">
                                     <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_mobile" }); if (addToPlanMealId) setSwapSuggestedMealId(addToPlanMealId); setRescueChoice({ day: entry.day, slot }); }}>

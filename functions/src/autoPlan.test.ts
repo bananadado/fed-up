@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { buildPlan, classifyEffort, type AllocatorMeal, type DayContext } from "./autoPlan";
+import { buildPlan, classifyEffort, localDaysFromContextEvents, mergeCalendarPressure, type AllocatorMeal, type DayContext } from "./autoPlan";
 import { prototypeRecipes } from "./generated/prototypeData";
 
 function meal(partial: Partial<AllocatorMeal> & { id: string }): AllocatorMeal {
@@ -99,6 +99,130 @@ describe("buildPlan", () => {
     expect(cook?.batchCook).toBe(true);
     const busyDinner = plan[1].meals.find((m) => m.slot === "dinner");
     expect(busyDinner?.leftoverOf).toBe("batch");
+  });
+
+  it("does not create batch cooks when batch cooking is off", () => {
+    const plan = buildPlan({
+      days: [day({ date: "2026-06-01", stress: 0.2 })],
+      pool: [breakfast, batchMeal, minimalMeal],
+      avoided: [],
+      planningPriorities: { batchCooking: "off" },
+    });
+
+    expect(plan.flatMap((entry) => entry.meals).some((m) => m.batchCook)).toBe(false);
+  });
+
+  it("high batch mode creates more leftover coverage than balanced mode", () => {
+    const days = [
+      day({ date: "2026-06-01", stress: 0.2 }),
+      day({ date: "2026-06-02", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } }),
+      day({ date: "2026-06-03", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } }),
+      day({ date: "2026-06-04", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } }),
+    ];
+
+    const balanced = buildPlan({
+      days,
+      pool: [breakfast, batchMeal, minimalMeal],
+      avoided: [],
+      planningPriorities: { batchCooking: "balanced" },
+    });
+    const high = buildPlan({
+      days,
+      pool: [breakfast, batchMeal, minimalMeal],
+      avoided: [],
+      planningPriorities: { batchCooking: "high" },
+    });
+
+    const leftoverCount = (plan: ReturnType<typeof buildPlan>) =>
+      plan.flatMap((entry) => entry.meals).filter((m) => m.leftoverOf === "batch").length;
+
+    expect(leftoverCount(balanced)).toBe(2);
+    expect(leftoverCount(high)).toBe(3);
+  });
+
+  it("repeats one breakfast across weekday slots in repeat mode", () => {
+    const otherBreakfast = meal({ id: "other-bfast", type: "cook", time: 7, mealSlots: ["breakfast"] });
+    const plan = buildPlan({
+      days: Array.from({ length: 5 }, (_, i) => day({ date: `2026-06-${String(i + 1).padStart(2, "0")}` })),
+      pool: [breakfast, otherBreakfast, batchMeal, minimalMeal],
+      avoided: [],
+      planningPriorities: { breakfastRoutine: "repeat" },
+    });
+
+    const breakfastIds = plan.map((entry) => entry.meals.find((m) => m.slot === "breakfast")?.mealId);
+    expect(new Set(breakfastIds)).toHaveLength(1);
+  });
+
+  it("rotates two breakfasts in rotate mode", () => {
+    const otherBreakfast = meal({ id: "other-bfast", type: "cook", time: 7, mealSlots: ["breakfast"] });
+    const plan = buildPlan({
+      days: Array.from({ length: 4 }, (_, i) => day({ date: `2026-06-${String(i + 1).padStart(2, "0")}` })),
+      pool: [breakfast, otherBreakfast, batchMeal, minimalMeal],
+      avoided: [],
+      planningPriorities: { breakfastRoutine: "rotate" },
+    });
+
+    const breakfastIds = plan.map((entry) => entry.meals.find((m) => m.slot === "breakfast")?.mealId);
+    expect(new Set(breakfastIds)).toEqual(new Set(["bfast", "other-bfast"]));
+    expect(breakfastIds[0]).toBe(breakfastIds[2]);
+    expect(breakfastIds[1]).toBe(breakfastIds[3]);
+    expect(breakfastIds[0]).not.toBe(breakfastIds[1]);
+  });
+
+  it("prefers ingredient overlap when ingredient reuse is high", () => {
+    const lunchBase = meal({ id: "rice-lunch", type: "cook", mealSlots: ["lunch"], ingredients: [{ name: "rice" }] });
+    const differentDinner = meal({ id: "pasta-dinner", type: "cook", mealSlots: ["dinner"], ingredients: [{ name: "pasta" }] });
+    const overlapDinner = meal({ id: "rice-dinner", type: "cook", mealSlots: ["dinner"], ingredients: [{ name: "rice" }] });
+    const plan = buildPlan({
+      days: [day({ date: "2026-06-01", stress: 0.3 })],
+      pool: [breakfast, lunchBase, differentDinner, overlapDinner],
+      avoided: [],
+      planningPriorities: { ingredientReuse: "high" },
+    });
+
+    expect(plan[0].meals.find((m) => m.slot === "dinner")?.mealId).toBe("rice-dinner");
+  });
+
+  it("uses matching ingredients before rotating otherwise similar meals", () => {
+    const lunchBase = meal({ id: "bean-lunch", type: "cook", mealSlots: ["lunch"], ingredients: [{ name: "beans" }] });
+    const overlapDinner = meal({ id: "bean-dinner", type: "cook", mealSlots: ["dinner"], ingredients: [{ name: "beans" }] });
+    const unusedDinner = meal({ id: "unused-dinner", type: "cook", mealSlots: ["dinner"], ingredients: [{ name: "rice" }] });
+    const plan = buildPlan({
+      days: [day({ date: "2026-06-01", stress: 0.3 })],
+      pool: [breakfast, lunchBase, unusedDinner, overlapDinner],
+      avoided: [],
+      planningPriorities: { ingredientReuse: "balanced" },
+    });
+
+    expect(plan[0].meals.find((m) => m.slot === "dinner")?.mealId).toBe("bean-dinner");
+  });
+
+  it("keeps busy-day meals minimal before applying repeat avoidance", () => {
+    const quick = meal({ id: "quick", type: "fallback", time: 5, mealSlots: ["lunch", "dinner"] });
+    const fullCook = meal({ id: "cook", type: "cook", time: 15, mealSlots: ["lunch", "dinner"] });
+    const plan = buildPlan({
+      days: [
+        day({ date: "2026-06-01", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } }),
+        day({ date: "2026-06-02", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } }),
+      ],
+      pool: [quick, fullCook],
+      avoided: [],
+    });
+
+    expect(plan[1].meals.find((m) => m.slot === "lunch")?.mealId).toBe("quick");
+  });
+
+  it("excludes campus fallbacks when fallbacks are off", () => {
+    const fallback = meal({ id: "campus", type: "fallback", time: 3, mealSlots: ["dinner"] });
+    const cookMeal = meal({ id: "cook", type: "cook", time: 8, mealSlots: ["dinner"] });
+    const plan = buildPlan({
+      days: [day({ date: "2026-06-01", stress: 0.9, recommended_constraints: { max_prep_minutes: 15 } })],
+      pool: [fallback, cookMeal],
+      avoided: [],
+      planningPriorities: { campusFallbacks: "off" },
+    });
+
+    expect(plan[0].meals.find((m) => m.slot === "dinner")?.mealId).toBe("cook");
   });
 
   it("excludes meals that hit an allergen or dislike", () => {
@@ -290,5 +414,121 @@ describe("buildPlan", () => {
     expect(plan[0].meals.map((m) => m.mealId)).toEqual(["quick-a", "quick-b", "quick-c"]);
     const dinnerIds = plan.map((entry) => entry.meals.find((m) => m.slot === "dinner")?.mealId);
     expect(new Set(dinnerIds)).toEqual(new Set(["quick-a", "quick-b", "quick-c"]));
+  });
+
+  it("uses variant seeds to offer different similarly valid alternatives on regeneration", () => {
+    const days = [day({ date: "2026-06-01", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } })];
+    const pool = [
+      meal({ id: "quick-a", type: "fallback", time: 5, mealSlots: ["dinner"] }),
+      meal({ id: "quick-b", type: "fallback", time: 5, mealSlots: ["dinner"] }),
+      meal({ id: "quick-c", type: "fallback", time: 5, mealSlots: ["dinner"] }),
+    ];
+
+    const first = buildPlan({ days, pool, avoided: [], variantSeed: 1 });
+    const second = buildPlan({ days, pool, avoided: [], variantSeed: 3 });
+
+    expect(first[0].meals.find((m) => m.slot === "dinner")?.mealId).not.toBe(
+      second[0].meals.find((m) => m.slot === "dinner")?.mealId,
+    );
+  });
+});
+
+describe("localDaysFromContextEvents", () => {
+  it("turns submitted workload events into busy day context when recommender context is unavailable", () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const days = localDaysFromContextEvents(
+      [
+        {
+          title: "Operating Systems coursework deadline",
+          start: `${today}T18:00:00`,
+          all_day: false,
+        },
+      ],
+      3,
+    );
+
+    expect(days).toHaveLength(3);
+    expect(days[0].stress).toBeGreaterThanOrEqual(0.8);
+    expect(days[0].hard_deadlines).toBe(1);
+    expect(days[0].free_evening).toBe(false);
+    expect(days[0].recommended_constraints.max_prep_minutes).toBe(15);
+  });
+
+  it("keeps neutral days when submitted events fall outside the horizon", () => {
+    const outside = new Date();
+    outside.setDate(outside.getDate() + 10);
+    const days = localDaysFromContextEvents(
+      [
+        {
+          title: "Exam",
+          start: outside.toISOString().slice(0, 10),
+          all_day: true,
+        },
+      ],
+      3,
+    );
+
+    expect(days.map((dayContext) => dayContext.stress)).toEqual([0.3, 0.3, 0.3]);
+  });
+
+  it("treats dense non-academic calendars as busy days", () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const days = localDaysFromContextEvents(
+      [
+        { title: "Gym", start: `${today}T09:00:00`, end: `${today}T10:30:00` },
+        { title: "Society meeting", start: `${today}T11:00:00`, end: `${today}T12:30:00` },
+        { title: "Shift", start: `${today}T14:00:00`, end: `${today}T18:30:00` },
+      ],
+      3,
+    );
+
+    expect(days[0].stress).toBeGreaterThanOrEqual(0.8);
+    expect(days[0].free_evening).toBe(false);
+    expect(days[0].recommended_constraints.max_prep_minutes).toBe(15);
+  });
+
+  it("uses edited urgency and effort metadata from in-app workload entries", () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const days = localDaysFromContextEvents(
+      [
+        {
+          title: "Project work",
+          start: `${today}T13:00:00`,
+          event_type: "academic",
+          urgency: "high",
+          effort_hours: 7,
+        },
+      ],
+      3,
+    );
+
+    expect(days[0].stress).toBeGreaterThanOrEqual(0.88);
+    expect(days[0].hard_deadlines).toBe(1);
+    expect(days[0].recommended_constraints.max_prep_minutes).toBe(15);
+  });
+});
+
+describe("mergeCalendarPressure", () => {
+  it("does not let weak recommender context downgrade a locally dense calendar day", () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const merged = mergeCalendarPressure(
+      [
+        day({
+          date: today,
+          stress: 0.2,
+          free_evening: true,
+          hard_deadlines: 0,
+          recommended_constraints: { max_prep_minutes: 60 },
+        }),
+      ],
+      [
+        { title: "Work block", start: `${today}T09:00:00`, end: `${today}T17:30:00` },
+      ],
+      1,
+    );
+
+    expect(merged[0].stress).toBeGreaterThanOrEqual(0.88);
+    expect(merged[0].free_evening).toBe(false);
+    expect(merged[0].recommended_constraints.max_prep_minutes).toBe(15);
   });
 });

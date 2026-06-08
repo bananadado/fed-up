@@ -80,7 +80,7 @@ Exports:
 - `defaultDeadlines`
 - `seedMeals`
 - `initialPlan`
-- `sourceOptions`
+- `defaultPlanningPriorities`
 - `allergens`
 - `dislikes`
 - `likes`
@@ -135,7 +135,7 @@ Plan rescue/swap:
 
 Shopping list:
 
-- `ingredientsFromPlan(plan, customRecipes)` aggregates all planned meal ingredients.
+- `ingredientsFromPlan(plan, customRecipes)` aggregates planned meal ingredients and skips leftover slots.
 - `aggregateIngredients` combines quantities by name/unit key.
 
 Health signals:
@@ -405,7 +405,7 @@ Settings shape:
   settingsVersion: 1,
   preferences: Preferences,
   deadlines: Deadline[],
-  selectedSources: string[],
+  selectedSources: string[], // legacy source toggles
   onboarded: boolean
 }
 ```
@@ -444,4 +444,3 @@ When changing session schema:
 2. Update frontend normalization and backend normalization.
 3. Update `docs/anonymous-session-storage.md` and this doc.
 4. Add backward compatibility or explicit migration behaviour.
-

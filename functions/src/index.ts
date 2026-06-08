@@ -7,8 +7,7 @@ import {setGlobalOptions} from "firebase-functions/v2/options";
 import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import {randomUUID} from "crypto";
-import {buildPlan} from "./autoPlan";
-import type * as AutoPlan from "./autoPlan";
+import * as AutoPlan from "./autoPlan";
 import {parseICSText} from "./icsParser";
 import {
   calendarEventsToDeadlines,
@@ -225,6 +224,7 @@ type PrototypeSessionSettings = {
     availableIngredients: RecipeIngredient[];
     planningHorizonDays: number;
     planRegenMode: "prompt" | "auto";
+    planningPriorities?: AutoPlan.PlanningPriorities;
   };
   deadlines: {
     id: string;
@@ -1001,6 +1001,7 @@ function mealToAllocator(meal: UnknownRecord): AutoPlan.AllocatorMeal {
     mealSlots: toMealSlots(meal.mealSlots),
     time: boundedNumber(meal.time, 20, 0, 600),
     pricePence: Math.round(boundedNumber(meal.price, 0, 0, 100000) * 100),
+    servings: Math.round(boundedNumber(meal.servings, 0, 0, 100)),
     tags: Array.isArray(meal.tags) ? meal.tags.filter((t): t is string => typeof t === "string") : [],
     allergens: Array.isArray(meal.allergens) ? meal.allergens.filter((a): a is string => typeof a === "string") : [],
     ingredients,
@@ -1039,6 +1040,23 @@ function normalizeDayContext(value: unknown): AutoPlan.DayContext | null {
   };
 }
 
+function normalizePlanningPriorities(value: unknown): AutoPlan.PlanningPriorities {
+  const raw = asRecord(value);
+  const batchCooking = boundedString(raw?.batchCooking, "balanced", 20);
+  const breakfastRoutine = boundedString(raw?.breakfastRoutine, "repeat", 20);
+  const mealRepeats = boundedString(raw?.mealRepeats, "balanced", 20);
+  const ingredientReuse = boundedString(raw?.ingredientReuse, "balanced", 20);
+  const campusFallbacks = boundedString(raw?.campusFallbacks, "when-busy", 20);
+
+  return {
+    batchCooking: batchCooking === "off" || batchCooking === "high" ? batchCooking : "balanced",
+    breakfastRoutine: breakfastRoutine === "varied" || breakfastRoutine === "rotate" ? breakfastRoutine : "repeat",
+    mealRepeats: mealRepeats === "varied" || mealRepeats === "low-effort" ? mealRepeats : "balanced",
+    ingredientReuse: ingredientReuse === "low" || ingredientReuse === "high" ? ingredientReuse : "balanced",
+    campusFallbacks: campusFallbacks === "off" || campusFallbacks === "allowed" ? campusFallbacks : "when-busy",
+  };
+}
+
 async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Promise<void> {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
@@ -1060,6 +1078,8 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const dislikes = canonicalRecommenderTags(boundedStringList(body.dislikes, 40, 80));
   const allergens = canonicalRecommenderTags(boundedStringList(body.allergens, 40, 80));
   const weeklyBudgetPence = Math.round(boundedNumber(body.budget, 48, 0, 1000) * 100);
+  const planningPriorities = normalizePlanningPriorities(body.planningPriorities);
+  const planVariant = Math.round(boundedNumber(body.planVariant, 0, 0, 1_000_000));
 
   // 1. Per-day calendar context across the horizon (#65). horizon_days produces
   // horizon_days+1 entries (incl. today), so request one fewer than we need.
@@ -1072,7 +1092,11 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     days = rawDays.map(normalizeDayContext).filter((d): d is AutoPlan.DayContext => d !== null);
   }
   if (days.length === 0) {
-    days = syntheticDays(horizonDays);
+    days = contextEvents.length > 0 ?
+      AutoPlan.localDaysFromContextEvents(contextEvents as AutoPlan.ContextEventInput[], horizonDays) :
+      syntheticDays(horizonDays);
+  } else if (contextEvents.length > 0) {
+    days = AutoPlan.mergeCalendarPressure(days, contextEvents as AutoPlan.ContextEventInput[], horizonDays);
   }
   days = days.slice(0, horizonDays);
 
@@ -1085,12 +1109,13 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const savedAlloc = savedRecipes.map(mealToAllocator).filter((m) => m.id);
 
   const avgStress = days.reduce((sum, d) => sum + d.stress, 0) / (days.length || 1);
+  const peakStress = days.reduce((max, d) => Math.max(max, d.stress), 0);
   const fillAlloc: AutoPlan.AllocatorMeal[] = [];
   if (userId) {
     const fill = await callRecommenderJson("/recommend", {
       user_id: userId,
       n: 60,
-      deadline_stress: avgStress,
+      deadline_stress: Math.max(avgStress, peakStress),
       budget_pence: weeklyBudgetPence,
       exclude_ids: excludeIds,
     });
@@ -1118,12 +1143,14 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     fallbackAlloc.push(mealToAllocator(meal));
   }
 
-  const plan = buildPlan({
+  const plan = AutoPlan.buildPlan({
     days,
     pool: [...savedAlloc, ...fillAlloc, ...fallbackAlloc],
     avoided: [...dislikes, ...allergens],
     dietary,
     weeklyBudgetPence,
+    planningPriorities,
+    variantSeed: planVariant > 0 ? planVariant : undefined,
   });
 
   // 3. Return only the meals actually placed, so the client can resolve them.

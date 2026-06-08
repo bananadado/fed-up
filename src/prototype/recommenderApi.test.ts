@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test";
 
+import { defaultPlanningPriorities } from "./data";
 import { deadlineStressFromDeadlines, fetchRecommenderRecommendations, resolveDeadlineStress, toPrototypeMeal } from "./recommenderApi";
 import type { Deadline } from "./types";
 
@@ -83,6 +84,7 @@ describe("recommender API helpers", () => {
         availableIngredients: [],
         planningHorizonDays: 21,
         planRegenMode: "prompt",
+        planningPriorities: defaultPlanningPriorities,
       },
       deadlines: [deadline("medium")],
       excludeIds: ["recipe-1"],
@@ -125,6 +127,7 @@ describe("recommender API helpers", () => {
         availableIngredients: [],
         planningHorizonDays: 21,
         planRegenMode: "prompt",
+        planningPriorities: defaultPlanningPriorities,
       },
       deadlines: [deadline("medium")],
       excludeIds: [],

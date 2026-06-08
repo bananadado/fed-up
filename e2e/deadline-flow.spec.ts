@@ -32,7 +32,9 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await expect(page.getByRole("heading", { name: /about you/i })).toBeVisible();
   await page.getByLabel("Current cooking ability").click();
   await page.getByRole("option", { name: /beginner/i }).click();
+  await expect(page.getByText(/Beginner - Toast/i)).toBeVisible();
   await page.getByRole("button", { name: "Tofu" }).click();
+  await expect(page.getByRole("button", { name: "Tofu" })).toHaveAttribute("aria-pressed", "true");
   await page.getByPlaceholder("Add an ingredient you dislike").fill("Aubergine");
   await page.getByPlaceholder("Add an ingredient you dislike").press("Enter");
   await expect(page.getByRole("button", { name: "Aubergine" })).toBeVisible();
@@ -44,7 +46,9 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await page.getByLabel("Your university").click();
   await page.getByRole("option", { name: "Imperial College London" }).click();
   await expect(page.getByRole("heading", { name: /planning priorities/i })).toBeVisible();
-  await expect(page.getByRole("button", { name: /keep costs low/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /repeat weekday breakfast/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /student-focused cooking/i })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /use my own recipes/i })).toHaveCount(0);
   await page.getByRole("button", { name: /create my plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
