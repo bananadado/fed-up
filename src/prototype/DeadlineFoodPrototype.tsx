@@ -277,7 +277,10 @@ export function DeadlineFoodPrototype() {
             urgency: d.urgency ?? "medium",
           })));
           setSelectedSources(snapshot.settings.selectedSources);
-          setOnboarded(snapshot.settings.onboarded);
+          // Never downgrade onboarded from true→false: an auth transition
+          // (email link / OAuth redirect) may have already set it to true
+          // before the session network response arrived.
+          setOnboarded(prev => prev || snapshot.settings!.onboarded);
           setCanPersistSession(true);
           if (snapshot.settings.customRecipes) setCustomRecipes(snapshot.settings.customRecipes as Meal[]);
           const restoredDiscoverSaved = snapshot.settings.discoverSaved ?? [];
