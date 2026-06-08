@@ -11,6 +11,7 @@ const UNIT_ALIASES: Record<string, string> = {
   ounce: "oz", ounces: "oz",
   pound: "lb", pounds: "lb", lbs: "lb",
   cloves: "clove",
+  quart: "qt", quarts: "qt", qts: "qt",
   "fluid ounce": "fl oz", "fluid ounces": "fl oz",
   "fl. oz": "fl oz", "fl. oz.": "fl oz",
 };
@@ -20,11 +21,11 @@ function canonicalizeUnit(unit: string): string {
   return UNIT_ALIASES[normalized] ?? normalized;
 }
 
-const VOLUME_UNITS = new Set(["ml", "l", "tsp", "tbsp", "cup", "fl oz"]);
+const VOLUME_UNITS = new Set(["ml", "l", "tsp", "tbsp", "cup", "fl oz", "qt"]);
 const MASS_UNITS = new Set(["g", "kg", "oz", "lb"]);
 
 // Conversion factors to metric volume base (ml)
-const TO_ML: Record<string, number> = { tsp: 4.929, tbsp: 14.787, cup: 236.588, l: 1000, "fl oz": 29.574 };
+const TO_ML: Record<string, number> = { tsp: 4.929, tbsp: 14.787, cup: 236.588, l: 1000, "fl oz": 29.574, qt: 946.353 };
 // Conversion factors to metric mass base (g)
 const TO_G: Record<string, number> = { kg: 1000, oz: 28.35, lb: 453.592 };
 
@@ -144,7 +145,7 @@ export function normalizeIngredientUnit(
 
   if (unitSystem === "imperial") {
     if (VOLUME_UNITS.has(unit)) {
-      if (unit === "cup" || unit === "tsp" || unit === "tbsp" || unit === "fl oz") {
+      if (unit === "cup" || unit === "tsp" || unit === "tbsp" || unit === "fl oz" || unit === "qt") {
         return { ...ingredient, unit };
       }
       const ml = unit === "ml" ? quantity : quantity * 1000;
