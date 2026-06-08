@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Import, LogOut, RotateCcw, ShieldCheck, UserRound } from "lucide-react";
+import { Import, LogOut, Mail, RotateCcw, ShieldCheck, UserRound } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -43,6 +43,7 @@ export function SettingsScreen({
   accountMessage,
   accountBusy,
   onConnectAccount,
+  onSendEmailMagicLink,
   onUseAnonymousAccount,
   track,
 }: {
@@ -61,8 +62,9 @@ export function SettingsScreen({
   sessionId: string;
   account: AccountSummary;
   accountMessage: string;
-  accountBusy: AccountProviderId | "anonymous" | null;
+  accountBusy: AccountProviderId | "email" | "anonymous" | null;
   onConnectAccount: (provider: AccountProviderId) => void;
+  onSendEmailMagicLink: (email: string) => void;
   onUseAnonymousAccount: () => void;
   track: TrackPrototypeEvent;
 }) {
@@ -70,6 +72,7 @@ export function SettingsScreen({
   const [importMessage, setImportMessage] = useState("");
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [accountEmail, setAccountEmail] = useState(account.email ?? "");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
@@ -221,6 +224,26 @@ export function SettingsScreen({
                 </AppButton>
               )}
             </div>
+          )}
+          {account.configured && (
+            <form
+              className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto]"
+              onSubmit={(event) => {
+                event.preventDefault();
+                onSendEmailMagicLink(accountEmail);
+              }}
+            >
+              <Input
+                type="email"
+                value={accountEmail}
+                onChange={(event) => setAccountEmail(event.target.value)}
+                placeholder="you@example.com"
+                className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
+              />
+              <AppButton type="submit" variant="secondary" disabled={accountBusy !== null || !accountEmail.trim()} className="justify-center">
+                <Mail size={15} /> {accountBusy === "email" ? "Sending..." : "Send magic link"}
+              </AppButton>
+            </form>
           )}
           {accountMessage && <p className="mt-3 rounded-lg bg-white p-3 text-sm text-emerald-800">{accountMessage}</p>}
         </div>

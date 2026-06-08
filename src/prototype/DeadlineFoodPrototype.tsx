@@ -13,8 +13,10 @@ import { createPrototypeSessionSettings, normalizePreferences, restorePrototypeP
 import { syncRecommenderUser } from "./recommenderApi";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
 import {
+  completeDeadlineFoodEmailLinkSignIn,
   linkDeadlineFoodAccount,
   onDeadlineFoodAccountChanged,
+  sendDeadlineFoodEmailMagicLink,
   switchToAnonymousAccountOnThisDevice,
   type AccountProviderId,
   type AccountSummary,
@@ -83,7 +85,7 @@ export function DeadlineFoodPrototype() {
     providerIds: [],
   });
   const [accountMessage, setAccountMessage] = useState("");
-  const [accountBusy, setAccountBusy] = useState<AccountProviderId | "anonymous" | null>(null);
+  const [accountBusy, setAccountBusy] = useState<AccountProviderId | "email" | "anonymous" | null>(null);
   const [screen, setScreen] = useState<Screen>(() => screenFromHash() ?? "landing");
   const routeHistory = useRef<Screen[]>([]);
   const pendingHashScreen = useRef<Screen | null>(null);
@@ -360,6 +362,22 @@ export function DeadlineFoodPrototype() {
     return snapshot;
   }, [buildSessionSettings, sessionId]);
 
+  useEffect(() => {
+    completeDeadlineFoodEmailLinkSignIn()
+      .then((nextAccount) => {
+        if (nextAccount) {
+          setAccount(nextAccount);
+          setCanPersistSession(true);
+          setAccountMessage("Email sign-in complete. Your plan is saved to your account.");
+          void saveCurrentSessionNow();
+        }
+      })
+      .catch((error) => {
+        const message = error instanceof Error ? error.message : "Email sign-in could not be completed.";
+        setAccountMessage(message);
+      });
+  }, [saveCurrentSessionNow]);
+
   const connectAccount = useCallback(async (provider: AccountProviderId) => {
     setAccountBusy(provider);
     setAccountMessage("");
@@ -378,6 +396,22 @@ export function DeadlineFoodPrototype() {
       setAccountBusy(null);
     }
   }, [saveCurrentSessionNow, track]);
+
+  const sendEmailMagicLink = useCallback(async (email: string) => {
+    setAccountBusy("email");
+    setAccountMessage("");
+    try {
+      await sendDeadlineFoodEmailMagicLink(email);
+      setAccountMessage("Check your email for a sign-in link. Open it in this browser to save your plan.");
+      track("account_magic_link_sent", {});
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Magic link could not be sent.";
+      setAccountMessage(message);
+      track("account_magic_link_failed", { error: message });
+    } finally {
+      setAccountBusy(null);
+    }
+  }, [track]);
 
   const returnToAnonymousAccount = useCallback(async () => {
     setAccountBusy("anonymous");
@@ -615,6 +649,12 @@ export function DeadlineFoodPrototype() {
         calendarTokens={calendarTokens}
         setCalendarTokens={setCalendarTokens}
         sessionId={sessionId}
+        account={account}
+        accountMessage={accountMessage}
+        accountBusy={accountBusy}
+        onConnectAccount={connectAccount}
+        onSendEmailMagicLink={sendEmailMagicLink}
+        onUseAnonymousAccount={returnToAnonymousAccount}
         track={track}
         setCalendarSkipped={setCalendarSkipped}
       />
@@ -627,7 +667,7 @@ export function DeadlineFoodPrototype() {
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} track={track} />}
-      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountBusy={accountBusy} onConnectAccount={connectAccount} onUseAnonymousAccount={returnToAnonymousAccount} track={track} />}
+      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onUseAnonymousAccount={returnToAnonymousAccount} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} />}
     </Shell>
   );

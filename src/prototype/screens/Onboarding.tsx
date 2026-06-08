@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Mail, ShieldCheck, Sparkles, UserRound } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,9 +23,10 @@ import {
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
 import { filterFoodPreferenceOptions } from "../preferenceOptions";
+import type { AccountProviderId, AccountSummary } from "../accountAuth";
 
 function Progress({ step }: { step: number }) {
-  const labels = ["Calendar", "About you", "Preferences"];
+  const labels = ["Calendar", "About you", "Preferences", "Save"];
 
   return (
     <div className="mb-8 flex gap-2">
@@ -109,6 +110,12 @@ export function Onboarding({
   calendarTokens,
   setCalendarTokens,
   sessionId,
+  account,
+  accountMessage,
+  accountBusy,
+  onConnectAccount,
+  onSendEmailMagicLink,
+  onUseAnonymousAccount,
   track,
   setCalendarSkipped,
 }: {
@@ -128,13 +135,19 @@ export function Onboarding({
   calendarTokens: CalendarToken[];
   setCalendarTokens: (tokens: CalendarToken[]) => void;
   sessionId: string;
+  account: AccountSummary;
+  accountMessage: string;
+  accountBusy: AccountProviderId | "email" | "anonymous" | null;
+  onConnectAccount: (provider: AccountProviderId) => void;
+  onSendEmailMagicLink: (email: string) => void;
+  onUseAnonymousAccount: () => void;
   track: TrackPrototypeEvent;
   setCalendarSkipped: (skipped: boolean) => void;
 }) {
   const [step, setStep] = useState(() => {
     try {
       const saved = sessionStorage.getItem("deadlineFood:onboardingStep");
-      if (saved !== null) { const n = parseInt(saved, 10); if (n >= 0 && n <= 2) return n; }
+      if (saved !== null) { const n = parseInt(saved, 10); if (n >= 0 && n <= 3) return n; }
     } catch { /* sessionStorage unavailable */ }
     return 0;
   });
@@ -151,8 +164,10 @@ export function Onboarding({
   const [showCalendarSkipConfirm, setShowCalendarSkipConfirm] = useState(false);
   const [showStep1SkipConfirm, setShowStep1SkipConfirm] = useState(false);
   const [showStep2SkipConfirm, setShowStep2SkipConfirm] = useState(false);
+  const [accountEmail, setAccountEmail] = useState(account.email ?? "");
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
+  const accountLabel = account.email ?? account.displayName ?? (account.isAnonymous ? "Anonymous on this browser" : "Signed in");
 
   function goToStep(nextStep: number) {
     setStep(nextStep);
@@ -309,7 +324,7 @@ export function Onboarding({
         <Progress step={step} />
         {step === 0 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 1 of 3</Badge>
+            <Badge tone="green">Step 1 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
             <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days. This is optional — you can connect later in Settings.</p>
             <div className="mt-7 grid grid-cols-2 gap-3">
@@ -551,7 +566,8 @@ export function Onboarding({
                 </AppButton>
                 <AppButton type="button" className="justify-center" onClick={() => {
                   setShowStep2SkipConfirm(false);
-                  finish();
+                  track("onboarding_step_completed", { step: 2, next_step: 3, skipped_setup_fields: true });
+                  goToStep(3);
                 }}>
                   Continue anyway
                 </AppButton>
@@ -561,7 +577,7 @@ export function Onboarding({
         )}
         {step === 1 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 2 of 3</Badge>
+            <Badge tone="green">Step 2 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">About you</h2>
             <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -662,7 +678,7 @@ export function Onboarding({
         )}
         {step === 2 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 3 of 3</Badge>
+            <Badge tone="green">Step 3 of 4</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -818,7 +834,7 @@ export function Onboarding({
               </PreferenceSection>
             </div>
             <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
-              <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. Create your deadline-week plan when everything looks right.</p>
+              <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. The next step lets you save this plan to an account.</p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
                 <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); goToStep(1); }}>
                   <ArrowLeft size={16} /> Back
@@ -829,10 +845,109 @@ export function Onboarding({
                     setShowStep2SkipConfirm(true);
                     return;
                   }
-                  finish();
+                  track("onboarding_step_completed", { step: 2, next_step: 3 });
+                  goToStep(3);
                 }}>
-                  Create my plan <Sparkles size={16} />
+                  Continue <ArrowRight size={16} />
                 </AppButton>
+              </div>
+            </div>
+          </Card>
+        )}
+        {step === 3 && (
+          <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+            <Badge tone="green">Step 4 of 4</Badge>
+            <h2 className="mt-4 text-3xl font-bold">Save your plan</h2>
+            <p className="mt-2 text-stone-600">Sign in to keep your preferences, calendar setup and meal plan available across browsers and devices.</p>
+            <div className="mt-7 rounded-lg border border-emerald-100 bg-emerald-50/70 p-4">
+              <div className="flex items-start gap-3">
+                <div className="rounded-lg bg-white p-2 text-emerald-700">
+                  {account.isAnonymous ? <UserRound size={18} /> : <ShieldCheck size={18} />}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-stone-900">{account.isAnonymous ? "Optional account" : "Account connected"}</p>
+                  <p className="mt-1 break-words text-sm text-stone-600">
+                    {account.configured ? accountLabel : "Account sign-in is not configured for this app yet."}
+                  </p>
+                </div>
+              </div>
+              {account.configured && (
+                <div className="mt-5 space-y-3">
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <AppButton
+                      type="button"
+                      onClick={() => onConnectAccount("google")}
+                      disabled={accountBusy !== null}
+                      className="justify-center py-3"
+                    >
+                      <ShieldCheck size={15} /> {accountBusy === "google" ? "Connecting..." : "Continue with Google"}
+                    </AppButton>
+                    <AppButton
+                      type="button"
+                      onClick={() => onConnectAccount("microsoft")}
+                      disabled={accountBusy !== null}
+                      className="justify-center py-3"
+                    >
+                      <ShieldCheck size={15} /> {accountBusy === "microsoft" ? "Connecting..." : "Continue with Microsoft"}
+                    </AppButton>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="h-px flex-1 bg-emerald-200" />
+                    <span className="text-xs font-medium text-emerald-700">or email a magic link</span>
+                    <div className="h-px flex-1 bg-emerald-200" />
+                  </div>
+                  <form
+                    className="grid gap-2 sm:grid-cols-[1fr_auto]"
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      onSendEmailMagicLink(accountEmail);
+                    }}
+                  >
+                    <Input
+                      type="email"
+                      value={accountEmail}
+                      onChange={(event) => setAccountEmail(event.target.value)}
+                      placeholder="you@example.com"
+                      className="h-auto rounded-lg border-emerald-200 bg-white p-3 text-sm"
+                    />
+                    <AppButton type="submit" variant="secondary" disabled={accountBusy !== null || !accountEmail.trim()} className="justify-center">
+                      <Mail size={15} /> {accountBusy === "email" ? "Sending..." : "Send link"}
+                    </AppButton>
+                  </form>
+                </div>
+              )}
+              {accountMessage && <p className="mt-3 rounded-lg bg-white p-3 text-sm text-emerald-800">{accountMessage}</p>}
+            </div>
+            <div className="mt-7 grid gap-3 sm:grid-cols-[auto_1fr] sm:items-center">
+              <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 3, next_step: 2 }); goToStep(2); }}>
+                <ArrowLeft size={16} /> Back
+              </AppButton>
+              <div className="grid gap-3 sm:justify-end">
+                {!account.isAnonymous && (
+                  <AppButton className="justify-center py-3" onClick={finish} disabled={accountBusy !== null}>
+                    Create my plan <Sparkles size={16} />
+                  </AppButton>
+                )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    onUseAnonymousAccount();
+                    track("onboarding_account_skipped", {});
+                    finish();
+                  }}
+                  disabled={accountBusy !== null}
+                  className="rounded-lg px-4 py-2 text-sm font-semibold text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline disabled:pointer-events-none disabled:opacity-60"
+                >
+                  Continue without signing in
+                </button>
+                {account.isAnonymous && (
+                  <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-900">
+                    <p className="font-semibold">Your plan will stay on this browser.</p>
+                    <p className="mt-1">
+                      If browser data is cleared, or you use another browser or device, we may not be able to recover it.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </Card>

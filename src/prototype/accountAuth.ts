@@ -4,11 +4,14 @@ import {
   connectAuthEmulator,
   getAuth,
   GoogleAuthProvider,
+  isSignInWithEmailLink,
   linkWithPopup,
   OAuthProvider,
   onAuthStateChanged,
+  sendSignInLinkToEmail,
   setPersistence,
   signInAnonymously,
+  signInWithEmailLink,
   signInWithPopup,
   signOut,
   type Auth,
@@ -26,6 +29,7 @@ declare const __BUN_PUBLIC_FIREBASE_AUTH_EMULATOR_URL__: string | undefined;
 
 const FIREBASE_APP_NAME = "deadline-food-auth";
 const DEFAULT_FIREBASE_PROJECT_ID = "drp03-50059";
+const EMAIL_LINK_STORAGE_KEY = "deadlineFoodEmailForSignIn";
 
 export type AccountProviderId = "google" | "microsoft";
 
@@ -118,6 +122,7 @@ function firebaseConfig(): FirebaseOptions | null {
 
 let authInstance: Auth | null | undefined;
 let anonymousSignInPromise: Promise<User> | null = null;
+let emailLinkCompletionPromise: Promise<AccountSummary | null> | null = null;
 let emulatorConnected = false;
 
 function userToSummary(user: User | null): AccountSummary {
@@ -201,7 +206,57 @@ export async function ensureDeadlineFoodAuthUser(): Promise<User | null> {
   return anonymousSignInPromise;
 }
 
+function currentEmailLink(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return isSignInWithEmailLink(getDeadlineFoodAuth()!, window.location.href) ? window.location.href : null;
+}
+
+function cleanEmailLinkFromUrl(): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const cleanUrl = `${window.location.origin}${window.location.pathname}${window.location.hash || "#/onboarding"}`;
+  window.history.replaceState({}, document.title, cleanUrl);
+}
+
+export async function completeDeadlineFoodEmailLinkSignIn(): Promise<AccountSummary | null> {
+  const auth = getDeadlineFoodAuth();
+  if (auth === null || typeof window === "undefined") {
+    return null;
+  }
+
+  const emailLink = currentEmailLink();
+  if (emailLink === null) {
+    return null;
+  }
+
+  if (emailLinkCompletionPromise !== null) {
+    return emailLinkCompletionPromise;
+  }
+
+  emailLinkCompletionPromise = (async () => {
+    const email = window.localStorage.getItem(EMAIL_LINK_STORAGE_KEY);
+    if (!email) {
+      throw new Error("Open the sign-in link in the same browser where you requested it, or request a new link.");
+    }
+
+    const result = await signInWithEmailLink(auth, email, emailLink);
+    window.localStorage.removeItem(EMAIL_LINK_STORAGE_KEY);
+    cleanEmailLinkFromUrl();
+    return userToSummary(result.user);
+  })().finally(() => {
+    emailLinkCompletionPromise = null;
+  });
+
+  return emailLinkCompletionPromise;
+}
+
 export async function getDeadlineFoodAuthToken(): Promise<string | null> {
+  await completeDeadlineFoodEmailLinkSignIn().catch(() => null);
   const user = await ensureDeadlineFoodAuthUser();
   return user ? user.getIdToken() : null;
 }
@@ -261,6 +316,29 @@ export async function linkDeadlineFoodAccount(providerId: AccountProviderId): Pr
 
     throw error;
   }
+}
+
+export async function sendDeadlineFoodEmailMagicLink(email: string): Promise<void> {
+  const auth = getDeadlineFoodAuth();
+  if (auth === null || typeof window === "undefined") {
+    throw new Error("Firebase Auth is not configured for this app.");
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail || !normalizedEmail.includes("@")) {
+    throw new Error("Enter a valid email address.");
+  }
+
+  const url = new URL(window.location.href);
+  if (!url.hash) {
+    url.hash = "/onboarding";
+  }
+
+  await sendSignInLinkToEmail(auth, normalizedEmail, {
+    url: url.toString(),
+    handleCodeInApp: true,
+  });
+  window.localStorage.setItem(EMAIL_LINK_STORAGE_KEY, normalizedEmail);
 }
 
 export async function switchToAnonymousAccountOnThisDevice(): Promise<AccountSummary> {

@@ -118,7 +118,9 @@ user's data.
 The app remains usable without accounts. To enable account persistence:
 
 1. In Firebase Console, enable Authentication.
-2. Enable Anonymous, Google, and Microsoft providers under Sign-in method.
+2. Enable Anonymous, Google, Microsoft, and Email/Password providers under
+   Sign-in method. In Email/Password, also enable Email link/passwordless
+   sign-in.
 3. Add the app domains under Authentication > Settings > Authorized domains,
    including `localhost` for local development and your deployed domain.
 4. Add the Firebase web app config to `.env` or deployment env vars:
