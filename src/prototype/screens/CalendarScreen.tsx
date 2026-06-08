@@ -545,15 +545,29 @@ function PrepReminderSuggestions({
             These meals need advance prep. Add a reminder to your calendar the evening before.
           </p>
         </div>
-        <label className="flex items-center gap-2 self-center">
+        <div className="flex items-center gap-2 self-center">
           <span className="text-xs font-semibold text-stone-500">at</span>
-          <Input
-            type="time"
-            value={prepReminderTime}
-            onChange={(e) => onPrepReminderTimeChange(e.target.value)}
-            className="h-auto w-auto rounded-lg border-stone-200 bg-stone-50 p-2 text-sm"
-          />
-        </label>
+          <div className="flex flex-wrap gap-1.5">
+            {(["19:00", "20:00", "21:00", "22:00", "23:00"] as const).map((value) => {
+              const label = { "19:00": "7pm", "20:00": "8pm", "21:00": "9pm", "22:00": "10pm", "23:00": "11pm" }[value];
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => onPrepReminderTimeChange(value)}
+                  className={cn(
+                    "rounded-lg border px-2.5 py-1.5 text-xs font-medium transition",
+                    prepReminderTime === value
+                      ? "border-blue-400 bg-blue-50 text-blue-800"
+                      : "border-stone-200 bg-white text-stone-500 hover:bg-stone-50",
+                  )}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
       <div className="space-y-4">
         {suggestions.map((s) => (

@@ -229,13 +229,22 @@ export function SettingsScreen({
           <div>
             <span className="text-sm font-semibold">Evening prep reminder</span>
             <p className="mt-1 text-sm text-stone-500">When to be reminded to prep overnight meals.</p>
-            <Input
-              type="time"
-              step="60"
-              value={prefs.prepReminderTime}
-              onChange={(e) => { track("settings_preference_changed", { field: "prep_reminder_time", value: e.target.value }); setPrefs({ ...prefs, prepReminderTime: e.target.value }); }}
-              className="mt-3 h-auto rounded-lg border-stone-200 bg-white p-3"
-            />
+            <div className="mt-3 flex flex-wrap gap-2">
+              {(["19:00", "20:00", "21:00", "22:00", "23:00"] as const).map((value) => {
+                const label = { "19:00": "7pm", "20:00": "8pm", "21:00": "9pm", "22:00": "10pm", "23:00": "11pm" }[value];
+                const active = prefs.prepReminderTime === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => { track("settings_preference_changed", { field: "prep_reminder_time", value }); setPrefs({ ...prefs, prepReminderTime: value }); }}
+                    className={cn("rounded-lg border px-3 py-2.5 text-sm font-medium transition", active ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300")}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
           <div>
             <span className="text-sm font-semibold">Planning window</span>
