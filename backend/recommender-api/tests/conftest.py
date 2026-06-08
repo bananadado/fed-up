@@ -263,7 +263,15 @@ class FakeSession:
         """Emulate stage-1 hard filtering + embedding-ordered retrieval."""
         allergens = set(params.get("allergens") or [])
         dislikes = set(params.get("dislikes") or [])  # already lower-cased by the API
-        dietary = set(params.get("dietary") or [])
+        dietary_groups = [
+            set(value)
+            for key, value in params.items()
+            if key.startswith("dietary_") and isinstance(value, list)
+        ]
+        ingredient_exclusion_patterns = [
+            str(pattern).strip("%")
+            for pattern in (params.get("ingredient_exclusion_patterns") or [])
+        ]
         max_time = params.get("max_time")
         meal_slot = params.get("meal_slot")
         exclude = set(params.get("exclude_ids") or [])
@@ -273,7 +281,8 @@ class FakeSession:
         for r in self.store["recipes"].values():
             if taste is not None and not r.get("embedding"):
                 continue  # WHERE embedding IS NOT NULL
-            if allergens and (set(r.get("allergens") or []) & allergens):
+            recipe_allergens = {str(a).lower() for a in (r.get("allergens") or [])}
+            if allergens and (recipe_allergens & allergens):
                 continue
             if dislikes:
                 names = {
@@ -283,7 +292,16 @@ class FakeSession:
                 }
                 if names & dislikes:
                     continue
-            if dietary and not dietary.issubset(set(r.get("dietary_tags") or [])):
+            if ingredient_exclusion_patterns:
+                names = {
+                    str(i.get("name", "")).lower()
+                    for i in (r.get("ingredients") or [])
+                    if isinstance(i, dict)
+                }
+                if any(pattern in name for pattern in ingredient_exclusion_patterns for name in names):
+                    continue
+            recipe_dietary = {str(t).lower() for t in (r.get("dietary_tags") or [])}
+            if any(recipe_dietary.isdisjoint(group) for group in dietary_groups):
                 continue
             if max_time is not None and (r.get("prep_minutes") or 0) > max_time:
                 continue

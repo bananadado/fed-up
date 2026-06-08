@@ -352,12 +352,32 @@ async function listRecipes(): Promise<UnknownRecord[]> {
 
 // Map a canonical prototype recipe (Firestore shape) to the recommender's
 // RecipeIn payload so pgvector can embed it keyed by the recipe UID.
+const recommenderDietaryTags = new Set(["vegetarian", "vegan", "halal", "gluten-free", "dairy-free"]);
+const recommenderTagAliases: Record<string, string> = {
+  "peanuts": "peanut",
+  "eggs": "egg",
+};
+
+function canonicalRecommenderTag(value: unknown): string {
+  if (typeof value !== "string") return "";
+  const normalized = value.trim().toLowerCase().replace(/\s+/g, " ");
+  return recommenderTagAliases[normalized] ?? normalized;
+}
+
+function canonicalRecommenderTags(values: unknown): string[] {
+  if (!Array.isArray(values)) return [];
+  return [...new Set(values.map(canonicalRecommenderTag).filter(Boolean))];
+}
+
 function toRecommenderRecipePayload(recipe: UnknownRecord): UnknownRecord {
   const num = (value: unknown, fallback = 0): number =>
     typeof value === "number" && Number.isFinite(value) ? value : fallback;
   const str = (value: unknown): string => (typeof value === "string" ? value : "");
   const list = (value: unknown): unknown[] => (Array.isArray(value) ? value : []);
   const nutrition = asRecord(recipe.nutrition) ?? {};
+  const tags = canonicalRecommenderTags(recipe.tags);
+  const dietaryTags = tags.filter((tag) => recommenderDietaryTags.has(tag));
+  const suitabilityTags = tags.filter((tag) => !recommenderDietaryTags.has(tag));
 
   return {
     id: recipe.id,
@@ -366,9 +386,9 @@ function toRecommenderRecipePayload(recipe: UnknownRecord): UnknownRecord {
     meal_slots: list(recipe.mealSlots),
     price_pence: Math.round(num(recipe.price) * 100),
     prep_minutes: num(recipe.time),
-    dietary_tags: [],
-    allergens: list(recipe.allergens),
-    suitability_tags: list(recipe.tags),
+    dietary_tags: dietaryTags,
+    allergens: canonicalRecommenderTags(recipe.allergens),
+    suitability_tags: suitabilityTags,
     ingredients: list(recipe.ingredients),
     instructions: list(recipe.instructions),
     nutrition: {
