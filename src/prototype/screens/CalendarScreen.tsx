@@ -625,7 +625,6 @@ export function CalendarScreen({
   plan,
   customRecipes,
   prefs,
-  setPrefs,
   setScreen,
   track,
 }: {
@@ -635,7 +634,6 @@ export function CalendarScreen({
   plan: PlanEntry[];
   customRecipes: Meal[];
   prefs: Preferences;
-  setPrefs: (prefs: Preferences) => void;
   setScreen: (screen: Screen) => void;
   track: TrackPrototypeEvent;
 }) {
