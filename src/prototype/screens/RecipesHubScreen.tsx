@@ -29,6 +29,7 @@ export function RecipesHubScreen({
   deadlines,
   sessionId,
   onSelectMeal,
+  onAddToPlan,
   discoverContext,
   track,
 }: {
@@ -46,6 +47,7 @@ export function RecipesHubScreen({
   deadlines: Deadline[];
   sessionId: string;
   onSelectMeal: (mealId: string) => void;
+  onAddToPlan?: (mealId: string) => void;
   discoverContext?: { day: string; slot: MealSlot; mealId: string } | null;
   track: TrackPrototypeEvent;
 }) {
@@ -250,13 +252,22 @@ export function RecipesHubScreen({
                       </p>
                     </button>
                     <div className="mt-3 border-t border-stone-100 pt-3">
-                      <AppButton
-                        variant="ghost"
-                        className="w-full text-sm text-stone-400 hover:text-rose-600"
-                        onClick={() => setConfirmAction({ recipeId: recipe.id, isOwn })}
-                      >
-                        {isOwn ? "Delete recipe" : "Unsave"}
-                      </AppButton>
+                      <div className="flex gap-2">
+                        <AppButton
+                          variant="ghost"
+                          className="flex-1 text-sm text-stone-400 hover:text-rose-600"
+                          onClick={() => setConfirmAction({ recipeId: recipe.id, isOwn })}
+                        >
+                          {isOwn ? "Delete recipe" : "Unsave"}
+                        </AppButton>
+                        <AppButton
+                          variant="secondary"
+                          className="flex-1 justify-center text-sm"
+                          onClick={() => onAddToPlan?.(recipe.id)}
+                        >
+                          Add to plan
+                        </AppButton>
+                      </div>
                     </div>
                   </div>
                 );

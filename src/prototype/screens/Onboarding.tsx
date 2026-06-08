@@ -110,6 +110,7 @@ export function Onboarding({
   setCalendarTokens,
   sessionId,
   track,
+  setCalendarSkipped,
 }: {
   setOnboarded: (onboarded: boolean) => void;
   setScreen: (screen: Screen) => void;
@@ -128,6 +129,7 @@ export function Onboarding({
   setCalendarTokens: (tokens: CalendarToken[]) => void;
   sessionId: string;
   track: TrackPrototypeEvent;
+  setCalendarSkipped: (skipped: boolean) => void;
 }) {
   const [step, setStep] = useState(() => {
     try {
@@ -293,6 +295,7 @@ export function Onboarding({
     track("calendar_skip_confirmed", { provider: calendarProvider });
     setShowCalendarSkipConfirm(false);
     track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider, calendar_skipped: true });
+    setCalendarSkipped(true);
     goToStep(1);
   }
 
@@ -394,6 +397,20 @@ export function Onboarding({
               <p className={cn("mt-4 rounded-lg p-3 text-sm", importError ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800")}>
                 {importMessage}
               </p>
+            )}
+            {importError && (
+              <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 p-3">
+                <p className="text-sm text-rose-800 font-medium">We couldn't connect to {calendarProvider === "google" ? "Google" : "Microsoft"}.</p>
+                <p className="mt-1 text-sm text-rose-700">You can skip this step and add your workload manually on the Calendar screen, or try again later in Settings.</p>
+                <div className="mt-3 flex gap-2">
+                  <AppButton variant="secondary" onClick={() => { track("calendar_skip_confirmed", { provider: calendarProvider }); setShowCalendarSkipConfirm(true); }}>
+                    Skip for now
+                  </AppButton>
+                  <AppButton variant="secondary" onClick={() => { track("calendar_retry_clicked", { provider: calendarProvider }); setImportError(false); setImportMessage(""); }}>
+                    Try again
+                  </AppButton>
+                </div>
+              </div>
             )}
             <p className="mt-4 text-sm text-stone-500">
               Adding a calendar is optional. You can import calendar events any time through Settings or the Calendar menu.

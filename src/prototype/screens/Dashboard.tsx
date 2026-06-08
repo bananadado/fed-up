@@ -24,6 +24,7 @@ export function Dashboard({
   onRegenerate,
   openDiscover,
   track,
+  calendarSkipped,
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
@@ -38,6 +39,7 @@ export function Dashboard({
   onRegenerate: () => void;
   openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
+  calendarSkipped?: boolean;
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
   const nextMeal = plan
@@ -82,6 +84,27 @@ export function Dashboard({
           >
             <Sparkles size={16} /> {regenerating ? "Building plan…" : planGenerated ? "Regenerate plan" : "Generate plan"}
           </AppButton>
+        </div>
+      )}
+      {calendarSkipped && !planStale && (
+        <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 rounded-lg bg-amber-100 p-1.5 text-amber-700">
+              <Sparkles size={16} />
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-amber-900">Calendar not connected</p>
+              <p className="mt-1 text-sm text-amber-800">
+                Your plan was generated without calendar context. Adding a calendar lets Autopilot adapt cooking effort around your busy study days.
+              </p>
+            </div>
+            <AppButton
+              variant="secondary"
+              onClick={() => { track("dashboard_calendar_connect_clicked"); setScreen("calendar"); }}
+            >
+              Connect calendar
+            </AppButton>
+          </div>
         </div>
       )}
       <div className="grid gap-5 lg:grid-cols-[.9fr_1.1fr]">
