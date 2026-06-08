@@ -61,6 +61,8 @@ export interface BuildPlanInput {
   pool: AllocatorMeal[];
   /** Lower-cased dislikes + allergens — hard filters. */
   avoided: string[];
+  /** Canonical dietary requirements from onboarding. */
+  dietary?: string[];
   /** Weekly budget cap in pence. Omit for legacy/no-budget allocation. */
   weeklyBudgetPence?: number;
 }
@@ -72,6 +74,42 @@ const SLOTS: MealSlot[] = ["breakfast", "lunch", "dinner"];
 const LEFTOVER_PORTIONS = 2;
 const LEFTOVER_SHELF_DAYS = 3;
 const RECENT_REPEAT_DAYS = 3;
+
+const TAG_ALIASES: Record<string, string> = {
+  peanuts: "peanut",
+  eggs: "egg",
+};
+
+const ANIMAL_ALLERGENS = new Set(["egg", "fish", "shellfish", "milk", "dairy"]);
+const VEGETARIAN_ALLERGENS = new Set(["fish", "shellfish"]);
+const DAIRY_ALLERGENS = new Set(["milk", "dairy"]);
+
+const ANIMAL_INGREDIENT_PATTERNS = [
+  "beef", "chicken", "pork", "bacon", "ham", "lamb", "turkey", "duck",
+  "fish", "salmon", "tuna", "cod", "prawn", "shrimp", "shellfish",
+  "egg", "milk", "cheese", "butter", "yoghurt", "yogurt", "cream", "honey",
+];
+const MEAT_FISH_INGREDIENT_PATTERNS = [
+  "beef", "chicken", "pork", "bacon", "ham", "lamb", "turkey", "duck",
+  "fish", "salmon", "tuna", "cod", "prawn", "shrimp", "shellfish",
+];
+const GLUTEN_INGREDIENT_PATTERNS = ["wheat", "barley", "rye", "flour", "bread", "pasta", "couscous"];
+const DAIRY_INGREDIENT_PATTERNS = ["milk", "cheese", "butter", "yoghurt", "yogurt", "cream"];
+const HALAL_INGREDIENT_PATTERNS = ["pork", "bacon", "ham", "lard", "gelatin", "wine", "beer", "alcohol"];
+
+function canonicalTag(value: string): string {
+  const tag = value.trim().toLowerCase().replace(/\s+/g, " ");
+  return TAG_ALIASES[tag] ?? tag;
+}
+
+function canonicalTags(values: string[]): string[] {
+  return [...new Set(values.map(canonicalTag).filter(Boolean))];
+}
+
+function includesAnyPattern(value: string, patterns: string[]): boolean {
+  const normalized = canonicalTag(value);
+  return patterns.some((pattern) => normalized.includes(pattern));
+}
 
 export function classifyEffort(meal: AllocatorMeal): Effort {
   if (meal.type === "fallback") return "minimal";
@@ -90,8 +128,44 @@ function band(stress: number): Band {
 
 function isSafe(meal: AllocatorMeal, avoided: Set<string>): boolean {
   if (avoided.size === 0) return true;
-  if (meal.ingredients.some((i) => avoided.has((i.name || "").toLowerCase()))) return false;
-  if (meal.allergens.some((a) => avoided.has(a.toLowerCase()))) return false;
+  if (meal.ingredients.some((i) => avoided.has(canonicalTag(i.name || "")))) return false;
+  if (meal.allergens.some((a) => avoided.has(canonicalTag(a)))) return false;
+  return true;
+}
+
+function hasTag(meal: AllocatorMeal, tag: string): boolean {
+  return canonicalTags(meal.tags).includes(tag);
+}
+
+function hasAnyAllergen(meal: AllocatorMeal, allergens: Set<string>): boolean {
+  return canonicalTags(meal.allergens).some((allergen) => allergens.has(allergen));
+}
+
+function hasAnyIngredient(meal: AllocatorMeal, patterns: string[]): boolean {
+  return meal.ingredients.some((ingredient) => includesAnyPattern(ingredient.name || "", patterns));
+}
+
+function isDietCompatible(meal: AllocatorMeal, dietary: Set<string>): boolean {
+  if (dietary.has("vegan")) {
+    if (!hasTag(meal, "vegan")) return false;
+    if (hasAnyAllergen(meal, ANIMAL_ALLERGENS)) return false;
+    if (hasAnyIngredient(meal, ANIMAL_INGREDIENT_PATTERNS)) return false;
+  } else if (dietary.has("vegetarian")) {
+    if (!hasTag(meal, "vegetarian") && !hasTag(meal, "vegan")) return false;
+    if (hasAnyAllergen(meal, VEGETARIAN_ALLERGENS)) return false;
+    if (hasAnyIngredient(meal, MEAT_FISH_INGREDIENT_PATTERNS)) return false;
+  }
+
+  if (dietary.has("gluten-free") && hasAnyIngredient(meal, GLUTEN_INGREDIENT_PATTERNS)) return false;
+  if (dietary.has("dairy-free")) {
+    if (hasAnyAllergen(meal, DAIRY_ALLERGENS)) return false;
+    if (hasAnyIngredient(meal, DAIRY_INGREDIENT_PATTERNS)) return false;
+  }
+  if (dietary.has("halal")) {
+    if (!hasTag(meal, "halal") && !hasTag(meal, "vegetarian") && !hasTag(meal, "vegan")) return false;
+    if (hasAnyIngredient(meal, HALAL_INGREDIENT_PATTERNS)) return false;
+  }
+
   return true;
 }
 
@@ -152,8 +226,9 @@ function effortRank(effort: Effort, b: Band, slot: MealSlot): number {
 }
 
 export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
-  const avoided = new Set(input.avoided.map((v) => v.toLowerCase()));
-  const safePool = input.pool.filter((m) => isSafe(m, avoided));
+  const avoided = new Set(canonicalTags(input.avoided));
+  const dietary = new Set(canonicalTags(input.dietary ?? []));
+  const safePool = input.pool.filter((m) => isSafe(m, avoided) && isDietCompatible(m, dietary));
   const weeklyBudgetPence =
     input.weeklyBudgetPence === undefined || !Number.isFinite(input.weeklyBudgetPence) ?
       null :
