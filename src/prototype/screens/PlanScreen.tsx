@@ -148,7 +148,7 @@ export function PlanScreen({
       )}
 
       {addToPlanMealId && (() => {
-        const meal = getMealById(addToPlanMealId, customRecipes);
+        const meal = discoverSaved.find((m) => m.id === addToPlanMealId) ?? getMealById(addToPlanMealId, customRecipes);
         return (
           <div className="mb-6 flex items-center justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
             <p className="text-sm text-emerald-900">
