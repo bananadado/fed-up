@@ -270,7 +270,7 @@ export function SettingsScreen({
           </div>
           <div>
             <span className="text-sm font-semibold">Units</span>
-            <p className="mt-1 text-sm text-stone-500">How ingredient quantities are shown in recipes and your shopping list.</p>
+            <p className="mt-1 text-sm text-stone-500">Your saved default — used across the whole app. Recipe pages have a temporary override that doesn't change this setting.</p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               {([
                 { value: "metric", label: "Metric (g, ml)" },

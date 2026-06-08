@@ -1,6 +1,6 @@
 import type { RecipeIngredient } from "./types";
 
-const numberPattern = /^(?<quantity>\d+(?:\.\d+)?|\d+\/\d+)\s*(?<unit>g|kg|ml|l|tbsp|tsp|cup|cups|slice|slices|wrap|wraps|item|items|can|cans|portion|portions|pack|packs)?\s+(?<name>.+)$/i;
+const numberPattern = /^(?<quantity>\d+\s+\d+\/\d+|\d+(?:\.\d+)?|\d+\/\d+)\s*(?<unit>g|kg|ml|l|tbsp|tsp|cup|cups|slice|slices|wrap|wraps|item|items|can|cans|portion|portions|pack|packs)?\s+(?<name>.+)$/i;
 
 export const ingredientUnits = [
   "g",
@@ -130,6 +130,13 @@ const ingredientAliases = new Map([
 ]);
 
 function parseQuantity(value: string) {
+  const mixedMatch = /^(\d+)\s+(\d+)\/(\d+)$/.exec(value.trim());
+  if (mixedMatch) {
+    const whole = Number(mixedMatch[1]);
+    const num = Number(mixedMatch[2]);
+    const den = Number(mixedMatch[3]);
+    return den ? whole + num / den : whole;
+  }
   if (value.includes("/")) {
     const [numerator = 1, denominator = 1] = value.split("/").map(Number);
     return denominator ? numerator / denominator : 1;

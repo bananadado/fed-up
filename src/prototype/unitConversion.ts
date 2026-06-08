@@ -1,5 +1,24 @@
 import type { RecipeIngredient } from "./types";
 
+const UNIT_ALIASES: Record<string, string> = {
+  cups: "cup", cupss: "cup",
+  tablespoon: "tbsp", tablespoons: "tbsp", tablespoonss: "tbsp",
+  teaspoon: "tsp", teaspoons: "tsp", tsps: "tsp", tbsps: "tbsp",
+  gram: "g", grams: "g",
+  kilogram: "kg", kilograms: "kg",
+  milliliter: "ml", milliliters: "ml", millilitre: "ml", millilitres: "ml",
+  liter: "l", liters: "l", litre: "l", litres: "l",
+  ounce: "oz", ounces: "oz",
+  pound: "lb", pounds: "lb", lbs: "lb",
+  "fluid ounce": "fl oz", "fluid ounces": "fl oz",
+  "fl. oz": "fl oz", "fl. oz.": "fl oz",
+};
+
+function canonicalizeUnit(unit: string): string {
+  const normalized = unit.trim().toLowerCase();
+  return UNIT_ALIASES[normalized] ?? normalized;
+}
+
 const VOLUME_UNITS = new Set(["ml", "l", "tsp", "tbsp", "cup", "fl oz"]);
 const MASS_UNITS = new Set(["g", "kg", "oz", "lb"]);
 
@@ -37,11 +56,50 @@ function imperialMassDisplay(oz: number): { quantity: number; unit: string } {
     : { quantity: round(oz, 1), unit: "oz" };
 }
 
+function parseEmbeddedQty(s: string): number {
+  const mixed = /^(\d+)\s+(\d+)\/(\d+)$/.exec(s.trim());
+  if (mixed) {
+    const [, w = "0", n = "0", d = "1"] = mixed;
+    return Number(w) + (Number(d) ? Number(n) / Number(d) : 0);
+  }
+  const frac = /^(\d+)\/(\d+)$/.exec(s.trim());
+  if (frac) {
+    const [, n = "1", d = "1"] = frac;
+    return Number(d) ? Number(n) / Number(d) : 1;
+  }
+  return Number(s) || 1;
+}
+
+const EMBEDDED_PATTERN =
+  /^(\d+(?:\s+\d+\/\d+|\/\d+|\.\d+)?)\s+(fl\s+oz|tbsp|tsp|cups?|ml|l|kg|g|lbs?|oz)\s+(.+)$/i;
+
+function cleanEmbeddedIngredient(ingredient: RecipeIngredient): RecipeIngredient {
+  if (!/^\d/.test(ingredient.name.trim())) return ingredient;
+  const m = EMBEDDED_PATTERN.exec(ingredient.name.trim());
+  if (!m) return ingredient;
+  const [, qtyStr = "1", rawUnit = "", rawName = ""] = m;
+  const qty = parseEmbeddedQty(qtyStr);
+  const parsedName = rawName.trim().toLowerCase();
+  if (!parsedName || !Number.isFinite(qty)) return ingredient;
+  const unit = canonicalizeUnit(rawUnit);
+  if (unit === "serving" || unit === "") return ingredient;
+  const origUnit = canonicalizeUnit(ingredient.unit);
+  const quantity =
+    origUnit === "serving" || origUnit === "" ? ingredient.quantity * qty : qty;
+  return { ...ingredient, name: parsedName, quantity, unit };
+}
+
 export function normalizeIngredientUnit(
   ingredient: RecipeIngredient,
   unitSystem: "metric" | "imperial",
 ): RecipeIngredient {
-  const { unit, quantity } = ingredient;
+  const cleaned = cleanEmbeddedIngredient(ingredient);
+  if (cleaned !== ingredient) {
+    return normalizeIngredientUnit(cleaned, unitSystem);
+  }
+
+  const { quantity } = ingredient;
+  const unit = canonicalizeUnit(ingredient.unit);
 
   if (unitSystem === "metric") {
     if (unit === "ml" || unit === "l") {
@@ -66,14 +124,20 @@ export function normalizeIngredientUnit(
 
   if (unitSystem === "imperial") {
     if (VOLUME_UNITS.has(unit)) {
-      const ml = unit === "ml" ? quantity : unit === "l" ? quantity * 1000 : quantity * (TO_ML[unit] ?? 1);
-      const floz = ml * 0.033814; // ml → fl oz
+      if (unit === "cup" || unit === "tsp" || unit === "tbsp" || unit === "fl oz") {
+        return { ...ingredient, unit };
+      }
+      const ml = unit === "ml" ? quantity : quantity * 1000;
+      const floz = ml * 0.033814;
       const d = imperialVolumeDisplay(floz);
       return { ...ingredient, quantity: d.quantity, unit: d.unit };
     }
     if (MASS_UNITS.has(unit)) {
-      const g = unit === "g" ? quantity : unit === "kg" ? quantity * 1000 : quantity * (TO_G[unit] ?? 1);
-      const oz = g * 0.035274; // g → oz
+      if (unit === "oz" || unit === "lb") {
+        return { ...ingredient, unit };
+      }
+      const g = unit === "g" ? quantity : quantity * 1000;
+      const oz = g * 0.035274;
       const d = imperialMassDisplay(oz);
       return { ...ingredient, quantity: d.quantity, unit: d.unit };
     }

@@ -64,6 +64,19 @@ describe("recipe ingredient helpers", () => {
     ]);
   });
 
+  test("parses mixed-fraction quantities like '1 1/2' and '1 1/4'", () => {
+    const [flour] = parseIngredients("1 1/2 cups flour");
+    expect(flour?.quantity).toBe(1.5);
+    expect(flour?.unit).toBe("cup");
+    expect(flour?.name).toBe("flour");
+
+    const [sugar] = parseIngredients("1 1/4 cup sugar");
+    expect(sugar?.quantity).toBe(1.25);
+
+    const [salt] = parseIngredients("2 3/4 tsp salt");
+    expect(salt?.quantity).toBeCloseTo(2.75);
+  });
+
   test("returns ingredients unchanged for a factor of 1 or an invalid factor", () => {
     const ingredients = [{ name: "oats", quantity: 50, unit: "g" }];
     expect(scaleIngredients(ingredients, 1)).toBe(ingredients);

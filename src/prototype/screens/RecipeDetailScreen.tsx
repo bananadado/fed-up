@@ -446,7 +446,7 @@ export function RecipeDetailScreen({
                   )}
                   <ul className="mt-4 grid gap-2">
                     {scaledIngredients.map((ingredient) => (
-                      <li key={`${ingredient.name}-${ingredient.unit}-${ingredient.preparation ?? ""}`} className="rounded-lg bg-stone-50 px-3 py-2 text-stone-700">
+                      <li key={`${ingredient.name}-${ingredient.quantity}-${ingredient.unit}-${ingredient.preparation ?? ""}`} className="rounded-lg bg-stone-50 px-3 py-2 text-stone-700">
                         {formatIngredient(ingredient)}
                       </li>
                     ))}
