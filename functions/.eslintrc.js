@@ -20,6 +20,7 @@ module.exports = {
   ignorePatterns: [
     "/lib/**/*", // Ignore built files.
     "/src/generated/**/*", // Ignore generated files.
+    "/src/**/*.test.ts", // Tests run under bun, not the functions tsc project.
   ],
   plugins: [
     "@typescript-eslint",

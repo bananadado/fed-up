@@ -412,7 +412,7 @@ Files:
 This tree:
 
 - Uses React Router routes.
-- Loads bootstrap data from the Deadline Food API.
+- Loads bootstrap data from the Fed Up API.
 - Uses pure `src/domain` planner logic.
 - Implements the spec's strategy comparison and rescue route.
 
@@ -459,4 +459,3 @@ Before changing frontend code:
 4. Keep budget/time impact visible around swaps.
 5. Preserve accessibility labels and keyboard-friendly controls.
 6. Run at least `bun run lint`, `bun run typecheck`, and targeted tests.
-

@@ -1,7 +1,7 @@
 import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences } from "./types";
 
 export const ANONYMOUS_SESSION_STORAGE_KEY = "deadlineFoodAnonymousSessionId";
-export const PROTOTYPE_SESSION_SETTINGS_VERSION = 2;
+export const PROTOTYPE_SESSION_SETTINGS_VERSION = 3;
 export const PROTOTYPE_SESSION_RETENTION_DAYS = 90;
 
 export type IcsSubscription = {
@@ -32,7 +32,26 @@ export type PrototypeSessionSettings = {
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
   calendarTokens?: CalendarToken[];
+  /** Hash of the inputs the current plan was generated from (staleness detection). */
+  planSignature?: string;
+  /** ISO timestamp of the last auto-plan generation. */
+  planGeneratedAt?: string;
+  /** Whether the user explicitly skipped calendar import during onboarding. */
+  calendarSkipped?: boolean;
 };
+
+/**
+ * Fill in preference fields added after a session was first written (e.g. the
+ * #66 planning-horizon settings) so restored sessions never carry `undefined`.
+ */
+export function normalizePreferences(raw: Preferences): Preferences {
+  const horizon = Number.isFinite(raw.planningHorizonDays) ? raw.planningHorizonDays : 21;
+  return {
+    ...raw,
+    planningHorizonDays: Math.min(28, Math.max(1, Math.round(horizon))),
+    planRegenMode: raw.planRegenMode === "auto" ? "auto" : "prompt",
+  };
+}
 
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 
@@ -62,6 +81,9 @@ export function createPrototypeSessionSettings(input: {
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
   calendarTokens?: CalendarToken[];
+  planSignature?: string;
+  planGeneratedAt?: string;
+  calendarSkipped?: boolean;
 }): PrototypeSessionSettings {
   return {
     settingsVersion: PROTOTYPE_SESSION_SETTINGS_VERSION,
@@ -78,6 +100,9 @@ export function createPrototypeSessionSettings(input: {
     calendarEvents: input.calendarEvents,
     icsSubscriptions: input.icsSubscriptions,
     calendarTokens: input.calendarTokens,
+    planSignature: input.planSignature,
+    planGeneratedAt: input.planGeneratedAt,
+    calendarSkipped: input.calendarSkipped,
   };
 }
 

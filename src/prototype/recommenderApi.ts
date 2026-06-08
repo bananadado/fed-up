@@ -1,6 +1,6 @@
 import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
-import { requestDeadlineContext, type ContextEventInput } from "./calendarImport";
+import { deadlineToContextEvent, requestDeadlineContext, type ContextEventInput } from "./calendarImport";
 import type { Deadline, Meal, MealSlot, Preferences, RecipeIngredient } from "./types";
 
 type RecommenderRecipe = {
@@ -45,6 +45,20 @@ function cookingAbility(ability: string): string {
   return ability || "basic";
 }
 
+const recommenderTagAliases: Record<string, string> = {
+  peanuts: "peanut",
+  eggs: "egg",
+};
+
+export function normalizeRecommenderTag(value: string): string {
+  const normalized = value.trim().toLowerCase().replace(/\s+/g, " ");
+  return recommenderTagAliases[normalized] ?? normalized;
+}
+
+export function normalizeRecommenderTags(values: string[]): string[] {
+  return [...new Set(values.map(normalizeRecommenderTag).filter(Boolean))];
+}
+
 export function deadlineStressFromDeadlines(deadlines: Deadline[]): number {
   const total = deadlines
     .filter((deadline) => deadline.eventType === "academic")
@@ -55,18 +69,6 @@ export function deadlineStressFromDeadlines(deadlines: Deadline[]): number {
     }, 0);
 
   return Math.min(1, total / 3);
-}
-
-/** Reconstruct a minimal context event from a deadline so the backend pipeline
- * can re-score it. Deadlines without a concrete date can't be placed. */
-function deadlineToContextEvent(deadline: Deadline): ContextEventInput | null {
-  if (!deadline.rawDate) return null;
-  const hasClockTime = /^\d{2}:\d{2}$/.test(deadline.time);
-  return {
-    title: deadline.title,
-    start: hasClockTime ? `${deadline.rawDate}T${deadline.time}:00` : deadline.rawDate,
-    all_day: !hasClockTime,
-  };
 }
 
 /**
@@ -104,10 +106,10 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences,
       kitchen_access: prefs.kitchen,
       budget_pence: Math.round(prefs.budget * 100),
       max_time_minutes: prefs.maxTime ?? 240,
-      dietary_tags: prefs.dietary,
-      allergens: prefs.allergens,
-      dislikes: prefs.dislikes,
-      likes: prefs.likes,
+      dietary_tags: normalizeRecommenderTags(prefs.dietary),
+      allergens: normalizeRecommenderTags(prefs.allergens),
+      dislikes: normalizeRecommenderTags(prefs.dislikes),
+      likes: normalizeRecommenderTags(prefs.likes),
       university: prefs.university || null,
       postcode: prefs.postcode || null,
     }),

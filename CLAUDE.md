@@ -1,5 +1,5 @@
 
-# Deadline Food Autopilot
+# Fed Up
 
 Student deadline-week food planning prototype: affordable, low-effort meals with plan failure recovery when cooking becomes unrealistic.
 
@@ -53,7 +53,7 @@ If the user says "the app", "prototype", or names screens like Dashboard, Plan, 
 - State: `src/state/DeadlineModeProvider.tsx`
 - Components: `src/components/deadline-food/*.tsx`
 
-This slice more closely matches `DEADLINE_FOOD_AUTOPILOT_SPEC.md` with strategy cards and `/deadline-mode/*` routes. It is covered by `src/domain/planGenerator.test.ts` but NOT by the active e2e flow.
+This slice more closely matches `FED_UP_SPEC.md` with strategy cards and `/deadline-mode/*` routes. It is covered by `src/domain/planGenerator.test.ts` but NOT by the active e2e flow.
 
 **The two surfaces use different data models.** Active uses `Meal` with `cook|remix|fallback` types and prices in pounds. Dormant uses `MealOption` with `prep_base|remix|quick_cook|fallback` types and prices in pence. Do not mix them without an explicit migration plan.
 
@@ -171,6 +171,7 @@ Never manually edit `functions/src/generated/prototypeData.ts` — always regene
 | Scenario | `GET /api/deadline-food/scenario` | `deadlineFoodScenario` |
 | Session | `GET/PUT /api/deadline-food/session` | `deadlineFoodSession` |
 | Nutrition | `POST /api/deadline-food/nutrition/openfoodfacts` | `deadlineFoodNutrition` |
+| Auto-plan | `POST /api/deadline-food/auto-plan` | `deadlineFoodAutoPlan` |
 
 When adding/changing an endpoint: update `src/adapters/deadlineFoodApi.ts`, local route in `src/index.ts`, Firebase function in `functions/src/index.ts`, and keep response shapes aligned.
 

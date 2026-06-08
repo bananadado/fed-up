@@ -96,6 +96,48 @@ def test_dietary_tags_are_required(client):
     assert ids == {"vegan"}
 
 
+def test_capitalized_onboarding_dietary_tags_are_normalized(client):
+    _seed_user(client, dietary_tags=["Vegetarian"], max_time_minutes=999)
+    _seed_recipe(client, id="veg", name="Vegetarian", dietary_tags=["vegetarian"])
+    _seed_recipe(client, id="vegan", name="Vegan", dietary_tags=["vegan"])
+    _seed_recipe(client, id="meat", name="Meat", dietary_tags=[])
+
+    ids = {r["recipe"]["id"] for r in _recommend(client)}
+    assert ids == {"veg", "vegan"}
+
+
+def test_gluten_free_filters_by_allergen_not_exact_dietary_tag(client):
+    _seed_user(client, dietary_tags=["Gluten-free"], max_time_minutes=999)
+    _seed_recipe(client, id="rice", name="Rice", dietary_tags=[], allergens=[])
+    _seed_recipe(client, id="pasta", name="Pasta", dietary_tags=[], allergens=["gluten"])
+    _seed_recipe(client, id="bread", name="Bread", dietary_tags=[], allergens=[],
+                 ingredients=[{"name": "wheat flour"}])
+
+    ids = {r["recipe"]["id"] for r in _recommend(client)}
+    assert ids == {"rice"}
+
+
+def test_halal_uses_vegetarian_fallback_and_blocks_haram_ingredients(client):
+    _seed_user(client, dietary_tags=["Halal"], max_time_minutes=999)
+    _seed_recipe(client, id="veg", name="Vegetarian", dietary_tags=["vegetarian"], ingredients=[])
+    _seed_recipe(client, id="pork", name="Pork", dietary_tags=["halal"],
+                 ingredients=[{"name": "pork belly"}])
+    _seed_recipe(client, id="plain", name="Plain", dietary_tags=[], ingredients=[])
+
+    ids = {r["recipe"]["id"] for r in _recommend(client)}
+    assert ids == {"veg"}
+
+
+def test_capitalized_allergens_are_normalized(client):
+    _seed_user(client, allergens=["Gluten", "Peanuts"], max_time_minutes=999)
+    _seed_recipe(client, id="rice", name="Rice", allergens=[])
+    _seed_recipe(client, id="bread", name="Bread", allergens=["gluten"])
+    _seed_recipe(client, id="satay", name="Satay", allergens=["peanut"])
+
+    ids = {r["recipe"]["id"] for r in _recommend(client)}
+    assert ids == {"rice"}
+
+
 def test_max_time_is_hard_filtered(client):
     _seed_user(client, max_time_minutes=20)
     _seed_recipe(client, id="quick", name="Quick", prep_minutes=15)

@@ -1,5 +1,5 @@
-import { ChevronRight, Clock3, RefreshCcw, Utensils } from "lucide-react";
-import { useState } from "react";
+import { ChevronRight, Clock3, RefreshCcw, ShoppingBasket, Sparkles, Utensils } from "lucide-react";
+import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
@@ -7,6 +7,7 @@ import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal } from "../components/SwapModal";
 import { getMealById, money } from "../utils";
+import { ingredientsFromPlan } from "../shopping";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -15,19 +16,34 @@ export function Dashboard({
   plan,
   setPlan,
   customRecipes,
+  discoverSaved,
   setScreen,
   onSelectMeal,
+  planStale,
+  planGenerated,
+  regenerating,
+  onRegenerate,
+  openDiscover,
   track,
+  calendarSkipped,
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
   setPlan: (plan: PlanEntry[]) => void;
   customRecipes: Meal[];
+  discoverSaved: Meal[];
   setScreen: (screen: Screen) => void;
   onSelectMeal: (mealId: string) => void;
+  planStale: boolean;
+  planGenerated: boolean;
+  regenerating: boolean;
+  onRegenerate: () => void;
+  openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
+  calendarSkipped?: boolean;
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
+  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
   const nextMeal = plan
     .flatMap((entry) =>
       entry.meals.map((planMeal) => ({
@@ -51,6 +67,48 @@ export function Dashboard({
           View full plan <ChevronRight size={16} />
         </AppButton>
       </div>
+      {planStale && (
+        <div className="mb-6 flex flex-col gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 rounded-lg bg-emerald-100 p-1.5 text-emerald-700">
+              <Sparkles size={16} />
+            </span>
+            <p className="text-sm leading-6 text-emerald-900">
+              {planGenerated
+                ? "Your calendar or recipes changed. Regenerate your plan to keep it in step with your week."
+                : "Generate a plan from your saved recipes and calendar to get started."}
+            </p>
+          </div>
+          <AppButton
+            className="shrink-0 justify-center"
+            disabled={regenerating}
+            onClick={() => { track("auto_plan_regenerate_clicked", { source: "dashboard", stale: planStale }); onRegenerate(); }}
+          >
+            <Sparkles size={16} /> {regenerating ? "Building plan…" : planGenerated ? "Regenerate plan" : "Generate plan"}
+          </AppButton>
+        </div>
+      )}
+      {calendarSkipped && !planStale && (
+        <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 rounded-lg bg-amber-100 p-1.5 text-amber-700">
+              <Sparkles size={16} />
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-amber-900">Calendar not connected</p>
+              <p className="mt-1 text-sm text-amber-800">
+                Your plan was generated without calendar context. Adding a calendar lets Fed Up adapt cooking effort around your busy study days.
+              </p>
+            </div>
+            <AppButton
+              variant="secondary"
+              onClick={() => { track("dashboard_calendar_connect_clicked"); setScreen("calendar"); }}
+            >
+              Connect calendar
+            </AppButton>
+          </div>
+        </div>
+      )}
       <div className="grid gap-5 lg:grid-cols-[.9fr_1.1fr]">
         <div className="space-y-5">
           <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />
@@ -62,7 +120,7 @@ export function Dashboard({
               <>
                 <button
                   type="button"
-                  onClick={() => { track("dashboard_next_meal_clicked", { meal_id: nextMeal.mealId }); onSelectMeal(nextMeal.mealId); }}
+                  onClick={() => { track("dashboard_next_meal_clicked", { meal_id: nextMeal.mealId }); track("meal_card_view_clicked", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, source: "dashboard_next_meal" }); onSelectMeal(nextMeal.mealId); }}
                   className="mt-4 break-words text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                 >
                   {nextMeal.meal.image} {nextMeal.meal.name}
@@ -81,13 +139,60 @@ export function Dashboard({
                     </Badge>
                   ))}
                 </div>
-                <AppButton variant="secondary" className="mt-4 w-full justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, layout: "dashboard_next_meal" }); setRescueChoice({ day: nextMeal.day, slot: nextMeal.slot }); }}>
-                  <RefreshCcw size={13} /> Change meal
-                </AppButton>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <AppButton variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, layout: "dashboard_next_meal" }); track("meal_card_swap_clicked", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, source: "dashboard_next_meal" }); setRescueChoice({ day: nextMeal.day, slot: nextMeal.slot }); }}>
+                    <RefreshCcw size={13} /> Change
+                  </AppButton>
+                  <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(nextMeal.day, nextMeal.slot, nextMeal.mealId)}>
+                    Find something else
+                  </AppButton>
+                </div>
               </>
             ) : (
               <p className="mt-3 text-stone-500">No meals planned this week.</p>
             )}
+          </Card>
+          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4">
+            <div className="flex items-center gap-3">
+              <span className="rounded-lg bg-emerald-50 p-2 text-emerald-700">
+                <ShoppingBasket size={18} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">Shopping list</p>
+                <p className="mt-0.5 text-sm text-stone-500">
+                  {shoppingItems.length === 0 ? "No items yet" : `${shoppingItems.length} items to buy this week`}
+                </p>
+              </div>
+              <AppButton
+                variant="secondary"
+                className="shrink-0 px-3 py-1.5 text-xs"
+                disabled={shoppingItems.length === 0}
+                onClick={() => {
+                  track("dashboard_shopping_list_clicked", { item_count: shoppingItems.length });
+                  try { sessionStorage.setItem("deadlineFood:openShopping", "1"); } catch { /* ignore */ }
+                  setScreen("plan");
+                }}
+              >
+                View list
+              </AppButton>
+            </div>
+          </Card>
+          <Card className="gap-0 rounded-lg border-emerald-100 bg-emerald-50 p-5">
+            <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
+              <Sparkles size={17} /> Discover new recipes
+            </div>
+            <p className="mt-2 text-sm text-stone-600">Find personalised meal ideas matched to your taste and budget.</p>
+            <AppButton
+              variant="secondary"
+              className="mt-4 w-full justify-center px-3 py-2 text-xs"
+              onClick={() => {
+                track("dashboard_discover_clicked");
+                try { sessionStorage.setItem("deadlineFood:recipesTab", "discover"); } catch { /* ignore */ }
+                setScreen("recipes");
+              }}
+            >
+              Browse recipes <Sparkles size={13} />
+            </AppButton>
           </Card>
         </div>
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-5 sm:p-6">
@@ -113,25 +218,34 @@ export function Dashboard({
                         const meal = getMealById(planMeal.mealId, customRecipes);
 
                         return (
-                          <div key={planMeal.slot} className="relative min-w-0 rounded-lg bg-white px-3 py-2">
+                          <div key={planMeal.slot} className="min-w-0 rounded-lg bg-white px-3 py-2">
                             <button
                               type="button"
-                              onClick={() => onSelectMeal(planMeal.mealId)}
+                              onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, source: "dashboard_upcoming" }); onSelectMeal(planMeal.mealId); }}
                               className="block w-full text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                             >
                               <p className="text-[11px] font-semibold uppercase text-stone-500">{planMeal.slot}</p>
-                              <p className="mt-1 truncate pr-5 text-sm font-medium">
+                              <p className="mt-1 truncate text-sm font-medium">
                                 {meal.image} {meal.name}
                               </p>
                             </button>
-                            <button
-                              type="button"
-                              aria-label="Change meal"
-                              onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, layout: "dashboard" }); setRescueChoice({ day: entry.day, slot: planMeal.slot }); }}
-                              className="absolute right-1.5 top-1.5 rounded p-1 text-stone-400 hover:bg-stone-100 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
-                            >
-                              <RefreshCcw size={13} />
-                            </button>
+                            <div className="mt-2 flex flex-wrap gap-1">
+                              <button
+                                type="button"
+                                aria-label="Change meal"
+                                onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, layout: "dashboard" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, source: "dashboard_upcoming" }); setRescueChoice({ day: entry.day, slot: planMeal.slot }); }}
+                                className="flex items-center gap-1 rounded px-1.5 py-1 text-[11px] font-medium text-stone-500 hover:bg-stone-100 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                              >
+                                <RefreshCcw size={11} /> Change
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => openDiscover(entry.day, planMeal.slot, planMeal.mealId)}
+                                className="flex items-center rounded px-1.5 py-1 text-[11px] font-medium text-stone-500 hover:bg-stone-100 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                              >
+                                Find
+                              </button>
+                            </div>
                           </div>
                         );
                       })}
@@ -151,6 +265,7 @@ export function Dashboard({
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
+          savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           track={track}
         />

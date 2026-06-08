@@ -14,6 +14,7 @@ import {
   sanitiseIngredientDrafts,
   type IngredientDraft,
 } from "../ingredients";
+import { estimateRecipeCost } from "../costEstimate";
 import { money, nutritionSourceSummary } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -109,7 +110,7 @@ function mealToForm(meal: Meal): EditorForm {
     time: meal.time,
     price: meal.price,
     totalCost: portion?.totalCost ?? meal.price,
-    servings: portion?.servings ?? 1,
+    servings: meal.servings ?? portion?.servings ?? 1,
     ingredients: ingredientDraftsFromIngredients(meal.ingredients),
     tags: [...meal.mealSlots, ...meal.tags],
     allergens: meal.allergens.join(", "),
@@ -365,6 +366,20 @@ export function RecipeEditor({
   };
   const hasErrors = errors.name || errors.ingredients || errors.servings || errors.totalCost;
 
+  function estimateCostFromIngredients() {
+    if (ingredients.length === 0) {
+      setAttempted(true);
+      return;
+    }
+    const estimate = estimateRecipeCost(ingredients);
+    setForm((prev) => ({ ...prev, totalCost: estimate }));
+    track("recipe_cost_estimated", {
+      ...(meal ? { meal_id: meal.id } : {}),
+      ingredient_count: ingredients.length,
+      estimated_total: estimate,
+    });
+  }
+
   async function estimateNutrition() {
     if (ingredients.length === 0) {
       setAttempted(true);
@@ -575,16 +590,34 @@ export function RecipeEditor({
 
         {mode === "create" && (
           <>
-            <Field
-              label="Total recipe cost (£)"
-              type="number"
-              step="0.05"
-              required
-              value={form.totalCost}
-              onChange={(cost) => setForm({ ...form, totalCost: +cost })}
-              error={attempted && errors.totalCost}
-              errorMessage="Please enter a cost"
-            />
+            <div className="flex flex-wrap items-end gap-2">
+              <div className="min-w-[12rem] flex-1">
+                <Field
+                  label="Total recipe cost (£)"
+                  type="number"
+                  step="0.05"
+                  required
+                  value={form.totalCost}
+                  onChange={(cost) => setForm({ ...form, totalCost: +cost })}
+                  error={attempted && errors.totalCost}
+                  errorMessage="Please enter a cost"
+                />
+              </div>
+              <AppButton
+                type="button"
+                variant="secondary"
+                onClick={estimateCostFromIngredients}
+                disabled={ingredients.length === 0}
+                title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
+              >
+                <RefreshCcw size={16} /> Estimate from ingredients
+              </AppButton>
+            </div>
+            <p className="text-xs text-stone-500">
+              {ingredients.length === 0
+                ? "Add ingredients below to estimate a rough cost, or enter the total yourself."
+                : "We'll fill in a rough total from illustrative grocery prices — adjust it if you know better."}
+            </p>
             <p className="rounded-lg bg-emerald-50 p-3 text-sm font-medium text-emerald-800">
               Estimated cost per portion: {money(costPerPortion)}
             </p>
@@ -627,16 +660,20 @@ export function RecipeEditor({
           <div>
             <p className="text-sm font-semibold">Nutrition data</p>
             <p className="mt-1 text-xs text-stone-500">
-              {nutritionStatus ?? nutritionSourceSummary(form.nutritionSource)}
+              {nutritionStatus ??
+                (ingredients.length === 0
+                  ? "Add an ingredient to auto-fill nutrition, or enter the values yourself."
+                  : nutritionSourceSummary(form.nutritionSource))}
             </p>
           </div>
           <AppButton
             type="button"
             variant="secondary"
             onClick={estimateNutrition}
-            disabled={nutritionLoading}
+            disabled={nutritionLoading || ingredients.length === 0}
+            title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
           >
-            <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Pull from OpenFoodFacts"}
+            <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Estimate from USDA"}
           </AppButton>
         </div>
 

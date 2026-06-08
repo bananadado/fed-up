@@ -7,6 +7,8 @@ import {setGlobalOptions} from "firebase-functions/v2/options";
 import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import {randomUUID} from "crypto";
+import {buildPlan} from "./autoPlan";
+import type * as AutoPlan from "./autoPlan";
 import {parseICSText} from "./icsParser";
 import {
   calendarEventsToDeadlines,
@@ -37,19 +39,23 @@ const recipesRef = firestore.collection("recipes");
 const recipeReviewsRef = firestore.collection("recipeReviews");
 const anonymousSessionsRef = firestore.collection("anonymousSessions");
 const openFoodFactsCacheRef = firestore.collection("openFoodFactsNutritionCache");
-const openFoodFactsRateLimitRef = firestore
-  .collection("serviceRateLimits")
-  .doc("openFoodFactsSearchV2");
 const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
-const prototypeSessionSettingsVersion = 2;
+const prototypeSessionSettingsVersion = 3;
+// Versions whose payloads we can read & migrate forward to the current schema.
+const supportedSessionSettingsVersions = new Set([1, 2, 3]);
 const publicHttpOptions = {cors: true, invoker: "public"} as const;
+// USDA FoodData Central key for live nutrition lookups. Set in production with
+// `firebase functions:secrets:set USDA_API_KEY`; falls back to the heavily
+// rate-limited DEMO_KEY when unset (e.g. local emulator without functions/.env).
+const usdaApiKey = defineSecret("USDA_API_KEY");
 const nutritionHttpOptions = {
   ...publicHttpOptions,
   timeoutSeconds: 300,
-} as const;
+  secrets: [usdaApiKey],
+};
 const googleClientId = defineSecret("GOOGLE_CLIENT_ID");
 const googleClientSecret = defineSecret("GOOGLE_CLIENT_SECRET");
 const microsoftClientId = defineSecret("MICROSOFT_CLIENT_ID");
@@ -75,21 +81,17 @@ const recommenderHttpOptions = {
   secrets: [recommenderApiUrl, recommenderApiKey],
   timeoutSeconds: 60,
 };
-const openFoodFactsProductionBaseUrl = "https://world.openfoodfacts.org";
-const openFoodFactsStagingBaseUrl = "https://world.openfoodfacts.net";
-const openFoodFactsBaseUrl = (
-  process.env.OPENFOODFACTS_BASE_URL ??
-  (process.env.FUNCTIONS_EMULATOR === "true" ? openFoodFactsStagingBaseUrl : openFoodFactsProductionBaseUrl)
+const usdaFdcBaseUrl = (
+  process.env.USDA_FDC_BASE_URL ?? "https://api.nal.usda.gov/fdc"
 ).replace(/\/$/, "");
-const openFoodFactsUserAgent =
-  process.env.OPENFOODFACTS_USER_AGENT ??
-  "DeadlineFoodPrototype/0.1 Firebase Functions";
 const storageBucket = "drp03-50059.firebasestorage.app";
 const maxPhotoBytes = 5 * 1024 * 1024;
 const allowedPhotoMimeTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 
-const openFoodFactsTimeoutMs = 6000;
-const openFoodFactsMinRequestIntervalMs = 6500;
+const usdaTimeoutMs = 8000;
+// The api-umbrella gateway sprays spurious 4xx/429s under load; retry on any
+// non-2xx so transient blips don't surface as missing ingredients.
+const usdaMaxAttempts = 6;
 const openFoodFactsCacheTtlMs = 24 * 60 * 60 * 1000;
 const openFoodFactsMissingCacheTtlMs = 60 * 60 * 1000;
 const openFoodFactsLockTtlMs = 45 * 1000;
@@ -104,13 +106,18 @@ type RecipeIngredient = {
   preparation?: string;
 };
 
+// Which upstream database a cached product came from. The cache is populated by
+// the ingestion scripts (USDA first, OpenFoodFacts fallback); the function may
+// also fetch live from OpenFoodFacts on a cache miss.
+type NutritionProvider = "USDA" | "OpenFoodFacts";
+
 type Nutrition = {
   calories: number;
   protein: number;
   carbs: number;
   fat: number;
   source: {
-    provider: "OpenFoodFacts";
+    provider: NutritionProvider | "USDA + OpenFoodFacts";
     label: string;
     fetchedAt: string;
     matchedIngredients: {
@@ -125,6 +132,7 @@ type Nutrition = {
 type OpenFoodFactsProduct = {
   code?: string;
   product_name?: string;
+  provider?: NutritionProvider;
   nutriments?: {
     "energy-kcal_100g"?: number;
     energy_100g?: number;
@@ -138,6 +146,7 @@ type OpenFoodFactsProduct = {
 type IngredientNutritionEstimate = {
   ingredient: RecipeIngredient;
   productName: string;
+  provider: NutritionProvider;
   grams: number;
   calories: number;
   protein: number;
@@ -145,8 +154,20 @@ type IngredientNutritionEstimate = {
   fat: number;
 };
 
-type OpenFoodFactsSearchResponse = {
-  products?: OpenFoodFactsProduct[];
+type FdcNutrient = {
+  nutrientNumber?: string;
+  value?: number;
+};
+
+type FdcFood = {
+  fdcId?: number;
+  description?: string;
+  dataType?: string;
+  foodNutrients?: FdcNutrient[];
+};
+
+type FdcSearchResponse = {
+  foods?: FdcFood[];
 };
 
 type HttpRequest = {
@@ -202,6 +223,8 @@ type PrototypeSessionSettings = {
     dislikes: string[];
     likes: string[];
     availableIngredients: RecipeIngredient[];
+    planningHorizonDays: number;
+    planRegenMode: "prompt" | "auto";
   };
   deadlines: {
     id: string;
@@ -225,6 +248,8 @@ type PrototypeSessionSettings = {
   calendarEvents: CalendarEvent[];
   icsSubscriptions: IcsSubscription[];
   calendarTokens: CalendarToken[];
+  planSignature?: string;
+  planGeneratedAt?: string;
 };
 
 const servingGrams: Record<string, number> = {
@@ -238,21 +263,6 @@ const servingGrams: Record<string, number> = {
   "rice portion": 180,
   "tortilla wrap": 60,
   "wrap": 60,
-};
-
-const cookingAdjectives = new Set([
-  "baby", "canned", "chopped", "cooked", "diced", "dried", "frozen", "grated",
-  "large", "medium", "minced", "organic", "raw", "sliced", "small", "tinned", "whole",
-]);
-
-const irregularCategoryTerms: Record<string, string[]> = {
-  berry: ["berries"],
-  berries: ["berries"],
-  courgette: ["courgettes", "zucchini"],
-  egg: ["eggs"],
-  pepper: ["peppers"],
-  potato: ["potatoes"],
-  tomato: ["tomatoes"],
 };
 
 async function seedPrototypeData(): Promise<PrototypeData> {
@@ -342,12 +352,32 @@ async function listRecipes(): Promise<UnknownRecord[]> {
 
 // Map a canonical prototype recipe (Firestore shape) to the recommender's
 // RecipeIn payload so pgvector can embed it keyed by the recipe UID.
+const recommenderDietaryTags = new Set(["vegetarian", "vegan", "halal", "gluten-free", "dairy-free"]);
+const recommenderTagAliases: Record<string, string> = {
+  "peanuts": "peanut",
+  "eggs": "egg",
+};
+
+function canonicalRecommenderTag(value: unknown): string {
+  if (typeof value !== "string") return "";
+  const normalized = value.trim().toLowerCase().replace(/\s+/g, " ");
+  return recommenderTagAliases[normalized] ?? normalized;
+}
+
+function canonicalRecommenderTags(values: unknown): string[] {
+  if (!Array.isArray(values)) return [];
+  return [...new Set(values.map(canonicalRecommenderTag).filter(Boolean))];
+}
+
 function toRecommenderRecipePayload(recipe: UnknownRecord): UnknownRecord {
   const num = (value: unknown, fallback = 0): number =>
     typeof value === "number" && Number.isFinite(value) ? value : fallback;
   const str = (value: unknown): string => (typeof value === "string" ? value : "");
   const list = (value: unknown): unknown[] => (Array.isArray(value) ? value : []);
   const nutrition = asRecord(recipe.nutrition) ?? {};
+  const tags = canonicalRecommenderTags(recipe.tags);
+  const dietaryTags = tags.filter((tag) => recommenderDietaryTags.has(tag));
+  const suitabilityTags = tags.filter((tag) => !recommenderDietaryTags.has(tag));
 
   return {
     id: recipe.id,
@@ -356,9 +386,9 @@ function toRecommenderRecipePayload(recipe: UnknownRecord): UnknownRecord {
     meal_slots: list(recipe.mealSlots),
     price_pence: Math.round(num(recipe.price) * 100),
     prep_minutes: num(recipe.time),
-    dietary_tags: [],
-    allergens: list(recipe.allergens),
-    suitability_tags: list(recipe.tags),
+    dietary_tags: dietaryTags,
+    allergens: canonicalRecommenderTags(recipe.allergens),
+    suitability_tags: suitabilityTags,
     ingredients: list(recipe.ingredients),
     instructions: list(recipe.instructions),
     nutrition: {
@@ -651,7 +681,7 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     throw new Error("Session settings must be an object.");
   }
 
-  if (settings.settingsVersion !== 1 && settings.settingsVersion !== prototypeSessionSettingsVersion) {
+  if (typeof settings.settingsVersion !== "number" || !supportedSessionSettingsVersions.has(settings.settingsVersion)) {
     throw new Error("Unsupported session settings version.");
   }
 
@@ -678,6 +708,8 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
       dislikes: boundedStringList(preferences.dislikes),
       likes: boundedStringList(preferences.likes),
       availableIngredients: normalizeRecipeIngredientList(preferences.availableIngredients),
+      planningHorizonDays: Math.round(boundedNumber(preferences.planningHorizonDays, 21, 1, 28)),
+      planRegenMode: preferences.planRegenMode === "auto" ? "auto" : "prompt",
     },
     deadlines: Array.isArray(settings.deadlines) ?
       settings.deadlines
@@ -691,7 +723,9 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     discoverSaved: normalizeRecipeList(settings.discoverSaved),
     discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
     discoverReviewedRecipeIds: boundedStringList(settings.discoverReviewedRecipeIds, 250, 120),
-    plan: normalizeRecipeList(settings.plan, 30),
+    plan: normalizeRecipeList(settings.plan, 31),
+    ...(typeof settings.planSignature === "string" ? {planSignature: settings.planSignature.slice(0, 200)} : {}),
+    ...(typeof settings.planGeneratedAt === "string" ? {planGeneratedAt: settings.planGeneratedAt.slice(0, 40)} : {}),
     calendarEvents: Array.isArray(settings.calendarEvents) ?
       settings.calendarEvents
         .map(normalizeCalendarEvent)
@@ -891,6 +925,218 @@ async function proxyRecommenderRecommendations(
   }
 }
 
+// ── Recipe auto-planning (issue #66) ─────────────────────────────────────────
+
+// POST a payload to the recommender and return parsed JSON, or null on failure.
+async function callRecommenderJson(path: string, payload: unknown): Promise<unknown | null> {
+  try {
+    const url = new URL(path, recommenderApiUrl.value().replace(/\/$/, ""));
+    const upstream = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "X-Deadline-Food-API-Key": recommenderApiKey.value(),
+      },
+      body: JSON.stringify(payload ?? {}),
+      signal: AbortSignal.timeout(30_000),
+    });
+    if (!upstream.ok) return null;
+    return (await upstream.json()) as unknown;
+  } catch (error) {
+    logger.warn("Recommender call failed during auto-plan", {path, error: String(error)});
+    return null;
+  }
+}
+
+const PLAN_SLOTS: AutoPlan.MealSlot[] = ["breakfast", "lunch", "dinner"];
+
+function toMealSlots(value: unknown): AutoPlan.MealSlot[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((s): s is AutoPlan.MealSlot => PLAN_SLOTS.includes(s as AutoPlan.MealSlot));
+}
+
+function toMealType(value: unknown): AutoPlan.MealType {
+  return value === "fallback" ? "fallback" : value === "remix" ? "remix" : "cook";
+}
+
+// Map a recommender recipe row to the prototype `Meal` shape the frontend renders.
+function recommenderRecipeToMeal(recipe: UnknownRecord): UnknownRecord {
+  const dietary = Array.isArray(recipe.dietary_tags) ? recipe.dietary_tags : [];
+  const suitability = Array.isArray(recipe.suitability_tags) ?
+    recipe.suitability_tags : [];
+  return {
+    id: boundedString(recipe.id, "", 80),
+    name: boundedString(recipe.name, "Recipe", 200),
+    type: toMealType(recipe.meal_type),
+    mealSlots: toMealSlots(recipe.meal_slots),
+    time: boundedNumber(recipe.prep_minutes, 20, 0, 600),
+    price: boundedNumber(recipe.price_pence, 0, 0, 100000) / 100,
+    tags: [...new Set([...dietary, ...suitability].filter((t): t is string => typeof t === "string"))],
+    allergens: Array.isArray(recipe.allergens) ?
+      recipe.allergens.filter((a): a is string => typeof a === "string") : [],
+    ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
+    instructions: Array.isArray(recipe.instructions) ? recipe.instructions : [],
+    nutrition: asRecord(recipe.nutrition) ?? {calories: 0, protein: 0, carbs: 0, fat: 0},
+    rating: 0,
+    reviews: [],
+    source: boundedString(recipe.source, "Recommender", 200),
+    note: boundedString(recipe.note, "", 400),
+    image: "🍽️",
+    ...(typeof recipe.photoUrl === "string" ? {photoUrl: recipe.photoUrl} : {}),
+  };
+}
+
+// Extract the allocator-relevant subset from a prototype Meal record.
+function mealToAllocator(meal: UnknownRecord): AutoPlan.AllocatorMeal {
+  const ingredients = Array.isArray(meal.ingredients) ?
+    meal.ingredients
+      .map((i) => asRecord(i))
+      .filter((i): i is UnknownRecord => i !== null)
+      .map((i) => ({name: boundedString(i.name, "", 120)})) :
+    [];
+  return {
+    id: boundedString(meal.id, "", 80),
+    type: toMealType(meal.type),
+    mealSlots: toMealSlots(meal.mealSlots),
+    time: boundedNumber(meal.time, 20, 0, 600),
+    pricePence: Math.round(boundedNumber(meal.price, 0, 0, 100000) * 100),
+    tags: Array.isArray(meal.tags) ? meal.tags.filter((t): t is string => typeof t === "string") : [],
+    allergens: Array.isArray(meal.allergens) ? meal.allergens.filter((a): a is string => typeof a === "string") : [],
+    ingredients,
+  };
+}
+
+// A neutral, lightly-pressured horizon used when no calendar context exists.
+function syntheticDays(horizonDays: number): AutoPlan.DayContext[] {
+  const today = new Date();
+  const days: AutoPlan.DayContext[] = [];
+  for (let i = 0; i < horizonDays; i += 1) {
+    const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+    days.push({
+      date: d.toISOString().slice(0, 10),
+      stress: 0.3,
+      free_evening: true,
+      hard_deadlines: 0,
+      recommended_constraints: {max_prep_minutes: 60},
+    });
+  }
+  return days;
+}
+
+function normalizeDayContext(value: unknown): AutoPlan.DayContext | null {
+  const day = asRecord(value);
+  if (day === null || typeof day.date !== "string") return null;
+  const constraints = asRecord(day.recommended_constraints);
+  return {
+    date: day.date.slice(0, 10),
+    stress: boundedNumber(day.stress, 0.3, 0, 1),
+    free_evening: day.free_evening !== false,
+    hard_deadlines: boundedNumber(day.hard_deadlines, 0, 0, 20),
+    recommended_constraints: {
+      max_prep_minutes: boundedNumber(constraints?.max_prep_minutes, 60, 0, 600),
+    },
+  };
+}
+
+async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Promise<void> {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = readRequestBody(request);
+  if (body === null) {
+    response.status(400).json({error: "A JSON body is required."});
+    return;
+  }
+
+  const userId = boundedString(body.user_id, "", 80);
+  const horizonDays = Math.round(boundedNumber(body.horizonDays, 21, 1, 28));
+  const contextEvents = Array.isArray(body.contextEvents) ? body.contextEvents.slice(0, 250) : [];
+  const savedRecipes = Array.isArray(body.savedRecipes) ?
+    body.savedRecipes.map((m) => asRecord(m)).filter((m): m is UnknownRecord => m !== null).slice(0, 200) :
+    [];
+  const excludeIds = boundedStringList(body.excludeIds, 250, 80);
+  const excludedIds = new Set(excludeIds);
+  const dietary = canonicalRecommenderTags(boundedStringList(body.dietary, 40, 80));
+  const dislikes = canonicalRecommenderTags(boundedStringList(body.dislikes, 40, 80));
+  const allergens = canonicalRecommenderTags(boundedStringList(body.allergens, 40, 80));
+  const weeklyBudgetPence = Math.round(boundedNumber(body.budget, 48, 0, 1000) * 100);
+
+  // 1. Per-day calendar context across the horizon (#65). horizon_days produces
+  // horizon_days+1 entries (incl. today), so request one fewer than we need.
+  let days: AutoPlan.DayContext[] = [];
+  if (contextEvents.length > 0) {
+    const context = asRecord(
+      await callRecommenderJson("/context/deadlines", {events: contextEvents, horizon_days: horizonDays - 1}),
+    );
+    const rawDays = Array.isArray(context?.days) ? context.days : [];
+    days = rawDays.map(normalizeDayContext).filter((d): d is AutoPlan.DayContext => d !== null);
+  }
+  if (days.length === 0) {
+    days = syntheticDays(horizonDays);
+  }
+  days = days.slice(0, horizonDays);
+
+  // 2. Candidate pool: saved recipes first, recommender gap-fill after.
+  const mealsById = new Map<string, UnknownRecord>();
+  for (const meal of savedRecipes) {
+    const id = boundedString(meal.id, "", 80);
+    if (id) mealsById.set(id, meal);
+  }
+  const savedAlloc = savedRecipes.map(mealToAllocator).filter((m) => m.id);
+
+  const avgStress = days.reduce((sum, d) => sum + d.stress, 0) / (days.length || 1);
+  const fillAlloc: AutoPlan.AllocatorMeal[] = [];
+  if (userId) {
+    const fill = await callRecommenderJson("/recommend", {
+      user_id: userId,
+      n: 60,
+      deadline_stress: avgStress,
+      budget_pence: weeklyBudgetPence,
+      exclude_ids: excludeIds,
+    });
+    if (Array.isArray(fill)) {
+      for (const item of fill) {
+        const recipe = asRecord(asRecord(item)?.recipe);
+        if (recipe === null) continue;
+        const id = boundedString(recipe.id, "", 80);
+        if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
+        const meal = recommenderRecipeToMeal(recipe);
+        mealsById.set(id, meal);
+        fillAlloc.push(mealToAllocator(meal));
+      }
+    }
+  }
+
+  // Deterministic final fallback: if the user has few/no saved recipes and the
+  // recommender is empty or unavailable, still plan from the canonical catalogue.
+  const fallbackAlloc: AutoPlan.AllocatorMeal[] = [];
+  for (const recipe of prototypeRecipes) {
+    const meal = recipe as unknown as UnknownRecord;
+    const id = boundedString(meal.id, "", 80);
+    if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
+    mealsById.set(id, meal);
+    fallbackAlloc.push(mealToAllocator(meal));
+  }
+
+  const plan = buildPlan({
+    days,
+    pool: [...savedAlloc, ...fillAlloc, ...fallbackAlloc],
+    avoided: [...dislikes, ...allergens],
+    dietary,
+    weeklyBudgetPence,
+  });
+
+  // 3. Return only the meals actually placed, so the client can resolve them.
+  const usedIds = new Set<string>();
+  for (const entry of plan) {
+    for (const meal of entry.meals) usedIds.add(meal.mealId);
+  }
+  const meals = [...usedIds].map((id) => mealsById.get(id)).filter((m): m is UnknownRecord => m !== undefined);
+
+  response.set("Cache-Control", "private, max-age=0, no-store");
+  response.status(200).json({plan, meals, generatedAt: new Date().toISOString()});
+}
+
 function rejectUnsupportedNutritionMethod(
   request: HttpRequest,
   response: HttpResponse,
@@ -929,34 +1175,6 @@ function normalizeIngredientKey(name: string): string {
 
 function openFoodFactsCacheDocId(cacheKey: string): string {
   return Buffer.from(cacheKey).toString("base64url");
-}
-
-function toCategoryTag(term: string): string {
-  return normalizeIngredientKey(term)
-    .replace(/&/g, " and ")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-function uniqueTerms(terms: string[]): string[] {
-  return [...new Set(terms.map(toCategoryTag).filter(Boolean))];
-}
-
-function openFoodFactsCategoryTerms(ingredient: RecipeIngredient): string[] {
-  const name = normalizeIngredientKey(ingredient.name);
-  const terms = [name, ...(irregularCategoryTerms[name] ?? [])];
-  const words = name.split(" ");
-
-  if (words.length > 1 && words[0] && cookingAdjectives.has(words[0])) {
-    const stripped = words.slice(1).join(" ");
-    terms.push(stripped, ...(irregularCategoryTerms[stripped] ?? []));
-  }
-
-  if (words.length > 1 && words[0] && words[0].length > 2) {
-    terms.push(words[0], ...(irregularCategoryTerms[words[0]] ?? []));
-  }
-
-  return uniqueTerms(terms);
 }
 
 function gramsForIngredient(ingredient: RecipeIngredient): number {
@@ -1009,6 +1227,7 @@ function estimateIngredientNutrition(
   return {
     ingredient,
     productName: product.product_name?.trim() || ingredient.name,
+    provider: product.provider ?? "OpenFoodFacts",
     grams,
     calories: caloriesPer100g * multiplier,
     protein: nutriments.proteins_100g * multiplier,
@@ -1025,14 +1244,19 @@ function totalNutritionFromEstimates(
   estimates: IngredientNutritionEstimate[],
   missingIngredients: string[],
 ): Nutrition {
+  const usedUsda = estimates.some((estimate) => estimate.provider === "USDA");
+  const usedOff = estimates.some((estimate) => estimate.provider === "OpenFoodFacts");
+  const provider =
+    usedUsda && usedOff ? "USDA + OpenFoodFacts" : usedUsda ? "USDA" : "OpenFoodFacts";
+
   return {
     calories: roundMacro(estimates.reduce((sum, estimate) => sum + estimate.calories, 0)),
     protein: roundMacro(estimates.reduce((sum, estimate) => sum + estimate.protein, 0)),
     carbs: roundMacro(estimates.reduce((sum, estimate) => sum + estimate.carbs, 0)),
     fat: roundMacro(estimates.reduce((sum, estimate) => sum + estimate.fat, 0)),
     source: {
-      provider: "OpenFoodFacts",
-      label: "OpenFoodFacts estimate",
+      provider,
+      label: `${provider} estimate`,
       fetchedAt: new Date().toISOString(),
       matchedIngredients: estimates.map((estimate) => ({
         ingredient: estimate.ingredient.name,
@@ -1072,6 +1296,10 @@ function parseCachedProduct(value: unknown): OpenFoodFactsProduct | null | undef
   return {
     code: typeof product.code === "string" ? product.code : undefined,
     product_name: typeof product.product_name === "string" ? product.product_name : undefined,
+    provider:
+      product.provider === "USDA" || product.provider === "OpenFoodFacts" ?
+        product.provider :
+        undefined,
     nutriments: nutriments === null ? undefined : {
       "energy-kcal_100g":
         typeof nutriments["energy-kcal_100g"] === "number" ?
@@ -1090,97 +1318,141 @@ function parseCachedProduct(value: unknown): OpenFoodFactsProduct | null | undef
   };
 }
 
-function compactOpenFoodFactsProduct(product: OpenFoodFactsProduct): OpenFoodFactsProduct {
-  return {
-    ...(product.code ? {code: product.code} : {}),
-    ...(product.product_name ? {product_name: product.product_name} : {}),
-    nutriments: {
-      ...(typeof product.nutriments?.["energy-kcal_100g"] === "number" ?
-        {"energy-kcal_100g": product.nutriments["energy-kcal_100g"]} :
-        {}),
-      ...(typeof product.nutriments?.energy_100g === "number" ?
-        {energy_100g: product.nutriments.energy_100g} :
-        {}),
-      ...(product.nutriments?.energy_unit ? {energy_unit: product.nutriments.energy_unit} : {}),
-      ...(typeof product.nutriments?.proteins_100g === "number" ?
-        {proteins_100g: product.nutriments.proteins_100g} :
-        {}),
-      ...(typeof product.nutriments?.carbohydrates_100g === "number" ?
-        {carbohydrates_100g: product.nutriments.carbohydrates_100g} :
-        {}),
-      ...(typeof product.nutriments?.fat_100g === "number" ?
-        {fat_100g: product.nutriments.fat_100g} :
-        {}),
-    },
-  };
-}
-
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, Math.max(0, ms)));
 }
 
-async function waitForOpenFoodFactsTurn(): Promise<void> {
-  const waitMs = await firestore.runTransaction(async (transaction) => {
-    const snapshot = await transaction.get(openFoodFactsRateLimitRef);
-    const currentTime = Date.now();
-    const nextRequestAt = timestampMillis(snapshot.data()?.nextRequestAt) ?? currentTime;
-    const scheduledAt = Math.max(currentTime, nextRequestAt);
+// ── USDA FoodData Central live lookup ──────────────────────────────────────
+// Mirrors scripts/ingest/usda.ts so the live fetch and the cache-population
+// scripts resolve ingredients identically. USDA replaced OpenFoodFacts: it
+// indexes generic cooking ingredients far more reliably (OFF's barcoded-product
+// category search returned nonsense like "baby lettuce leaves" → banana muesli).
 
-    transaction.set(
-      openFoodFactsRateLimitRef,
-      {
-        nextRequestAt: Timestamp.fromMillis(scheduledAt + openFoodFactsMinRequestIntervalMs),
-        updatedAt: FieldValue.serverTimestamp(),
-      },
-      {merge: true},
-    );
+const usdaGenericDataTypes = new Set(["Foundation", "SR Legacy", "Survey (FNDDS)"]);
+const usdaPreferWindow = 12;
 
-    return scheduledAt - currentTime;
-  });
+// Aliases for names USDA doesn't index under that spelling (misspellings /
+// regional names), keyed by de-accented lower-case. Only the query is rewritten.
+const usdaIngredientAliases: Record<string, string> = {
+  "challots": "shallots",
+  "cassaba": "casaba",
+  "jamon iberico": "prosciutto",
+  "khus khus": "spices poppy seed",
+  "mulukhiyah": "jute",
+};
 
-  await sleep(waitMs);
+function deaccent(value: string): string {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-async function fetchOpenFoodFactsProducts(categoryTag: string): Promise<OpenFoodFactsProduct[]> {
-  const url = new URL("/api/v2/search", openFoodFactsBaseUrl);
-  url.searchParams.set("categories_tags_en", categoryTag);
-  url.searchParams.set("page", "1");
-  url.searchParams.set("page_size", "5");
-  url.searchParams.set("sort_by", "popularity_key");
-  url.searchParams.set("fields", "code,product_name,nutriments");
+function fdcNutrientValue(food: FdcFood, ...numbers: string[]): number | undefined {
+  for (const number of numbers) {
+    const hit = food.foodNutrients?.find((nutrient) => String(nutrient.nutrientNumber) === number);
+    if (hit && typeof hit.value === "number") return hit.value;
+  }
+  return undefined;
+}
 
-  await waitForOpenFoodFactsTurn();
+// Map an FDC food onto the per-100g product shape, or null when it lacks any of
+// the four macros. Energy falls back to the Atwater values (957/958) some
+// Foundation foods carry instead of nutrient 208.
+function fdcToProduct(food: FdcFood): OpenFoodFactsProduct | null {
+  const calories = fdcNutrientValue(food, "208", "957", "958");
+  const protein = fdcNutrientValue(food, "203");
+  const carbs = fdcNutrientValue(food, "205");
+  const fat = fdcNutrientValue(food, "204");
 
-  const response = await fetch(url, {
-    headers: {"Accept": "application/json", "User-Agent": openFoodFactsUserAgent},
-    signal: AbortSignal.timeout(openFoodFactsTimeoutMs),
-  }).catch(() => null);
-
-  if (!response?.ok) {
-    logger.warn("OpenFoodFacts v2 search failed", {
-      status: response?.status,
-      categoryTag,
-    });
-    return [];
+  if (
+    typeof calories !== "number" ||
+    typeof protein !== "number" ||
+    typeof carbs !== "number" ||
+    typeof fat !== "number"
+  ) {
+    return null;
   }
 
-  const payload = await response.json().catch(() => null) as OpenFoodFactsSearchResponse | null;
-  return payload?.products ?? [];
+  return {
+    provider: "USDA",
+    ...(typeof food.fdcId === "number" ? {code: String(food.fdcId)} : {}),
+    ...(food.description ? {product_name: food.description} : {}),
+    nutriments: {
+      "energy-kcal_100g": calories,
+      "proteins_100g": protein,
+      "carbohydrates_100g": carbs,
+      "fat_100g": fat,
+    },
+  };
 }
 
-async function fetchOpenFoodFactsProductForIngredient(
-  ingredient: RecipeIngredient,
-): Promise<OpenFoodFactsProduct | null> {
-  for (const categoryTag of openFoodFactsCategoryTerms(ingredient)) {
-    const products = await fetchOpenFoodFactsProducts(categoryTag);
-    const match = products.find((product) => estimateIngredientNutrition(ingredient, product) !== null);
+// Run one FDC search, retrying any non-2xx (the gateway emits spurious 4xx/429s)
+// and network/timeout errors with jittered backoff that honours Retry-After.
+// Returns [] only on a real HTTP 200 with no foods; null on persistent failure.
+async function searchFdcFoods(query: string): Promise<FdcFood[] | null> {
+  // usdaFdcBaseUrl carries a `/fdc` path, so concatenate rather than use the
+  // URL(base) form (a leading-slash path would resolve against the origin only).
+  const url = new URL(`${usdaFdcBaseUrl}/v1/foods/search`);
+  url.searchParams.set("api_key", process.env.USDA_API_KEY ?? "DEMO_KEY");
+  url.searchParams.set("query", query);
+  url.searchParams.set("pageSize", "25");
+  url.searchParams.set("dataType", "Foundation,SR Legacy,Survey (FNDDS),Branded");
 
-    if (match) {
-      return compactOpenFoodFactsProduct(match);
+  for (let attempt = 1; attempt <= usdaMaxAttempts; attempt++) {
+    const response = await fetch(url, {
+      headers: {"Accept": "application/json"},
+      signal: AbortSignal.timeout(usdaTimeoutMs),
+    }).catch(() => null);
+
+    if (response?.ok) {
+      const payload = await response.json().catch(() => null) as FdcSearchResponse | null;
+      return payload?.foods ?? [];
+    }
+
+    if (attempt < usdaMaxAttempts) {
+      const retryAfter = Number(response?.headers.get("retry-after"));
+      const backoff = Number.isFinite(retryAfter) && retryAfter > 0 ?
+        retryAfter * 1000 :
+        400 + Math.floor(Math.random() * 500);
+      await sleep(backoff);
     }
   }
 
+  logger.warn("USDA FDC search failed after retries", {query});
   return null;
+}
+
+async function fetchUsdaProductForIngredient(
+  ingredient: RecipeIngredient,
+): Promise<OpenFoodFactsProduct | null> {
+  const deaccented = deaccent(ingredient.name.trim());
+  if (!deaccented) return null;
+  const query = usdaIngredientAliases[deaccented.toLowerCase()] ?? deaccented;
+
+  const foods = await searchFdcFoods(query);
+  if (foods === null || foods.length === 0) return null;
+
+  // Walk results in USDA's relevance order. Within the top usdaPreferWindow hits
+  // prefer cleaner generic whole-foods (raw/fresh, then any non-branded), else
+  // fall back to the first complete-macro hit in relevance order.
+  let rawGeneric: OpenFoodFactsProduct | null = null;
+  let anyGeneric: OpenFoodFactsProduct | null = null;
+  let fallback: OpenFoodFactsProduct | null = null;
+
+  for (const [i, food] of foods.entries()) {
+    const product = fdcToProduct(food);
+    if (!product) continue;
+
+    if (fallback === null) fallback = product;
+    if (i >= usdaPreferWindow) continue;
+
+    if (usdaGenericDataTypes.has(food.dataType ?? "")) {
+      if (anyGeneric === null) anyGeneric = product;
+      if (rawGeneric === null && /\b(raw|fresh)\b/i.test(food.description ?? "")) {
+        rawGeneric = product;
+      }
+    }
+  }
+
+  return rawGeneric ?? anyGeneric ?? fallback;
 }
 
 async function tryAcquireOpenFoodFactsCacheLock(
@@ -1261,7 +1533,7 @@ async function cacheOpenFoodFactsProduct(
   );
 }
 
-async function findOpenFoodFactsProductForIngredient(
+async function findNutritionProductForIngredient(
   ingredient: RecipeIngredient,
 ): Promise<OpenFoodFactsProduct | null> {
   const cacheKey = normalizeIngredientKey(ingredient.name);
@@ -1279,11 +1551,11 @@ async function findOpenFoodFactsProductForIngredient(
   }
 
   try {
-    const product = await fetchOpenFoodFactsProductForIngredient(ingredient);
+    const product = await fetchUsdaProductForIngredient(ingredient);
     await cacheOpenFoodFactsProduct(cacheKey, product);
     return product;
   } catch (error) {
-    logger.error("OpenFoodFacts lookup failed", {cacheKey, error});
+    logger.error("USDA lookup failed", {cacheKey, error});
     await openFoodFactsCacheRef.doc(openFoodFactsCacheDocId(cacheKey)).set(
       {
         lockedUntil: FieldValue.delete(),
@@ -1468,6 +1740,10 @@ export const deadlineFoodDeadlineContext = onRequest(recommenderHttpOptions, asy
   await proxyRecommenderRequest(request, response, "/context/deadlines");
 });
 
+export const deadlineFoodAutoPlan = onRequest(recommenderHttpOptions, async (request, response) => {
+  await handleAutoPlan(request, response);
+});
+
 export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (request, response) => {
   if (rejectUnsupportedNutritionMethod(request, response)) return;
 
@@ -1488,7 +1764,7 @@ export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (requ
 
     const lookups = await Promise.all(
       ingredients.map(async (ingredient) => {
-        const product = await findOpenFoodFactsProductForIngredient(ingredient);
+        const product = await findNutritionProductForIngredient(ingredient);
         return product ? estimateIngredientNutrition(ingredient, product) : null;
       }),
     );
@@ -1499,7 +1775,7 @@ export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (requ
 
     if (estimates.length === 0) {
       response.status(502).json({
-        error: "OpenFoodFacts did not return usable nutrition data for these ingredients.",
+        error: "USDA did not return usable nutrition data for these ingredients.",
       });
       return;
     }

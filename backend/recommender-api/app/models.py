@@ -1,4 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+from .normalization import canonical_tags
 
 
 class Ingredient(BaseModel):
@@ -35,6 +37,19 @@ class RecipeIn(BaseModel):
     source: str | None = None
     note: str | None = None
 
+    @field_validator(
+        "dietary_tags",
+        "allergens",
+        "suitability_tags",
+        "flavor_profile",
+        "techniques",
+        "equipment",
+        mode="before",
+    )
+    @classmethod
+    def normalize_recipe_tags(cls, value):
+        return canonical_tags(value)
+
 
 class RecipeOut(RecipeIn):
     difficulty: float
@@ -53,6 +68,11 @@ class UserIn(BaseModel):
     likes: list[str] = []
     university: str | None = None
     postcode: str | None = None
+
+    @field_validator("dietary_tags", "allergens", "dislikes", "likes", mode="before")
+    @classmethod
+    def normalize_user_tags(cls, value):
+        return canonical_tags(value)
 
 
 class UserAbility(BaseModel):

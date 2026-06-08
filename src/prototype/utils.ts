@@ -1,4 +1,4 @@
-import { getRecipeCatalogue } from "./recipeCatalogue";
+import { getPlanMeal, getRecipeCatalogue } from "./recipeCatalogue";
 import type { Deadline, Meal, NutritionSource, RecipeIngredient } from "./types";
 import { formatIngredient, ingredientName } from "./ingredients";
 
@@ -57,7 +57,10 @@ export function formatCookingLimit(minutes: number | null) {
 }
 
 export function mealById(id: string, customRecipes: Meal[]) {
-  return [...customRecipes, ...getRecipeCatalogue()].find((meal) => meal.id === id);
+  return (
+    [...customRecipes, ...getRecipeCatalogue()].find((meal) => meal.id === id) ??
+    getPlanMeal(id)
+  );
 }
 
 export function getMealById(id: string, customRecipes: Meal[]) {
@@ -95,5 +98,44 @@ export function ingredientNames(
   return ingredients
     .slice(0, limit)
     .map(ingredientName)
+    .join(", ");
+}
+
+const NAME_STOPWORDS = new Set([
+  "a", "an", "the", "and", "or", "with", "in", "on", "of", "for",
+  "to", "from", "by", "&", "style", "based",
+]);
+
+/**
+ * Returns the top `limit` key ingredients for a named dish, ranked so that
+ * ingredients mentioned in the dish name appear first. Ingredients with no
+ * name-word match fall back to their original list order.
+ */
+export function keyIngredients(
+  name: string,
+  ingredients: RecipeIngredient[],
+  limit = 5,
+): string {
+  const titleWords = name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 1 && !NAME_STOPWORDS.has(w));
+
+  if (titleWords.length === 0) {
+    return ingredientNames(ingredients, limit);
+  }
+
+  const scored = ingredients.map((ingredient, index) => {
+    const ingName = ingredientName(ingredient).toLowerCase();
+    const score = titleWords.filter((w) => ingName.includes(w)).length;
+    return { ingredient, score, index };
+  });
+
+  scored.sort((a, b) => b.score - a.score || a.index - b.index);
+
+  return scored
+    .slice(0, limit)
+    .map(({ ingredient }) => ingredientName(ingredient))
     .join(", ");
 }
