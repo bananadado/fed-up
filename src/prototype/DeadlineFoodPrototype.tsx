@@ -497,8 +497,7 @@ export function DeadlineFoodPrototype() {
 
   function openAddToPlan(mealId: string) {
     track("recipe_add_to_plan_clicked", { meal_id: mealId, source_screen: activeScreen });
-    // Navigate to plan screen - the PlanScreen will open the swap modal for the first available slot
-    // or we could open a specific day/slot picker. For now, navigate to plan.
+    try { sessionStorage.setItem("deadlineFood:addToPlanMealId", mealId); } catch { /* sessionStorage unavailable */ }
     navigateScreen("plan");
   }
 

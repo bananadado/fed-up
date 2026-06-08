@@ -74,6 +74,14 @@ export function PlanScreen({
     } catch { /* sessionStorage unavailable */ }
     return null;
   });
+  const [addToPlanMealId, setAddToPlanMealId] = useState<string | null>(() => {
+    try {
+      const saved = sessionStorage.getItem("deadlineFood:addToPlanMealId");
+      if (saved) { sessionStorage.removeItem("deadlineFood:addToPlanMealId"); return saved; }
+    } catch { /* sessionStorage unavailable */ }
+    return null;
+  });
+  const [swapSuggestedMealId, setSwapSuggestedMealId] = useState<string | null>(null);
   const [shoppingOpen, setShoppingOpen] = useState(() => {
     try {
       if (sessionStorage.getItem("deadlineFood:openShopping") === "1") {
@@ -138,6 +146,21 @@ export function PlanScreen({
           </AppButton>
         </div>
       )}
+
+      {addToPlanMealId && (() => {
+        const meal = getMealById(addToPlanMealId, customRecipes);
+        return (
+          <div className="mb-6 flex items-center justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
+            <p className="text-sm text-emerald-900">
+              <span className="font-semibold">{meal.image} {meal.name}</span>
+              {" "}— tap <strong>Change</strong> on any meal to assign it to that slot.
+            </p>
+            <button type="button" onClick={() => setAddToPlanMealId(null)} className="shrink-0 rounded-lg p-1 text-emerald-700 hover:bg-emerald-100" aria-label="Dismiss">
+              <X size={16} />
+            </button>
+          </div>
+        );
+      })()}
 
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_280px]">
         <div className="space-y-6">
@@ -237,7 +260,7 @@ export function PlanScreen({
                                     </div>
                                   )}
                                   <div className="mt-4 flex flex-wrap gap-2">
-                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_desktop" }); if (addToPlanMealId) setSwapSuggestedMealId(addToPlanMealId); setRescueChoice({ day: entry.day, slot }); }}>
                                       <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
                                     </AppButton>
                                     {meal && (
@@ -300,7 +323,7 @@ export function PlanScreen({
                                     </div>
                                   )}
                                   <div className="mt-3 flex flex-wrap gap-2">
-                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_mobile" }); if (addToPlanMealId) setSwapSuggestedMealId(addToPlanMealId); setRescueChoice({ day: entry.day, slot }); }}>
                                       <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
                                     </AppButton>
                                     {meal && (
@@ -381,13 +404,14 @@ export function PlanScreen({
       {rescueChoice && (
         <SwapModal
           rescueChoice={rescueChoice}
-          onClose={() => setRescueChoice(null)}
+          onClose={() => { setRescueChoice(null); setSwapSuggestedMealId(null); setAddToPlanMealId(null); }}
           plan={plan}
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
           savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
+          suggestedMealId={swapSuggestedMealId ?? undefined}
           track={track}
         />
       )}
