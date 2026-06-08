@@ -8,6 +8,7 @@ acquire
 acronym
 across
 action
+actions
 activation
 active
 add
@@ -26,6 +27,7 @@ aligned
 all
 allergen
 allergens
+allocator
 allow
 allowed
 also
@@ -37,9 +39,9 @@ anchor
 anchors
 and
 animate
+animations
 annotations
 anonymous
-answer
 answers
 any
 api
@@ -60,12 +62,15 @@ assisted
 assumptions
 ast
 async
+atomic
 audio
 audit
 auth
 authenticate
 authentication
 authority
+auto
+autonomous
 autopilot
 average
 avoid
@@ -105,6 +110,8 @@ bounded
 bounds
 bowl
 box
+branch
+branches
 breakdown
 breakfast
 browse
@@ -119,11 +126,13 @@ bulk
 bun
 bunx
 bus
+busy
 but
 button
 cache
 cached
 calendar
+call
 calls
 camel
 campus
@@ -143,17 +152,18 @@ cat
 catalogue
 categories
 category
-causes
 cautions
 cell
 change
 changes
+cheap
 cheapest
 check
 checked
 checklist
 checks
 chicken
+chilli
 choice
 choosing
 chromium
@@ -167,6 +177,7 @@ classify
 claude
 clean
 cleanup
+clear
 clearing
 cli
 client
@@ -193,6 +204,7 @@ command
 commands
 commit
 common
+communication
 communities
 compact
 comparison
@@ -228,6 +240,7 @@ correct
 cors
 cosine
 cost
+costly
 countable
 counts
 couscous
@@ -250,6 +263,7 @@ date
 datetime
 day
 days
+deaccent
 deadline
 deadlines
 debounce
@@ -260,6 +274,7 @@ default
 defaults
 deferred
 definition
+delay
 delete
 deliberately
 demands
@@ -296,10 +311,12 @@ dimension
 dimensions
 dims
 dinner
+dinners
 dir
 direction
 directory
 discover
+discovery
 dislike
 disliked
 dislikes
@@ -322,6 +339,7 @@ down
 download
 draft
 drafts
+driven
 drives
 drp
 dry
@@ -388,9 +406,11 @@ exchange
 exclude
 executable
 execute
+execution
 existing
 exotic
 expected
+expensive
 experience
 expires
 expiry
@@ -416,6 +436,7 @@ falls
 fallthrough
 fast
 favours
+fdc
 feasibility
 features
 feed
@@ -426,6 +447,7 @@ fields
 file
 filename
 files
+fillable
 filter
 filtered
 filtering
@@ -447,8 +469,10 @@ float
 flow
 flows
 food
+foods
 footer
 for
+forbidden
 force
 form
 format
@@ -506,11 +530,13 @@ halls
 handle
 handler
 handles
+handling
 hard
 has
 hash
 have
 header
+headers
 health
 hello
 helpers
@@ -535,6 +561,7 @@ hummus
 hundred
 icon
 ics
+idempotency
 idempotent
 identical
 ids
@@ -561,7 +588,6 @@ indexes
 indicators
 infer
 inference
-infinite
 info
 information
 ingest
@@ -609,7 +635,6 @@ jobs
 journey
 json
 jsx
-just
 keeps
 key
 keys
@@ -626,6 +651,7 @@ later
 launch
 layer
 led
+leftover
 legacy
 less
 level
@@ -663,6 +689,7 @@ logs
 long
 longer
 lookup
+loop
 lowers
 lucide
 lunch
@@ -672,7 +699,6 @@ makes
 management
 manifest
 manual
-many
 map
 mapped
 mappings
@@ -693,11 +719,13 @@ merge
 message
 meta
 method
+metric
 metrics
 microsoft
 migration
 millis
 mime
+minimal
 minus
 minutes
 missing
@@ -721,6 +749,7 @@ must
 mvp
 name
 names
+naming
 native
 natural
 nav
@@ -736,7 +765,6 @@ neutral
 nev
 never
 node
-nodes
 non
 none
 noodles
@@ -749,10 +777,14 @@ note
 notes
 now
 number
+nutrient
 nutrition
+nutty
 nvidia
 object
+objective
 obsidian
+off
 omits
 omitted
 onboarding
@@ -782,6 +814,7 @@ overreaching
 override
 overrides
 overview
+paced
 package
 pad
 page
@@ -796,6 +829,7 @@ parser
 parses
 part
 past
+pasta
 path
 paths
 patterns
@@ -833,6 +867,8 @@ plugin
 pluralise
 point
 points
+policy
+populate
 popup
 port
 portion
@@ -862,6 +898,7 @@ principles
 priors
 private
 problem
+procedural
 product
 products
 profile
@@ -876,6 +913,7 @@ proposal
 proposition
 prototype
 provider
+providers
 proxy
 pseudo
 public
@@ -913,6 +951,7 @@ real
 realism
 reality
 reason
+recalc
 recent
 recently
 recipe
@@ -926,6 +965,7 @@ recompute
 recomputes
 record
 recording
+recovery
 redirect
 reducer
 reduces
@@ -934,12 +974,15 @@ ref
 refines
 refresh
 refreshed
+regen
 regex
+region
 register
 reject
 rejects
 relationship
 relationships
+remaining
 reminder
 remix
 remote
@@ -947,6 +990,7 @@ remove
 removes
 repeat
 report
+repository
 representation
 request
 requests
@@ -960,6 +1004,7 @@ rescued
 reserved
 resolution
 resolve
+resolved
 respects
 response
 responsible
@@ -970,6 +1015,7 @@ results
 retention
 retrieval
 retrieve
+retry
 return
 returned
 returns
@@ -994,6 +1040,7 @@ rules
 run
 runtime
 safe
+safety
 salad
 same
 sample
@@ -1036,6 +1083,7 @@ send
 sentence
 separation
 separator
+sequencer
 serve
 server
 service
@@ -1056,7 +1104,6 @@ shift
 shifts
 shopping
 should
-shows
 sided
 signal
 signals
@@ -1074,10 +1121,12 @@ sleep
 slice
 slot
 slots
+small
 smoky
 snack
 snapshot
 social
+software
 solution
 sort
 sorted
@@ -1097,6 +1146,7 @@ stack
 stage
 stakeholders
 stamp
+standard
 star
 start
 startup
@@ -1154,8 +1204,10 @@ syntax
 synthesis
 synthesize
 synthesized
+synthetic
 system
 systemctl
+systen
 tab
 table
 tag
@@ -1166,6 +1218,7 @@ tailwindcss
 target
 targets
 task
+tasks
 taste
 technical
 technique
@@ -1209,7 +1262,6 @@ tokens
 tolerance
 tone
 tones
-too
 tool
 tooling
 tools
@@ -1223,11 +1275,14 @@ toward
 track
 tracker
 transcribe
+transient
+traybake
 trending
 trigger
 troubleshooting
 true
 trusted
+truth
 try
 tsconfig
 tsx
@@ -1235,6 +1290,7 @@ ttls
 tuna
 tunnel
 turn
+tutorials
 two
 type
 typecheck
@@ -1267,6 +1323,7 @@ upsert
 urgency
 url
 usage
+usda
 use
 used
 user
@@ -1289,11 +1346,13 @@ vectors
 vegetable
 vegetarian
 vendor
+vendors
 verbatim
 vercel
 verification
 verify
 version
+versions
 via
 video
 view
@@ -1315,12 +1374,14 @@ when
 which
 why
 wildcards
+win
 window
 with
 without
 words
 work
 worker
+workflow
 workload
 would
 wrap

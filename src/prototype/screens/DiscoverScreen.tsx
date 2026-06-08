@@ -1,10 +1,10 @@
-import { LoaderCircle, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Clock3, LoaderCircle, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useMemo, useRef, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Deadline, DiscoverRecommendationState, Meal, Preferences } from "../types";
+import type { Deadline, DiscoverRecommendationState, Meal, MealSlot, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
-import { formatCookingLimit, money, ingredientNames, sourceUrl } from "../utils";
+import { formatCookingLimit, money, keyIngredients, sourceUrl } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 import { fetchRecommenderRecommendations, recordRecommenderInteraction } from "../recommenderApi";
@@ -40,6 +40,7 @@ export function DiscoverScreen({
   recommendationState,
   setRecommendationState,
   onSelectMeal,
+  context,
   track,
 }: {
   prefs: Preferences;
@@ -55,6 +56,7 @@ export function DiscoverScreen({
   recommendationState: DiscoverRecommendationState;
   setRecommendationState: StateSetter<DiscoverRecommendationState>;
   onSelectMeal: (mealId: string) => void;
+  context?: { day: string; slot: MealSlot; mealId: string } | null;
   track: TrackPrototypeEvent;
 }) {
   const latestRecommendationRequestId = useRef(0);
@@ -69,14 +71,17 @@ export function DiscoverScreen({
   const recommendationStatus = recommendationState.contextKey === recommendationContextKey ? recommendationState.status : "idle";
   const excludedRecipeIds = useMemo(
     () => [...new Set([
+      ...(context?.mealId ? [context.mealId] : []),
       ...reviewedRecipeIds,
       ...saved.map((meal) => meal.id),
       ...rejected.map((meal) => meal.id),
     ])],
-    [reviewedRecipeIds, saved, rejected],
+    [context, reviewedRecipeIds, saved, rejected],
   );
   const reviewedRecipeIdSet = useMemo(() => new Set(excludedRecipeIds), [excludedRecipeIds]);
-  const candidateRecipes = recommendedRecipes.filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id));
+  const candidateRecipes = recommendedRecipes
+    .filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))
+    .filter((meal) => !context || meal.mealSlots.includes(context.slot));
 
   const sortedQueue = candidateRecipes
     .filter((meal) => !reviewedRecipeIdSet.has(meal.id))
@@ -172,6 +177,12 @@ export function DiscoverScreen({
 
   return (
     <div>
+      {context && (
+        <div className="mb-5 flex items-center gap-2 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          <Sparkles size={15} className="shrink-0" />
+          <span>Finding alternatives for <strong>{context.day} {context.slot}</strong></span>
+        </div>
+      )}
       <div className="mb-7">
         <h1 className="text-3xl font-bold">Discover recipes</h1>
         <p className="mt-2 text-stone-600">
@@ -202,7 +213,7 @@ export function DiscoverScreen({
                 )}
               </button>
               <div className="p-6">
-                <div className="flex justify-between gap-3">
+                <div className="flex items-start justify-between gap-3">
                   <button
                     type="button"
                     onClick={() => onSelectMeal(current.id)}
@@ -210,8 +221,13 @@ export function DiscoverScreen({
                   >
                     {current.name}
                   </button>
-                  <span className="whitespace-nowrap font-semibold text-emerald-700">{money(current.price)}</span>
                   <StarRating rating={current.rating} reviews={current.reviews.length} />
+                </div>
+                <div className="mt-2 flex items-center gap-4">
+                  <span className="flex items-center gap-1 text-sm font-semibold text-stone-700">
+                    <Clock3 size={14} />{current.time} mins
+                  </span>
+                  <span className="text-sm font-semibold text-emerald-700">{money(current.price)}</span>
                 </div>
                 <p className="mt-1 text-sm text-stone-400">
                   {sourceUrl(current.source) ? (
@@ -230,7 +246,7 @@ export function DiscoverScreen({
                 </p>
                 <div className="mt-4 rounded-lg bg-stone-50 p-3">
                   <p className="text-xs font-semibold uppercase text-stone-500">Key ingredients</p>
-                  <p className="mt-1 text-sm text-stone-700">{ingredientNames(current.ingredients, 5)}</p>
+                  <p className="mt-1 text-sm text-stone-700">{keyIngredients(current.name, current.ingredients, 5)}</p>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {current.mealSlots.map((slot) => (

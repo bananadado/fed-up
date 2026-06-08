@@ -71,6 +71,48 @@ describe("recommender API helpers", () => {
       sessionId: "session-1",
       prefs: {
         dietary: [],
+        allergens: ["Gluten", "Peanuts"],
+        dislikes: ["Spicy food"],
+        likes: ["High-protein meals"],
+        budget: 20,
+        maxTime: 30,
+        cookingAbility: "basic",
+        kitchen: "shared",
+        university: "",
+        postcode: "",
+        availableIngredients: [],
+        planningHorizonDays: 21,
+        planRegenMode: "prompt",
+      },
+      deadlines: [deadline("medium")],
+      excludeIds: ["recipe-1"],
+      count: 5,
+    });
+
+    expect(requestBodies[0]).toMatchObject({
+      id: "session-1",
+      allergens: ["gluten", "peanut"],
+      dislikes: ["spicy food"],
+      likes: ["high-protein meals"],
+    });
+    expect(requestBodies[1]).toMatchObject({
+      user_id: "session-1",
+      n: 5,
+      exclude_ids: ["recipe-1"],
+    });
+  });
+
+  test("normalizes capitalized dietary onboarding labels before user sync", async () => {
+    const requestBodies: unknown[] = [];
+    globalThis.fetch = ((_url: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
+      requestBodies.push(JSON.parse(String(init?.body ?? "{}")));
+      return Promise.resolve({ ok: true, status: 200, json: async () => [] });
+    }) as unknown as typeof fetch;
+
+    await fetchRecommenderRecommendations({
+      sessionId: "session-2",
+      prefs: {
+        dietary: ["Vegetarian", "Vegan", "Gluten-free", "Dairy-free"],
         allergens: [],
         dislikes: [],
         likes: [],
@@ -81,16 +123,16 @@ describe("recommender API helpers", () => {
         university: "",
         postcode: "",
         availableIngredients: [],
+        planningHorizonDays: 21,
+        planRegenMode: "prompt",
       },
       deadlines: [deadline("medium")],
-      excludeIds: ["recipe-1"],
+      excludeIds: [],
       count: 5,
     });
 
-    expect(requestBodies[1]).toMatchObject({
-      user_id: "session-1",
-      n: 5,
-      exclude_ids: ["recipe-1"],
+    expect(requestBodies[0]).toMatchObject({
+      dietary_tags: ["vegetarian", "vegan", "gluten-free", "dairy-free"],
     });
   });
 

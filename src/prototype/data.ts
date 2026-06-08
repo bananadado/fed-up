@@ -33,6 +33,7 @@ export const seedMeals: Meal[] = [
     ],
     allergens: ["gluten"],
     nutrition: { calories: 510, protein: 19, carbs: 74, fat: 14 },
+    servings: 2,
     rating: 0,
     reviews: [],
     instructions: ["Chop the vegetables and spread them on a tray.", "Add chickpeas, oil and seasoning, then roast until tender.", "Serve with couscous and save leftovers for wraps."],
@@ -366,4 +367,6 @@ export const initialPreferences: Preferences = {
   dislikes: [],
   likes: [],
   availableIngredients: [],
+  planningHorizonDays: 21,
+  planRegenMode: "prompt",
 };

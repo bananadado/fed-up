@@ -1,7 +1,7 @@
 import { Plus, RotateCcw, Sparkles, UtensilsCrossed } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
-import type { Deadline, DiscoverRecommendationState, Meal, Preferences } from "../types";
+import type { Deadline, DiscoverRecommendationState, Meal, MealSlot, Preferences } from "../types";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { AppButton, Badge } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
@@ -29,6 +29,8 @@ export function RecipesHubScreen({
   deadlines,
   sessionId,
   onSelectMeal,
+  onAddToPlan,
+  discoverContext,
   track,
 }: {
   customRecipes: Meal[];
@@ -45,9 +47,12 @@ export function RecipesHubScreen({
   deadlines: Deadline[];
   sessionId: string;
   onSelectMeal: (mealId: string) => void;
+  onAddToPlan?: (mealId: string) => void;
+  discoverContext?: { day: string; slot: MealSlot; mealId: string } | null;
   track: TrackPrototypeEvent;
 }) {
   const [tab, setTab] = useState<Tab>(() => {
+    if (discoverContext) return "discover";
     try {
       const stored = sessionStorage.getItem("deadlineFood:recipesTab");
       if (stored === "discover" || stored === "saved" || stored === "add") return stored;
@@ -75,6 +80,7 @@ export function RecipesHubScreen({
       mealSlots: output.mealSlots,
       time: output.time,
       price: output.price,
+      servings: output.servings,
       ingredients: output.ingredients,
       tags: output.tags,
       allergens: output.allergens,
@@ -246,13 +252,22 @@ export function RecipesHubScreen({
                       </p>
                     </button>
                     <div className="mt-3 border-t border-stone-100 pt-3">
-                      <AppButton
-                        variant="ghost"
-                        className="w-full text-sm text-stone-400 hover:text-rose-600"
-                        onClick={() => setConfirmAction({ recipeId: recipe.id, isOwn })}
-                      >
-                        {isOwn ? "Delete recipe" : "Unsave"}
-                      </AppButton>
+                      <div className="flex gap-2">
+                        <AppButton
+                          variant="ghost"
+                          className="flex-1 text-sm text-stone-400 hover:text-rose-600"
+                          onClick={() => setConfirmAction({ recipeId: recipe.id, isOwn })}
+                        >
+                          {isOwn ? "Delete recipe" : "Unsave"}
+                        </AppButton>
+                        <AppButton
+                          variant="secondary"
+                          className="flex-1 justify-center text-sm"
+                          onClick={() => onAddToPlan?.(recipe.id)}
+                        >
+                          Add to plan
+                        </AppButton>
+                      </div>
                     </div>
                   </div>
                 );
@@ -333,6 +348,7 @@ export function RecipesHubScreen({
           recommendationState={discoverRecommendationState}
           setRecommendationState={setDiscoverRecommendationState}
           onSelectMeal={onSelectMeal}
+          context={discoverContext}
           track={track}
         />
       )}

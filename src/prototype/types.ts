@@ -14,7 +14,7 @@ export type Nutrition = {
 };
 
 export type NutritionSource = {
-  provider: "manual" | "OpenFoodFacts";
+  provider: "manual" | "USDA" | "OpenFoodFacts" | "USDA + OpenFoodFacts";
   label: string;
   fetchedAt?: string;
   matchedIngredients?: NutritionMatch[];
@@ -42,6 +42,7 @@ export type Meal = {
   mealSlots: MealSlot[];
   time: number;
   price: number;
+  servings?: number;
   tags: string[];
   ingredients: RecipeIngredient[];
   allergens: string[];
@@ -60,10 +61,17 @@ export type PlanMeal = {
   slot: MealSlot;
   mealId: string;
   rescued?: boolean;
+  /** True when this slot is a batch cook that seeds leftovers on later days. */
+  batchCook?: boolean;
+  /** Set when this slot reuses an earlier batch cook (mealId of the source cook). */
+  leftoverOf?: string;
 };
 
 export type PlanEntry = {
+  /** Display label, e.g. "Mon 1 Jun". */
   day: string;
+  /** Local ISO date `YYYY-MM-DD` the entry maps to (auto-planning, calendar export, staleness). */
+  dateIso?: string;
   context: string;
   meals: PlanMeal[];
 };
@@ -81,6 +89,8 @@ export type Deadline = {
   rawDate?: string;
 };
 
+export type PlanRegenMode = "prompt" | "auto";
+
 export type Preferences = {
   maxTime: number | null;
   budget: number;
@@ -93,6 +103,10 @@ export type Preferences = {
   dislikes: string[];
   likes: string[];
   availableIngredients: RecipeIngredient[];
+  /** How many days ahead the auto-planner fills (default 21 = 3 weeks). */
+  planningHorizonDays: number;
+  /** Whether stale plans prompt the user ("prompt") or regenerate silently ("auto"). */
+  planRegenMode: PlanRegenMode;
 };
 
 export type DiscoverRecommendationStatus = "idle" | "ready" | "exhausted";

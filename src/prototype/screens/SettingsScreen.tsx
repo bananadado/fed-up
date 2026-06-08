@@ -225,6 +225,50 @@ export function SettingsScreen({
             View privacy summary
           </button>
         </div>
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <div>
+            <span className="text-sm font-semibold">Planning window</span>
+            <p className="mt-1 text-sm text-stone-500">How far ahead Fed Up fills your plan.</p>
+            <div className="mt-3 grid grid-cols-4 gap-2">
+              {[7, 14, 21, 28].map((days) => {
+                const active = prefs.planningHorizonDays === days;
+                const wk = days / 7;
+                return (
+                  <button
+                    key={days}
+                    type="button"
+                    onClick={() => { track("settings_preference_changed", { field: "planning_horizon_days", value: days }); setPrefs({ ...prefs, planningHorizonDays: days }); }}
+                    className={cn("rounded-lg border px-2 py-2.5 text-sm font-medium transition", active ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300")}
+                  >
+                    {wk}w
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div>
+            <span className="text-sm font-semibold">Plan updates</span>
+            <p className="mt-1 text-sm text-stone-500">When your calendar or recipes change.</p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              {([
+                { value: "prompt", label: "Prompt me" },
+                { value: "auto", label: "Automatic" },
+              ] as const).map((option) => {
+                const active = prefs.planRegenMode === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => { track("settings_preference_changed", { field: "plan_regen_mode", value: option.value }); setPrefs({ ...prefs, planRegenMode: option.value }); }}
+                    className={cn("rounded-lg border px-3 py-2.5 text-sm font-medium transition", active ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300")}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
         <div className="mt-6 space-y-5">
           <ChoiceGroup
             title="Dietary requirements (leave blank if none)"

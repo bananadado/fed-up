@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Sparkles } from "lucide-react";
 
+import fedUpLogo from "@/assets/fed-up-logo.svg";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -110,6 +111,7 @@ export function Onboarding({
   setCalendarTokens,
   sessionId,
   track,
+  setCalendarSkipped,
 }: {
   setOnboarded: (onboarded: boolean) => void;
   setScreen: (screen: Screen) => void;
@@ -128,6 +130,7 @@ export function Onboarding({
   setCalendarTokens: (tokens: CalendarToken[]) => void;
   sessionId: string;
   track: TrackPrototypeEvent;
+  setCalendarSkipped: (skipped: boolean) => void;
 }) {
   const [step, setStep] = useState(() => {
     try {
@@ -293,15 +296,15 @@ export function Onboarding({
     track("calendar_skip_confirmed", { provider: calendarProvider });
     setShowCalendarSkipConfirm(false);
     track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider, calendar_skipped: true });
+    setCalendarSkipped(true);
     goToStep(1);
   }
 
   return (
     <div className="min-h-screen bg-[#faf9f5] px-4 py-7 sm:px-6">
       <div className="mx-auto max-w-3xl">
-        <div className="mb-7 flex items-center gap-2 font-bold text-emerald-800">
-          <Leaf size={20} />
-          Deadline Food Autopilot
+        <div className="mb-7 flex items-center">
+          <img src={fedUpLogo} alt="Fed Up" className="h-8 w-auto" />
         </div>
         <Progress step={step} />
         {step === 0 && (
@@ -395,6 +398,20 @@ export function Onboarding({
                 {importMessage}
               </p>
             )}
+            {importError && (
+              <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 p-3">
+                <p className="text-sm text-rose-800 font-medium">We couldn't connect to {calendarProvider === "google" ? "Google" : "Microsoft"}.</p>
+                <p className="mt-1 text-sm text-rose-700">You can skip this step and add your workload manually on the Calendar screen, or try again later in Settings.</p>
+                <div className="mt-3 flex gap-2">
+                  <AppButton variant="secondary" onClick={() => { track("calendar_skip_confirmed", { provider: calendarProvider }); setShowCalendarSkipConfirm(true); }}>
+                    Skip for now
+                  </AppButton>
+                  <AppButton variant="secondary" onClick={() => { track("calendar_retry_clicked", { provider: calendarProvider }); setImportError(false); setImportMessage(""); }}>
+                    Try again
+                  </AppButton>
+                </div>
+              </div>
+            )}
             <p className="mt-4 text-sm text-stone-500">
               Adding a calendar is optional. You can import calendar events any time through Settings or the Calendar menu.
             </p>
@@ -453,7 +470,7 @@ export function Onboarding({
                 <div>
                   <h3 id="calendar-skip-title" className="text-lg font-bold text-stone-950">Continue without a calendar?</h3>
                   <p className="mt-2 text-sm leading-6 text-stone-600">
-                    No calendar has been imported, so Autopilot will not adapt meals around your real events yet. You can import calendar events any time through Settings or the Calendar menu.
+                    No calendar has been imported, so Fed Up will not adapt meals around your real events yet. You can import calendar events any time through Settings or the Calendar menu.
                   </p>
                 </div>
               </div>
@@ -651,7 +668,7 @@ export function Onboarding({
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
               <PreferenceSection
                 title="Cooking time"
-                description="Set the maximum effort for a normal deadline-week meal. This is the control Autopilot uses before suggesting anything."
+                description="Set the maximum effort for a normal deadline-week meal. This is the control Fed Up uses before suggesting anything."
               >
                 <label className="block">
                   <span className="text-sm font-semibold">Maximum cooking time</span>
@@ -718,7 +735,10 @@ export function Onboarding({
                     onChange={(kitchen) => { track("onboarding_preference_changed", { field: "kitchen", value: kitchen }); setPrefs({ ...prefs, kitchen }); }}
                     options={[
                       { value: "full", label: "Full kitchen" },
+                      { value: "shared", label: "Shared kitchen (often busy)" },
+                      { value: "hob", label: "Hob only (no oven)" },
                       { value: "limited", label: "Microwave / kettle only" },
+                      { value: "catered", label: "Catered hall" },
                       { value: "none", label: "No kitchen access" },
                     ]}
                     required
@@ -747,6 +767,27 @@ export function Onboarding({
               </button>
             </div>
             <div className="mt-4 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
+              <PreferenceSection
+                title="Planning window"
+                description="How far ahead should Fed Up plan your meals? You can change this later."
+              >
+                <div className="grid grid-cols-4 gap-2">
+                  {[7, 14, 21, 28].map((days) => {
+                    const active = prefs.planningHorizonDays === days;
+                    const wk = days / 7;
+                    return (
+                      <button
+                        key={days}
+                        type="button"
+                        onClick={() => { track("onboarding_preference_changed", { field: "planning_horizon_days", value: days }); setPrefs({ ...prefs, planningHorizonDays: days }); }}
+                        className={cn("rounded-lg border px-2 py-2.5 text-sm font-medium transition", active ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300")}
+                      >
+                        {wk} {wk === 1 ? "week" : "weeks"}
+                      </button>
+                    );
+                  })}
+                </div>
+              </PreferenceSection>
               <PreferenceSection
                 title="Planning Priorities"
                 description="What should we optimise for? You can change this later."
