@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Mail, ShieldCheck, Sparkles, UserRound } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Leaf, Mail, Sparkles, UserRound } from "lucide-react";
+import { GoogleIcon, MicrosoftIcon } from "../components/BrandIcons";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -862,7 +863,7 @@ export function Onboarding({
             <div className="mt-7 rounded-lg border border-emerald-100 bg-emerald-50/70 p-4">
               <div className="flex items-start gap-3">
                 <div className="rounded-lg bg-white p-2 text-emerald-700">
-                  {account.isAnonymous ? <UserRound size={18} /> : <ShieldCheck size={18} />}
+                  <UserRound size={18} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-stone-900">{account.isAnonymous ? "Optional account" : "Account connected"}</p>
@@ -880,7 +881,7 @@ export function Onboarding({
                       disabled={accountBusy !== null}
                       className="justify-center py-3"
                     >
-                      <ShieldCheck size={15} /> {accountBusy === "google" ? "Connecting..." : "Continue with Google"}
+                      <GoogleIcon size={15} /> {accountBusy === "google" ? "Connecting..." : "Continue with Google"}
                     </AppButton>
                     <AppButton
                       type="button"
@@ -888,7 +889,7 @@ export function Onboarding({
                       disabled={accountBusy !== null}
                       className="justify-center py-3"
                     >
-                      <ShieldCheck size={15} /> {accountBusy === "microsoft" ? "Connecting..." : "Continue with Microsoft"}
+                      <MicrosoftIcon size={15} /> {accountBusy === "microsoft" ? "Connecting..." : "Continue with Microsoft"}
                     </AppButton>
                   </div>
                   <div className="flex items-center gap-3">
@@ -914,6 +915,7 @@ export function Onboarding({
                       <Mail size={15} /> {accountBusy === "email" ? "Sending..." : "Send link"}
                     </AppButton>
                   </form>
+                  <p className="text-xs text-emerald-700">Link opens in the same browser. Check spam if it doesn't arrive.</p>
                 </div>
               )}
               {accountMessage && <p className="mt-3 rounded-lg bg-white p-3 text-sm text-emerald-800">{accountMessage}</p>}

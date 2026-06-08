@@ -3,18 +3,23 @@ import {
   browserLocalPersistence,
   connectAuthEmulator,
   getAuth,
+  getRedirectResult,
   GoogleAuthProvider,
   isSignInWithEmailLink,
   linkWithPopup,
+  linkWithRedirect,
   OAuthProvider,
   onAuthStateChanged,
   sendSignInLinkToEmail,
   setPersistence,
   signInAnonymously,
+  signInWithCredential,
   signInWithEmailLink,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   type Auth,
+  type AuthError,
   type AuthProvider,
   type User,
 } from "firebase/auth";
@@ -218,8 +223,8 @@ function cleanEmailLinkFromUrl(): void {
   if (typeof window === "undefined") {
     return;
   }
-
-  const cleanUrl = `${window.location.origin}${window.location.pathname}${window.location.hash || "#/onboarding"}`;
+  // Strip query params (oobCode etc.) but preserve whatever hash is present.
+  const cleanUrl = `${window.location.origin}${window.location.pathname}${window.location.hash}`;
   window.history.replaceState({}, document.title, cleanUrl);
 }
 
@@ -329,16 +334,74 @@ export async function sendDeadlineFoodEmailMagicLink(email: string): Promise<voi
     throw new Error("Enter a valid email address.");
   }
 
-  const url = new URL(window.location.href);
-  if (!url.hash) {
-    url.hash = "/onboarding";
-  }
+  // Use origin-only URL so Firebase can append oobCode as query params.
+  // A hash fragment in the continueUrl causes Firebase to append params after
+  // the hash where isSignInWithEmailLink() cannot find them.
+  const url = `${window.location.origin}/`;
 
   await sendSignInLinkToEmail(auth, normalizedEmail, {
-    url: url.toString(),
+    url,
     handleCodeInApp: true,
   });
   window.localStorage.setItem(EMAIL_LINK_STORAGE_KEY, normalizedEmail);
+}
+
+const MICROSOFT_REDIRECT_PENDING_KEY = "deadlineFoodMicrosoftAuthPending";
+
+export async function linkDeadlineFoodMicrosoftRedirect(): Promise<void> {
+  const auth = getDeadlineFoodAuth();
+  if (auth === null) {
+    throw new Error("Firebase Auth is not configured for this app.");
+  }
+
+  const user = await ensureDeadlineFoodAuthUser();
+  const provider = providerFor("microsoft");
+
+  try {
+    sessionStorage.setItem(MICROSOFT_REDIRECT_PENDING_KEY, "1");
+  } catch { /* sessionStorage unavailable */ }
+
+  if (user?.isAnonymous) {
+    await linkWithRedirect(user, provider);
+  } else {
+    await signInWithRedirect(auth, provider);
+  }
+}
+
+export async function checkDeadlineFoodMicrosoftRedirectResult(): Promise<AccountSummary | null> {
+  const auth = getDeadlineFoodAuth();
+  if (auth === null) return null;
+
+  let pending = false;
+  try {
+    pending = sessionStorage.getItem(MICROSOFT_REDIRECT_PENDING_KEY) === "1";
+    if (pending) sessionStorage.removeItem(MICROSOFT_REDIRECT_PENDING_KEY);
+  } catch { /* sessionStorage unavailable */ }
+
+  if (!pending) return null;
+
+  try {
+    const result = await getRedirectResult(auth);
+    if (result) return userToSummary(result.user);
+    // Firebase may have already consumed the redirect result via onAuthStateChanged.
+    // Fall back to the current user if they are non-anonymous.
+    const current = auth.currentUser;
+    return current && !current.isAnonymous ? userToSummary(current) : null;
+  } catch (error) {
+    const code = firebaseErrorCode(error);
+    if (
+      code === "auth/credential-already-in-use" ||
+      code === "auth/email-already-in-use" ||
+      code === "auth/account-exists-with-different-credential"
+    ) {
+      const credential = OAuthProvider.credentialFromError(error as AuthError);
+      if (credential) {
+        const result = await signInWithCredential(auth, credential);
+        return userToSummary(result.user);
+      }
+    }
+    throw error;
+  }
 }
 
 export async function switchToAnonymousAccountOnThisDevice(): Promise<AccountSummary> {

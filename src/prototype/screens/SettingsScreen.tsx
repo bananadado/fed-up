@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { Import, LogOut, Mail, RotateCcw, ShieldCheck, UserRound } from "lucide-react";
+import { Import, LogOut, Mail, RotateCcw, UserRound } from "lucide-react";
+import { GoogleIcon, MicrosoftIcon } from "../components/BrandIcons";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -183,7 +184,7 @@ export function SettingsScreen({
         <div className="mb-6 rounded-lg border border-emerald-100 bg-emerald-50/70 p-4">
           <div className="flex items-start gap-3">
             <div className="rounded-lg bg-white p-2 text-emerald-700">
-              {account.isAnonymous ? <UserRound size={18} /> : <ShieldCheck size={18} />}
+              <UserRound size={18} />
             </div>
             <div className="min-w-0 flex-1">
               <p className="font-semibold text-stone-900">Account</p>
@@ -201,7 +202,7 @@ export function SettingsScreen({
                 disabled={accountBusy !== null}
                 className="justify-center"
               >
-                <ShieldCheck size={15} /> {accountBusy === "google" ? "Connecting..." : "Continue with Google"}
+                <GoogleIcon size={15} /> {accountBusy === "google" ? "Connecting..." : "Continue with Google"}
               </AppButton>
               <AppButton
                 type="button"
@@ -210,7 +211,7 @@ export function SettingsScreen({
                 disabled={accountBusy !== null}
                 className="justify-center"
               >
-                <ShieldCheck size={15} /> {accountBusy === "microsoft" ? "Connecting..." : "Continue with Microsoft"}
+                <MicrosoftIcon size={15} /> {accountBusy === "microsoft" ? "Connecting..." : "Continue with Microsoft"}
               </AppButton>
               {!account.isAnonymous && (
                 <AppButton
@@ -226,24 +227,27 @@ export function SettingsScreen({
             </div>
           )}
           {account.configured && (
-            <form
-              className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto]"
-              onSubmit={(event) => {
-                event.preventDefault();
-                onSendEmailMagicLink(accountEmail);
-              }}
-            >
-              <Input
-                type="email"
-                value={accountEmail}
-                onChange={(event) => setAccountEmail(event.target.value)}
-                placeholder="you@example.com"
-                className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
-              />
-              <AppButton type="submit" variant="secondary" disabled={accountBusy !== null || !accountEmail.trim()} className="justify-center">
-                <Mail size={15} /> {accountBusy === "email" ? "Sending..." : "Send magic link"}
-              </AppButton>
-            </form>
+            <div className="mt-3 space-y-1.5">
+              <form
+                className="grid gap-2 sm:grid-cols-[1fr_auto]"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  onSendEmailMagicLink(accountEmail);
+                }}
+              >
+                <Input
+                  type="email"
+                  value={accountEmail}
+                  onChange={(event) => setAccountEmail(event.target.value)}
+                  placeholder="you@example.com"
+                  className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
+                />
+                <AppButton type="submit" variant="secondary" disabled={accountBusy !== null || !accountEmail.trim()} className="justify-center">
+                  <Mail size={15} /> {accountBusy === "email" ? "Sending..." : "Send magic link"}
+                </AppButton>
+              </form>
+              <p className="text-xs text-stone-500">Link opens in the same browser. Check spam if it doesn't arrive.</p>
+            </div>
           )}
           {accountMessage && <p className="mt-3 rounded-lg bg-white p-3 text-sm text-emerald-800">{accountMessage}</p>}
         </div>

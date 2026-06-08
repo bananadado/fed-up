@@ -13,8 +13,10 @@ import { createPrototypeSessionSettings, normalizePreferences, restorePrototypeP
 import { syncRecommenderUser } from "./recommenderApi";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
 import {
+  checkDeadlineFoodMicrosoftRedirectResult,
   completeDeadlineFoodEmailLinkSignIn,
   linkDeadlineFoodAccount,
+  linkDeadlineFoodMicrosoftRedirect,
   onDeadlineFoodAccountChanged,
   sendDeadlineFoodEmailMagicLink,
   switchToAnonymousAccountOnThisDevice,
@@ -186,7 +188,21 @@ export function DeadlineFoodPrototype() {
     registerPostHogSession(posthog, sessionId);
   }, [posthog, sessionId]);
 
-  useEffect(() => onDeadlineFoodAccountChanged(setAccount), []);
+  const prevAccountRef = useRef<AccountSummary | null>(null);
+  useEffect(() => {
+    return onDeadlineFoodAccountChanged((nextAccount) => {
+      const prev = prevAccountRef.current;
+      prevAccountRef.current = nextAccount;
+      setAccount(nextAccount);
+      // Detect any anonymous→authenticated transition regardless of which sign-in
+      // path completed it (popup, redirect, email link via getDeadlineFoodAuthToken).
+      if (prev !== null && prev.isAnonymous && !nextAccount.isAnonymous) {
+        setOnboarded(true);
+        setCanPersistSession(true);
+        window.location.hash = "/dashboard";
+      }
+    });
+  }, []);
 
   useEffect(() => {
     function onHashChange() {
@@ -363,13 +379,34 @@ export function DeadlineFoodPrototype() {
   }, [buildSessionSettings, sessionId]);
 
   useEffect(() => {
+    // Backup: if onAuthStateChanged fired only once (redirect already processed
+    // before subscription), pick up the result via the sessionStorage flag.
+    checkDeadlineFoodMicrosoftRedirectResult()
+      .then((nextAccount) => {
+        if (nextAccount) {
+          void saveCurrentSessionNow();
+          setAccountMessage("Saved to Microsoft. Your plan is now synced to your account.");
+          track("account_linked", { provider: "microsoft" });
+          // We know the user just came from a Microsoft redirect — always navigate.
+          setOnboarded(true);
+          setCanPersistSession(true);
+          window.location.hash = "/dashboard";
+        }
+      })
+      .catch((error) => {
+        const message = error instanceof Error ? error.message : "Microsoft sign-in could not be completed.";
+        setAccountMessage(message);
+        track("account_link_failed", { provider: "microsoft", error: message });
+      });
+  }, [saveCurrentSessionNow, track]);
+
+  useEffect(() => {
     completeDeadlineFoodEmailLinkSignIn()
       .then((nextAccount) => {
         if (nextAccount) {
-          setAccount(nextAccount);
-          setCanPersistSession(true);
-          setAccountMessage("Email sign-in complete. Your plan is saved to your account.");
+          // Navigation is handled by the onAuthStateChanged transition above.
           void saveCurrentSessionNow();
+          setAccountMessage("Email sign-in complete. Your plan is now synced to your account.");
         }
       })
       .catch((error) => {
@@ -382,11 +419,14 @@ export function DeadlineFoodPrototype() {
     setAccountBusy(provider);
     setAccountMessage("");
     try {
-      const nextAccount = await linkDeadlineFoodAccount(provider);
-      setAccount(nextAccount);
-      setCanPersistSession(true);
+      if (provider === "microsoft") {
+        await linkDeadlineFoodMicrosoftRedirect();
+        return; // page navigates away — nothing after this runs
+      }
+      await linkDeadlineFoodAccount(provider);
+      // onAuthStateChanged transition handler above handles setAccount + navigation.
       await saveCurrentSessionNow();
-      setAccountMessage(`Saved to ${provider === "google" ? "Google" : "Microsoft"}.`);
+      setAccountMessage("Saved to Google. Your plan is now synced to your account.");
       track("account_linked", { provider });
     } catch (error) {
       const message = error instanceof Error ? error.message : "Account sign-in failed.";
@@ -614,10 +654,15 @@ export function DeadlineFoodPrototype() {
   }
 
   if (activeScreen === "landing") {
-    return <Landing onStart={() => {
-      enableSessionPersistence();
-      navigateScreen("onboarding");
-    }} track={track} />;
+    return <Landing
+      onStart={() => { enableSessionPersistence(); navigateScreen("onboarding"); }}
+      track={track}
+      account={account}
+      accountBusy={accountBusy}
+      accountMessage={accountMessage}
+      onConnectAccount={connectAccount}
+      onSendEmailMagicLink={sendEmailMagicLink}
+    />;
   }
 
   if (activeScreen === "onboarding") {
