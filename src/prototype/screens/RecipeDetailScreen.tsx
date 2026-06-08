@@ -62,6 +62,7 @@ export function RecipeDetailScreen({
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
+  const [localUnitSystem, setLocalUnitSystem] = useState<"metric" | "imperial">(unitSystem);
 
   const baseServings = meal?.servings && meal.servings > 0 ? meal.servings : 1;
   // Track which recipe the chosen serving count belongs to so it resets to the
@@ -132,7 +133,7 @@ export function RecipeDetailScreen({
   const selectedVendor = groceryVendorById(selectedVendorId);
   const scaleFactor = servings / baseServings;
   const scaledIngredients = scaleIngredients(selectedMeal.ingredients, scaleFactor).map((ing) =>
-    normalizeIngredientUnit(ing, unitSystem),
+    normalizeIngredientUnit(ing, localUnitSystem),
   );
   const shoppingItems = aggregateIngredients(scaledIngredients);
   const isScaled = servings !== baseServings;
@@ -396,6 +397,19 @@ export function RecipeDetailScreen({
                 <div>
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <h2 className="text-xl font-bold">Ingredients</h2>
+                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 rounded-lg border border-stone-200 bg-white p-1" role="group" aria-label="Unit system">
+                      {(["metric", "imperial"] as const).map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          onClick={() => setLocalUnitSystem(option)}
+                          className={`rounded-md px-2 py-1 text-xs font-medium transition ${localUnitSystem === option ? "bg-stone-100 text-stone-900" : "text-stone-500 hover:text-stone-700"}`}
+                        >
+                          {option === "metric" ? "g/ml" : "oz/cup"}
+                        </button>
+                      ))}
+                    </div>
                     <div className="flex items-center gap-1 rounded-lg border border-stone-200 bg-white p-1" role="group" aria-label="Servings">
                       <Users size={14} className="ml-1 text-stone-400" />
                       <button
@@ -419,6 +433,7 @@ export function RecipeDetailScreen({
                       >
                         <Plus size={14} />
                       </button>
+                    </div>
                     </div>
                   </div>
                   {isScaled && (
