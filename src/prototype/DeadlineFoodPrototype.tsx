@@ -12,6 +12,13 @@ import {
 import { createPrototypeSessionSettings, normalizePreferences, restorePrototypePlan, type CalendarToken, type IcsSubscription } from "./sessionPersistence";
 import { syncRecommenderUser } from "./recommenderApi";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
+import {
+  linkDeadlineFoodAccount,
+  onDeadlineFoodAccountChanged,
+  switchToAnonymousAccountOnThisDevice,
+  type AccountProviderId,
+  type AccountSummary,
+} from "./accountAuth";
 import { fetchRecipeCatalogue, setRecipeCatalogue } from "./recipeCatalogue";
 import { Shell } from "./components/Shell";
 import { CalendarScreen } from "./screens/CalendarScreen";
@@ -64,9 +71,19 @@ function maxTimeBucket(maxTime: number | null): string {
 
 export function DeadlineFoodPrototype() {
   const posthog = usePostHog();
-  const [sessionId] = useState(() => getOrCreateAnonymousSessionId());
+  const [sessionId, setSessionId] = useState(() => getOrCreateAnonymousSessionId());
   const [sessionLoaded, setSessionLoaded] = useState(false);
   const [canPersistSession, setCanPersistSession] = useState(false);
+  const [account, setAccount] = useState<AccountSummary>({
+    configured: false,
+    uid: null,
+    email: null,
+    displayName: null,
+    isAnonymous: true,
+    providerIds: [],
+  });
+  const [accountMessage, setAccountMessage] = useState("");
+  const [accountBusy, setAccountBusy] = useState<AccountProviderId | "anonymous" | null>(null);
   const [screen, setScreen] = useState<Screen>(() => screenFromHash() ?? "landing");
   const routeHistory = useRef<Screen[]>([]);
   const pendingHashScreen = useRef<Screen | null>(null);
@@ -167,6 +184,8 @@ export function DeadlineFoodPrototype() {
     registerPostHogSession(posthog, sessionId);
   }, [posthog, sessionId]);
 
+  useEffect(() => onDeadlineFoodAccountChanged(setAccount), []);
+
   useEffect(() => {
     function onHashChange() {
       const nextScreen = screenFromHash();
@@ -226,6 +245,10 @@ export function DeadlineFoodPrototype() {
     loadAnonymousSessionSettings(sessionId)
       .then(snapshot => {
         if (cancelled) return;
+
+        if (snapshot.sessionId !== sessionId) {
+          setSessionId(snapshot.sessionId);
+        }
 
         if (snapshot.settings !== null) {
           setPrefs(normalizePreferences(snapshot.settings.preferences));
@@ -328,6 +351,50 @@ export function DeadlineFoodPrototype() {
     prefs,
     selectedSources,
   ]);
+
+  const saveCurrentSessionNow = useCallback(async () => {
+    const snapshot = await saveAnonymousSessionSettings(sessionId, buildSessionSettings());
+    if (snapshot.sessionId !== sessionId) {
+      setSessionId(snapshot.sessionId);
+    }
+    return snapshot;
+  }, [buildSessionSettings, sessionId]);
+
+  const connectAccount = useCallback(async (provider: AccountProviderId) => {
+    setAccountBusy(provider);
+    setAccountMessage("");
+    try {
+      const nextAccount = await linkDeadlineFoodAccount(provider);
+      setAccount(nextAccount);
+      setCanPersistSession(true);
+      await saveCurrentSessionNow();
+      setAccountMessage(`Saved to ${provider === "google" ? "Google" : "Microsoft"}.`);
+      track("account_linked", { provider });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Account sign-in failed.";
+      setAccountMessage(message);
+      track("account_link_failed", { provider, error: message });
+    } finally {
+      setAccountBusy(null);
+    }
+  }, [saveCurrentSessionNow, track]);
+
+  const returnToAnonymousAccount = useCallback(async () => {
+    setAccountBusy("anonymous");
+    setAccountMessage("");
+    try {
+      const nextAccount = await switchToAnonymousAccountOnThisDevice();
+      setAccount(nextAccount);
+      await saveCurrentSessionNow();
+      setAccountMessage("This device is using an anonymous account again.");
+      track("account_signed_out", {});
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not switch account.";
+      setAccountMessage(message);
+    } finally {
+      setAccountBusy(null);
+    }
+  }, [saveCurrentSessionNow, track]);
 
   useEffect(() => {
     if (!sessionLoaded || !canPersistSession) return;
@@ -560,7 +627,7 @@ export function DeadlineFoodPrototype() {
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} track={track} />}
-      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} track={track} />}
+      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountBusy={accountBusy} onConnectAccount={connectAccount} onUseAnonymousAccount={returnToAnonymousAccount} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} />}
     </Shell>
   );

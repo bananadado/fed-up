@@ -1,5 +1,6 @@
 import {initializeApp} from "firebase-admin/app";
-import {FieldValue, getFirestore, Timestamp} from "firebase-admin/firestore";
+import {getAuth} from "firebase-admin/auth";
+import {FieldValue, getFirestore, Timestamp, type DocumentData, type DocumentReference} from "firebase-admin/firestore";
 import {getStorage} from "firebase-admin/storage";
 import {onRequest} from "firebase-functions/v2/https";
 import {onSchedule} from "firebase-functions/v2/scheduler";
@@ -32,12 +33,14 @@ initializeApp();
 setGlobalOptions({region: "europe-west2", maxInstances: 10});
 
 const firestore = getFirestore();
+const firebaseAuth = getAuth();
 const prototypeRef = firestore.collection("prototypeData").doc("deadlineFood");
 // Canonical recipe content lives in Firestore (issue #123). pgvector stores only
 // the recipe UID as primary key plus its embedding; reviews are Firestore-only.
 const recipesRef = firestore.collection("recipes");
 const recipeReviewsRef = firestore.collection("recipeReviews");
 const anonymousSessionsRef = firestore.collection("anonymousSessions");
+const accountSessionsRef = firestore.collection("accountSessions");
 const openFoodFactsCacheRef = firestore.collection("openFoodFactsNutritionCache");
 const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
@@ -174,6 +177,8 @@ type HttpRequest = {
   method: string;
   query: Record<string, unknown>;
   body: unknown;
+  headers?: Record<string, unknown>;
+  get?(name: string): string | undefined;
 };
 
 type HttpResponse = {
@@ -753,6 +758,87 @@ function readRequestBody(request: HttpRequest): UnknownRecord | null {
   }
 
   return asRecord(request.body);
+}
+
+function requestHeader(request: HttpRequest, name: string): string {
+  const fromGetter = typeof request.get === "function" ? request.get(name) : undefined;
+  if (typeof fromGetter === "string") {
+    return fromGetter;
+  }
+
+  const lowerName = name.toLowerCase();
+  const value = request.headers?.[lowerName] ?? request.headers?.[name];
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (Array.isArray(value) && typeof value[0] === "string") {
+    return value[0];
+  }
+
+  return "";
+}
+
+async function verifiedAuthUid(request: HttpRequest): Promise<string | null> {
+  const authorization = requestHeader(request, "authorization");
+
+  if (!authorization) {
+    return null;
+  }
+
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
+  if (!match?.[1]) {
+    throw new Error("Invalid authorization header.");
+  }
+
+  const decodedToken = await firebaseAuth.verifyIdToken(match[1]);
+  return decodedToken.uid;
+}
+
+function accountSessionDocId(uid: string): string {
+  return Buffer.from(uid).toString("base64url");
+}
+
+function sessionOwnerUid(data: DocumentData | undefined): string | null {
+  return typeof data?.authUid === "string" ? data.authUid : null;
+}
+
+async function pointAccountToSession(uid: string, sessionId: string): Promise<void> {
+  const pointerRef = accountSessionsRef.doc(accountSessionDocId(uid));
+  const pointer = await pointerRef.get();
+
+  await pointerRef.set(
+    {
+      ...(pointer.exists ? {} : {createdAt: FieldValue.serverTimestamp()}),
+      uid,
+      sessionId,
+      updatedAt: FieldValue.serverTimestamp(),
+    },
+    {merge: true},
+  );
+}
+
+async function claimSessionForAccount(
+  uid: string,
+  sessionId: string,
+  sessionRef: DocumentReference,
+): Promise<void> {
+  await sessionRef.set(
+    {
+      authUid: uid,
+      accountLinkedAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
+    },
+    {merge: true},
+  );
+  await pointAccountToSession(uid, sessionId);
+}
+
+async function accountSessionId(uid: string): Promise<string | null> {
+  const pointer = await accountSessionsRef.doc(accountSessionDocId(uid)).get();
+  const sessionId = pointer.data()?.sessionId;
+  return typeof sessionId === "string" && anonymousSessionIdPattern.test(sessionId) ? sessionId : null;
 }
 
 function rejectUnsupportedRecommenderMethod(
@@ -1770,6 +1856,14 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
   if (rejectUnsupportedSessionMethod(request, response)) return;
 
   try {
+    let authUid: string | null;
+    try {
+      authUid = await verifiedAuthUid(request);
+    } catch {
+      response.status(401).json({error: "Invalid Firebase authentication token."});
+      return;
+    }
+
     if (request.method === "GET" || request.method === "HEAD") {
       const requestedSessionId = request.query.sessionId;
       const sessionId = typeof requestedSessionId === "string" ? requestedSessionId : "";
@@ -1779,11 +1873,38 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
         return;
       }
 
-      const sessionRef = anonymousSessionsRef.doc(sessionId);
-      const snapshot = await sessionRef.get();
+      let sessionRef = anonymousSessionsRef.doc(sessionId);
+      let snapshot = await sessionRef.get();
+
+      if (authUid !== null) {
+        const ownerUid = sessionOwnerUid(snapshot.data());
+
+        if (snapshot.exists && (ownerUid === null || ownerUid === authUid)) {
+          if (ownerUid === null) {
+            await claimSessionForAccount(authUid, sessionId, sessionRef);
+            snapshot = await sessionRef.get();
+          } else {
+            await pointAccountToSession(authUid, sessionId);
+          }
+        } else {
+          const linkedSessionId = await accountSessionId(authUid);
+          if (linkedSessionId !== null) {
+            sessionRef = anonymousSessionsRef.doc(linkedSessionId);
+            snapshot = await sessionRef.get();
+            const linkedOwnerUid = sessionOwnerUid(snapshot.data());
+            if (snapshot.exists && linkedOwnerUid !== null && linkedOwnerUid !== authUid) {
+              sessionRef = anonymousSessionsRef.doc(randomUUID());
+              snapshot = await sessionRef.get();
+            }
+          } else {
+            sessionRef = anonymousSessionsRef.doc(randomUUID());
+            snapshot = await sessionRef.get();
+          }
+        }
+      }
 
       if (!snapshot.exists) {
-        sendSessionJson(response, sessionId, null, null);
+        sendSessionJson(response, sessionRef.id, null, null);
         return;
       }
 
@@ -1799,7 +1920,7 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
         {merge: true},
       );
 
-      sendSessionJson(response, sessionId, settings, expiresAt);
+      sendSessionJson(response, sessionRef.id, settings, expiresAt);
       return;
     }
 
@@ -1825,8 +1946,20 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       return;
     }
 
-    const sessionRef = anonymousSessionsRef.doc(sessionId);
-    const existingSession = await sessionRef.get();
+    let writableSessionId = sessionId;
+    let sessionRef = anonymousSessionsRef.doc(writableSessionId);
+    let existingSession = await sessionRef.get();
+
+    if (authUid !== null) {
+      const ownerUid = sessionOwnerUid(existingSession.data());
+
+      if (existingSession.exists && ownerUid !== null && ownerUid !== authUid) {
+        writableSessionId = randomUUID();
+        sessionRef = anonymousSessionsRef.doc(writableSessionId);
+        existingSession = await sessionRef.get();
+      }
+    }
+
     const expiresAt = sessionExpiryTimestamp();
 
     await sessionRef.set(
@@ -1835,13 +1968,18 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
         schemaVersion: 1,
         settingsVersion: prototypeSessionSettingsVersion,
         settings,
+        ...(authUid === null ? {} : {authUid, accountLinkedAt: FieldValue.serverTimestamp()}),
         updatedAt: FieldValue.serverTimestamp(),
         expiresAt,
       },
       {merge: true},
     );
 
-    sendSessionJson(response, sessionId, settings, expiresAt);
+    if (authUid !== null) {
+      await pointAccountToSession(authUid, writableSessionId);
+    }
+
+    sendSessionJson(response, writableSessionId, settings, expiresAt);
   } catch (error) {
     logger.error("Deadline food session function failed", error);
     response.status(500).json({error: "Anonymous session could not be saved"});

@@ -7,6 +7,7 @@ import {
   PROTOTYPE_SESSION_RETENTION_DAYS,
   type PrototypeSessionSettings,
 } from "./sessionPersistence";
+import { getDeadlineFoodAuthToken } from "./accountAuth";
 
 type AnonymousSessionResponse = {
   sessionId: string;
@@ -61,11 +62,21 @@ async function readJson(response: Response, label: string): Promise<AnonymousSes
   return response.json() as Promise<AnonymousSessionResponse>;
 }
 
+async function authHeaders(): Promise<Record<string, string>> {
+  const token = await getDeadlineFoodAuthToken().catch(() => null);
+  return token ? {authorization: `Bearer ${token}`} : {};
+}
+
 export async function loadAnonymousSessionSettings(sessionId: string): Promise<AnonymousSessionResponse> {
   const url = new URL(deadlineFoodEndpointUrl("session"), window.location.origin);
   url.searchParams.set("sessionId", sessionId);
 
-  const body = await readJson(await fetch(url), "Anonymous session load");
+  const body = await readJson(
+    await fetch(url, {
+      headers: await authHeaders(),
+    }),
+    "Anonymous session load",
+  );
 
   if (isAnonymousSessionId(body.sessionId)) {
     storeSessionId(body.sessionId);
@@ -85,6 +96,7 @@ export async function saveAnonymousSessionSettings(
     await fetch(deadlineFoodEndpointUrl("session"), {
       method: "PUT",
       headers: {
+        ...(await authHeaders()),
         "content-type": "application/json",
       },
       body: JSON.stringify({ sessionId, settings }),

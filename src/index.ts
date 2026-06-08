@@ -7,6 +7,34 @@ const sessionRetentionDays = 90;
 const anonymousSessions = new Map<string, { settings: unknown; updatedAt: string; expiresAt: string }>();
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const firebaseFunctionsBaseUrl = process.env.BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL?.replace(/\/$/, "");
+const publicEnvKeys = [
+  "BUN_PUBLIC_DEADLINE_FOOD_API_BACKEND",
+  "BUN_PUBLIC_FIREBASE_API_KEY",
+  "BUN_PUBLIC_FIREBASE_APP_ID",
+  "BUN_PUBLIC_FIREBASE_AUTH_DOMAIN",
+  "BUN_PUBLIC_FIREBASE_AUTH_EMULATOR_URL",
+  "BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL",
+  "BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION",
+  "BUN_PUBLIC_FIREBASE_PROJECT_ID",
+  "BUN_PUBLIC_GOOGLE_CLIENT_ID",
+  "BUN_PUBLIC_MICROSOFT_CLIENT_ID",
+  "BUN_PUBLIC_POSTHOG_HOST",
+  "BUN_PUBLIC_POSTHOG_PROJECT_TOKEN",
+] as const;
+
+function publicEnvJson(): Response {
+  const publicEnv = Object.fromEntries(
+    publicEnvKeys
+      .map((key) => [key, process.env[key] ?? ""] as const)
+      .filter(([, value]) => value.length > 0),
+  );
+
+  return Response.json(publicEnv, {
+    headers: {
+      "Cache-Control": "no-store",
+    },
+  });
+}
 
 function sessionResponse(sessionId: string, settings: unknown | null, expiresAt: string | null) {
   return Response.json({
@@ -52,6 +80,12 @@ async function proxyToFirebaseFunction(functionName: string, req: Request): Prom
 const server = serve({
   port: Number(process.env.PORT ?? 3000),
   routes: {
+    "/api/public-env": {
+      async GET() {
+        return publicEnvJson();
+      },
+    },
+
     // Serve index.html for all unmatched routes.
     "/*": index,
 

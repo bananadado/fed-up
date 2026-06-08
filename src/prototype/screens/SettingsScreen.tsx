@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Import, RotateCcw } from "lucide-react";
+import { Import, LogOut, RotateCcw, ShieldCheck, UserRound } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,6 +23,7 @@ import {
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
 import { filterFoodPreferenceOptions } from "../preferenceOptions";
+import type { AccountProviderId, AccountSummary } from "../accountAuth";
 
 export function SettingsScreen({
   prefs,
@@ -38,6 +39,11 @@ export function SettingsScreen({
   calendarTokens,
   setCalendarTokens,
   sessionId,
+  account,
+  accountMessage,
+  accountBusy,
+  onConnectAccount,
+  onUseAnonymousAccount,
   track,
 }: {
   prefs: Preferences;
@@ -53,6 +59,11 @@ export function SettingsScreen({
   calendarTokens: CalendarToken[];
   setCalendarTokens: (tokens: CalendarToken[]) => void;
   sessionId: string;
+  account: AccountSummary;
+  accountMessage: string;
+  accountBusy: AccountProviderId | "anonymous" | null;
+  onConnectAccount: (provider: AccountProviderId) => void;
+  onUseAnonymousAccount: () => void;
   track: TrackPrototypeEvent;
 }) {
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -62,6 +73,7 @@ export function SettingsScreen({
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
+  const accountLabel = account.email ?? account.displayName ?? (account.isAnonymous ? "Anonymous on this device" : "Signed in");
 
   async function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -165,6 +177,53 @@ export function SettingsScreen({
         <h1 className="text-3xl font-bold">Preferences</h1>
       <p className="mt-2 text-stone-600">Update the limits used for future plans and meal replacements.</p>
       <Card className="mt-7 gap-0 rounded-lg border-stone-200 bg-white p-6">
+        <div className="mb-6 rounded-lg border border-emerald-100 bg-emerald-50/70 p-4">
+          <div className="flex items-start gap-3">
+            <div className="rounded-lg bg-white p-2 text-emerald-700">
+              {account.isAnonymous ? <UserRound size={18} /> : <ShieldCheck size={18} />}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="font-semibold text-stone-900">Account</p>
+              <p className="mt-1 break-words text-sm text-stone-600">
+                {account.configured ? accountLabel : "Anonymous sessions are active. Firebase Auth is not configured."}
+              </p>
+            </div>
+          </div>
+          {account.configured && (
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              <AppButton
+                type="button"
+                variant={account.providerIds.includes("google.com") ? "secondary" : "primary"}
+                onClick={() => onConnectAccount("google")}
+                disabled={accountBusy !== null}
+                className="justify-center"
+              >
+                <ShieldCheck size={15} /> {accountBusy === "google" ? "Connecting..." : "Continue with Google"}
+              </AppButton>
+              <AppButton
+                type="button"
+                variant={account.providerIds.includes("microsoft.com") ? "secondary" : "primary"}
+                onClick={() => onConnectAccount("microsoft")}
+                disabled={accountBusy !== null}
+                className="justify-center"
+              >
+                <ShieldCheck size={15} /> {accountBusy === "microsoft" ? "Connecting..." : "Continue with Microsoft"}
+              </AppButton>
+              {!account.isAnonymous && (
+                <AppButton
+                  type="button"
+                  variant="secondary"
+                  onClick={onUseAnonymousAccount}
+                  disabled={accountBusy !== null}
+                  className="justify-center sm:col-span-2"
+                >
+                  <LogOut size={15} /> {accountBusy === "anonymous" ? "Switching..." : "Use only on this device"}
+                </AppButton>
+              )}
+            </div>
+          )}
+          {accountMessage && <p className="mt-3 rounded-lg bg-white p-3 text-sm text-emerald-800">{accountMessage}</p>}
+        </div>
         <div className="grid gap-5 sm:grid-cols-2">
           <label>
             <span className="text-sm font-semibold">Maximum cooking time</span>
