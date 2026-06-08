@@ -1056,8 +1056,9 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     [];
   const excludeIds = boundedStringList(body.excludeIds, 250, 80);
   const excludedIds = new Set(excludeIds);
-  const dislikes = boundedStringList(body.dislikes, 40, 80);
-  const allergens = boundedStringList(body.allergens, 40, 80);
+  const dietary = canonicalRecommenderTags(boundedStringList(body.dietary, 40, 80));
+  const dislikes = canonicalRecommenderTags(boundedStringList(body.dislikes, 40, 80));
+  const allergens = canonicalRecommenderTags(boundedStringList(body.allergens, 40, 80));
   const weeklyBudgetPence = Math.round(boundedNumber(body.budget, 48, 0, 1000) * 100);
 
   // 1. Per-day calendar context across the horizon (#65). horizon_days produces
@@ -1121,6 +1122,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     days,
     pool: [...savedAlloc, ...fillAlloc, ...fallbackAlloc],
     avoided: [...dislikes, ...allergens],
+    dietary,
     weeklyBudgetPence,
   });
 
