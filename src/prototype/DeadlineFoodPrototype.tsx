@@ -90,6 +90,7 @@ export function DeadlineFoodPrototype() {
   const [icsSubscriptions, setIcsSubscriptions] = useState<IcsSubscription[]>([]);
   const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
+  const [calendarSkipped, setCalendarSkipped] = useState(false);
   // Auto-planning (issue #66): the signature/timestamp the current plan was
   // generated from, so we can detect when it has gone stale.
   const [planSignature, setPlanSignature] = useState<string | undefined>(undefined);
@@ -262,6 +263,7 @@ export function DeadlineFoodPrototype() {
           setPlan(restorePrototypePlan(snapshot.settings.plan, initialPlan));
           if (snapshot.settings.planSignature) setPlanSignature(snapshot.settings.planSignature);
           if (snapshot.settings.planGeneratedAt) setPlanGeneratedAt(snapshot.settings.planGeneratedAt);
+          if (snapshot.settings.calendarSkipped) setCalendarSkipped(snapshot.settings.calendarSkipped);
         } else if (screenFromHash() === "onboarding") {
           // No saved session but the user refreshed mid-onboarding — enable
           // persistence immediately so choices made before the refresh are
@@ -290,6 +292,7 @@ export function DeadlineFoodPrototype() {
     plan?: PlanEntry[];
     planGeneratedAt?: string;
     planSignature?: string;
+    calendarSkipped?: boolean;
   } = {}) => createPrototypeSessionSettings({
     preferences: prefs,
     deadlines,
@@ -306,6 +309,7 @@ export function DeadlineFoodPrototype() {
     calendarTokens,
     planSignature: overrides.planSignature ?? planSignature,
     planGeneratedAt: overrides.planGeneratedAt ?? planGeneratedAt,
+    calendarSkipped: overrides.calendarSkipped ?? calendarSkipped,
   }), [
     calendarEvents,
     calendarProvider,
@@ -316,6 +320,7 @@ export function DeadlineFoodPrototype() {
     discoverReviewedRecipeIds,
     discoverSaved,
     icsSubscriptions,
+    calendarSkipped,
     onboarded,
     plan,
     planGeneratedAt,
@@ -490,6 +495,13 @@ export function DeadlineFoodPrototype() {
     navigateScreen("recipe-detail");
   }
 
+  function openAddToPlan(mealId: string) {
+    track("recipe_add_to_plan_clicked", { meal_id: mealId, source_screen: activeScreen });
+    // Navigate to plan screen - the PlanScreen will open the swap modal for the first available slot
+    // or we could open a specific day/slot picker. For now, navigate to plan.
+    navigateScreen("plan");
+  }
+
   function openDiscover(day: string, slot: MealSlot, mealId: string) {
     track("meal_card_discover_clicked", { day, meal_slot: slot, meal_id: mealId });
     setDiscoverContext({ day, slot, mealId });
@@ -537,16 +549,17 @@ export function DeadlineFoodPrototype() {
         setCalendarTokens={setCalendarTokens}
         sessionId={sessionId}
         track={track}
+        setCalendarSkipped={setCalendarSkipped}
       />
     );
   }
 
   return (
     <Shell screen={activeScreen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
-      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} />}
+      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarSkipped={calendarSkipped} />}
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
-      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} discoverContext={discoverContext} track={track} />}
+      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} />}
     </Shell>

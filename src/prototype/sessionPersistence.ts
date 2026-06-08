@@ -36,6 +36,8 @@ export type PrototypeSessionSettings = {
   planSignature?: string;
   /** ISO timestamp of the last auto-plan generation. */
   planGeneratedAt?: string;
+  /** Whether the user explicitly skipped calendar import during onboarding. */
+  calendarSkipped?: boolean;
 };
 
 /**
@@ -81,6 +83,7 @@ export function createPrototypeSessionSettings(input: {
   calendarTokens?: CalendarToken[];
   planSignature?: string;
   planGeneratedAt?: string;
+  calendarSkipped?: boolean;
 }): PrototypeSessionSettings {
   return {
     settingsVersion: PROTOTYPE_SESSION_SETTINGS_VERSION,
@@ -99,6 +102,7 @@ export function createPrototypeSessionSettings(input: {
     calendarTokens: input.calendarTokens,
     planSignature: input.planSignature,
     planGeneratedAt: input.planGeneratedAt,
+    calendarSkipped: input.calendarSkipped,
   };
 }
 
