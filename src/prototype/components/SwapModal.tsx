@@ -49,6 +49,7 @@ export function SwapModal({
   customRecipes,
   savedRecipes,
   onSelectMeal,
+  suggestedMealId,
   track,
 }: {
   rescueChoice: { day: string; slot: MealSlot };
@@ -59,6 +60,7 @@ export function SwapModal({
   customRecipes: Meal[];
   savedRecipes?: Meal[];
   onSelectMeal: (mealId: string) => void;
+  suggestedMealId?: string;
   track: TrackPrototypeEvent;
 }) {
   const [savedFilters] = useState(() => {
@@ -78,9 +80,9 @@ export function SwapModal({
   });
 
   const [search, setSearch] = useState(savedFilters?.search ?? "");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(suggestedMealId ?? null);
   const [sortBy, setSortBy] = useState<SortOption>(savedFilters?.sortBy ?? "match");
-  const [selectedSlots, setSelectedSlots] = useState<MealSlot[]>(savedFilters?.selectedSlots ?? [rescueChoice.slot]);
+  const [selectedSlots, setSelectedSlots] = useState<MealSlot[]>(suggestedMealId ? [] : (savedFilters?.selectedSlots ?? [rescueChoice.slot]));
   const [selectedTags, setSelectedTags] = useState<string[]>(savedFilters?.selectedTags ?? []);
   const [customTagInput, setCustomTagInput] = useState("");
   const [showFilters, setShowFilters] = useState(false);
