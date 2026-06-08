@@ -13,7 +13,7 @@ export const canonicalConstraints: PlanningConstraints = {
 };
 
 export const prototypeMeta: PrototypeMeta = {
-  productName: "Deadline Food Autopilot",
+  productName: "Fed Up",
   scenarioName: "Steven's deadline week",
   disclaimer: "Prototype meal options - availability and prices are illustrative.",
 };

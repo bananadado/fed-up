@@ -2,15 +2,15 @@
 
 Last inspected: 2026-05-29.
 
-This is the root retrieval file for Deadline Food Autopilot. Load this first before modifying the project. It tells you what the product is, which source files are active, where the backend lives, and which deeper docs to retrieve for a task.
+This is the root retrieval file for Fed Up. Load this first before modifying the project. It tells you what the product is, which source files are active, where the backend lives, and which deeper docs to retrieve for a task.
 
 ## One Sentence
 
-Deadline Food Autopilot is a student deadline-week food planning prototype that helps users choose affordable, low-effort meals and recover when cooking becomes unrealistic.
+Fed Up is a student deadline-week food planning prototype that helps users choose affordable, low-effort meals and recover when cooking becomes unrealistic.
 
 ## Product Intent
 
-The source product brief is [../DEADLINE_FOOD_AUTOPILOT_SPEC.md](../DEADLINE_FOOD_AUTOPILOT_SPEC.md). The product is not a generic recipe app, calorie tracker, delivery marketplace, or LLM meal generator. It is a deadline-aware planning and rescue tool for stressed students.
+The source product brief is [../FED_UP_SPEC.md](../FED_UP_SPEC.md). The product is not a generic recipe app, calorie tracker, delivery marketplace, or LLM meal generator. It is a deadline-aware planning and rescue tool for stressed students.
 
 Core promise:
 
@@ -109,7 +109,7 @@ Use this table to find the right files quickly.
 
 | Concern | Primary files |
 |---|---|
-| Product brief | `DEADLINE_FOOD_AUTOPILOT_SPEC.md` |
+| Product brief | `FED_UP_SPEC.md` |
 | Active app mount | `src/App.tsx`, `src/frontend.tsx`, `src/index.html` |
 | Bun server and local API | `src/index.ts` |
 | Active prototype orchestration | `src/prototype/DeadlineFoodPrototype.tsx` |
@@ -178,7 +178,7 @@ The root verification script installs dependencies if needed, runs root lint/typ
 For product questions, retrieve:
 
 - [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)
-- [../DEADLINE_FOOD_AUTOPILOT_SPEC.md](../DEADLINE_FOOD_AUTOPILOT_SPEC.md)
+- [../FED_UP_SPEC.md](../FED_UP_SPEC.md)
 
 For frontend changes, retrieve:
 
@@ -229,7 +229,7 @@ For privacy, anonymous persistence, PostHog, and analytics, retrieve:
 
 Do not break these without an explicit product decision:
 
-- Deadline Food Autopilot stays deadline-week focused.
+- Fed Up stays deadline-week focused.
 - The central interaction is plan failure recovery, not generic browsing.
 - Purchased fallback meals are neutral and legitimate, not framed as failure.
 - Recommendation logic should remain deterministic and explainable for the MVP.

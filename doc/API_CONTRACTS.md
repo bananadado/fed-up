@@ -408,7 +408,7 @@ PUT /api/hello
 GET /api/hello/:name
 ```
 
-These are template/demo endpoints and are not part of Deadline Food Autopilot's product API.
+These are template/demo endpoints and are not part of Fed Up's product API.
 
 ## API Change Checklist
 
