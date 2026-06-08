@@ -490,20 +490,29 @@ function CookingScheduler({
 
 // --- PrepReminderSuggestions ---
 
+const PREP_TIME_OPTIONS = [
+  { label: "7pm", value: "19:00" },
+  { label: "8pm", value: "20:00" },
+  { label: "9pm", value: "21:00" },
+  { label: "10pm", value: "22:00" },
+  { label: "11pm", value: "23:00" },
+] as const;
+
 function PrepReminderSuggestions({
   suggestions,
   prepReminderTime,
-  onPrepReminderTimeChange,
   track,
 }: {
   suggestions: PrepSuggestion[];
   prepReminderTime: string;
-  onPrepReminderTimeChange: (t: string) => void;
   track: TrackPrototypeEvent;
 }) {
   const todayIso = toLocalIso(new Date());
   const [dateOverrides, setDateOverrides] = useState<Record<string, string>>(() =>
     Object.fromEntries(suggestions.map((s) => [s.meal.id, s.reminderDateIso ?? todayIso])),
+  );
+  const [timeOverrides, setTimeOverrides] = useState<Record<string, string>>(() =>
+    Object.fromEntries(suggestions.map((s) => [s.meal.id, prepReminderTime])),
   );
   const [exported, setExported] = useState<Record<string, "ics" | "google">>({});
 
@@ -515,7 +524,7 @@ function PrepReminderSuggestions({
       eventTitle: `Prep: ${s.meal.name}`,
       cookMinutes: 15,
       dateIso: dateOverrides[s.meal.id] ?? todayIso,
-      time: prepReminderTime,
+      time: timeOverrides[s.meal.id] ?? prepReminderTime,
     };
   }
 
@@ -545,29 +554,6 @@ function PrepReminderSuggestions({
             These meals need advance prep. Add a reminder to your calendar the evening before.
           </p>
         </div>
-        <div className="flex items-center gap-2 self-center">
-          <span className="text-xs font-semibold text-stone-500">at</span>
-          <div className="flex flex-wrap gap-1.5">
-            {(["19:00", "20:00", "21:00", "22:00", "23:00"] as const).map((value) => {
-              const label = { "19:00": "7pm", "20:00": "8pm", "21:00": "9pm", "22:00": "10pm", "23:00": "11pm" }[value];
-              return (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => onPrepReminderTimeChange(value)}
-                  className={cn(
-                    "rounded-lg border px-2.5 py-1.5 text-xs font-medium transition",
-                    prepReminderTime === value
-                      ? "border-blue-400 bg-blue-50 text-blue-800"
-                      : "border-stone-200 bg-white text-stone-500 hover:bg-stone-50",
-                  )}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
       </div>
       <div className="space-y-4">
         {suggestions.map((s) => (
@@ -588,6 +574,26 @@ function PrepReminderSuggestions({
                   className="mt-1 h-auto rounded-lg border-stone-200 bg-white p-2 text-sm"
                 />
               </label>
+              <div>
+                <span className="text-xs font-semibold text-stone-600">Reminder time</span>
+                <div className="mt-1 flex flex-wrap gap-1.5">
+                  {PREP_TIME_OPTIONS.map(({ label, value }) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => setTimeOverrides((prev) => ({ ...prev, [s.meal.id]: value }))}
+                      className={cn(
+                        "rounded-lg border px-2.5 py-1.5 text-xs font-medium transition",
+                        (timeOverrides[s.meal.id] ?? prepReminderTime) === value
+                          ? "border-blue-400 bg-blue-50 text-blue-800"
+                          : "border-stone-200 bg-white text-stone-500 hover:bg-stone-50",
+                      )}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <div className="flex flex-wrap gap-2">
                 <AppButton variant="primary" onClick={() => handleDownload(s)} className="justify-center py-2 text-xs">
                   <Download size={13} /> Add (.ics)
@@ -1095,7 +1101,6 @@ export function CalendarScreen({
       <PrepReminderSuggestions
         suggestions={prepSuggestions}
         prepReminderTime={prefs.prepReminderTime}
-        onPrepReminderTimeChange={(t) => setPrefs({ ...prefs, prepReminderTime: t })}
         track={track}
       />
 
