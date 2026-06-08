@@ -1,9 +1,9 @@
-# Deadline Food Autopilot — Product and Implementation Specification
+# Fed Up — Product and Implementation Specification
 
 > **Audience:** AI coding agents (especially Codex) and developers implementing the application.  
 > **Document purpose:** Define the product concept, required user experience, MVP scope, implementation constraints, suggested architecture, data model, and acceptance criteria clearly enough that an agent can build the initial application without inventing product decisions.  
 > **Status:** Concept-development / walking-skeleton prototype specification.  
-> **Working product name:** **Deadline Food Autopilot**.
+> **Working product name:** **Fed Up**.
 
 ---
 
@@ -34,7 +34,7 @@ Students may intend to eat well during normal weeks, but during deadlines their 
 
 ### 1.2 Product proposition
 
-**Deadline Food Autopilot** is an adaptive web application that helps students handle food during academic pressure.
+**Fed Up** is an adaptive web application that helps students handle food during academic pressure.
 
 It:
 
@@ -53,7 +53,7 @@ It:
 
 The system is not simply a meal planner. It is designed around **routine failure under time pressure**.
 
-A normal meal planner usually assumes that a user will cook what they planned. Deadline Food Autopilot assumes that plans sometimes fail and treats adaptation as a first-class feature.
+A normal meal planner usually assumes that a user will cook what they planned. Fed Up assumes that plans sometimes fail and treats adaptation as a first-class feature.
 
 The product must therefore demonstrate:
 
@@ -93,7 +93,7 @@ The product combines the strongest aspects of four candidate ideas:
 | Previous concept | Incorporated role in final product |
 |---|---|
 | Deadline Mode Meal Planner | Core planning workflow and constraint input |
-| Calendar-Aware Food Autopilot | Trigger for recognising high-pressure periods |
+| Calendar-Aware Food Planning | Trigger for recognising high-pressure periods |
 | Campus Healthy Fallback Finder | Rescue path when the user cannot cook |
 | Prep Once, Remix All Week | Optional strategy for affordable advance preparation |
 | CookTogether / social cooking | Not part of MVP; possible later extension only |
@@ -667,7 +667,7 @@ For a smaller first iteration, `/deadline-mode/plan/:dayId` and `/deadline-mode/
 
 ### Suggested copy
 
-**Deadline Food Autopilot**  
+**Fed Up**  
 *Healthy, affordable meals that still work when your week does not.*
 
 CTA: **Activate Deadline Mode**
@@ -1251,12 +1251,12 @@ Implement in this order unless the existing codebase strongly suggests another s
 
 Use this section when assigning the first build task:
 
-> Build the MVP vertical slice described in `DEADLINE_FOOD_AUTOPILOT_SPEC.md`. Inspect the existing React/Bun/Firebase project structure first and reuse its conventions. Implement deterministic client-side domain logic and seeded illustrative meal data before UI wiring. The completed user flow must allow a student to configure a deadline week, compare three strategies, select a plan, trigger “I have even less time today”, confirm a fallback substitution, and see the recalculated budget. Add unit tests for recommendation, dietary filtering and rescue budget recalculation. Do not add real calendar/menu integrations or LLM calls.
+> Build the MVP vertical slice described in `FED_UP_SPEC.md`. Inspect the existing React/Bun/Firebase project structure first and reuse its conventions. Implement deterministic client-side domain logic and seeded illustrative meal data before UI wiring. The completed user flow must allow a student to configure a deadline week, compare three strategies, select a plan, trigger “I have even less time today”, confirm a fallback substitution, and see the recalculated budget. Add unit tests for recommendation, dietary filtering and rescue budget recalculation. Do not add real calendar/menu integrations or LLM calls.
 
 ---
 
 ## 28. Final Product Definition
 
-**Deadline Food Autopilot** is a deadline-week planning and rescue tool for students. Its purpose is not to persuade students that cooking is always best; its purpose is to make a healthy, affordable option the least burdensome available action when academic pressure changes normal behaviour.
+**Fed Up** is a deadline-week planning and rescue tool for students. Its purpose is not to persuade students that cooking is always best; its purpose is to make a healthy, affordable option the least burdensome available action when academic pressure changes normal behaviour.
 
 The application wins if a student in a stressful week can open it, make very few decisions, obtain a plan that respects real constraints, and recover instantly when that plan becomes impossible.
