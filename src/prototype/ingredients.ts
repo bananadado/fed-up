@@ -313,16 +313,23 @@ export function formatIngredient(ingredient: RecipeIngredient | string) {
   }
 
   if (ingredient.name.toLowerCase() === ingredient.unit) {
-    return `${quantity} ${ingredient.quantity === 1 ? ingredient.unit : `${ingredient.unit}s`}`;
+    return `${quantity} ${pluraliseUnit(ingredient.unit, ingredient.quantity)}`;
   }
 
-  return `${quantity} ${ingredient.quantity === 1 ? ingredient.unit : `${ingredient.unit}s`} ${preparation}${ingredient.name}`;
+  return `${quantity} ${pluraliseUnit(ingredient.unit, ingredient.quantity)} ${preparation}${ingredient.name}`;
 }
 
 function pluraliseIngredientName(name: string) {
   if (name.endsWith("s")) return name;
   if (name.endsWith("y")) return `${name.slice(0, -1)}ies`;
   return `${name}s`;
+}
+
+function pluraliseUnit(unit: string, quantity: number): string {
+  if (quantity === 1) return unit;
+  if (unit.endsWith("s")) return unit;
+  if (unit.endsWith("ch") || unit.endsWith("sh")) return `${unit}es`;
+  return `${unit}s`;
 }
 
 export function parseIngredients(value: string): RecipeIngredient[] {

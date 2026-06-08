@@ -77,6 +77,17 @@ describe("recipe ingredient helpers", () => {
     expect(salt?.quantity).toBeCloseTo(2.75);
   });
 
+  test("does not double-pluralise already-plural units", () => {
+    expect(formatIngredient({ name: "garlic", quantity: 3, unit: "cloves" })).toBe("3 cloves garlic");
+    expect(formatIngredient({ name: "celery", quantity: 2, unit: "stalks" })).toBe("2 stalks celery");
+  });
+
+  test("pluralises singular count units correctly", () => {
+    expect(formatIngredient({ name: "garlic", quantity: 3, unit: "clove" })).toBe("3 cloves garlic");
+    expect(formatIngredient({ name: "parsley", quantity: 2, unit: "bunch" })).toBe("2 bunches parsley");
+    expect(formatIngredient({ name: "salt", quantity: 2, unit: "pinch" })).toBe("2 pinches salt");
+  });
+
   test("returns ingredients unchanged for a factor of 1 or an invalid factor", () => {
     const ingredients = [{ name: "oats", quantity: 50, unit: "g" }];
     expect(scaleIngredients(ingredients, 1)).toBe(ingredients);
