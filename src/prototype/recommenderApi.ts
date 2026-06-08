@@ -45,6 +45,20 @@ function cookingAbility(ability: string): string {
   return ability || "basic";
 }
 
+const recommenderTagAliases: Record<string, string> = {
+  peanuts: "peanut",
+  eggs: "egg",
+};
+
+export function normalizeRecommenderTag(value: string): string {
+  const normalized = value.trim().toLowerCase().replace(/\s+/g, " ");
+  return recommenderTagAliases[normalized] ?? normalized;
+}
+
+export function normalizeRecommenderTags(values: string[]): string[] {
+  return [...new Set(values.map(normalizeRecommenderTag).filter(Boolean))];
+}
+
 export function deadlineStressFromDeadlines(deadlines: Deadline[]): number {
   const total = deadlines
     .filter((deadline) => deadline.eventType === "academic")
@@ -92,10 +106,10 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences,
       kitchen_access: prefs.kitchen,
       budget_pence: Math.round(prefs.budget * 100),
       max_time_minutes: prefs.maxTime ?? 240,
-      dietary_tags: prefs.dietary,
-      allergens: prefs.allergens,
-      dislikes: prefs.dislikes,
-      likes: prefs.likes,
+      dietary_tags: normalizeRecommenderTags(prefs.dietary),
+      allergens: normalizeRecommenderTags(prefs.allergens),
+      dislikes: normalizeRecommenderTags(prefs.dislikes),
+      likes: normalizeRecommenderTags(prefs.likes),
       university: prefs.university || null,
       postcode: prefs.postcode || null,
     }),
