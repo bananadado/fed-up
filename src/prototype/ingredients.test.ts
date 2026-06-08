@@ -5,6 +5,7 @@ import {
   formatIngredient,
   parseIngredients,
   sanitiseIngredientDrafts,
+  scaleIngredients,
 } from "./ingredients";
 
 describe("recipe ingredient helpers", () => {
@@ -38,5 +39,35 @@ describe("recipe ingredient helpers", () => {
       { name: "tomato", quantity: 250.56, unit: "g", preparation: "chopped" },
       { name: "pepper", quantity: 0.5, unit: "cup", preparation: "frozen" },
     ]);
+  });
+
+  test("scales ingredient quantities by a serving factor", () => {
+    expect(
+      scaleIngredients(
+        [
+          { name: "oats", quantity: 50, unit: "g" },
+          { name: "egg", quantity: 2, unit: "item" },
+          { name: "tomato", quantity: 1, unit: "serving", preparation: "chopped" },
+        ],
+        2,
+      ),
+    ).toEqual([
+      { name: "oats", quantity: 100, unit: "g" },
+      { name: "egg", quantity: 4, unit: "item" },
+      { name: "tomato", quantity: 2, unit: "serving", preparation: "chopped" },
+    ]);
+  });
+
+  test("scaling by a fractional factor rounds and preserves units/preparation", () => {
+    expect(scaleIngredients([{ name: "rice", quantity: 75, unit: "g" }], 0.5)).toEqual([
+      { name: "rice", quantity: 37.5, unit: "g" },
+    ]);
+  });
+
+  test("returns ingredients unchanged for a factor of 1 or an invalid factor", () => {
+    const ingredients = [{ name: "oats", quantity: 50, unit: "g" }];
+    expect(scaleIngredients(ingredients, 1)).toBe(ingredients);
+    expect(scaleIngredients(ingredients, 0)).toBe(ingredients);
+    expect(scaleIngredients(ingredients, Number.NaN)).toBe(ingredients);
   });
 });
