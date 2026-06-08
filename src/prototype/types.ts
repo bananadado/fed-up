@@ -107,6 +107,7 @@ export type Preferences = {
   planningHorizonDays: number;
   /** Whether stale plans prompt the user ("prompt") or regenerate silently ("auto"). */
   planRegenMode: PlanRegenMode;
+  unitSystem: "metric" | "imperial";
 };
 
 export type DiscoverRecommendationStatus = "idle" | "ready" | "exhausted";

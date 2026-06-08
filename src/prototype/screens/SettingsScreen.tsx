@@ -268,6 +268,28 @@ export function SettingsScreen({
               })}
             </div>
           </div>
+          <div>
+            <span className="text-sm font-semibold">Units</span>
+            <p className="mt-1 text-sm text-stone-500">How ingredient quantities are shown in recipes and your shopping list.</p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              {([
+                { value: "metric", label: "Metric (g, ml)" },
+                { value: "imperial", label: "Imperial (oz, cups)" },
+              ] as const).map((option) => {
+                const active = prefs.unitSystem === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => { track("settings_preference_changed", { field: "unit_system", value: option.value }); setPrefs({ ...prefs, unitSystem: option.value }); }}
+                    className={cn("rounded-lg border px-3 py-2.5 text-sm font-medium transition", active ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300")}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
         <div className="mt-6 space-y-5">
           <ChoiceGroup

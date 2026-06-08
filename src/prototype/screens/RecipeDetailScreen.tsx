@@ -8,6 +8,7 @@ import { AppButton, Badge, Field } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { formatIngredient, scaleIngredients } from "../ingredients";
+import { normalizeIngredientUnit } from "../unitConversion";
 import { mealById, money, nutritionSourceSummary, sourceUrl } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
@@ -43,6 +44,7 @@ export function RecipeDetailScreen({
   backTo,
   onSelectMeal,
   track,
+  unitSystem = "metric",
 }: {
   mealId: string;
   customRecipes: Meal[];
@@ -53,6 +55,7 @@ export function RecipeDetailScreen({
   backTo?: Screen | null;
   onSelectMeal: (mealId: string) => void;
   track: TrackPrototypeEvent;
+  unitSystem?: "metric" | "imperial";
 }) {
   const meal = mealById(mealId, customRecipes);
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
@@ -128,7 +131,9 @@ export function RecipeDetailScreen({
   const selectedMeal = meal;
   const selectedVendor = groceryVendorById(selectedVendorId);
   const scaleFactor = servings / baseServings;
-  const scaledIngredients = scaleIngredients(selectedMeal.ingredients, scaleFactor);
+  const scaledIngredients = scaleIngredients(selectedMeal.ingredients, scaleFactor).map((ing) =>
+    normalizeIngredientUnit(ing, unitSystem),
+  );
   const shoppingItems = aggregateIngredients(scaledIngredients);
   const isScaled = servings !== baseServings;
 

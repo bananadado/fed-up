@@ -296,7 +296,7 @@ export function formatIngredient(ingredient: RecipeIngredient | string) {
     return ingredient.quantity === 1 ? `${preparation}${ingredient.name}` : `${quantity} servings ${preparation}${ingredient.name}`;
   }
 
-  if (["g", "kg", "ml", "l"].includes(ingredient.unit)) {
+  if (["g", "kg", "ml", "l", "oz", "lb", "fl oz"].includes(ingredient.unit)) {
     return `${quantity}${ingredient.unit} ${preparation}${ingredient.name}`;
   }
 

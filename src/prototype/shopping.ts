@@ -1,6 +1,7 @@
 import type { Meal, PlanEntry, RecipeIngredient } from "./types";
 import { formatIngredient } from "./ingredients";
 import { getMealById } from "./utils";
+import { normalizeIngredientUnit } from "./unitConversion";
 
 export type GroceryVendor = {
   id: string;
@@ -157,10 +158,20 @@ export function shoppingItemKey(value: ShoppingItem | string) {
   return value.unit ? `${normaliseIngredient(value.name)}:${value.unit}` : normaliseIngredient(value.name);
 }
 
-export function ingredientsFromPlan(plan: PlanEntry[], customRecipes: Meal[], availableIngredients: RecipeIngredient[] = []) {
+export function ingredientsFromPlan(
+  plan: PlanEntry[],
+  customRecipes: Meal[],
+  availableIngredients: RecipeIngredient[] = [],
+  unitSystem: "metric" | "imperial" = "metric",
+) {
   const available = new Set(availableIngredients.map((ingredient) => normaliseIngredient(ingredient.name)));
 
-  return aggregateIngredients(
-    plan.flatMap((entry) => entry.meals.flatMap((planMeal) => getMealById(planMeal.mealId, customRecipes).ingredients)),
-  ).filter((item) => !available.has(normaliseIngredient(item.name)) && !ALWAYS_AVAILABLE.has(normaliseIngredient(item.name)));
+  const rawIngredients = plan.flatMap((entry) =>
+    entry.meals.flatMap((planMeal) => getMealById(planMeal.mealId, customRecipes).ingredients),
+  );
+  const normalised = rawIngredients.map((ing) => normalizeIngredientUnit(ing, unitSystem));
+
+  return aggregateIngredients(normalised).filter(
+    (item) => !available.has(normaliseIngredient(item.name)) && !ALWAYS_AVAILABLE.has(normaliseIngredient(item.name)),
+  );
 }

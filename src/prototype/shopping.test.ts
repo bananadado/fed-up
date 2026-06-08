@@ -75,6 +75,39 @@ describe("shopping helpers", () => {
     expect(items.some((item) => item.name === "Pasta")).toBe(true);
   });
 
+  test("merges same ingredient with different units via unit conversion in ingredientsFromPlan", () => {
+    const mealA = {
+      id: "meal-a",
+      name: "Meal A",
+      type: "cook" as const,
+      mealSlots: ["lunch" as const],
+      time: 15,
+      price: 2,
+      tags: [],
+      ingredients: [{ name: "All purpose flour", quantity: 1, unit: "cup" }],
+      allergens: [],
+      nutrition: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+      rating: 0,
+      reviews: [],
+      instructions: [],
+      source: "",
+      note: "",
+      image: "",
+    };
+    const mealB = { ...mealA, id: "meal-b", ingredients: [{ name: "All purpose flour", quantity: 4, unit: "tbsp" }] };
+    const plan = [
+      { day: "Mon", context: "Test", meals: [{ slot: "lunch" as const, mealId: "meal-a" }] },
+      { day: "Tue", context: "Test", meals: [{ slot: "lunch" as const, mealId: "meal-b" }] },
+    ];
+
+    const items = ingredientsFromPlan(plan, [mealA, mealB], [], "metric");
+
+    // Both flour entries should merge into a single ml entry
+    const flourItems = items.filter((item) => item.name === "All purpose flour");
+    expect(flourItems).toHaveLength(1);
+    expect(flourItems[0]?.unit).toBe("ml");
+  });
+
   test("builds selected vendor search URLs for one ingredient at a time", () => {
     expect(groceryVendorById("asda").searchUrl("oat milk")).toBe("https://groceries.asda.com/search/oat%20milk");
     expect(groceryVendorById("morrisons").searchUrl("berries")).toBe("https://groceries.morrisons.com/search?q=berries");

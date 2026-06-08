@@ -369,4 +369,5 @@ export const initialPreferences: Preferences = {
   availableIngredients: [],
   planningHorizonDays: 21,
   planRegenMode: "prompt",
+  unitSystem: "metric" as const,
 };
