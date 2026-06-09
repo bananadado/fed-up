@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { AppButton } from "../components/primitives";
 import { GoogleIcon, MicrosoftIcon } from "../components/BrandIcons";
 import type { TrackPrototypeEvent } from "../analytics";
-import type { AccountMessageTone, AccountProviderId, AccountSummary } from "../accountAuth";
+import type { AccountMessageTone, AccountProviderId, AccountSummary, EmailMagicLinkOptions } from "../accountAuth";
 
 export function Landing({
   onStart,
@@ -25,7 +25,7 @@ export function Landing({
   accountMessage: string;
   accountMessageTone: AccountMessageTone;
   onConnectAccount: (provider: AccountProviderId) => void;
-  onSendEmailMagicLink: (email: string) => void;
+  onSendEmailMagicLink: (email: string, options?: EmailMagicLinkOptions) => void;
 }) {
   const [email, setEmail] = useState("");
 
@@ -76,7 +76,7 @@ export function Landing({
               onSubmit={(e) => {
                 e.preventDefault();
                 track("landing_sign_in_clicked", { provider: "email" });
-                onSendEmailMagicLink(email);
+                onSendEmailMagicLink(email, {requireExistingAccount: true});
               }}
             >
               <Input
@@ -91,6 +91,9 @@ export function Landing({
               </AppButton>
             </form>
             <p className="mt-1.5 text-xs text-stone-400">Link opens in the same browser. Check spam if it doesn't arrive.</p>
+            <p className="mt-2 text-xs leading-5 text-stone-500">
+              Use this only for an existing account. No account yet? Continue to create one.
+            </p>
             {accountMessage && (
               <p className={`mt-3 rounded-lg p-3 text-sm ${accountMessageTone === "error" ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800"}`}>{accountMessage}</p>
             )}

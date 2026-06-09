@@ -2,8 +2,10 @@ import { initializeApp, getApp, getApps, type FirebaseApp, type FirebaseOptions 
 import {
   browserLocalPersistence,
   connectAuthEmulator,
+  deleteUser,
   fetchSignInMethodsForEmail,
   getAuth,
+  getAdditionalUserInfo,
   getRedirectResult,
   GoogleAuthProvider,
   isSignInWithEmailLink,
@@ -35,6 +37,7 @@ declare const __BUN_PUBLIC_FIREBASE_AUTH_EMULATOR_URL__: string | undefined;
 const FIREBASE_APP_NAME = "deadline-food-auth";
 const DEFAULT_FIREBASE_PROJECT_ID = "drp03-50059";
 const EMAIL_LINK_STORAGE_KEY = "deadlineFoodEmailForSignIn";
+const EMAIL_LINK_INTENT_STORAGE_KEY = "deadlineFoodEmailLinkIntent";
 
 export type AccountProviderId = "google" | "microsoft";
 
@@ -49,6 +52,19 @@ export type AccountSummary = {
   isAnonymous: boolean;
   providerIds: string[];
 };
+
+export type EmailMagicLinkOptions = {
+  requireExistingAccount?: boolean;
+};
+
+export type EmailMagicLinkIntent = "existing" | "create";
+
+export type EmailLinkCompletion = {
+  account: AccountSummary;
+  intent: EmailMagicLinkIntent;
+};
+
+export const NO_ACCOUNT_YET_MESSAGE = "No, there isn't an account yet. Please continue to create one.";
 
 function readRuntimeEnv(key: string): string | undefined {
   const browserValue = readBrowserPublicEnv(key);
@@ -130,7 +146,7 @@ function firebaseConfig(): FirebaseOptions | null {
 
 let authInstance: Auth | null | undefined;
 let anonymousSignInPromise: Promise<User> | null = null;
-let emailLinkCompletionPromise: Promise<AccountSummary | null> | null = null;
+let emailLinkCompletionPromise: Promise<EmailLinkCompletion | null> | null = null;
 let emulatorConnected = false;
 
 function userToSummary(user: User | null): AccountSummary {
@@ -231,7 +247,7 @@ function cleanEmailLinkFromUrl(): void {
   window.history.replaceState({}, document.title, cleanUrl);
 }
 
-export async function completeDeadlineFoodEmailLinkSignIn(): Promise<AccountSummary | null> {
+export async function completeDeadlineFoodEmailLinkSignIn(): Promise<EmailLinkCompletion | null> {
   const auth = getDeadlineFoodAuth();
   if (auth === null || typeof window === "undefined") {
     return null;
@@ -248,6 +264,8 @@ export async function completeDeadlineFoodEmailLinkSignIn(): Promise<AccountSumm
 
   emailLinkCompletionPromise = (async () => {
     const email = window.localStorage.getItem(EMAIL_LINK_STORAGE_KEY);
+    const storedIntent = window.localStorage.getItem(EMAIL_LINK_INTENT_STORAGE_KEY);
+    const intent: EmailMagicLinkIntent = storedIntent === "create" ? "create" : "existing";
     if (!email) {
       throw new Error("Open the sign-in link in the same browser where you requested it, or request a new link.");
     }
@@ -257,12 +275,14 @@ export async function completeDeadlineFoodEmailLinkSignIn(): Promise<AccountSumm
       result = await signInWithEmailLink(auth, email, emailLink);
     } catch (error) {
       window.localStorage.removeItem(EMAIL_LINK_STORAGE_KEY);
+      window.localStorage.removeItem(EMAIL_LINK_INTENT_STORAGE_KEY);
       cleanEmailLinkFromUrl();
       throw new Error(friendlyAuthErrorMessage(error, "email"), {cause: error});
     }
     window.localStorage.removeItem(EMAIL_LINK_STORAGE_KEY);
+    window.localStorage.removeItem(EMAIL_LINK_INTENT_STORAGE_KEY);
     cleanEmailLinkFromUrl();
-    return userToSummary(result.user);
+    return {account: userToSummary(result.user), intent};
   })().finally(() => {
     emailLinkCompletionPromise = null;
   });
@@ -387,6 +407,20 @@ async function describeExistingAccountConflict(auth: Auth, error: unknown): Prom
   return `${email} is already registered with a different sign-in method. Please use the one you signed up with (for example Google, Microsoft, or an email link).`;
 }
 
+async function assertEmailBelongsToExistingAccount(auth: Auth, email: string): Promise<void> {
+  try {
+    const methods = await fetchSignInMethodsForEmail(auth, email);
+    if (methods.length === 0) {
+      throw new Error(NO_ACCOUNT_YET_MESSAGE);
+    }
+  } catch (error) {
+    if (error instanceof Error && error.message === NO_ACCOUNT_YET_MESSAGE) {
+      throw error;
+    }
+    throw new Error(friendlyAuthErrorMessage(error, "email"), {cause: error});
+  }
+}
+
 export async function linkDeadlineFoodAccount(providerId: AccountProviderId): Promise<AccountSummary> {
   const auth = getDeadlineFoodAuth();
   if (auth === null) {
@@ -425,7 +459,38 @@ export async function linkDeadlineFoodAccount(providerId: AccountProviderId): Pr
   }
 }
 
-export async function sendDeadlineFoodEmailMagicLink(email: string): Promise<void> {
+export async function signInExistingDeadlineFoodAccount(providerId: AccountProviderId): Promise<AccountSummary> {
+  const auth = getDeadlineFoodAuth();
+  if (auth === null) {
+    throw new Error("Firebase Auth is not configured for this app.");
+  }
+
+  const provider = providerFor(providerId);
+
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const additionalInfo = getAdditionalUserInfo(result);
+    if (additionalInfo?.isNewUser) {
+      await deleteUser(result.user);
+      throw new Error(NO_ACCOUNT_YET_MESSAGE);
+    }
+
+    return userToSummary(result.user);
+  } catch (error) {
+    if (error instanceof Error && error.message === NO_ACCOUNT_YET_MESSAGE) {
+      throw error;
+    }
+
+    const code = firebaseErrorCode(error);
+    if (code === "auth/account-exists-with-different-credential" || code === "auth/email-already-in-use") {
+      throw new Error(await describeExistingAccountConflict(auth, error), {cause: error});
+    }
+
+    throw new Error(friendlyAuthErrorMessage(error, providerLabel(providerId)), {cause: error});
+  }
+}
+
+export async function sendDeadlineFoodEmailMagicLink(email: string, options: EmailMagicLinkOptions = {}): Promise<void> {
   const auth = getDeadlineFoodAuth();
   if (auth === null || typeof window === "undefined") {
     throw new Error("Firebase Auth is not configured for this app.");
@@ -434,6 +499,10 @@ export async function sendDeadlineFoodEmailMagicLink(email: string): Promise<voi
   const normalizedEmail = email.trim().toLowerCase();
   if (!normalizedEmail || !normalizedEmail.includes("@")) {
     throw new Error("Please enter a valid email address.");
+  }
+
+  if (options.requireExistingAccount) {
+    await assertEmailBelongsToExistingAccount(auth, normalizedEmail);
   }
 
   // Use origin-only URL so Firebase can append oobCode as query params.
@@ -450,6 +519,7 @@ export async function sendDeadlineFoodEmailMagicLink(email: string): Promise<voi
     throw new Error(friendlyAuthErrorMessage(error, "email"), {cause: error});
   }
   window.localStorage.setItem(EMAIL_LINK_STORAGE_KEY, normalizedEmail);
+  window.localStorage.setItem(EMAIL_LINK_INTENT_STORAGE_KEY, options.requireExistingAccount ? "existing" : "create");
 }
 
 const MICROSOFT_REDIRECT_PENDING_KEY = "deadlineFoodMicrosoftAuthPending";

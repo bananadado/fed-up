@@ -119,6 +119,7 @@ export function Onboarding({
   onConnectAccount,
   onSendEmailMagicLink,
   onUseAnonymousAccount,
+  onClearAccountMessage,
   track,
   setCalendarSkipped,
 }: {
@@ -145,6 +146,7 @@ export function Onboarding({
   onConnectAccount: (provider: AccountProviderId) => void;
   onSendEmailMagicLink: (email: string) => void;
   onUseAnonymousAccount: () => void;
+  onClearAccountMessage: () => void;
   track: TrackPrototypeEvent;
   setCalendarSkipped: (skipped: boolean) => void;
 }) {
@@ -174,6 +176,9 @@ export function Onboarding({
   const accountLabel = account.email ?? account.displayName ?? (account.isAnonymous ? "Anonymous on this browser" : "Signed in");
 
   function goToStep(nextStep: number) {
+    if (nextStep > 0 && accountMessage) {
+      onClearAccountMessage();
+    }
     setStep(nextStep);
     setAnimationKey(k => k + 1);
     try { sessionStorage.setItem("deadlineFood:onboardingStep", String(nextStep)); } catch { /* ignore */ }
@@ -325,6 +330,11 @@ export function Onboarding({
           <img src={fedUpLogo} alt="Fed Up" className="h-8 w-auto" />
         </div>
         <Progress step={step} />
+        {accountMessage && step === 0 && (
+          <p className={`mb-4 rounded-lg p-3 text-sm ${accountMessageTone === "error" ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800"}`}>
+            {accountMessage}
+          </p>
+        )}
         {step === 0 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
             <Badge tone="green">Step 1 of 4</Badge>

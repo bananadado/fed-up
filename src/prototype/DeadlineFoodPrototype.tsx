@@ -14,11 +14,14 @@ import { syncRecommenderUser } from "./recommenderApi";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
 import {
   completeDeadlineFoodEmailLinkSignIn,
+  NO_ACCOUNT_YET_MESSAGE,
   linkDeadlineFoodAccount,
   onDeadlineFoodAccountChanged,
   sendDeadlineFoodEmailMagicLink,
+  signInExistingDeadlineFoodAccount,
   switchToAnonymousAccountOnThisDevice,
   type AccountMessageTone,
+  type EmailMagicLinkOptions,
   type AccountProviderId,
   type AccountSummary,
 } from "./accountAuth";
@@ -199,9 +202,12 @@ export function DeadlineFoodPrototype() {
   useEffect(() => {
     sessionIdRef.current = sessionId;
   }, [sessionId]);
-  // Guards resolveSignInDestination so a single sign-in resolves once even when
-  // both onAuthStateChanged and the redirect-result backup observe it.
-  const signInResolutionRef = useRef(false);
+  // Share a single destination resolution between onAuthStateChanged and direct
+  // sign-in completions. Firebase can complete email/OAuth before our listener
+  // observes an anonymous->authenticated transition, so successful sign-in
+  // handlers also call resolveSignInDestination explicitly.
+  const signInResolutionPromiseRef = useRef<Promise<void> | null>(null);
+  const suppressAuthStateDestinationRef = useRef(false);
 
   // Decide where a freshly signed-in user lands. The backend returns the
   // account's linked session when one exists; if that session is onboarded we
@@ -209,10 +215,10 @@ export function DeadlineFoodPrototype() {
   // sign-in method has no plan yet ("an account with these details doesn't exist
   // yet") — sign back out to anonymous and run full onboarding. The user re-links
   // the account at the end of onboarding.
-  const resolveSignInDestination = useCallback(async () => {
-    if (signInResolutionRef.current) return;
-    signInResolutionRef.current = true;
-    try {
+  const resolveSignInDestination = useCallback(() => {
+    if (signInResolutionPromiseRef.current) return signInResolutionPromiseRef.current;
+
+    const resolution = (async () => {
       const snapshot = await loadAnonymousSessionSettings(sessionIdRef.current);
       const hasExistingPlan = snapshot.settings?.onboarded === true;
       if (hasExistingPlan) {
@@ -229,14 +235,17 @@ export function DeadlineFoodPrototype() {
         await switchToAnonymousAccountOnThisDevice();
         setOnboarded(false);
         setCanPersistSession(true);
-        notifyAccount("No saved plan is linked to that sign-in yet — let's set one up, then you can save it to your account.");
+        notifyAccount(NO_ACCOUNT_YET_MESSAGE, "error");
         window.location.hash = "/onboarding";
       }
-    } catch (error) {
+    })().catch((error) => {
       const message = error instanceof Error ? error.message : "Sign-in could not be completed.";
       notifyAccount(message, "error");
-      signInResolutionRef.current = false; // allow a retry after a failure
-    }
+      signInResolutionPromiseRef.current = null; // allow a retry after a failure
+    });
+
+    signInResolutionPromiseRef.current = resolution;
+    return resolution;
   }, [notifyAccount]);
 
   const prevAccountRef = useRef<AccountSummary | null>(null);
@@ -248,7 +257,7 @@ export function DeadlineFoodPrototype() {
       if (nextAccount.isAnonymous) {
         // Back to anonymous (manual sign-out, or the onboard-as-anonymous path):
         // allow the next sign-in to resolve a destination again.
-        signInResolutionRef.current = false;
+        signInResolutionPromiseRef.current = null;
         return;
       }
       // Detect any anonymous→authenticated transition regardless of which sign-in
@@ -256,6 +265,9 @@ export function DeadlineFoodPrototype() {
       // already-authenticated user being restored on load — handled by the
       // session-load effect, not here.
       if (prev !== null && prev.isAnonymous) {
+        if (suppressAuthStateDestinationRef.current) {
+          return;
+        }
         void resolveSignInDestination();
       }
     });
@@ -438,19 +450,32 @@ export function DeadlineFoodPrototype() {
     return snapshot;
   }, [buildSessionSettings, sessionId]);
 
+  const completeOnboardingAfterAccountCreated = useCallback(() => {
+    enableSessionPersistence();
+    setOnboarded(true);
+    syncRecommenderUser(sessionId, prefs).catch((error) => {
+      console.warn("Recommender user profile could not be created.", error);
+    });
+    navigateScreen("dashboard");
+  }, [enableSessionPersistence, navigateScreen, prefs, sessionId]);
+
   useEffect(() => {
     completeDeadlineFoodEmailLinkSignIn()
-      .then((nextAccount) => {
-        if (nextAccount) {
-          // Destination + persistence handled by the onAuthStateChanged transition.
+      .then((completion) => {
+        if (completion) {
           track("account_linked", { provider: "email" });
+          if (completion.intent === "create") {
+            completeOnboardingAfterAccountCreated();
+          } else {
+            void resolveSignInDestination();
+          }
         }
       })
       .catch((error) => {
         const message = error instanceof Error ? error.message : "Email sign-in could not be completed.";
         notifyAccount(message, "error");
       });
-  }, [notifyAccount, track]);
+  }, [completeOnboardingAfterAccountCreated, notifyAccount, resolveSignInDestination, track]);
 
   const connectAccount = useCallback(async (provider: AccountProviderId) => {
     setAccountBusy(provider);
@@ -460,11 +485,15 @@ export function DeadlineFoodPrototype() {
       // its result on Firebase JS SDK v12 when the app origin differs from
       // authDomain (browser third-party-storage partitioning), so the redirect
       // never came back. Popup keeps the page alive and delivers the result via
-      // the opener. The onAuthStateChanged transition then runs
-      // resolveSignInDestination, which owns navigation + persistence for both
-      // existing and brand-new accounts.
+      // the opener. In onboarding/settings this is account creation or linking,
+      // not existing-account lookup from the landing page.
       await linkDeadlineFoodAccount(provider);
       track("account_linked", { provider });
+      if (screen === "onboarding") {
+        completeOnboardingAfterAccountCreated();
+      } else {
+        notifyAccount("Account connected.");
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Account sign-in failed.";
       notifyAccount(message, "error");
@@ -472,13 +501,36 @@ export function DeadlineFoodPrototype() {
     } finally {
       setAccountBusy(null);
     }
-  }, [notifyAccount, track]);
+  }, [completeOnboardingAfterAccountCreated, notifyAccount, screen, track]);
 
-  const sendEmailMagicLink = useCallback(async (email: string) => {
+  const signInToExistingAccount = useCallback(async (provider: AccountProviderId) => {
+    setAccountBusy(provider);
+    notifyAccount("");
+    suppressAuthStateDestinationRef.current = true;
+    try {
+      await signInExistingDeadlineFoodAccount(provider);
+      track("account_linked", { provider });
+      await resolveSignInDestination();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Account sign-in failed.";
+      if (message === NO_ACCOUNT_YET_MESSAGE) {
+        await switchToAnonymousAccountOnThisDevice();
+        notifyAccount(message, "error");
+      } else {
+        notifyAccount(message, "error");
+      }
+      track("account_link_failed", { provider, error: message });
+    } finally {
+      suppressAuthStateDestinationRef.current = false;
+      setAccountBusy(null);
+    }
+  }, [notifyAccount, resolveSignInDestination, track]);
+
+  const sendEmailMagicLink = useCallback(async (email: string, options?: EmailMagicLinkOptions) => {
     setAccountBusy("email");
     notifyAccount("");
     try {
-      await sendDeadlineFoodEmailMagicLink(email);
+      await sendDeadlineFoodEmailMagicLink(email, options);
       notifyAccount("Check your email for a sign-in link. Open it in this browser to save your plan.");
       track("account_magic_link_sent", {});
     } catch (error) {
@@ -691,13 +743,13 @@ export function DeadlineFoodPrototype() {
 
   if (activeScreen === "landing") {
     return <Landing
-      onStart={() => { enableSessionPersistence(); navigateScreen("onboarding"); }}
+      onStart={() => { notifyAccount(""); enableSessionPersistence(); navigateScreen("onboarding"); }}
       track={track}
       account={account}
       accountBusy={accountBusy}
       accountMessage={accountMessage}
       accountMessageTone={accountMessageTone}
-      onConnectAccount={connectAccount}
+      onConnectAccount={signInToExistingAccount}
       onSendEmailMagicLink={sendEmailMagicLink}
     />;
   }
@@ -738,6 +790,7 @@ export function DeadlineFoodPrototype() {
         onConnectAccount={connectAccount}
         onSendEmailMagicLink={sendEmailMagicLink}
         onUseAnonymousAccount={returnToAnonymousAccount}
+        onClearAccountMessage={() => notifyAccount("")}
         track={track}
         setCalendarSkipped={setCalendarSkipped}
       />
