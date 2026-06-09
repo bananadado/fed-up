@@ -82,12 +82,40 @@ function shoppingIngredientName(ingredient: ShoppingIngredient) {
   return typeof ingredient === "string" ? ingredient.trim() : ingredient.name.trim();
 }
 
+// Maps compatible metric units to a single grouping key so g+kg and ml+l merge.
+const MASS_TO_G: Record<string, number> = { g: 1, kg: 1000 };
+const VOLUME_TO_ML: Record<string, number> = { ml: 1, l: 1000 };
+
+function aggregationUnit(unit: string): string {
+  if (unit in MASS_TO_G) return "g";
+  if (unit in VOLUME_TO_ML) return "ml";
+  return unit;
+}
+
+function toBaseQty(quantity: number, unit: string): number {
+  return quantity * (MASS_TO_G[unit] ?? VOLUME_TO_ML[unit] ?? 1);
+}
+
+function fromBaseQty(quantity: number, unit: string): { quantity: number; unit: string } {
+  if (unit === "g") {
+    return quantity >= 1000
+      ? { quantity: Math.round(quantity / 10) / 100, unit: "kg" }
+      : { quantity: Math.round(quantity * 10) / 10, unit: "g" };
+  }
+  if (unit === "ml") {
+    return quantity >= 1000
+      ? { quantity: Math.round(quantity / 10) / 100, unit: "l" }
+      : { quantity: Math.round(quantity * 10) / 10, unit: "ml" };
+  }
+  return { quantity, unit };
+}
+
 function shoppingIngredientKey(ingredient: ShoppingIngredient) {
   if (typeof ingredient === "string") {
     return normaliseIngredient(ingredient);
   }
 
-  return `${singularise(normaliseIngredient(ingredient.name))}:${ingredient.unit}`;
+  return `${singularise(normaliseIngredient(ingredient.name))}:${aggregationUnit(ingredient.unit)}`;
 }
 
 function addPreparation(preparations: string[] | undefined, preparation: string | undefined) {
@@ -141,21 +169,32 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
       return;
     }
 
+    const baseUnit = aggregationUnit(ingredient.unit);
+    const baseQty = toBaseQty(ingredient.quantity, ingredient.unit);
+
     items.set(key, current ? {
       ...current,
       count: current.count + 1,
-      quantity: (current.quantity ?? 0) + ingredient.quantity,
+      quantity: (current.quantity ?? 0) + baseQty,
       preparations: addPreparation(current.preparations, ingredient.preparation),
     } : {
       name,
       count: 1,
-      quantity: ingredient.quantity,
-      unit: ingredient.unit,
+      quantity: baseQty,
+      unit: baseUnit,
       preparations: addPreparation(undefined, ingredient.preparation),
     });
   });
 
-  return [...items.values()].sort((a, b) => a.name.localeCompare(b.name));
+  return [...items.values()]
+    .map((item) => {
+      if (typeof item.quantity === "number" && item.unit) {
+        const d = fromBaseQty(item.quantity, item.unit);
+        return d.unit !== item.unit || d.quantity !== item.quantity ? { ...item, ...d } : item;
+      }
+      return item;
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export function formatShoppingList(items: ShoppingItem[]) {

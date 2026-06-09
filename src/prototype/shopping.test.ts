@@ -125,6 +125,45 @@ describe("shopping helpers", () => {
     expect(items.filter((i) => i.name.toLowerCase().includes("onion"))).toHaveLength(1);
   });
 
+  test("aggregates g and kg quantities together", () => {
+    const items = aggregateIngredients([
+      { name: "flour", quantity: 500, unit: "g" },
+      { name: "flour", quantity: 1, unit: "kg" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.name).toBe("flour");
+    expect(items[0]?.unit).toBe("kg");
+    expect(items[0]?.quantity).toBe(1.5);
+  });
+
+  test("aggregates ml and l quantities together", () => {
+    const items = aggregateIngredients([
+      { name: "milk", quantity: 250, unit: "ml" },
+      { name: "milk", quantity: 1, unit: "l" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.unit).toBe("l");
+    expect(items[0]?.quantity).toBe(1.25);
+  });
+
+  test("converts aggregated grams to kg when total reaches 1000g", () => {
+    const items = aggregateIngredients([
+      { name: "rice", quantity: 600, unit: "g" },
+      { name: "rice", quantity: 500, unit: "g" },
+    ]);
+    expect(items[0]?.unit).toBe("kg");
+    expect(items[0]?.quantity).toBe(1.1);
+  });
+
+  test("keeps aggregated grams as g when total under 1000", () => {
+    const items = aggregateIngredients([
+      { name: "salt", quantity: 200, unit: "g" },
+      { name: "salt", quantity: 300, unit: "g" },
+    ]);
+    expect(items[0]?.unit).toBe("g");
+    expect(items[0]?.quantity).toBe(500);
+  });
+
   test("builds selected vendor search URLs for one ingredient at a time", () => {
     expect(groceryVendorById("asda").searchUrl("oat milk")).toBe("https://groceries.asda.com/search/oat%20milk");
     expect(groceryVendorById("morrisons").searchUrl("berries")).toBe("https://groceries.morrisons.com/search?q=berries");
