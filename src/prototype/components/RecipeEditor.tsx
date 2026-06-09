@@ -428,7 +428,6 @@ export function RecipeEditor({
     const key = sanitised.map((i) => `${i.name}:${i.quantity}:${i.unit}`).join("|");
 
     if (key === "") {
-      setNutritionStatus(null);
       prevIngredientKeyRef.current = "";
       return;
     }
@@ -538,12 +537,12 @@ export function RecipeEditor({
 
   const nutritionStatusText = nutritionLoading
     ? "Auto-filling from ingredients…"
-    : nutritionStatus
-      ?? (form.nutritionSource
-        ? nutritionSourceSummary(form.nutritionSource)
-        : ingredients.length > 0
-          ? "Will auto-fill when you stop editing ingredients"
-          : "Add ingredients to auto-fill nutrition");
+    : ingredients.length === 0
+      ? "Add ingredients to auto-fill nutrition"
+      : nutritionStatus
+        ?? (form.nutritionSource
+          ? nutritionSourceSummary(form.nutritionSource)
+          : "Will auto-fill when you stop editing ingredients");
 
   return (
     <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6">
