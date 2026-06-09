@@ -86,7 +86,7 @@ function contextEvents(calendarEvents: CalendarEvent[], deadlines: Deadline[]): 
  */
 export async function generateAutoPlan(
   input: GenerateAutoPlanInput,
-): Promise<{ plan: PlanEntry[]; generatedAt: string }> {
+): Promise<{ plan: PlanEntry[]; meals: Meal[]; generatedAt: string }> {
   const response = await fetch(firebaseFunctionUrl("deadlineFoodAutoPlan", "/api/deadline-food/auto-plan"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -109,6 +109,7 @@ export async function generateAutoPlan(
   }
 
   const data = (await response.json()) as AutoPlanResponse;
-  registerPlanMeals(Array.isArray(data.meals) ? data.meals : []);
-  return { plan: Array.isArray(data.plan) ? data.plan : [], generatedAt: data.generatedAt };
+  const meals = Array.isArray(data.meals) ? data.meals : [];
+  registerPlanMeals(meals);
+  return { plan: Array.isArray(data.plan) ? data.plan : [], meals, generatedAt: data.generatedAt };
 }
