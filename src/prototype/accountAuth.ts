@@ -7,7 +7,6 @@ import {
   GoogleAuthProvider,
   isSignInWithEmailLink,
   linkWithPopup,
-  linkWithRedirect,
   OAuthProvider,
   onAuthStateChanged,
   sendSignInLinkToEmail,
@@ -354,18 +353,19 @@ export async function linkDeadlineFoodMicrosoftRedirect(): Promise<void> {
     throw new Error("Firebase Auth is not configured for this app.");
   }
 
-  const user = await ensureDeadlineFoodAuthUser();
   const provider = providerFor("microsoft");
 
+  // Use localStorage, not sessionStorage: sessionStorage is not guaranteed to
+  // survive the cross-origin hop chain (localhost → microsoftonline.com →
+  // firebaseapp.com/__/auth/handler → localhost).
   try {
-    sessionStorage.setItem(MICROSOFT_REDIRECT_PENDING_KEY, "1");
-  } catch { /* sessionStorage unavailable */ }
+    window.localStorage.setItem(MICROSOFT_REDIRECT_PENDING_KEY, String(Date.now()));
+  } catch { /* ignore */ }
 
-  if (user?.isAnonymous) {
-    await linkWithRedirect(user, provider);
-  } else {
-    await signInWithRedirect(auth, provider);
-  }
+  // Always signInWithRedirect rather than linkWithRedirect: linkWithRedirect
+  // stores extra anonymous-user-linking state that can also be lost across
+  // the same multi-origin redirect chain.
+  await signInWithRedirect(auth, provider);
 }
 
 export async function checkDeadlineFoodMicrosoftRedirectResult(): Promise<AccountSummary | null> {
@@ -374,9 +374,17 @@ export async function checkDeadlineFoodMicrosoftRedirectResult(): Promise<Accoun
 
   let pending = false;
   try {
-    pending = sessionStorage.getItem(MICROSOFT_REDIRECT_PENDING_KEY) === "1";
-    if (pending) sessionStorage.removeItem(MICROSOFT_REDIRECT_PENDING_KEY);
-  } catch { /* sessionStorage unavailable */ }
+    const stored = window.localStorage.getItem(MICROSOFT_REDIRECT_PENDING_KEY);
+    if (stored !== null) {
+      const ageMs = Date.now() - Number(stored);
+      // Valid if initiated within the last 10 minutes.
+      pending = ageMs < 10 * 60 * 1000;
+      // Clear if pending or older than 30 min (stale).
+      if (pending || ageMs > 30 * 60 * 1000) {
+        window.localStorage.removeItem(MICROSOFT_REDIRECT_PENDING_KEY);
+      }
+    }
+  } catch { /* ignore */ }
 
   if (!pending) return null;
 
