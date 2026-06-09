@@ -82,6 +82,25 @@ export const ingredientOptions = [
   "yoghurt dressing",
 ] as const;
 
+// Approximate grams per single countable unit for common ingredients.
+// Only covers ingredients where a count-based quantity is natural for shopping.
+export const ITEM_WEIGHT_G: Record<string, number> = {
+  apple: 182,
+  banana: 118,
+  broccoli: 350,
+  carrot: 80,
+  cucumber: 300,
+  egg: 58,
+  flatbread: 60,
+  "jacket potato": 400,
+  lime: 67,
+  pepper: 160,
+  potato: 213,
+  "spring onion": 15,
+  tomato: 123,
+  "tortilla wrap": 45,
+};
+
 export type IngredientDraft = {
   id: string;
   name: string;
