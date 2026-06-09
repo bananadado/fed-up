@@ -23,7 +23,6 @@ import {
 } from "../calendarImport";
 import {
   PRIVACY_CONSENT_TEXT,
-  PRIVACY_POLICY_URL,
   createPrivacyConsent,
   hasCurrentPrivacyConsent,
   type CalendarToken,

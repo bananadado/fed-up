@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 2466 nodes, 4477 edges, 146 communities. Commit: cfcc1cc</p>
+<p class="subtitle">Generated from graphify knowledge graph: 2466 nodes, 4477 edges, 146 communities. Commit: 9381c0c</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -118,18 +118,18 @@ flowchart LR
     class COMMUNITY_27_99AD9ED4 module;
     OTHER_D0941E68("Other<br/><small>462 nodes</small>")
     class OTHER_D0941E68 module;
-    COMMUNITY_20_C86C0F59 -->|imports x89| TESTS_FIXTURES_B84B1DCC
-    COMMUNITY_0_B056AD3D -->|contains x60| OTHER_D0941E68
+    COMMUNITY_20_C86C0F59 -->|imports x81| TESTS_FIXTURES_B84B1DCC
+    COMMUNITY_0_B056AD3D -->|contains x59| OTHER_D0941E68
     COMMUNITY_1_3073A0DB -->|contains x50| OTHER_D0941E68
     TESTS_FIXTURES_B84B1DCC -->|imports x43| SERVE_API_35EC8E86
-    TESTS_FIXTURES_B84B1DCC -->|imports x42| OTHER_D0941E68
+    TESTS_FIXTURES_B84B1DCC -->|imports x40| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x36| TESTS_FIXTURES_B84B1DCC
     TESTS_FIXTURES_B84B1DCC -->|imports x36| COMMUNITY_24_ECF60D36
-    OTHER_D0941E68 -->|imports x34| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x29| COMMUNITY_20_C86C0F59
     COMMUNITY_24_ECF60D36 -->|calls x25| SERVE_API_35EC8E86
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
-    TESTS_FIXTURES_B84B1DCC -->|imports x21| COMMUNITY_20_C86C0F59
     COMMUNITY_24_ECF60D36 -->|imports x21| TESTS_FIXTURES_B84B1DCC
-    COMMUNITY_20_C86C0F59 -->|imports x17| OTHER_D0941E68
+    COMMUNITY_15_4BECAAD7 -->|imports x17| SERVE_API_35EC8E86
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -3585,8 +3585,8 @@ flowchart LR
         deadline_food_deadlinefoodapp_replacescreenurl_5f4795e3("replaceScreenUrl()<br/><small>src/deadline-food/DeadlineFoodApp.tsx</small>")
     end
     subgraph community_20_deadline_food_screens_PrivacyPolicy_6e403dd0["deadline-food/screens/PrivacyPolicyScreen.tsx"]
-        screens_privacypolicyscreen_privacypolicyscreen_26f6350d("PrivacyPolicyScreen()<br/><small>deadline-food/screens/PrivacyPolicyScreen.tsx</small>")
         src_deadline_food_screens_privacypolicyscreen_ts_c95b4fd2("PrivacyPolicyScreen.tsx")
+        screens_privacypolicyscreen_privacypolicyscreen_26f6350d("PrivacyPolicyScreen()<br/><small>deadline-food/screens/PrivacyPolicyScreen.tsx</small>")
         screens_privacypolicyscreen_trackevent_4070865e("TrackEvent<br/><small>deadline-food/screens/PrivacyPolicyScreen.tsx</small>")
     end
     subgraph community_20_deadline_food_components_Shell_tsx_d205ff39["deadline-food/components/Shell.tsx"]
@@ -3608,20 +3608,20 @@ flowchart LR
     deadline_food_deadlinefoodapp_isappscreen_3a8794af -->|calls| deadline_food_deadlinefoodapp_deadlinefoodapp_1675a415
     deadline_food_deadlinefoodapp_urlforscreen_0c4e85f5 -->|calls| deadline_food_deadlinefoodapp_replacescreenurl_5f4795e3
     deadline_food_deadlinefoodapp_deadlinefoodapp_1675a415 -->|calls| deadline_food_sessionpersistence_hascurrentpriva_6e7c8b0d
+    lib_posthog_analyticsproperties_afe56a65 -->|imports| src_deadline_food_deadlinefoodapp_tsx_271a67e1
+    lib_posthog_analyticsproperties_afe56a65 -->|imports| src_deadline_food_screens_privacypolicyscreen_ts_c95b4fd2
+    src_deadline_food_recipecatalogue_ts_61016489 -->|imports| src_deadline_food_deadlinefoodapp_tsx_271a67e1
+    src_deadline_food_recipecatalogue_ts_61016489 -->|imports| deadline_food_data_seedmeals_579484f0
+    src_deadline_food_recipecatalogue_ts_61016489 -->|imports| src_deadline_food_types_ts_7fe1fb7a
+    deadline_food_recipecatalogue_setrecipecatalogue_26ad6cc7 -->|imports| src_deadline_food_deadlinefoodapp_tsx_271a67e1
     src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| components_shell_shell_90a82b12
-    src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| deadline_food_recipecatalogue_setrecipecatalogue_26ad6cc7
     src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| deadline_food_sessionpersistence_hascurrentpriva_6e7c8b0d
     src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| deadline_food_types_screen_b18899a9
-    src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| lib_posthog_analyticsproperties_afe56a65
     src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| screens_planscreen_planscreen_84e89dc0
     src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| screens_privacypolicyscreen_privacypolicyscreen_26f6350d
     src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| src_deadline_food_components_shell_tsx_659fa8b6
-    src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| src_deadline_food_recipecatalogue_ts_61016489
     src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| src_deadline_food_screens_privacypolicyscreen_ts_c95b4fd2
     src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| src_deadline_food_types_ts_7fe1fb7a
-    lib_posthog_analyticsproperties_afe56a65 -->|imports| src_deadline_food_screens_privacypolicyscreen_ts_c95b4fd2
-    src_deadline_food_recipecatalogue_ts_61016489 -->|imports| deadline_food_data_seedmeals_579484f0
-    src_deadline_food_recipecatalogue_ts_61016489 -->|imports| src_deadline_food_types_ts_7fe1fb7a
     src_deadline_food_types_ts_7fe1fb7a -->|imports| src_deadline_food_components_shell_tsx_659fa8b6
     src_deadline_food_types_ts_7fe1fb7a -->|imports| src_deadline_food_screens_privacypolicyscreen_ts_c95b4fd2
     deadline_food_types_screen_b18899a9 -->|imports| src_deadline_food_components_shell_tsx_659fa8b6
@@ -3632,8 +3632,8 @@ flowchart LR
     class deadline_food_deadlinefoodapp_urlforscreen_0c4e85f5 ui;
     class deadline_food_deadlinefoodapp_deadlinefoodapp_1675a415 ui;
     class deadline_food_deadlinefoodapp_replacescreenurl_5f4795e3 ui;
-    class screens_privacypolicyscreen_privacypolicyscreen_26f6350d ui;
     class src_deadline_food_screens_privacypolicyscreen_ts_c95b4fd2 ui;
+    class screens_privacypolicyscreen_privacypolicyscreen_26f6350d ui;
     class screens_privacypolicyscreen_trackevent_4070865e ui;
     class components_shell_shell_90a82b12 ui;
     class src_deadline_food_components_shell_tsx_659fa8b6 ui;
@@ -3668,118 +3668,22 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>hasCurrentPrivacyConsent()</code><br><small style="color:var(--muted)">src/deadline-food/sessionPersistence.ts</small><br><code>PlanScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/PlanScreen.tsx</small><br>+8 more</td>
-  <td>Module file in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>screens</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>screens node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>onboardingScreens</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>onboardingScreens node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>screenFromLocation()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>screenFromLocation() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>isAppScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>DeadlineFoodApp()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td>isAppScreen() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>urlForScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>replaceScreenUrl()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td>urlForScreen() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>replaceScreenUrl()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>urlForScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>replaceScreenUrl() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>LoadingScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>LoadingScreen() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>budgetBand()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>budgetBand() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>maxTimeBucket()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>maxTimeBucket() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>DeadlineFoodApp()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>isAppScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><code>hasCurrentPrivacyConsent()</code><br><small style="color:var(--muted)">src/deadline-food/sessionPersistence.ts</small></td>
-  <td>DeadlineFoodApp() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>hasCurrentPrivacyConsent()</code><br><small style="color:var(--muted)">src/deadline-food/sessionPersistence.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>DeadlineFoodApp()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>hasCurrentPrivacyConsent() node in src/deadline-food/sessionPersistence.ts.</td>
-</tr>
-<tr>
-  <td>13</td>
   <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
-  <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><code>PrivacyPolicyScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>PrivacyPolicyScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small></td>
   <td>Orchestrates analysis and returns structured documentation data.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>2</td>
   <td><code>recipeCatalogue.ts</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
-  <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><code>seedMeals</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>seedMeals</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td>Module file in src/deadline-food/recipeCatalogue.ts.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>3</td>
   <td><code>planMeals</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3787,15 +3691,15 @@ flowchart LR
   <td>planMeals node in src/deadline-food/recipeCatalogue.ts.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>4</td>
   <td><code>setRecipeCatalogue()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
   <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td>No direct outbound edge</td>
   <td>setRecipeCatalogue() node in src/deadline-food/recipeCatalogue.ts.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>5</td>
   <td><code>normalizeRecipe()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -3803,7 +3707,7 @@ flowchart LR
   <td>normalizeRecipe() node in src/deadline-food/recipeCatalogue.ts.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>6</td>
   <td><code>seedMeals</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>recipeCatalogue.ts</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
@@ -3811,7 +3715,95 @@ flowchart LR
   <td>seedMeals node in src/deadline-food/data.ts.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>7</td>
+  <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>recipeCatalogue.ts</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small><br><code>setRecipeCatalogue()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
+  <td><code>hasCurrentPrivacyConsent()</code><br><small style="color:var(--muted)">src/deadline-food/sessionPersistence.ts</small><br><code>PlanScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/PlanScreen.tsx</small><br><code>PrivacyPolicyScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small><br>+5 more</td>
+  <td>Module file in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>screens</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>screens node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>onboardingScreens</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>onboardingScreens node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>screenFromLocation()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>screenFromLocation() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>isAppScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>DeadlineFoodApp()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td>isAppScreen() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>urlForScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>replaceScreenUrl()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td>urlForScreen() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>replaceScreenUrl()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>urlForScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>replaceScreenUrl() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>LoadingScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>LoadingScreen() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>budgetBand()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>budgetBand() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>maxTimeBucket()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>maxTimeBucket() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>DeadlineFoodApp()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>isAppScreen()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td><code>hasCurrentPrivacyConsent()</code><br><small style="color:var(--muted)">src/deadline-food/sessionPersistence.ts</small></td>
+  <td>DeadlineFoodApp() node in src/deadline-food/DeadlineFoodApp.tsx.</td>
+</tr>
+<tr>
+  <td>18</td>
   <td><code>types.ts</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>recipeCatalogue.ts</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
@@ -3819,7 +3811,7 @@ flowchart LR
   <td>Module file in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>19</td>
   <td><code>MealType</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -3827,7 +3819,7 @@ flowchart LR
   <td>MealType node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>20</td>
   <td><code>NutritionSource</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -3835,7 +3827,7 @@ flowchart LR
   <td>NutritionSource node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>21</td>
   <td><code>RecipeReview</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -3843,7 +3835,7 @@ flowchart LR
   <td>RecipeReview node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>22</td>
   <td><code>PlanMeal</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -3851,7 +3843,7 @@ flowchart LR
   <td>PlanMeal node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>23</td>
   <td><code>PlanRegenMode</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -3859,7 +3851,7 @@ flowchart LR
   <td>PlanRegenMode node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>24</td>
   <td><code>DiscoverRecommendationStatus</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -3867,12 +3859,20 @@ flowchart LR
   <td>DiscoverRecommendationStatus node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>25</td>
   <td><code>Screen</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
   <td><code>PrivacyPolicyScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small><br><code>Shell.tsx</code><br><small style="color:var(--muted)">deadline-food/components/Shell.tsx</small></td>
   <td>Screen node in src/deadline-food/types.ts.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>hasCurrentPrivacyConsent()</code><br><small style="color:var(--muted)">src/deadline-food/sessionPersistence.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>DeadlineFoodApp()</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>hasCurrentPrivacyConsent() node in src/deadline-food/sessionPersistence.ts.</td>
 </tr>
 <tr>
   <td>27</td>
@@ -4978,71 +4978,67 @@ flowchart LR
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
     %% Section: Other (462 nodes, 539 edges)
-    subgraph other_functions_src_index_ts_f2396a12["functions/src/index.ts"]
-        src_index_asrecord_128d572b("asRecord()<br/><small>functions/src/index.ts</small>")
-        src_index_boundedstring_dceb72f0("boundedString()<br/><small>functions/src/index.ts</small>")
-        src_index_boundednumber_9827874f("boundedNumber()<br/><small>functions/src/index.ts</small>")
-        src_index_canonicalrecommendertags_b281af18("canonicalRecommenderTags()<br/><small>functions/src/index.ts</small>")
-        src_index_handleautoplan_3619a350("handleAutoPlan()<br/><small>functions/src/index.ts</small>")
-        src_index_torecommenderrecipepayload_363422fd("toRecommenderRecipePayload()<br/><small>functions/src/index.ts</small>")
-        src_index_normalizecalendarevent_4e6e3493("normalizeCalendarEvent()<br/><small>functions/src/index.ts</small>")
-        src_index_normalizecalendartoken_b53c0426("normalizeCalendarToken()<br/><small>functions/src/index.ts</small>")
-        src_index_normalizedaycontext_9fa3b50d("normalizeDayContext()<br/><small>functions/src/index.ts</small>")
-        src_index_normalizedeadline_e85b975a("normalizeDeadline()<br/><small>functions/src/index.ts</small>")
-        src_index_normalizeicssubscription_94dc874e("normalizeIcsSubscription()<br/><small>functions/src/index.ts</small>")
-        src_index_normalizeprivacyconsent_2b7dc5fd("normalizePrivacyConsent()<br/><small>functions/src/index.ts</small>")
-        src_index_normalizerecipeingredient_03e219ce("normalizeRecipeIngredient()<br/><small>functions/src/index.ts</small>")
-        src_index_normalizesessionsettings_4e7a983c("normalizeSessionSettings()<br/><small>functions/src/index.ts</small>")
-        src_index_parsecachedproduct_3de4130b("parseCachedProduct()<br/><small>functions/src/index.ts</small>")
+    subgraph other_src_adapters_deadlineFoodApi_ts_df6f9e2e["src/adapters/deadlineFoodApi.ts"]
+        adapters_deadlinefoodapi_firebasefunctionurl_609ca870("firebaseFunctionUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_readruntimeenv_ec472788("readRuntimeEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_readpublicenv_69f47266("readPublicEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_appnodeenv_bee3fb4c("appNodeEnv()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_configuredbackend_0b76ddbe("configuredBackend()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc("firebaseFunctionsBaseUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_firebasefunctionsregion_5834e133("firebaseFunctionsRegion()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_firebaseprojectid_c6c6f171("firebaseProjectId()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_readbrowseroverride_cce3c953("readBrowserOverride()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79("shouldUseFirebaseBackend()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0("deadlineFoodEndpointUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f("fetchCanonicalScenario()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
+        adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099("fetchDeadlineBootstrap()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
     end
     subgraph other_functions_lib_index_js_c34dee45["functions/lib/index.js"]
         lib_index_asrecord_ee234b0f("asRecord()<br/><small>functions/lib/index.js</small>")
         lib_index_boundedstring_8bbbb209("boundedString()<br/><small>functions/lib/index.js</small>")
         lib_index_boundednumber_fb360176("boundedNumber()<br/><small>functions/lib/index.js</small>")
     end
-    src_index_canonicalrecommendertags_b281af18 -->|calls| src_index_handleautoplan_3619a350
-    src_index_canonicalrecommendertags_b281af18 -->|calls| src_index_torecommenderrecipepayload_363422fd
-    src_index_torecommenderrecipepayload_363422fd -->|calls| src_index_asrecord_128d572b
-    src_index_asrecord_128d572b -->|calls| src_index_handleautoplan_3619a350
-    src_index_asrecord_128d572b -->|calls| src_index_normalizecalendarevent_4e6e3493
-    src_index_asrecord_128d572b -->|calls| src_index_normalizecalendartoken_b53c0426
-    src_index_asrecord_128d572b -->|calls| src_index_normalizedaycontext_9fa3b50d
-    src_index_asrecord_128d572b -->|calls| src_index_normalizedeadline_e85b975a
-    src_index_asrecord_128d572b -->|calls| src_index_normalizeicssubscription_94dc874e
-    src_index_asrecord_128d572b -->|calls| src_index_normalizeprivacyconsent_2b7dc5fd
-    src_index_asrecord_128d572b -->|calls| src_index_normalizerecipeingredient_03e219ce
-    src_index_asrecord_128d572b -->|calls| src_index_normalizesessionsettings_4e7a983c
-    src_index_asrecord_128d572b -->|calls| src_index_parsecachedproduct_3de4130b
-    src_index_boundedstring_dceb72f0 -->|calls| src_index_handleautoplan_3619a350
-    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizecalendarevent_4e6e3493
-    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizecalendartoken_b53c0426
-    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizedeadline_e85b975a
-    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizeicssubscription_94dc874e
-    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizeprivacyconsent_2b7dc5fd
-    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizerecipeingredient_03e219ce
-    src_index_boundedstring_dceb72f0 -->|calls| src_index_normalizesessionsettings_4e7a983c
-    src_index_boundednumber_9827874f -->|calls| src_index_handleautoplan_3619a350
-    src_index_boundednumber_9827874f -->|calls| src_index_normalizedaycontext_9fa3b50d
-    src_index_boundednumber_9827874f -->|calls| src_index_normalizedeadline_e85b975a
-    %% Omitted for readability: 444 nodes, 3 edges
-    class src_index_asrecord_128d572b function;
-    class src_index_boundedstring_dceb72f0 function;
-    class src_index_boundednumber_9827874f function;
-    class src_index_canonicalrecommendertags_b281af18 function;
-    class src_index_handleautoplan_3619a350 function;
-    class src_index_torecommenderrecipepayload_363422fd function;
-    class src_index_normalizecalendarevent_4e6e3493 function;
-    class src_index_normalizecalendartoken_b53c0426 function;
-    class src_index_normalizedaycontext_9fa3b50d function;
-    class src_index_normalizedeadline_e85b975a function;
-    class src_index_normalizeicssubscription_94dc874e function;
-    class src_index_normalizeprivacyconsent_2b7dc5fd function;
-    class src_index_normalizerecipeingredient_03e219ce function;
-    class src_index_normalizesessionsettings_4e7a983c function;
-    class src_index_parsecachedproduct_3de4130b function;
+    subgraph other_functions_src_index_ts_f2396a12["functions/src/index.ts"]
+        src_index_asrecord_128d572b("asRecord()<br/><small>functions/src/index.ts</small>")
+        src_index_boundedstring_dceb72f0("boundedString()<br/><small>functions/src/index.ts</small>")
+    end
+    adapters_deadlinefoodapi_readruntimeenv_ec472788 -->|calls| adapters_deadlinefoodapi_readpublicenv_69f47266
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_appnodeenv_bee3fb4c
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_configuredbackend_0b76ddbe
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebasefunctionsregion_5834e133
+    adapters_deadlinefoodapi_readpublicenv_69f47266 -->|calls| adapters_deadlinefoodapi_firebaseprojectid_c6c6f171
+    adapters_deadlinefoodapi_readbrowseroverride_cce3c953 -->|calls| adapters_deadlinefoodapi_configuredbackend_0b76ddbe
+    adapters_deadlinefoodapi_readbrowseroverride_cce3c953 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_configuredbackend_0b76ddbe -->|calls| adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79
+    adapters_deadlinefoodapi_appnodeenv_bee3fb4c -->|calls| adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79
+    adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 -->|calls| adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0
+    adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 -->|calls| adapters_deadlinefoodapi_firebasefunctionurl_609ca870
+    adapters_deadlinefoodapi_firebaseprojectid_c6c6f171 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_firebasefunctionsregion_5834e133 -->|calls| adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc
+    adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc -->|calls| adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0
+    adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc -->|calls| adapters_deadlinefoodapi_firebasefunctionurl_609ca870
+    adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 -->|calls| adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f
+    adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 -->|calls| adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099
+    %% Omitted for readability: 444 nodes, 0 edges
+    class adapters_deadlinefoodapi_firebasefunctionurl_609ca870 function;
+    class adapters_deadlinefoodapi_readruntimeenv_ec472788 function;
+    class adapters_deadlinefoodapi_readpublicenv_69f47266 function;
+    class adapters_deadlinefoodapi_appnodeenv_bee3fb4c function;
+    class adapters_deadlinefoodapi_configuredbackend_0b76ddbe function;
+    class adapters_deadlinefoodapi_firebasefunctionsbaseur_bf887fdc function;
+    class adapters_deadlinefoodapi_firebasefunctionsregion_5834e133 function;
+    class adapters_deadlinefoodapi_firebaseprojectid_c6c6f171 function;
+    class adapters_deadlinefoodapi_readbrowseroverride_cce3c953 function;
+    class adapters_deadlinefoodapi_shouldusefirebasebacken_bd2c8d79 function;
+    class adapters_deadlinefoodapi_deadlinefoodendpointurl_98a9c3f0 api;
+    class adapters_deadlinefoodapi_fetchcanonicalscenario_4b57435f function;
+    class adapters_deadlinefoodapi_fetchdeadlinebootstrap_2340c099 function;
     class lib_index_asrecord_ee234b0f function;
     class lib_index_boundedstring_8bbbb209 function;
     class lib_index_boundednumber_fb360176 function;
+    class src_index_asrecord_128d572b function;
+    class src_index_boundedstring_dceb72f0 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -5353,7 +5349,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-09 16:38 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-09 16:43 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

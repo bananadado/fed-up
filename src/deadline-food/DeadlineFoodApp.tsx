@@ -434,23 +434,24 @@ export function DeadlineFoodApp() {
       routeHistory.current = [];
       pendingHashScreen.current = "privacy-policy";
       replaceScreenUrl("privacy-policy");
-      setScreen("privacy-policy");
-      return;
+      const timer = window.setTimeout(() => setScreen("privacy-policy"), 0);
+      return () => window.clearTimeout(timer);
     }
 
     if (onboarded && onboardingScreens.has(screen)) {
       routeHistory.current = [];
       pendingHashScreen.current = "dashboard";
       replaceScreenUrl("dashboard");
-      setScreen("dashboard");
-      return;
+      const timer = window.setTimeout(() => setScreen("dashboard"), 0);
+      return () => window.clearTimeout(timer);
     }
 
     if (!onboarded && isAppScreen(screen)) {
       routeHistory.current = [];
       pendingHashScreen.current = "landing";
       replaceScreenUrl("landing");
-      setScreen("landing");
+      const timer = window.setTimeout(() => setScreen("landing"), 0);
+      return () => window.clearTimeout(timer);
     }
   }, [hasPrivacyConsent, onboarded, screen, sessionLoaded]);
 

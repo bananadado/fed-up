@@ -1,10 +1,10 @@
-import { ArrowLeft, Check, ExternalLink, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Check, ShieldCheck } from "lucide-react";
 
 import fedUpLogo from "@/assets/fed-up-logo.svg";
 import { cn } from "@/lib/utils";
 import type { AnalyticsProperties } from "@/lib/posthog";
 import { AppButton, Badge } from "../components/primitives";
-import { PRIVACY_CONSENT_TEXT, PRIVACY_POLICY_URL, PRIVACY_POLICY_VERSION } from "../sessionPersistence";
+import { PRIVACY_CONSENT_TEXT, PRIVACY_POLICY_VERSION } from "../sessionPersistence";
 import type { Screen } from "../types";
 
 const effectiveDate = "9 June 2026";
