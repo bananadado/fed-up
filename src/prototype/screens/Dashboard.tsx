@@ -43,7 +43,7 @@ export function Dashboard({
   calendarSkipped?: boolean;
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
-  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
+  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients, prefs.unitSystem), [plan, customRecipes, prefs.availableIngredients, prefs.unitSystem]);
   const nextMeal = plan
     .flatMap((entry) =>
       entry.meals.map((planMeal) => ({

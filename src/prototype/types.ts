@@ -107,6 +107,7 @@ export type Preferences = {
   planningHorizonDays: number;
   /** Whether stale plans prompt the user ("prompt") or regenerate silently ("auto"). */
   planRegenMode: PlanRegenMode;
+  unitSystem: "metric" | "imperial";
   /** Time of day (HH:MM) to schedule evening prep reminders, e.g. "22:00". */
   prepReminderTime: string;
 };

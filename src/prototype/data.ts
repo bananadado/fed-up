@@ -369,5 +369,6 @@ export const initialPreferences: Preferences = {
   availableIngredients: [],
   planningHorizonDays: 21,
   planRegenMode: "prompt",
+  unitSystem: "metric" as const,
   prepReminderTime: "22:00",
 };

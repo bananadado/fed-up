@@ -1,6 +1,6 @@
 import type { RecipeIngredient } from "./types";
 
-const numberPattern = /^(?<quantity>\d+(?:\.\d+)?|\d+\/\d+)\s*(?<unit>g|kg|ml|l|tbsp|tsp|cup|cups|slice|slices|wrap|wraps|item|items|can|cans|portion|portions|pack|packs)?\s+(?<name>.+)$/i;
+const numberPattern = /^(?<quantity>\d+\s+\d+\/\d+|\d+(?:\.\d+)?|\d+\/\d+)\s*(?<unit>g|kg|ml|l|tbsp|tsp|cup|cups|slice|slices|wrap|wraps|item|items|can|cans|portion|portions|pack|packs)?\s+(?<name>.+)$/i;
 
 export const ingredientUnits = [
   "g",
@@ -82,6 +82,25 @@ export const ingredientOptions = [
   "yoghurt dressing",
 ] as const;
 
+// Approximate grams per single countable unit for common ingredients.
+// Only covers ingredients where a count-based quantity is natural for shopping.
+export const ITEM_WEIGHT_G: Record<string, number> = {
+  apple: 182,
+  banana: 118,
+  broccoli: 350,
+  carrot: 80,
+  cucumber: 300,
+  egg: 58,
+  flatbread: 60,
+  "jacket potato": 400,
+  lime: 67,
+  pepper: 160,
+  potato: 213,
+  "spring onion": 15,
+  tomato: 123,
+  "tortilla wrap": 45,
+};
+
 export type IngredientDraft = {
   id: string;
   name: string;
@@ -130,6 +149,13 @@ const ingredientAliases = new Map([
 ]);
 
 function parseQuantity(value: string) {
+  const mixedMatch = /^(\d+)\s+(\d+)\/(\d+)$/.exec(value.trim());
+  if (mixedMatch) {
+    const whole = Number(mixedMatch[1]);
+    const num = Number(mixedMatch[2]);
+    const den = Number(mixedMatch[3]);
+    return den ? whole + num / den : whole;
+  }
   if (value.includes("/")) {
     const [numerator = 1, denominator = 1] = value.split("/").map(Number);
     return denominator ? numerator / denominator : 1;
@@ -296,7 +322,7 @@ export function formatIngredient(ingredient: RecipeIngredient | string) {
     return ingredient.quantity === 1 ? `${preparation}${ingredient.name}` : `${quantity} servings ${preparation}${ingredient.name}`;
   }
 
-  if (["g", "kg", "ml", "l"].includes(ingredient.unit)) {
+  if (["g", "kg", "ml", "l", "oz", "lb", "fl oz"].includes(ingredient.unit)) {
     return `${quantity}${ingredient.unit} ${preparation}${ingredient.name}`;
   }
 
@@ -306,16 +332,23 @@ export function formatIngredient(ingredient: RecipeIngredient | string) {
   }
 
   if (ingredient.name.toLowerCase() === ingredient.unit) {
-    return `${quantity} ${ingredient.quantity === 1 ? ingredient.unit : `${ingredient.unit}s`}`;
+    return `${quantity} ${pluraliseUnit(ingredient.unit, ingredient.quantity)}`;
   }
 
-  return `${quantity} ${ingredient.quantity === 1 ? ingredient.unit : `${ingredient.unit}s`} ${preparation}${ingredient.name}`;
+  return `${quantity} ${pluraliseUnit(ingredient.unit, ingredient.quantity)} ${preparation}${ingredient.name}`;
 }
 
 function pluraliseIngredientName(name: string) {
   if (name.endsWith("s")) return name;
   if (name.endsWith("y")) return `${name.slice(0, -1)}ies`;
   return `${name}s`;
+}
+
+function pluraliseUnit(unit: string, quantity: number): string {
+  if (quantity === 1) return unit;
+  if (unit.endsWith("s")) return unit;
+  if (unit.endsWith("ch") || unit.endsWith("sh")) return `${unit}es`;
+  return `${unit}s`;
 }
 
 export function parseIngredients(value: string): RecipeIngredient[] {

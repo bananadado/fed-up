@@ -92,7 +92,7 @@ export function PlanScreen({
     return false;
   });
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
-  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
+  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients, prefs.unitSystem), [plan, customRecipes, prefs.availableIngredients, prefs.unitSystem]);
 
   const weeks = useMemo(() => {
     const chunks: PlanEntry[][] = [];
