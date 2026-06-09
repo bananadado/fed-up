@@ -146,15 +146,6 @@ function shoppingIngredientKey(ingredient: ShoppingIngredient) {
   return sigPrep ? `${baseName}:${unitPart}:${sigPrep}` : `${baseName}:${unitPart}`;
 }
 
-function addPreparation(preparations: string[] | undefined, preparation: string | undefined) {
-  if (!preparation) {
-    return preparations;
-  }
-
-  const current = preparations ?? [];
-
-  return current.includes(preparation) ? current : [...current, preparation];
-}
 
 function pluralise(name: string): string {
   if (name.endsWith("y") && !/[aeiou]y$/i.test(name)) return `${name.slice(0, -1)}ies`;
