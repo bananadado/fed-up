@@ -250,11 +250,14 @@ type PrototypeSessionSettings = {
   discoverRejected: UnknownRecord[];
   discoverReviewedRecipeIds: string[];
   plan: UnknownRecord[];
+  planMeals: UnknownRecord[];
   calendarEvents: CalendarEvent[];
   icsSubscriptions: IcsSubscription[];
   calendarTokens: CalendarToken[];
   planSignature?: string;
   planGeneratedAt?: string;
+  calendarProvider?: string;
+  calendarSkipped?: boolean;
 };
 
 const servingGrams: Record<string, number> = {
@@ -729,8 +732,13 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
     discoverReviewedRecipeIds: boundedStringList(settings.discoverReviewedRecipeIds, 250, 120),
     plan: normalizeRecipeList(settings.plan, 31),
+    planMeals: normalizeRecipeList(settings.planMeals, 200),
     ...(typeof settings.planSignature === "string" ? {planSignature: settings.planSignature.slice(0, 200)} : {}),
     ...(typeof settings.planGeneratedAt === "string" ? {planGeneratedAt: settings.planGeneratedAt.slice(0, 40)} : {}),
+    ...(typeof settings.calendarProvider === "string" ?
+      {calendarProvider: settings.calendarProvider.slice(0, 40)} :
+      {}),
+    ...(typeof settings.calendarSkipped === "boolean" ? {calendarSkipped: settings.calendarSkipped} : {}),
     calendarEvents: Array.isArray(settings.calendarEvents) ?
       settings.calendarEvents
         .map(normalizeCalendarEvent)
