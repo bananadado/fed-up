@@ -441,6 +441,7 @@ export function DeadlineFoodPrototype() {
         deadlines,
         excludeIds: discoverRejected.map((meal) => meal.id),
         planVariant: planVariantRef.current,
+        previousPlan: plan,
       });
       if (result.plan.length === 0) {
         throw new Error("Auto-plan generation returned an empty plan.");
@@ -475,6 +476,8 @@ export function DeadlineFoodPrototype() {
         saved_recipe_count: savedRecipes.length,
         calendar_connected: hasImportedCalendar,
         in_app_workload_count: deadlines.length,
+        quality_score: result.quality?.score,
+        changed_flexible_slots: result.quality?.changedFlexibleSlots,
       });
     } catch (error) {
       console.warn("Auto-plan generation failed.", error);
@@ -482,7 +485,7 @@ export function DeadlineFoodPrototype() {
     } finally {
       setPlanGenerating(false);
     }
-  }, [sessionId, prefs, savedRecipes, calendarEvents, deadlines, discoverRejected, currentPlanSignature, hasImportedCalendar, buildSessionSettings, track]);
+  }, [sessionId, prefs, savedRecipes, calendarEvents, deadlines, discoverRejected, plan, currentPlanSignature, hasImportedCalendar, buildSessionSettings, track]);
 
   // Generate the first plan automatically once onboarded (also upgrades existing
   // users off the seed/mock plan). Thereafter "prompt" mode shows a banner and

@@ -1050,6 +1050,15 @@ function mealToAllocator(meal: UnknownRecord): AutoPlan.AllocatorMeal {
     tags: Array.isArray(meal.tags) ? meal.tags.filter((t): t is string => typeof t === "string") : [],
     allergens: Array.isArray(meal.allergens) ? meal.allergens.filter((a): a is string => typeof a === "string") : [],
     ingredients,
+    nutrition: (() => {
+      const nutrition = asRecord(meal.nutrition);
+      return {
+        calories: boundedNumber(nutrition?.calories, 0, 0, 5000),
+        protein: boundedNumber(nutrition?.protein, 0, 0, 500),
+        carbs: boundedNumber(nutrition?.carbs, 0, 0, 1000),
+        fat: boundedNumber(nutrition?.fat, 0, 0, 500),
+      };
+    })(),
   };
 }
 
@@ -1125,6 +1134,15 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const weeklyBudgetPence = Math.round(boundedNumber(body.budget, 48, 0, 1000) * 100);
   const planningPriorities = normalizePlanningPriorities(body.planningPriorities);
   const planVariant = Math.round(boundedNumber(body.planVariant, 0, 0, 1_000_000));
+  const previousPlan = Array.isArray(body.previousPlan) ?
+    body.previousPlan.map((entry) => asRecord(entry)).filter((entry): entry is UnknownRecord => entry !== null) :
+    [];
+  const availableIngredients = Array.isArray(body.availableIngredients) ?
+    body.availableIngredients
+      .map((ingredient) => asRecord(ingredient))
+      .filter((ingredient): ingredient is UnknownRecord => ingredient !== null)
+      .map((ingredient) => ({name: boundedString(ingredient.name, "", 120)})) :
+    [];
 
   // 1. Per-day calendar context across the horizon (#65). horizon_days produces
   // horizon_days+1 entries (incl. today), so request one fewer than we need.
@@ -1188,7 +1206,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     fallbackAlloc.push(mealToAllocator(meal));
   }
 
-  const plan = AutoPlan.buildPlan({
+  const {plan, quality} = AutoPlan.buildBestPlan({
     days,
     pool: [...savedAlloc, ...fillAlloc, ...fallbackAlloc],
     avoided: [...dislikes, ...allergens],
@@ -1196,6 +1214,10 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     weeklyBudgetPence,
     planningPriorities,
     variantSeed: planVariant > 0 ? planVariant : undefined,
+    previousPlan: previousPlan as unknown as AutoPlan.PlanEntryOut[],
+    candidateCount: 12,
+    nutritionTargets: "balanced-defaults",
+    availableIngredients,
   });
 
   // 3. Return only the meals actually placed, so the client can resolve them.
@@ -1206,7 +1228,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const meals = [...usedIds].map((id) => mealsById.get(id)).filter((m): m is UnknownRecord => m !== undefined);
 
   response.set("Cache-Control", "private, max-age=0, no-store");
-  response.status(200).json({plan, meals, generatedAt: new Date().toISOString()});
+  response.status(200).json({plan, meals, quality, generatedAt: new Date().toISOString()});
 }
 
 function rejectUnsupportedNutritionMethod(

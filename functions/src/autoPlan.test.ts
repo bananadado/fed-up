@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { buildPlan, classifyEffort, localDaysFromContextEvents, mergeCalendarPressure, type AllocatorMeal, type DayContext } from "./autoPlan";
+import { buildBestPlan, buildPlan, classifyEffort, localDaysFromContextEvents, mergeCalendarPressure, scorePlan, type AllocatorMeal, type DayContext } from "./autoPlan";
 import { prototypeRecipes } from "./generated/prototypeData";
 
 function meal(partial: Partial<AllocatorMeal> & { id: string }): AllocatorMeal {
@@ -12,6 +12,7 @@ function meal(partial: Partial<AllocatorMeal> & { id: string }): AllocatorMeal {
     tags: [],
     allergens: [],
     ingredients: [],
+    nutrition: { calories: 650, protein: 30, carbs: 75, fat: 18 },
     ...partial,
   };
 }
@@ -36,6 +37,7 @@ function prototypeMealToAllocator(meal: (typeof prototypeRecipes)[number]): Allo
     tags: [...meal.tags],
     allergens: [...meal.allergens],
     ingredients: meal.ingredients.map((ingredient) => ({ name: ingredient.name })),
+    nutrition: meal.nutrition,
   };
 }
 
@@ -430,6 +432,153 @@ describe("buildPlan", () => {
     expect(first[0].meals.find((m) => m.slot === "dinner")?.mealId).not.toBe(
       second[0].meals.find((m) => m.slot === "dinner")?.mealId,
     );
+  });
+});
+
+describe("buildBestPlan", () => {
+  it("selects a plan with better protein and calorie fit when constraints are equal", () => {
+    const days = [day({ date: "2026-06-01" })];
+    const poorLunch = meal({
+      id: "poor-lunch",
+      mealSlots: ["lunch"],
+      nutrition: { calories: 250, protein: 5, carbs: 40, fat: 6 },
+    });
+    const balancedLunch = meal({
+      id: "balanced-lunch",
+      mealSlots: ["lunch"],
+      nutrition: { calories: 650, protein: 34, carbs: 70, fat: 18 },
+    });
+
+    const result = buildBestPlan({
+      days,
+      pool: [poorLunch, balancedLunch],
+      avoided: [],
+      candidateCount: 12,
+      variantSeed: 4,
+    });
+
+    expect(result.plan[0].meals.find((m) => m.slot === "lunch")?.mealId).toBe("balanced-lunch");
+    expect(result.quality.nutritionScore).toBeGreaterThan(0.8);
+  });
+
+  it("scores compact shopping lists higher when nutrition and variety are comparable", () => {
+    const days = [day({ date: "2026-06-01" }), day({ date: "2026-06-02" })];
+    const riceBeans = meal({
+      id: "rice-beans",
+      mealSlots: ["dinner"],
+      ingredients: [{ name: "rice" }, { name: "beans" }, { name: "pepper" }],
+    });
+    const riceWrap = meal({
+      id: "rice-wrap",
+      mealSlots: ["dinner"],
+      ingredients: [{ name: "rice" }, { name: "beans" }, { name: "tortilla" }],
+    });
+    const pasta = meal({
+      id: "pasta",
+      mealSlots: ["dinner"],
+      ingredients: [{ name: "pasta" }, { name: "tomato" }, { name: "cheese" }],
+    });
+    const noodles = meal({
+      id: "noodles",
+      mealSlots: ["dinner"],
+      ingredients: [{ name: "noodles" }, { name: "mushroom" }, { name: "soy sauce" }],
+    });
+
+    const compact = [
+      { day: "Mon 1 Jun", dateIso: "2026-06-01", context: "", meals: [{ slot: "dinner" as const, mealId: "rice-beans" }] },
+      { day: "Tue 2 Jun", dateIso: "2026-06-02", context: "", meals: [{ slot: "dinner" as const, mealId: "rice-wrap" }] },
+    ];
+    const sprawling = [
+      { day: "Mon 1 Jun", dateIso: "2026-06-01", context: "", meals: [{ slot: "dinner" as const, mealId: "pasta" }] },
+      { day: "Tue 2 Jun", dateIso: "2026-06-02", context: "", meals: [{ slot: "dinner" as const, mealId: "noodles" }] },
+    ];
+    const input = { days, pool: [riceBeans, riceWrap, pasta, noodles], avoided: [] };
+
+    expect(scorePlan(input, compact).shoppingSimplicityScore).toBeGreaterThan(scorePlan(input, sprawling).shoppingSimplicityScore);
+    expect(scorePlan(input, compact).ingredientReuseScore).toBeGreaterThan(scorePlan(input, sprawling).ingredientReuseScore);
+  });
+
+  it("does not count leftover meals as extra shopping items", () => {
+    const batch = meal({
+      id: "batch",
+      tags: ["batch-friendly"],
+      mealSlots: ["dinner"],
+      ingredients: [{ name: "rice" }, { name: "lentils" }, { name: "spinach" }],
+    });
+    const plan = [
+      { day: "Mon 1 Jun", dateIso: "2026-06-01", context: "", meals: [{ slot: "dinner" as const, mealId: "batch", batchCook: true }] },
+      { day: "Tue 2 Jun", dateIso: "2026-06-02", context: "", meals: [{ slot: "dinner" as const, mealId: "batch", leftoverOf: "batch" }] },
+    ];
+
+    const quality = scorePlan({ days: [day({ date: "2026-06-01" }), day({ date: "2026-06-02" })], pool: [batch], avoided: [] }, plan);
+
+    expect(quality.uniqueIngredientCount).toBe(3);
+  });
+
+  it("reduces shopping item count for available ingredients", () => {
+    const dinner = meal({
+      id: "dinner",
+      mealSlots: ["dinner"],
+      ingredients: [{ name: "rice" }, { name: "beans" }, { name: "spinach" }],
+    });
+    const plan = [
+      { day: "Mon 1 Jun", dateIso: "2026-06-01", context: "", meals: [{ slot: "dinner" as const, mealId: "dinner" }] },
+    ];
+
+    const quality = scorePlan({
+      days: [day({ date: "2026-06-01" })],
+      pool: [dinner],
+      avoided: [],
+      availableIngredients: [{ name: "rice" }],
+    }, plan);
+
+    expect(quality.uniqueIngredientCount).toBe(2);
+  });
+
+  it("targets moderate regeneration change on flexible meal slots", () => {
+    const days = Array.from({ length: 7 }, (_, i) => day({ date: `2026-06-${String(i + 1).padStart(2, "0")}` }));
+    const pool = [
+      meal({ id: "a", mealSlots: ["dinner"] }),
+      meal({ id: "b", mealSlots: ["dinner"] }),
+      meal({ id: "c", mealSlots: ["dinner"] }),
+      meal({ id: "d", mealSlots: ["dinner"] }),
+    ];
+    const previousPlan = days.map((d, index) => ({
+      day: `Day ${index}`,
+      dateIso: d.date,
+      context: "",
+      meals: [{ slot: "dinner" as const, mealId: pool[index % 4]!.id }],
+    }));
+
+    const result = buildBestPlan({
+      days,
+      pool,
+      avoided: [],
+      previousPlan,
+      candidateCount: 16,
+      variantSeed: 7,
+    });
+
+    expect(result.quality.changedFlexibleSlots).toBeGreaterThan(0);
+    expect(result.quality.changedFlexibleSlots).toBeLessThan(7);
+  });
+
+  it("preserves repeated breakfast routines while scoring candidate plans", () => {
+    const days = Array.from({ length: 5 }, (_, i) => day({ date: `2026-06-${String(i + 1).padStart(2, "0")}` }));
+    const bfastA = meal({ id: "bfast-a", mealSlots: ["breakfast"], nutrition: { calories: 450, protein: 22, carbs: 55, fat: 12 } });
+    const bfastB = meal({ id: "bfast-b", mealSlots: ["breakfast"], nutrition: { calories: 450, protein: 22, carbs: 55, fat: 12 } });
+
+    const result = buildBestPlan({
+      days,
+      pool: [bfastA, bfastB],
+      avoided: [],
+      planningPriorities: { breakfastRoutine: "repeat" },
+      candidateCount: 12,
+      variantSeed: 5,
+    });
+
+    const breakfasts = result.plan.map((entry) => entry.meals.find((m) => m.slot === "breakfast")?.mealId);
+    expect(new Set(breakfasts)).toHaveLength(1);
   });
 });
 

@@ -31,6 +31,12 @@ export interface AllocatorMeal {
   tags: string[];
   allergens: string[];
   ingredients: { name: string }[];
+  nutrition?: {
+    calories?: number;
+    protein?: number;
+    carbs?: number;
+    fat?: number;
+  };
 }
 
 /** Mirrors the recommender `DailyContext` (#65) — only the fields we use. */
@@ -69,6 +75,29 @@ export interface BuildPlanInput {
   planningPriorities?: Partial<PlanningPriorities>;
   /** Changes final tie-breaks so explicit regenerations can produce alternatives. */
   variantSeed?: number;
+  previousPlan?: PlanEntryOut[];
+  candidateCount?: number;
+  nutritionTargets?: "balanced-defaults";
+  availableIngredients?: { name: string }[];
+}
+
+export interface PlanQuality {
+  score: number;
+  nutritionScore: number;
+  varietyScore: number;
+  budgetScore: number;
+  shoppingSimplicityScore: number;
+  ingredientReuseScore: number;
+  regenerationChangeScore: number;
+  weeklyCostPence: number;
+  uniqueIngredientCount: number;
+  reusedIngredientGroups: number;
+  changedFlexibleSlots: number;
+}
+
+export interface BestPlanResult {
+  plan: PlanEntryOut[];
+  quality: PlanQuality;
 }
 
 export type PlanningPriorities = {
@@ -380,8 +409,23 @@ function mealCostPence(meal: AllocatorMeal): number {
   return Math.max(0, Math.round(meal.pricePence));
 }
 
+function clamp01(value: number): number {
+  if (!Number.isFinite(value)) return 0;
+  return Math.max(0, Math.min(1, value));
+}
+
 function ingredientKeys(meal: AllocatorMeal): string[] {
   return canonicalTags(meal.ingredients.map((ingredient) => ingredient.name || ""));
+}
+
+function nutritionValue(value: number | undefined): number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : 0;
+}
+
+function slotNutritionTarget(slot: MealSlot): { calories: number; protein: number } {
+  if (slot === "breakfast") return {calories: 450, protein: 20};
+  if (slot === "lunch") return {calories: 650, protein: 30};
+  return {calories: 750, protein: 35};
 }
 
 function ingredientOverlapScore(meal: AllocatorMeal, weekIngredients: Map<string, number>): number {
@@ -607,6 +651,274 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
   });
 
   return entries;
+}
+
+function mealById(pool: AllocatorMeal[]): Map<string, AllocatorMeal> {
+  return new Map(pool.map((meal) => [meal.id, meal]));
+}
+
+function plannedMealEntries(plan: PlanEntryOut[], pool: AllocatorMeal[]): Array<{
+  entry: PlanEntryOut;
+  planMeal: PlanMealOut;
+  meal: AllocatorMeal;
+  dayIndex: number;
+  weekIndex: number;
+}> {
+  const byId = mealById(pool);
+  const out: Array<{
+    entry: PlanEntryOut;
+    planMeal: PlanMealOut;
+    meal: AllocatorMeal;
+    dayIndex: number;
+    weekIndex: number;
+  }> = [];
+
+  plan.forEach((entry, dayIndex) => {
+    const weekIndex = Math.floor(dayIndex / 7);
+    entry.meals.forEach((planMeal) => {
+      const meal = byId.get(planMeal.mealId);
+      if (meal) out.push({entry, planMeal, meal, dayIndex, weekIndex});
+    });
+  });
+
+  return out;
+}
+
+function nutritionScore(plan: PlanEntryOut[], pool: AllocatorMeal[]): number {
+  const placed = plannedMealEntries(plan, pool);
+  let targetCalories = 0;
+  let targetProtein = 0;
+  let calories = 0;
+  let protein = 0;
+  let known = 0;
+  let dailyScoreSum = 0;
+  let dailyScoreCount = 0;
+
+  for (const entry of plan) {
+    let dayTargetCalories = 0;
+    let dayTargetProtein = 0;
+    let dayCalories = 0;
+    let dayProtein = 0;
+    let dayKnown = 0;
+
+    for (const planMeal of entry.meals) {
+      const meal = placed.find((item) => item.entry === entry && item.planMeal === planMeal)?.meal;
+      if (!meal) continue;
+      const target = slotNutritionTarget(planMeal.slot);
+      targetCalories += target.calories;
+      targetProtein += target.protein;
+      dayTargetCalories += target.calories;
+      dayTargetProtein += target.protein;
+      const mealCalories = nutritionValue(meal.nutrition?.calories);
+      const mealProtein = nutritionValue(meal.nutrition?.protein);
+      calories += mealCalories;
+      protein += mealProtein;
+      dayCalories += mealCalories;
+      dayProtein += mealProtein;
+      if (mealCalories > 0 || mealProtein > 0) {
+        known += 1;
+        dayKnown += 1;
+      }
+    }
+
+    if (dayTargetCalories > 0 && dayKnown > 0) {
+      const dayProteinScore = clamp01(dayProtein / dayTargetProtein);
+      const dayCaloriesScore = clamp01(1 - Math.abs(dayCalories - dayTargetCalories) / (dayTargetCalories * 0.55));
+      dailyScoreSum += dayProteinScore * 0.65 + dayCaloriesScore * 0.35;
+      dailyScoreCount += 1;
+    }
+  }
+
+  if (targetCalories === 0 || known === 0) return 0.5;
+
+  const weeklyProteinScore = clamp01(protein / targetProtein);
+  const weeklyCaloriesScore = clamp01(1 - Math.abs(calories - targetCalories) / (targetCalories * 0.45));
+  const dailyScore = dailyScoreCount > 0 ? dailyScoreSum / dailyScoreCount : 0.5;
+  const confidence = known / Math.max(1, placed.length);
+  const raw = weeklyProteinScore * 0.45 + weeklyCaloriesScore * 0.25 + dailyScore * 0.30;
+  return clamp01(raw * confidence + 0.5 * (1 - confidence));
+}
+
+function purchasableMealEntries(plan: PlanEntryOut[], pool: AllocatorMeal[]) {
+  return plannedMealEntries(plan, pool).filter(({planMeal}) => !planMeal.leftoverOf);
+}
+
+function weeklyCostPence(plan: PlanEntryOut[], pool: AllocatorMeal[]): number {
+  return purchasableMealEntries(plan, pool).reduce((sum, {meal}) => sum + mealCostPence(meal), 0);
+}
+
+function ingredientCountsForPlan(
+  plan: PlanEntryOut[],
+  pool: AllocatorMeal[],
+  availableIngredients: { name: string }[] = [],
+): Map<string, number> {
+  const available = new Set(canonicalTags(availableIngredients.map((ingredient) => ingredient.name || "")));
+  const counts = new Map<string, number>();
+
+  for (const {meal} of purchasableMealEntries(plan, pool)) {
+    for (const key of ingredientKeys(meal)) {
+      if (!key || available.has(key)) continue;
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+  }
+
+  return counts;
+}
+
+const PERISHABLE_INGREDIENT_PATTERNS = [
+  "spinach", "lettuce", "salad", "tomato", "pepper", "mushroom", "avocado",
+  "berries", "berry", "banana", "apple", "yoghurt", "yogurt", "milk",
+  "chicken", "fish", "salmon", "beef", "pork", "egg",
+];
+
+function isPerishableIngredient(key: string): boolean {
+  return PERISHABLE_INGREDIENT_PATTERNS.some((pattern) => key.includes(pattern));
+}
+
+function shoppingSimplicityScore(plan: PlanEntryOut[], pool: AllocatorMeal[], availableIngredients: { name: string }[] = []): number {
+  const counts = ingredientCountsForPlan(plan, pool, availableIngredients);
+  const purchaseMeals = purchasableMealEntries(plan, pool).length;
+  if (purchaseMeals === 0) return 1;
+  const targetUnique = Math.max(4, Math.ceil(purchaseMeals * 2.25));
+  const uniqueScore = counts.size <= targetUnique ? 1 : clamp01(1 - (counts.size - targetUnique) / targetUnique);
+  const perishableCount = [...counts.keys()].filter(isPerishableIngredient).length;
+  const targetPerishable = Math.max(3, Math.ceil(purchaseMeals * 0.9));
+  const perishableScore = perishableCount <= targetPerishable ? 1 : clamp01(1 - (perishableCount - targetPerishable) / targetPerishable);
+  return uniqueScore * 0.75 + perishableScore * 0.25;
+}
+
+function ingredientReuseScore(plan: PlanEntryOut[], pool: AllocatorMeal[], availableIngredients: { name: string }[] = []): number {
+  const counts = ingredientCountsForPlan(plan, pool, availableIngredients);
+  if (counts.size === 0) return 0.5;
+  const reused = [...counts.values()].filter((count) => count > 1).length;
+  return clamp01((reused / counts.size) / 0.35);
+}
+
+function varietyScore(plan: PlanEntryOut[], priorities: PlanningPriorities): number {
+  const flexible = plan.flatMap((entry) =>
+    entry.meals.filter((meal) => meal.slot !== "breakfast" && !meal.leftoverOf),
+  );
+  if (flexible.length === 0) return 0.7;
+  const distinctMeals = new Set(flexible.map((meal) => meal.mealId)).size;
+  const distinctScore = distinctMeals / flexible.length;
+  const dinners = flexible.filter((meal) => meal.slot === "dinner");
+  const dinnerCounts = new Map<string, number>();
+  dinners.forEach((meal) => dinnerCounts.set(meal.mealId, (dinnerCounts.get(meal.mealId) ?? 0) + 1));
+  const repeatedDinnerSlots = [...dinnerCounts.values()].reduce((sum, count) => sum + Math.max(0, count - 1), 0);
+  const repeatPenalty =
+    priorities.mealRepeats === "low-effort" ? 0 :
+      priorities.mealRepeats === "varied" ? repeatedDinnerSlots * 0.10 :
+        repeatedDinnerSlots * 0.06;
+  return clamp01(distinctScore - repeatPenalty);
+}
+
+function budgetScore(plan: PlanEntryOut[], pool: AllocatorMeal[], weeklyBudgetPence: number | undefined): number {
+  if (weeklyBudgetPence === undefined || !Number.isFinite(weeklyBudgetPence) || weeklyBudgetPence <= 0) return 0.85;
+  const weekSpend = new Map<number, number>();
+  for (const {weekIndex, meal} of purchasableMealEntries(plan, pool)) {
+    weekSpend.set(weekIndex, (weekSpend.get(weekIndex) ?? 0) + mealCostPence(meal));
+  }
+  const ratios = [...weekSpend.values()].map((spend) => spend / weeklyBudgetPence);
+  const worstRatio = ratios.length > 0 ? Math.max(...ratios) : 0;
+  if (worstRatio > 1) return 0;
+  if (worstRatio <= 0.9) return 1;
+  return clamp01(1 - (worstRatio - 0.9) / 0.1 * 0.2);
+}
+
+function comparablePlanMealKey(entry: PlanEntryOut, meal: PlanMealOut): string {
+  return `${entry.dateIso}|${meal.slot}`;
+}
+
+function isFlexibleForRegeneration(meal: PlanMealOut): boolean {
+  return meal.slot !== "breakfast" && !meal.leftoverOf;
+}
+
+function regenerationChangeScore(plan: PlanEntryOut[], previousPlan: PlanEntryOut[] | undefined): { score: number; changed: number } {
+  if (!previousPlan || previousPlan.length === 0) return {score: 0.8, changed: 0};
+  const previous = new Map<string, string>();
+  previousPlan.forEach((entry) => {
+    entry.meals.filter(isFlexibleForRegeneration).forEach((meal) => {
+      previous.set(comparablePlanMealKey(entry, meal), meal.mealId);
+    });
+  });
+
+  const current = plan.flatMap((entry) =>
+    entry.meals
+      .filter(isFlexibleForRegeneration)
+      .map((meal) => ({key: comparablePlanMealKey(entry, meal), mealId: meal.mealId})),
+  );
+  const comparable = current.filter((meal) => previous.has(meal.key));
+  if (comparable.length === 0) return {score: 0.8, changed: 0};
+  const changed = comparable.filter((meal) => previous.get(meal.key) !== meal.mealId).length;
+  const changeRate = changed / comparable.length;
+  const target = 0.35;
+  return {
+    score: clamp01(1 - Math.abs(changeRate - target) / target),
+    changed,
+  };
+}
+
+export function scorePlan(input: BuildPlanInput, plan: PlanEntryOut[]): PlanQuality {
+  const priorities = normalizePriorities(input.planningPriorities);
+  const cost = weeklyCostPence(plan, input.pool);
+  const ingredientCounts = ingredientCountsForPlan(plan, input.pool, input.availableIngredients);
+  const reusedIngredientGroups = [...ingredientCounts.values()].filter((count) => count > 1).length;
+  const regen = regenerationChangeScore(plan, input.previousPlan);
+  const quality = {
+    nutritionScore: nutritionScore(plan, input.pool),
+    varietyScore: varietyScore(plan, priorities),
+    budgetScore: budgetScore(plan, input.pool, input.weeklyBudgetPence),
+    shoppingSimplicityScore: shoppingSimplicityScore(plan, input.pool, input.availableIngredients),
+    ingredientReuseScore: ingredientReuseScore(plan, input.pool, input.availableIngredients),
+    regenerationChangeScore: regen.score,
+    weeklyCostPence: cost,
+    uniqueIngredientCount: ingredientCounts.size,
+    reusedIngredientGroups,
+    changedFlexibleSlots: regen.changed,
+  };
+  const score =
+    quality.nutritionScore * 0.28 +
+    quality.varietyScore * 0.18 +
+    quality.budgetScore * 0.17 +
+    quality.shoppingSimplicityScore * 0.16 +
+    quality.ingredientReuseScore * 0.13 +
+    quality.regenerationChangeScore * 0.08;
+
+  return {
+    score: Number(score.toFixed(4)),
+    nutritionScore: Number(quality.nutritionScore.toFixed(4)),
+    varietyScore: Number(quality.varietyScore.toFixed(4)),
+    budgetScore: Number(quality.budgetScore.toFixed(4)),
+    shoppingSimplicityScore: Number(quality.shoppingSimplicityScore.toFixed(4)),
+    ingredientReuseScore: Number(quality.ingredientReuseScore.toFixed(4)),
+    regenerationChangeScore: Number(quality.regenerationChangeScore.toFixed(4)),
+    weeklyCostPence: quality.weeklyCostPence,
+    uniqueIngredientCount: quality.uniqueIngredientCount,
+    reusedIngredientGroups: quality.reusedIngredientGroups,
+    changedFlexibleSlots: quality.changedFlexibleSlots,
+  };
+}
+
+export function buildBestPlan(input: BuildPlanInput): BestPlanResult {
+  const candidateCount = Math.max(1, Math.min(24, Math.round(input.candidateCount ?? 12)));
+  let bestPlan = buildPlan(input);
+  let bestQuality = scorePlan(input, bestPlan);
+  const baseSeed = input.variantSeed ?? 0;
+
+  for (let index = 1; index < candidateCount; index += 1) {
+    const candidateSeed = baseSeed + index * 9973;
+    const candidatePlan = buildPlan({...input, variantSeed: candidateSeed});
+    const candidateQuality = scorePlan(input, candidatePlan);
+    if (
+      candidateQuality.score > bestQuality.score ||
+      (candidateQuality.score === bestQuality.score && candidateQuality.changedFlexibleSlots > bestQuality.changedFlexibleSlots)
+    ) {
+      bestPlan = candidatePlan;
+      bestQuality = candidateQuality;
+    }
+  }
+
+  return {plan: bestPlan, quality: bestQuality};
 }
 
 function recordUse({

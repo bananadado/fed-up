@@ -1,7 +1,13 @@
-import { describe, expect, test } from "bun:test";
+import { afterEach, describe, expect, test } from "bun:test";
 
 import { initialPreferences } from "./data";
-import { buildAutoPlanContextEvents, computePlanSignature } from "./autoPlanApi";
+import { buildAutoPlanContextEvents, computePlanSignature, generateAutoPlan } from "./autoPlanApi";
+
+const originalFetch = globalThis.fetch;
+
+afterEach(() => {
+  globalThis.fetch = originalFetch;
+});
 
 describe("computePlanSignature", () => {
   test("changes when planning priorities change", () => {
@@ -105,5 +111,50 @@ describe("buildAutoPlanContextEvents", () => {
 
     expect(events).toHaveLength(1);
     expect(events[0]).toMatchObject({ urgency: "high", effort_hours: 6 });
+  });
+});
+
+describe("generateAutoPlan", () => {
+  test("sends previous plan and available ingredients and tolerates quality metadata", async () => {
+    const captured: { body?: Record<string, unknown> } = {};
+    globalThis.fetch = ((_url: string | URL | Request, init?: RequestInit) => {
+      captured.body = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({
+          plan: [],
+          meals: [],
+          generatedAt: "2026-06-09T00:00:00Z",
+          quality: { score: 0.9, changedFlexibleSlots: 2 },
+        }),
+      } as Response);
+    }) as typeof fetch;
+
+    const previousPlan = [
+      {
+        day: "Tue 9 Jun",
+        dateIso: "2026-06-09",
+        context: "",
+        meals: [{ slot: "dinner" as const, mealId: "old-dinner" }],
+      },
+    ];
+    const prefs = {
+      ...initialPreferences,
+      availableIngredients: [{ name: "rice", quantity: 500, unit: "g" }],
+    };
+
+    const result = await generateAutoPlan({
+      sessionId: "session-1",
+      prefs,
+      savedRecipes: [],
+      calendarEvents: [],
+      deadlines: [],
+      previousPlan,
+      planVariant: 3,
+    });
+
+    expect(captured.body?.previousPlan).toEqual(previousPlan);
+    expect(captured.body?.availableIngredients).toEqual(prefs.availableIngredients);
+    expect(result.quality?.score).toBe(0.9);
   });
 });

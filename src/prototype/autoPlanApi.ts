@@ -17,7 +17,22 @@ export type GenerateAutoPlanInput = {
   excludeIds?: string[];
   /** Explicit regeneration variant; only affects backend tie-breaks. */
   planVariant?: number;
+  previousPlan?: PlanEntry[];
   signal?: AbortSignal;
+};
+
+export type AutoPlanQuality = {
+  score: number;
+  nutritionScore: number;
+  varietyScore: number;
+  budgetScore: number;
+  shoppingSimplicityScore: number;
+  ingredientReuseScore: number;
+  regenerationChangeScore: number;
+  weeklyCostPence: number;
+  uniqueIngredientCount: number;
+  reusedIngredientGroups: number;
+  changedFlexibleSlots: number;
 };
 
 // Small deterministic FNV-1a hash so the signature stays short and stable
@@ -66,6 +81,7 @@ export function computePlanSignature(input: {
 type AutoPlanResponse = {
   plan: PlanEntry[];
   meals: Meal[];
+  quality?: AutoPlanQuality;
   generatedAt: string;
 };
 
@@ -105,7 +121,7 @@ export function buildAutoPlanContextEvents(calendarEvents: CalendarEvent[], dead
  */
 export async function generateAutoPlan(
   input: GenerateAutoPlanInput,
-): Promise<{ plan: PlanEntry[]; generatedAt: string }> {
+): Promise<{ plan: PlanEntry[]; generatedAt: string; quality?: AutoPlanQuality }> {
   const response = await fetch(firebaseFunctionUrl("deadlineFoodAutoPlan", "/api/deadline-food/auto-plan"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -117,10 +133,12 @@ export async function generateAutoPlan(
       savedRecipes: input.savedRecipes,
       excludeIds: input.excludeIds ?? [],
       planVariant: input.planVariant,
+      previousPlan: input.previousPlan ?? [],
       dietary: input.prefs.dietary,
       dislikes: input.prefs.dislikes,
       allergens: input.prefs.allergens,
       planningPriorities: input.prefs.planningPriorities,
+      availableIngredients: input.prefs.availableIngredients,
     }),
     signal: input.signal,
   });
@@ -131,5 +149,5 @@ export async function generateAutoPlan(
 
   const data = (await response.json()) as AutoPlanResponse;
   registerPlanMeals(Array.isArray(data.meals) ? data.meals : []);
-  return { plan: Array.isArray(data.plan) ? data.plan : [], generatedAt: data.generatedAt };
+  return { plan: Array.isArray(data.plan) ? data.plan : [], generatedAt: data.generatedAt, quality: data.quality };
 }
