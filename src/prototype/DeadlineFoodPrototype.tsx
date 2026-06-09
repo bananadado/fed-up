@@ -12,7 +12,7 @@ import {
 import { createPrototypeSessionSettings, normalizePreferences, restorePrototypePlan, type CalendarToken, type IcsSubscription } from "./sessionPersistence";
 import { syncRecommenderUser } from "./recommenderApi";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
-import { fetchRecipeCatalogue, setRecipeCatalogue } from "./recipeCatalogue";
+import { fetchRecipeCatalogue, registerPlanMeals, setRecipeCatalogue } from "./recipeCatalogue";
 import { Shell } from "./components/Shell";
 import { CalendarScreen } from "./screens/CalendarScreen";
 import { Dashboard } from "./screens/Dashboard";
@@ -96,6 +96,7 @@ export function DeadlineFoodPrototype() {
   const [planSignature, setPlanSignature] = useState<string | undefined>(undefined);
   const [planGeneratedAt, setPlanGeneratedAt] = useState<string | undefined>(undefined);
   const [planGenerating, setPlanGenerating] = useState(false);
+  const [planMeals, setPlanMeals] = useState<Meal[]>([]);
   const [discoverContext, setDiscoverContext] = useState<{ day: string; slot: MealSlot; mealId: string } | null>(null);
   // Bumped once the canonical recipe catalogue is hydrated from Firestore so
   // screens re-read it via mealById/getMealById (issue #123).
@@ -261,6 +262,11 @@ export function DeadlineFoodPrototype() {
           if (snapshot.settings.icsSubscriptions) setIcsSubscriptions(snapshot.settings.icsSubscriptions as IcsSubscription[]);
           if (snapshot.settings.calendarTokens) setCalendarTokens(snapshot.settings.calendarTokens as CalendarToken[]);
           setPlan(restorePrototypePlan(snapshot.settings.plan, initialPlan));
+          if (snapshot.settings.planMeals) {
+            const restoredPlanMeals = snapshot.settings.planMeals as Meal[];
+            registerPlanMeals(restoredPlanMeals);
+            setPlanMeals(restoredPlanMeals);
+          }
           if (snapshot.settings.planSignature) setPlanSignature(snapshot.settings.planSignature);
           if (snapshot.settings.planGeneratedAt) setPlanGeneratedAt(snapshot.settings.planGeneratedAt);
           if (snapshot.settings.calendarSkipped) setCalendarSkipped(snapshot.settings.calendarSkipped);
@@ -290,6 +296,7 @@ export function DeadlineFoodPrototype() {
 
   const buildSessionSettings = useCallback((overrides: {
     plan?: PlanEntry[];
+    planMeals?: Meal[];
     planGeneratedAt?: string;
     planSignature?: string;
     calendarSkipped?: boolean;
@@ -304,6 +311,7 @@ export function DeadlineFoodPrototype() {
     discoverRejected,
     discoverReviewedRecipeIds,
     plan: overrides.plan ?? plan,
+    planMeals: overrides.planMeals ?? planMeals,
     calendarEvents,
     icsSubscriptions,
     calendarTokens,
@@ -323,6 +331,7 @@ export function DeadlineFoodPrototype() {
     calendarSkipped,
     onboarded,
     plan,
+    planMeals,
     planGeneratedAt,
     planSignature,
     prefs,
@@ -437,6 +446,7 @@ export function DeadlineFoodPrototype() {
         throw new Error("Auto-plan generation returned an empty plan.");
       }
       setPlan(result.plan);
+      setPlanMeals(result.meals);
       setPlanGeneratedAt(result.generatedAt);
       setPlanSignature(currentPlanSignature);
       setCanPersistSession(true);
@@ -450,6 +460,7 @@ export function DeadlineFoodPrototype() {
           sessionId,
           buildSessionSettings({
             plan: result.plan,
+            planMeals: result.meals,
             planGeneratedAt: result.generatedAt,
             planSignature: currentPlanSignature,
           }),
