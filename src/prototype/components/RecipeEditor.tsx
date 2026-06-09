@@ -1,5 +1,5 @@
 import { Camera, Plus, RefreshCcw, X } from "lucide-react";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { uploadRecipePhoto } from "@/adapters/deadlineFoodApi";
 
 import { Card } from "@/components/ui/card";
@@ -353,6 +353,7 @@ export function RecipeEditor({
   const formRef = useRef<HTMLFormElement>(null);
   const autoNutritionTimerRef = useRef<number | null>(null);
   const prevIngredientKeyRef = useRef("");
+  const cancelFetchRef = useRef<{ cancelled: boolean } | null>(null);
 
   const ingredients = sanitiseIngredientDrafts(form.ingredients);
   const servings = positiveNumber(Number(form.servings), 1);
@@ -367,58 +368,18 @@ export function RecipeEditor({
   };
   const hasErrors = errors.name || errors.ingredients || errors.servings || errors.totalCost;
 
-  async function estimateNutrition() {
-    if (ingredients.length === 0) {
-      setAttempted(true);
-      setNutritionStatus("Add at least one ingredient with a quantity first.");
-      return;
-    }
-    setNutritionLoading(true);
-    setNutritionStatus(null);
-    try {
-      const nutrition = await fetchOpenFoodFactsNutrition(ingredients);
-      setForm((prev) => ({
-        ...prev,
-        calories: nutrition.calories,
-        protein: nutrition.protein,
-        carbs: nutrition.carbs,
-        fat: nutrition.fat,
-        nutritionSource: nutrition.source,
-      }));
-      const missing = nutrition.source?.missingIngredients ?? [];
-      setNutritionStatus(
-        missing.length > 0 ? `Couldn't find: ${missing.join(", ")}` : "All ingredients matched",
-      );
-      track("recipe_nutrition_refreshed", {
-        ...(meal ? { meal_id: meal.id } : {}),
-        provider: nutrition.source?.provider,
-        ingredient_count: ingredients.length,
-        matched_count: nutrition.source?.matchedIngredients?.length ?? 0,
-        missing_count: missing.length,
-      });
-    } catch (error) {
-      setNutritionStatus(
-        error instanceof Error ? error.message : "Nutrition data could not be loaded.",
-      );
-    } finally {
-      setNutritionLoading(false);
-    }
-  }
+  const mealId = meal?.id;
+  const triggerNutritionFetch = useCallback(
+    (sanitised: RecipeIngredient[], source: "auto" | "manual") => {
+      if (cancelFetchRef.current) cancelFetchRef.current.cancelled = true;
+      const signal = { cancelled: false };
+      cancelFetchRef.current = signal;
 
-  useEffect(() => {
-    const sanitised = sanitiseIngredientDrafts(form.ingredients);
-    const key = sanitised.map((i) => `${i.name}:${i.quantity}:${i.unit}`).join("|");
-    if (key === "" || key === prevIngredientKeyRef.current) return;
-    prevIngredientKeyRef.current = key;
-
-    if (autoNutritionTimerRef.current !== null) window.clearTimeout(autoNutritionTimerRef.current);
-    autoNutritionTimerRef.current = window.setTimeout(() => {
-      autoNutritionTimerRef.current = null;
-      if (sanitised.length === 0) return;
       setNutritionLoading(true);
       setNutritionStatus(null);
       fetchOpenFoodFactsNutrition(sanitised)
         .then((nutrition) => {
+          if (signal.cancelled) return;
           setForm((prev) => ({
             ...prev,
             calories: nutrition.calories,
@@ -428,12 +389,57 @@ export function RecipeEditor({
             nutritionSource: nutrition.source,
           }));
           const missing = nutrition.source?.missingIngredients ?? [];
-          setNutritionStatus(missing.length > 0 ? `Couldn't find: ${missing.join(", ")}` : "All ingredients matched");
+          setNutritionStatus(
+            missing.length > 0 ? `Couldn't find: ${missing.join(", ")}` : "All ingredients matched",
+          );
+          track("recipe_nutrition_refreshed", {
+            ...(mealId ? { meal_id: mealId } : {}),
+            provider: nutrition.source?.provider,
+            ingredient_count: sanitised.length,
+            matched_count: nutrition.source?.matchedIngredients?.length ?? 0,
+            missing_count: missing.length,
+            trigger: source,
+          });
         })
         .catch((error: unknown) => {
-          setNutritionStatus(error instanceof Error ? error.message : "Nutrition data could not be loaded.");
+          if (signal.cancelled) return;
+          setNutritionStatus(
+            error instanceof Error ? error.message : "Nutrition data could not be loaded.",
+          );
         })
-        .finally(() => setNutritionLoading(false));
+        .finally(() => {
+          if (!signal.cancelled) setNutritionLoading(false);
+        });
+    },
+    [mealId, track],
+  );
+
+  function estimateNutrition() {
+    if (ingredients.length === 0) {
+      setAttempted(true);
+      setNutritionStatus("Add at least one ingredient with a quantity first.");
+      return;
+    }
+    triggerNutritionFetch(ingredients, "manual");
+  }
+
+  useEffect(() => {
+    const sanitised = sanitiseIngredientDrafts(form.ingredients);
+    const key = sanitised.map((i) => `${i.name}:${i.quantity}:${i.unit}`).join("|");
+
+    if (key === "") {
+      setNutritionStatus(null);
+      prevIngredientKeyRef.current = "";
+      return;
+    }
+    if (key === prevIngredientKeyRef.current) return;
+    prevIngredientKeyRef.current = key;
+
+    if (autoNutritionTimerRef.current !== null) window.clearTimeout(autoNutritionTimerRef.current);
+    autoNutritionTimerRef.current = window.setTimeout(() => {
+      autoNutritionTimerRef.current = null;
+      if (sanitised.length === 0) return;
+      triggerNutritionFetch(sanitised, "auto");
     }, 1500);
 
     return () => {
@@ -442,7 +448,7 @@ export function RecipeEditor({
         autoNutritionTimerRef.current = null;
       }
     };
-  }, [form.ingredients]);
+  }, [form.ingredients, triggerNutritionFetch]);
 
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null;
