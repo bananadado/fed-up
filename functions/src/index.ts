@@ -730,7 +730,9 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     planMeals: normalizeRecipeList(settings.planMeals, 200),
     ...(typeof settings.planSignature === "string" ? {planSignature: settings.planSignature.slice(0, 200)} : {}),
     ...(typeof settings.planGeneratedAt === "string" ? {planGeneratedAt: settings.planGeneratedAt.slice(0, 40)} : {}),
-    ...(typeof settings.calendarProvider === "string" ? {calendarProvider: settings.calendarProvider.slice(0, 40)} : {}),
+    ...(typeof settings.calendarProvider === "string" ?
+      {calendarProvider: settings.calendarProvider.slice(0, 40)} :
+      {}),
     ...(typeof settings.calendarSkipped === "boolean" ? {calendarSkipped: settings.calendarSkipped} : {}),
     calendarEvents: Array.isArray(settings.calendarEvents) ?
       settings.calendarEvents
