@@ -38,6 +38,7 @@ analyze
 anchor
 anchors
 and
+animal
 animate
 animations
 annotations
@@ -81,6 +82,7 @@ badge
 balance
 band
 base
+based
 baseline
 bash
 basic
@@ -99,6 +101,7 @@ between
 blank
 blend
 block
+blocks
 bodies
 body
 bool
@@ -144,6 +147,7 @@ cannot
 canonical
 capability
 capable
+capitalized
 capture
 card
 case
@@ -256,6 +260,7 @@ curl
 current
 cutoff
 daily
+dairy
 dashboard
 data
 database
@@ -399,6 +404,7 @@ evening
 event
 events
 evidence
+exact
 example
 examples
 exams
@@ -439,6 +445,7 @@ favours
 fdc
 feasibility
 features
+fed
 feed
 fetch
 fewer
@@ -459,6 +466,7 @@ firebase
 firestore
 first
 fiscal
+fish
 fixed
 fixtures
 flag
@@ -510,6 +518,7 @@ gis
 git
 global
 globals
+gluten
 goals
 google
 gpg
@@ -526,11 +535,13 @@ group
 gru
 guidance
 guide
+halal
 halls
 handle
 handler
 handles
 handling
+haram
 hard
 has
 hash
@@ -713,6 +724,7 @@ meal
 meals
 means
 measure
+meat
 mechanisms
 memory
 merge
@@ -771,7 +783,9 @@ noodles
 noop
 normalise
 normalised
+normalization
 normalize
+normalized
 not
 note
 notes
@@ -832,6 +846,7 @@ past
 pasta
 path
 paths
+pattern
 patterns
 payload
 pca
@@ -861,6 +876,7 @@ plan
 planned
 planner
 planning
+plant
 playbook
 playwright
 plugin
@@ -1048,6 +1064,7 @@ sanitise
 sanitize
 save
 scalar
+scale
 scales
 scenario
 scheduler
@@ -1158,6 +1175,7 @@ stays
 step
 steps
 stop
+stopwords
 storage
 store
 stored
@@ -1211,6 +1229,7 @@ systen
 tab
 table
 tag
+tagged
 tags
 tail
 tailwind
@@ -1270,6 +1289,7 @@ top
 topic
 torch
 total
+totals
 touches
 toward
 track
@@ -1313,6 +1333,7 @@ universities
 university
 unknown
 unsupported
+untagged
 untitled
 unused
 update
@@ -1336,6 +1357,7 @@ validate
 validates
 validation
 value
+values
 variables
 variance
 variant
@@ -1343,6 +1365,7 @@ variants
 vault
 vector
 vectors
+vegan
 vegetable
 vegetarian
 vendor
