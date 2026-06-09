@@ -78,6 +78,35 @@ function singularise(name: string): string {
   return name;
 }
 
+const SIGNIFICANT_PREPS = new Set(["cooked", "minced", "frozen", "raw", "tinned"]);
+const PREP_CANONICAL = new Map<string, string>([["canned", "tinned"]]);
+const ALL_PREP_WORDS = new Set([
+  "chopped", "sliced", "diced", "grated", "mashed", "pressed", "peeled",
+  "fresh", "dried", "frozen", "cooked", "raw", "toasted", "roasted", "ground",
+  "shredded", "crushed", "drained", "rinsed", "minced", "tinned", "canned", "whole",
+]);
+
+function extractIngredientParts(ingredient: RecipeIngredient): { baseName: string; sigPrep: string } {
+  const words = normaliseIngredient(ingredient.name).split(/\s+/).filter(Boolean);
+  const sigPreps = new Set<string>();
+
+  while (words.length > 1 && ALL_PREP_WORDS.has(words[0]!)) {
+    const word = words.shift()!;
+    const canonical = PREP_CANONICAL.get(word) ?? word;
+    if (SIGNIFICANT_PREPS.has(canonical)) sigPreps.add(canonical);
+  }
+
+  for (const p of (ingredient.preparation ?? "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean)) {
+    const canonical = PREP_CANONICAL.get(p) ?? p;
+    if (SIGNIFICANT_PREPS.has(canonical)) sigPreps.add(canonical);
+  }
+
+  return {
+    baseName: singularise(words.join(" ")),
+    sigPrep: [...sigPreps].sort().join("+"),
+  };
+}
+
 function shoppingIngredientName(ingredient: ShoppingIngredient) {
   return typeof ingredient === "string" ? ingredient.trim() : ingredient.name.trim();
 }
@@ -111,11 +140,10 @@ function fromBaseQty(quantity: number, unit: string): { quantity: number; unit: 
 }
 
 function shoppingIngredientKey(ingredient: ShoppingIngredient) {
-  if (typeof ingredient === "string") {
-    return normaliseIngredient(ingredient);
-  }
-
-  return `${singularise(normaliseIngredient(ingredient.name))}:${aggregationUnit(ingredient.unit)}`;
+  if (typeof ingredient === "string") return normaliseIngredient(ingredient);
+  const { baseName, sigPrep } = extractIngredientParts(ingredient);
+  const unitPart = aggregationUnit(ingredient.unit);
+  return sigPrep ? `${baseName}:${unitPart}:${sigPrep}` : `${baseName}:${unitPart}`;
 }
 
 function addPreparation(preparations: string[] | undefined, preparation: string | undefined) {
@@ -128,13 +156,21 @@ function addPreparation(preparations: string[] | undefined, preparation: string 
   return current.includes(preparation) ? current : [...current, preparation];
 }
 
+function pluralise(name: string): string {
+  if (name.endsWith("y") && !/[aeiou]y$/i.test(name)) return `${name.slice(0, -1)}ies`;
+  if (name.endsWith("o") && !name.endsWith("oo")) return `${name}es`;
+  if (!name.endsWith("s")) return `${name}s`;
+  return name;
+}
+
 export function shoppingItemLabel(item: ShoppingItem) {
   if (typeof item.quantity === "number" && item.unit) {
-    return formatIngredient({
-      name: item.name,
-      quantity: item.quantity,
-      unit: item.unit,
-    });
+    if (item.unit === "serving") {
+      if (item.quantity <= 1) return item.name;
+      const qty = Number.isInteger(item.quantity) ? String(item.quantity) : item.quantity.toFixed(1);
+      return `${qty} ${pluralise(item.name)}`;
+    }
+    return formatIngredient({ name: item.name, quantity: item.quantity, unit: item.unit });
   }
 
   return item.count > 1 ? `${item.name} x${item.count}` : item.name;
@@ -173,7 +209,7 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
 
     const name = typeof ingredient === "string"
       ? shoppingIngredientName(ingredient)
-      : singularise(normaliseIngredient(ingredient.name));
+      : (() => { const { baseName, sigPrep } = extractIngredientParts(ingredient); return sigPrep ? `${sigPrep} ${baseName}` : baseName; })();
 
     if (!name) {
       return;
@@ -193,13 +229,11 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
       ...current,
       count: current.count + 1,
       quantity: (current.quantity ?? 0) + baseQty,
-      preparations: addPreparation(current.preparations, ingredient.preparation),
     } : {
       name,
       count: 1,
       quantity: baseQty,
       unit: baseUnit,
-      preparations: addPreparation(undefined, ingredient.preparation),
     });
   });
 
@@ -232,7 +266,7 @@ export function ingredientsFromPlan(
   availableIngredients: RecipeIngredient[] = [],
   unitSystem: "metric" | "imperial" = "metric",
 ) {
-  const available = new Set(availableIngredients.map((ingredient) => normaliseIngredient(ingredient.name)));
+  const available = new Set(availableIngredients.map((i) => singularise(normaliseIngredient(i.name))));
 
   const rawIngredients = plan.flatMap((entry) =>
     entry.meals.flatMap((planMeal) => getMealById(planMeal.mealId, customRecipes).ingredients),
@@ -240,6 +274,6 @@ export function ingredientsFromPlan(
   const normalised = rawIngredients.map((ing) => normalizeIngredientUnit(ing, unitSystem));
 
   return aggregateIngredients(normalised).filter(
-    (item) => !available.has(normaliseIngredient(item.name)) && !ALWAYS_AVAILABLE.has(normaliseIngredient(item.name)),
+    (item) => !available.has(item.name) && !ALWAYS_AVAILABLE.has(item.name),
   );
 }

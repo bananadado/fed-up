@@ -26,12 +26,12 @@ describe("shopping helpers", () => {
     ]);
 
     expect(items).toEqual([
-      { name: "pepper", count: 1, quantity: 0.5, unit: "cup", preparations: ["frozen"] },
-      { name: "tomato", count: 2, quantity: 150, unit: "g", preparations: ["chopped", "sliced"] },
-      { name: "tomato", count: 1, quantity: 1, unit: "serving", preparations: undefined },
+      { name: "frozen pepper", count: 1, quantity: 0.5, unit: "cup" },
+      { name: "tomato", count: 2, quantity: 150, unit: "g" },
+      { name: "tomato", count: 1, quantity: 1, unit: "serving" },
     ]);
-    expect(items.map(shoppingItemLabel)).toEqual(["0.5 cups pepper", "150g tomato", "tomato"]);
-    expect(formatShoppingList(items)).toBe("0.5 cups pepper\n150g tomato\ntomato");
+    expect(items.map(shoppingItemLabel)).toEqual(["0.5 cups frozen pepper", "150g tomato", "tomato"]);
+    expect(formatShoppingList(items)).toBe("0.5 cups frozen pepper\n150g tomato\ntomato");
   });
 
   test("normalises shopping item keys for checklist state", () => {
@@ -108,6 +108,36 @@ describe("shopping helpers", () => {
     expect(flourItems[0]?.unit).toBe("ml");
   });
 
+  test("strips insignificant prep from name so chopped onion merges with onion", () => {
+    const items = aggregateIngredients([
+      { name: "chopped onion", quantity: 100, unit: "g" },
+      { name: "Onion", quantity: 50, unit: "g" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.name).toBe("onion");
+    expect(items[0]?.quantity).toBe(150);
+  });
+
+  test("keeps significant prep in key so frozen peas stay separate from plain peas", () => {
+    const items = aggregateIngredients([
+      { name: "frozen peas", quantity: 100, unit: "g" },
+      { name: "peas", quantity: 50, unit: "g" },
+    ]);
+    expect(items).toHaveLength(2);
+    expect(items.some((i) => i.name === "frozen pea")).toBe(true);
+    expect(items.some((i) => i.name === "pea")).toBe(true);
+  });
+
+  test("normalises canned to tinned so they group together", () => {
+    const items = aggregateIngredients([
+      { name: "tinned tomatoes", quantity: 400, unit: "g" },
+      { name: "canned tomatoes", quantity: 400, unit: "g" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.name).toBe("tinned tomato");
+    expect(items[0]?.quantity).toBe(800);
+  });
+
   test("aggregates plural and singular forms of the same ingredient", () => {
     const items = aggregateIngredients([
       { name: "Apple", quantity: 100, unit: "g" },
@@ -162,6 +192,45 @@ describe("shopping helpers", () => {
     ]);
     expect(items[0]?.unit).toBe("g");
     expect(items[0]?.quantity).toBe(500);
+  });
+
+  test("merges descriptor-unit and prep-unit onion variants via ingredientsFromPlan", () => {
+    const meal = {
+      id: "onion-meal",
+      name: "Onion Medley",
+      type: "cook" as const,
+      mealSlots: ["dinner" as const],
+      time: 20,
+      price: 1,
+      tags: [],
+      ingredients: [
+        { name: "Onion", quantity: 2, unit: "medium" },
+        { name: "Onion", quantity: 2, unit: "sliced" },
+        { name: "Onion", quantity: 5, unit: "chopped" },
+        { name: "Onion", quantity: 2, unit: "large" },
+      ],
+      allergens: [],
+      nutrition: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+      rating: 0,
+      reviews: [],
+      instructions: [],
+      source: "",
+      note: "",
+      image: "",
+    };
+    const plan = [{ day: "Mon", context: "Test", meals: [{ slot: "dinner" as const, mealId: "onion-meal" }] }];
+    const items = ingredientsFromPlan(plan, [meal]);
+
+    const onionItems = items.filter((i) => i.name.includes("onion"));
+    expect(onionItems).toHaveLength(1);
+    expect(onionItems[0]?.quantity).toBe(11);
+    expect(shoppingItemLabel(onionItems[0]!)).toBe("11 onions");
+  });
+
+  test("shoppingItemLabel uses natural plural for serving-unit items", () => {
+    expect(shoppingItemLabel({ name: "tomato", count: 1, quantity: 3, unit: "serving" })).toBe("3 tomatoes");
+    expect(shoppingItemLabel({ name: "onion", count: 1, quantity: 1, unit: "serving" })).toBe("onion");
+    expect(shoppingItemLabel({ name: "berry", count: 1, quantity: 4, unit: "serving" })).toBe("4 berries");
   });
 
   test("builds selected vendor search URLs for one ingredient at a time", () => {

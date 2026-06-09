@@ -140,6 +140,29 @@ describe("normalizeIngredientUnit", () => {
     expect(oz.quantity).toBe(4);
   });
 
+  test("normalises size-descriptor units (medium, large, small, whole) to serving", () => {
+    expect(normalizeIngredientUnit({ name: "onion", quantity: 2, unit: "medium" }, "metric").unit).toBe("serving");
+    expect(normalizeIngredientUnit({ name: "onion", quantity: 1, unit: "large" }, "metric").unit).toBe("serving");
+    expect(normalizeIngredientUnit({ name: "apple", quantity: 3, unit: "small" }, "metric").unit).toBe("serving");
+    expect(normalizeIngredientUnit({ name: "garlic", quantity: 1, unit: "whole" }, "metric").unit).toBe("serving");
+  });
+
+  test("redirects prep-word units to preparation field and normalises unit to serving", () => {
+    const sliced = normalizeIngredientUnit({ name: "onion", quantity: 2, unit: "sliced" }, "metric");
+    expect(sliced.unit).toBe("serving");
+    expect(sliced.preparation).toBe("sliced");
+
+    const chopped = normalizeIngredientUnit({ name: "onion", quantity: 3, unit: "chopped" }, "metric");
+    expect(chopped.unit).toBe("serving");
+    expect(chopped.preparation).toBe("chopped");
+  });
+
+  test("redirects significant prep-word units so they flow through to shopping key", () => {
+    const frozen = normalizeIngredientUnit({ name: "peas", quantity: 1, unit: "frozen" }, "metric");
+    expect(frozen.unit).toBe("serving");
+    expect(frozen.preparation).toBe("frozen");
+  });
+
   test("preserves name and preparation when converting", () => {
     const result = normalizeIngredientUnit(
       { name: "butter", quantity: 50, unit: "g", preparation: "softened" },

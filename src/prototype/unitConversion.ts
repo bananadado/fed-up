@@ -18,6 +18,8 @@ const UNIT_ALIASES: Record<string, string> = {
   quart: "qt", quarts: "qt", qts: "qt",
   "fluid ounce": "fl oz", "fluid ounces": "fl oz",
   "fl. oz": "fl oz", "fl. oz.": "fl oz",
+  // Size descriptors used as units → treat as a single serving
+  medium: "serving", large: "serving", small: "serving", whole: "serving",
 };
 
 function canonicalizeUnit(unit: string): string {
@@ -166,6 +168,15 @@ export function normalizeIngredientUnit(
       const d = imperialMassDisplay(oz);
       return { ...ingredient, quantity: d.quantity, unit: d.unit };
     }
+  }
+
+  // Prep word used as unit (e.g. "sliced", "frozen") → move to preparation field, normalise to serving
+  if (PREPARATION_WORDS.has(unit)) {
+    const parts = [ingredient.preparation, unit].filter(Boolean);
+    return normalizeIngredientUnit(
+      { ...ingredient, unit: "serving", preparation: parts.join(", ") || undefined },
+      unitSystem,
+    );
   }
 
   // Count / non-convertible unit — return with canonicalized unit
