@@ -28,6 +28,7 @@ firestore-debug.log
 .env.test.local
 .env.production.local
 .env.local
+drp03-50059-firebase-adminsdk-fbsvc-480f3682e4.json
 
 # caches
 .eslintcache
