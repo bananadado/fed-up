@@ -31,7 +31,7 @@ const MASS_UNITS = new Set(["g", "kg", "oz", "lb"]);
 // Conversion factors to metric volume base (ml)
 const TO_ML: Record<string, number> = { tsp: 4.929, tbsp: 14.787, cup: 236.588, l: 1000, "fl oz": 29.574, qt: 946.353 };
 // Conversion factors to metric mass base (g)
-const TO_G: Record<string, number> = { kg: 1000, oz: 28.35, lb: 453.592 };
+const TO_G: Record<string, number> = { kg: 1000, oz: 28.35, lb: 453.592, pinch: 0.3 };
 
 function round(value: number, decimals: number): number {
   const factor = 10 ** decimals;
