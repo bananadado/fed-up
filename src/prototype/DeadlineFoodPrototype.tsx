@@ -744,8 +744,17 @@ export function DeadlineFoodPrototype() {
     if (autoPlanAttemptRef.current === currentPlanSignature) return;
     autoPlanAttemptRef.current = currentPlanSignature;
     // Defer so generation runs after commit (not a synchronous setState in the effect).
-    const timer = setTimeout(() => { void regeneratePlan(); }, 0);
-    return () => clearTimeout(timer);
+    let fired = false;
+    const timer = setTimeout(() => { fired = true; void regeneratePlan(); }, 0);
+    return () => {
+      clearTimeout(timer);
+      // If this effect re-ran before generation actually started — e.g. signing
+      // in as the last onboarding step switches the session id to the account
+      // handle, re-running this effect and cancelling the timer — the attempt
+      // never happened. Un-mark it so the re-run retries instead of the de-dupe
+      // guard suppressing the first plan forever.
+      if (!fired) autoPlanAttemptRef.current = null;
+    };
   }, [sessionLoaded, onboarded, planGenerating, planGeneratedAt, planStale, prefs.planRegenMode, currentPlanSignature, regeneratePlan]);
 
   function openRecipe(mealId: string) {
