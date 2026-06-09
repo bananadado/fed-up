@@ -46,6 +46,7 @@ export function computePlanSignature(input: {
     `k:${input.prefs.kitchen}`,
     `a:${input.prefs.cookingAbility}`,
     `b:${input.prefs.budget}`,
+    `dt:${[...input.prefs.dietary].sort().join(",")}`,
     `di:${[...input.prefs.dislikes].sort().join(",")}`,
     `al:${[...input.prefs.allergens].sort().join(",")}`,
     `sr:${input.savedRecipes.map((m) => m.id).sort().join(",")}`,
@@ -85,7 +86,7 @@ function contextEvents(calendarEvents: CalendarEvent[], deadlines: Deadline[]): 
  */
 export async function generateAutoPlan(
   input: GenerateAutoPlanInput,
-): Promise<{ plan: PlanEntry[]; generatedAt: string }> {
+): Promise<{ plan: PlanEntry[]; meals: Meal[]; generatedAt: string }> {
   const response = await fetch(firebaseFunctionUrl("deadlineFoodAutoPlan", "/api/deadline-food/auto-plan"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -96,6 +97,7 @@ export async function generateAutoPlan(
       contextEvents: contextEvents(input.calendarEvents, input.deadlines),
       savedRecipes: input.savedRecipes,
       excludeIds: input.excludeIds ?? [],
+      dietary: input.prefs.dietary,
       dislikes: input.prefs.dislikes,
       allergens: input.prefs.allergens,
     }),
@@ -107,6 +109,7 @@ export async function generateAutoPlan(
   }
 
   const data = (await response.json()) as AutoPlanResponse;
-  registerPlanMeals(Array.isArray(data.meals) ? data.meals : []);
-  return { plan: Array.isArray(data.plan) ? data.plan : [], generatedAt: data.generatedAt };
+  const meals = Array.isArray(data.meals) ? data.meals : [];
+  registerPlanMeals(meals);
+  return { plan: Array.isArray(data.plan) ? data.plan : [], meals, generatedAt: data.generatedAt };
 }

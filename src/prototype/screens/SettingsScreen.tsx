@@ -248,7 +248,7 @@ export function SettingsScreen({
           </div>
           <div>
             <span className="text-sm font-semibold">Planning window</span>
-            <p className="mt-1 text-sm text-stone-500">How far ahead Autopilot fills your plan.</p>
+            <p className="mt-1 text-sm text-stone-500">How far ahead Fed Up fills your plan.</p>
             <div className="mt-3 grid grid-cols-4 gap-2">
               {[7, 14, 21, 28].map((days) => {
                 const active = prefs.planningHorizonDays === days;

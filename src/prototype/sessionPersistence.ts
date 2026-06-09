@@ -29,6 +29,7 @@ export type PrototypeSessionSettings = {
   discoverRejected?: Meal[];
   discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
+  planMeals?: Meal[];
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
   calendarTokens?: CalendarToken[];
@@ -36,6 +37,8 @@ export type PrototypeSessionSettings = {
   planSignature?: string;
   /** ISO timestamp of the last auto-plan generation. */
   planGeneratedAt?: string;
+  /** Whether the user explicitly skipped calendar import during onboarding. */
+  calendarSkipped?: boolean;
 };
 
 /**
@@ -77,11 +80,13 @@ export function createPrototypeSessionSettings(input: {
   discoverRejected?: Meal[];
   discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
+  planMeals?: Meal[];
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
   calendarTokens?: CalendarToken[];
   planSignature?: string;
   planGeneratedAt?: string;
+  calendarSkipped?: boolean;
 }): PrototypeSessionSettings {
   return {
     settingsVersion: PROTOTYPE_SESSION_SETTINGS_VERSION,
@@ -95,11 +100,13 @@ export function createPrototypeSessionSettings(input: {
     discoverRejected: input.discoverRejected,
     discoverReviewedRecipeIds: input.discoverReviewedRecipeIds,
     plan: input.plan,
+    planMeals: input.planMeals,
     calendarEvents: input.calendarEvents,
     icsSubscriptions: input.icsSubscriptions,
     calendarTokens: input.calendarTokens,
     planSignature: input.planSignature,
     planGeneratedAt: input.planGeneratedAt,
+    calendarSkipped: input.calendarSkipped,
   };
 }
 

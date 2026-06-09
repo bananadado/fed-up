@@ -168,7 +168,7 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
               </button>
             ))}
           </div>
-          <p className="mt-1.5 text-xs text-stone-400">Academic events affect how much cooking effort Autopilot assigns.</p>
+          <p className="mt-1.5 text-xs text-stone-400">Academic events affect how much cooking effort Fed Up assigns.</p>
         </div>
 
         <div>
@@ -736,7 +736,7 @@ export function CalendarScreen({
         <div>
           <h1 className="text-3xl font-bold">Deadline calendar</h1>
           <p className="mt-2 text-stone-600">
-            Tap any event to confirm its type, effort and urgency — Autopilot uses this to adjust your cooking plan.
+            Tap any event to confirm its type, effort and urgency — Fed Up uses this to adjust your cooking plan.
           </p>
         </div>
         <AppButton
@@ -980,7 +980,7 @@ export function CalendarScreen({
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-stone-400">New academic workload</p>
               <h2 className="mt-1 text-xl font-bold text-stone-950">{draft.dayLabel}</h2>
-              <p className="mt-1 text-sm text-stone-500">Add anything Autopilot missed so cooking effort can adapt around it.</p>
+              <p className="mt-1 text-sm text-stone-500">Add anything Fed Up missed so cooking effort can adapt around it.</p>
             </div>
             <button
               type="button"

@@ -1,4 +1,4 @@
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, Clock3, MessageSquare, Pencil, Star, Trash2 } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, Clock3, MessageSquare, Minus, Pencil, Plus, Star, Trash2, Users } from "lucide-react";
 import { useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -7,7 +7,7 @@ import type { Meal, RecipeReview, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
-import { formatIngredient } from "../ingredients";
+import { formatIngredient, scaleIngredients } from "../ingredients";
 import { mealById, money, nutritionSourceSummary, sourceUrl } from "../utils";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
@@ -16,6 +16,12 @@ import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shop
 import type { TrackPrototypeEvent } from "../analytics";
 
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
+
+const MAX_SERVINGS = 12;
+
+function createRecipeId() {
+  return `custom-${Date.now()}`;
+}
 
 function ratingLabel(rating: number) {
   return rating > 0 ? `${rating.toFixed(1)} / 5` : "No ratings yet";
@@ -53,6 +59,12 @@ export function RecipeDetailScreen({
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
+
+  const baseServings = meal?.servings && meal.servings > 0 ? meal.servings : 1;
+  // Track which recipe the chosen serving count belongs to so it resets to the
+  // recipe's base whenever a different recipe is viewed — no effect needed.
+  const [servingsState, setServingsState] = useState({ mealId, servings: baseServings });
+  const servings = servingsState.mealId === mealId ? servingsState.servings : baseServings;
 
   useEffect(() => {
     function check() {
@@ -115,7 +127,21 @@ export function RecipeDetailScreen({
 
   const selectedMeal = meal;
   const selectedVendor = groceryVendorById(selectedVendorId);
-  const shoppingItems = aggregateIngredients(selectedMeal.ingredients);
+  const scaleFactor = servings / baseServings;
+  const scaledIngredients = scaleIngredients(selectedMeal.ingredients, scaleFactor);
+  const shoppingItems = aggregateIngredients(scaledIngredients);
+  const isScaled = servings !== baseServings;
+
+  function changeServings(delta: number) {
+    const next = Math.min(MAX_SERVINGS, Math.max(1, servings + delta));
+    if (next === servings) return;
+    setServingsState({ mealId, servings: next });
+    track("recipe_servings_changed", {
+      meal_id: selectedMeal.id,
+      servings: next,
+      base_servings: baseServings,
+    });
+  }
 
   function saveMeal(nextMeal: Meal) {
     setCustomRecipes((recipes) => [nextMeal, ...recipes.filter((recipe) => recipe.id !== nextMeal.id)]);
@@ -160,7 +186,7 @@ export function RecipeDetailScreen({
       const newRecipe: Meal = {
         ...selectedMeal,
         ...updatedFields,
-        id: `custom-${Date.now()}`,
+        id: createRecipeId(),
         isUserCreated: true,
         rating: 0,
         reviews: [],
@@ -340,7 +366,9 @@ export function RecipeDetailScreen({
                       {slot}
                     </Badge>
                   ))}
-                  <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>{meal.type}</Badge>
+                  <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
+                    {meal.type === "fallback" ? "Easy option" : meal.type === "cook" ? "Cook" : "Remix"}
+                  </Badge>
                   {meal.tags.map((tag) => (
                     <Badge key={tag} tone="green">
                       {tag}
@@ -361,10 +389,44 @@ export function RecipeDetailScreen({
               <p className="mt-2 text-stone-600">{meal.note}</p>
               <div className="mt-7 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
                 <div>
-                  <h2 className="text-xl font-bold">Ingredients</h2>
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <h2 className="text-xl font-bold">Ingredients</h2>
+                    <div className="flex items-center gap-1 rounded-lg border border-stone-200 bg-white p-1" role="group" aria-label="Servings">
+                      <Users size={14} className="ml-1 text-stone-400" />
+                      <button
+                        type="button"
+                        aria-label="Fewer servings"
+                        onClick={() => changeServings(-1)}
+                        disabled={servings <= 1}
+                        className="flex h-7 w-7 items-center justify-center rounded-md text-stone-600 hover:bg-stone-100 disabled:opacity-40"
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <span className="min-w-[5.5rem] text-center text-sm font-semibold text-stone-700" aria-live="polite">
+                        {servings} {servings === 1 ? "serving" : "servings"}
+                      </span>
+                      <button
+                        type="button"
+                        aria-label="More servings"
+                        onClick={() => changeServings(1)}
+                        disabled={servings >= MAX_SERVINGS}
+                        className="flex h-7 w-7 items-center justify-center rounded-md text-stone-600 hover:bg-stone-100 disabled:opacity-40"
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+                  </div>
+                  {isScaled && (
+                    <p className="mt-2 text-xs text-stone-500">
+                      Scaled from {baseServings} {baseServings === 1 ? "serving" : "servings"}.{" "}
+                      <button type="button" onClick={() => changeServings(baseServings - servings)} className="font-semibold text-emerald-700 underline underline-offset-2">
+                        Reset
+                      </button>
+                    </p>
+                  )}
                   <ul className="mt-4 grid gap-2">
-                    {meal.ingredients.map((ingredient) => (
-                      <li key={`${ingredient.name}-${ingredient.quantity}-${ingredient.unit}`} className="rounded-lg bg-stone-50 px-3 py-2 text-stone-700">
+                    {scaledIngredients.map((ingredient) => (
+                      <li key={`${ingredient.name}-${ingredient.unit}-${ingredient.preparation ?? ""}`} className="rounded-lg bg-stone-50 px-3 py-2 text-stone-700">
                         {formatIngredient(ingredient)}
                       </li>
                     ))}

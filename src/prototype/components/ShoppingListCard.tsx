@@ -97,6 +97,7 @@ export function ShoppingListCard({
   compact?: boolean;
 }) {
   const [copied, setCopied] = useState(false);
+  const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => readStoredCheckedItems(storageKey, items));
   const outstandingItems = useMemo(() => items.filter((item) => !checkedItems[shoppingItemKey(item)]), [checkedItems, items]);
   const listText = useMemo(() => formatShoppingList(outstandingItems), [outstandingItems]);
@@ -109,7 +110,9 @@ export function ShoppingListCard({
 
     await writeClipboardText(listText);
     onCopy?.();
+    const count = outstandingItems.length;
     setCopied(true);
+    setCopyMessage(`Copied ${count} item${count === 1 ? "" : "s"} — paste into a note or your supermarket's search box.`);
     window.setTimeout(() => setCopied(false), 1800);
   }
 
@@ -185,11 +188,18 @@ export function ShoppingListCard({
         ))}
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        <AppButton type="button" variant="secondary" onClick={copyList} disabled={!listText}>
-          {copied ? <ClipboardCheck size={16} /> : <ClipboardList size={16} />}
-          {copied ? "Copied" : "Copy list"}
-        </AppButton>
+      <div className="mt-4 space-y-1.5">
+        <div className="flex flex-wrap gap-2">
+          <AppButton type="button" variant="secondary" onClick={copyList} disabled={!listText}>
+            {copied ? <ClipboardCheck size={16} /> : <ClipboardList size={16} />}
+            {copied ? "Copied" : "Copy list"}
+          </AppButton>
+        </div>
+        {copyMessage ? (
+          <p className="text-xs font-medium text-emerald-700" aria-live="polite">{copyMessage}</p>
+        ) : (
+          <p className="text-xs text-stone-500">Copies your remaining items as text to paste into a note or a supermarket app.</p>
+        )}
       </div>
     </Card>
   );

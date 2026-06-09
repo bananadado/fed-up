@@ -18,6 +18,21 @@ type RescueChoice = {
   slot: MealSlot;
 } | null;
 
+function dailyTotals(entry: PlanEntry, customRecipes: Meal[]) {
+  return entry.meals.reduce(
+    (sum, planMeal) => {
+      const { nutrition } = getMealById(planMeal.mealId, customRecipes);
+      return {
+        calories: sum.calories + nutrition.calories,
+        protein: sum.protein + nutrition.protein,
+        carbs: sum.carbs + nutrition.carbs,
+        fat: sum.fat + nutrition.fat,
+      };
+    },
+    { calories: 0, protein: 0, carbs: 0, fat: 0 },
+  );
+}
+
 export function PlanScreen({
   plan,
   setPlan,
@@ -59,7 +74,23 @@ export function PlanScreen({
     } catch { /* sessionStorage unavailable */ }
     return null;
   });
-  const [shoppingOpen, setShoppingOpen] = useState(false);
+  const [addToPlanMealId, setAddToPlanMealId] = useState<string | null>(() => {
+    try {
+      const saved = sessionStorage.getItem("deadlineFood:addToPlanMealId");
+      if (saved) { sessionStorage.removeItem("deadlineFood:addToPlanMealId"); return saved; }
+    } catch { /* sessionStorage unavailable */ }
+    return null;
+  });
+  const [swapSuggestedMealId, setSwapSuggestedMealId] = useState<string | null>(null);
+  const [shoppingOpen, setShoppingOpen] = useState(() => {
+    try {
+      if (sessionStorage.getItem("deadlineFood:openShopping") === "1") {
+        sessionStorage.removeItem("deadlineFood:openShopping");
+        return true;
+      }
+    } catch { /* sessionStorage unavailable */ }
+    return false;
+  });
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
 
@@ -116,6 +147,21 @@ export function PlanScreen({
         </div>
       )}
 
+      {addToPlanMealId && (() => {
+        const meal = discoverSaved.find((m) => m.id === addToPlanMealId) ?? getMealById(addToPlanMealId, customRecipes);
+        return (
+          <div className="mb-6 flex items-center justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
+            <p className="text-sm text-emerald-900">
+              <span className="font-semibold">{meal.image} {meal.name}</span>
+              {" "}— tap <strong>Change</strong> on any meal to assign it to that slot.
+            </p>
+            <button type="button" onClick={() => setAddToPlanMealId(null)} className="shrink-0 rounded-lg p-1 text-emerald-700 hover:bg-emerald-100" aria-label="Dismiss">
+              <X size={16} />
+            </button>
+          </div>
+        );
+      })()}
+
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_280px]">
         <div className="space-y-6">
           {weeks.map((weekEntries, weekIndex) => {
@@ -144,7 +190,10 @@ export function PlanScreen({
                   <>
                     <div className="hidden overflow-hidden rounded-lg border border-stone-200 bg-white md:block">
                       <div className="grid grid-cols-[minmax(100px,0.55fr)_repeat(3,minmax(0,1fr))] border-b border-stone-200 bg-stone-50 text-sm font-semibold text-stone-600">
-                        <div className="px-4 py-3">Day</div>
+                        <div className="px-4 py-3">
+                          <span>Day</span>
+                          <p className="mt-0.5 text-[10px] font-normal text-stone-400">broad nutrition signal</p>
+                        </div>
                         {mealSlots.map((slot) => (
                           <div key={slot} className="border-l border-stone-200 px-4 py-3">
                             {slotLabels[slot]}
@@ -156,6 +205,13 @@ export function PlanScreen({
                           <div className="bg-stone-50 px-4 py-4">
                             <p className="font-bold">{entry.day}</p>
                             {entry.context && <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>}
+                            {(() => { const t = dailyTotals(entry, customRecipes); return (
+                              <div className="mt-3 space-y-0.5">
+                                <p className="text-xs font-semibold text-stone-700">{t.calories} kcal</p>
+                                <p className="text-xs text-stone-500">{t.protein}g protein</p>
+                                <p className="text-[11px] text-stone-400">{t.carbs}g carbs · {t.fat}g fat</p>
+                              </div>
+                            ); })()}
                           </div>
                           {mealSlots.map((slot) => {
                             const planMeal = entry.meals.find((meal) => meal.slot === slot);
@@ -175,7 +231,7 @@ export function PlanScreen({
                                         {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
                                         {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                         <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
-                                          {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Fallback</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
+                                          {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Easy option</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
                                         </Badge>
                                       </div>
                                       <p className="mt-3 break-words text-sm font-semibold leading-5">
@@ -204,7 +260,7 @@ export function PlanScreen({
                                     </div>
                                   )}
                                   <div className="mt-4 flex flex-wrap gap-2">
-                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_desktop" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_desktop" }); if (addToPlanMealId) setSwapSuggestedMealId(addToPlanMealId); setRescueChoice({ day: entry.day, slot }); }}>
                                       <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
                                     </AppButton>
                                     {meal && (
@@ -224,10 +280,19 @@ export function PlanScreen({
                     <div className="space-y-4 md:hidden">
                       {weekEntries.map((entry) => (
                         <Card key={entry.day} className="gap-0 rounded-lg border-stone-200 bg-white p-4">
-                          <div className="mb-4">
-                            <p className="font-bold">{entry.day}</p>
-                            {entry.context && <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>}
-                          </div>
+                          {(() => { const t = dailyTotals(entry, customRecipes); return (
+                            <div className="mb-4 flex items-start justify-between gap-3">
+                              <div>
+                                <p className="font-bold">{entry.day}</p>
+                                {entry.context && <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>}
+                              </div>
+                              <div className="shrink-0 text-right">
+                                <p className="text-xs font-semibold text-stone-700">{t.calories} kcal</p>
+                                <p className="text-xs text-stone-500">{t.protein}g protein</p>
+                                <p className="text-[11px] text-stone-400">{t.carbs}g carbs · {t.fat}g fat</p>
+                              </div>
+                            </div>
+                          ); })()}
                           <div className="grid gap-3 sm:grid-cols-3">
                             {mealSlots.map((slot) => {
                               const planMeal = entry.meals.find((meal) => meal.slot === slot);
@@ -258,7 +323,7 @@ export function PlanScreen({
                                     </div>
                                   )}
                                   <div className="mt-3 flex flex-wrap gap-2">
-                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_mobile" }); setRescueChoice({ day: entry.day, slot }); }}>
+                                    <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_mobile" }); if (addToPlanMealId) setSwapSuggestedMealId(addToPlanMealId); setRescueChoice({ day: entry.day, slot }); }}>
                                       <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
                                     </AppButton>
                                     {meal && (
@@ -308,8 +373,8 @@ export function PlanScreen({
       </div>
       {shoppingOpen && (
         <>
-          <div className="fixed inset-0 z-40 bg-stone-950/40" onClick={() => setShoppingOpen(false)} />
-          <div className="fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-white shadow-2xl sm:max-w-md">
+          <div className="animate-fade-in fixed inset-0 z-40 bg-stone-950/40" onClick={() => setShoppingOpen(false)} />
+          <div className="animate-slide-in-from-right fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-white shadow-2xl sm:max-w-md">
             <div className="flex items-center justify-between border-b border-stone-200 px-5 py-4">
               <h2 className="font-bold">Shopping list</h2>
               <button type="button" onClick={() => setShoppingOpen(false)} aria-label="Close shopping list" className="rounded-lg p-2 hover:bg-stone-100">
@@ -339,13 +404,14 @@ export function PlanScreen({
       {rescueChoice && (
         <SwapModal
           rescueChoice={rescueChoice}
-          onClose={() => setRescueChoice(null)}
+          onClose={() => { setRescueChoice(null); setSwapSuggestedMealId(null); setAddToPlanMealId(null); }}
           plan={plan}
           setPlan={setPlan}
           prefs={prefs}
           customRecipes={customRecipes}
           savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
+          suggestedMealId={swapSuggestedMealId ?? undefined}
           track={track}
         />
       )}

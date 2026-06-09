@@ -259,6 +259,23 @@ export function sanitiseIngredientDrafts(drafts: IngredientDraft[]) {
   });
 }
 
+export function scaleIngredient(ingredient: RecipeIngredient, factor: number): RecipeIngredient {
+  const safeFactor = Number.isFinite(factor) && factor > 0 ? factor : 1;
+
+  return {
+    ...ingredient,
+    quantity: sanitiseIngredientQuantity(ingredient.quantity * safeFactor),
+  };
+}
+
+export function scaleIngredients(ingredients: RecipeIngredient[], factor: number): RecipeIngredient[] {
+  if (!Number.isFinite(factor) || factor <= 0 || factor === 1) {
+    return ingredients;
+  }
+
+  return ingredients.map((ingredient) => scaleIngredient(ingredient, factor));
+}
+
 export function ingredientName(ingredient: RecipeIngredient | string) {
   return typeof ingredient === "string" ? ingredient : ingredient.name;
 }

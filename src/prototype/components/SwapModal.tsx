@@ -20,12 +20,14 @@ export const mealTypeIcon: Record<string, React.ElementType> = {
   remix: Layers,
 };
 
-type SortOption = "match" | "quickest" | "cheapest";
+type SortOption = "match" | "quickest" | "cheapest" | "fewest-ingredients" | "easiest";
 
 const sortLabels: Record<SortOption, string> = {
-  match: "Best match",
+  match: "Recommended for you",
   quickest: "Quickest",
   cheapest: "Cheapest",
+  "fewest-ingredients": "Fewest ingredients",
+  easiest: "Easiest",
 };
 
 const allSlots: MealSlot[] = ["breakfast", "lunch", "dinner"];
@@ -47,6 +49,7 @@ export function SwapModal({
   customRecipes,
   savedRecipes,
   onSelectMeal,
+  suggestedMealId,
   track,
 }: {
   rescueChoice: { day: string; slot: MealSlot };
@@ -57,6 +60,7 @@ export function SwapModal({
   customRecipes: Meal[];
   savedRecipes?: Meal[];
   onSelectMeal: (mealId: string) => void;
+  suggestedMealId?: string;
   track: TrackPrototypeEvent;
 }) {
   const [savedFilters] = useState(() => {
@@ -76,9 +80,9 @@ export function SwapModal({
   });
 
   const [search, setSearch] = useState(savedFilters?.search ?? "");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(suggestedMealId ?? null);
   const [sortBy, setSortBy] = useState<SortOption>(savedFilters?.sortBy ?? "match");
-  const [selectedSlots, setSelectedSlots] = useState<MealSlot[]>(savedFilters?.selectedSlots ?? [rescueChoice.slot]);
+  const [selectedSlots, setSelectedSlots] = useState<MealSlot[]>(suggestedMealId ? [] : (savedFilters?.selectedSlots ?? [rescueChoice.slot]));
   const [selectedTags, setSelectedTags] = useState<string[]>(savedFilters?.selectedTags ?? []);
   const [customTagInput, setCustomTagInput] = useState("");
   const [showFilters, setShowFilters] = useState(false);
@@ -118,6 +122,9 @@ export function SwapModal({
   const allOptions = [...tagFiltered].sort((a, b) => {
     if (sortBy === "quickest") return a.time - b.time;
     if (sortBy === "cheapest") return a.price - b.price;
+    if (sortBy === "fewest-ingredients") return a.ingredients.length - b.ingredients.length;
+    if (sortBy === "easiest") return a.time - b.time || a.ingredients.length - b.ingredients.length;
+    // "match" - Recommended for you: saved recipes first, then preference match, then time, then price
     const aSaved = savedSet.has(a.id) ? 1 : 0;
     const bSaved = savedSet.has(b.id) ? 1 : 0;
     if (aSaved !== bSaved) return bSaved - aSaved;
@@ -152,16 +159,20 @@ export function SwapModal({
 
   function toggleSlot(slot: MealSlot) {
     setSelectedId(null);
-    setSelectedSlots((prev) =>
-      prev.includes(slot) ? prev.filter((s) => s !== slot) : [...prev, slot],
-    );
+    setSelectedSlots((prev) => {
+      const next = prev.includes(slot) ? prev.filter((s) => s !== slot) : [...prev, slot];
+      track("meal_swap_filter_changed", { filter_type: "slot", value: slot, active: next.includes(slot) });
+      return next;
+    });
   }
 
   function toggleTag(tag: string) {
     setSelectedId(null);
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-    );
+    setSelectedTags((prev) => {
+      const next = prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag];
+      track("meal_swap_filter_changed", { filter_type: "tag", value: tag, active: next.includes(tag) });
+      return next;
+    });
   }
 
   function addCustomTag() {
@@ -274,7 +285,7 @@ export function SwapModal({
             {/* Sort button */}
             <button
               type="button"
-              onClick={() => { setShowSort((s) => !s); setShowFilters(false); }}
+              onClick={() => { const next = !showSort; setShowSort(next); setShowFilters(false); track("meal_swap_sort_toggled", { open: next }); }}
               aria-label="Sort options"
               className={`flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-2.5 text-xs font-medium transition ${sortBy !== "match" ? "border-emerald-400 bg-emerald-50 text-emerald-700" : showSort ? "border-stone-300 bg-stone-100 text-stone-600" : "border-stone-200 text-stone-500 hover:border-stone-300"}`}
             >
@@ -284,7 +295,7 @@ export function SwapModal({
             {/* Filter button */}
             <button
               type="button"
-              onClick={() => { setShowFilters((f) => !f); setShowSort(false); }}
+              onClick={() => { const next = !showFilters; setShowFilters(next); setShowSort(false); track("meal_swap_filter_toggled", { open: next }); }}
               aria-label="Filter options"
               className={`relative flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-2.5 text-xs font-medium transition ${activeFilterCount > 0 ? "border-emerald-400 bg-emerald-50 text-emerald-700" : showFilters ? "border-stone-300 bg-stone-100 text-stone-600" : "border-stone-200 text-stone-500 hover:border-stone-300"}`}
             >
@@ -305,7 +316,7 @@ export function SwapModal({
             <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Sort by</p>
               <div className="flex flex-wrap gap-2">
-                {(["match", "quickest", "cheapest"] as SortOption[]).map((opt) => (
+                {(["match", "quickest", "cheapest", "fewest-ingredients", "easiest"] as SortOption[]).map((opt) => (
                   <button
                     key={opt}
                     type="button"
@@ -391,12 +402,20 @@ export function SwapModal({
             {filteredOptions.length === 0 ? (
               <p className="py-6 text-center text-sm text-stone-400">No matching meals found</p>
             ) : (
-              filteredOptions.map((meal) => {
+              filteredOptions.map((meal, index) => {
                 const isSelected = meal.id === effectiveId;
                 const diff = originalMeal ? priceDiff(meal.price, originalMeal.price) : { label: `adds ${money(meal.price)}`, sign: "extra" as const };
                 const DiffIcon = diff.sign === "saving" ? TrendingDown : diff.sign === "extra" ? TrendingUp : null;
                 const diffColor = diff.sign === "saving" ? "text-emerald-700" : diff.sign === "extra" ? "text-rose-600" : "text-stone-400";
                 const timeDiff = originalMeal ? originalMeal.time - meal.time : null;
+                const isTopMatch = sortBy === "match" && index === 0;
+                const rationale = isTopMatch
+                  ? (savedSet.has(meal.id)
+                      ? "Saved recipe · matches your preferences"
+                      : prefs.likes.some((like) => meal.tags.some((tag) => tag.toLowerCase() === like.toLowerCase()))
+                        ? "Matches your preferences"
+                        : "Quick to prepare · within budget")
+                  : null;
 
                 return (
                   <div
@@ -416,7 +435,11 @@ export function SwapModal({
                         <div className="flex flex-wrap items-center gap-1.5">
                           <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
                           {savedSet.has(meal.id) && <Badge tone="blue">Saved</Badge>}
+                          {isTopMatch && <Badge tone="green">Suggested</Badge>}
                         </div>
+                        {rationale && (
+                          <p className="mt-1 text-xs text-emerald-700 font-medium">{rationale}</p>
+                        )}
                         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
                           <span className="flex items-center gap-1"><Clock3 size={11} /> {meal.time} min</span>
                           <span>{money(meal.price)}</span>

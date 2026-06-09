@@ -1,5 +1,5 @@
 import { Camera, Plus, RefreshCcw, X } from "lucide-react";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { uploadRecipePhoto } from "@/adapters/deadlineFoodApi";
 
 import { Card } from "@/components/ui/card";
@@ -14,6 +14,7 @@ import {
   sanitiseIngredientDrafts,
   type IngredientDraft,
 } from "../ingredients";
+import { estimateRecipeCost } from "../costEstimate";
 import { money, nutritionSourceSummary } from "../utils";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -351,6 +352,9 @@ export function RecipeEditor({
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const autoNutritionTimerRef = useRef<number | null>(null);
+  const prevIngredientKeyRef = useRef("");
+  const cancelFetchRef = useRef<{ cancelled: boolean } | null>(null);
 
   const ingredients = sanitiseIngredientDrafts(form.ingredients);
   const servings = positiveNumber(Number(form.servings), 1);
@@ -365,43 +369,96 @@ export function RecipeEditor({
   };
   const hasErrors = errors.name || errors.ingredients || errors.servings || errors.totalCost;
 
-  async function estimateNutrition() {
+  const mealId = meal?.id;
+  const triggerNutritionFetch = useCallback(
+    (sanitised: RecipeIngredient[], source: "auto" | "manual") => {
+      if (cancelFetchRef.current) cancelFetchRef.current.cancelled = true;
+      const signal = { cancelled: false };
+      cancelFetchRef.current = signal;
+
+      setNutritionLoading(true);
+      setNutritionStatus(null);
+      fetchOpenFoodFactsNutrition(sanitised)
+        .then((nutrition) => {
+          if (signal.cancelled) return;
+          setForm((prev) => ({
+            ...prev,
+            calories: nutrition.calories,
+            protein: nutrition.protein,
+            carbs: nutrition.carbs,
+            fat: nutrition.fat,
+            nutritionSource: nutrition.source,
+          }));
+          const missing = nutrition.source?.missingIngredients ?? [];
+          setNutritionStatus(
+            missing.length > 0 ? `Couldn't find: ${missing.join(", ")}` : "All ingredients matched",
+          );
+          track("recipe_nutrition_refreshed", {
+            ...(mealId ? { meal_id: mealId } : {}),
+            provider: nutrition.source?.provider,
+            ingredient_count: sanitised.length,
+            matched_count: nutrition.source?.matchedIngredients?.length ?? 0,
+            missing_count: missing.length,
+            trigger: source,
+          });
+        })
+        .catch((error: unknown) => {
+          if (signal.cancelled) return;
+          setNutritionStatus(
+            error instanceof Error ? error.message : "Nutrition data could not be loaded.",
+          );
+        })
+        .finally(() => {
+          if (!signal.cancelled) setNutritionLoading(false);
+        });
+    },
+    [mealId, track],
+  );
+
+  function estimateCostFromIngredients() {
     if (ingredients.length === 0) {
       setAttempted(true);
-      setNutritionStatus("Add at least one ingredient with a quantity first.");
       return;
     }
-    setNutritionLoading(true);
-    setNutritionStatus(null);
-    try {
-      const nutrition = await fetchOpenFoodFactsNutrition(ingredients);
-      setForm((prev) => ({
-        ...prev,
-        calories: nutrition.calories,
-        protein: nutrition.protein,
-        carbs: nutrition.carbs,
-        fat: nutrition.fat,
-        nutritionSource: nutrition.source,
-      }));
-      const missing = nutrition.source?.missingIngredients ?? [];
-      setNutritionStatus(
-        missing.length > 0 ? `Couldn't find: ${missing.join(", ")}` : "All ingredients matched",
-      );
-      track("recipe_nutrition_refreshed", {
-        ...(meal ? { meal_id: meal.id } : {}),
-        provider: nutrition.source?.provider,
-        ingredient_count: ingredients.length,
-        matched_count: nutrition.source?.matchedIngredients?.length ?? 0,
-        missing_count: missing.length,
-      });
-    } catch (error) {
-      setNutritionStatus(
-        error instanceof Error ? error.message : "Nutrition data could not be loaded.",
-      );
-    } finally {
-      setNutritionLoading(false);
-    }
+    const estimate = estimateRecipeCost(ingredients);
+    setForm((prev) => ({ ...prev, totalCost: estimate }));
+    track("recipe_cost_estimated", {
+      ...(meal ? { meal_id: meal.id } : {}),
+      ingredient_count: ingredients.length,
+      estimated_total: estimate,
+    });
   }
+
+  function estimateNutrition() {
+    triggerNutritionFetch(ingredients, "manual");
+  }
+
+  useEffect(() => {
+    const sanitised = sanitiseIngredientDrafts(form.ingredients);
+    const key = sanitised.map((i) => `${i.name}:${i.quantity}:${i.unit}`).join("|");
+
+    if (key === "") {
+      if (cancelFetchRef.current) cancelFetchRef.current.cancelled = true;
+      prevIngredientKeyRef.current = "";
+      return;
+    }
+    if (key === prevIngredientKeyRef.current) return;
+    prevIngredientKeyRef.current = key;
+
+    if (autoNutritionTimerRef.current !== null) window.clearTimeout(autoNutritionTimerRef.current);
+    autoNutritionTimerRef.current = window.setTimeout(() => {
+      autoNutritionTimerRef.current = null;
+      if (sanitised.length === 0) return;
+      triggerNutritionFetch(sanitised, "auto");
+    }, 1500);
+
+    return () => {
+      if (autoNutritionTimerRef.current !== null) {
+        window.clearTimeout(autoNutritionTimerRef.current);
+        autoNutritionTimerRef.current = null;
+      }
+    };
+  }, [form.ingredients, triggerNutritionFetch]);
 
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null;
@@ -489,6 +546,15 @@ export function RecipeEditor({
   const displayedPhoto = photoPreview ?? meal?.photoUrl;
   const hasHeader = title || onCancel;
 
+  const nutritionStatusText = nutritionLoading
+    ? "Auto-filling from ingredients…"
+    : ingredients.length === 0
+      ? "Add ingredients to auto-fill nutrition"
+      : nutritionStatus
+        ?? (form.nutritionSource
+          ? nutritionSourceSummary(form.nutritionSource)
+          : "Will auto-fill when you stop editing ingredients");
+
   return (
     <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6">
       {hasHeader && (
@@ -575,16 +641,34 @@ export function RecipeEditor({
 
         {mode === "create" && (
           <>
-            <Field
-              label="Total recipe cost (£)"
-              type="number"
-              step="0.05"
-              required
-              value={form.totalCost}
-              onChange={(cost) => setForm({ ...form, totalCost: +cost })}
-              error={attempted && errors.totalCost}
-              errorMessage="Please enter a cost"
-            />
+            <div className="flex flex-wrap items-end gap-2">
+              <div className="min-w-[12rem] flex-1">
+                <Field
+                  label="Total recipe cost (£)"
+                  type="number"
+                  step="0.05"
+                  required
+                  value={form.totalCost}
+                  onChange={(cost) => setForm({ ...form, totalCost: +cost })}
+                  error={attempted && errors.totalCost}
+                  errorMessage="Please enter a cost"
+                />
+              </div>
+              <AppButton
+                type="button"
+                variant="secondary"
+                onClick={estimateCostFromIngredients}
+                disabled={ingredients.length === 0}
+                title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
+              >
+                <RefreshCcw size={16} /> Estimate from ingredients
+              </AppButton>
+            </div>
+            <p className="text-xs text-stone-500">
+              {ingredients.length === 0
+                ? "Add ingredients below to estimate a rough cost, or enter the total yourself."
+                : "We'll fill in a rough total from illustrative grocery prices — adjust it if you know better."}
+            </p>
             <p className="rounded-lg bg-emerald-50 p-3 text-sm font-medium text-emerald-800">
               Estimated cost per portion: {money(costPerPortion)}
             </p>
@@ -604,40 +688,22 @@ export function RecipeEditor({
           )}
         </div>
 
-        <div>
-          <p className="mb-2 text-sm font-semibold">
-            Tags <span className="font-normal text-stone-400">(optional)</span>
-          </p>
-          <TagEditor
-            values={form.tags}
-            onChange={(tags) => setForm({ ...form, tags })}
-            options={TAG_OPTIONS}
-            placeholder="Search or add tags…"
-          />
-        </div>
-
-        <Field
-          label="Allergens"
-          value={form.allergens}
-          onChange={(allergens) => setForm({ ...form, allergens })}
-          placeholder="gluten, dairy"
-        />
-
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-stone-50 p-3">
-          <div>
-            <p className="text-sm font-semibold">Nutrition data</p>
-            <p className="mt-1 text-xs text-stone-500">
-              {nutritionStatus ?? nutritionSourceSummary(form.nutritionSource)}
-            </p>
+        <div className="rounded-lg bg-emerald-50 p-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-emerald-900">Nutrition</p>
+              <p className="mt-0.5 text-xs text-emerald-700">{nutritionStatusText}</p>
+            </div>
+            <AppButton
+              type="button"
+              variant="secondary"
+              onClick={estimateNutrition}
+              disabled={nutritionLoading || ingredients.length === 0}
+              className="shrink-0 px-3 py-1.5 text-xs"
+            >
+              <RefreshCcw size={13} /> {nutritionLoading ? "Filling…" : "Refresh"}
+            </AppButton>
           </div>
-          <AppButton
-            type="button"
-            variant="secondary"
-            onClick={estimateNutrition}
-            disabled={nutritionLoading}
-          >
-            <RefreshCcw size={16} /> {nutritionLoading ? "Checking..." : "Estimate from USDA"}
-          </AppButton>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -666,6 +732,25 @@ export function RecipeEditor({
             onChange={(fat) => setForm({ ...form, fat: +fat })}
           />
         </div>
+
+        <div>
+          <p className="mb-2 text-sm font-semibold">
+            Tags <span className="font-normal text-stone-400">(optional)</span>
+          </p>
+          <TagEditor
+            values={form.tags}
+            onChange={(tags) => setForm({ ...form, tags })}
+            options={TAG_OPTIONS}
+            placeholder="Search or add tags…"
+          />
+        </div>
+
+        <Field
+          label="Allergens"
+          value={form.allergens}
+          onChange={(allergens) => setForm({ ...form, allergens })}
+          placeholder="gluten, dairy"
+        />
 
         <label className="block">
           <span className="text-sm font-semibold">Method</span>

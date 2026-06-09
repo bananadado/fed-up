@@ -109,7 +109,7 @@ function buildCookingVEvent(block: CookingCalendarBlock, now: Date): string[] {
   const start = parseLocalDateTime(block.dateIso, block.time);
   if (!start) throw new Error(`Invalid cooking block date/time: ${block.dateIso} ${block.time}`);
   const end = new Date(start.getTime() + blockMinutes(block.cookMinutes) * 60_000);
-  const uid = `cook-${toIcsLocalStamp(start)}-${Math.abs(hashString(block.mealName))}@deadline-food-autopilot`;
+  const uid = `cook-${toIcsLocalStamp(start)}-${Math.abs(hashString(block.mealName))}@fed-up`;
   return [
     "BEGIN:VEVENT",
     `UID:${uid}`,
@@ -126,7 +126,7 @@ function buildShoppingVEvent(block: CookingCalendarBlock, cookStart: Date, now: 
   const lead = block.shoppingReminderLeadMinutes ?? DEFAULT_SHOPPING_LEAD_MINUTES;
   const start = new Date(cookStart.getTime() - lead * 60_000);
   const end = new Date(start.getTime() + 30 * 60_000);
-  const uid = `shop-${toIcsLocalStamp(start)}-${Math.abs(hashString(block.mealName))}@deadline-food-autopilot`;
+  const uid = `shop-${toIcsLocalStamp(start)}-${Math.abs(hashString(block.mealName))}@fed-up`;
   const descLines = [`Pick up ingredients for ${block.mealName}.`];
   if (block.ingredients?.length) {
     descLines.push("", ...block.ingredients.map((i) => `- ${i}`));
@@ -157,7 +157,7 @@ export function buildCookingIcs(block: CookingCalendarBlock, now: Date = new Dat
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Deadline Food Autopilot//Cooking Schedule//EN",
+    "PRODID:-//Fed Up//Cooking Schedule//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     ...buildCookingVEvent(block, now),
