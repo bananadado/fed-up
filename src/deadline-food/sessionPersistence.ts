@@ -39,6 +39,7 @@ export type SessionSettings = {
   discoverRejected?: Meal[];
   discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
+  planMeals?: Meal[];
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
   calendarTokens?: CalendarToken[];
@@ -103,6 +104,7 @@ export function createSessionSettings(input: {
   discoverRejected?: Meal[];
   discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
+  planMeals?: Meal[];
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
   calendarTokens?: CalendarToken[];
@@ -123,6 +125,7 @@ export function createSessionSettings(input: {
     discoverRejected: input.discoverRejected,
     discoverReviewedRecipeIds: input.discoverReviewedRecipeIds,
     plan: input.plan,
+    planMeals: input.planMeals,
     calendarEvents: input.calendarEvents,
     icsSubscriptions: input.icsSubscriptions,
     calendarTokens: input.calendarTokens,
