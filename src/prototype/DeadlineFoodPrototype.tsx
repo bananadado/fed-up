@@ -14,7 +14,6 @@ import { syncRecommenderUser } from "./recommenderApi";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
 import {
   completeDeadlineFoodEmailLinkSignIn,
-  NO_ACCOUNT_YET_MESSAGE,
   linkDeadlineFoodAccount,
   onDeadlineFoodAccountChanged,
   sendDeadlineFoodEmailMagicLink,
@@ -211,16 +210,19 @@ export function DeadlineFoodPrototype() {
 
   // Decide where a freshly signed-in user lands. The backend returns the
   // account's linked session when one exists; if that session is onboarded we
-  // treat this as an existing account and go to the dashboard. Otherwise the
-  // sign-in method has no plan yet ("an account with these details doesn't exist
-  // yet") — sign back out to anonymous and run full onboarding. The user re-links
-  // the account at the end of onboarding.
-  const resolveSignInDestination = useCallback(() => {
+  // treat this as an existing account and go to the dashboard. Otherwise we keep
+  // the user signed in and run onboarding under that account, so the next save
+  // attaches the session without showing a separate account step.
+  const resolveSignInDestination = useCallback((options: { existingAccount?: boolean } = {}) => {
     if (signInResolutionPromiseRef.current) return signInResolutionPromiseRef.current;
 
     const resolution = (async () => {
       const snapshot = await loadAnonymousSessionSettings(sessionIdRef.current);
-      const hasExistingPlan = snapshot.settings?.onboarded === true;
+      // Treat the sign-in as a returning user when Firebase reports the account
+      // already existed (options.existingAccount) OR the backend already has an
+      // onboarded plan for it. Either way we skip onboarding and load their
+      // synced session straight onto the dashboard.
+      const hasExistingPlan = options.existingAccount === true || snapshot.settings?.onboarded === true;
       if (hasExistingPlan) {
         // setSessionId re-runs the session-load effect, which repopulates all
         // state (prefs, plan, deadlines…) and sets onboarded from the settings.
@@ -232,10 +234,12 @@ export function DeadlineFoodPrototype() {
         notifyAccount("Welcome back — your saved plan is synced to this account.");
         window.location.hash = "/dashboard";
       } else {
-        await switchToAnonymousAccountOnThisDevice();
+        if (snapshot.sessionId !== sessionIdRef.current) {
+          setSessionId(snapshot.sessionId);
+        }
         setOnboarded(false);
         setCanPersistSession(true);
-        notifyAccount(NO_ACCOUNT_YET_MESSAGE, "error");
+        notifyAccount("");
         window.location.hash = "/onboarding";
       }
     })().catch((error) => {
@@ -463,11 +467,19 @@ export function DeadlineFoodPrototype() {
   }, [enableSessionPersistence, navigateScreen, prefs, sessionId]);
 
   useEffect(() => {
+    // Drive the post-email-link destination ourselves using isNewUser; suppress
+    // the onAuthStateChanged listener so it can't resolve a destination first
+    // (without the isNewUser signal) and win the de-duped resolution race.
+    suppressAuthStateDestinationRef.current = true;
     completeDeadlineFoodEmailLinkSignIn()
       .then((completion) => {
         if (completion) {
           track("account_linked", { provider: "email" });
-          if (completion.intent === "create") {
+          if (!completion.isNewUser) {
+            // The link matched an account that already existed: go straight to
+            // the dashboard with their synced plan, never back through onboarding.
+            void resolveSignInDestination({ existingAccount: true });
+          } else if (completion.intent === "create") {
             completeOnboardingAfterAccountCreated();
           } else {
             void resolveSignInDestination();
@@ -477,6 +489,9 @@ export function DeadlineFoodPrototype() {
       .catch((error) => {
         const message = error instanceof Error ? error.message : "Email sign-in could not be completed.";
         notifyAccount(message, "error");
+      })
+      .finally(() => {
+        suppressAuthStateDestinationRef.current = false;
       });
   }, [completeOnboardingAfterAccountCreated, notifyAccount, resolveSignInDestination, track]);
 
@@ -513,17 +528,12 @@ export function DeadlineFoodPrototype() {
     notifyAccount("");
     suppressAuthStateDestinationRef.current = true;
     try {
-      await signInExistingDeadlineFoodAccount(provider);
+      const result = await signInExistingDeadlineFoodAccount(provider);
       track("account_linked", { provider });
-      await resolveSignInDestination();
+      await resolveSignInDestination({ existingAccount: !result.isNewUser });
     } catch (error) {
       const message = error instanceof Error ? error.message : "Account sign-in failed.";
-      if (message === NO_ACCOUNT_YET_MESSAGE) {
-        await switchToAnonymousAccountOnThisDevice();
-        notifyAccount(message, "error");
-      } else {
-        notifyAccount(message, "error");
-      }
+      notifyAccount(message, "error");
       track("account_link_failed", { provider, error: message });
     } finally {
       suppressAuthStateDestinationRef.current = false;
@@ -763,14 +773,20 @@ export function DeadlineFoodPrototype() {
       <Onboarding
         setOnboarded={(nextOnboarded) => {
           enableSessionPersistence();
-          setOnboarded(nextOnboarded);
           if (nextOnboarded) {
+            // Allow the first auto-plan to run for this input set even if the
+            // signature was already attempted earlier this session (e.g. when a
+            // user signs in at the start and then finishes onboarding). Without
+            // this reset the auto-plan effect's de-dupe guard suppresses the
+            // first plan generation. Mirrors completeOnboardingAfterAccountCreated.
+            autoPlanAttemptRef.current = null;
             // Create + embed the user profile on the recommender at onboarding
             // time rather than lazily on first Discover load.
             syncRecommenderUser(sessionId, prefs).catch((error) => {
               console.warn("Recommender user profile could not be created.", error);
             });
           }
+          setOnboarded(nextOnboarded);
         }}
         setScreen={navigateScreen}
         prefs={prefs}

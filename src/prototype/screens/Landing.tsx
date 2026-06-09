@@ -48,7 +48,7 @@ export function Landing({
           <div className="mt-8">
             <div className="flex items-center gap-3">
               <div className="h-px flex-1 bg-stone-200" />
-              <span className="text-sm font-medium text-stone-400">or sign in to an existing plan</span>
+              <span className="text-sm font-medium text-stone-400">or sign in with an account</span>
               <div className="h-px flex-1 bg-stone-200" />
             </div>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -76,7 +76,7 @@ export function Landing({
               onSubmit={(e) => {
                 e.preventDefault();
                 track("landing_sign_in_clicked", { provider: "email" });
-                onSendEmailMagicLink(email, {requireExistingAccount: true});
+                onSendEmailMagicLink(email, {intent: "existing"});
               }}
             >
               <Input
@@ -91,9 +91,6 @@ export function Landing({
               </AppButton>
             </form>
             <p className="mt-1.5 text-xs text-stone-400">Link opens in the same browser. Check spam if it doesn't arrive.</p>
-            <p className="mt-2 text-xs leading-5 text-stone-500">
-              Use this only for an existing account. No account yet? Continue to create one.
-            </p>
             {accountMessage && (
               <p className={`mt-3 rounded-lg p-3 text-sm ${accountMessageTone === "error" ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800"}`}>{accountMessage}</p>
             )}

@@ -2,7 +2,6 @@ import { initializeApp, getApp, getApps, type FirebaseApp, type FirebaseOptions 
 import {
   browserLocalPersistence,
   connectAuthEmulator,
-  deleteUser,
   fetchSignInMethodsForEmail,
   getAuth,
   getAdditionalUserInfo,
@@ -55,6 +54,7 @@ export type AccountSummary = {
 
 export type EmailMagicLinkOptions = {
   requireExistingAccount?: boolean;
+  intent?: EmailMagicLinkIntent;
 };
 
 export type EmailMagicLinkIntent = "existing" | "create";
@@ -62,6 +62,7 @@ export type EmailMagicLinkIntent = "existing" | "create";
 export type EmailLinkCompletion = {
   account: AccountSummary;
   intent: EmailMagicLinkIntent;
+  isNewUser: boolean;
 };
 
 export const NO_ACCOUNT_YET_MESSAGE = "No, there isn't an account yet. Please continue to create one.";
@@ -282,7 +283,8 @@ export async function completeDeadlineFoodEmailLinkSignIn(): Promise<EmailLinkCo
     window.localStorage.removeItem(EMAIL_LINK_STORAGE_KEY);
     window.localStorage.removeItem(EMAIL_LINK_INTENT_STORAGE_KEY);
     cleanEmailLinkFromUrl();
-    return {account: userToSummary(result.user), intent};
+    const additionalInfo = getAdditionalUserInfo(result);
+    return {account: userToSummary(result.user), intent, isNewUser: additionalInfo?.isNewUser === true};
   })().finally(() => {
     emailLinkCompletionPromise = null;
   });
@@ -292,7 +294,13 @@ export async function completeDeadlineFoodEmailLinkSignIn(): Promise<EmailLinkCo
 
 export async function getDeadlineFoodAuthToken(): Promise<string | null> {
   await completeDeadlineFoodEmailLinkSignIn().catch(() => null);
-  const user = await ensureDeadlineFoodAuthUser();
+  // Only attach a token for a user who is already signed in. Do NOT call
+  // ensureDeadlineFoodAuthUser here: that would silently create an anonymous
+  // Firebase user on every session load. Anonymous use is keyed purely by the
+  // localStorage session id until the user explicitly chooses to sign in or to
+  // "continue without signing in" (which signs in anonymously on purpose).
+  const auth = getDeadlineFoodAuth();
+  const user = auth?.currentUser ?? null;
   return user ? user.getIdToken() : null;
 }
 
@@ -459,7 +467,12 @@ export async function linkDeadlineFoodAccount(providerId: AccountProviderId): Pr
   }
 }
 
-export async function signInExistingDeadlineFoodAccount(providerId: AccountProviderId): Promise<AccountSummary> {
+export type ProviderSignInResult = {
+  account: AccountSummary;
+  isNewUser: boolean;
+};
+
+export async function signInExistingDeadlineFoodAccount(providerId: AccountProviderId): Promise<ProviderSignInResult> {
   const auth = getDeadlineFoodAuth();
   if (auth === null) {
     throw new Error("Firebase Auth is not configured for this app.");
@@ -470,17 +483,8 @@ export async function signInExistingDeadlineFoodAccount(providerId: AccountProvi
   try {
     const result = await signInWithPopup(auth, provider);
     const additionalInfo = getAdditionalUserInfo(result);
-    if (additionalInfo?.isNewUser) {
-      await deleteUser(result.user);
-      throw new Error(NO_ACCOUNT_YET_MESSAGE);
-    }
-
-    return userToSummary(result.user);
+    return {account: userToSummary(result.user), isNewUser: additionalInfo?.isNewUser === true};
   } catch (error) {
-    if (error instanceof Error && error.message === NO_ACCOUNT_YET_MESSAGE) {
-      throw error;
-    }
-
     const code = firebaseErrorCode(error);
     if (code === "auth/account-exists-with-different-credential" || code === "auth/email-already-in-use") {
       throw new Error(await describeExistingAccountConflict(auth, error), {cause: error});
@@ -519,7 +523,8 @@ export async function sendDeadlineFoodEmailMagicLink(email: string, options: Ema
     throw new Error(friendlyAuthErrorMessage(error, "email"), {cause: error});
   }
   window.localStorage.setItem(EMAIL_LINK_STORAGE_KEY, normalizedEmail);
-  window.localStorage.setItem(EMAIL_LINK_INTENT_STORAGE_KEY, options.requireExistingAccount ? "existing" : "create");
+  const intent = options.intent ?? (options.requireExistingAccount ? "existing" : "create");
+  window.localStorage.setItem(EMAIL_LINK_INTENT_STORAGE_KEY, intent);
 }
 
 const MICROSOFT_REDIRECT_PENDING_KEY = "deadlineFoodMicrosoftAuthPending";

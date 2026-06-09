@@ -27,9 +27,7 @@ import type { TrackPrototypeEvent } from "../analytics";
 import { filterFoodPreferenceOptions } from "../preferenceOptions";
 import type { AccountMessageTone, AccountProviderId, AccountSummary } from "../accountAuth";
 
-function Progress({ step }: { step: number }) {
-  const labels = ["Calendar", "About you", "Preferences", "Save"];
-
+function Progress({ labels, step }: { labels: string[]; step: number }) {
   return (
     <div className="mb-8 flex gap-2">
       {labels.map((label, index) => (
@@ -174,6 +172,10 @@ export function Onboarding({
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
   const accountLabel = account.email ?? account.displayName ?? (account.isAnonymous ? "Anonymous on this browser" : "Signed in");
+  const accountAttached = account.configured && !account.isAnonymous;
+  const progressLabels = accountAttached ? ["Calendar", "About you", "Preferences"] : ["Calendar", "About you", "Preferences", "Save"];
+  const totalSteps = progressLabels.length;
+  const activeStep = accountAttached && step > 2 ? 2 : step;
 
   function goToStep(nextStep: number) {
     if (nextStep > 0 && accountMessage) {
@@ -186,7 +188,7 @@ export function Onboarding({
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [step]);
+  }, [activeStep]);
 
   async function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
@@ -271,7 +273,7 @@ export function Onboarding({
 
   function toggle(values: string[], value: string, update: (next: string[]) => void) {
     const selected = !values.includes(value);
-    track("onboarding_choice_toggled", { step, value, selected });
+    track("onboarding_choice_toggled", { step: activeStep, value, selected });
     update(selected ? [...values, value] : values.filter((item) => item !== value));
   }
 
@@ -282,7 +284,7 @@ export function Onboarding({
       return;
     }
 
-    track("onboarding_custom_choice_added", { step, value: normalizedValue });
+    track("onboarding_custom_choice_added", { step: activeStep, value: normalizedValue });
     update([...values, normalizedValue]);
   }
 
@@ -303,6 +305,20 @@ export function Onboarding({
     });
     setOnboarded(true);
     setScreen("dashboard");
+  }
+
+  function continueFromPreferencesStep(skippedSetupFields = false) {
+    const nextStep = accountAttached ? "complete" : 3;
+    track("onboarding_step_completed", {
+      step: 2,
+      next_step: nextStep,
+      ...(skippedSetupFields ? { skipped_setup_fields: true } : {}),
+    });
+    if (accountAttached) {
+      finish();
+      return;
+    }
+    goToStep(3);
   }
 
   function continueFromCalendarStep() {
@@ -329,15 +345,15 @@ export function Onboarding({
         <div className="mb-7 flex items-center">
           <img src={fedUpLogo} alt="Fed Up" className="h-8 w-auto" />
         </div>
-        <Progress step={step} />
-        {accountMessage && step === 0 && (
+        <Progress labels={progressLabels} step={activeStep} />
+        {accountMessage && activeStep === 0 && (
           <p className={`mb-4 rounded-lg p-3 text-sm ${accountMessageTone === "error" ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800"}`}>
             {accountMessage}
           </p>
         )}
-        {step === 0 && (
+        {activeStep === 0 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 1 of 4</Badge>
+            <Badge tone="green">Step 1 of {totalSteps}</Badge>
             <h2 className="mt-4 text-3xl font-bold">Connect your calendar</h2>
             <p className="mt-2 text-stone-600">We use calendar titles and times to spot likely busy study days. This is optional — you can connect later in Settings.</p>
             <div className="mt-7 grid grid-cols-2 gap-3">
@@ -579,8 +595,7 @@ export function Onboarding({
                 </AppButton>
                 <AppButton type="button" className="justify-center" onClick={() => {
                   setShowStep2SkipConfirm(false);
-                  track("onboarding_step_completed", { step: 2, next_step: 3, skipped_setup_fields: true });
-                  goToStep(3);
+                  continueFromPreferencesStep(true);
                 }}>
                   Continue anyway
                 </AppButton>
@@ -588,9 +603,9 @@ export function Onboarding({
             </div>
           </div>
         )}
-        {step === 1 && (
+        {activeStep === 1 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 2 of 4</Badge>
+            <Badge tone="green">Step 2 of {totalSteps}</Badge>
             <h2 className="mt-4 text-3xl font-bold">About you</h2>
             <p className="mt-2 text-stone-600">Help us understand your situation so suggestions actually fit your life.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -689,9 +704,9 @@ export function Onboarding({
             </div>
           </Card>
         )}
-        {step === 2 && (
+        {activeStep === 2 && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 3 of 4</Badge>
+            <Badge tone="green">Step 3 of {totalSteps}</Badge>
             <h2 className="mt-4 text-3xl font-bold">What works for you?</h2>
             <p className="mt-2 text-stone-600">Set hard limits once. Recommendations stay inside them.</p>
             <div className="mt-5 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
@@ -847,7 +862,9 @@ export function Onboarding({
               </PreferenceSection>
             </div>
             <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
-              <p className="mb-3 text-sm text-stone-600 sm:mb-0">Preferences are ready. The next step lets you save this plan to an account.</p>
+              <p className="mb-3 text-sm text-stone-600 sm:mb-0">
+                {accountAttached ? "Preferences are ready. This plan will be saved to your signed-in account." : "Preferences are ready. The next step lets you save this plan to an account."}
+              </p>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
                 <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 2, next_step: 1 }); goToStep(1); }}>
                   <ArrowLeft size={16} /> Back
@@ -858,18 +875,17 @@ export function Onboarding({
                     setShowStep2SkipConfirm(true);
                     return;
                   }
-                  track("onboarding_step_completed", { step: 2, next_step: 3 });
-                  goToStep(3);
+                  continueFromPreferencesStep();
                 }}>
-                  Continue <ArrowRight size={16} />
+                  {accountAttached ? "Create my plan" : "Continue"} <ArrowRight size={16} />
                 </AppButton>
               </div>
             </div>
           </Card>
         )}
-        {step === 3 && (
+        {activeStep === 3 && !accountAttached && (
           <Card key={animationKey} className="animate-onboarding-enter gap-0 rounded-lg border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-            <Badge tone="green">Step 4 of 4</Badge>
+            <Badge tone="green">Step 4 of {totalSteps}</Badge>
             <h2 className="mt-4 text-3xl font-bold">Save your plan</h2>
             <p className="mt-2 text-stone-600">Sign in to keep your preferences, calendar setup and meal plan available across browsers and devices.</p>
             <div className="mt-7 rounded-lg border border-emerald-100 bg-emerald-50/70 p-4">

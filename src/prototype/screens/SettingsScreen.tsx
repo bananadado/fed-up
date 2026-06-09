@@ -24,7 +24,7 @@ import {
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
 import { filterFoodPreferenceOptions } from "../preferenceOptions";
-import type { AccountMessageTone, AccountProviderId, AccountSummary } from "../accountAuth";
+import type { AccountMessageTone, AccountProviderId, AccountSummary, EmailMagicLinkOptions } from "../accountAuth";
 
 export function SettingsScreen({
   prefs,
@@ -67,7 +67,7 @@ export function SettingsScreen({
   accountMessageTone: AccountMessageTone;
   accountBusy: AccountProviderId | "email" | "anonymous" | null;
   onConnectAccount: (provider: AccountProviderId) => void;
-  onSendEmailMagicLink: (email: string) => void;
+  onSendEmailMagicLink: (email: string, options?: EmailMagicLinkOptions) => void;
   onUseAnonymousAccount: () => void;
   track: TrackPrototypeEvent;
 }) {
@@ -234,7 +234,7 @@ export function SettingsScreen({
                 className="grid gap-2 sm:grid-cols-[1fr_auto]"
                 onSubmit={(event) => {
                   event.preventDefault();
-                  onSendEmailMagicLink(accountEmail);
+                  onSendEmailMagicLink(accountEmail, {intent: "existing"});
                 }}
               >
                 <Input

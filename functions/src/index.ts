@@ -1899,29 +1899,33 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       let snapshot = await sessionRef.get();
 
       if (authUid !== null) {
-        const ownerUid = sessionOwnerUid(snapshot.data());
+        const linkedSessionId = await accountSessionId(authUid);
 
-        if (snapshot.exists && (ownerUid === null || ownerUid === authUid)) {
-          if (ownerUid === null) {
+        if (linkedSessionId !== null) {
+          sessionRef = anonymousSessionsRef.doc(linkedSessionId);
+          snapshot = await sessionRef.get();
+          const linkedOwnerUid = sessionOwnerUid(snapshot.data());
+          if (snapshot.exists && linkedOwnerUid === null) {
+            await claimSessionForAccount(authUid, linkedSessionId, sessionRef);
+            snapshot = await sessionRef.get();
+          } else if (snapshot.exists && linkedOwnerUid !== authUid) {
+            sessionRef = anonymousSessionsRef.doc(randomUUID());
+            snapshot = await sessionRef.get();
+          }
+        } else if (snapshot.exists) {
+          const requestedOwnerUid = sessionOwnerUid(snapshot.data());
+          if (requestedOwnerUid === null) {
             await claimSessionForAccount(authUid, sessionId, sessionRef);
             snapshot = await sessionRef.get();
-          } else {
+          } else if (requestedOwnerUid === authUid) {
             await pointAccountToSession(authUid, sessionId);
-          }
-        } else {
-          const linkedSessionId = await accountSessionId(authUid);
-          if (linkedSessionId !== null) {
-            sessionRef = anonymousSessionsRef.doc(linkedSessionId);
-            snapshot = await sessionRef.get();
-            const linkedOwnerUid = sessionOwnerUid(snapshot.data());
-            if (snapshot.exists && linkedOwnerUid !== null && linkedOwnerUid !== authUid) {
-              sessionRef = anonymousSessionsRef.doc(randomUUID());
-              snapshot = await sessionRef.get();
-            }
           } else {
             sessionRef = anonymousSessionsRef.doc(randomUUID());
             snapshot = await sessionRef.get();
           }
+        } else {
+          sessionRef = anonymousSessionsRef.doc(randomUUID());
+          snapshot = await sessionRef.get();
         }
       }
 
