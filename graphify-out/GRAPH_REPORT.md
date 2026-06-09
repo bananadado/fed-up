@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-06-09)
 
 ## Corpus Check
-- 214 files · ~151,112 words
+- 214 files · ~151,098 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `776c2022`
+- Built from commit: `cfcc1cca`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -678,7 +678,7 @@ Cohesion: 0.67
 Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block4 (Corpus: X files · ~Y words), Step 2 - Detect files
 
 ## Knowledge Gaps
-- **955 isolated node(s):** `$schema`, `buildCommand`, `installCommand`, `outputDirectory`, `deploymentEnabled` (+950 more)
+- **955 isolated node(s):** `firestore`, `appDataRef`, `recipesRef`, `recipeReviewsRef`, `anonymousSessionsRef` (+950 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -686,12 +686,12 @@ Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block4 (C
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `recompute_user_profile()` connect `Community 2` to `Community 72`, `Community 19`, `Community 63`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `FastAPI` connect `Community 2` to `Community 18`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `sample_recipe()` connect `Community 62` to `Community 2`, `Community 72`, `Community 57`, `Community 26`, `Community 63`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
-- **What connects `$schema`, `buildCommand`, `installCommand` to the rest of the system?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
+- **Why does `datetime` connect `Community 4` to `Community 2`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Why does `cn()` connect `Community 24` to `Community 5`, `Community 6`, `Community 7`, `Community 8`, `Community 20`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **What connects `firestore`, `appDataRef`, `recipesRef` to the rest of the system?**
   _1006 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.024033437826541274 - nodes in this community are weakly interconnected._
