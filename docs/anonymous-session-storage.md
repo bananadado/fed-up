@@ -2,7 +2,7 @@
 
 Tracking issue: #22
 
-Deadline Food Autopilot uses anonymous, no-sign-in sessions to persist prototype
+Fed Up uses anonymous, no-sign-in sessions to persist prototype
 settings without introducing accounts. The browser keeps only an opaque session
 ID in `localStorage`; the settings payload is stored behind the backend in
 Firestore.
@@ -53,7 +53,7 @@ provider attached to the record.
 
 ## API
 
-The frontend calls the shared Deadline Food API adapter. In local Bun mode it
+The frontend calls the shared Fed Up API adapter. In local Bun mode it
 uses `/api/deadline-food/session`; in Firebase mode it uses the
 `deadlineFoodSession` function.
 

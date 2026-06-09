@@ -1,4 +1,4 @@
-# Deadline Food Autopilot Documentation
+# Fed Up Documentation
 
 This directory is the AI-first documentation set for the project.
 
@@ -14,5 +14,5 @@ Start here:
 - [DEVELOPMENT_AND_TESTING.md](DEVELOPMENT_AND_TESTING.md) - commands, verification, CI, deployment, and troubleshooting.
 - [AI_AGENT_PLAYBOOK.md](AI_AGENT_PLAYBOOK.md) - task-oriented guide for future coding agents.
 
-The original product and MVP specification remains [../DEADLINE_FOOD_AUTOPILOT_SPEC.md](../DEADLINE_FOOD_AUTOPILOT_SPEC.md). Treat it as the product intent baseline. Treat the files in `src/`, `functions/`, and config files as the current implementation truth.
+The original product and MVP specification remains [../FED_UP_SPEC.md](../FED_UP_SPEC.md). Treat it as the product intent baseline. Treat the files in `src/`, `functions/`, and config files as the current implementation truth.
 

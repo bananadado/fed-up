@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
-import { AlertTriangle, CalendarPlus, CalendarClock, ChevronDown, Download, ExternalLink, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight, ChefHat } from "lucide-react";
-import type { CalendarEvent, Deadline, Meal, PlanEntry, Screen } from "../types";
+import { AlertTriangle, Bell, CalendarPlus, CalendarClock, ChevronDown, Download, ExternalLink, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight, ChefHat } from "lucide-react";
+import type { CalendarEvent, Deadline, Meal, PlanEntry, Preferences, Screen } from "../types";
+import { getPrepSuggestions, type PrepSuggestion } from "../advancePrep";
 import { AppButton, Badge } from "../components/primitives";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -167,7 +168,7 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
               </button>
             ))}
           </div>
-          <p className="mt-1.5 text-xs text-stone-400">Academic events affect how much cooking effort Autopilot assigns.</p>
+          <p className="mt-1.5 text-xs text-stone-400">Academic events affect how much cooking effort Fed Up assigns.</p>
         </div>
 
         <div>
@@ -487,6 +488,134 @@ function CookingScheduler({
   );
 }
 
+// --- PrepReminderSuggestions ---
+
+const PREP_TIME_OPTIONS = [
+  { label: "7pm", value: "19:00" },
+  { label: "8pm", value: "20:00" },
+  { label: "9pm", value: "21:00" },
+  { label: "10pm", value: "22:00" },
+  { label: "11pm", value: "23:00" },
+] as const;
+
+function PrepReminderSuggestions({
+  suggestions,
+  prepReminderTime,
+  track,
+}: {
+  suggestions: PrepSuggestion[];
+  prepReminderTime: string;
+  track: TrackPrototypeEvent;
+}) {
+  const todayIso = toLocalIso(new Date());
+  const [dateOverrides, setDateOverrides] = useState<Record<string, string>>(() =>
+    Object.fromEntries(suggestions.map((s) => [s.meal.id, s.reminderDateIso ?? todayIso])),
+  );
+  const [timeOverrides, setTimeOverrides] = useState<Record<string, string>>(() =>
+    Object.fromEntries(suggestions.map((s) => [s.meal.id, prepReminderTime])),
+  );
+  const [exported, setExported] = useState<Record<string, "ics" | "google">>({});
+
+  if (suggestions.length === 0) return null;
+
+  function buildPrepBlock(s: PrepSuggestion): CookingCalendarBlock {
+    return {
+      mealName: s.meal.name,
+      eventTitle: `Prep: ${s.meal.name}`,
+      cookMinutes: 15,
+      dateIso: dateOverrides[s.meal.id] ?? todayIso,
+      time: timeOverrides[s.meal.id] ?? prepReminderTime,
+    };
+  }
+
+  function handleDownload(s: PrepSuggestion) {
+    const block = buildPrepBlock(s);
+    downloadIcs(cookingIcsFilename(block), buildCookingIcs(block));
+    setExported((prev) => ({ ...prev, [s.meal.id]: "ics" }));
+    track("prep_reminder_exported", { meal_id: s.meal.id, method: "ics", date: block.dateIso });
+  }
+
+  function handleGoogle(s: PrepSuggestion) {
+    const block = buildPrepBlock(s);
+    window.open(buildGoogleCalendarUrl(block), "_blank", "noopener,noreferrer");
+    setExported((prev) => ({ ...prev, [s.meal.id]: "google" }));
+    track("prep_reminder_exported", { meal_id: s.meal.id, method: "google", date: block.dateIso });
+  }
+
+  return (
+    <div className="mt-6 rounded-xl border border-blue-200 bg-white p-6 shadow-sm">
+      <div className="mb-4 flex flex-wrap items-start gap-3">
+        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+          <Bell size={18} />
+        </div>
+        <div className="flex-1">
+          <h2 className="text-lg font-bold text-stone-900">Prep reminders</h2>
+          <p className="mt-1 text-sm text-stone-600">
+            These meals need advance prep. Add a reminder to your calendar the evening before.
+          </p>
+        </div>
+      </div>
+      <div className="space-y-4">
+        {suggestions.map((s) => (
+          <div key={s.meal.id} className="rounded-lg border border-stone-200 bg-stone-50 p-4">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="font-semibold text-stone-900">{s.meal.image} {s.meal.name}</p>
+                <p className="mt-0.5 text-xs text-stone-500">{s.prep.reason} · planned {s.entry.day}</p>
+              </div>
+            </div>
+            <div className="mt-3 flex flex-wrap items-end gap-3">
+              <label className="block">
+                <span className="text-xs font-semibold text-stone-600">Reminder date</span>
+                <Input
+                  type="date"
+                  value={dateOverrides[s.meal.id] ?? todayIso}
+                  onChange={(e) => setDateOverrides((prev) => ({ ...prev, [s.meal.id]: e.target.value }))}
+                  className="mt-1 h-auto rounded-lg border-stone-200 bg-white p-2 text-sm"
+                />
+              </label>
+              <div>
+                <span className="text-xs font-semibold text-stone-600">Reminder time</span>
+                <div className="mt-1 flex flex-wrap gap-1.5">
+                  {PREP_TIME_OPTIONS.map(({ label, value }) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => setTimeOverrides((prev) => ({ ...prev, [s.meal.id]: value }))}
+                      className={cn(
+                        "rounded-lg border px-2.5 py-1.5 text-xs font-medium transition",
+                        (timeOverrides[s.meal.id] ?? prepReminderTime) === value
+                          ? "border-blue-400 bg-blue-50 text-blue-800"
+                          : "border-stone-200 bg-white text-stone-500 hover:bg-stone-50",
+                      )}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <AppButton variant="primary" onClick={() => handleDownload(s)} className="justify-center py-2 text-xs">
+                  <Download size={13} /> Add (.ics)
+                </AppButton>
+                <AppButton variant="secondary" onClick={() => handleGoogle(s)} className="justify-center py-2 text-xs">
+                  <ExternalLink size={13} /> Google Calendar
+                </AppButton>
+              </div>
+            </div>
+            {exported[s.meal.id] === "ics" && (
+              <p className="mt-2 text-xs text-emerald-700">Prep reminder downloaded — open the .ics to add it.</p>
+            )}
+            {exported[s.meal.id] === "google" && (
+              <p className="mt-2 text-xs text-emerald-700">Google Calendar opened — confirm to add the reminder.</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // --- CalendarScreen ---
 
 export function CalendarScreen({
@@ -495,6 +624,7 @@ export function CalendarScreen({
   calendarEvents,
   plan,
   customRecipes,
+  prefs,
   setScreen,
   track,
 }: {
@@ -503,6 +633,7 @@ export function CalendarScreen({
   calendarEvents: CalendarEvent[];
   plan: PlanEntry[];
   customRecipes: Meal[];
+  prefs: Preferences;
   setScreen: (screen: Screen) => void;
   track: TrackPrototypeEvent;
 }) {
@@ -512,6 +643,7 @@ export function CalendarScreen({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [draft, setDraft] = useState<WorkloadDraft | null>(null);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const prepSuggestions = useMemo(() => getPrepSuggestions(plan, customRecipes), [plan, customRecipes]);
 
   const selectedDeadline = deadlines.find((d) => d.id === selectedId) ?? null;
   const weekDays = useMemo(() => getWeekDays(weekOffset), [weekOffset]);
@@ -604,7 +736,7 @@ export function CalendarScreen({
         <div>
           <h1 className="text-3xl font-bold">Deadline calendar</h1>
           <p className="mt-2 text-stone-600">
-            Tap any event to confirm its type, effort and urgency — Autopilot uses this to adjust your cooking plan.
+            Tap any event to confirm its type, effort and urgency — Fed Up uses this to adjust your cooking plan.
           </p>
         </div>
         <AppButton
@@ -848,7 +980,7 @@ export function CalendarScreen({
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-stone-400">New academic workload</p>
               <h2 className="mt-1 text-xl font-bold text-stone-950">{draft.dayLabel}</h2>
-              <p className="mt-1 text-sm text-stone-500">Add anything Autopilot missed so cooking effort can adapt around it.</p>
+              <p className="mt-1 text-sm text-stone-500">Add anything Fed Up missed so cooking effort can adapt around it.</p>
             </div>
             <button
               type="button"
@@ -963,6 +1095,12 @@ export function CalendarScreen({
           onClose={() => setSelectedId(null)}
         />
       )}
+
+      <PrepReminderSuggestions
+        suggestions={prepSuggestions}
+        prepReminderTime={prefs.prepReminderTime}
+        track={track}
+      />
 
       <CookingScheduler
         plan={plan}

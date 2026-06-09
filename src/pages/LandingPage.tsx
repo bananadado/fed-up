@@ -1,6 +1,7 @@
-import { CalendarDays, CheckCircle2, Utensils } from "lucide-react";
+import { CalendarDays, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router";
 
+import fedUpLogo from "@/assets/fed-up-logo.svg";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDeadlineMode } from "@/state/DeadlineModeProvider";
@@ -12,9 +13,8 @@ export function LandingPage() {
     <main className="mx-auto grid min-h-screen w-full max-w-6xl gap-10 px-5 py-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
       <section className="space-y-8">
         <div className="space-y-5">
-          <div className="inline-flex items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-800">
-            <Utensils className="size-4" />
-            Deadline Food Autopilot
+          <div className="inline-flex items-center rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2">
+            <img src={fedUpLogo} alt="Fed Up" className="h-6 w-auto" />
           </div>
           <div className="space-y-4">
             <h1 className="max-w-3xl text-4xl font-bold tracking-normal text-slate-950 md:text-6xl">

@@ -29,6 +29,7 @@ export type PrototypeSessionSettings = {
   discoverRejected?: Meal[];
   discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
+  planMeals?: Meal[];
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
   calendarTokens?: CalendarToken[];
@@ -51,6 +52,7 @@ export function normalizePreferences(raw: Preferences): Preferences {
     planningHorizonDays: Math.min(28, Math.max(1, Math.round(horizon))),
     planRegenMode: raw.planRegenMode === "auto" ? "auto" : "prompt",
     unitSystem: raw.unitSystem === "imperial" ? "imperial" : "metric",
+    prepReminderTime: /^\d{1,2}:\d{2}$/.test(raw.prepReminderTime ?? "") ? raw.prepReminderTime : "22:00",
   };
 }
 
@@ -79,6 +81,7 @@ export function createPrototypeSessionSettings(input: {
   discoverRejected?: Meal[];
   discoverReviewedRecipeIds?: string[];
   plan?: PlanEntry[];
+  planMeals?: Meal[];
   calendarEvents?: CalendarEvent[];
   icsSubscriptions?: IcsSubscription[];
   calendarTokens?: CalendarToken[];
@@ -98,6 +101,7 @@ export function createPrototypeSessionSettings(input: {
     discoverRejected: input.discoverRejected,
     discoverReviewedRecipeIds: input.discoverReviewedRecipeIds,
     plan: input.plan,
+    planMeals: input.planMeals,
     calendarEvents: input.calendarEvents,
     icsSubscriptions: input.icsSubscriptions,
     calendarTokens: input.calendarTokens,

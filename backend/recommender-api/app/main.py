@@ -60,7 +60,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Deadline Food Recommender",
+    title="Fed Up Recommender",
     description="Multi-stage recipe recommendation engine with GPU-accelerated embeddings",
     version="0.1.0",
     lifespan=lifespan,

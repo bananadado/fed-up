@@ -97,7 +97,7 @@ export function Dashboard({
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-amber-900">Calendar not connected</p>
               <p className="mt-1 text-sm text-amber-800">
-                Your plan was generated without calendar context. Adding a calendar lets Autopilot adapt cooking effort around your busy study days.
+                Your plan was generated without calendar context. Adding a calendar lets Fed Up adapt cooking effort around your busy study days.
               </p>
             </div>
             <AppButton
