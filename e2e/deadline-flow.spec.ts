@@ -19,7 +19,7 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await page.goto("/");
 
   await expect(page.getByRole("heading", { name: /healthy meals that fit around coursework/i })).toBeVisible();
-  await page.getByRole("button", { name: /build my meal plan/i }).click();
+  await page.getByRole("button", { name: /start fresh/i }).click();
 
   await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /sign in with google/i })).toBeVisible();
@@ -45,7 +45,9 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await page.getByRole("option", { name: "Imperial College London" }).click();
   await expect(page.getByRole("heading", { name: /planning priorities/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /keep costs low/i })).toBeVisible();
-  await page.getByRole("button", { name: /create my plan/i }).click();
+  await page.getByRole("button", { name: /^continue$/i }).click();
+  await expect(page.getByRole("heading", { name: /save your plan/i })).toBeVisible();
+  await page.getByRole("button", { name: /continue without signing in/i }).click();
 
   await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
   await expect(page.getByText(/planned spend/i)).toBeVisible();
@@ -110,7 +112,7 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
 
 test("onboarding continue without calendar shows confirmation dialog then advances to 'About you'", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: /build my meal plan/i }).click();
+  await page.getByRole("button", { name: /start fresh/i }).click();
   await expect(page.getByRole("heading", { name: /connect your calendar/i })).toBeVisible();
   await page.getByRole("button", { name: /skip for now/i }).click();
   await expect(page.getByRole("dialog", { name: /continue without a calendar/i })).toBeVisible();
