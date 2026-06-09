@@ -51,6 +51,7 @@ export function normalizePreferences(raw: Preferences): Preferences {
     ...raw,
     planningHorizonDays: Math.min(28, Math.max(1, Math.round(horizon))),
     planRegenMode: raw.planRegenMode === "auto" ? "auto" : "prompt",
+    unitSystem: raw.unitSystem === "imperial" ? "imperial" : "metric",
     prepReminderTime: /^\d{1,2}:\d{2}$/.test(raw.prepReminderTime ?? "") ? raw.prepReminderTime : "22:00",
   };
 }
