@@ -38,7 +38,6 @@ analyze
 anchor
 anchors
 and
-animal
 animate
 animations
 annotations
@@ -64,15 +63,12 @@ assumptions
 ast
 async
 atomic
-atomic
 audio
 audit
 auth
 authenticate
 authentication
 authority
-auto
-autonomous
 auto
 autonomous
 autopilot
@@ -85,7 +81,6 @@ badge
 balance
 band
 base
-based
 baseline
 bash
 basic
@@ -104,7 +99,6 @@ between
 blank
 blend
 block
-blocks
 bodies
 body
 bool
@@ -133,13 +127,11 @@ bun
 bunx
 bus
 busy
-busy
 but
 button
 cache
 cached
 calendar
-call
 call
 calls
 camel
@@ -152,7 +144,6 @@ cannot
 canonical
 capability
 capable
-capitalized
 capture
 card
 case
@@ -166,14 +157,12 @@ cell
 change
 changes
 cheap
-cheap
 cheapest
 check
 checked
 checklist
 checks
 chicken
-chilli
 chilli
 choice
 choosing
@@ -216,7 +205,6 @@ commands
 commit
 common
 communication
-communication
 communities
 compact
 comparison
@@ -253,7 +241,6 @@ cors
 cosine
 cost
 costly
-costly
 countable
 counts
 couscous
@@ -269,7 +256,6 @@ curl
 current
 cutoff
 daily
-dairy
 dashboard
 data
 database
@@ -413,7 +399,6 @@ evening
 event
 events
 evidence
-exact
 example
 examples
 exams
@@ -454,7 +439,6 @@ favours
 fdc
 feasibility
 features
-fed
 feed
 fetch
 fewer
@@ -475,7 +459,6 @@ firebase
 firestore
 first
 fiscal
-fish
 fixed
 fixtures
 flag
@@ -527,7 +510,6 @@ gis
 git
 global
 globals
-gluten
 goals
 google
 gpg
@@ -544,11 +526,11 @@ group
 gru
 guidance
 guide
-halal
 halls
 handle
 handler
 handles
+handling
 hard
 has
 hash
@@ -731,7 +713,6 @@ meal
 meals
 means
 measure
-meat
 mechanisms
 memory
 merge
@@ -790,9 +771,7 @@ noodles
 noop
 normalise
 normalised
-normalization
 normalize
-normalized
 not
 note
 notes
@@ -853,7 +832,6 @@ past
 pasta
 path
 paths
-pattern
 patterns
 payload
 pca
@@ -883,7 +861,6 @@ plan
 planned
 planner
 planning
-plant
 playbook
 playwright
 plugin
@@ -1071,7 +1048,6 @@ sanitise
 sanitize
 save
 scalar
-scale
 scales
 scenario
 scheduler
@@ -1182,7 +1158,6 @@ stays
 step
 steps
 stop
-stopwords
 storage
 store
 stored
@@ -1236,7 +1211,6 @@ systen
 tab
 table
 tag
-tagged
 tags
 tail
 tailwind
@@ -1296,7 +1270,6 @@ top
 topic
 torch
 total
-totals
 touches
 toward
 track
@@ -1340,7 +1313,6 @@ universities
 university
 unknown
 unsupported
-untagged
 untitled
 unused
 update
@@ -1364,7 +1336,6 @@ validate
 validates
 validation
 value
-values
 variables
 variance
 variant
@@ -1372,7 +1343,6 @@ variants
 vault
 vector
 vectors
-vegan
 vegetable
 vegetarian
 vendor
