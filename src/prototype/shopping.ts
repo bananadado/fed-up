@@ -68,6 +68,16 @@ function normaliseIngredient(value: string) {
   return value.trim().toLowerCase();
 }
 
+const NON_PLURAL_S = new Set(["hummus", "couscous", "asparagus"]);
+
+function singularise(name: string): string {
+  if (NON_PLURAL_S.has(name)) return name;
+  if (name.endsWith("ies") && name.length > 4) return `${name.slice(0, -3)}y`;
+  if (name.endsWith("oes") && name.length > 3) return name.slice(0, -2);
+  if (name.endsWith("s") && !name.endsWith("ss") && name.length > 3) return name.slice(0, -1);
+  return name;
+}
+
 function shoppingIngredientName(ingredient: ShoppingIngredient) {
   return typeof ingredient === "string" ? ingredient.trim() : ingredient.name.trim();
 }
@@ -77,7 +87,7 @@ function shoppingIngredientKey(ingredient: ShoppingIngredient) {
     return normaliseIngredient(ingredient);
   }
 
-  return `${normaliseIngredient(ingredient.name)}:${ingredient.unit}`;
+  return `${singularise(normaliseIngredient(ingredient.name))}:${ingredient.unit}`;
 }
 
 function addPreparation(preparations: string[] | undefined, preparation: string | undefined) {
@@ -116,7 +126,9 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
       return;
     }
 
-    const name = shoppingIngredientName(ingredient);
+    const name = typeof ingredient === "string"
+      ? shoppingIngredientName(ingredient)
+      : singularise(normaliseIngredient(ingredient.name));
 
     if (!name) {
       return;

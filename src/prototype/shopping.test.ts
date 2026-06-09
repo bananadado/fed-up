@@ -72,7 +72,7 @@ describe("shopping helpers", () => {
     const items = ingredientsFromPlan(plan, [meal]);
 
     expect(items.some((item) => item.name.toLowerCase().includes("water"))).toBe(false);
-    expect(items.some((item) => item.name === "Pasta")).toBe(true);
+    expect(items.some((item) => item.name === "pasta")).toBe(true);
   });
 
   test("merges same ingredient with different units via unit conversion in ingredientsFromPlan", () => {
@@ -103,9 +103,26 @@ describe("shopping helpers", () => {
     const items = ingredientsFromPlan(plan, [mealA, mealB], [], "metric");
 
     // Both flour entries should merge into a single ml entry
-    const flourItems = items.filter((item) => item.name === "All purpose flour");
+    const flourItems = items.filter((item) => item.name === "all purpose flour");
     expect(flourItems).toHaveLength(1);
     expect(flourItems[0]?.unit).toBe("ml");
+  });
+
+  test("aggregates plural and singular forms of the same ingredient", () => {
+    const items = aggregateIngredients([
+      { name: "Apple", quantity: 100, unit: "g" },
+      { name: "apples", quantity: 50, unit: "g" },
+      { name: "onions", quantity: 1, unit: "serving" },
+      { name: "Onion", quantity: 2, unit: "serving" },
+    ]);
+    const apple = items.find((i) => i.name === "apple");
+    expect(apple).toBeDefined();
+    expect(apple?.quantity).toBe(150);
+    expect(items.filter((i) => i.name.toLowerCase().includes("apple"))).toHaveLength(1);
+    const onion = items.find((i) => i.name === "onion");
+    expect(onion).toBeDefined();
+    expect(onion?.count).toBe(2);
+    expect(items.filter((i) => i.name.toLowerCase().includes("onion"))).toHaveLength(1);
   });
 
   test("builds selected vendor search URLs for one ingredient at a time", () => {
