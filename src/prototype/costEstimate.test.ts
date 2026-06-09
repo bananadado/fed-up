@@ -8,14 +8,13 @@ describe("estimateRecipeCost", () => {
   });
 
   test("estimates weight-based ingredients from per-100g prices", () => {
-    // 200g chicken @ £0.80/100g = £1.60, 100g rice @ £0.12/100g = £0.12 → £1.72,
-    // rounded to the nearest 5p → £1.70
+    // 200g chicken @ seeded UK table + 100g rice, rounded to the nearest 5p.
     expect(
       estimateRecipeCost([
         { name: "chicken", quantity: 200, unit: "g" },
         { name: "rice", quantity: 100, unit: "g" },
       ]),
-    ).toBe(1.7);
+    ).toBe(1.85);
   });
 
   test("estimates countable ingredients from per-item prices", () => {
@@ -33,8 +32,8 @@ describe("estimateRecipeCost", () => {
   });
 
   test("falls back to a default price for unknown ingredients", () => {
-    // 100g of an unknown weight ingredient @ default £0.30/100g = £0.30
-    expect(estimateRecipeCost([{ name: "mystery powder", quantity: 100, unit: "g" }])).toBe(0.3);
+    // 100g of an unknown weight ingredient @ default £0.25/100g = £0.25
+    expect(estimateRecipeCost([{ name: "mystery powder", quantity: 100, unit: "g" }])).toBe(0.25);
   });
 
   test("is deterministic for the same input", () => {

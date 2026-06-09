@@ -10,6 +10,7 @@
 
 import type { FirestoreMeal, Ingredient, RecipeIn } from "../types.ts";
 import { estimatePricePence } from "../prices.ts";
+import { parseMeasureToIngredient as parseSharedMeasureToIngredient } from "../../../src/domain/ingredientMeasurements.ts";
 import {
   detectAllergens,
   detectDietaryTags,
@@ -100,46 +101,8 @@ function parseMeasureToIngredient(
   name: string,
   measure: string,
 ): Ingredient {
-  const s = measure.trim().toLowerCase();
-
-  // Patterns: "200g", "1 tbs", "3/4 cup", "2 medium", "To taste", etc.
-  const weightMatch = s.match(/^(\d+(?:[./]\d+)?)\s*(g|kg|oz|lb)?\b/);
-  const volMatch = s.match(/^(\d+(?:[./]\d+)?)\s*(ml|l|litre|liter)\b/i);
-  const tbspMatch = s.match(/^(\d+(?:[./]\d+)?)\s*(?:tbsp|tablespoon|tbs)\b/i);
-  const tspMatch = s.match(/^(\d+(?:[./]\d+)?)\s*(?:tsp|teaspoon)\b/i);
-  const cupMatch = s.match(/^(\d+(?:[./]\d+)?)\s*cup/i);
-
-  function qty(raw: string): number {
-    const m = raw.match(/(\d+)\s*\/\s*(\d+)/);
-    if (m) return parseInt(m[1]!) / parseInt(m[2]!);
-    return parseFloat(raw) || 1;
-  }
-
-  if (tbspMatch) return { name, quantity: qty(tbspMatch[1]!), unit: "tbsp" };
-  if (tspMatch) return { name, quantity: qty(tspMatch[1]!), unit: "tsp" };
-  if (cupMatch) return { name, quantity: qty(cupMatch[1]!), unit: "cup" };
-
-  if (volMatch) {
-    const unit = volMatch[2]?.toLowerCase() ?? "ml";
-    return { name, quantity: qty(volMatch[1]!), unit };
-  }
-
-  if (weightMatch && weightMatch[2]) {
-    return { name, quantity: qty(weightMatch[1]!), unit: weightMatch[2] };
-  }
-
-  // Fallback: if there's any number, treat as count
-  const numMatch = s.match(/^(\d+(?:[./]\d+)?)/);
-  if (numMatch) {
-    const q = qty(numMatch[1]!);
-    // Infer unit from the remainder of the measure string
-    const rest = s.slice(numMatch[0].length).trim();
-    const unit = rest || "item";
-    return { name, quantity: q, unit };
-  }
-
-  // "to taste", "pinch", etc. → tiny quantity
-  return { name, quantity: 1, unit: "pinch" };
+  const { originalMeasure: _originalMeasure, ...ingredient } = parseSharedMeasureToIngredient(name, measure);
+  return ingredient;
 }
 
 // ── meal_type assignment ──────────────────────────────────────────────────

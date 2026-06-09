@@ -15,6 +15,7 @@
 
 import { FieldValue, Timestamp, type Firestore } from "firebase-admin/firestore";
 
+import { gramsForIngredient as sharedGramsForIngredient } from "../../src/domain/ingredientMeasurements.ts";
 import type { Ingredient, Nutrition } from "./types.ts";
 
 // ── Config ───────────────────────────────────────────────────────────────────
@@ -87,19 +88,6 @@ export type NutritionWithSource = Nutrition & {
 
 // ── Ingredient name → category term mapping (ported from the function) ────────
 
-const servingGrams: Record<string, number> = {
-  banana: 120,
-  bread: 80,
-  egg: 50,
-  eggs: 50,
-  flatbread: 70,
-  "jacket potato": 250,
-  "microwave rice": 250,
-  "rice portion": 180,
-  "tortilla wrap": 60,
-  wrap: 60,
-};
-
 const cookingAdjectives = new Set([
   "baby", "canned", "chopped", "cooked", "diced", "dried", "frozen", "grated",
   "large", "medium", "minced", "organic", "raw", "sliced", "small", "tinned", "whole",
@@ -154,26 +142,7 @@ function categoryTerms(name: string): string[] {
 // ── Nutrition estimation (ported from the function) ──────────────────────────
 
 export function gramsForIngredient(ingredient: Ingredient): number {
-  switch (ingredient.unit) {
-  case "g":
-    return ingredient.quantity;
-  case "kg":
-    return ingredient.quantity * 1000;
-  case "ml":
-    return ingredient.quantity;
-  case "l":
-    return ingredient.quantity * 1000;
-  case "tsp":
-    return ingredient.quantity * 5;
-  case "tbsp":
-    return ingredient.quantity * 15;
-  case "cup":
-    return ingredient.quantity * 240;
-  case "can":
-    return ingredient.quantity * 400;
-  default:
-    return ingredient.quantity * (servingGrams[ingredient.name.toLowerCase()] ?? 100);
-  }
+  return sharedGramsForIngredient(ingredient);
 }
 
 export function estimateIngredientNutrition(
