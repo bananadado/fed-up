@@ -536,6 +536,15 @@ export function RecipeEditor({
   const displayedPhoto = photoPreview ?? meal?.photoUrl;
   const hasHeader = title || onCancel;
 
+  const nutritionStatusText = nutritionLoading
+    ? "Auto-filling from ingredients…"
+    : nutritionStatus
+      ?? (form.nutritionSource
+        ? nutritionSourceSummary(form.nutritionSource)
+        : ingredients.length > 0
+          ? "Will auto-fill when you stop editing ingredients"
+          : "Add ingredients to auto-fill nutrition");
+
   return (
     <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6">
       {hasHeader && (
@@ -655,16 +664,7 @@ export function RecipeEditor({
           <div className="flex items-center justify-between gap-2">
             <div className="min-w-0">
               <p className="text-sm font-semibold text-emerald-900">Nutrition</p>
-              <p className="mt-0.5 text-xs text-emerald-700">
-                {nutritionLoading
-                  ? "Auto-filling from ingredients…"
-                  : (nutritionStatus
-                      ?? (form.nutritionSource
-                          ? nutritionSourceSummary(form.nutritionSource)
-                          : ingredients.length > 0
-                          ? "Will auto-fill when you stop editing ingredients"
-                          : "Add ingredients to auto-fill nutrition"))}
-              </p>
+              <p className="mt-0.5 text-xs text-emerald-700">{nutritionStatusText}</p>
             </div>
             <AppButton
               type="button"
