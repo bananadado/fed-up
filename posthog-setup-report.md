@@ -5,7 +5,7 @@ PostHog is initialized in `src/lib/posthog.ts` using `BUN_PUBLIC_POSTHOG_PROJECT
 
 The app imports PostHog's session replay recorder so it is bundled with the app instead of being loaded as a separate runtime dependency. Session recording starts from the SDK `loaded` hook with ingestion controls overridden.
 
-The app registers the existing anonymous prototype session ID with PostHog at startup. The same ID is also registered as the `anonymous_session_id` super property, so manual captures include it on every event.
+The app registers the existing anonymous app session ID with PostHog at startup. The same ID is also registered as the `anonymous_session_id` super property, so manual captures include it on every event.
 
 ## Enabled PostHog Features
 
@@ -24,10 +24,10 @@ The app registers the existing anonymous prototype session ID with PostHog at st
 
 ## Journey Dimensions
 
-The prototype registers dynamic super properties so manual events, autocapture, heatmaps, replay-linked events, rage clicks, and dead clicks can be sliced by user journey state:
+The app registers dynamic super properties so manual events, autocapture, heatmaps, replay-linked events, rage clicks, and dead clicks can be sliced by user journey state:
 
 - `current_screen`
-- `prototype_onboarded`
+- `app_onboarded`
 - `deadline_count`
 - `custom_recipe_count`
 - `selected_source_count`
@@ -43,7 +43,7 @@ The prototype registers dynamic super properties so manual events, autocapture, 
 
 | Event | Description |
 |---|---|
-| `prototype_screen_viewed` | Screen changes in the prototype flow. |
+| `app_screen_viewed` | Screen changes in the app flow. |
 | `navigation_clicked` | Header, settings, desktop nav, and mobile nav clicks. |
 | `deadline_mode_started` | Landing page setup/demo CTA clicks. |
 | `calendar_source_selected` | Google Calendar or `.ics` import option selection. |

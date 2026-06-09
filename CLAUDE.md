@@ -1,7 +1,7 @@
 
 # Fed Up
 
-Student deadline-week food planning prototype: affordable, low-effort meals with plan failure recovery when cooking becomes unrealistic.
+Student deadline-week food planning app: affordable, low-effort meals with plan failure recovery when cooking becomes unrealistic.
 
 ## Runtime
 
@@ -32,18 +32,18 @@ Exception: Firebase Functions (`functions/`) use Node 24. Repo scripts use Bun t
 
 There are two frontend surfaces. Editing the wrong one is the most common mistake.
 
-### 1. Active Prototype (what users see)
+### 1. Active App (what users see)
 
-- Mount: `src/App.tsx` renders `<DeadlineFoodPrototype />`
-- Root: `src/prototype/DeadlineFoodPrototype.tsx`
+- Mount: `src/App.tsx` renders `<DeadlineFoodApp />`
+- Root: `src/deadline-food/DeadlineFoodApp.tsx`
 - Navigation: hash-based (`#/dashboard`, `#/plan`, etc.)
-- Types: `src/prototype/types.ts`
-- Seed data: `src/prototype/data.ts`
-- Screens: `src/prototype/screens/*.tsx`
-- Components: `src/prototype/components/*.tsx`
+- Types: `src/deadline-food/types.ts`
+- Seed data: `src/deadline-food/data.ts`
+- Screens: `src/deadline-food/screens/*.tsx`
+- Components: `src/deadline-food/components/*.tsx`
 - E2E coverage: `e2e/deadline-flow.spec.ts`
 
-If the user says "the app", "prototype", or names screens like Dashboard, Plan, Discover, Recipes, Settings, Onboarding — edit `src/prototype/*`.
+If the user says "the app", "app", or names screens like Dashboard, Plan, Discover, Recipes, Settings, Onboarding — edit `src/deadline-food/*`.
 
 ### 2. Dormant React Router Slice (not mounted)
 
@@ -80,7 +80,7 @@ bun run verify               # full local gate (lint, typecheck, tests, firebase
 Testing strategy by risk:
 
 - Copy-only UI change: `lint` + `typecheck`
-- Active prototype behaviour change: `lint` + `typecheck` + `test:unit` + `test:e2e`
+- Active app behaviour change: `lint` + `typecheck` + `test:unit` + `test:e2e`
 - Domain planner change: `test:domain` + `typecheck`
 - Backend function change: `firebase:data` + `cd functions && bun run lint && bun run build`
 - GPU recommender change: edit `backend/`, push to staging — CI deploys only affected services
@@ -155,12 +155,12 @@ CI/CD deploys only changed services: editing `backend/recommender-api/` restarts
 ### Firebase Commands
 
 ```sh
-bun run firebase:data        # generate functions/src/generated/prototypeData.ts from src/data/*
+bun run firebase:data        # generate functions/src/generated/appData.ts from src/data/*
 bun run firebase:dev         # emulators + dev server
 bun run firebase:deploy      # deploy functions, rules, indexes
 ```
 
-Never manually edit `functions/src/generated/prototypeData.ts` — always regenerate.
+Never manually edit `functions/src/generated/appData.ts` — always regenerate.
 
 ## API Endpoints (Frontend)
 
@@ -180,7 +180,7 @@ When adding/changing an endpoint: update `src/adapters/deadlineFoodApi.ts`, loca
 - Session ID stored in `localStorage` key `deadlineFoodAnonymousSessionId`
 - Persisted: `prefs`, `deadlines`, `selectedSources`, `onboarded`
 - NOT persisted: `plan`, `customRecipes`, `discoverSaved/Rejected`, route history, rescue choices
-- Schema version tracked in `src/prototype/sessionPersistence.ts`
+- Schema version tracked in `src/deadline-food/sessionPersistence.ts`
 - If breaking schema changes: bump version, update normalization in frontend + backend
 
 ## Environment Variables
@@ -212,11 +212,11 @@ CI/deploy:
 
 ## Implementation Rules
 
-- Do not assume `src/pages/*` or `src/domain/*` power the active prototype — they don't.
+- Do not assume `src/pages/*` or `src/domain/*` power the active app — they don't.
 - Do not add medical/weight-loss claims or calorie-target framing.
-- Do not remove prototype disclaimers about illustrative meal availability/prices.
+- Do not remove app disclaimers about illustrative meal availability/prices.
 - Do not make Firestore readable from the client without deliberate auth/rules design.
-- Use existing UI primitives (`src/components/ui/*`, `src/prototype/components/primitives.tsx`) before adding new UI libraries.
+- Use existing UI primitives (`src/components/ui/*`, `src/deadline-food/components/primitives.tsx`) before adding new UI libraries.
 - Dietary restrictions and allergens are hard filters wherever supported.
 - Budget impact must remain visible when swapping meals.
 - Purchased fallback meals are neutral and legitimate — never frame as failure.

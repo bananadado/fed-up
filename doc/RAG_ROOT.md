@@ -6,7 +6,7 @@ This is the root retrieval file for Fed Up. Load this first before modifying the
 
 ## One Sentence
 
-Fed Up is a student deadline-week food planning prototype that helps users choose affordable, low-effort meals and recover when cooking becomes unrealistic.
+Fed Up is a student deadline-week food planning app that helps users choose affordable, low-effort meals and recover when cooking becomes unrealistic.
 
 ## Product Intent
 
@@ -33,41 +33,41 @@ MVP non-goals:
 
 There are two frontend surfaces in the repo.
 
-1. Active UI: `src/App.tsx` renders `src/prototype/DeadlineFoodPrototype.tsx`.
+1. Active UI: `src/App.tsx` renders `src/deadline-food/DeadlineFoodApp.tsx`.
    - Uses hash navigation like `#/dashboard`, `#/plan`, `#/recipes`.
    - Covered by `e2e/deadline-flow.spec.ts`.
-   - Uses `src/prototype/*` data models and state.
+   - Uses `src/deadline-food/*` data models and state.
 
 2. Dormant React Router deadline-mode vertical slice:
    - `src/app/router.tsx`, `src/pages/*`, `src/domain/*`, `src/state/DeadlineModeProvider.tsx`, `src/components/deadline-food/*`.
    - This is a cleaner deterministic planner matching the original spec.
-   - It is not currently mounted because `src/App.tsx` returns `<DeadlineFoodPrototype />`, not `<AppRouter />`.
+   - It is not currently mounted because `src/App.tsx` returns `<DeadlineFoodApp />`, not `<AppRouter />`.
    - It is covered by `src/domain/planGenerator.test.ts`, but not by the active e2e flow.
 
-Before editing UI, decide which surface the task targets. If the user says "the app", "prototype", or references active screens such as Dashboard, Plan, Discover, Recipes, Settings, or Onboarding, edit `src/prototype/*`. If the user references strategy cards, `/deadline-mode/*` routes, or pure planner logic, edit the dormant router/domain slice unless you are explicitly asked to mount it.
+Before editing UI, decide which surface the task targets. If the user says "the app", "app", or references active screens such as Dashboard, Plan, Discover, Recipes, Settings, or Onboarding, edit `src/deadline-food/*`. If the user references strategy cards, `/deadline-mode/*` routes, or pure planner logic, edit the dormant router/domain slice unless you are explicitly asked to mount it.
 
 ## Current Active User Flow
 
-Active flow from `src/prototype/DeadlineFoodPrototype.tsx`:
+Active flow from `src/deadline-food/DeadlineFoodApp.tsx`:
 
-1. `landing` screen: `src/prototype/screens/Landing.tsx`.
-2. `onboarding` screen: `src/prototype/screens/Onboarding.tsx`.
+1. `landing` screen: `src/deadline-food/screens/Landing.tsx`.
+2. `onboarding` screen: `src/deadline-food/screens/Onboarding.tsx`.
    - Calendar provider selection or `.ics` import.
    - Preferences: max cooking time, budget, kitchen access, university, postcode, dietary requirements, allergens, dislikes, likes.
    - Recipe source priorities.
-3. `dashboard`: `src/prototype/screens/Dashboard.tsx`.
+3. `dashboard`: `src/deadline-food/screens/Dashboard.tsx`.
    - Deadline mode summary, budget card, upcoming meals, next cook.
-4. `calendar`: `src/prototype/screens/CalendarScreen.tsx`.
+4. `calendar`: `src/deadline-food/screens/CalendarScreen.tsx`.
    - Edit/import workload signals.
-5. `plan`: `src/prototype/screens/PlanScreen.tsx`.
+5. `plan`: `src/deadline-food/screens/PlanScreen.tsx`.
    - Full weekly meal plan, budget, shopping list, meal swap/rescue modal.
-6. `discover`: `src/prototype/screens/DiscoverScreen.tsx`.
+6. `discover`: `src/deadline-food/screens/DiscoverScreen.tsx`.
    - Swipe/save/pass recipe discovery and add saved meals into the plan.
-7. `recipes`: `src/prototype/screens/RecipesScreen.tsx`.
+7. `recipes`: `src/deadline-food/screens/RecipesScreen.tsx`.
    - Add custom recipes, calculate cost per portion, optionally pull nutrition estimates.
-8. `recipe-detail`: `src/prototype/screens/RecipeDetailScreen.tsx`.
+8. `recipe-detail`: `src/deadline-food/screens/RecipeDetailScreen.tsx`.
    - View/edit recipe, nutrition, reviews, grocery vendor links.
-9. `settings`: `src/prototype/screens/SettingsScreen.tsx`.
+9. `settings`: `src/deadline-food/screens/SettingsScreen.tsx`.
    - Update preferences and reimport calendar data.
 
 Navigation is internal hash state, not React Router. `Shell.tsx` owns desktop/mobile navigation and back behavior.
@@ -83,7 +83,7 @@ The frontend endpoint selector is `src/adapters/deadlineFoodApi.ts`.
 
 Backend endpoint families:
 
-- Prototype bootstrap data: meals, canonical constraints, metadata.
+- App bootstrap data: meals, canonical constraints, metadata.
 - Anonymous no-sign-in session storage.
 - OpenFoodFacts nutrition estimates for recipe ingredients.
 
@@ -96,7 +96,7 @@ Firebase deployment:
 
 Firestore collections used by Functions:
 
-- `prototypeData/deadlineFood`
+- `appData/deadlineFood`
 - `anonymousSessions/{sessionId}`
 - `openFoodFactsNutritionCache/{base64urlCacheKey}`
 - `serviceRateLimits/openFoodFactsSearchV2`
@@ -112,17 +112,17 @@ Use this table to find the right files quickly.
 | Product brief | `FED_UP_SPEC.md` |
 | Active app mount | `src/App.tsx`, `src/frontend.tsx`, `src/index.html` |
 | Bun server and local API | `src/index.ts` |
-| Active prototype orchestration | `src/prototype/DeadlineFoodPrototype.tsx` |
-| Active prototype types | `src/prototype/types.ts` |
-| Active prototype seed data | `src/prototype/data.ts` |
-| Active onboarding | `src/prototype/screens/Onboarding.tsx` |
-| Active dashboard | `src/prototype/screens/Dashboard.tsx` |
-| Active plan and rescue modal | `src/prototype/screens/PlanScreen.tsx` |
-| Active recipes | `src/prototype/screens/RecipesScreen.tsx`, `src/prototype/screens/RecipeDetailScreen.tsx` |
-| Active settings | `src/prototype/screens/SettingsScreen.tsx` |
-| Active session persistence | `src/prototype/sessionPersistence.ts`, `src/prototype/anonymousSessionApi.ts` |
-| Active nutrition client | `src/prototype/nutrition.ts`, `src/prototype/nutritionApi.ts` |
-| Active shopping list logic | `src/prototype/shopping.ts` |
+| Active app orchestration | `src/deadline-food/DeadlineFoodApp.tsx` |
+| Active app types | `src/deadline-food/types.ts` |
+| Active app seed data | `src/deadline-food/data.ts` |
+| Active onboarding | `src/deadline-food/screens/Onboarding.tsx` |
+| Active dashboard | `src/deadline-food/screens/Dashboard.tsx` |
+| Active plan and rescue modal | `src/deadline-food/screens/PlanScreen.tsx` |
+| Active recipes | `src/deadline-food/screens/RecipesScreen.tsx`, `src/deadline-food/screens/RecipeDetailScreen.tsx` |
+| Active settings | `src/deadline-food/screens/SettingsScreen.tsx` |
+| Active session persistence | `src/deadline-food/sessionPersistence.ts`, `src/deadline-food/anonymousSessionApi.ts` |
+| Active nutrition client | `src/deadline-food/nutrition.ts`, `src/deadline-food/nutritionApi.ts` |
+| Active shopping list logic | `src/deadline-food/shopping.ts` |
 | Active analytics | `src/lib/posthog.ts`, `src/lib/posthogConfig.ts`, `posthog-setup-report.md` |
 | Dormant router | `src/app/router.tsx` |
 | Dormant pages | `src/pages/*.tsx` |
@@ -130,8 +130,8 @@ Use this table to find the right files quickly.
 | Seeded deadline-mode meals | `src/data/seededMeals.ts`, `src/data/meals/*.ts` |
 | Deadline-mode state provider | `src/state/DeadlineModeProvider.tsx`, `src/application/deadlineMode.ts` |
 | Firebase Functions | `functions/src/index.ts` |
-| Generated function seed data | `functions/src/generated/prototypeData.ts` |
-| Data export script | `scripts/export-firebase-prototype-data.ts` |
+| Generated function seed data | `functions/src/generated/appData.ts` |
+| Data export script | `scripts/export-firebase-app-data.ts` |
 | Firestore config | `firebase.json`, `firestore.rules`, `firestore.indexes.json` |
 | Verification scripts | `scripts/verify-local.sh`, `scripts/firebase-local-dev.sh`, `scripts/audit.sh` |
 | CI | `.gitlab-ci.yml` |
@@ -171,7 +171,7 @@ Deploy backend:
 bun run firebase:deploy
 ```
 
-The root verification script installs dependencies if needed, runs root lint/typecheck/tests, exports Firebase prototype data, lints/builds functions, builds the app, runs audit, and then runs Playwright e2e.
+The root verification script installs dependencies if needed, runs root lint/typecheck/tests, exports Firebase app data, lints/builds functions, builds the app, runs audit, and then runs Playwright e2e.
 
 ## RAG Retrieval Guide
 
@@ -185,7 +185,7 @@ For frontend changes, retrieve:
 - [FRONTEND.md](FRONTEND.md)
 - [DATA_AND_DOMAIN.md](DATA_AND_DOMAIN.md)
 - `src/App.tsx`
-- `src/prototype/DeadlineFoodPrototype.tsx`
+- `src/deadline-food/DeadlineFoodApp.tsx`
 - The specific screen/component being edited.
 
 For planner, strategy, or rescue logic, retrieve:
@@ -242,8 +242,8 @@ Do not break these without an explicit product decision:
 
 ## Known Gaps And Cautions
 
-- The active prototype and dormant router use different data models.
-- Active prototype plans are not generated by `src/domain/planGenerator.ts`; they come from `src/prototype/data.ts` and local state.
+- The active app and dormant router use different data models.
+- Active app plans are not generated by `src/domain/planGenerator.ts`; they come from `src/deadline-food/data.ts` and local state.
 - Anonymous session persistence stores preferences, deadlines, selected sources, and onboarded state. It does not persist the active plan, custom recipes, route history, or rescue choices.
 - Local Bun `/api/deadline-food/session` stores sessions in process memory; server restarts clear it.
 - Firebase `deadlineFoodSession` persists anonymous sessions in Firestore.

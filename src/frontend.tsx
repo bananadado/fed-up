@@ -10,7 +10,7 @@ import { createRoot } from "react-dom/client";
 import { PostHogErrorBoundary, PostHogProvider } from "@posthog/react";
 import { App } from "./App";
 import { posthog, registerPostHogSession } from "./lib/posthog";
-import { getOrCreateAnonymousSessionId } from "./prototype/anonymousSessionApi";
+import { getOrCreateAnonymousSessionId } from "./deadline-food/anonymousSessionApi";
 
 const elem = document.getElementById("root")!;
 registerPostHogSession(posthog, getOrCreateAnonymousSessionId());
