@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 2834 nodes, 5556 edges, 178 communities. Commit: e8d9188</p>
+<p class="subtitle">Generated from graphify knowledge graph: 2822 nodes, 5540 edges, 181 communities. Commit: 3df6735</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -75,8 +75,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#community-0">Community 0</a>
     <a href="#community-3">Community 3</a>
     <a href="#community-12">Community 12</a>
-    <a href="#community-64">Community 64</a>
     <a href="#community-4">Community 4</a>
+    <a href="#community-28">Community 28</a>
     <a href="#community-20">Community 20</a>
     <a href="#other">Other</a>
 </div>
@@ -96,11 +96,11 @@ flowchart LR
     class OUTPUTS_DOCS_ED82387C module;
     CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>201 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
-    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>144 nodes</small>")
+    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>135 nodes</small>")
     class INGEST_CACHE_UPDATE_FF457338 module;
-    SERVE_API_35EC8E86("Serving API<br/><small>340 nodes</small>")
+    SERVE_API_35EC8E86("Serving API<br/><small>335 nodes</small>")
     class SERVE_API_35EC8E86 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>766 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>706 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
     COMMUNITY_1_3073A0DB("Community 1<br/><small>95 nodes</small>")
     class COMMUNITY_1_3073A0DB module;
@@ -110,26 +110,26 @@ flowchart LR
     class COMMUNITY_3_D8DFCEA7 module;
     COMMUNITY_12_82F13F05("Community 12<br/><small>43 nodes</small>")
     class COMMUNITY_12_82F13F05 module;
-    COMMUNITY_64_0821645F("Community 64<br/><small>34 nodes</small>")
-    class COMMUNITY_64_0821645F module;
     COMMUNITY_4_AC2DC2A9("Community 4<br/><small>32 nodes</small>")
     class COMMUNITY_4_AC2DC2A9 module;
+    COMMUNITY_28_3AE3708D("Community 28<br/><small>31 nodes</small>")
+    class COMMUNITY_28_3AE3708D module;
     COMMUNITY_20_C86C0F59("Community 20<br/><small>30 nodes</small>")
     class COMMUNITY_20_C86C0F59 module;
-    OTHER_D0941E68("Other<br/><small>697 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>762 nodes</small>")
     class OTHER_D0941E68 module;
-    OTHER_D0941E68 -->|imports x74| TESTS_FIXTURES_B84B1DCC
-    TESTS_FIXTURES_B84B1DCC -->|imports x62| OTHER_D0941E68
+    TESTS_FIXTURES_B84B1DCC -->|imports x170| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x102| TESTS_FIXTURES_B84B1DCC
     COMMUNITY_1_3073A0DB -->|contains x57| OTHER_D0941E68
     CLI_SKILLS_9964CBB8 -->|contains x48| OTHER_D0941E68
     COMMUNITY_0_B056AD3D -->|contains x47| OTHER_D0941E68
-    TESTS_FIXTURES_B84B1DCC -->|imports x35| COMMUNITY_64_0821645F
-    TESTS_FIXTURES_B84B1DCC -->|imports x27| SERVE_API_35EC8E86
+    OTHER_D0941E68 -->|imports x40| SERVE_API_35EC8E86
+    COMMUNITY_28_3AE3708D -->|imports x33| OTHER_D0941E68
+    COMMUNITY_28_3AE3708D -->|imports x33| TESTS_FIXTURES_B84B1DCC
+    SERVE_API_35EC8E86 -->|imports x27| TESTS_FIXTURES_B84B1DCC
+    SERVE_API_35EC8E86 -->|imports x23| OTHER_D0941E68
     OTHER_D0941E68 -->|contains x23| CLI_SKILLS_9964CBB8
-    COMMUNITY_64_0821645F -->|calls x22| SERVE_API_35EC8E86
-    SERVE_API_35EC8E86 -->|imports x19| TESTS_FIXTURES_B84B1DCC
-    COMMUNITY_64_0821645F -->|imports x19| TESTS_FIXTURES_B84B1DCC
-    SERVE_API_35EC8E86 -->|imports x13| COMMUNITY_64_0821645F
+    OTHER_D0941E68 -->|imports x12| COMMUNITY_0_B056AD3D
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,19 +146,19 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>226</td><td><code>24, 35, 36, 43, 45, 52, 54, 55, 60, 73, 88, 108, 136, 138, 150</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>41</td><td><code>18</code></td></tr><tr><td>Outputs &amp; Docs</td><td>28</td><td><code>164, 109, 149</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>201</td><td><code>21, 49, 31, 32, 44, 63, 69, 75, 97, 118, 119, 120, 139, 77</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>144</td><td><code>15, 58, 26, 56, 41, 46, 176, 177</code></td></tr><tr><td>Serving API</td><td>340</td><td><code>8, 9, 10, 11, 2, 27, 48</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>766</td><td><code>82, 6, 5, 38, 22, 7, 17, 19, 25, 30, 33, 76, 47, 14, 28, 39, 42, 173, 70, 34, 87, 51, 110, 112, 129, 171</code></td></tr><tr><td>Community 1</td><td>95</td><td><code>1</code></td></tr><tr><td>Community 0</td><td>88</td><td><code>0</code></td></tr><tr><td>Community 3</td><td>69</td><td><code>3</code></td></tr><tr><td>Community 12</td><td>43</td><td><code>12</code></td></tr><tr><td>Community 64</td><td>34</td><td><code>64</code></td></tr><tr><td>Community 4</td><td>32</td><td><code>4</code></td></tr><tr><td>Community 20</td><td>30</td><td><code>20</code></td></tr><tr><td>Other</td><td>697</td><td><code>23, 13, 40, 29, 37, 50, 135, 167, 59, 61, 62, 16, 174, 85, 65, 74, 165, 53, 166, 79, 80, 175, 168, 169, 57, 84, 170, 68, 78, 90, 99, 72, 81, 86, 89, 91, 92, 93, 96, 98, 100, 101, 102, 103, 104, 105, 106, 107, 115, 116, 117, 122, 123, 124, 71, 94, 95, 111, 113, 114, 121, 125, 130, 134, 140, 141, 159, 126, 127, 128, 131, 132, 133, 137, 142, 144, 145, 146, 147, 148, 151, 152, 160, 161, 162, 163, 172, 83, 143, 153, 154, 155, 156, 157, 158, 66, 67</code></td></tr>
+      <tr><td>Graph Build</td><td>226</td><td><code>24, 35, 36, 43, 45, 52, 54, 55, 60, 73, 88, 108, 136, 138, 150</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>41</td><td><code>18</code></td></tr><tr><td>Outputs &amp; Docs</td><td>28</td><td><code>164, 109, 149</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>201</td><td><code>21, 49, 31, 32, 44, 63, 69, 75, 97, 118, 119, 120, 139, 77</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>135</td><td><code>15, 41, 26, 46, 56, 58, 178, 180</code></td></tr><tr><td>Serving API</td><td>335</td><td><code>8, 10, 11, 9, 2, 27, 48</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>706</td><td><code>82, 5, 38, 7, 17, 19, 22, 6, 13, 25, 14, 51, 33, 39, 30, 76, 47, 42, 70, 34, 87, 179, 110, 112, 129, 171</code></td></tr><tr><td>Community 1</td><td>95</td><td><code>1</code></td></tr><tr><td>Community 0</td><td>88</td><td><code>0</code></td></tr><tr><td>Community 3</td><td>69</td><td><code>3</code></td></tr><tr><td>Community 12</td><td>43</td><td><code>12</code></td></tr><tr><td>Community 4</td><td>32</td><td><code>4</code></td></tr><tr><td>Community 28</td><td>31</td><td><code>28</code></td></tr><tr><td>Community 20</td><td>30</td><td><code>20</code></td></tr><tr><td>Other</td><td>762</td><td><code>23, 64, 40, 173, 29, 37, 176, 135, 50, 167, 59, 165, 61, 62, 16, 177, 85, 166, 65, 74, 174, 53, 79, 80, 168, 169, 175, 57, 84, 68, 78, 90, 99, 170, 72, 81, 86, 89, 91, 92, 93, 96, 98, 100, 101, 102, 103, 104, 105, 106, 107, 115, 116, 117, 122, 123, 124, 71, 94, 95, 111, 113, 114, 121, 125, 130, 134, 140, 141, 159, 126, 127, 128, 131, 132, 133, 137, 142, 144, 145, 146, 147, 148, 151, 152, 160, 161, 162, 163, 172, 83, 143, 153, 154, 155, 156, 157, 158, 66, 67</code></td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Core Flow</h4>
-    <div class="arrow-chain">Ingestion &amp; Updates -&gt; Tests &amp; Fixtures -&gt; Other -&gt; CLI &amp; Skill Installers -&gt; Graph Build -&gt; Analysis &amp; Clustering -&gt; Outputs &amp; Docs</div>
+    <div class="arrow-chain">Community 3 -&gt; Community 1 -&gt; Other -&gt; Tests &amp; Fixtures -&gt; Serving API -&gt; Community 12 -&gt; Outputs &amp; Docs</div>
   </div>
 </div>
 <div class="grid">
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>2834 nodes · 5556 edges · 178 communities (165 shown, 13 thin omitted)</li>
+      <li>2822 nodes · 5540 edges · 181 communities (168 shown, 13 thin omitted)</li>
       <li>Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 151 edges (avg confidence: 0.63)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `cn()` - 47 edges</li>
@@ -1537,85 +1537,68 @@ flowchart LR
 
 <!-- ====== 6. Ingestion & Updates ====== -->
 <h2 id="ingest-cache-update">6. Ingestion &amp; Updates</h2>
-<p>Ingestion &amp; Updates groups implementation around scripts, ingest, openfoodfactsts, nutrition, mostly in scripts/ingest/openfoodfacts.ts, ingest/sources/themealdb.ts, scripts/ingest/normalise.ts. This section covers 144 nodes and 272 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Ingestion &amp; Updates groups implementation around scripts, ingest, openfoodfactsts, themealdbts, mostly in scripts/ingest/openfoodfacts.ts, ingest/sources/themealdb.ts, scripts/ingest/normalise.ts. This section covers 135 nodes and 252 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Ingestion &amp; Updates (144 nodes, 272 edges)
-    subgraph ingest_cache_update_scripts_ingest_recipes_ts_abd8912f["scripts/ingest-recipes.ts"]
-        scripts_ingest_recipes_ts_e7dff0c6("ingest-recipes.ts")
-        scripts_ingest_recipes_initfirebase_da419e0d("initFirebase()<br/><small>scripts/ingest-recipes.ts</small>")
-        scripts_ingest_recipes_main_d186c3d1("main()<br/><small>scripts/ingest-recipes.ts</small>")
-        scripts_ingest_recipes_postrecipesbulk_ae7193c9("postRecipesBulk()<br/><small>scripts/ingest-recipes.ts</small>")
-    end
+    %% Section: Ingestion &amp; Updates (135 nodes, 252 edges)
     subgraph ingest_cache_update_scripts_ingest_openfoodfacts_6f1d8700["scripts/ingest/openfoodfacts.ts"]
+        scripts_ingest_openfoodfacts_ts_4d5d38e2("openfoodfacts.ts")
         ingest_openfoodfacts_cachekeyforname_87eabe8e("cacheKeyForName()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
-        ingest_openfoodfacts_estimateingredientnutrition_7f09122e("estimateIngredientNutrition()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_normalizeingredientkey_212ec9b9("normalizeIngredientKey()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_categoryterms_c2af8c16("categoryTerms()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_tocategorytag_792a064d("toCategoryTag()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_cachedocid_b09db8b1("cacheDocId()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
         ingest_openfoodfacts_readcachedproduct_e441acea("readCachedProduct()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
-        ingest_openfoodfacts_totalnutritionfromestimates_07a08754("totalNutritionFromEstimates()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_writecachedproduct_8ce3ae18("writeCachedProduct()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_uniqueterms_21dfedce("uniqueTerms()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_findproductforingredient_d210b887("findProductForIngredient()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_gramsforingredient_0332bf7a("gramsForIngredient()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_estimateingredientnutrition_7f09122e("estimateIngredientNutrition()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
+        ingest_openfoodfacts_roundmacro_ac359b40("roundMacro()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
     end
-    subgraph ingest_cache_update_scripts_ingest_recommender_t_c4029d8e["scripts/ingest/recommender.ts"]
-        ingest_recommender_bulkupsertrecipes_30c59fab("bulkUpsertRecipes()<br/><small>scripts/ingest/recommender.ts</small>")
-        ingest_recommender_listrecipes_805f7ed3("listRecipes()<br/><small>scripts/ingest/recommender.ts</small>")
+    subgraph ingest_cache_update_ingest_sources_themealdb_ts_4a113243["ingest/sources/themealdb.ts"]
+        scripts_ingest_sources_themealdb_ts_6126aa11("themealdb.ts")
+        sources_themealdb_normalise_a2a0a588("normalise()<br/><small>ingest/sources/themealdb.ts</small>")
     end
-    subgraph ingest_cache_update_scripts_populate_nutrition_c_f27298a3["scripts/populate-nutrition-cache.ts"]
-        scripts_populate_nutrition_cache_ts_828d932c("populate-nutrition-cache.ts")
-        scripts_populate_nutrition_cache_main_d952b68d("main()<br/><small>scripts/populate-nutrition-cache.ts</small>")
-    end
-    subgraph ingest_cache_update_scripts_recalc_nutrition_ts_d6ee161e["scripts/recalc-nutrition.ts"]
-        scripts_recalc_nutrition_ts_9839d525("recalc-nutrition.ts")
-        scripts_recalc_nutrition_main_fc91c473("main()<br/><small>scripts/recalc-nutrition.ts</small>")
-    end
-    subgraph ingest_cache_update_scripts_recalc_prices_ts_c5a2ee87["scripts/recalc-prices.ts"]
-        scripts_recalc_prices_ts_6d55c36f("recalc-prices.ts")
-        scripts_recalc_prices_main_59a22928("main()<br/><small>scripts/recalc-prices.ts</small>")
-    end
-    ingest_firebase_initfirebase_6e02e2ec("initFirebase()<br/><small>scripts/ingest/firebase.ts</small>")
-    ingest_prices_estimatestructuredpricepence_632ddc42("estimateStructuredPricePence()<br/><small>scripts/ingest/prices.ts</small>")
-    scripts_recalc_prices_main_59a22928 -->|calls| ingest_firebase_initfirebase_6e02e2ec
-    scripts_recalc_prices_main_59a22928 -->|calls| ingest_prices_estimatestructuredpricepence_632ddc42
-    scripts_recalc_prices_main_59a22928 -->|calls| ingest_recommender_bulkupsertrecipes_30c59fab
-    scripts_recalc_prices_main_59a22928 -->|calls| ingest_recommender_listrecipes_805f7ed3
-    scripts_recalc_nutrition_main_fc91c473 -->|calls| ingest_firebase_initfirebase_6e02e2ec
-    scripts_recalc_nutrition_main_fc91c473 -->|calls| ingest_openfoodfacts_cachekeyforname_87eabe8e
-    scripts_recalc_nutrition_main_fc91c473 -->|calls| ingest_openfoodfacts_estimateingredientnutrition_7f09122e
-    scripts_recalc_nutrition_main_fc91c473 -->|calls| ingest_openfoodfacts_readcachedproduct_e441acea
-    scripts_recalc_nutrition_main_fc91c473 -->|calls| ingest_openfoodfacts_totalnutritionfromestimates_07a08754
-    scripts_recalc_nutrition_main_fc91c473 -->|calls| ingest_recommender_bulkupsertrecipes_30c59fab
-    scripts_recalc_nutrition_main_fc91c473 -->|calls| ingest_recommender_listrecipes_805f7ed3
-    scripts_ingest_recipes_initfirebase_da419e0d -->|calls| scripts_ingest_recipes_main_d186c3d1
-    scripts_populate_nutrition_cache_main_d952b68d -->|calls| ingest_firebase_initfirebase_6e02e2ec
-    scripts_populate_nutrition_cache_main_d952b68d -->|calls| ingest_openfoodfacts_cachekeyforname_87eabe8e
-    scripts_populate_nutrition_cache_main_d952b68d -->|calls| ingest_openfoodfacts_readcachedproduct_e441acea
-    scripts_populate_nutrition_cache_main_d952b68d -->|calls| ingest_recommender_listrecipes_805f7ed3
-    scripts_recalc_prices_ts_6d55c36f -->|imports| ingest_firebase_initfirebase_6e02e2ec
-    scripts_recalc_prices_ts_6d55c36f -->|imports| ingest_prices_estimatestructuredpricepence_632ddc42
-    scripts_recalc_prices_ts_6d55c36f -->|imports| ingest_recommender_bulkupsertrecipes_30c59fab
-    scripts_recalc_prices_ts_6d55c36f -->|imports| ingest_recommender_listrecipes_805f7ed3
-    scripts_recalc_nutrition_ts_9839d525 -->|imports| ingest_firebase_initfirebase_6e02e2ec
-    scripts_recalc_nutrition_ts_9839d525 -->|imports| ingest_openfoodfacts_cachekeyforname_87eabe8e
-    scripts_recalc_nutrition_ts_9839d525 -->|imports| ingest_openfoodfacts_estimateingredientnutrition_7f09122e
-    scripts_recalc_nutrition_ts_9839d525 -->|imports| ingest_openfoodfacts_readcachedproduct_e441acea
-    %% Omitted for readability: 126 nodes, 7 edges
-    class scripts_ingest_recipes_ts_e7dff0c6 module;
-    class scripts_ingest_recipes_initfirebase_da419e0d function;
-    class scripts_ingest_recipes_main_d186c3d1 function;
-    class scripts_ingest_recipes_postrecipesbulk_ae7193c9 function;
+    scripts_populate_nutrition_cache_ts_828d932c("populate-nutrition-cache.ts")
+    scripts_recalc_nutrition_main_fc91c473("main()<br/><small>scripts/recalc-nutrition.ts</small>")
+    scripts_recalc_prices_ts_6d55c36f("recalc-prices.ts")
+    ingest_openfoodfacts_normalizeingredientkey_212ec9b9 -->|calls| ingest_openfoodfacts_cachekeyforname_87eabe8e
+    ingest_openfoodfacts_normalizeingredientkey_212ec9b9 -->|calls| ingest_openfoodfacts_categoryterms_c2af8c16
+    ingest_openfoodfacts_normalizeingredientkey_212ec9b9 -->|calls| ingest_openfoodfacts_tocategorytag_792a064d
+    ingest_openfoodfacts_cachedocid_b09db8b1 -->|calls| ingest_openfoodfacts_readcachedproduct_e441acea
+    ingest_openfoodfacts_cachedocid_b09db8b1 -->|calls| ingest_openfoodfacts_writecachedproduct_8ce3ae18
+    ingest_openfoodfacts_uniqueterms_21dfedce -->|calls| ingest_openfoodfacts_categoryterms_c2af8c16
+    ingest_openfoodfacts_categoryterms_c2af8c16 -->|calls| ingest_openfoodfacts_findproductforingredient_d210b887
+    ingest_openfoodfacts_gramsforingredient_0332bf7a -->|calls| ingest_openfoodfacts_estimateingredientnutrition_7f09122e
+    ingest_openfoodfacts_estimateingredientnutrition_7f09122e -->|calls| scripts_recalc_nutrition_main_fc91c473
+    ingest_openfoodfacts_cachekeyforname_87eabe8e -->|calls| scripts_recalc_nutrition_main_fc91c473
+    ingest_openfoodfacts_readcachedproduct_e441acea -->|calls| scripts_recalc_nutrition_main_fc91c473
+    scripts_ingest_openfoodfacts_ts_4d5d38e2 -->|imports| scripts_populate_nutrition_cache_ts_828d932c
+    ingest_openfoodfacts_cachekeyforname_87eabe8e -->|imports| scripts_populate_nutrition_cache_ts_828d932c
+    ingest_openfoodfacts_readcachedproduct_e441acea -->|imports| scripts_populate_nutrition_cache_ts_828d932c
+    ingest_openfoodfacts_writecachedproduct_8ce3ae18 -->|imports| scripts_populate_nutrition_cache_ts_828d932c
+    %% Omitted for readability: 117 nodes, 0 edges
+    class scripts_ingest_openfoodfacts_ts_4d5d38e2 module;
     class ingest_openfoodfacts_cachekeyforname_87eabe8e function;
-    class ingest_openfoodfacts_estimateingredientnutrition_7f09122e function;
+    class ingest_openfoodfacts_normalizeingredientkey_212ec9b9 function;
+    class ingest_openfoodfacts_categoryterms_c2af8c16 function;
+    class ingest_openfoodfacts_tocategorytag_792a064d function;
+    class ingest_openfoodfacts_cachedocid_b09db8b1 function;
     class ingest_openfoodfacts_readcachedproduct_e441acea function;
-    class ingest_openfoodfacts_totalnutritionfromestimates_07a08754 function;
-    class ingest_recommender_bulkupsertrecipes_30c59fab function;
-    class ingest_recommender_listrecipes_805f7ed3 function;
+    class ingest_openfoodfacts_writecachedproduct_8ce3ae18 function;
+    class ingest_openfoodfacts_uniqueterms_21dfedce function;
+    class ingest_openfoodfacts_findproductforingredient_d210b887 function;
+    class ingest_openfoodfacts_gramsforingredient_0332bf7a function;
+    class ingest_openfoodfacts_estimateingredientnutrition_7f09122e function;
+    class ingest_openfoodfacts_roundmacro_ac359b40 function;
+    class scripts_ingest_sources_themealdb_ts_6126aa11 module;
+    class sources_themealdb_normalise_a2a0a588 function;
     class scripts_populate_nutrition_cache_ts_828d932c module;
-    class scripts_populate_nutrition_cache_main_d952b68d function;
-    class scripts_recalc_nutrition_ts_9839d525 module;
     class scripts_recalc_nutrition_main_fc91c473 function;
     class scripts_recalc_prices_ts_6d55c36f module;
-    class scripts_recalc_prices_main_59a22928 function;
-    class ingest_firebase_initfirebase_6e02e2ec function;
-    class ingest_prices_estimatestructuredpricepence_632ddc42 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -1639,158 +1622,14 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>normalise.ts</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Nutrition</code><br><small style="color:var(--muted)">scripts/ingest/types.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">scripts/ingest/types.ts</small></td>
-  <td>Module file in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>ALLERGEN_KEYWORDS</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>ALLERGEN_KEYWORDS node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>detectAllergens()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>detectAllergens() node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>detectDietaryTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>detectDietaryTags() node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>detectSuitabilityTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>detectSuitabilityTags() node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>CUISINE_FLAVORS</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>CUISINE_FLAVORS node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>inferFlavorProfile()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>inferFlavorProfile() node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>TECHNIQUE_PATTERNS</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>TECHNIQUE_PATTERNS node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>extractTechniques()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>extractTechniques() node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>EQUIPMENT_PATTERNS</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>EQUIPMENT_PATTERNS node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>extractEquipment()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>extractEquipment() node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>CATEGORY_FALLBACK_MINUTES</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>CATEGORY_FALLBACK_MINUTES node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>estimatePrepMinutes()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>estimatePrepMinutes() node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>CATEGORY_NUTRITION</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>CATEGORY_NUTRITION node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>DEFAULT_NUTRITION</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>DEFAULT_NUTRITION node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>estimateNutrition()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>estimateNutrition() node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>splitInstructions()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>splitInstructions() node in scripts/ingest/normalise.ts.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>estimatePricePence()</code><br><small style="color:var(--muted)">scripts/ingest/prices.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
-  <td>estimatePricePence() node in scripts/ingest/prices.ts.</td>
-</tr>
-<tr>
-  <td>19</td>
   <td><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
-  <td><code>detectAllergens()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small><br><code>detectDietaryTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small><br><code>detectSuitabilityTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small><br>+14 more</td>
-  <td>No direct outbound edge</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>detectAllergens()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small><br><code>detectDietaryTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small><br><code>detectSuitabilityTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small><br>+12 more</td>
   <td>Module file in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>2</td>
   <td><code>SKIP_CATEGORIES</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1798,7 +1637,7 @@ flowchart LR
   <td>SKIP_CATEGORIES node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>3</td>
   <td><code>CATEGORY_EMOJI</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1806,7 +1645,7 @@ flowchart LR
   <td>CATEGORY_EMOJI node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>4</td>
   <td><code>sleep()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1814,7 +1653,7 @@ flowchart LR
   <td>sleep() node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>5</td>
   <td><code>getJson()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1822,7 +1661,7 @@ flowchart LR
   <td>getJson() node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>6</td>
   <td><code>CategoryListResponse</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1830,7 +1669,7 @@ flowchart LR
   <td>CategoryListResponse node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>7</td>
   <td><code>MealSummaryResponse</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1838,7 +1677,7 @@ flowchart LR
   <td>MealSummaryResponse node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>8</td>
   <td><code>MealDetail</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1846,7 +1685,7 @@ flowchart LR
   <td>MealDetail node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>9</td>
   <td><code>MealDetailResponse</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1854,7 +1693,7 @@ flowchart LR
   <td>MealDetailResponse node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>10</td>
   <td><code>extractRawIngredients()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1862,7 +1701,15 @@ flowchart LR
   <td>extractRawIngredients() node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>11</td>
+  <td><code>parseMeasureToIngredient()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>parseMeasureToIngredient() node in ingest/sources/themealdb.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
   <td><code>assignMealType()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1870,12 +1717,148 @@ flowchart LR
   <td>assignMealType() node in ingest/sources/themealdb.ts.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>13</td>
   <td><code>assignMealSlots()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
   <td>assignMealSlots() node in ingest/sources/themealdb.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>assignMealSlots()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>assignMealType()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>extractRawIngredients()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><code>detectAllergens()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small><br><code>detectDietaryTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small><br><code>detectSuitabilityTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small><br>+7 more</td>
+  <td>normalise() node in ingest/sources/themealdb.ts.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>NormalisedRecipe</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>NormalisedRecipe node in ingest/sources/themealdb.ts.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>fetchCategories()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>fetchAllMeals()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td>fetchCategories() node in ingest/sources/themealdb.ts.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>fetchMealIdsByCategory()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>sleep()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><code>fetchAllMeals()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td>fetchMealIdsByCategory() node in ingest/sources/themealdb.ts.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>fetchMealDetail()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>sleep()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><code>fetchAllMeals()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td>fetchMealDetail() node in ingest/sources/themealdb.ts.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>fetchAllMeals()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>fetchCategories()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>fetchMealDetail()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>fetchMealIdsByCategory()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br>+1 more</td>
+  <td><code>ingest-recipes.ts</code><br><small style="color:var(--muted)">scripts/ingest-recipes.ts</small><br><code>main()</code><br><small style="color:var(--muted)">scripts/ingest-recipes.ts</small></td>
+  <td>fetchAllMeals() node in ingest/sources/themealdb.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>normalise.ts</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td><code>Nutrition</code><br><small style="color:var(--muted)">scripts/ingest/types.ts</small><br><code>types.ts</code><br><small style="color:var(--muted)">scripts/ingest/types.ts</small></td>
+  <td>Module file in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>ALLERGEN_KEYWORDS</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>ALLERGEN_KEYWORDS node in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>detectAllergens()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>detectAllergens() node in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>detectDietaryTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>detectDietaryTags() node in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>detectSuitabilityTags()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>detectSuitabilityTags() node in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>CUISINE_FLAVORS</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>CUISINE_FLAVORS node in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>inferFlavorProfile()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>inferFlavorProfile() node in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>TECHNIQUE_PATTERNS</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>TECHNIQUE_PATTERNS node in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>extractTechniques()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>extractTechniques() node in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>EQUIPMENT_PATTERNS</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>EQUIPMENT_PATTERNS node in scripts/ingest/normalise.ts.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>extractEquipment()</code><br><small style="color:var(--muted)">scripts/ingest/normalise.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>normalise()</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small><br><code>themealdb.ts</code><br><small style="color:var(--muted)">ingest/sources/themealdb.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>extractEquipment() node in scripts/ingest/normalise.ts.</td>
 </tr>
 </table>
 
@@ -1884,31 +1867,31 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>scripts/ingest/openfoodfacts.ts</code></td><td>25 nodes</td></tr>
-<tr><td><code>ingest/sources/themealdb.ts</code></td><td>18 nodes</td></tr>
+      <tr><td><code>scripts/ingest/openfoodfacts.ts</code></td><td>24 nodes</td></tr>
+<tr><td><code>ingest/sources/themealdb.ts</code></td><td>19 nodes</td></tr>
 <tr><td><code>scripts/ingest/normalise.ts</code></td><td>17 nodes</td></tr>
 <tr><td><code>scripts/ingest/usda.ts</code></td><td>15 nodes</td></tr>
 <tr><td><code>scripts/ingest-recipes.ts</code></td><td>13 nodes</td></tr>
 <tr><td><code>scripts/populate-nutrition-cache.ts</code></td><td>12 nodes</td></tr>
-<tr><td><code>scripts/ingest/prices.ts</code></td><td>9 nodes</td></tr>
 <tr><td><code>scripts/recalc-nutrition.ts</code></td><td>7 nodes</td></tr>
+<tr><td><code>scripts/recalc-prices.ts</code></td><td>7 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x130, calls x67, imports x51, imports x24. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x122, calls x61, imports x48, imports x21. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 7. Serving API ====== -->
 <h2 id="serve-api">7. Serving API</h2>
-<p>Serving API groups implementation around api, backend, recommender, home, mostly in recommender-api/app/main.py, drp03/doc/FIREBASE_BACKEND.md, doc/API_CONTRACTS.md. This section covers 340 nodes and 866 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Serving API groups implementation around api, backend, recommender, home, mostly in recommender-api/app/main.py, drp03/doc/FIREBASE_BACKEND.md, doc/API_CONTRACTS.md. This section covers 335 nodes and 805 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Serving API (340 nodes, 866 edges)
+    %% Section: Serving API (335 nodes, 805 edges)
     subgraph serve_api_recommender_api_app_main_py_9a94cf49["recommender-api/app/main.py"]
         backend_recommender_api_app_main_py_70db9597("main.py")
         app_main_log_event_533e11be("log_event()<br/><small>recommender-api/app/main.py</small>")
@@ -1925,7 +1908,7 @@ flowchart LR
         app_main_lifespan_8cd9c108("lifespan()<br/><small>recommender-api/app/main.py</small>")
         app_main_log_requests_3e49e1f4("log_requests()<br/><small>recommender-api/app/main.py</small>")
     end
-    src_pages_deadlinesetuppage_tsx_e932c009("DeadlineSetupPage.tsx")
+    app_recommend_recommend_e12a69f0("recommend()<br/><small>recommender-api/app/recommend.py</small>")
     src_pages_plandashboardpage_tsx_89a95277("PlanDashboardPage.tsx")
     src_pages_recipepage_tsx_a5da0078("RecipePage.tsx")
     src_pages_rescuepage_tsx_934ae23d("RescuePage.tsx")
@@ -1941,7 +1924,9 @@ flowchart LR
     app_main_log_event_533e11be -->|calls| app_main_job_recompute_users_e86f1919
     app_main_log_event_533e11be -->|calls| app_main_lifespan_8cd9c108
     app_main_log_event_533e11be -->|calls| app_main_log_requests_3e49e1f4
-    %% Omitted for readability: 322 nodes, 0 edges
+    app_main_get_recommendations_5e6f4e20 -->|calls| app_recommend_recommend_e12a69f0
+    backend_recommender_api_app_main_py_70db9597 -->|imports| app_recommend_recommend_e12a69f0
+    %% Omitted for readability: 317 nodes, 0 edges
     class backend_recommender_api_app_main_py_70db9597 module;
     class app_main_log_event_533e11be function;
     class app_main_context_deadlines_8ce8894a function;
@@ -1956,7 +1941,7 @@ flowchart LR
     class app_main_job_recompute_users_e86f1919 function;
     class app_main_lifespan_8cd9c108 function;
     class app_main_log_requests_3e49e1f4 function;
-    class src_pages_deadlinesetuppage_tsx_e932c009 ui;
+    class app_recommend_recommend_e12a69f0 function;
     class src_pages_plandashboardpage_tsx_89a95277 ui;
     class src_pages_recipepage_tsx_a5da0078 ui;
     class src_pages_rescuepage_tsx_934ae23d ui;
@@ -2240,70 +2225,75 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x290, references x202, imports x107, calls x83. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x286, references x202, calls x81, imports x66. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 8. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">8. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around test, prototype, home, kolesniii, mostly in drp03/doc/DEVELOPMENT_AND_TESTING.md, recommender-api/tests/test_recommend_unit.py, recommender-api/tests/conftest.py. This section covers 766 nodes and 1745 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around test, home, kolesniii, uni, mostly in drp03/doc/DEVELOPMENT_AND_TESTING.md, recommender-api/tests/test_recommend_unit.py, recommender-api/tests/conftest.py. This section covers 706 nodes and 1446 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (766 nodes, 1745 edges)
-    subgraph tests_fixtures_recommender_api_tests_conftest_py_85c59f35["recommender-api/tests/conftest.py"]
-        tests_conftest_sample_recipe_249931a7("sample_recipe()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_fake_embed_single_b23a3bfa("fake_embed_single()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_fake_embed_texts_4b0dce71("fake_embed_texts()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_parse_vector_d71deacb("_parse_vector()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_fakesession_recommend_candidates_766a776d("_recommend_candidates()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_cosine_51bd5da4("_cosine()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_mappings_67d4d83a("_Mappings<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_mappings_all_66d31670("all()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_mappings_first_27161191("first()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_mappings_init_b65df564("__init__()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_fakeresult_405e77f7("FakeResult<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_fakeresult_all_2539da37("all()<br/><small>recommender-api/tests/conftest.py</small>")
-        tests_conftest_fakeresult_init_a9ef0f29("__init__()<br/><small>recommender-api/tests/conftest.py</small>")
+    %% Section: Tests &amp; Fixtures (706 nodes, 1446 edges)
+    subgraph tests_fixtures_src_domain_ingredientCosting_ts_d00216e7["src/domain/ingredientCosting.ts"]
+        domain_ingredientcosting_estimaterawmeasurescost_23e6e627("estimateRawMeasuresCostPence()<br/><small>src/domain/ingredientCosting.ts</small>")
+        domain_ingredientcosting_estimaterecipecostpence_ea1fc68a("estimateRecipeCostPence()<br/><small>src/domain/ingredientCosting.ts</small>")
+        domain_ingredientcosting_normalizename_13df8459("normalizeName()<br/><small>src/domain/ingredientCosting.ts</small>")
+        domain_ingredientcosting_findingredientpricereco_819f5994("findIngredientPriceRecord()<br/><small>src/domain/ingredientCosting.ts</small>")
+        domain_ingredientcosting_estimateingredientcostp_2ded2ead("estimateIngredientCostPence()<br/><small>src/domain/ingredientCosting.ts</small>")
+        domain_ingredientcosting_roundpencetonearestfive_8ff6776b("roundPenceToNearestFive()<br/><small>src/domain/ingredientCosting.ts</small>")
     end
     subgraph tests_fixtures_recommender_api_tests_test_recomm_acf4a69b["recommender-api/tests/test_recommend_api.py"]
         tests_test_recommend_api_seed_user_20dec82f("_seed_user()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
         tests_test_recommend_api_recommend_1bfbc378("_recommend()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
+        tests_test_recommend_api_seed_recipe_4ae5d63f("_seed_recipe()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
     end
-    subgraph tests_fixtures_src_prototype_utils_ts_1a67a27f["src/prototype/utils.ts"]
-        src_prototype_utils_ts_ab166376("utils.ts")
-        prototype_utils_money_e5ae07fe("money()<br/><small>src/prototype/utils.ts</small>")
+    subgraph tests_fixtures_src_prototype_nutrition_ts_5c24a940["src/prototype/nutrition.ts"]
+        prototype_nutrition_roundmacro_f349ffbb("roundMacro()<br/><small>src/prototype/nutrition.ts</small>")
+        prototype_nutrition_totalnutritionfromestimates_617c1ad8("totalNutritionFromEstimates()<br/><small>src/prototype/nutrition.ts</small>")
+        prototype_nutrition_gramsforingredient_1b4740a6("gramsForIngredient()<br/><small>src/prototype/nutrition.ts</small>")
     end
-    src_prototype_deadlinefoodprototype_tsx_f5893eb1("DeadlineFoodPrototype.tsx")
-    tests_conftest_fake_embed_single_b23a3bfa -->|calls| tests_conftest_fake_embed_texts_4b0dce71
-    tests_conftest_parse_vector_d71deacb -->|calls| tests_conftest_fakesession_recommend_candidates_766a776d
-    tests_conftest_cosine_51bd5da4 -->|calls| tests_conftest_fakesession_recommend_candidates_766a776d
-    tests_conftest_mappings_67d4d83a -->|method| tests_conftest_mappings_all_66d31670
-    tests_conftest_mappings_67d4d83a -->|method| tests_conftest_mappings_first_27161191
-    tests_conftest_mappings_67d4d83a -->|method| tests_conftest_mappings_init_b65df564
-    tests_conftest_fakeresult_405e77f7 -->|method| tests_conftest_fakeresult_all_2539da37
-    tests_conftest_fakeresult_405e77f7 -->|method| tests_conftest_fakeresult_init_a9ef0f29
-    %% Omitted for readability: 748 nodes, 0 edges
-    class tests_conftest_sample_recipe_249931a7 test;
-    class tests_conftest_fake_embed_single_b23a3bfa test;
-    class tests_conftest_fake_embed_texts_4b0dce71 test;
-    class tests_conftest_parse_vector_d71deacb test;
-    class tests_conftest_fakesession_recommend_candidates_766a776d test;
-    class tests_conftest_cosine_51bd5da4 test;
-    class tests_conftest_mappings_67d4d83a test;
-    class tests_conftest_mappings_all_66d31670 test;
-    class tests_conftest_mappings_first_27161191 test;
-    class tests_conftest_mappings_init_b65df564 test;
-    class tests_conftest_fakeresult_405e77f7 test;
-    class tests_conftest_fakeresult_all_2539da37 test;
-    class tests_conftest_fakeresult_init_a9ef0f29 test;
+    subgraph tests_fixtures_recommender_api_tests_conftest_py_85c59f35["recommender-api/tests/conftest.py"]
+        tests_conftest_sample_recipe_249931a7("sample_recipe()<br/><small>recommender-api/tests/conftest.py</small>")
+        tests_conftest_fakesession_87518332("FakeSession<br/><small>recommender-api/tests/conftest.py</small>")
+    end
+    subgraph tests_fixtures_scripts_ingest_prices_ts_fbdf29df["scripts/ingest/prices.ts"]
+        ingest_prices_estimatepricepence_2e707348("estimatePricePence()<br/><small>scripts/ingest/prices.ts</small>")
+        ingest_prices_estimatestructuredpricepence_632ddc42("estimateStructuredPricePence()<br/><small>scripts/ingest/prices.ts</small>")
+    end
+    prototype_costestimate_estimaterecipecost_68d3b94b("estimateRecipeCost()<br/><small>src/prototype/costEstimate.ts</small>")
+    src_prototype_utils_ts_ab166376("utils.ts")
+    ingest_prices_estimatepricepence_2e707348 -->|calls| domain_ingredientcosting_estimaterawmeasurescost_23e6e627
+    ingest_prices_estimatestructuredpricepence_632ddc42 -->|calls| domain_ingredientcosting_estimaterecipecostpence_ea1fc68a
+    domain_ingredientcosting_normalizename_13df8459 -->|calls| domain_ingredientcosting_findingredientpricereco_819f5994
+    domain_ingredientcosting_findingredientpricereco_819f5994 -->|calls| domain_ingredientcosting_estimateingredientcostp_2ded2ead
+    domain_ingredientcosting_roundpencetonearestfive_8ff6776b -->|calls| domain_ingredientcosting_estimaterecipecostpence_ea1fc68a
+    domain_ingredientcosting_estimaterecipecostpence_ea1fc68a -->|calls| domain_ingredientcosting_estimaterawmeasurescost_23e6e627
+    domain_ingredientcosting_estimaterecipecostpence_ea1fc68a -->|calls| prototype_costestimate_estimaterecipecost_68d3b94b
+    prototype_nutrition_roundmacro_f349ffbb -->|calls| prototype_nutrition_totalnutritionfromestimates_617c1ad8
+    tests_conftest_sample_recipe_249931a7 -->|calls| tests_test_recommend_api_seed_recipe_4ae5d63f
+    %% Omitted for readability: 688 nodes, 0 edges
+    class domain_ingredientcosting_estimaterawmeasurescost_23e6e627 function;
+    class domain_ingredientcosting_estimaterecipecostpence_ea1fc68a function;
+    class domain_ingredientcosting_normalizename_13df8459 function;
+    class domain_ingredientcosting_findingredientpricereco_819f5994 function;
+    class domain_ingredientcosting_estimateingredientcostp_2ded2ead function;
+    class domain_ingredientcosting_roundpencetonearestfive_8ff6776b function;
     class tests_test_recommend_api_seed_user_20dec82f test;
     class tests_test_recommend_api_recommend_1bfbc378 test;
+    class tests_test_recommend_api_seed_recipe_4ae5d63f test;
+    class prototype_nutrition_roundmacro_f349ffbb function;
+    class prototype_nutrition_totalnutritionfromestimates_617c1ad8 function;
+    class prototype_nutrition_gramsforingredient_1b4740a6 function;
+    class tests_conftest_sample_recipe_249931a7 test;
+    class tests_conftest_fakesession_87518332 test;
+    class ingest_prices_estimatepricepence_2e707348 function;
+    class ingest_prices_estimatestructuredpricepence_632ddc42 function;
+    class prototype_costestimate_estimaterecipecost_68d3b94b test;
     class src_prototype_utils_ts_ab166376 module;
-    class prototype_utils_money_e5ae07fe function;
-    class src_prototype_deadlinefoodprototype_tsx_f5893eb1 ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -2576,15 +2566,15 @@ flowchart LR
 <tr><td><code>recommender-api/tests/test_recommend_unit.py</code></td><td>36 nodes</td></tr>
 <tr><td><code>recommender-api/tests/conftest.py</code></td><td>34 nodes</td></tr>
 <tr><td><code>functions/src/autoPlan.test.ts</code></td><td>32 nodes</td></tr>
-<tr><td><code>src/prototype/ingredients.ts</code></td><td>31 nodes</td></tr>
 <tr><td><code>recommender-api/app/context.py</code></td><td>30 nodes</td></tr>
 <tr><td><code>recommender-api/tests/test_recommend_api.py</code></td><td>30 nodes</td></tr>
+<tr><td><code>src/prototype/ingredients.ts</code></td><td>29 nodes</td></tr>
 <tr><td><code>drp03/doc/DATA_AND_DOMAIN.md</code></td><td>24 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x760, imports x350, calls x265, imports x152. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x707, calls x245, imports x195, imports x84. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3945,372 +3935,8 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 13. Community 64 ====== -->
-<h2 id="community-64">13. Community 64</h2>
-<p>Community 64 groups implementation around components, selecttsx, prototype, primitivestsx, mostly in components/ui/select.tsx, prototype/components/primitives.tsx, components/ui/card.tsx. This section covers 34 nodes and 77 internal edges; the diagram shows only representative relationships to stay readable.</p>
-
-<div class="mermaid">
-%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
-flowchart LR
-    %% Section: Community 64 (34 nodes, 77 edges)
-    subgraph community_64_components_ui_select_tsx_2409b7a9["components/ui/select.tsx"]
-        ui_select_selectcontent_0e8c3125("SelectContent()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectitem_6d771bd5("SelectItem()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectlabel_5e9f580d("SelectLabel()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectscrolldownbutton_86f5b0fc("SelectScrollDownButton()<br/><small>components/ui/select.tsx</small>")
-    end
-    subgraph community_64_components_ui_card_tsx_4cd30f92["components/ui/card.tsx"]
-        ui_card_cardaction_a1a717ff("CardAction()<br/><small>components/ui/card.tsx</small>")
-        ui_card_carddescription_40d0a254("CardDescription()<br/><small>components/ui/card.tsx</small>")
-        ui_card_cardfooter_2f80e30f("CardFooter()<br/><small>components/ui/card.tsx</small>")
-    end
-    subgraph community_64_prototype_components_primitives_tsx_efa55048["prototype/components/primitives.tsx"]
-        src_prototype_components_primitives_tsx_84931f01("primitives.tsx")
-        components_primitives_field_80de4fc0("Field()<br/><small>prototype/components/primitives.tsx</small>")
-        components_primitives_selectfield_18905dd2("SelectField()<br/><small>prototype/components/primitives.tsx</small>")
-    end
-    subgraph community_64_prototype_components_UniversityFiel_d070b8e2["prototype/components/UniversityField.tsx"]
-        src_prototype_components_universityfield_tsx_8d7104f0("UniversityField.tsx")
-        components_universityfield_universityfield_0abccc0d("UniversityField()<br/><small>prototype/components/UniversityField.tsx</small>")
-    end
-    subgraph community_64_src_lib_utils_ts_f4c2cb9f["src/lib/utils.ts"]
-        lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
-        src_lib_utils_ts_0eb4cd5d("utils.ts")
-    end
-    ui_input_input_54fb3925("Input()<br/><small>components/ui/input.tsx</small>")
-    ui_label_label_def6cab4("Label()<br/><small>components/ui/label.tsx</small>")
-    screens_onboarding_preferencesection_5c73c125("PreferenceSection()<br/><small>prototype/screens/Onboarding.tsx</small>")
-    src_apitester_tsx_e67681e5("APITester.tsx")
-    lib_utils_cn_b8743bb6 -->|calls| components_primitives_field_80de4fc0
-    lib_utils_cn_b8743bb6 -->|calls| components_primitives_selectfield_18905dd2
-    lib_utils_cn_b8743bb6 -->|calls| components_universityfield_universityfield_0abccc0d
-    lib_utils_cn_b8743bb6 -->|calls| screens_onboarding_preferencesection_5c73c125
-    lib_utils_cn_b8743bb6 -->|calls| ui_card_cardaction_a1a717ff
-    lib_utils_cn_b8743bb6 -->|calls| ui_card_carddescription_40d0a254
-    lib_utils_cn_b8743bb6 -->|calls| ui_card_cardfooter_2f80e30f
-    lib_utils_cn_b8743bb6 -->|calls| ui_input_input_54fb3925
-    lib_utils_cn_b8743bb6 -->|calls| ui_label_label_def6cab4
-    lib_utils_cn_b8743bb6 -->|calls| ui_select_selectcontent_0e8c3125
-    lib_utils_cn_b8743bb6 -->|calls| ui_select_selectitem_6d771bd5
-    lib_utils_cn_b8743bb6 -->|calls| ui_select_selectlabel_5e9f580d
-    lib_utils_cn_b8743bb6 -->|calls| ui_select_selectscrolldownbutton_86f5b0fc
-    src_apitester_tsx_e67681e5 -->|imports| ui_input_input_54fb3925
-    src_apitester_tsx_e67681e5 -->|imports| ui_label_label_def6cab4
-    src_apitester_tsx_e67681e5 -->|imports| ui_select_selectcontent_0e8c3125
-    src_apitester_tsx_e67681e5 -->|imports| ui_select_selectitem_6d771bd5
-    src_lib_utils_ts_0eb4cd5d -->|imports| src_prototype_components_primitives_tsx_84931f01
-    src_lib_utils_ts_0eb4cd5d -->|imports| src_prototype_components_universityfield_tsx_8d7104f0
-    lib_utils_cn_b8743bb6 -->|imports| src_prototype_components_primitives_tsx_84931f01
-    lib_utils_cn_b8743bb6 -->|imports| src_prototype_components_universityfield_tsx_8d7104f0
-    src_prototype_components_universityfield_tsx_8d7104f0 -->|imports| ui_input_input_54fb3925
-    src_prototype_components_universityfield_tsx_8d7104f0 -->|imports| ui_label_label_def6cab4
-    src_prototype_components_primitives_tsx_84931f01 -->|imports| ui_input_input_54fb3925
-    %% Omitted for readability: 16 nodes, 3 edges
-    class ui_select_selectcontent_0e8c3125 ui;
-    class ui_select_selectitem_6d771bd5 ui;
-    class ui_select_selectlabel_5e9f580d ui;
-    class ui_select_selectscrolldownbutton_86f5b0fc ui;
-    class ui_card_cardaction_a1a717ff ui;
-    class ui_card_carddescription_40d0a254 ui;
-    class ui_card_cardfooter_2f80e30f ui;
-    class src_prototype_components_primitives_tsx_84931f01 ui;
-    class components_primitives_field_80de4fc0 ui;
-    class components_primitives_selectfield_18905dd2 ui;
-    class src_prototype_components_universityfield_tsx_8d7104f0 ui;
-    class components_universityfield_universityfield_0abccc0d ui;
-    class lib_utils_cn_b8743bb6 function;
-    class src_lib_utils_ts_0eb4cd5d module;
-    class ui_input_input_54fb3925 ui;
-    class ui_label_label_def6cab4 ui;
-    class screens_onboarding_preferencesection_5c73c125 ui;
-    class src_apitester_tsx_e67681e5 test;
-    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
-    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
-    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
-    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
-    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
-    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
-    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
-    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
-    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
-</div>
-
-<h3>Call Details</h3>
-<table class="call-table">
-<tr>
-  <th style="width:5%">#</th>
-  <th style="width:28%">Node</th>
-  <th style="width:10%">Type</th>
-  <th style="width:17%">Caller</th>
-  <th style="width:20%">Callees</th>
-  <th style="width:20%">Description</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br>+9 more</td>
-  <td>Module file in src/APITester.tsx.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>APITester()</code><br><small style="color:var(--muted)">src/APITester.tsx</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Verifies imports, entry points, or version behavior.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+3 more</td>
-  <td>Module file in src/lib/utils.ts.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+20 more</td>
-  <td>cn() node in src/lib/utils.ts.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">prototype/screens/Onboarding.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>PreferenceSection() node in prototype/screens/Onboarding.tsx.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>UniversityField.tsx</code><br><small style="color:var(--muted)">prototype/components/UniversityField.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br>+1 more</td>
-  <td>Module file in prototype/components/UniversityField.tsx.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>UniversityField()</code><br><small style="color:var(--muted)">prototype/components/UniversityField.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>UniversityField() node in prototype/components/UniversityField.tsx.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br>+7 more</td>
-  <td>Module file in prototype/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>Tone</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Tone node in prototype/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>badgeTones</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>badgeTones node in prototype/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>AppButtonVariant</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>AppButtonVariant node in prototype/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>appButtonClasses</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><span class="tag tag-async">Async</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>appButtonClasses node in prototype/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>Field()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>Field() node in prototype/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>SelectField()</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectField() node in prototype/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in components/ui/label.tsx.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+1 more</td>
-  <td>No direct outbound edge</td>
-  <td>Label() node in components/ui/label.tsx.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in components/ui/input.tsx.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+1 more</td>
-  <td>No direct outbound edge</td>
-  <td>Input() node in components/ui/input.tsx.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>textarea.tsx</code><br><small style="color:var(--muted)">components/ui/textarea.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>Module file in components/ui/textarea.tsx.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>Textarea()</code><br><small style="color:var(--muted)">components/ui/textarea.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>Textarea() node in components/ui/textarea.tsx.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small><br>+1 more</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>Select()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Select() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>SelectGroup()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>SelectGroup() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>SelectValue()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectValue() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>SelectTrigger()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectTrigger() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>SelectContent()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectContent() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>SelectLabel()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectLabel() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>SelectItem()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">prototype/components/primitives.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectItem() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>SelectSeparator()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectSeparator() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>SelectScrollUpButton()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectScrollUpButton() node in components/ui/select.tsx.</td>
-</tr>
-</table>
-
-<div class="grid">
-  <div class="card">
-    <h4>Key Files</h4>
-    <table style="width:100%;font-size:0.85rem;">
-      <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>components/ui/select.tsx</code></td><td>11 nodes</td></tr>
-<tr><td><code>prototype/components/primitives.tsx</code></td><td>7 nodes</td></tr>
-<tr><td><code>components/ui/card.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/APITester.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>components/ui/input.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>components/ui/label.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>components/ui/textarea.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/lib/utils.ts</code></td><td>2 nodes</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x23, contains x22, calls x17, imports x15. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
-  </div>
-</div>
-<hr>
-
-<!-- ====== 14. Community 4 ====== -->
-<h2 id="community-4">14. Community 4</h2>
+<!-- ====== 13. Community 4 ====== -->
+<h2 id="community-4">13. Community 4</h2>
 <p>Community 4 groups implementation around autoplants, functions, ingredient, patterns, mostly in functions/src/autoPlan.ts. This section covers 32 nodes and 33 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -4630,6 +4256,370 @@ flowchart LR
   <div class="card">
     <h4>Design Notes</h4>
     <p>This section comes from graphify community clustering. Relationship summary: contains x31, calls x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 14. Community 28 ====== -->
+<h2 id="community-28">14. Community 28</h2>
+<p>Community 28 groups implementation around prototype, posthogts, deadlinefoodprototypetsx, screens, mostly in src/lib/posthog.ts, src/prototype/DeadlineFoodPrototype.tsx, src/App.tsx. This section covers 31 nodes and 48 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Community 28 (31 nodes, 48 edges)
+    subgraph community_28_src_lib_posthog_ts_1e744464["src/lib/posthog.ts"]
+        lib_posthog_analyticsproperties_afe56a65("AnalyticsProperties<br/><small>src/lib/posthog.ts</small>")
+        lib_posthog_compactproperties_472c4d3d("compactProperties()<br/><small>src/lib/posthog.ts</small>")
+        src_lib_posthog_ts_f1fe30cc("posthog.ts")
+        lib_posthog_captureposthogevent_c6f2b4d4("capturePostHogEvent()<br/><small>src/lib/posthog.ts</small>")
+        lib_posthog_registerposthogcontext_3a2e9754("registerPostHogContext()<br/><small>src/lib/posthog.ts</small>")
+        lib_posthog_posthog_b6113102("posthog<br/><small>src/lib/posthog.ts</small>")
+        lib_posthog_registerposthogsession_25b98906("registerPostHogSession()<br/><small>src/lib/posthog.ts</small>")
+    end
+    subgraph community_28_src_prototype_DeadlineFoodPrototype_0997bf39["src/prototype/DeadlineFoodPrototype.tsx"]
+        prototype_deadlinefoodprototype_isappscreen_5a02a2aa("isAppScreen()<br/><small>src/prototype/DeadlineFoodPrototype.tsx</small>")
+        prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4("DeadlineFoodPrototype()<br/><small>src/prototype/DeadlineFoodPrototype.tsx</small>")
+        src_prototype_deadlinefoodprototype_tsx_f5893eb1("DeadlineFoodPrototype.tsx")
+    end
+    subgraph community_28_prototype_components_Shell_tsx_a87d726f["prototype/components/Shell.tsx"]
+        src_prototype_components_shell_tsx_d614f256("Shell.tsx")
+        components_shell_shell_90a82b12("Shell()<br/><small>prototype/components/Shell.tsx</small>")
+    end
+    subgraph community_28_src_App_tsx_672c0574["src/App.tsx"]
+        src_app_tsx_7809c3b0("App.tsx")
+        src_app_app_f316b20d("App()<br/><small>src/App.tsx</small>")
+    end
+    subgraph community_28_src_prototype_analytics_ts_1b010881["src/prototype/analytics.ts"]
+        prototype_analytics_trackprototypeevent_c3567b75("TrackPrototypeEvent<br/><small>src/prototype/analytics.ts</small>")
+        src_prototype_analytics_ts_6f8af2df("analytics.ts")
+    end
+    src_prototype_screens_landing_tsx_20713129("Landing.tsx")
+    src_frontend_tsx_befdbdc9("frontend.tsx")
+    lib_posthog_compactproperties_472c4d3d -->|calls| lib_posthog_captureposthogevent_c6f2b4d4
+    lib_posthog_compactproperties_472c4d3d -->|calls| lib_posthog_registerposthogcontext_3a2e9754
+    prototype_deadlinefoodprototype_isappscreen_5a02a2aa -->|calls| prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4
+    src_app_tsx_7809c3b0 -->|imports| prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4
+    src_app_tsx_7809c3b0 -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
+    src_app_tsx_7809c3b0 -->|imports| src_frontend_tsx_befdbdc9
+    src_app_app_f316b20d -->|imports| src_frontend_tsx_befdbdc9
+    src_frontend_tsx_befdbdc9 -->|imports| lib_posthog_posthog_b6113102
+    src_frontend_tsx_befdbdc9 -->|imports| lib_posthog_registerposthogsession_25b98906
+    src_frontend_tsx_befdbdc9 -->|imports| src_lib_posthog_ts_f1fe30cc
+    src_lib_posthog_ts_f1fe30cc -->|imports| src_prototype_analytics_ts_6f8af2df
+    src_lib_posthog_ts_f1fe30cc -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
+    lib_posthog_analyticsproperties_afe56a65 -->|imports| src_prototype_analytics_ts_6f8af2df
+    lib_posthog_analyticsproperties_afe56a65 -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
+    lib_posthog_registerposthogsession_25b98906 -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
+    lib_posthog_registerposthogcontext_3a2e9754 -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
+    lib_posthog_captureposthogevent_c6f2b4d4 -->|imports| src_prototype_deadlinefoodprototype_tsx_f5893eb1
+    src_prototype_analytics_ts_6f8af2df -->|imports| src_prototype_components_shell_tsx_d614f256
+    src_prototype_analytics_ts_6f8af2df -->|imports| src_prototype_screens_landing_tsx_20713129
+    prototype_analytics_trackprototypeevent_c3567b75 -->|imports| src_prototype_components_shell_tsx_d614f256
+    prototype_analytics_trackprototypeevent_c3567b75 -->|imports| src_prototype_screens_landing_tsx_20713129
+    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| components_shell_shell_90a82b12
+    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| src_prototype_components_shell_tsx_d614f256
+    src_prototype_deadlinefoodprototype_tsx_f5893eb1 -->|imports| src_prototype_screens_landing_tsx_20713129
+    %% Omitted for readability: 13 nodes, 0 edges
+    class lib_posthog_analyticsproperties_afe56a65 klass;
+    class lib_posthog_compactproperties_472c4d3d function;
+    class src_lib_posthog_ts_f1fe30cc module;
+    class lib_posthog_captureposthogevent_c6f2b4d4 function;
+    class lib_posthog_registerposthogcontext_3a2e9754 function;
+    class lib_posthog_posthog_b6113102 function;
+    class lib_posthog_registerposthogsession_25b98906 function;
+    class prototype_deadlinefoodprototype_isappscreen_5a02a2aa ui;
+    class prototype_deadlinefoodprototype_deadlinefoodprot_5ce5d2e4 ui;
+    class src_prototype_deadlinefoodprototype_tsx_f5893eb1 ui;
+    class src_prototype_components_shell_tsx_d614f256 ui;
+    class components_shell_shell_90a82b12 ui;
+    class src_app_tsx_7809c3b0 ui;
+    class src_app_app_f316b20d ui;
+    class prototype_analytics_trackprototypeevent_c3567b75 klass;
+    class src_prototype_analytics_ts_6f8af2df module;
+    class src_prototype_screens_landing_tsx_20713129 ui;
+    class src_frontend_tsx_befdbdc9 ui;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>App.tsx</code><br><small style="color:var(--muted)">src/App.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>DeadlineFoodPrototype()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small><br><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small><br><code>frontend.tsx</code><br><small style="color:var(--muted)">src/frontend.tsx</small></td>
+  <td>Module file in src/App.tsx.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>App()</code><br><small style="color:var(--muted)">src/App.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>frontend.tsx</code><br><small style="color:var(--muted)">src/frontend.tsx</small></td>
+  <td>App() node in src/App.tsx.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>frontend.tsx</code><br><small style="color:var(--muted)">src/frontend.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>App()</code><br><small style="color:var(--muted)">src/App.tsx</small><br><code>App.tsx</code><br><small style="color:var(--muted)">src/App.tsx</small></td>
+  <td><code>posthog</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>posthog.ts</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>registerPostHogSession()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td>Module file in src/frontend.tsx.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>posthog.ts</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>frontend.tsx</code><br><small style="color:var(--muted)">src/frontend.tsx</small></td>
+  <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small><br><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>Module file in src/lib/posthog.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>readBunPublicEnv()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>readBunPublicEnv() node in src/lib/posthog.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>token</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>token node in src/lib/posthog.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>host</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>host node in src/lib/posthog.ts.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>AnalyticsProperty</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Orchestrates analysis and returns structured documentation data.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small><br><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>Orchestrates analysis and returns structured documentation data.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>compactProperties()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>capturePostHogEvent()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>registerPostHogContext()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td>compactProperties() node in src/lib/posthog.ts.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>registerPostHogSession()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>frontend.tsx</code><br><small style="color:var(--muted)">src/frontend.tsx</small></td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>registerPostHogSession() node in src/lib/posthog.ts.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>registerPostHogContext()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>compactProperties()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>registerPostHogContext() node in src/lib/posthog.ts.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>capturePostHogEvent()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>compactProperties()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>capturePostHogEvent() node in src/lib/posthog.ts.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>posthog.ts</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><code>Landing.tsx</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small><br><code>Shell.tsx</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
+  <td>Module file in src/prototype/analytics.ts.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>TrackPrototypeEvent</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Landing.tsx</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small><br><code>Shell.tsx</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
+  <td>TrackPrototypeEvent node in src/prototype/analytics.ts.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>App.tsx</code><br><small style="color:var(--muted)">src/App.tsx</small><br><code>capturePostHogEvent()</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br>+3 more</td>
+  <td><code>Landing()</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small><br><code>Landing.tsx</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small><br><code>PlanScreen()</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small><br>+3 more</td>
+  <td>Module file in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>screens</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>screens node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>onboardingScreens</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>onboardingScreens node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>screenFromHash()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>isAppScreen()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>DeadlineFoodPrototype()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>isAppScreen() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>LoadingScreen()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>LoadingScreen() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>budgetBand()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>budgetBand() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>maxTimeBucket()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>maxTimeBucket() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>DeadlineFoodPrototype()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>App.tsx</code><br><small style="color:var(--muted)">src/App.tsx</small><br><code>isAppScreen()</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>DeadlineFoodPrototype() node in src/prototype/DeadlineFoodPrototype.tsx.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>RecipesHubScreen()</code><br><small style="color:var(--muted)">prototype/screens/RecipesHubScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>RecipesHubScreen() node in prototype/screens/RecipesHubScreen.tsx.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>Landing.tsx</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small><br><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small><br><code>TrackPrototypeEvent</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>Module file in prototype/screens/Landing.tsx.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>Landing()</code><br><small style="color:var(--muted)">prototype/screens/Landing.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>Landing() node in prototype/screens/Landing.tsx.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>PlanScreen()</code><br><small style="color:var(--muted)">prototype/screens/PlanScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>PlanScreen() node in prototype/screens/PlanScreen.tsx.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>Shell.tsx</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small><br><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small><br><code>TrackPrototypeEvent</code><br><small style="color:var(--muted)">src/prototype/analytics.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>Module file in prototype/components/Shell.tsx.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>Shell()</code><br><small style="color:var(--muted)">prototype/components/Shell.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>DeadlineFoodPrototype.tsx</code><br><small style="color:var(--muted)">src/prototype/DeadlineFoodPrototype.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>Shell() node in prototype/components/Shell.tsx.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/lib/posthog.ts</code></td><td>11 nodes</td></tr>
+<tr><td><code>src/prototype/DeadlineFoodPrototype.tsx</code></td><td>9 nodes</td></tr>
+<tr><td><code>src/App.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/prototype/analytics.ts</code></td><td>2 nodes</td></tr>
+<tr><td><code>prototype/components/Shell.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>prototype/screens/Landing.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/frontend.tsx</code></td><td>1 nodes</td></tr>
+<tr><td><code>prototype/screens/PlanScreen.tsx</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x21, imports x15, imports x9, calls x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4989,69 +4979,66 @@ flowchart LR
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around specmd, functions, deadline, fed, mostly in FED_UP_SPEC.md, DEADLINE_FOOD_AUTOPILOT_SPEC.md, functions/lib/index.js. This section covers 697 nodes and 804 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around specmd, functions, prototype, deadline, mostly in FED_UP_SPEC.md, DEADLINE_FOOD_AUTOPILOT_SPEC.md, functions/lib/index.js. This section covers 762 nodes and 1042 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (697 nodes, 804 edges)
-    subgraph other_functions_lib_index_js_c34dee45["functions/lib/index.js"]
-        lib_index_asrecord_ee234b0f("asRecord()<br/><small>functions/lib/index.js</small>")
-        lib_index_boundedstring_8bbbb209("boundedString()<br/><small>functions/lib/index.js</small>")
-        lib_index_seedprototypedata_fbaee7ab("seedPrototypeData()<br/><small>functions/lib/index.js</small>")
-        lib_index_getprototypedata_63e5c586("getPrototypeData()<br/><small>functions/lib/index.js</small>")
-        lib_index_data_1fd1ff03("data<br/><small>functions/lib/index.js</small>")
-        lib_index_canonicalrecommendertags_6a4b6677("canonicalRecommenderTags()<br/><small>functions/lib/index.js</small>")
-        lib_index_handleautoplan_a81d5f18("handleAutoPlan()<br/><small>functions/lib/index.js</small>")
-        lib_index_torecommenderrecipepayload_89013296("toRecommenderRecipePayload()<br/><small>functions/lib/index.js</small>")
-        lib_index_readrecipereviews_1109581b("readRecipeReviews()<br/><small>functions/lib/index.js</small>")
-        lib_index_normalizecalendarevent_54f5a02d("normalizeCalendarEvent()<br/><small>functions/lib/index.js</small>")
+    %% Section: Other (762 nodes, 1042 edges)
+    subgraph other_scripts_import_tesco_prices_ts_f0b82ee3["scripts/import-tesco-prices.ts"]
+        scripts_import_tesco_prices_stringfield_0d973481("stringField()<br/><small>scripts/import-tesco-prices.ts</small>")
+        scripts_import_tesco_prices_parseunitprice_4e8402b8("parseUnitPrice()<br/><small>scripts/import-tesco-prices.ts</small>")
+        scripts_import_tesco_prices_proposalforproduct_3ec8fe6d("proposalForProduct()<br/><small>scripts/import-tesco-prices.ts</small>")
+        scripts_import_tesco_prices_numberfield_db204aea("numberField()<br/><small>scripts/import-tesco-prices.ts</small>")
+        scripts_import_tesco_prices_parseprice_907832f3("parsePrice()<br/><small>scripts/import-tesco-prices.ts</small>")
+        scripts_import_tesco_prices_parsepackagegrams_0a594c73("parsePackageGrams()<br/><small>scripts/import-tesco-prices.ts</small>")
+        scripts_import_tesco_prices_csvrows_67b73fae("csvRows()<br/><small>scripts/import-tesco-prices.ts</small>")
+        scripts_import_tesco_prices_readproducts_3ee9bb47("readProducts()<br/><small>scripts/import-tesco-prices.ts</small>")
+        scripts_import_tesco_prices_main_89907ee1("main()<br/><small>scripts/import-tesco-prices.ts</small>")
     end
-    subgraph other_functions_lib_calendarUtils_js_be74c30a["functions/lib/calendarUtils.js"]
-        lib_calendarutils_filterfutureevents_426fec48("filterFutureEvents()<br/><small>functions/lib/calendarUtils.js</small>")
-        lib_calendarutils_calendareventstodeadlines_2fc5589a("calendarEventsToDeadlines()<br/><small>functions/lib/calendarUtils.js</small>")
+    subgraph other_src_domain_ingredientMeasurements_ts_fdb9e24a["src/domain/ingredientMeasurements.ts"]
+        domain_ingredientmeasurements_parsemeasuretoingr_ce5d5187("parseMeasureToIngredient()<br/><small>src/domain/ingredientMeasurements.ts</small>")
+        domain_ingredientmeasurements_normalizetext_565e599f("normalizeText()<br/><small>src/domain/ingredientMeasurements.ts</small>")
+        domain_ingredientmeasurements_gramsforingredient_3737c9ce("gramsForIngredientUnit()<br/><small>src/domain/ingredientMeasurements.ts</small>")
     end
-    subgraph other_functions_lib_icsParser_js_7fb2eedd["functions/lib/icsParser.js"]
-        lib_icsparser_unfoldlines_cf66a073("unfoldLines()<br/><small>functions/lib/icsParser.js</small>")
-        lib_icsparser_parseicstext_17bead12("parseICSText()<br/><small>functions/lib/icsParser.js</small>")
+    subgraph other_src_lib_utils_ts_cce31e30["src/lib/utils.ts"]
+        lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
+        src_lib_utils_ts_0eb4cd5d("utils.ts")
     end
-    subgraph other_functions_src_index_ts_f2396a12["functions/src/index.ts"]
-        src_index_asrecord_128d572b("asRecord()<br/><small>functions/src/index.ts</small>")
-        src_index_boundedstring_dceb72f0("boundedString()<br/><small>functions/src/index.ts</small>")
-    end
-    adapters_deadlinefoodapi_firebasefunctionurl_609ca870("firebaseFunctionUrl()<br/><small>src/adapters/deadlineFoodApi.ts</small>")
-    src_state_deadlinemodeprovider_tsx_f2378296("DeadlineModeProvider.tsx")
-    lib_calendarutils_filterfutureevents_426fec48 -->|calls| lib_calendarutils_calendareventstodeadlines_2fc5589a
-    lib_icsparser_unfoldlines_cf66a073 -->|calls| lib_icsparser_parseicstext_17bead12
-    lib_index_seedprototypedata_fbaee7ab -->|calls| lib_index_getprototypedata_63e5c586
-    lib_index_getprototypedata_63e5c586 -->|calls| lib_index_data_1fd1ff03
-    lib_index_canonicalrecommendertags_6a4b6677 -->|calls| lib_index_handleautoplan_a81d5f18
-    lib_index_canonicalrecommendertags_6a4b6677 -->|calls| lib_index_torecommenderrecipepayload_89013296
-    lib_index_torecommenderrecipepayload_89013296 -->|calls| lib_index_asrecord_ee234b0f
-    lib_index_readrecipereviews_1109581b -->|calls| lib_index_data_1fd1ff03
-    lib_index_asrecord_ee234b0f -->|calls| lib_index_handleautoplan_a81d5f18
-    lib_index_asrecord_ee234b0f -->|calls| lib_index_normalizecalendarevent_54f5a02d
-    lib_index_boundedstring_8bbbb209 -->|calls| lib_index_handleautoplan_a81d5f18
-    lib_index_boundedstring_8bbbb209 -->|calls| lib_index_normalizecalendarevent_54f5a02d
-    %% Omitted for readability: 679 nodes, 0 edges
+    lib_index_asrecord_ee234b0f("asRecord()<br/><small>functions/lib/index.js</small>")
+    src_apitester_tsx_e67681e5("APITester.tsx")
+    src_pages_deadlinesetuppage_tsx_e932c009("DeadlineSetupPage.tsx")
+    prototype_utils_money_e5ae07fe("money()<br/><small>src/prototype/utils.ts</small>")
+    scripts_import_tesco_prices_stringfield_0d973481 -->|calls| scripts_import_tesco_prices_parseunitprice_4e8402b8
+    scripts_import_tesco_prices_stringfield_0d973481 -->|calls| scripts_import_tesco_prices_proposalforproduct_3ec8fe6d
+    scripts_import_tesco_prices_numberfield_db204aea -->|calls| scripts_import_tesco_prices_parseprice_907832f3
+    scripts_import_tesco_prices_numberfield_db204aea -->|calls| scripts_import_tesco_prices_proposalforproduct_3ec8fe6d
+    scripts_import_tesco_prices_parsepackagegrams_0a594c73 -->|calls| domain_ingredientmeasurements_parsemeasuretoingr_ce5d5187
+    scripts_import_tesco_prices_parsepackagegrams_0a594c73 -->|calls| scripts_import_tesco_prices_proposalforproduct_3ec8fe6d
+    scripts_import_tesco_prices_parseunitprice_4e8402b8 -->|calls| scripts_import_tesco_prices_proposalforproduct_3ec8fe6d
+    scripts_import_tesco_prices_csvrows_67b73fae -->|calls| scripts_import_tesco_prices_readproducts_3ee9bb47
+    scripts_import_tesco_prices_readproducts_3ee9bb47 -->|calls| scripts_import_tesco_prices_main_89907ee1
+    domain_ingredientmeasurements_normalizetext_565e599f -->|calls| domain_ingredientmeasurements_gramsforingredient_3737c9ce
+    domain_ingredientmeasurements_normalizetext_565e599f -->|calls| domain_ingredientmeasurements_parsemeasuretoingr_ce5d5187
+    %% Omitted for readability: 744 nodes, 0 edges
+    class scripts_import_tesco_prices_stringfield_0d973481 function;
+    class scripts_import_tesco_prices_parseunitprice_4e8402b8 function;
+    class scripts_import_tesco_prices_proposalforproduct_3ec8fe6d function;
+    class scripts_import_tesco_prices_numberfield_db204aea function;
+    class scripts_import_tesco_prices_parseprice_907832f3 function;
+    class scripts_import_tesco_prices_parsepackagegrams_0a594c73 function;
+    class scripts_import_tesco_prices_csvrows_67b73fae function;
+    class scripts_import_tesco_prices_readproducts_3ee9bb47 function;
+    class scripts_import_tesco_prices_main_89907ee1 function;
+    class domain_ingredientmeasurements_parsemeasuretoingr_ce5d5187 function;
+    class domain_ingredientmeasurements_normalizetext_565e599f function;
+    class domain_ingredientmeasurements_gramsforingredient_3737c9ce function;
+    class lib_utils_cn_b8743bb6 function;
+    class src_lib_utils_ts_0eb4cd5d module;
     class lib_index_asrecord_ee234b0f function;
-    class lib_index_boundedstring_8bbbb209 function;
-    class lib_index_seedprototypedata_fbaee7ab function;
-    class lib_index_getprototypedata_63e5c586 function;
-    class lib_index_data_1fd1ff03 function;
-    class lib_index_canonicalrecommendertags_6a4b6677 function;
-    class lib_index_handleautoplan_a81d5f18 function;
-    class lib_index_torecommenderrecipepayload_89013296 function;
-    class lib_index_readrecipereviews_1109581b function;
-    class lib_index_normalizecalendarevent_54f5a02d function;
-    class lib_calendarutils_filterfutureevents_426fec48 function;
-    class lib_calendarutils_calendareventstodeadlines_2fc5589a function;
-    class lib_icsparser_unfoldlines_cf66a073 function;
-    class lib_icsparser_parseicstext_17bead12 function;
-    class src_index_asrecord_128d572b function;
-    class src_index_boundedstring_dceb72f0 function;
-    class adapters_deadlinefoodapi_firebasefunctionurl_609ca870 function;
-    class src_state_deadlinemodeprovider_tsx_f2378296 ui;
+    class src_apitester_tsx_e67681e5 test;
+    class src_pages_deadlinesetuppage_tsx_e932c009 ui;
+    class prototype_utils_money_e5ae07fe function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -5307,11 +5294,11 @@ flowchart LR
 </tr>
 <tr>
   <td>30</td>
-  <td><code>DeadlineModeProvider.tsx</code><br><small style="color:var(--muted)">src/state/DeadlineModeProvider.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>deadlineFoodApi.ts</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small><br><code>fetchDeadlineBootstrap()</code><br><small style="color:var(--muted)">src/adapters/deadlineFoodApi.ts</small></td>
-  <td><code>createDeadlineModeCommands()</code><br><small style="color:var(--muted)">src/application/deadlineMode.ts</small><br><code>createEventBus()</code><br><small style="color:var(--muted)">src/application/eventBus.ts</small><br><code>deadlineMode.ts</code><br><small style="color:var(--muted)">src/application/deadlineMode.ts</small><br>+6 more</td>
-  <td>Module file in src/state/DeadlineModeProvider.tsx.</td>
+  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br>+9 more</td>
+  <td>Module file in src/APITester.tsx.</td>
 </tr>
 </table>
 
@@ -5332,7 +5319,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x480, calls x262, imports x36, imports x15. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x523, calls x296, imports x147, imports x65. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5343,17 +5330,17 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>2834</td></tr>
-      <tr><td>Edges</td><td>5556</td></tr>
+      <tr><td>Nodes</td><td>2822</td></tr>
+      <tr><td>Edges</td><td>5540</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>178</td></tr>
+      <tr><td>Communities</td><td>181</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>5405</td></tr>
+      <tr><td>EXTRACTED</td><td>5389</td></tr>
       <tr><td>INFERRED</td><td>151</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -5362,7 +5349,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-09 12:21 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-09 12:27 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
