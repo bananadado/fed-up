@@ -415,11 +415,6 @@ export function RecipeEditor({
   );
 
   function estimateNutrition() {
-    if (ingredients.length === 0) {
-      setAttempted(true);
-      setNutritionStatus("Add at least one ingredient with a quantity first.");
-      return;
-    }
     triggerNutritionFetch(ingredients, "manual");
   }
 
@@ -428,6 +423,7 @@ export function RecipeEditor({
     const key = sanitised.map((i) => `${i.name}:${i.quantity}:${i.unit}`).join("|");
 
     if (key === "") {
+      if (cancelFetchRef.current) cancelFetchRef.current.cancelled = true;
       prevIngredientKeyRef.current = "";
       return;
     }
