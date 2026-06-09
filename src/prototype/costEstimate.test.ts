@@ -8,27 +8,27 @@ describe("estimateRecipeCost", () => {
   });
 
   test("estimates weight-based ingredients from per-100g prices", () => {
-    // 200g chicken @ seeded UK table + 100g rice, rounded to the nearest 5p.
+    // 200g chicken + 100g rice from the active Tesco-backed price table.
     expect(
       estimateRecipeCost([
         { name: "chicken", quantity: 200, unit: "g" },
         { name: "rice", quantity: 100, unit: "g" },
       ]),
-    ).toBe(1.85);
+    ).toBe(2.1);
   });
 
   test("estimates countable ingredients from per-item prices", () => {
-    // 2 eggs @ £0.20 = £0.40, 1 wrap @ £0.20 = £0.20 → £0.60
+    // Count units are converted to grams before applying active Tesco-backed prices.
     expect(
       estimateRecipeCost([
         { name: "egg", quantity: 2, unit: "item" },
         { name: "tortilla wrap", quantity: 1, unit: "wrap" },
       ]),
-    ).toBe(0.6);
+    ).toBe(1.1);
   });
 
   test("applies a per-recipe floor so a non-empty recipe never costs £0", () => {
-    expect(estimateRecipeCost([{ name: "black pepper", quantity: 1, unit: "tsp" }])).toBe(0.2);
+    expect(estimateRecipeCost([{ name: "black pepper", quantity: 1, unit: "tsp" }])).toBe(0.3);
   });
 
   test("falls back to a default price for unknown ingredients", () => {

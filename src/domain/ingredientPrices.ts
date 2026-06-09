@@ -1,3 +1,5 @@
+import { tescoIngredientPriceTable } from "./generatedTescoIngredientPrices";
+
 export type IngredientPriceSource = {
   retailer: "seeded-uk" | "tesco";
   source: string;
@@ -41,7 +43,7 @@ function priced(
 
 export const DEFAULT_PRICE_PENCE_PER_GRAM = 0.25;
 
-export const ingredientPriceTable: IngredientPriceRecord[] = [
+export const seededIngredientPriceTable: IngredientPriceRecord[] = [
   priced("chicken breast", ["chicken breast", "chicken", "halal chicken"], 425, 500),
   priced("chicken pieces", ["chicken pieces", "halal chicken pieces", "chicken thigh", "chicken thighs"], 330, 600),
   priced("tuna", ["tuna", "tinned tuna", "canned tuna"], 90, 145),
@@ -86,4 +88,9 @@ export const ingredientPriceTable: IngredientPriceRecord[] = [
   priced("oil", ["oil", "olive oil", "vegetable oil", "sunflower oil"], 225, 1000),
   priced("spice", ["spice", "spices", "smoked paprika", "black pepper", "pepper sachet", "hot sauce"], 100, 100, "low"),
   priced("vegetable sushi", ["vegetable sushi", "vegetable sushi pieces"], 250, 180, "low"),
+];
+
+export const ingredientPriceTable: IngredientPriceRecord[] = [
+  ...tescoIngredientPriceTable,
+  ...seededIngredientPriceTable,
 ];

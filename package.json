@@ -17,6 +17,7 @@
     "build": "bun run build.ts",
     "firebase:data": "bun run scripts/export-firebase-prototype-data.ts",
     "ingest:recipes": "bun scripts/ingest-recipes.ts",
+    "prices:fetch-tesco": "bun scripts/fetch-tesco-prices.ts",
     "prices:import-tesco": "bun scripts/import-tesco-prices.ts",
     "prices:recalc": "bun scripts/recalc-prices.ts",
     "nutrition:clear": "bun scripts/clear-nutrition-cache.ts",

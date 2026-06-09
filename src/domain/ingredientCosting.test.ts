@@ -45,7 +45,7 @@ describe("ingredient costing", () => {
   });
 
   test("converts count units to grams before pricing", () => {
-    expect(estimateRecipeCostPence([{ name: "egg", quantity: 2, unit: "item" }])).toBe(40);
+    expect(estimateRecipeCostPence([{ name: "egg", quantity: 2, unit: "item" }])).toBe(80);
   });
 
   test("uses fallback pricing for unknown ingredients", () => {

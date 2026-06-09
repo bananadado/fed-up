@@ -28,8 +28,12 @@ export function findIngredientPriceRecord(name: string): IngredientPriceRecord |
   return ingredientPriceTable
     .filter((record) => allPriceKeys(record).some((key) => normalized === key || normalized.includes(key)))
     .sort((a, b) => {
-      const aLongest = Math.max(...allPriceKeys(a).map((key) => key.length));
-      const bLongest = Math.max(...allPriceKeys(b).map((key) => key.length));
+      const aLongest = Math.max(
+        ...allPriceKeys(a).filter((key) => normalized === key || normalized.includes(key)).map((key) => key.length),
+      );
+      const bLongest = Math.max(
+        ...allPriceKeys(b).filter((key) => normalized === key || normalized.includes(key)).map((key) => key.length),
+      );
       return bLongest - aLongest;
     })[0];
 }

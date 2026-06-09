@@ -14,6 +14,7 @@
  *
  * Usage:
  *   bun scripts/import-tesco-prices.ts --input data/raw/tesco-products.json --out tmp/tesco-price-proposals.json
+ *   bun scripts/import-tesco-prices.ts --input data/raw/tesco-products.json --update-price-table
  */
 
 import path from "path";
@@ -27,14 +28,18 @@ type TescoPriceProposal = {
   status: "matched" | "review";
   ingredient?: string;
   matchedAlias?: string;
+  searchIngredient?: string;
   productId?: string;
   productName: string;
   pricePence: number;
   packageGrams: number;
   pencePerGram: number;
+  preferredUnitPrice?: boolean;
+  rank?: number;
   sourceUrl?: string;
   sourceDate: string;
   postcodeOrStoreId?: string;
+  selectedForIngredient?: boolean;
   reason?: string;
 };
 
@@ -51,7 +56,9 @@ function option(name: string): string | undefined {
 
 const inputPath = option("--input");
 const outputPath = option("--out") ?? "tmp/tesco-price-proposals.json";
+const priceTableOutputPath = option("--price-table-out") ?? "src/domain/generatedTescoIngredientPrices.ts";
 const isDryRun = flag("--dry-run");
+const shouldUpdatePriceTable = flag("--update-price-table");
 
 function stringField(product: RawProduct, keys: string[]): string | undefined {
   for (const key of keys) {
@@ -88,6 +95,13 @@ function parsePrice(value: string): number | undefined {
   return numeric > 20 ? Math.round(numeric) : Math.round(numeric * 100);
 }
 
+function isMarketplaceProduct(product: RawProduct): boolean {
+  const productName = stringField(product, ["productName", "name", "title", "product_name"]);
+  const sourceUrl = stringField(product, ["sourceUrl", "url", "productUrl"]);
+  return (productName !== undefined && /^more from marketplace$/i.test(productName))
+    || (sourceUrl !== undefined && /[?&]seller=|\/marketplace\//i.test(sourceUrl));
+}
+
 function parsePackageGrams(productName: string, rawSize?: string): number | undefined {
   const candidates = [rawSize, productName].filter((value): value is string => Boolean(value));
 
@@ -97,6 +111,41 @@ function parsePackageGrams(productName: string, rawSize?: string): number | unde
     const parsed = parseMeasureToIngredient(productName, `${match[1]} ${match[2]}`);
     return gramsForIngredient(parsed);
   }
+
+  return undefined;
+}
+
+function estimateReviewPackageGrams(productName: string, searchIngredient?: string): number | undefined {
+  const productText = productName.toLowerCase();
+  const text = `${productText} ${searchIngredient ?? ""}`.toLowerCase();
+  const packCount = productName.match(/\b(\d+)\s*(?:pack|roll|rolls|stems)\b/i)
+    ?? productName.match(/\b(\d+)\s+.*\b(?:buns?|muffins?|eggs?)\b/i);
+  const count = packCount ? Number(packCount[1]) : undefined;
+
+  if (/medium pot/.test(text) && /\b(?:basil|thyme|herb)\b/.test(text)) return 30;
+  if (/beef tomato/.test(productText)) return 180;
+  if (/bramley apple pies/.test(productText)) return count ? count * 50 : 300;
+  if (/bramley apple pie/.test(productText)) return 500;
+  if (/kitchen roll/.test(productText)) return count ? count * 250 : 500;
+  if (/\b(?:bun|buns|burger buns|rolls?)\b/.test(productText)) return count ? count * 75 : 75;
+  if (/muffins?/.test(productText)) return count ? count * 65 : 260;
+  if (/fennel/.test(productText)) return 250;
+  if (/celeriac/.test(productText)) return 700;
+  if (/chinese leaf|chinese cabbage/.test(productText)) return 700;
+  if (/chicory/.test(productText)) return 160;
+  if (/corn on the cob twinpack/.test(productText)) return 360;
+  if (/cobettes/.test(productText)) return count ? count * 100 : 400;
+  if (/courgettes?|zucchini/.test(productText)) return count ? count * 160 : 500;
+  if (/aubergine|egg plants?/.test(productText)) return 300;
+  if (/\begg/.test(productText) && count) return count * 58;
+  if (/pretzel roll/.test(productText)) return 220;
+  if (/large garlic|garlic bulb/.test(productText)) return 80;
+  if (/\b(?:green|yellow) peppers?\b/.test(productText)) return 160;
+  if (/lemongrass/.test(productText)) return count ? count * 15 : 30;
+  if (/little gem/.test(productText)) return /twin pack/.test(productText) ? 300 : 150;
+  if (/savoy cabbage/.test(productText)) return 800;
+  if (/white cabbage/.test(productText)) return 900;
+  if (/\bswede\b/.test(productText) || /turnips?/.test(text)) return 700;
 
   return undefined;
 }
@@ -169,40 +218,135 @@ async function readProducts(filePath: string): Promise<RawProduct[]> {
 }
 
 function proposalForProduct(product: RawProduct): TescoPriceProposal | null {
+  if (isMarketplaceProduct(product)) return null;
+
   const productName = stringField(product, ["productName", "name", "title", "product_name"]);
   const pricePence = numberField(product, ["pricePence", "price", "priceText", "currentPrice"]);
   if (!productName || pricePence === undefined) return null;
 
+  const searchIngredient = stringField(product, ["searchIngredient", "ingredient", "query"]);
   const unitPrice = parseUnitPrice(product);
   const rawSize = stringField(product, ["packageSize", "size", "weight", "contents"]);
   const packageGrams = numberField(product, ["packageGrams", "grams"]) ?? parsePackageGrams(productName, rawSize);
   const pencePerGram = unitPrice?.pencePerGram ?? (packageGrams ? pricePence / packageGrams : undefined);
   if (pencePerGram === undefined || !Number.isFinite(pencePerGram) || pencePerGram <= 0) {
+    const reviewPackageGrams = packageGrams ?? estimateReviewPackageGrams(productName, searchIngredient);
+    const reviewPencePerGram = reviewPackageGrams ? pricePence / reviewPackageGrams : 0;
     return {
       status: "review",
       productName,
       pricePence,
-      packageGrams: packageGrams ?? 0,
-      pencePerGram: 0,
+      packageGrams: reviewPackageGrams ?? 0,
+      pencePerGram: Number(reviewPencePerGram.toFixed(6)),
+      ...(searchIngredient ? { searchIngredient } : {}),
       sourceDate: stringField(product, ["scrapedAt", "sourceDate", "timestamp"]) ?? new Date().toISOString(),
-      reason: "Could not derive package grams or unit price.",
+      reason: reviewPackageGrams
+        ? "Estimated package grams from product wording; manual review required."
+        : "Could not derive package grams or unit price.",
     };
   }
 
   const match = findIngredientPriceRecord(productName);
+  const ingredient = searchIngredient ?? match?.ingredient;
   return {
-    status: match ? "matched" : "review",
-    ...(match ? { ingredient: match.ingredient, matchedAlias: match.aliases.find((alias) => productName.toLowerCase().includes(alias)) ?? match.ingredient } : {}),
+    status: ingredient ? "matched" : "review",
+    ...(ingredient ? { ingredient } : {}),
+    ...(match ? { matchedAlias: match.aliases.find((alias) => productName.toLowerCase().includes(alias)) ?? match.ingredient } : {}),
+    ...(searchIngredient ? { searchIngredient } : {}),
     productId: stringField(product, ["productId", "id", "sku", "tpnb", "gtin"]),
     productName,
     pricePence,
     packageGrams: packageGrams ?? unitPrice?.packageGrams ?? 0,
     pencePerGram: Number(pencePerGram.toFixed(6)),
+    preferredUnitPrice: product["preferredUnitPrice"] === true,
+    rank: numberField(product, ["rank"]),
     sourceUrl: stringField(product, ["sourceUrl", "url", "productUrl"]),
     sourceDate: stringField(product, ["scrapedAt", "sourceDate", "timestamp"]) ?? new Date().toISOString(),
     postcodeOrStoreId: stringField(product, ["postcode", "storeId", "location"]),
-    ...(match ? {} : { reason: "No existing ingredient alias matched this product." }),
+    ...(ingredient ? {} : { reason: "No existing ingredient alias matched this product." }),
   };
+}
+
+function normalizeAlias(value: string): string {
+  return value.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function bestProposalForIngredient(proposals: TescoPriceProposal[]): TescoPriceProposal | undefined {
+  return proposals
+    .filter((proposal) => proposal.status === "matched" && proposal.ingredient && proposal.pencePerGram > 0)
+    .sort((a, b) => {
+      return a.pencePerGram - b.pencePerGram
+        || Number(b.preferredUnitPrice) - Number(a.preferredUnitPrice)
+        || (a.rank ?? Number.MAX_SAFE_INTEGER) - (b.rank ?? Number.MAX_SAFE_INTEGER)
+        || a.productName.localeCompare(b.productName);
+    })[0];
+}
+
+function dedupeKey(proposal: TescoPriceProposal): string {
+  return normalizeAlias(proposal.ingredient ?? proposal.searchIngredient ?? proposal.productName);
+}
+
+function bestProposal(proposals: TescoPriceProposal[]): TescoPriceProposal | undefined {
+  return proposals
+    .filter((proposal) => proposal.pencePerGram > 0)
+    .sort((a, b) => {
+      return Number(b.status === "matched") - Number(a.status === "matched")
+        || a.pencePerGram - b.pencePerGram
+        || Number(b.preferredUnitPrice) - Number(a.preferredUnitPrice)
+        || (a.rank ?? Number.MAX_SAFE_INTEGER) - (b.rank ?? Number.MAX_SAFE_INTEGER)
+        || a.productName.localeCompare(b.productName);
+    })[0];
+}
+
+function markSelectedProposals(proposals: TescoPriceProposal[]): TescoPriceProposal[] {
+  const selected = new Set<TescoPriceProposal>();
+  for (const group of Map.groupBy(proposals, dedupeKey).values()) {
+    const best = bestProposal(group);
+    if (best) selected.add(best);
+  }
+  return proposals.map((proposal) => ({
+    ...proposal,
+    selectedForIngredient: selected.has(proposal),
+  }));
+}
+
+function generatedPriceTableSource(proposals: TescoPriceProposal[]): string {
+  const grouped = Map.groupBy(
+    proposals.filter((proposal) => proposal.status === "matched" && proposal.ingredient),
+    (proposal) => proposal.ingredient as string,
+  );
+  const records = [...grouped.entries()]
+    .map(([ingredient, ingredientProposals]) => {
+      const best = bestProposalForIngredient(ingredientProposals);
+      if (!best) return null;
+      const aliases = [
+        ingredient,
+        best.searchIngredient,
+        best.productName,
+      ].filter((alias): alias is string => Boolean(alias)).map(normalizeAlias);
+      return {
+        ingredient: normalizeAlias(ingredient),
+        aliases: [...new Set(aliases)],
+        pencePerGram: best.pencePerGram,
+        packagePricePence: best.pricePence,
+        packageGrams: best.packageGrams || undefined,
+        source: {
+          retailer: "tesco",
+          source: best.productName,
+          ...(best.sourceUrl ? { sourceUrl: best.sourceUrl } : {}),
+          sourceDate: best.sourceDate.slice(0, 10),
+          confidence: best.preferredUnitPrice ? "high" : "medium",
+        },
+      };
+    })
+    .filter((record): record is NonNullable<typeof record> => record !== null)
+    .sort((a, b) => a.ingredient.localeCompare(b.ingredient));
+
+  return `import type { IngredientPriceRecord } from "./ingredientPrices";
+
+// Generated by scripts/import-tesco-prices.ts. Do not edit by hand.
+export const tescoIngredientPriceTable: IngredientPriceRecord[] = ${JSON.stringify(records, null, 2)};
+`;
 }
 
 async function main() {
@@ -211,12 +355,15 @@ async function main() {
   }
 
   const products = await readProducts(inputPath);
-  const proposals = products.map(proposalForProduct).filter((p): p is TescoPriceProposal => p !== null);
+  const skippedMarketplace = products.filter(isMarketplaceProduct).length;
+  const proposals = markSelectedProposals(products.map(proposalForProduct).filter((p): p is TescoPriceProposal => p !== null));
   const matched = proposals.filter((p) => p.status === "matched").length;
   const review = proposals.length - matched;
+  const selectedProposals = proposals.filter((proposal) => proposal.selectedForIngredient);
 
   console.log("=== Tesco Price Import Review ===");
   console.log(`  input products    ${products.length}`);
+  console.log(`  marketplace skip  ${skippedMarketplace}`);
   console.log(`  usable products   ${proposals.length}`);
   console.log(`  matched           ${matched}`);
   console.log(`  needs review      ${review}`);
@@ -226,8 +373,13 @@ async function main() {
     return;
   }
 
-  await Bun.write(outputPath, `${JSON.stringify({ generatedAt: new Date().toISOString(), proposals }, null, 2)}\n`);
+  await Bun.write(outputPath, `${JSON.stringify({ generatedAt: new Date().toISOString(), proposals, selectedProposals }, null, 2)}\n`);
   console.log(`\nWrote ${outputPath}`);
+
+  if (shouldUpdatePriceTable) {
+    await Bun.write(priceTableOutputPath, generatedPriceTableSource(proposals));
+    console.log(`Updated ${priceTableOutputPath}`);
+  }
 }
 
 main().catch((error) => {
