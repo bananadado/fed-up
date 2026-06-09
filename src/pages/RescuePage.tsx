@@ -18,7 +18,7 @@ function BudgetResult({ proposal }: { proposal: RescueProposal }) {
     <div className={inBudget ? "rounded-lg bg-emerald-50 p-4 text-emerald-900" : "rounded-lg bg-amber-50 p-4 text-amber-950"}>
       {inBudget
         ? `This keeps the plan ${formatPence(proposal.newBudgetDifferencePence)} within budget.`
-        : `This is ${formatPence(Math.abs(proposal.newBudgetDifferencePence))} over budget. It is still the lowest-effort compatible prototype option.`}
+        : `This is ${formatPence(Math.abs(proposal.newBudgetDifferencePence))} over budget. It is still the lowest-effort compatible app option.`}
     </div>
   );
 }
@@ -88,7 +88,7 @@ export function RescuePage() {
       ) : bestProposal === undefined ? (
         <Card className="rounded-lg border-slate-200 bg-white">
           <CardContent className="pt-0">
-            <p className="text-slate-700">No compatible prototype fallback is available for the current dietary constraints.</p>
+            <p className="text-slate-700">No compatible app fallback is available for the current dietary constraints.</p>
           </CardContent>
         </Card>
       ) : (

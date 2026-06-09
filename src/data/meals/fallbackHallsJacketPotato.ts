@@ -17,7 +17,7 @@ export const fallbackHallsJacketPotato: MealOption = {
     summary: "A filling potato and beans option near halls.",
     ingredients: recipeIngredients(["jacket potato", "baked beans", "side salad"]),
     steps: ["Collect from the Halls Shop hot counter.", "Add side salad if available."],
-    prepNotes: "Prototype option: availability and pricing are illustrative.",
+    prepNotes: "App option: availability and pricing are illustrative.",
     whyItFits: "It is the cheapest seeded fallback and useful when the budget is tight.",
   },
 };

@@ -96,7 +96,7 @@ export type RankedStrategy = {
   recommended: boolean;
 };
 
-export type PrototypeEvent =
+export type DeadlineEvent =
   | { type: "deadline_mode_started"; occurredAt: string }
   | { type: "constraints_submitted"; occurredAt: string; constraints: PlanningConstraints }
   | { type: "strategy_viewed"; occurredAt: string }
@@ -106,7 +106,7 @@ export type PrototypeEvent =
   | { type: "rescue_confirmed"; occurredAt: string; dayId: string; replacementMealId: string; plan: WeeklyPlan }
   | { type: "constraints_edited"; occurredAt: string };
 
-export type PrototypeMeta = {
+export type ProductMeta = {
   productName: string;
   disclaimer: string;
   scenarioName: string;
@@ -115,5 +115,5 @@ export type PrototypeMeta = {
 export type DeadlineBootstrap = {
   meals: MealOption[];
   canonicalConstraints: PlanningConstraints;
-  prototype: PrototypeMeta;
+  app: ProductMeta;
 };

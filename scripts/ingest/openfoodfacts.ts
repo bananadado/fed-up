@@ -25,7 +25,7 @@ const OFF_BASE_URL = (
 
 const OFF_USER_AGENT =
   process.env["OPENFOODFACTS_USER_AGENT"] ??
-  "DeadlineFoodPrototype/0.1 (recipe nutrition ingestion)";
+  "DeadlineFoodApp/0.1 (recipe nutrition ingestion)";
 
 const OFF_TIMEOUT_MS = 6000;
 

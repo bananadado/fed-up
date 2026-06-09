@@ -1,14 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { PrototypeEvent } from "@/domain/types";
+import type { DeadlineEvent } from "@/domain/types";
 import { eventLabel } from "./format";
 
-export function EventLog({ events }: { events: PrototypeEvent[] }) {
+export function EventLog({ events }: { events: DeadlineEvent[] }) {
   const recentEvents = events.slice(-6).reverse();
 
   return (
     <Card className="rounded-lg border-slate-200 bg-white">
       <CardHeader>
-        <CardTitle className="text-base">Prototype event log</CardTitle>
+        <CardTitle className="text-base">App event log</CardTitle>
       </CardHeader>
       <CardContent>
         {recentEvents.length === 0 ? (

@@ -1,4 +1,4 @@
-import type { MealOption, PlanStrategy, PrototypeEvent } from "@/domain/types";
+import type { MealOption, PlanStrategy, DeadlineEvent } from "@/domain/types";
 
 export function formatPence(value: number): string {
   const sign = value < 0 ? "-" : "";
@@ -22,7 +22,7 @@ export function mealTypeLabel(meal: MealOption): string {
   }[meal.mealType];
 }
 
-export function eventLabel(event: PrototypeEvent): string {
+export function eventLabel(event: DeadlineEvent): string {
   if (event.type === "strategy_selected") return `strategy_selected: ${strategyName(event.strategy)}`;
   if (event.type === "plan_generated") return `plan_generated: ${strategyName(event.plan.strategy)}`;
   if (event.type === "rescue_started") return `rescue_started: ${event.dayId}`;
