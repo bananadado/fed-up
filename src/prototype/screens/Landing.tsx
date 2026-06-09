@@ -21,7 +21,7 @@ export function Landing({
   onStart: () => void;
   track: TrackPrototypeEvent;
   account: AccountSummary;
-  accountBusy: AccountProviderId | "email" | "anonymous" | null;
+  accountBusy: AccountProviderId | "email" | "anonymous" | "delete" | null;
   accountMessage: string;
   accountMessageTone: AccountMessageTone;
   onConnectAccount: (provider: AccountProviderId) => void;

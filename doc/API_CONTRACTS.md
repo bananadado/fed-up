@@ -322,6 +322,23 @@ Important difference:
 - Firebase save can generate a session ID if invalid/missing.
 - Local Bun save rejects invalid/missing session ID.
 
+### Delete Account
+
+```http
+DELETE /deadlineFoodSession
+Authorization: Bearer <firebase-id-token>
+```
+
+Firebase behaviour:
+
+- Requires a valid **non-anonymous** token (`401` otherwise).
+- Deletes `accountSessions/{uid}` and the Firebase Auth user (Admin SDK).
+- Returns `{ "deleted": true }`.
+
+Used by the Settings "Delete account" flow. Account sessions never expire, so
+this DELETE is the only way an account's synced profile is removed. Anonymous
+sessions are not deleted here — they lapse via the rolling `expiresAt` TTL.
+
 ## Nutrition
 
 Frontend client:

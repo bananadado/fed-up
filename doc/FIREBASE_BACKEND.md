@@ -271,8 +271,12 @@ Session IDs must match:
 
 Retention:
 
-- `expiresAt` is set 90 days from the latest save/load.
-- Firestore TTL should be enabled on `anonymousSessions.expiresAt`.
+- `expiresAt` is set 90 days from the latest save/load (anonymous sessions only).
+- Firestore TTL should be enabled on `anonymousSessions.expiresAt` — and NOT on
+  `accountSessions`, which never expire (their writes clear `expiresAt`).
+- Account sessions persist until deleted. `DELETE` on `deadlineFoodSession` with
+  a non-anonymous token removes the `accountSessions/{uid}` profile and the
+  Firebase Auth user.
 
 See also [../docs/anonymous-session-storage.md](../docs/anonymous-session-storage.md).
 

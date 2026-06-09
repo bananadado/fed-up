@@ -147,12 +147,28 @@ If a user clears browser storage before linking Google or Microsoft, the app
 cannot know which Firestore document belonged to that user. Once linked,
 Firebase Auth can recover the session through `accountSessions`.
 
-Cleanup is handled with a rolling expiry:
+Cleanup is handled with a rolling expiry on **anonymous sessions only**:
 
 - Every save writes a fresh `expiresAt` value 90 days in the future.
 - Loading an existing session also refreshes `expiresAt`.
 - Firestore TTL should be enabled on `anonymousSessions.expiresAt` so expired
   documents are removed automatically.
+
+Account sessions (`accountSessions/{uid}`) **never expire**. Their writes
+explicitly clear `expiresAt` (`FieldValue.delete()`), so a TTL policy must NOT
+be configured on the `accountSessions` collection group — only on
+`anonymousSessions`. An account's data persists until the user deletes it.
+
+When a signed-in account first loads, the anonymous session it arrived with is
+adopted into the uid-keyed account record and the original
+`anonymousSessions/{sessionId}` document is deleted (the data now lives under the
+account, so the anonymous copy is redundant).
+
+Deleting an account (`DELETE /api/deadline-food/session` with a valid
+non-anonymous token) permanently removes both the `accountSessions/{uid}`
+profile document and the Firebase Auth user itself (via the Admin SDK). Using
+server-side deletion avoids the client `auth/requires-recent-login` reauth
+prompt. The client then signs out locally and starts a fresh anonymous session.
 
 Enable TTL for the Firebase project:
 

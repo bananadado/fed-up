@@ -1,57 +1,77 @@
 {
   "/home/kolesniii/uni/drp03/functions/tsconfig.dev.json": {
-    "mtime": 1779809271.374578,
+    "mtime": 1780343067.2780054,
     "ast_hash": "7ebce47a7673d7c9b9db4401a85e7a23",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/package.json": {
-    "mtime": 1779968117.1025615,
+    "mtime": 1780343067.2775517,
     "ast_hash": "220fdc75e1834da6a6353511d2e4228b",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/tsconfig.json": {
-    "mtime": 1779809271.374578,
-    "ast_hash": "7ab5b7443cd7f661a5fb4455bf0ece35",
+    "mtime": 1780925579.8193076,
+    "ast_hash": "6d3148de3074f233074e006d1a5d1b36",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/.eslintrc.js": {
-    "mtime": 1779809271.372714,
-    "ast_hash": "ece8de07f8a035b325d5b9af673ed3d0",
+    "mtime": 1780925579.818397,
+    "ast_hash": "e59fe61343159cd122ff01ac22f88b0d",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/src/index.ts": {
-    "mtime": 1780312476.0552197,
-    "ast_hash": "d0ed2c5dff67082f1ff33495473aabe1",
+    "mtime": 1781030449.395484,
+    "ast_hash": "89b61dce147cb960a6ceeac65d32f623",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/src/icsParser.ts": {
-    "mtime": 1780311763.4093304,
+    "mtime": 1781029074.7193627,
     "ast_hash": "3aef2765071416a0c3d11f41d708f13f",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/src/calendarUtils.ts": {
-    "mtime": 1780312221.2460947,
+    "mtime": 1780521381.7561471,
     "ast_hash": "5a118e885e518e55a95805620cd64914",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/src/generated/prototypeData.ts": {
-    "mtime": 1780309349.1332414,
-    "ast_hash": "c742b10259a49c2de536654d5134384d",
+    "mtime": 1781029218.4920056,
+    "ast_hash": "0eae13a68171657d59fc35bceee5025f",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/lib/index.js": {
-    "mtime": 1780312513.8035986,
-    "ast_hash": "438319d460465ce08a29acca4f9262ba",
+    "mtime": 1781030690.0486033,
+    "ast_hash": "0a78d1e2c47edd75c534207cd29ab730",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/lib/icsParser.js": {
-    "mtime": 1780312513.7435966,
+    "mtime": 1781030689.907343,
     "ast_hash": "ddc16a3bc1725e7f8f4897119fc11407",
     "semantic_hash": ""
   },
   "/home/kolesniii/uni/drp03/functions/lib/calendarUtils.js": {
-    "mtime": 1780312513.7585971,
+    "mtime": 1781030689.9236045,
     "ast_hash": "b10a43128e8e1a2f8ecc9f21d47b4dc8",
+    "semantic_hash": ""
+  },
+  "/home/kolesniii/uni/drp03/functions/src/autoPlan.ts": {
+    "mtime": 1781029074.7193627,
+    "ast_hash": "39509c7be5682c5092d728d345e4acff",
+    "semantic_hash": ""
+  },
+  "/home/kolesniii/uni/drp03/functions/src/autoPlan.test.ts": {
+    "mtime": 1781029074.7193627,
+    "ast_hash": "2e0be6f4265e3b05579d4d919a5ce90d",
+    "semantic_hash": ""
+  },
+  "/home/kolesniii/uni/drp03/functions/lib/autoPlan.test.js": {
+    "mtime": 1780583811.075061,
+    "ast_hash": "59fe0ca0c8012ae3c44279dd8eb0fae9",
+    "semantic_hash": ""
+  },
+  "/home/kolesniii/uni/drp03/functions/lib/autoPlan.js": {
+    "mtime": 1781030689.8974557,
+    "ast_hash": "3dee93e909a51f500442258bb0185864",
     "semantic_hash": ""
   }
 }

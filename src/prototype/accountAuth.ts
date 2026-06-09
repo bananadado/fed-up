@@ -300,7 +300,16 @@ export async function getDeadlineFoodAuthToken(): Promise<string | null> {
   // localStorage session id until the user explicitly chooses to sign in or to
   // "continue without signing in" (which signs in anonymously on purpose).
   const auth = getDeadlineFoodAuth();
-  const user = auth?.currentUser ?? null;
+  if (auth === null) {
+    return null;
+  }
+  // Firebase restores a persisted (signed-in) user from IndexedDB
+  // asynchronously after page load. authStateReady() resolves once that initial
+  // restore has settled, so on a reload we attach the real account's token
+  // instead of racing it and falling back to an anonymous session — which is
+  // what previously bounced returning users back through onboarding.
+  await auth.authStateReady();
+  const user = auth.currentUser;
   return user ? user.getIdToken() : null;
 }
 
@@ -592,6 +601,22 @@ export async function checkDeadlineFoodMicrosoftRedirectResult(): Promise<Accoun
     }
     throw error;
   }
+}
+
+// Clears the local Firebase session after the backend has deleted the account
+// (Firestore profile + Auth user) via DELETE /session. The cached credential is
+// now invalid, so we sign out locally to drop it before the app reloads. Using
+// server-side admin deletion avoids the client-side auth/requires-recent-login
+// reauth dance entirely.
+export async function signOutDeadlineFoodAccount(): Promise<void> {
+  const auth = getDeadlineFoodAuth();
+  if (auth === null) {
+    return;
+  }
+  await signOut(auth).catch(() => {
+    // The user record is already gone server-side; a failed client sign-out is
+    // harmless because the page reloads into a fresh anonymous session next.
+  });
 }
 
 export async function switchToAnonymousAccountOnThisDevice(): Promise<AccountSummary> {

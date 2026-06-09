@@ -42,6 +42,17 @@ function storeSessionId(sessionId: string): void {
   window.localStorage.setItem(ANONYMOUS_SESSION_STORAGE_KEY, sessionId);
 }
 
+// Drops the locally stored session handle so the next load starts from a brand
+// new anonymous session (used after deleting an account, which must not reuse
+// the deleted account's session handle).
+export function clearStoredAnonymousSessionId(): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.localStorage.removeItem(ANONYMOUS_SESSION_STORAGE_KEY);
+}
+
 export function getOrCreateAnonymousSessionId(): string {
   const existingSessionId = readStoredSessionId();
 
@@ -86,6 +97,25 @@ export async function loadAnonymousSessionSettings(sessionId: string): Promise<A
     ...body,
     retentionDays: body.retentionDays ?? PROTOTYPE_SESSION_RETENTION_DAYS,
   };
+}
+
+// Permanently deletes the signed-in account's synced profile and its Firebase
+// Auth user (the backend does both, keyed by the verified token's uid). Requires
+// a non-anonymous auth token; throws if the request is rejected.
+export async function deleteAccountProfile(): Promise<void> {
+  const headers = await authHeaders();
+  if (!headers.authorization) {
+    throw new Error("You need to be signed in to delete your account.");
+  }
+
+  const response = await fetch(deadlineFoodEndpointUrl("session"), {
+    method: "DELETE",
+    headers,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Account deletion request failed with ${response.status}`);
+  }
 }
 
 export async function saveAnonymousSessionSettings(

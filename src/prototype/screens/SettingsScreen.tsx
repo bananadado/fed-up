@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Import, LogOut, Mail, RotateCcw, UserRound } from "lucide-react";
+import { Import, Mail, RotateCcw, UserRound } from "lucide-react";
 import { GoogleIcon, MicrosoftIcon } from "../components/BrandIcons";
 
 import { Card } from "@/components/ui/card";
@@ -46,7 +46,7 @@ export function SettingsScreen({
   accountBusy,
   onConnectAccount,
   onSendEmailMagicLink,
-  onUseAnonymousAccount,
+  onDeleteAccount,
   track,
 }: {
   prefs: Preferences;
@@ -65,10 +65,10 @@ export function SettingsScreen({
   account: AccountSummary;
   accountMessage: string;
   accountMessageTone: AccountMessageTone;
-  accountBusy: AccountProviderId | "email" | "anonymous" | null;
+  accountBusy: AccountProviderId | "email" | "anonymous" | "delete" | null;
   onConnectAccount: (provider: AccountProviderId) => void;
   onSendEmailMagicLink: (email: string, options?: EmailMagicLinkOptions) => void;
-  onUseAnonymousAccount: () => void;
+  onDeleteAccount: () => void;
   track: TrackPrototypeEvent;
 }) {
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -76,6 +76,7 @@ export function SettingsScreen({
   const [importing, setImporting] = useState(false);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
   const [accountEmail, setAccountEmail] = useState(account.email ?? "");
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
@@ -195,61 +196,52 @@ export function SettingsScreen({
               </p>
             </div>
           </div>
-          {account.configured && (
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              <AppButton
-                type="button"
-                variant={account.providerIds.includes("google.com") ? "secondary" : "primary"}
-                onClick={() => onConnectAccount("google")}
-                disabled={accountBusy !== null}
-                className="justify-center"
-              >
-                <GoogleIcon size={15} /> {accountBusy === "google" ? "Connecting..." : "Continue with Google"}
-              </AppButton>
-              <AppButton
-                type="button"
-                variant={account.providerIds.includes("microsoft.com") ? "secondary" : "primary"}
-                onClick={() => onConnectAccount("microsoft")}
-                disabled={accountBusy !== null}
-                className="justify-center"
-              >
-                <MicrosoftIcon size={15} /> {accountBusy === "microsoft" ? "Connecting..." : "Continue with Microsoft"}
-              </AppButton>
-              {!account.isAnonymous && (
+          {/* Anonymous session: offer the ways to link/sign in. Once an account
+              is attached there is nothing left to link, so we never show these. */}
+          {account.configured && account.isAnonymous && (
+            <>
+              <div className="mt-4 grid gap-2 sm:grid-cols-2">
                 <AppButton
                   type="button"
-                  variant="secondary"
-                  onClick={onUseAnonymousAccount}
+                  variant="primary"
+                  onClick={() => onConnectAccount("google")}
                   disabled={accountBusy !== null}
-                  className="justify-center sm:col-span-2"
+                  className="justify-center"
                 >
-                  <LogOut size={15} /> {accountBusy === "anonymous" ? "Switching..." : "Use only on this device"}
+                  <GoogleIcon size={15} /> {accountBusy === "google" ? "Connecting..." : "Continue with Google"}
                 </AppButton>
-              )}
-            </div>
-          )}
-          {account.configured && (
-            <div className="mt-3 space-y-1.5">
-              <form
-                className="grid gap-2 sm:grid-cols-[1fr_auto]"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  onSendEmailMagicLink(accountEmail, {intent: "existing"});
-                }}
-              >
-                <Input
-                  type="email"
-                  value={accountEmail}
-                  onChange={(event) => setAccountEmail(event.target.value)}
-                  placeholder="you@example.com"
-                  className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
-                />
-                <AppButton type="submit" variant="secondary" disabled={accountBusy !== null || !accountEmail.trim()} className="justify-center">
-                  <Mail size={15} /> {accountBusy === "email" ? "Sending..." : "Send magic link"}
+                <AppButton
+                  type="button"
+                  variant="primary"
+                  onClick={() => onConnectAccount("microsoft")}
+                  disabled={accountBusy !== null}
+                  className="justify-center"
+                >
+                  <MicrosoftIcon size={15} /> {accountBusy === "microsoft" ? "Connecting..." : "Continue with Microsoft"}
                 </AppButton>
-              </form>
-              <p className="text-xs text-stone-500">Link opens in the same browser. Check spam if it doesn't arrive.</p>
-            </div>
+              </div>
+              <div className="mt-3 space-y-1.5">
+                <form
+                  className="grid gap-2 sm:grid-cols-[1fr_auto]"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    onSendEmailMagicLink(accountEmail, {intent: "existing"});
+                  }}
+                >
+                  <Input
+                    type="email"
+                    value={accountEmail}
+                    onChange={(event) => setAccountEmail(event.target.value)}
+                    placeholder="you@example.com"
+                    className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
+                  />
+                  <AppButton type="submit" variant="secondary" disabled={accountBusy !== null || !accountEmail.trim()} className="justify-center">
+                    <Mail size={15} /> {accountBusy === "email" ? "Sending..." : "Send magic link"}
+                  </AppButton>
+                </form>
+                <p className="text-xs text-stone-500">Link opens in the same browser. Check spam if it doesn't arrive.</p>
+              </div>
+            </>
           )}
           {accountMessage && <p className={`mt-3 rounded-lg p-3 text-sm ${accountMessageTone === "error" ? "bg-red-50 text-red-700" : "bg-white text-emerald-800"}`}>{accountMessage}</p>}
         </div>
@@ -464,6 +456,33 @@ export function SettingsScreen({
           <AppButton onClick={() => { track("settings_saved", { dietary_count: prefs.dietary.length, allergen_count: prefs.allergens.length, likes_count: prefs.likes.length, dislikes_count: prefs.dislikes.length, available_ingredient_count: prefs.availableIngredients.length, cooking_ability: prefs.cookingAbility }); setScreen("dashboard"); }}>Save preferences</AppButton>
         </div>
       </Card>
+      {/* Danger zone: permanent account deletion lives at the very bottom, away
+          from everyday preferences. Only shown for a signed-in account — there is
+          nothing to delete for an anonymous session. */}
+      {account.configured && !account.isAnonymous && (
+        <Card className="mt-7 gap-0 rounded-lg border-red-200 bg-red-50/60 p-6">
+          <p className="text-sm font-semibold text-red-800">Delete account</p>
+          <p className="mt-1 text-sm text-red-700">
+            This permanently deletes your account and its synced plan. This can't be undone. Type <span className="font-semibold">confirm</span> below to enable the button.
+          </p>
+          <Input
+            type="text"
+            value={deleteConfirmText}
+            onChange={(event) => setDeleteConfirmText(event.target.value)}
+            placeholder="Type confirm"
+            className="mt-3 h-auto rounded-lg border-red-200 bg-white p-3 text-sm"
+          />
+          <AppButton
+            type="button"
+            variant="secondary"
+            onClick={onDeleteAccount}
+            disabled={accountBusy !== null || deleteConfirmText.trim().toLowerCase() !== "confirm"}
+            className="mt-3 w-full justify-center border-red-300 bg-white text-red-700 hover:bg-red-100"
+          >
+            {accountBusy === "delete" ? "Deleting..." : "Delete my account"}
+          </AppButton>
+        </Card>
+      )}
     </div>
   );
 }

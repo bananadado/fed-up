@@ -5,6 +5,8 @@ import { capturePostHogEvent, registerPostHogContext, registerPostHogSession, ty
 import { initialPlan, initialPreferences } from "./data";
 import type { CalendarEvent, CalendarProvider, Deadline, DiscoverRecommendationState, Meal, MealSlot, PlanEntry, Preferences, Screen } from "./types";
 import {
+  clearStoredAnonymousSessionId,
+  deleteAccountProfile,
   getOrCreateAnonymousSessionId,
   loadAnonymousSessionSettings,
   saveAnonymousSessionSettings,
@@ -18,6 +20,7 @@ import {
   onDeadlineFoodAccountChanged,
   sendDeadlineFoodEmailMagicLink,
   signInExistingDeadlineFoodAccount,
+  signOutDeadlineFoodAccount,
   switchToAnonymousAccountOnThisDevice,
   type AccountMessageTone,
   type EmailMagicLinkOptions,
@@ -89,7 +92,7 @@ export function DeadlineFoodPrototype() {
   });
   const [accountMessage, setAccountMessage] = useState("");
   const [accountMessageTone, setAccountMessageTone] = useState<AccountMessageTone>("info");
-  const [accountBusy, setAccountBusy] = useState<AccountProviderId | "email" | "anonymous" | null>(null);
+  const [accountBusy, setAccountBusy] = useState<AccountProviderId | "email" | "anonymous" | "delete" | null>(null);
   // Set an account-area notice with a tone so the UI styles errors distinctly
   // from success/info. Clear with notifyAccount("").
   const notifyAccount = useCallback((text: string, tone: AccountMessageTone = "info") => {
@@ -598,6 +601,29 @@ export function DeadlineFoodPrototype() {
     }
   }, [notifyAccount, saveCurrentSessionNow, track]);
 
+  const deleteAccount = useCallback(async () => {
+    setAccountBusy("delete");
+    notifyAccount("");
+    try {
+      // Backend deletes the synced profile document AND the Firebase Auth user
+      // (keyed by the verified token), then we clear the now-invalid local
+      // session. Order matters: the DELETE needs the still-valid token.
+      await deleteAccountProfile();
+      await signOutDeadlineFoodAccount();
+      track("account_deleted", {});
+      // The account and its synced session are gone. Start the device over from
+      // a brand new anonymous session by clearing the stored handle and reloading
+      // so every piece of in-memory state re-initialises cleanly.
+      clearStoredAnonymousSessionId();
+      window.location.hash = "/landing";
+      window.location.reload();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not delete account.";
+      notifyAccount(message, "error");
+      setAccountBusy(null);
+    }
+  }, [notifyAccount, track]);
+
   useEffect(() => {
     if (!sessionLoaded || !canPersistSession || sessionLoadPendingRef.current) return;
 
@@ -858,7 +884,7 @@ export function DeadlineFoodPrototype() {
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} track={track} />}
-      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onUseAnonymousAccount={returnToAnonymousAccount} track={track} />}
+      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onDeleteAccount={deleteAccount} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} />}
     </Shell>
   );

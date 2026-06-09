@@ -140,7 +140,7 @@ export function Onboarding({
   account: AccountSummary;
   accountMessage: string;
   accountMessageTone: AccountMessageTone;
-  accountBusy: AccountProviderId | "email" | "anonymous" | null;
+  accountBusy: AccountProviderId | "email" | "anonymous" | "delete" | null;
   onConnectAccount: (provider: AccountProviderId) => void;
   onSendEmailMagicLink: (email: string) => void;
   onUseAnonymousAccount: () => void;

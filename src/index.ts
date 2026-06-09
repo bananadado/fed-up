@@ -7,7 +7,9 @@ const sessionRetentionDays = 90;
 const anonymousSessions = new Map<string, { settings: unknown; updatedAt: string; expiresAt: string }>();
 // Real (non-anonymous) accounts key their data directly by Firebase uid, mirroring
 // the uid-keyed accountSessions collection used by the Firebase Functions backend.
-const accountSessions = new Map<string, { settings: unknown; updatedAt: string; expiresAt: string }>();
+// Account sessions never expire (expiresAt stays null) — only anonymous sessions
+// carry a rolling TTL. Mirrors the Firebase backend.
+const accountSessions = new Map<string, { settings: unknown; updatedAt: string; expiresAt: string | null }>();
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const firebaseFunctionsBaseUrl = process.env.BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL?.replace(/\/$/, "");
 const publicEnvKeys = [
@@ -186,17 +188,20 @@ const server = serve({
               ? anonymousSessions.get(requestedSessionId)
               : undefined;
             if (anon?.settings != null) {
-              record = { settings: anon.settings, updatedAt: new Date().toISOString(), expiresAt: expiresAtFromNow() };
+              // Account sessions never expire; the anonymous save is migrated in
+              // and its (now redundant) record dropped — matching the Firebase backend.
+              record = { settings: anon.settings, updatedAt: new Date().toISOString(), expiresAt: null };
               accountSessions.set(accountUid, record);
+              anonymousSessions.delete(requestedSessionId);
             }
           }
 
           if (record !== undefined) {
-            record.expiresAt = expiresAtFromNow();
+            // Account sessions don't expire; just touch updatedAt.
             record.updatedAt = new Date().toISOString();
           }
 
-          return sessionResponse(accountSessionHandle(accountUid), record?.settings ?? null, record?.expiresAt ?? null);
+          return sessionResponse(accountSessionHandle(accountUid), record?.settings ?? null, null);
         }
 
         const sessionId = new URL(req.url).searchParams.get("sessionId");
@@ -229,9 +234,9 @@ const server = serve({
           accountSessions.set(accountUid, {
             settings: payload.settings,
             updatedAt: new Date().toISOString(),
-            expiresAt,
+            expiresAt: null,
           });
-          return sessionResponse(accountSessionHandle(accountUid), payload.settings, expiresAt);
+          return sessionResponse(accountSessionHandle(accountUid), payload.settings, null);
         }
 
         const sessionId = typeof payload?.sessionId === "string" ? payload.sessionId : "";
@@ -247,6 +252,24 @@ const server = serve({
         });
 
         return sessionResponse(sessionId, payload.settings, expiresAt);
+      },
+      async DELETE(req) {
+        // Permanently deletes a signed-in account's profile. The local Bun backend
+        // has no Firebase Admin SDK, so (unlike the deployed Functions backend) it
+        // can only drop the in-memory profile record, not the emulator Auth user —
+        // adequate for dev, since the client signs out and reloads regardless.
+        const account = decodeAccountFromRequest(req);
+        const accountUid = account && !account.isAnonymous ? account.uid : null;
+
+        if (accountUid === null) {
+          return Response.json(
+            { error: "A signed-in account is required to delete an account." },
+            { status: 401 },
+          );
+        }
+
+        accountSessions.delete(accountUid);
+        return Response.json({ deleted: true });
       },
     },
 
