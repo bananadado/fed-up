@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-06-09)
 
 ## Corpus Check
-- 216 files · ~157,609 words
+- 216 files · ~157,652 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f1084515`
+- Built from commit: `2714766f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -205,16 +205,16 @@ Cohesion: 0.07
 Nodes (57): _clamp(), classify_event(), classify_events(), _cosine(), daily_context(), _embedding_classify(), _event_duration_hours(), event_type() (+49 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.06
-Nodes (59): BudgetCard(), entryTotal(), ConfirmDialog(), AppButton(), Badge(), EditorForm, formatPortionNote(), MEAL_SLOT_OPTIONS (+51 more)
+Cohesion: 0.07
+Nodes (54): BudgetCard(), entryTotal(), ConfirmDialog(), AppButton(), EditorForm, formatPortionNote(), MEAL_SLOT_OPTIONS, MEAL_SLOT_SET (+46 more)
 
 ### Community 6 - "Community 6"
 Cohesion: 0.07
 Nodes (50): AdvancePrepInfo, detectAdvancePrep(), getPrepSuggestions(), PrepSuggestion, blockMinutes(), buildCookingIcs(), buildCookingVEvent(), buildGoogleCalendarUrl() (+42 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.15
-Nodes (19): icsSubscriptionHints, IngredientEditor(), ChoiceGroup(), allergens, calendarProviders, cookingAbilities, dietary, dislikes (+11 more)
+Cohesion: 0.12
+Nodes (27): icsSubscriptionHints, IngredientEditor(), ChoiceGroup(), Field(), SelectField(), UniversityField(), allergens, calendarProviders (+19 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.17
@@ -225,8 +225,8 @@ Cohesion: 0.10
 Nodes (41): CalendarEventIn, ContextRequest, Ingredient, InteractionIn, Nutrition, RecipeIn, RecipeOut, RecommendRequest (+33 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.09
-Nodes (33): defaultForm(), mealToForm(), parsePortionNote(), clamp(), countableUnits, createIngredientDraft(), formatIngredient(), formatQuantityForInput() (+25 more)
+Cohesion: 0.11
+Nodes (27): defaultForm(), clamp(), countableUnits, createIngredientDraft(), formatIngredient(), formatQuantityForInput(), ingredientAliases, ingredientName() (+19 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.04
@@ -270,7 +270,7 @@ Nodes (15): DeadlineFoodApp(), isAppScreen(), onboardingScreens, replaceScreenUr
 
 ### Community 21 - "Community 21"
 Cohesion: 0.11
-Nodes (26): positiveNumber(), RecipeEditor(), currentItemKeys(), readStoredCheckedItems(), ShoppingListCard(), writeStoredCheckedItems(), aggregateIngredients(), formatShoppingList() (+18 more)
+Nodes (27): positiveNumber(), RecipeEditor(), currentItemKeys(), readStoredCheckedItems(), ShoppingListCard(), writeStoredCheckedItems(), scaleIngredients(), aggregateIngredients() (+19 more)
 
 ### Community 22 - "Community 22"
 Cohesion: 0.06
@@ -281,8 +281,8 @@ Cohesion: 0.07
 Nodes (25): AllocatorMeal, ANIMAL_ALLERGENS, ANIMAL_INGREDIENT_PATTERNS, Band, BuildPlanInput, canonicalTag(), classifyEffort(), DAIRY_ALLERGENS (+17 more)
 
 ### Community 24 - "Community 24"
-Cohesion: 0.15
-Nodes (23): appButtonClasses, AppButtonVariant, badgeTones, Field(), SelectField(), Tone, UniversityField(), cn() (+15 more)
+Cohesion: 0.13
+Nodes (25): appButtonClasses, AppButtonVariant, Badge(), badgeTones, Tone, AnalyticsProperties, cn(), PrivacyPolicyScreen() (+17 more)
 
 ### Community 25 - "Community 25"
 Cohesion: 0.06

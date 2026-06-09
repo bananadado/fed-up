@@ -2943,7 +2943,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L29",
       "id": "lib_posthog_analyticsproperties",
-      "community": 5,
+      "community": 24,
       "norm_label": "analyticsproperties"
     },
     {
@@ -3654,7 +3654,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L85",
       "id": "deadline_food_ingredients_ingredientdraft",
-      "community": 10,
+      "community": 7,
       "norm_label": "ingredientdraft"
     },
     {
@@ -3798,7 +3798,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L223",
       "id": "deadline_food_ingredients_ingredientdraftsfromingredients",
-      "community": 10,
+      "community": 7,
       "norm_label": "ingredientdraftsfromingredients()"
     },
     {
@@ -3816,7 +3816,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L246",
       "id": "deadline_food_ingredients_sanitiseingredientdrafts",
-      "community": 10,
+      "community": 7,
       "norm_label": "sanitiseingredientdrafts()"
     },
     {
@@ -3834,7 +3834,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L271",
       "id": "deadline_food_ingredients_scaleingredients",
-      "community": 10,
+      "community": 21,
       "norm_label": "scaleingredients()"
     },
     {
@@ -3978,7 +3978,7 @@
       "source_file": "src/deadline-food/utils.ts",
       "source_location": "L45",
       "id": "deadline_food_utils_formatcookinglimit",
-      "community": 5,
+      "community": 7,
       "norm_label": "formatcookinglimit()"
     },
     {
@@ -4644,7 +4644,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L122",
       "id": "deadline_food_types_screen",
-      "community": 5,
+      "community": 7,
       "norm_label": "screen"
     },
     {
@@ -5832,7 +5832,7 @@
       "source_file": "src/deadline-food/screens/PrivacyPolicyScreen.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_screens_privacypolicyscreen_tsx",
-      "community": 5,
+      "community": 24,
       "norm_label": "privacypolicyscreen.tsx"
     },
     {
@@ -5841,7 +5841,7 @@
       "source_file": "src/deadline-food/screens/PrivacyPolicyScreen.tsx",
       "source_location": "L10",
       "id": "screens_privacypolicyscreen_trackevent",
-      "community": 5,
+      "community": 24,
       "norm_label": "trackevent"
     },
     {
@@ -5850,16 +5850,16 @@
       "source_file": "src/deadline-food/screens/PrivacyPolicyScreen.tsx",
       "source_location": "L12",
       "id": "screens_privacypolicyscreen_sections",
-      "community": 5,
+      "community": 24,
       "norm_label": "sections"
     },
     {
       "label": "PrivacyPolicyScreen()",
       "file_type": "code",
       "source_file": "src/deadline-food/screens/PrivacyPolicyScreen.tsx",
-      "source_location": "L85",
+      "source_location": "L86",
       "id": "screens_privacypolicyscreen_privacypolicyscreen",
-      "community": 5,
+      "community": 24,
       "norm_label": "privacypolicyscreen()"
     },
     {
@@ -5958,7 +5958,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L28",
       "id": "components_primitives_badge",
-      "community": 5,
+      "community": 24,
       "norm_label": "badge()"
     },
     {
@@ -5985,7 +5985,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L130",
       "id": "components_primitives_field",
-      "community": 24,
+      "community": 7,
       "norm_label": "field()"
     },
     {
@@ -5994,7 +5994,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L184",
       "id": "components_primitives_selectfield",
-      "community": 24,
+      "community": 7,
       "norm_label": "selectfield()"
     },
     {
@@ -6183,7 +6183,7 @@
       "source_file": "src/deadline-food/components/UniversityField.tsx",
       "source_location": "L8",
       "id": "components_universityfield_universityfield",
-      "community": 24,
+      "community": 7,
       "norm_label": "universityfield()"
     },
     {
@@ -6246,7 +6246,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L34",
       "id": "components_recipeeditor_parseportionnote",
-      "community": 10,
+      "community": 5,
       "norm_label": "parseportionnote()"
     },
     {
@@ -6282,7 +6282,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L104",
       "id": "components_recipeeditor_mealtoform",
-      "community": 10,
+      "community": 5,
       "norm_label": "mealtoform()"
     },
     {
@@ -61629,9 +61629,9 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "e2e_deadline_flow_spec_ts",
-      "target": "e2e_deadline_flow_spec_policypagepromise",
-      "confidence_score": 1.0
+      "target": "e2e_deadline_flow_spec_policypagepromise"
     },
     {
       "relation": "contains",
@@ -70061,5 +70061,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f108451500d3c8f61427741e5746f69734362f86"
+  "built_at_commit": "2714766f9b5ce71ec3bd52a579db15d3ab6a461d"
 }

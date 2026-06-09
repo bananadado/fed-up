@@ -14,7 +14,7 @@ const sections = [
     title: "Who this policy covers",
     body: [
       "This policy applies to Fed Up, a student deadline-week meal planning service. It covers the website, anonymous session storage, calendar import, recipe features, recommender calls, nutrition lookups and analytics used by Fed Up.",
-      "The controller for Fed Up data is the Fed Up project team. Use the project contact details supplied with your invitation for privacy requests or questions.",
+      "The controller for Fed Up data is Tim Kolesnichenko. For privacy requests or questions, contact Tim Kolesnichenko at timkolesnichenko05@gmail.com.",
     ],
   },
   {
@@ -50,14 +50,15 @@ const sections = [
     title: "Retention",
     body: [
       "Anonymous session data is retained for up to 90 days after last use unless deleted earlier. Calendar refresh tokens are stored only while calendar import remains configured. Aggregated analytics may be retained longer where it no longer identifies a user.",
-      "Recipe photos and user-created recipes may remain available until deleted from your session or removed by the project team.",
+      "Recipe photos and user-created recipes may remain available until deleted from your session or removed by Fed Up.",
     ],
   },
   {
     title: "Your choices and rights",
     body: [
       "You can skip calendar import, use a broad campus postcode instead of a home postcode, change preferences in Settings, and stop using Fed Up without creating a plan.",
-      "Depending on where you live, you may have rights to access, correct, delete, restrict or object to processing of your personal information, withdraw consent, and complain to your data protection regulator. Withdrawing consent does not affect processing that already happened before withdrawal.",
+      "You can withdraw consent at any time by contacting Tim Kolesnichenko at timkolesnichenko05@gmail.com. If you withdraw consent, Fed Up will stop processing data that depends on consent and delete or disable consent-based session data where there is no other lawful basis to keep it. Account or session deletion is one way to give effect to withdrawal, but you can also make a withdrawal request directly by email.",
+      "Depending on where you live, you may have rights to access, correct, delete, restrict or object to processing of your personal information, data portability, withdraw consent, and complain to your data protection regulator. Withdrawing consent does not affect processing that already happened before withdrawal. In the UK, you can complain to the Information Commissioner's Office at ico.org.uk/make-a-complaint.",
     ],
   },
   {

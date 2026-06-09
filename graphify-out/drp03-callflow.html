@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 2491 nodes, 4529 edges, 149 communities. Commit: f108451</p>
+<p class="subtitle">Generated from graphify knowledge graph: 2491 nodes, 4529 edges, 149 communities. Commit: 2714766</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -100,7 +100,7 @@ flowchart LR
     class INGEST_CACHE_UPDATE_FF457338 module;
     SERVE_API_35EC8E86("Serving API<br/><small>297 nodes</small>")
     class SERVE_API_35EC8E86 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>740 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>737 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
     COMMUNITY_1_3073A0DB("Community 1<br/><small>95 nodes</small>")
     class COMMUNITY_1_3073A0DB module;
@@ -108,7 +108,7 @@ flowchart LR
     class COMMUNITY_0_B056AD3D module;
     COMMUNITY_15_4BECAAD7("Community 15<br/><small>43 nodes</small>")
     class COMMUNITY_15_4BECAAD7 module;
-    COMMUNITY_24_ECF60D36("Community 24<br/><small>35 nodes</small>")
+    COMMUNITY_24_ECF60D36("Community 24<br/><small>38 nodes</small>")
     class COMMUNITY_24_ECF60D36 module;
     COMMUNITY_23_58D9DE5D("Community 23<br/><small>32 nodes</small>")
     class COMMUNITY_23_58D9DE5D module;
@@ -118,14 +118,14 @@ flowchart LR
     class COMMUNITY_28_3AE3708D module;
     OTHER_D0941E68("Other<br/><small>524 nodes</small>")
     class OTHER_D0941E68 module;
-    OTHER_D0941E68 -->|imports x77| TESTS_FIXTURES_B84B1DCC
-    TESTS_FIXTURES_B84B1DCC -->|imports x72| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x72| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x71| OTHER_D0941E68
     COMMUNITY_0_B056AD3D -->|contains x59| OTHER_D0941E68
     COMMUNITY_1_3073A0DB -->|contains x59| OTHER_D0941E68
-    TESTS_FIXTURES_B84B1DCC -->|imports x36| COMMUNITY_24_ECF60D36
+    TESTS_FIXTURES_B84B1DCC -->|imports x37| COMMUNITY_24_ECF60D36
     COMMUNITY_24_ECF60D36 -->|imports x33| SERVE_API_35EC8E86
+    COMMUNITY_24_ECF60D36 -->|imports x30| TESTS_FIXTURES_B84B1DCC
     TESTS_FIXTURES_B84B1DCC -->|imports x29| SERVE_API_35EC8E86
-    COMMUNITY_24_ECF60D36 -->|imports x28| TESTS_FIXTURES_B84B1DCC
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
     COMMUNITY_15_4BECAAD7 -->|imports x14| SERVE_API_35EC8E86
     OTHER_D0941E68 -->|imports x14| SERVE_API_35EC8E86
@@ -146,12 +146,12 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>212</td><td><code>29, 37, 38, 43, 45, 48, 51, 52, 55, 67, 84, 103, 128, 136</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>35</td><td><code>18</code></td></tr><tr><td>Outputs &amp; Docs</td><td>23</td><td><code>49, 102</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>172</td><td><code>25, 33, 34, 44, 46, 50, 69, 92, 110, 111, 112, 129, 130</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>137</td><td><code>3, 41, 53, 56, 59, 148</code></td></tr><tr><td>Serving API</td><td>297</td><td><code>2, 9, 12, 8, 13, 31, 79, 133</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>740</td><td><code>5, 4, 6, 11, 14, 10, 17, 19, 21, 22, 26, 7, 32, 40, 42, 57, 61, 62, 63, 64, 70, 78, 72, 137, 80, 82, 146, 105, 107</code></td></tr><tr><td>Community 1</td><td>95</td><td><code>1</code></td></tr><tr><td>Community 0</td><td>88</td><td><code>0</code></td></tr><tr><td>Community 15</td><td>43</td><td><code>15</code></td></tr><tr><td>Community 24</td><td>35</td><td><code>24</code></td></tr><tr><td>Community 23</td><td>32</td><td><code>23</code></td></tr><tr><td>Community 27</td><td>30</td><td><code>27</code></td></tr><tr><td>Community 28</td><td>28</td><td><code>28</code></td></tr><tr><td>Other</td><td>524</td><td><code>16, 30, 35, 36, 20, 39, 47, 54, 58, 60, 65, 66, 68, 71, 76, 114, 77, 104, 73, 75, 81, 83, 85, 86, 147, 87, 88, 89, 90, 91, 93, 94, 100, 101, 95, 96, 97, 98, 99, 106, 108, 109, 113, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 131, 132, 134, 135, 138, 139, 74, 140, 141, 142, 143, 144, 145</code></td></tr>
+      <tr><td>Graph Build</td><td>212</td><td><code>29, 37, 38, 43, 45, 48, 51, 52, 55, 67, 84, 103, 128, 136</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>35</td><td><code>18</code></td></tr><tr><td>Outputs &amp; Docs</td><td>23</td><td><code>49, 102</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>172</td><td><code>25, 33, 34, 44, 46, 50, 69, 92, 110, 111, 112, 129, 130</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>137</td><td><code>3, 41, 53, 56, 59, 148</code></td></tr><tr><td>Serving API</td><td>297</td><td><code>2, 9, 12, 8, 13, 31, 79, 133</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>737</td><td><code>5, 4, 6, 11, 14, 17, 21, 7, 19, 10, 22, 26, 32, 40, 42, 57, 61, 62, 63, 64, 70, 78, 72, 137, 80, 82, 146, 105, 107</code></td></tr><tr><td>Community 1</td><td>95</td><td><code>1</code></td></tr><tr><td>Community 0</td><td>88</td><td><code>0</code></td></tr><tr><td>Community 15</td><td>43</td><td><code>15</code></td></tr><tr><td>Community 24</td><td>38</td><td><code>24</code></td></tr><tr><td>Community 23</td><td>32</td><td><code>23</code></td></tr><tr><td>Community 27</td><td>30</td><td><code>27</code></td></tr><tr><td>Community 28</td><td>28</td><td><code>28</code></td></tr><tr><td>Other</td><td>524</td><td><code>16, 30, 35, 36, 20, 39, 47, 54, 58, 60, 65, 66, 68, 71, 76, 114, 77, 104, 73, 75, 81, 83, 85, 86, 147, 87, 88, 89, 90, 91, 93, 94, 100, 101, 95, 96, 97, 98, 99, 106, 108, 109, 113, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 131, 132, 134, 135, 138, 139, 74, 140, 141, 142, 143, 144, 145</code></td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Core Flow</h4>
-    <div class="arrow-chain">Graph Build -&gt; Analysis &amp; Clustering -&gt; Serving API -&gt; Tests &amp; Fixtures -&gt; Other -&gt; Community 15 -&gt; Outputs &amp; Docs</div>
+    <div class="arrow-chain">Graph Build -&gt; Analysis &amp; Clustering -&gt; Serving API -&gt; Tests &amp; Fixtures -&gt; Other -&gt; Community 24 -&gt; Outputs &amp; Docs</div>
   </div>
 </div>
 <div class="grid">
@@ -2211,12 +2211,12 @@ flowchart LR
 
 <!-- ====== 8. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">8. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around deadline, test, food, api, mostly in doc/DEVELOPMENT_AND_TESTING.md, recommender-api/tests/test_recommend_unit.py, functions/src/autoPlan.test.ts. This section covers 740 nodes and 1432 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around deadline, test, food, api, mostly in doc/DEVELOPMENT_AND_TESTING.md, recommender-api/tests/test_recommend_unit.py, functions/src/autoPlan.test.ts. This section covers 737 nodes and 1424 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (740 nodes, 1432 edges)
+    %% Section: Tests &amp; Fixtures (737 nodes, 1424 edges)
     subgraph tests_fixtures_src_deadline_food_nutrition_ts_7e8726bb["src/deadline-food/nutrition.ts"]
         deadline_food_nutrition_roundmacro_2f1ef290("roundMacro()<br/><small>src/deadline-food/nutrition.ts</small>")
         deadline_food_nutrition_totalnutritionfromestima_f70e34da("totalNutritionFromEstimates()<br/><small>src/deadline-food/nutrition.ts</small>")
@@ -2255,7 +2255,7 @@ flowchart LR
     deadline_food_recipecatalogue_getplanmeal_7d4866c5 -->|calls| deadline_food_utils_mealbyid_f7cf0597
     deadline_food_cookingcalendar_pad2_a4ef3068 -->|calls| deadline_food_cookingcalendar_toicslocalstamp_d03b2188
     deadline_food_utils_mealbyid_f7cf0597 -->|calls| deadline_food_utils_getmealbyid_bec1fa55
-    %% Omitted for readability: 722 nodes, 0 edges
+    %% Omitted for readability: 719 nodes, 0 edges
     class deadline_food_nutrition_roundmacro_2f1ef290 function;
     class deadline_food_nutrition_totalnutritionfromestima_f70e34da function;
     class deadline_food_nutrition_gramsforingredient_100ccd44 function;
@@ -2305,14 +2305,6 @@ flowchart LR
 </tr>
 <tr>
   <td>2</td>
-  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/deadline-food/analytics.ts</small><br><code>PrivacyPolicyScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small></td>
-  <td>Orchestrates analysis and returns structured documentation data.</td>
-</tr>
-<tr>
-  <td>3</td>
   <td><code>recipeCatalogue.ts</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>RecipeIngredient</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
@@ -2320,7 +2312,7 @@ flowchart LR
   <td>Module file in src/deadline-food/recipeCatalogue.ts.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>3</td>
   <td><code>planMeals</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2328,7 +2320,7 @@ flowchart LR
   <td>planMeals node in src/deadline-food/recipeCatalogue.ts.</td>
 </tr>
 <tr>
-  <td>5</td>
+  <td>4</td>
   <td><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2336,7 +2328,7 @@ flowchart LR
   <td>getRecipeCatalogue() node in src/deadline-food/recipeCatalogue.ts.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>5</td>
   <td><code>getPlanMeal()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2344,7 +2336,7 @@ flowchart LR
   <td>getPlanMeal() node in src/deadline-food/recipeCatalogue.ts.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>6</td>
   <td><code>normalizeRecipe()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2352,7 +2344,7 @@ flowchart LR
   <td>normalizeRecipe() node in src/deadline-food/recipeCatalogue.ts.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>7</td>
   <td><code>mealSlots</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2360,15 +2352,15 @@ flowchart LR
   <td>mealSlots node in src/deadline-food/data.ts.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>8</td>
   <td><code>analytics.ts</code><br><small style="color:var(--muted)">src/deadline-food/analytics.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
-  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td>External entry / no inbound edge</td>
   <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/Dashboard.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/DiscoverScreen.tsx</small><br>+9 more</td>
   <td>Module file in src/deadline-food/analytics.ts.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>9</td>
   <td><code>TrackEvent</code><br><small style="color:var(--muted)">src/deadline-food/analytics.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -2376,7 +2368,7 @@ flowchart LR
   <td>TrackEvent node in src/deadline-food/analytics.ts.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>10</td>
   <td><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -2384,7 +2376,7 @@ flowchart LR
   <td>Module file in src/deadline-food/healthSignals.ts.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>11</td>
   <td><code>vegetableWords</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2392,7 +2384,7 @@ flowchart LR
   <td>vegetableWords node in src/deadline-food/healthSignals.ts.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>12</td>
   <td><code>mealHealthSignals()</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2400,7 +2392,7 @@ flowchart LR
   <td>mealHealthSignals() node in src/deadline-food/healthSignals.ts.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>13</td>
   <td><code>weeklyBalanceSummary()</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2408,7 +2400,7 @@ flowchart LR
   <td>weeklyBalanceSummary() node in src/deadline-food/healthSignals.ts.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>14</td>
   <td><code>utils.ts</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>formatIngredient()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small><br><code>getPlanMeal()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small><br>+5 more</td>
@@ -2416,7 +2408,7 @@ flowchart LR
   <td>Module file in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>15</td>
   <td><code>parseICS()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2424,7 +2416,7 @@ flowchart LR
   <td>parseICS() node in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>16</td>
   <td><code>money()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2432,7 +2424,7 @@ flowchart LR
   <td>money() node in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>17</td>
   <td><code>sourceUrl()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2440,15 +2432,7 @@ flowchart LR
   <td>sourceUrl() node in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
-  <td>19</td>
-  <td><code>formatCookingLimit()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>DiscoverScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/DiscoverScreen.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/DiscoverScreen.tsx</small><br><code>Onboarding()</code><br><small style="color:var(--muted)">deadline-food/screens/Onboarding.tsx</small><br>+3 more</td>
-  <td>formatCookingLimit() node in src/deadline-food/utils.ts.</td>
-</tr>
-<tr>
-  <td>20</td>
+  <td>18</td>
   <td><code>mealById()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>getPlanMeal()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small><br><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small></td>
@@ -2456,7 +2440,7 @@ flowchart LR
   <td>mealById() node in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>19</td>
   <td><code>getMealById()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>getPrepSuggestions()</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>getRecipeCatalogue()</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small><br>+2 more</td>
@@ -2464,7 +2448,7 @@ flowchart LR
   <td>getMealById() node in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>20</td>
   <td><code>ingredientNames()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -2472,7 +2456,7 @@ flowchart LR
   <td>ingredientNames() node in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>21</td>
   <td><code>NAME_STOPWORDS</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -2480,7 +2464,7 @@ flowchart LR
   <td>NAME_STOPWORDS node in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>22</td>
   <td><code>keyIngredients()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>ingredientNames()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
@@ -2488,15 +2472,15 @@ flowchart LR
   <td>keyIngredients() node in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>23</td>
   <td><code>types.ts</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>data.ts</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.ts</small><br>+8 more</td>
-  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br><code>costEstimate.ts</code><br><small style="color:var(--muted)">src/deadline-food/costEstimate.ts</small><br>+13 more</td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br><code>costEstimate.ts</code><br><small style="color:var(--muted)">src/deadline-food/costEstimate.ts</small><br>+12 more</td>
   <td>Module file in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>24</td>
   <td><code>MealType</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -2504,7 +2488,7 @@ flowchart LR
   <td>MealType node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>25</td>
   <td><code>MealSlot</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>data.ts</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small><br><code>recipeCatalogue.ts</code><br><small style="color:var(--muted)">src/deadline-food/recipeCatalogue.ts</small><br><code>recommenderApi.ts</code><br><small style="color:var(--muted)">src/deadline-food/recommenderApi.ts</small></td>
@@ -2512,7 +2496,7 @@ flowchart LR
   <td>MealSlot node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>26</td>
   <td><code>NutritionSource</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>utils.ts</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
@@ -2520,7 +2504,7 @@ flowchart LR
   <td>NutritionSource node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>27</td>
   <td><code>Meal</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>data.ts</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.ts</small><br>+3 more</td>
@@ -2528,12 +2512,28 @@ flowchart LR
   <td>Meal node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>28</td>
   <td><code>PlanMeal</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>PlanMeal node in src/deadline-food/types.ts.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>PlanEntry</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>data.ts</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small><br><code>healthSignals.ts</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.ts</small></td>
+  <td><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/Dashboard.tsx</small><br>+4 more</td>
+  <td>PlanEntry node in src/deadline-food/types.ts.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>Deadline</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>data.ts</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small><br><code>recommenderApi.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/recommenderApi.test.ts</small><br><code>recommenderApi.ts</code><br><small style="color:var(--muted)">src/deadline-food/recommenderApi.ts</small><br>+2 more</td>
+  <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br><code>DiscoverScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/DiscoverScreen.tsx</small><br><code>Onboarding.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/Onboarding.tsx</small><br>+2 more</td>
+  <td>Deadline node in src/deadline-food/types.ts.</td>
 </tr>
 </table>
 
@@ -2554,7 +2554,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x599, imports x297, calls x273, imports x119. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x596, imports x293, calls x273, imports x118. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3578,17 +3578,18 @@ flowchart LR
 
 <!-- ====== 12. Community 24 ====== -->
 <h2 id="community-24">12. Community 24</h2>
-<p>Community 24 groups implementation around components, selecttsx, deadline, food, mostly in components/ui/select.tsx, deadline-food/components/primitives.tsx, components/ui/card.tsx. This section covers 35 nodes and 87 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Community 24 groups implementation around components, selecttsx, deadline, food, mostly in components/ui/select.tsx, deadline-food/components/primitives.tsx, deadline-food/screens/PrivacyPolicyScreen.tsx. This section covers 38 nodes and 92 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 24 (35 nodes, 87 edges)
+    %% Section: Community 24 (38 nodes, 92 edges)
     subgraph community_24_components_ui_select_tsx_7a466277["components/ui/select.tsx"]
         ui_select_selectcontent_0e8c3125("SelectContent()<br/><small>components/ui/select.tsx</small>")
         ui_select_selectitem_6d771bd5("SelectItem()<br/><small>components/ui/select.tsx</small>")
         ui_select_selectlabel_5e9f580d("SelectLabel()<br/><small>components/ui/select.tsx</small>")
         ui_select_selectscrolldownbutton_86f5b0fc("SelectScrollDownButton()<br/><small>components/ui/select.tsx</small>")
+        ui_select_selectscrollupbutton_603e1a1a("SelectScrollUpButton()<br/><small>components/ui/select.tsx</small>")
     end
     subgraph community_24_components_ui_card_tsx_4336ea80["components/ui/card.tsx"]
         ui_card_cardaction_a1a717ff("CardAction()<br/><small>components/ui/card.tsx</small>")
@@ -3597,12 +3598,7 @@ flowchart LR
     end
     subgraph community_24_deadline_food_components_primitives_61e2616e["deadline-food/components/primitives.tsx"]
         src_deadline_food_components_primitives_tsx_ab3a258d("primitives.tsx")
-        components_primitives_field_80de4fc0("Field()<br/><small>deadline-food/components/primitives.tsx</small>")
-        components_primitives_selectfield_18905dd2("SelectField()<br/><small>deadline-food/components/primitives.tsx</small>")
-    end
-    subgraph community_24_deadline_food_components_University_a9240d63["deadline-food/components/UniversityField.tsx"]
-        src_deadline_food_components_universityfield_tsx_c777c3a2("UniversityField.tsx")
-        components_universityfield_universityfield_0abccc0d("UniversityField()<br/><small>deadline-food/components/UniversityField.tsx</small>")
+        components_primitives_badge_136cd462("Badge()<br/><small>deadline-food/components/primitives.tsx</small>")
     end
     subgraph community_24_src_lib_utils_ts_f8a6bd82["src/lib/utils.ts"]
         lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
@@ -3610,11 +3606,12 @@ flowchart LR
     end
     ui_input_input_54fb3925("Input()<br/><small>components/ui/input.tsx</small>")
     ui_label_label_def6cab4("Label()<br/><small>components/ui/label.tsx</small>")
+    src_deadline_food_components_universityfield_tsx_c777c3a2("UniversityField.tsx")
+    screens_privacypolicyscreen_privacypolicyscreen_26f6350d("PrivacyPolicyScreen()<br/><small>deadline-food/screens/PrivacyPolicyScreen.tsx</small>")
     src_apitester_tsx_e67681e5("APITester.tsx")
     src_pages_deadlinesetuppage_tsx_e932c009("DeadlineSetupPage.tsx")
-    lib_utils_cn_b8743bb6 -->|calls| components_primitives_field_80de4fc0
-    lib_utils_cn_b8743bb6 -->|calls| components_primitives_selectfield_18905dd2
-    lib_utils_cn_b8743bb6 -->|calls| components_universityfield_universityfield_0abccc0d
+    lib_utils_cn_b8743bb6 -->|calls| components_primitives_badge_136cd462
+    lib_utils_cn_b8743bb6 -->|calls| screens_privacypolicyscreen_privacypolicyscreen_26f6350d
     lib_utils_cn_b8743bb6 -->|calls| ui_card_cardaction_a1a717ff
     lib_utils_cn_b8743bb6 -->|calls| ui_card_carddescription_40d0a254
     lib_utils_cn_b8743bb6 -->|calls| ui_card_cardfooter_2f80e30f
@@ -3624,6 +3621,7 @@ flowchart LR
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectitem_6d771bd5
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectlabel_5e9f580d
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectscrolldownbutton_86f5b0fc
+    lib_utils_cn_b8743bb6 -->|calls| ui_select_selectscrollupbutton_603e1a1a
     src_apitester_tsx_e67681e5 -->|imports| ui_input_input_54fb3925
     src_apitester_tsx_e67681e5 -->|imports| ui_label_label_def6cab4
     src_apitester_tsx_e67681e5 -->|imports| ui_select_selectcontent_0e8c3125
@@ -3636,23 +3634,23 @@ flowchart LR
     src_lib_utils_ts_0eb4cd5d -->|imports| src_deadline_food_components_universityfield_tsx_c777c3a2
     lib_utils_cn_b8743bb6 -->|imports| src_deadline_food_components_primitives_tsx_ab3a258d
     lib_utils_cn_b8743bb6 -->|imports| src_deadline_food_components_universityfield_tsx_c777c3a2
-    %% Omitted for readability: 17 nodes, 6 edges
+    %% Omitted for readability: 20 nodes, 6 edges
     class ui_select_selectcontent_0e8c3125 ui;
     class ui_select_selectitem_6d771bd5 ui;
     class ui_select_selectlabel_5e9f580d ui;
     class ui_select_selectscrolldownbutton_86f5b0fc ui;
+    class ui_select_selectscrollupbutton_603e1a1a ui;
     class ui_card_cardaction_a1a717ff ui;
     class ui_card_carddescription_40d0a254 ui;
     class ui_card_cardfooter_2f80e30f ui;
     class src_deadline_food_components_primitives_tsx_ab3a258d ui;
-    class components_primitives_field_80de4fc0 ui;
-    class components_primitives_selectfield_18905dd2 ui;
-    class src_deadline_food_components_universityfield_tsx_c777c3a2 ui;
-    class components_universityfield_universityfield_0abccc0d ui;
+    class components_primitives_badge_136cd462 ui;
     class lib_utils_cn_b8743bb6 function;
     class src_lib_utils_ts_0eb4cd5d module;
     class ui_input_input_54fb3925 ui;
     class ui_label_label_def6cab4 ui;
+    class src_deadline_food_components_universityfield_tsx_c777c3a2 ui;
+    class screens_privacypolicyscreen_privacypolicyscreen_26f6350d ui;
     class src_apitester_tsx_e67681e5 test;
     class src_pages_deadlinesetuppage_tsx_e932c009 ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
@@ -3713,7 +3711,7 @@ flowchart LR
   <td><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br>+3 more</td>
+  <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br>+4 more</td>
   <td>Module file in src/lib/utils.ts.</td>
 </tr>
 <tr>
@@ -3721,19 +3719,59 @@ flowchart LR
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+19 more</td>
+  <td><code>Badge()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+19 more</td>
   <td>cn() node in src/lib/utils.ts.</td>
 </tr>
 <tr>
   <td>7</td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>PrivacyPolicyScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small></td>
+  <td>Orchestrates analysis and returns structured documentation data.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>PrivacyPolicyScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>AnalyticsProperties</code><br><small style="color:var(--muted)">src/lib/posthog.ts</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td><code>Badge()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
+  <td>Module file in deadline-food/screens/PrivacyPolicyScreen.tsx.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>TrackEvent</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>TrackEvent node in deadline-food/screens/PrivacyPolicyScreen.tsx.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>sections</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sections node in deadline-food/screens/PrivacyPolicyScreen.tsx.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>PrivacyPolicyScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>PrivacyPolicyScreen() node in deadline-food/screens/PrivacyPolicyScreen.tsx.</td>
+</tr>
+<tr>
+  <td>12</td>
   <td><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>PrivacyPolicyScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small><br>+7 more</td>
   <td>Module file in deadline-food/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>13</td>
   <td><code>Tone</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -3741,7 +3779,7 @@ flowchart LR
   <td>Tone node in deadline-food/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>14</td>
   <td><code>badgeTones</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -3749,7 +3787,7 @@ flowchart LR
   <td>badgeTones node in deadline-food/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>15</td>
   <td><code>AppButtonVariant</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -3757,7 +3795,7 @@ flowchart LR
   <td>AppButtonVariant node in deadline-food/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>16</td>
   <td><code>appButtonClasses</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
   <td><span class="tag tag-async">Async</span></td>
   <td>External entry / no inbound edge</td>
@@ -3765,23 +3803,15 @@ flowchart LR
   <td>appButtonClasses node in deadline-food/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>12</td>
-  <td><code>Field()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
+  <td>17</td>
+  <td><code>Badge()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>PrivacyPolicyScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/PrivacyPolicyScreen.tsx</small></td>
   <td>No direct outbound edge</td>
-  <td>Field() node in deadline-food/components/primitives.tsx.</td>
+  <td>Badge() node in deadline-food/components/primitives.tsx.</td>
 </tr>
 <tr>
-  <td>13</td>
-  <td><code>SelectField()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectField() node in deadline-food/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>14</td>
+  <td>18</td>
   <td><code>UniversityField.tsx</code><br><small style="color:var(--muted)">deadline-food/components/UniversityField.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -3789,15 +3819,7 @@ flowchart LR
   <td>Module file in deadline-food/components/UniversityField.tsx.</td>
 </tr>
 <tr>
-  <td>15</td>
-  <td><code>UniversityField()</code><br><small style="color:var(--muted)">deadline-food/components/UniversityField.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>UniversityField() node in deadline-food/components/UniversityField.tsx.</td>
-</tr>
-<tr>
-  <td>16</td>
+  <td>19</td>
   <td><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+2 more</td>
@@ -3805,7 +3827,7 @@ flowchart LR
   <td>Module file in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>20</td>
   <td><code>Select()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
@@ -3813,7 +3835,7 @@ flowchart LR
   <td>Select() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>21</td>
   <td><code>SelectGroup()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -3821,7 +3843,7 @@ flowchart LR
   <td>SelectGroup() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>22</td>
   <td><code>SelectValue()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
@@ -3829,7 +3851,7 @@ flowchart LR
   <td>SelectValue() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>23</td>
   <td><code>SelectTrigger()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+1 more</td>
@@ -3837,7 +3859,7 @@ flowchart LR
   <td>SelectTrigger() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>24</td>
   <td><code>SelectContent()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+1 more</td>
@@ -3845,7 +3867,7 @@ flowchart LR
   <td>SelectContent() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>25</td>
   <td><code>SelectLabel()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -3853,7 +3875,7 @@ flowchart LR
   <td>SelectLabel() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>26</td>
   <td><code>SelectItem()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+1 more</td>
@@ -3861,7 +3883,7 @@ flowchart LR
   <td>SelectItem() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>27</td>
   <td><code>SelectSeparator()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -3869,7 +3891,7 @@ flowchart LR
   <td>SelectSeparator() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>28</td>
   <td><code>SelectScrollUpButton()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -3877,7 +3899,7 @@ flowchart LR
   <td>SelectScrollUpButton() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>29</td>
   <td><code>SelectScrollDownButton()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -3885,36 +3907,12 @@ flowchart LR
   <td>SelectScrollDownButton() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>30</td>
   <td><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td>No direct outbound edge</td>
   <td>CardDescription() node in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>CardAction() node in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>CardFooter() node in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>textarea.tsx</code><br><small style="color:var(--muted)">components/ui/textarea.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>Module file in components/ui/textarea.tsx.</td>
 </tr>
 </table>
 
@@ -3924,18 +3922,18 @@ flowchart LR
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
       <tr><td><code>components/ui/select.tsx</code></td><td>11 nodes</td></tr>
-<tr><td><code>deadline-food/components/primitives.tsx</code></td><td>7 nodes</td></tr>
+<tr><td><code>deadline-food/components/primitives.tsx</code></td><td>6 nodes</td></tr>
+<tr><td><code>deadline-food/screens/PrivacyPolicyScreen.tsx</code></td><td>4 nodes</td></tr>
 <tr><td><code>components/ui/card.tsx</code></td><td>3 nodes</td></tr>
 <tr><td><code>src/APITester.tsx</code></td><td>2 nodes</td></tr>
 <tr><td><code>components/ui/input.tsx</code></td><td>2 nodes</td></tr>
 <tr><td><code>components/ui/label.tsx</code></td><td>2 nodes</td></tr>
 <tr><td><code>components/ui/textarea.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>deadline-food/components/UniversityField.tsx</code></td><td>2 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x30, contains x23, imports x18, calls x16. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x33, contains x24, imports x20, calls x15. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5321,7 +5319,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-09 19:24 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-09 20:16 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
