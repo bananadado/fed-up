@@ -5,7 +5,7 @@ import {
   createPrototypeSessionSettings,
 } from "../src/prototype/sessionPersistence";
 
-test("deadline food autopilot flow can onboard, rescue a meal, and add a recipe", async ({ page }) => {
+test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }) => {
   // Auto-planning regenerates the plan after onboarding; pin it to the seed plan
   // so this flow stays deterministic regardless of recommender availability.
   await page.route("**/api/deadline-food/auto-plan**", async (route) => {

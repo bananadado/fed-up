@@ -2,10 +2,9 @@
 
 Tracking issue: #22
 
-Deadline Food Autopilot starts every user in an anonymous session and can
-optionally attach that session to Firebase Auth. The browser keeps an opaque
-session ID in `localStorage`; the settings payload is stored behind the backend
-in Firestore.
+Fed Up starts every user in an anonymous session and can optionally attach that
+session to Firebase Auth. The browser keeps an opaque session ID in
+`localStorage`; the settings payload is stored behind the backend in Firestore.
 
 ## What Is Persisted
 
@@ -63,7 +62,7 @@ session from another browser without making Firestore readable from the client.
 
 ## API
 
-The frontend calls the shared Deadline Food API adapter. In local Bun mode it
+The frontend calls the shared Fed Up API adapter. In local Bun mode it
 uses `/api/deadline-food/session`; in Firebase mode it uses the
 `deadlineFoodSession` function.
 

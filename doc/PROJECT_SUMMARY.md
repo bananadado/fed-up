@@ -2,9 +2,9 @@
 
 ## Product
 
-Deadline Food Autopilot is a student-facing web prototype for food decisions during deadline weeks. Its purpose is to make healthy-ish, affordable, low-effort food the easiest realistic choice when academic pressure disrupts normal routines.
+Fed Up is a student-facing web prototype for food decisions during deadline weeks. Its purpose is to make healthy-ish, affordable, low-effort food the easiest realistic choice when academic pressure disrupts normal routines.
 
-It is based on [../DEADLINE_FOOD_AUTOPILOT_SPEC.md](../DEADLINE_FOOD_AUTOPILOT_SPEC.md), which defines the concept, MVP constraints, deterministic recommendation logic, seed data requirements, Firebase persistence direction, and acceptance criteria.
+It is based on [../FED_UP_SPEC.md](../FED_UP_SPEC.md), which defines the concept, MVP constraints, deterministic recommendation logic, seed data requirements, Firebase persistence direction, and acceptance criteria.
 
 ## User Problem
 
@@ -98,7 +98,7 @@ Not currently mounted:
 - `src/application/deadlineMode.ts`
 - `src/components/deadline-food/*.tsx`
 
-This slice more closely matches `DEADLINE_FOOD_AUTOPILOT_SPEC.md`:
+This slice more closely matches `FED_UP_SPEC.md`:
 
 - Routes such as `/deadline-mode/setup`, `/deadline-mode/strategies`, `/deadline-mode/plan`, `/deadline-mode/rescue/:dayId`.
 - Three strategies: Prep Once, Mixed Mode, No-Cook Rescue.
