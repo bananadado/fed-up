@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { AppButton, SelectField } from "./primitives";
 import type { GroceryVendor, ShoppingItem } from "../shopping";
-import { formatShoppingList, shoppingItemKey, shoppingItemLabel } from "../shopping";
+import { countHint, formatShoppingList, shoppingItemKey, shoppingItemLabel } from "../shopping";
 
 async function writeClipboardText(value: string) {
   if (navigator.clipboard) {
@@ -170,9 +170,16 @@ export function ShoppingListCard({
                 onChange={(event) => toggleItem(item, event.target.checked)}
                 className="size-4 rounded border-stone-300 text-emerald-700 accent-emerald-700"
               />
-              <span className={checkedItems[shoppingItemKey(item)] ? "min-w-0 text-sm text-stone-400 line-through" : "min-w-0 text-sm text-stone-700"}>
-                {shoppingItemLabel(item)}
-              </span>
+              {(() => {
+                const checked = Boolean(checkedItems[shoppingItemKey(item)]);
+                const hint = !checked ? countHint(item) : null;
+                return (
+                  <span className={checked ? "min-w-0 text-sm text-stone-400 line-through" : "min-w-0 text-sm text-stone-700"}>
+                    {shoppingItemLabel(item)}
+                    {hint && <span className="ml-1.5 text-stone-400">{hint}</span>}
+                  </span>
+                );
+              })()}
             </label>
             <AppButton
               type="button"

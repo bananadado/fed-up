@@ -1,5 +1,5 @@
 import type { Meal, PlanEntry, RecipeIngredient } from "./types";
-import { formatIngredient } from "./ingredients";
+import { ITEM_WEIGHT_G, formatIngredient } from "./ingredients";
 import { getMealById } from "./utils";
 import { normalizeIngredientUnit } from "./unitConversion";
 
@@ -138,6 +138,23 @@ export function shoppingItemLabel(item: ShoppingItem) {
   }
 
   return item.count > 1 ? `${item.name} x${item.count}` : item.name;
+}
+
+function hintPlural(name: string, count: number): string {
+  if (count === 1) return name;
+  if (name.endsWith("o") && !name.endsWith("oo")) return `${name}es`;
+  return `${name}s`;
+}
+
+export function countHint(item: ShoppingItem): string | null {
+  if (typeof item.quantity !== "number" || !item.unit) return null;
+  if (item.unit !== "g" && item.unit !== "kg") return null;
+  const gramsPerUnit = ITEM_WEIGHT_G[item.name.toLowerCase()];
+  if (!gramsPerUnit) return null;
+  const totalG = item.unit === "kg" ? item.quantity * 1000 : item.quantity;
+  const count = Math.round(totalG / gramsPerUnit);
+  if (count < 1) return null;
+  return `~${count} ${hintPlural(item.name, count)}`;
 }
 
 export function groceryVendorById(vendorId: string) {
