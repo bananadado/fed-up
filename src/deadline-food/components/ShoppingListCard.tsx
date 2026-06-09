@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { AppButton, SelectField } from "./primitives";
 import type { GroceryVendor, ShoppingItem } from "../shopping";
-import { formatShoppingList, shoppingItemKey, shoppingItemLabel } from "../shopping";
+import { countHint, formatShoppingList, shoppingItemKey, shoppingItemLabel } from "../shopping";
 
 async function writeClipboardText(value: string) {
   if (navigator.clipboard) {
@@ -160,7 +160,7 @@ export function ShoppingListCard({
       <div className="mt-4 grid gap-2">
         {items.map((item) => (
           <div
-            key={item.name}
+            key={shoppingItemKey(item)}
             className={compact ? "flex items-center justify-between gap-3 rounded-lg bg-stone-50 px-3 py-2" : "grid gap-2 rounded-lg bg-stone-50 px-3 py-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center"}
           >
             <label className="flex min-w-0 items-center gap-2">
@@ -170,9 +170,16 @@ export function ShoppingListCard({
                 onChange={(event) => toggleItem(item, event.target.checked)}
                 className="size-4 rounded border-stone-300 text-emerald-700 accent-emerald-700"
               />
-              <span className={checkedItems[shoppingItemKey(item)] ? "min-w-0 text-sm text-stone-400 line-through" : "min-w-0 text-sm text-stone-700"}>
-                {shoppingItemLabel(item)}
-              </span>
+              {(() => {
+                const checked = Boolean(checkedItems[shoppingItemKey(item)]);
+                const hint = !checked ? countHint(item) : null;
+                return (
+                  <span className={checked ? "min-w-0 text-sm text-stone-400 line-through" : "min-w-0 text-sm text-stone-700"}>
+                    {shoppingItemLabel(item)}
+                    {hint && <span className="ml-1.5 text-stone-400">{hint}</span>}
+                  </span>
+                );
+              })()}
             </label>
             <AppButton
               type="button"

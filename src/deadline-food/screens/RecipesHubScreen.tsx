@@ -6,6 +6,7 @@ import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEdito
 import { AppButton, Badge } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { formatIngredient } from "../ingredients";
+import { normalizeIngredientUnit } from "../unitConversion";
 import { money } from "../utils";
 import type { TrackEvent } from "../analytics";
 import { DiscoverScreen } from "./DiscoverScreen";
@@ -247,7 +248,7 @@ export function RecipesHubScreen({
                       <p className="mt-2 break-words font-semibold leading-snug">{recipe.name}</p>
                       <p className="mt-1 text-sm font-medium text-emerald-700">{money(recipe.price)}</p>
                       <p className="mt-1 text-xs text-stone-400">
-                        {recipe.time} min · {recipe.ingredients.map(formatIngredient).slice(0, 3).join(", ")}
+                        {recipe.time} min · {recipe.ingredients.map((ing) => formatIngredient(normalizeIngredientUnit(ing, prefs.unitSystem))).slice(0, 3).join(", ")}
                         {recipe.ingredients.length > 3 ? ` +${recipe.ingredients.length - 3}` : ""}
                       </p>
                     </button>
@@ -314,7 +315,7 @@ export function RecipesHubScreen({
                       <p className="mt-2 break-words font-semibold leading-snug text-stone-700">{recipe.name}</p>
                       <p className="mt-1 text-sm font-medium text-stone-500">{money(recipe.price)}</p>
                       <p className="mt-1 text-xs text-stone-400">
-                        {recipe.time} min · {recipe.ingredients.map(formatIngredient).slice(0, 3).join(", ")}
+                        {recipe.time} min · {recipe.ingredients.map((ing) => formatIngredient(normalizeIngredientUnit(ing, prefs.unitSystem))).slice(0, 3).join(", ")}
                         {recipe.ingredients.length > 3 ? ` +${recipe.ingredients.length - 3}` : ""}
                       </p>
                     </button>

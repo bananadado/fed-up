@@ -171,6 +171,8 @@ export function gramsForIngredient(ingredient: Ingredient): number {
     return ingredient.quantity * 240;
   case "can":
     return ingredient.quantity * 400;
+  case "pinch":
+    return ingredient.quantity * 0.3;
   default:
     return ingredient.quantity * (servingGrams[ingredient.name.toLowerCase()] ?? 100);
   }
