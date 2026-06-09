@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, Import, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, CalendarDays, Check, ExternalLink, Import, Sparkles } from "lucide-react";
 
 import fedUpLogo from "@/assets/fed-up-logo.svg";
 import { Card } from "@/components/ui/card";
@@ -23,6 +23,7 @@ import {
 } from "../calendarImport";
 import {
   PRIVACY_CONSENT_TEXT,
+  PRIVACY_POLICY_URL,
   createPrivacyConsent,
   hasCurrentPrivacyConsent,
   type CalendarToken,
@@ -121,6 +122,7 @@ export function Onboarding({
   setCalendarSkipped,
   privacyConsent,
   setPrivacyConsent,
+  initialStep,
 }: {
   setOnboarded: (onboarded: boolean) => void;
   setScreen: (screen: Screen) => void;
@@ -142,8 +144,10 @@ export function Onboarding({
   setCalendarSkipped: (skipped: boolean) => void;
   privacyConsent?: PrivacyConsent;
   setPrivacyConsent: (consent: PrivacyConsent) => void;
+  initialStep?: number;
 }) {
   const [step, setStep] = useState(() => {
+    if (initialStep !== undefined) return initialStep;
     try {
       const saved = sessionStorage.getItem("deadlineFood:onboardingStep");
       if (saved !== null) { const n = parseInt(saved, 10); if (n >= 0 && n <= 2) return n; }
@@ -788,16 +792,15 @@ export function Onboarding({
               <p className="mt-1">
                 University helps suggest campus fallback meals. Postcode is used as a general area signal for nearby shops and can be replaced with a broad campus postcode.
               </p>
-              <button
-                type="button"
-                onClick={() => {
-                  track("privacy_policy_opened", { source: "onboarding_location" });
-                  setScreen("privacy-policy");
-                }}
-                className="mt-2 font-semibold underline underline-offset-4"
+              <a
+                href={PRIVACY_POLICY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track("privacy_policy_opened", { source: "onboarding_location" })}
+                className="mt-2 inline-flex items-center gap-1 rounded-md px-2 py-1 font-semibold underline underline-offset-4 transition hover:bg-emerald-100 hover:text-emerald-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2"
               >
-                View Privacy Policy
-              </button>
+                View Privacy Policy <ExternalLink size={14} />
+              </a>
             </div>
             <div className="mt-4 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
               <PreferenceSection
@@ -872,16 +875,15 @@ export function Onboarding({
                   {PRIVACY_CONSENT_TEXT}
                 </span>
               </label>
-              <button
-                type="button"
-                onClick={() => {
-                  track("privacy_policy_opened", { source: "onboarding_consent" });
-                  setScreen("privacy-policy");
-                }}
-                className="mt-2 text-sm font-semibold text-emerald-700 underline underline-offset-4"
+              <a
+                href={PRIVACY_POLICY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track("privacy_policy_opened", { source: "onboarding_consent" })}
+                className="mt-2 inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-emerald-800 underline decoration-emerald-600 underline-offset-4 transition hover:bg-emerald-100 hover:text-emerald-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2"
               >
-                Read the Privacy Policy
-              </button>
+                Read the Privacy Policy <ExternalLink size={14} />
+              </a>
               {privacyAttempted && !privacyAccepted && (
                 <p className="mt-2 text-sm font-medium text-rose-700">
                   Consent is required before Fed Up can create and save your plan.

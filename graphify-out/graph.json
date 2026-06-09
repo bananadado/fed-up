@@ -1431,7 +1431,7 @@
       "source_file": "src/APITester.tsx",
       "source_location": "L1",
       "id": "src_apitester_tsx",
-      "community": 8,
+      "community": 24,
       "norm_label": "apitester.tsx"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_file": "src/APITester.tsx",
       "source_location": "L8",
       "id": "src_apitester_apitester",
-      "community": 8,
+      "community": 24,
       "norm_label": "apitester()"
     },
     {
@@ -1449,7 +1449,7 @@
       "source_file": "src/frontend.tsx",
       "source_location": "L1",
       "id": "src_frontend_tsx",
-      "community": 39,
+      "community": 76,
       "norm_label": "frontend.tsx"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_file": "src/App.tsx",
       "source_location": "L1",
       "id": "src_app_tsx",
-      "community": 39,
+      "community": 76,
       "norm_label": "app.tsx"
     },
     {
@@ -1467,7 +1467,7 @@
       "source_file": "src/App.tsx",
       "source_location": "L4",
       "id": "src_app_app",
-      "community": 39,
+      "community": 76,
       "norm_label": "app()"
     },
     {
@@ -1602,7 +1602,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L130",
       "id": "adapters_deadlinefoodapi_firebasefunctionurl",
-      "community": 73,
+      "community": 71,
       "norm_label": "firebasefunctionurl()"
     },
     {
@@ -2286,7 +2286,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L20",
       "id": "domain_types_recipeingredient",
-      "community": 73,
+      "community": 5,
       "norm_label": "recipeingredient"
     },
     {
@@ -2628,7 +2628,7 @@
       "source_file": "src/state/DeadlineModeProvider.tsx",
       "source_location": "L25",
       "id": "state_deadlinemodeprovider_deadlinemodeprovider",
-      "community": 8,
+      "community": 16,
       "norm_label": "deadlinemodeprovider()"
     },
     {
@@ -2745,7 +2745,7 @@
       "source_file": "src/pages/DeadlineSetupPage.tsx",
       "source_location": "L1",
       "id": "src_pages_deadlinesetuppage_tsx",
-      "community": 8,
+      "community": 24,
       "norm_label": "deadlinesetuppage.tsx"
     },
     {
@@ -2754,7 +2754,7 @@
       "source_file": "src/pages/DeadlineSetupPage.tsx",
       "source_location": "L16",
       "id": "pages_deadlinesetuppage_togglevalue",
-      "community": 8,
+      "community": 24,
       "norm_label": "togglevalue()"
     },
     {
@@ -2853,7 +2853,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L1",
       "id": "src_lib_posthogconfig_ts",
-      "community": 39,
+      "community": 146,
       "norm_label": "posthogconfig.ts"
     },
     {
@@ -2862,7 +2862,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L3",
       "id": "lib_posthogconfig_personaldataproperties",
-      "community": 39,
+      "community": 146,
       "norm_label": "personaldataproperties"
     },
     {
@@ -2871,7 +2871,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L14",
       "id": "lib_posthogconfig_createposthogconfig",
-      "community": 39,
+      "community": 146,
       "norm_label": "createposthogconfig()"
     },
     {
@@ -2880,7 +2880,7 @@
       "source_file": "src/lib/utils.ts",
       "source_location": "L1",
       "id": "src_lib_utils_ts",
-      "community": 8,
+      "community": 24,
       "norm_label": "utils.ts"
     },
     {
@@ -2889,7 +2889,7 @@
       "source_file": "src/lib/utils.ts",
       "source_location": "L4",
       "id": "lib_utils_cn",
-      "community": 8,
+      "community": 24,
       "norm_label": "cn()"
     },
     {
@@ -2898,7 +2898,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L1",
       "id": "src_lib_posthog_ts",
-      "community": 39,
+      "community": 76,
       "norm_label": "posthog.ts"
     },
     {
@@ -2907,7 +2907,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L8",
       "id": "lib_posthog_readbunpublicenv",
-      "community": 39,
+      "community": 76,
       "norm_label": "readbunpublicenv()"
     },
     {
@@ -2916,7 +2916,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L14",
       "id": "lib_posthog_token",
-      "community": 39,
+      "community": 76,
       "norm_label": "token"
     },
     {
@@ -2925,7 +2925,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L19",
       "id": "lib_posthog_host",
-      "community": 39,
+      "community": 76,
       "norm_label": "host"
     },
     {
@@ -2934,7 +2934,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L28",
       "id": "lib_posthog_analyticsproperty",
-      "community": 39,
+      "community": 76,
       "norm_label": "analyticsproperty"
     },
     {
@@ -2943,7 +2943,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L29",
       "id": "lib_posthog_analyticsproperties",
-      "community": 20,
+      "community": 5,
       "norm_label": "analyticsproperties"
     },
     {
@@ -2952,7 +2952,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L31",
       "id": "lib_posthog_compactproperties",
-      "community": 39,
+      "community": 76,
       "norm_label": "compactproperties()"
     },
     {
@@ -2961,7 +2961,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L37",
       "id": "lib_posthog_registerposthogsession",
-      "community": 39,
+      "community": 76,
       "norm_label": "registerposthogsession()"
     },
     {
@@ -2970,7 +2970,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L42",
       "id": "lib_posthog_registerposthogcontext",
-      "community": 39,
+      "community": 76,
       "norm_label": "registerposthogcontext()"
     },
     {
@@ -2979,7 +2979,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L46",
       "id": "lib_posthog_captureposthogevent",
-      "community": 39,
+      "community": 76,
       "norm_label": "captureposthogevent()"
     },
     {
@@ -2997,7 +2997,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L1",
       "id": "src_lib_posthogconfig_test_ts",
-      "community": 39,
+      "community": 146,
       "norm_label": "posthogconfig.test.ts"
     },
     {
@@ -3006,7 +3006,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L7",
       "id": "lib_posthogconfig_test_startsessionrecordingcalls",
-      "community": 39,
+      "community": 146,
       "norm_label": "startsessionrecordingcalls"
     },
     {
@@ -3015,7 +3015,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L8",
       "id": "lib_posthogconfig_test_config",
-      "community": 39,
+      "community": 146,
       "norm_label": "config"
     },
     {
@@ -3024,7 +3024,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L10",
       "id": "lib_posthogconfig_test_loadedposthog",
-      "community": 39,
+      "community": 146,
       "norm_label": "loadedposthog"
     },
     {
@@ -3033,7 +3033,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L12",
       "id": "lib_posthogconfig_test_client",
-      "community": 39,
+      "community": 146,
       "norm_label": "client"
     },
     {
@@ -3051,7 +3051,7 @@
       "source_file": "src/deadline-food/nutrition.ts",
       "source_location": "L1",
       "id": "src_deadline_food_nutrition_ts",
-      "community": 39,
+      "community": 78,
       "norm_label": "nutrition.ts"
     },
     {
@@ -3060,7 +3060,7 @@
       "source_file": "src/deadline-food/nutrition.ts",
       "source_location": "L3",
       "id": "deadline_food_nutrition_openfoodfactsproduct",
-      "community": 39,
+      "community": 78,
       "norm_label": "openfoodfactsproduct"
     },
     {
@@ -3069,7 +3069,7 @@
       "source_file": "src/deadline-food/nutrition.ts",
       "source_location": "L15",
       "id": "deadline_food_nutrition_ingredientnutritionestimate",
-      "community": 39,
+      "community": 78,
       "norm_label": "ingredientnutritionestimate"
     },
     {
@@ -3078,7 +3078,7 @@
       "source_file": "src/deadline-food/nutrition.ts",
       "source_location": "L25",
       "id": "deadline_food_nutrition_servinggrams",
-      "community": 39,
+      "community": 78,
       "norm_label": "servinggrams"
     },
     {
@@ -3087,7 +3087,7 @@
       "source_file": "src/deadline-food/nutrition.ts",
       "source_location": "L38",
       "id": "deadline_food_nutrition_roundmacro",
-      "community": 39,
+      "community": 78,
       "norm_label": "roundmacro()"
     },
     {
@@ -3096,7 +3096,7 @@
       "source_file": "src/deadline-food/nutrition.ts",
       "source_location": "L42",
       "id": "deadline_food_nutrition_gramsforingredient",
-      "community": 39,
+      "community": 78,
       "norm_label": "gramsforingredient()"
     },
     {
@@ -3105,7 +3105,7 @@
       "source_file": "src/deadline-food/nutrition.ts",
       "source_location": "L65",
       "id": "deadline_food_nutrition_estimateingredientnutrition",
-      "community": 39,
+      "community": 78,
       "norm_label": "estimateingredientnutrition()"
     },
     {
@@ -3114,7 +3114,7 @@
       "source_file": "src/deadline-food/nutrition.ts",
       "source_location": "L100",
       "id": "deadline_food_nutrition_totalnutritionfromestimates",
-      "community": 39,
+      "community": 78,
       "norm_label": "totalnutritionfromestimates()"
     },
     {
@@ -3123,7 +3123,7 @@
       "source_file": "src/deadline-food/recipeCatalogue.ts",
       "source_location": "L1",
       "id": "src_deadline_food_recipecatalogue_ts",
-      "community": 73,
+      "community": 5,
       "norm_label": "recipecatalogue.ts"
     },
     {
@@ -3132,7 +3132,7 @@
       "source_file": "src/deadline-food/recipeCatalogue.ts",
       "source_location": "L18",
       "id": "deadline_food_recipecatalogue_planmeals",
-      "community": 73,
+      "community": 5,
       "norm_label": "planmeals"
     },
     {
@@ -3150,7 +3150,7 @@
       "source_file": "src/deadline-food/recipeCatalogue.ts",
       "source_location": "L24",
       "id": "deadline_food_recipecatalogue_setrecipecatalogue",
-      "community": 73,
+      "community": 20,
       "norm_label": "setrecipecatalogue()"
     },
     {
@@ -3177,7 +3177,7 @@
       "source_file": "src/deadline-food/recipeCatalogue.ts",
       "source_location": "L42",
       "id": "deadline_food_recipecatalogue_normalizerecipe",
-      "community": 73,
+      "community": 5,
       "norm_label": "normalizerecipe()"
     },
     {
@@ -3186,7 +3186,7 @@
       "source_file": "src/deadline-food/recipeCatalogue.ts",
       "source_location": "L58",
       "id": "deadline_food_recipecatalogue_fetchrecipecatalogue",
-      "community": 73,
+      "community": 71,
       "norm_label": "fetchrecipecatalogue()"
     },
     {
@@ -3375,7 +3375,7 @@
       "source_file": "src/deadline-food/data.ts",
       "source_location": "L11",
       "id": "deadline_food_data_mealslots",
-      "community": 7,
+      "community": 5,
       "norm_label": "mealslots"
     },
     {
@@ -3384,7 +3384,7 @@
       "source_file": "src/deadline-food/data.ts",
       "source_location": "L13",
       "id": "deadline_food_data_defaultdeadlines",
-      "community": 20,
+      "community": 42,
       "norm_label": "defaultdeadlines"
     },
     {
@@ -3393,7 +3393,7 @@
       "source_file": "src/deadline-food/data.ts",
       "source_location": "L19",
       "id": "deadline_food_data_seedmeals",
-      "community": 20,
+      "community": 7,
       "norm_label": "seedmeals"
     },
     {
@@ -3402,7 +3402,7 @@
       "source_file": "src/deadline-food/data.ts",
       "source_location": "L291",
       "id": "deadline_food_data_initialplan",
-      "community": 20,
+      "community": 42,
       "norm_label": "initialplan"
     },
     {
@@ -3465,7 +3465,7 @@
       "source_file": "src/deadline-food/data.ts",
       "source_location": "L358",
       "id": "deadline_food_data_initialpreferences",
-      "community": 20,
+      "community": 42,
       "norm_label": "initialpreferences"
     },
     {
@@ -3474,7 +3474,7 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L1",
       "id": "src_deadline_food_advanceprep_ts",
-      "community": 5,
+      "community": 6,
       "norm_label": "advanceprep.ts"
     },
     {
@@ -3483,7 +3483,7 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L4",
       "id": "deadline_food_advanceprep_advanceprepinfo",
-      "community": 5,
+      "community": 6,
       "norm_label": "advanceprepinfo"
     },
     {
@@ -3492,7 +3492,7 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L13",
       "id": "deadline_food_advanceprep_detectadvanceprep",
-      "community": 5,
+      "community": 6,
       "norm_label": "detectadvanceprep()"
     },
     {
@@ -3510,7 +3510,7 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L36",
       "id": "deadline_food_advanceprep_getprepsuggestions",
-      "community": 5,
+      "community": 6,
       "norm_label": "getprepsuggestions()"
     },
     {
@@ -3519,7 +3519,7 @@
       "source_file": "src/deadline-food/nutrition.test.ts",
       "source_location": "L1",
       "id": "src_deadline_food_nutrition_test_ts",
-      "community": 39,
+      "community": 78,
       "norm_label": "nutrition.test.ts"
     },
     {
@@ -3528,7 +3528,7 @@
       "source_file": "src/deadline-food/nutrition.test.ts",
       "source_location": "L7",
       "id": "deadline_food_nutrition_test_estimate",
-      "community": 39,
+      "community": 78,
       "norm_label": "estimate"
     },
     {
@@ -3537,7 +3537,7 @@
       "source_file": "src/deadline-food/nutrition.test.ts",
       "source_location": "L31",
       "id": "deadline_food_nutrition_test_nutrition",
-      "community": 39,
+      "community": 78,
       "norm_label": "nutrition"
     },
     {
@@ -3654,7 +3654,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L85",
       "id": "deadline_food_ingredients_ingredientdraft",
-      "community": 7,
+      "community": 10,
       "norm_label": "ingredientdraft"
     },
     {
@@ -3798,7 +3798,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L223",
       "id": "deadline_food_ingredients_ingredientdraftsfromingredients",
-      "community": 7,
+      "community": 10,
       "norm_label": "ingredientdraftsfromingredients()"
     },
     {
@@ -3816,7 +3816,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L246",
       "id": "deadline_food_ingredients_sanitiseingredientdrafts",
-      "community": 7,
+      "community": 10,
       "norm_label": "sanitiseingredientdrafts()"
     },
     {
@@ -3906,7 +3906,7 @@
       "source_file": "src/deadline-food/workloadModel.ts",
       "source_location": "L3",
       "id": "deadline_food_workloadmodel_classifyimportedevent",
-      "community": 6,
+      "community": 30,
       "norm_label": "classifyimportedevent()"
     },
     {
@@ -3978,7 +3978,7 @@
       "source_file": "src/deadline-food/utils.ts",
       "source_location": "L45",
       "id": "deadline_food_utils_formatcookinglimit",
-      "community": 7,
+      "community": 5,
       "norm_label": "formatcookinglimit()"
     },
     {
@@ -4005,7 +4005,7 @@
       "source_file": "src/deadline-food/utils.ts",
       "source_location": "L76",
       "id": "deadline_food_utils_nutritionsourcesummary",
-      "community": 42,
+      "community": 21,
       "norm_label": "nutritionsourcesummary()"
     },
     {
@@ -4048,7 +4048,7 @@
       "label": "screens",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L37",
+      "source_location": "L36",
       "id": "deadline_food_deadlinefoodapp_screens",
       "community": 20,
       "norm_label": "screens"
@@ -4057,7 +4057,7 @@
       "label": "onboardingScreens",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L38",
+      "source_location": "L37",
       "id": "deadline_food_deadlinefoodapp_onboardingscreens",
       "community": 20,
       "norm_label": "onboardingscreens"
@@ -4066,7 +4066,7 @@
       "label": "screenFromLocation()",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L40",
+      "source_location": "L39",
       "id": "deadline_food_deadlinefoodapp_screenfromlocation",
       "community": 20,
       "norm_label": "screenfromlocation()"
@@ -4075,7 +4075,7 @@
       "label": "isAppScreen()",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L51",
+      "source_location": "L50",
       "id": "deadline_food_deadlinefoodapp_isappscreen",
       "community": 20,
       "norm_label": "isappscreen()"
@@ -4084,7 +4084,7 @@
       "label": "urlForScreen()",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L55",
+      "source_location": "L54",
       "id": "deadline_food_deadlinefoodapp_urlforscreen",
       "community": 20,
       "norm_label": "urlforscreen()"
@@ -4093,7 +4093,7 @@
       "label": "replaceScreenUrl()",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L59",
+      "source_location": "L58",
       "id": "deadline_food_deadlinefoodapp_replacescreenurl",
       "community": 20,
       "norm_label": "replacescreenurl()"
@@ -4102,7 +4102,7 @@
       "label": "LoadingScreen()",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L63",
+      "source_location": "L62",
       "id": "deadline_food_deadlinefoodapp_loadingscreen",
       "community": 20,
       "norm_label": "loadingscreen()"
@@ -4111,7 +4111,7 @@
       "label": "budgetBand()",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L73",
+      "source_location": "L72",
       "id": "deadline_food_deadlinefoodapp_budgetband",
       "community": 20,
       "norm_label": "budgetband()"
@@ -4120,7 +4120,7 @@
       "label": "maxTimeBucket()",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L80",
+      "source_location": "L79",
       "id": "deadline_food_deadlinefoodapp_maxtimebucket",
       "community": 20,
       "norm_label": "maxtimebucket()"
@@ -4129,7 +4129,7 @@
       "label": "DeadlineFoodApp()",
       "file_type": "code",
       "source_file": "src/deadline-food/DeadlineFoodApp.tsx",
-      "source_location": "L88",
+      "source_location": "L87",
       "id": "deadline_food_deadlinefoodapp_deadlinefoodapp",
       "community": 20,
       "norm_label": "deadlinefoodapp()"
@@ -4545,7 +4545,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L16",
       "id": "deadline_food_types_nutritionsource",
-      "community": 42,
+      "community": 5,
       "norm_label": "nutritionsource"
     },
     {
@@ -4554,7 +4554,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L24",
       "id": "deadline_food_types_nutritionmatch",
-      "community": 39,
+      "community": 78,
       "norm_label": "nutritionmatch"
     },
     {
@@ -4563,7 +4563,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L30",
       "id": "deadline_food_types_recipereview",
-      "community": 73,
+      "community": 21,
       "norm_label": "recipereview"
     },
     {
@@ -4599,7 +4599,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L79",
       "id": "deadline_food_types_deadline",
-      "community": 7,
+      "community": 5,
       "norm_label": "deadline"
     },
     {
@@ -4617,7 +4617,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L94",
       "id": "deadline_food_types_preferences",
-      "community": 5,
+      "community": 7,
       "norm_label": "preferences"
     },
     {
@@ -4644,7 +4644,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L122",
       "id": "deadline_food_types_screen",
-      "community": 20,
+      "community": 5,
       "norm_label": "screen"
     },
     {
@@ -4653,7 +4653,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L124",
       "id": "deadline_food_types_calendarprovider",
-      "community": 7,
+      "community": 77,
       "norm_label": "calendarprovider"
     },
     {
@@ -4824,7 +4824,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L1",
       "id": "src_deadline_food_reviewsapi_ts",
-      "community": 73,
+      "community": 147,
       "norm_label": "reviewsapi.ts"
     },
     {
@@ -4833,7 +4833,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L8",
       "id": "deadline_food_reviewsapi_recipereviewsresult",
-      "community": 73,
+      "community": 147,
       "norm_label": "recipereviewsresult"
     },
     {
@@ -4842,7 +4842,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L13",
       "id": "deadline_food_reviewsapi_reviewsurl",
-      "community": 73,
+      "community": 147,
       "norm_label": "reviewsurl()"
     },
     {
@@ -4851,7 +4851,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L17",
       "id": "deadline_food_reviewsapi_readjson",
-      "community": 73,
+      "community": 147,
       "norm_label": "readjson()"
     },
     {
@@ -4860,7 +4860,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L29",
       "id": "deadline_food_reviewsapi_fetchrecipereviews",
-      "community": 73,
+      "community": 147,
       "norm_label": "fetchrecipereviews()"
     },
     {
@@ -4869,7 +4869,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L35",
       "id": "deadline_food_reviewsapi_submitrecipereview",
-      "community": 73,
+      "community": 147,
       "norm_label": "submitrecipereview()"
     },
     {
@@ -5022,7 +5022,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L158",
       "id": "deadline_food_shopping_ingredientsfromplan",
-      "community": 5,
+      "community": 21,
       "norm_label": "ingredientsfromplan()"
     },
     {
@@ -5112,7 +5112,7 @@
       "source_file": "src/deadline-food/anonymousSessionApi.ts",
       "source_location": "L1",
       "id": "src_deadline_food_anonymoussessionapi_ts",
-      "community": 39,
+      "community": 104,
       "norm_label": "anonymoussessionapi.ts"
     },
     {
@@ -5121,7 +5121,7 @@
       "source_file": "src/deadline-food/anonymousSessionApi.ts",
       "source_location": "L11",
       "id": "deadline_food_anonymoussessionapi_anonymoussessionresponse",
-      "community": 39,
+      "community": 104,
       "norm_label": "anonymoussessionresponse"
     },
     {
@@ -5130,7 +5130,7 @@
       "source_file": "src/deadline-food/anonymousSessionApi.ts",
       "source_location": "L18",
       "id": "deadline_food_anonymoussessionapi_readstoredsessionid",
-      "community": 39,
+      "community": 104,
       "norm_label": "readstoredsessionid()"
     },
     {
@@ -5139,7 +5139,7 @@
       "source_file": "src/deadline-food/anonymousSessionApi.ts",
       "source_location": "L36",
       "id": "deadline_food_anonymoussessionapi_storesessionid",
-      "community": 39,
+      "community": 104,
       "norm_label": "storesessionid()"
     },
     {
@@ -5148,7 +5148,7 @@
       "source_file": "src/deadline-food/anonymousSessionApi.ts",
       "source_location": "L44",
       "id": "deadline_food_anonymoussessionapi_getorcreateanonymoussessionid",
-      "community": 39,
+      "community": 104,
       "norm_label": "getorcreateanonymoussessionid()"
     },
     {
@@ -5157,7 +5157,7 @@
       "source_file": "src/deadline-food/anonymousSessionApi.ts",
       "source_location": "L56",
       "id": "deadline_food_anonymoussessionapi_readjson",
-      "community": 39,
+      "community": 104,
       "norm_label": "readjson()"
     },
     {
@@ -5166,7 +5166,7 @@
       "source_file": "src/deadline-food/anonymousSessionApi.ts",
       "source_location": "L64",
       "id": "deadline_food_anonymoussessionapi_loadanonymoussessionsettings",
-      "community": 39,
+      "community": 104,
       "norm_label": "loadanonymoussessionsettings()"
     },
     {
@@ -5175,7 +5175,7 @@
       "source_file": "src/deadline-food/anonymousSessionApi.ts",
       "source_location": "L80",
       "id": "deadline_food_anonymoussessionapi_saveanonymoussessionsettings",
-      "community": 39,
+      "community": 104,
       "norm_label": "saveanonymoussessionsettings()"
     },
     {
@@ -5193,7 +5193,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L10",
       "id": "deadline_food_sessionpersistence_icssubscription",
-      "community": 7,
+      "community": 20,
       "norm_label": "icssubscription"
     },
     {
@@ -5202,7 +5202,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L16",
       "id": "deadline_food_sessionpersistence_calendartoken",
-      "community": 7,
+      "community": 20,
       "norm_label": "calendartoken"
     },
     {
@@ -5220,7 +5220,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L30",
       "id": "deadline_food_sessionpersistence_sessionsettings",
-      "community": 39,
+      "community": 104,
       "norm_label": "sessionsettings"
     },
     {
@@ -5238,7 +5238,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L72",
       "id": "deadline_food_sessionpersistence_isanonymoussessionid",
-      "community": 39,
+      "community": 104,
       "norm_label": "isanonymoussessionid()"
     },
     {
@@ -5247,7 +5247,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L76",
       "id": "deadline_food_sessionpersistence_createanonymoussessionid",
-      "community": 39,
+      "community": 104,
       "norm_label": "createanonymoussessionid()"
     },
     {
@@ -5256,7 +5256,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L84",
       "id": "deadline_food_sessionpersistence_createprivacyconsent",
-      "community": 20,
+      "community": 42,
       "norm_label": "createprivacyconsent()"
     },
     {
@@ -5274,7 +5274,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L97",
       "id": "deadline_food_sessionpersistence_createsessionsettings",
-      "community": 20,
+      "community": 42,
       "norm_label": "createsessionsettings()"
     },
     {
@@ -5301,7 +5301,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L164",
       "id": "deadline_food_sessionpersistence_restoresessionplan",
-      "community": 20,
+      "community": 42,
       "norm_label": "restoresessionplan()"
     },
     {
@@ -5337,7 +5337,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L1",
       "id": "src_deadline_food_sessionpersistence_test_ts",
-      "community": 20,
+      "community": 42,
       "norm_label": "sessionpersistence.test.ts"
     },
     {
@@ -5346,7 +5346,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L25",
       "id": "deadline_food_sessionpersistence_test_privacyconsent",
-      "community": 20,
+      "community": 42,
       "norm_label": "privacyconsent"
     },
     {
@@ -5355,7 +5355,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L26",
       "id": "deadline_food_sessionpersistence_test_settings",
-      "community": 20,
+      "community": 42,
       "norm_label": "settings"
     },
     {
@@ -5364,7 +5364,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L44",
       "id": "deadline_food_sessionpersistence_test_consent",
-      "community": 20,
+      "community": 42,
       "norm_label": "consent"
     },
     {
@@ -5373,7 +5373,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L57",
       "id": "deadline_food_sessionpersistence_test_fallbackplan",
-      "community": 20,
+      "community": 42,
       "norm_label": "fallbackplan"
     },
     {
@@ -5382,7 +5382,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L77",
       "id": "deadline_food_sessionpersistence_test_persistedplan",
-      "community": 20,
+      "community": 42,
       "norm_label": "persistedplan"
     },
     {
@@ -5616,7 +5616,7 @@
       "source_file": "src/deadline-food/screens/PlanScreen.tsx",
       "source_location": "L36",
       "id": "screens_planscreen_planscreen",
-      "community": 21,
+      "community": 5,
       "norm_label": "planscreen()"
     },
     {
@@ -5794,7 +5794,7 @@
       "label": "Progress()",
       "file_type": "code",
       "source_file": "src/deadline-food/screens/Onboarding.tsx",
-      "source_location": "L35",
+      "source_location": "L36",
       "id": "screens_onboarding_progress",
       "community": 7,
       "norm_label": "progress()"
@@ -5803,16 +5803,16 @@
       "label": "PreferenceSection()",
       "file_type": "code",
       "source_file": "src/deadline-food/screens/Onboarding.tsx",
-      "source_location": "L58",
+      "source_location": "L59",
       "id": "screens_onboarding_preferencesection",
-      "community": 8,
+      "community": 7,
       "norm_label": "preferencesection()"
     },
     {
       "label": "InfoTooltip()",
       "file_type": "code",
       "source_file": "src/deadline-food/screens/Onboarding.tsx",
-      "source_location": "L80",
+      "source_location": "L81",
       "id": "screens_onboarding_infotooltip",
       "community": 7,
       "norm_label": "infotooltip()"
@@ -5821,7 +5821,7 @@
       "label": "Onboarding()",
       "file_type": "code",
       "source_file": "src/deadline-food/screens/Onboarding.tsx",
-      "source_location": "L103",
+      "source_location": "L104",
       "id": "screens_onboarding_onboarding",
       "community": 7,
       "norm_label": "onboarding()"
@@ -5832,34 +5832,34 @@
       "source_file": "src/deadline-food/screens/PrivacyPolicyScreen.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_screens_privacypolicyscreen_tsx",
-      "community": 20,
+      "community": 5,
       "norm_label": "privacypolicyscreen.tsx"
     },
     {
       "label": "TrackEvent",
       "file_type": "code",
       "source_file": "src/deadline-food/screens/PrivacyPolicyScreen.tsx",
-      "source_location": "L11",
+      "source_location": "L10",
       "id": "screens_privacypolicyscreen_trackevent",
-      "community": 20,
+      "community": 5,
       "norm_label": "trackevent"
     },
     {
       "label": "sections",
       "file_type": "code",
       "source_file": "src/deadline-food/screens/PrivacyPolicyScreen.tsx",
-      "source_location": "L13",
+      "source_location": "L12",
       "id": "screens_privacypolicyscreen_sections",
-      "community": 20,
+      "community": 5,
       "norm_label": "sections"
     },
     {
       "label": "PrivacyPolicyScreen()",
       "file_type": "code",
       "source_file": "src/deadline-food/screens/PrivacyPolicyScreen.tsx",
-      "source_location": "L86",
+      "source_location": "L85",
       "id": "screens_privacypolicyscreen_privacypolicyscreen",
-      "community": 20,
+      "community": 5,
       "norm_label": "privacypolicyscreen()"
     },
     {
@@ -5913,7 +5913,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_primitives_tsx",
-      "community": 8,
+      "community": 24,
       "norm_label": "primitives.tsx"
     },
     {
@@ -5922,7 +5922,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L9",
       "id": "components_primitives_tone",
-      "community": 8,
+      "community": 24,
       "norm_label": "tone"
     },
     {
@@ -5931,7 +5931,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L11",
       "id": "components_primitives_badgetones",
-      "community": 8,
+      "community": 24,
       "norm_label": "badgetones"
     },
     {
@@ -5940,7 +5940,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L19",
       "id": "components_primitives_appbuttonvariant",
-      "community": 8,
+      "community": 24,
       "norm_label": "appbuttonvariant"
     },
     {
@@ -5949,7 +5949,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L21",
       "id": "components_primitives_appbuttonclasses",
-      "community": 8,
+      "community": 24,
       "norm_label": "appbuttonclasses"
     },
     {
@@ -5985,7 +5985,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L130",
       "id": "components_primitives_field",
-      "community": 7,
+      "community": 24,
       "norm_label": "field()"
     },
     {
@@ -5994,7 +5994,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L184",
       "id": "components_primitives_selectfield",
-      "community": 8,
+      "community": 24,
       "norm_label": "selectfield()"
     },
     {
@@ -6084,7 +6084,7 @@
       "source_file": "src/deadline-food/components/Shell.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_shell_tsx",
-      "community": 20,
+      "community": 5,
       "norm_label": "shell.tsx"
     },
     {
@@ -6093,7 +6093,7 @@
       "source_file": "src/deadline-food/components/Shell.tsx",
       "source_location": "L9",
       "id": "components_shell_shell",
-      "community": 20,
+      "community": 5,
       "norm_label": "shell()"
     },
     {
@@ -6174,7 +6174,7 @@
       "source_file": "src/deadline-food/components/UniversityField.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_universityfield_tsx",
-      "community": 8,
+      "community": 24,
       "norm_label": "universityfield.tsx"
     },
     {
@@ -6183,7 +6183,7 @@
       "source_file": "src/deadline-food/components/UniversityField.tsx",
       "source_location": "L8",
       "id": "components_universityfield_universityfield",
-      "community": 8,
+      "community": 24,
       "norm_label": "universityfield()"
     },
     {
@@ -6192,7 +6192,7 @@
       "source_file": "src/deadline-food/components/ConfirmDialog.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_confirmdialog_tsx",
-      "community": 21,
+      "community": 5,
       "norm_label": "confirmdialog.tsx"
     },
     {
@@ -6201,7 +6201,7 @@
       "source_file": "src/deadline-food/components/ConfirmDialog.tsx",
       "source_location": "L3",
       "id": "components_confirmdialog_confirmdialog",
-      "community": 21,
+      "community": 5,
       "norm_label": "confirmdialog()"
     },
     {
@@ -6210,7 +6210,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_recipeeditor_tsx",
-      "community": 42,
+      "community": 5,
       "norm_label": "recipeeditor.tsx"
     },
     {
@@ -6219,7 +6219,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L21",
       "id": "components_recipeeditor_meal_slot_options",
-      "community": 42,
+      "community": 5,
       "norm_label": "meal_slot_options"
     },
     {
@@ -6228,7 +6228,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L22",
       "id": "components_recipeeditor_meal_slot_set",
-      "community": 42,
+      "community": 5,
       "norm_label": "meal_slot_set"
     },
     {
@@ -6237,7 +6237,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L27",
       "id": "components_recipeeditor_formatportionnote",
-      "community": 42,
+      "community": 5,
       "norm_label": "formatportionnote()"
     },
     {
@@ -6246,7 +6246,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L34",
       "id": "components_recipeeditor_parseportionnote",
-      "community": 42,
+      "community": 10,
       "norm_label": "parseportionnote()"
     },
     {
@@ -6255,7 +6255,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L47",
       "id": "components_recipeeditor_tag_options",
-      "community": 42,
+      "community": 5,
       "norm_label": "tag_options"
     },
     {
@@ -6264,7 +6264,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L65",
       "id": "components_recipeeditor_editorform",
-      "community": 42,
+      "community": 5,
       "norm_label": "editorform"
     },
     {
@@ -6273,7 +6273,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L83",
       "id": "components_recipeeditor_recipeeditoroutput",
-      "community": 42,
+      "community": 5,
       "norm_label": "recipeeditoroutput"
     },
     {
@@ -6282,7 +6282,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L104",
       "id": "components_recipeeditor_mealtoform",
-      "community": 42,
+      "community": 10,
       "norm_label": "mealtoform()"
     },
     {
@@ -6300,7 +6300,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L149",
       "id": "components_recipeeditor_splitlist",
-      "community": 42,
+      "community": 5,
       "norm_label": "splitlist()"
     },
     {
@@ -6309,7 +6309,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L156",
       "id": "components_recipeeditor_positivenumber",
-      "community": 42,
+      "community": 21,
       "norm_label": "positivenumber()"
     },
     {
@@ -6318,7 +6318,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L162",
       "id": "components_recipeeditor_tageditor",
-      "community": 42,
+      "community": 5,
       "norm_label": "tageditor()"
     },
     {
@@ -6327,7 +6327,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L328",
       "id": "components_recipeeditor_recipeeditor",
-      "community": 42,
+      "community": 21,
       "norm_label": "recipeeditor()"
     },
     {
@@ -6345,7 +6345,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.test.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_deadlinecontext_test_ts",
-      "community": 30,
+      "community": 137,
       "norm_label": "deadlinecontext.test.ts"
     },
     {
@@ -6354,7 +6354,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.test.ts",
       "source_location": "L17",
       "id": "calendarimport_deadlinecontext_test_event",
-      "community": 30,
+      "community": 137,
       "norm_label": "event()"
     },
     {
@@ -6363,7 +6363,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.test.ts",
       "source_location": "L33",
       "id": "calendarimport_deadlinecontext_test_classified",
-      "community": 30,
+      "community": 137,
       "norm_label": "classified()"
     },
     {
@@ -6372,7 +6372,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.test.ts",
       "source_location": "L47",
       "id": "calendarimport_deadlinecontext_test_contextresponse",
-      "community": 30,
+      "community": 137,
       "norm_label": "contextresponse()"
     },
     {
@@ -6381,7 +6381,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.test.ts",
       "source_location": "L51",
       "id": "calendarimport_deadlinecontext_test_mockfetch",
-      "community": 30,
+      "community": 137,
       "norm_label": "mockfetch()"
     },
     {
@@ -6390,7 +6390,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.test.ts",
       "source_location": "L57",
       "id": "calendarimport_deadlinecontext_test_events",
-      "community": 30,
+      "community": 137,
       "norm_label": "events"
     },
     {
@@ -6399,7 +6399,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.test.ts",
       "source_location": "L58",
       "id": "calendarimport_deadlinecontext_test_context",
-      "community": 30,
+      "community": 137,
       "norm_label": "context"
     },
     {
@@ -6408,7 +6408,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.test.ts",
       "source_location": "L92",
       "id": "calendarimport_deadlinecontext_test_deadlines",
-      "community": 30,
+      "community": 137,
       "norm_label": "deadlines"
     },
     {
@@ -6417,7 +6417,7 @@
       "source_file": "src/deadline-food/calendarImport/calendarApi.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_calendarapi_ts",
-      "community": 30,
+      "community": 71,
       "norm_label": "calendarapi.ts"
     },
     {
@@ -6426,7 +6426,7 @@
       "source_file": "src/deadline-food/calendarImport/calendarApi.ts",
       "source_location": "L3",
       "id": "calendarimport_calendarapi_calendarfetchicsurl",
-      "community": 7,
+      "community": 77,
       "norm_label": "calendarfetchicsurl()"
     },
     {
@@ -6435,7 +6435,7 @@
       "source_file": "src/deadline-food/calendarImport/calendarApi.ts",
       "source_location": "L7",
       "id": "calendarimport_calendarapi_calendargoogleexchangeurl",
-      "community": 30,
+      "community": 71,
       "norm_label": "calendargoogleexchangeurl()"
     },
     {
@@ -6444,7 +6444,7 @@
       "source_file": "src/deadline-food/calendarImport/calendarApi.ts",
       "source_location": "L11",
       "id": "calendarimport_calendarapi_calendaroutlookexchangeurl",
-      "community": 30,
+      "community": 71,
       "norm_label": "calendaroutlookexchangeurl()"
     },
     {
@@ -6453,7 +6453,7 @@
       "source_file": "src/deadline-food/calendarImport/outlookCalendar.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_outlookcalendar_ts",
-      "community": 30,
+      "community": 71,
       "norm_label": "outlookcalendar.ts"
     },
     {
@@ -6462,7 +6462,7 @@
       "source_file": "src/deadline-food/calendarImport/outlookCalendar.ts",
       "source_location": "L19",
       "id": "calendarimport_outlookcalendar_base64urlencode",
-      "community": 30,
+      "community": 71,
       "norm_label": "base64urlencode()"
     },
     {
@@ -6471,7 +6471,7 @@
       "source_file": "src/deadline-food/calendarImport/outlookCalendar.ts",
       "source_location": "L27",
       "id": "calendarimport_outlookcalendar_generatepkce",
-      "community": 30,
+      "community": 71,
       "norm_label": "generatepkce()"
     },
     {
@@ -6480,7 +6480,7 @@
       "source_file": "src/deadline-food/calendarImport/outlookCalendar.ts",
       "source_location": "L36",
       "id": "calendarimport_outlookcalendar_waitforpopupredirect",
-      "community": 30,
+      "community": 71,
       "norm_label": "waitforpopupredirect()"
     },
     {
@@ -6489,7 +6489,7 @@
       "source_file": "src/deadline-food/calendarImport/outlookCalendar.ts",
       "source_location": "L71",
       "id": "calendarimport_outlookcalendar_outlookexchangeresult",
-      "community": 30,
+      "community": 71,
       "norm_label": "outlookexchangeresult"
     },
     {
@@ -6498,7 +6498,7 @@
       "source_file": "src/deadline-food/calendarImport/outlookCalendar.ts",
       "source_location": "L77",
       "id": "calendarimport_outlookcalendar_exchangecodeonserver",
-      "community": 30,
+      "community": 71,
       "norm_label": "exchangecodeonserver()"
     },
     {
@@ -6507,7 +6507,7 @@
       "source_file": "src/deadline-food/calendarImport/outlookCalendar.ts",
       "source_location": "L97",
       "id": "calendarimport_outlookcalendar_isoutlookconfigured",
-      "community": 30,
+      "community": 71,
       "norm_label": "isoutlookconfigured()"
     },
     {
@@ -6516,7 +6516,7 @@
       "source_file": "src/deadline-food/calendarImport/outlookCalendar.ts",
       "source_location": "L101",
       "id": "calendarimport_outlookcalendar_importoutlookcalendar",
-      "community": 30,
+      "community": 71,
       "norm_label": "importoutlookcalendar()"
     },
     {
@@ -6597,7 +6597,7 @@
       "source_file": "src/deadline-food/calendarImport/appleCalendar.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_applecalendar_ts",
-      "community": 7,
+      "community": 77,
       "norm_label": "applecalendar.ts"
     },
     {
@@ -6606,7 +6606,7 @@
       "source_file": "src/deadline-food/calendarImport/appleCalendar.ts",
       "source_location": "L6",
       "id": "calendarimport_applecalendar_normalizewebcalurl",
-      "community": 7,
+      "community": 77,
       "norm_label": "normalizewebcalurl()"
     },
     {
@@ -6615,7 +6615,7 @@
       "source_file": "src/deadline-food/calendarImport/appleCalendar.ts",
       "source_location": "L14",
       "id": "calendarimport_applecalendar_issubscriptionurl",
-      "community": 7,
+      "community": 77,
       "norm_label": "issubscriptionurl()"
     },
     {
@@ -6624,7 +6624,7 @@
       "source_file": "src/deadline-food/calendarImport/appleCalendar.ts",
       "source_location": "L24",
       "id": "calendarimport_applecalendar_importfromsubscriptionurl",
-      "community": 7,
+      "community": 77,
       "norm_label": "importfromsubscriptionurl()"
     },
     {
@@ -6642,7 +6642,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_icsparser_ts",
-      "community": 7,
+      "community": 77,
       "norm_label": "icsparser.ts"
     },
     {
@@ -6651,7 +6651,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L4",
       "id": "calendarimport_icsparser_unfoldlines",
-      "community": 7,
+      "community": 77,
       "norm_label": "unfoldlines()"
     },
     {
@@ -6660,7 +6660,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L8",
       "id": "calendarimport_icsparser_extractfield",
-      "community": 7,
+      "community": 77,
       "norm_label": "extractfield()"
     },
     {
@@ -6669,7 +6669,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L13",
       "id": "calendarimport_icsparser_parseicsdatetime",
-      "community": 7,
+      "community": 77,
       "norm_label": "parseicsdatetime()"
     },
     {
@@ -6678,7 +6678,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L30",
       "id": "calendarimport_icsparser_unescapeicsvalue",
-      "community": 7,
+      "community": 77,
       "norm_label": "unescapeicsvalue()"
     },
     {
@@ -6687,7 +6687,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L38",
       "id": "calendarimport_icsparser_parseicstext",
-      "community": 7,
+      "community": 77,
       "norm_label": "parseicstext()"
     },
     {
@@ -6741,7 +6741,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.ts",
       "source_location": "L31",
       "id": "calendarimport_deadlinecontext_deadlinecontextresponse",
-      "community": 30,
+      "community": 137,
       "norm_label": "deadlinecontextresponse"
     },
     {
@@ -6750,7 +6750,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.ts",
       "source_location": "L47",
       "id": "calendarimport_deadlinecontext_contexteventinput",
-      "community": 30,
+      "community": 73,
       "norm_label": "contexteventinput"
     },
     {
@@ -6786,7 +6786,7 @@
       "source_file": "src/deadline-food/calendarImport/deadlineContext.ts",
       "source_location": "L79",
       "id": "calendarimport_deadlinecontext_deadlinetocontextevent",
-      "community": 30,
+      "community": 73,
       "norm_label": "deadlinetocontextevent()"
     },
     {
@@ -7137,7 +7137,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L1",
       "id": "src_components_ui_select_tsx",
-      "community": 8,
+      "community": 24,
       "norm_label": "select.tsx"
     },
     {
@@ -7146,7 +7146,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L9",
       "id": "ui_select_select",
-      "community": 8,
+      "community": 24,
       "norm_label": "select()"
     },
     {
@@ -7155,7 +7155,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L13",
       "id": "ui_select_selectgroup",
-      "community": 8,
+      "community": 24,
       "norm_label": "selectgroup()"
     },
     {
@@ -7164,7 +7164,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L17",
       "id": "ui_select_selectvalue",
-      "community": 8,
+      "community": 24,
       "norm_label": "selectvalue()"
     },
     {
@@ -7173,7 +7173,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L21",
       "id": "ui_select_selecttrigger",
-      "community": 8,
+      "community": 24,
       "norm_label": "selecttrigger()"
     },
     {
@@ -7182,7 +7182,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L47",
       "id": "ui_select_selectcontent",
-      "community": 8,
+      "community": 24,
       "norm_label": "selectcontent()"
     },
     {
@@ -7191,7 +7191,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L84",
       "id": "ui_select_selectlabel",
-      "community": 8,
+      "community": 24,
       "norm_label": "selectlabel()"
     },
     {
@@ -7200,7 +7200,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L94",
       "id": "ui_select_selectitem",
-      "community": 8,
+      "community": 24,
       "norm_label": "selectitem()"
     },
     {
@@ -7209,7 +7209,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L114",
       "id": "ui_select_selectseparator",
-      "community": 8,
+      "community": 24,
       "norm_label": "selectseparator()"
     },
     {
@@ -7218,7 +7218,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L124",
       "id": "ui_select_selectscrollupbutton",
-      "community": 8,
+      "community": 24,
       "norm_label": "selectscrollupbutton()"
     },
     {
@@ -7227,7 +7227,7 @@
       "source_file": "src/components/ui/select.tsx",
       "source_location": "L136",
       "id": "ui_select_selectscrolldownbutton",
-      "community": 8,
+      "community": 24,
       "norm_label": "selectscrolldownbutton()"
     },
     {
@@ -7272,7 +7272,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L32",
       "id": "ui_card_carddescription",
-      "community": 8,
+      "community": 24,
       "norm_label": "carddescription()"
     },
     {
@@ -7281,7 +7281,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L36",
       "id": "ui_card_cardaction",
-      "community": 8,
+      "community": 24,
       "norm_label": "cardaction()"
     },
     {
@@ -7299,7 +7299,7 @@
       "source_file": "src/components/ui/card.tsx",
       "source_location": "L50",
       "id": "ui_card_cardfooter",
-      "community": 8,
+      "community": 24,
       "norm_label": "cardfooter()"
     },
     {
@@ -7308,7 +7308,7 @@
       "source_file": "src/components/ui/textarea.tsx",
       "source_location": "L1",
       "id": "src_components_ui_textarea_tsx",
-      "community": 8,
+      "community": 24,
       "norm_label": "textarea.tsx"
     },
     {
@@ -7317,7 +7317,7 @@
       "source_file": "src/components/ui/textarea.tsx",
       "source_location": "L5",
       "id": "ui_textarea_textarea",
-      "community": 8,
+      "community": 24,
       "norm_label": "textarea()"
     },
     {
@@ -7326,7 +7326,7 @@
       "source_file": "src/components/ui/label.tsx",
       "source_location": "L1",
       "id": "src_components_ui_label_tsx",
-      "community": 8,
+      "community": 24,
       "norm_label": "label.tsx"
     },
     {
@@ -7335,7 +7335,7 @@
       "source_file": "src/components/ui/label.tsx",
       "source_location": "L8",
       "id": "ui_label_label",
-      "community": 8,
+      "community": 24,
       "norm_label": "label()"
     },
     {
@@ -7344,7 +7344,7 @@
       "source_file": "src/components/ui/input.tsx",
       "source_location": "L1",
       "id": "src_components_ui_input_tsx",
-      "community": 8,
+      "community": 24,
       "norm_label": "input.tsx"
     },
     {
@@ -7353,7 +7353,7 @@
       "source_file": "src/components/ui/input.tsx",
       "source_location": "L5",
       "id": "ui_input_input",
-      "community": 8,
+      "community": 24,
       "norm_label": "input()"
     },
     {
@@ -13906,25 +13906,16 @@
       "label": "app_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L38",
+      "source_location": "L5",
       "id": "lib_index_app_1",
       "community": 1,
       "norm_label": "app_1"
     },
     {
-      "label": "auth_1",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L39",
-      "id": "lib_index_auth_1",
-      "community": 1,
-      "norm_label": "auth_1"
-    },
-    {
       "label": "firestore_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L40",
+      "source_location": "L6",
       "id": "lib_index_firestore_1",
       "community": 1,
       "norm_label": "firestore_1"
@@ -13933,7 +13924,7 @@
       "label": "storage_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L41",
+      "source_location": "L7",
       "id": "lib_index_storage_1",
       "community": 1,
       "norm_label": "storage_1"
@@ -13942,7 +13933,7 @@
       "label": "https_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L42",
+      "source_location": "L8",
       "id": "lib_index_https_1",
       "community": 1,
       "norm_label": "https_1"
@@ -13951,7 +13942,7 @@
       "label": "scheduler_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L43",
+      "source_location": "L9",
       "id": "lib_index_scheduler_1",
       "community": 1,
       "norm_label": "scheduler_1"
@@ -13960,7 +13951,7 @@
       "label": "options_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L44",
+      "source_location": "L10",
       "id": "lib_index_options_1",
       "community": 1,
       "norm_label": "options_1"
@@ -13969,25 +13960,25 @@
       "label": "params_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L45",
+      "source_location": "L11",
       "id": "lib_index_params_1",
       "community": 1,
       "norm_label": "params_1"
     },
     {
-      "label": "logger",
+      "label": "logger_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L46",
-      "id": "lib_index_logger",
+      "source_location": "L12",
+      "id": "lib_index_logger_1",
       "community": 1,
-      "norm_label": "logger"
+      "norm_label": "logger_1"
     },
     {
       "label": "crypto_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L47",
+      "source_location": "L13",
       "id": "lib_index_crypto_1",
       "community": 1,
       "norm_label": "crypto_1"
@@ -13996,7 +13987,7 @@
       "label": "autoPlan_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L48",
+      "source_location": "L14",
       "id": "lib_index_autoplan_1",
       "community": 1,
       "norm_label": "autoplan_1"
@@ -14005,7 +13996,7 @@
       "label": "icsParser_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L49",
+      "source_location": "L15",
       "id": "lib_index_icsparser_1",
       "community": 1,
       "norm_label": "icsparser_1"
@@ -14014,52 +14005,43 @@
       "label": "calendarUtils_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L50",
+      "source_location": "L16",
       "id": "lib_index_calendarutils_1",
       "community": 1,
       "norm_label": "calendarutils_1"
     },
     {
-      "label": "prototypeData_1",
+      "label": "appData_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L51",
-      "id": "lib_index_prototypedata_1",
+      "source_location": "L17",
+      "id": "lib_index_appdata_1",
       "community": 1,
-      "norm_label": "prototypedata_1"
+      "norm_label": "appdata_1"
     },
     {
       "label": "firestore",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L54",
+      "source_location": "L20",
       "id": "lib_index_firestore",
       "community": 1,
       "norm_label": "firestore"
     },
     {
-      "label": "firebaseAuth",
+      "label": "appDataRef",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L55",
-      "id": "lib_index_firebaseauth",
+      "source_location": "L21",
+      "id": "lib_index_appdataref",
       "community": 1,
-      "norm_label": "firebaseauth"
-    },
-    {
-      "label": "prototypeRef",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L56",
-      "id": "lib_index_prototyperef",
-      "community": 1,
-      "norm_label": "prototyperef"
+      "norm_label": "appdataref"
     },
     {
       "label": "recipesRef",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L59",
+      "source_location": "L24",
       "id": "lib_index_recipesref",
       "community": 1,
       "norm_label": "recipesref"
@@ -14068,7 +14050,7 @@
       "label": "recipeReviewsRef",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L60",
+      "source_location": "L25",
       "id": "lib_index_recipereviewsref",
       "community": 1,
       "norm_label": "recipereviewsref"
@@ -14077,25 +14059,16 @@
       "label": "anonymousSessionsRef",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L61",
+      "source_location": "L26",
       "id": "lib_index_anonymoussessionsref",
       "community": 1,
       "norm_label": "anonymoussessionsref"
     },
     {
-      "label": "accountSessionsRef",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L62",
-      "id": "lib_index_accountsessionsref",
-      "community": 1,
-      "norm_label": "accountsessionsref"
-    },
-    {
       "label": "openFoodFactsCacheRef",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L63",
+      "source_location": "L27",
       "id": "lib_index_openfoodfactscacheref",
       "community": 1,
       "norm_label": "openfoodfactscacheref"
@@ -14104,7 +14077,7 @@
       "label": "supportedSessionSettingsVersions",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L70",
+      "source_location": "L34",
       "id": "lib_index_supportedsessionsettingsversions",
       "community": 1,
       "norm_label": "supportedsessionsettingsversions"
@@ -14113,7 +14086,7 @@
       "label": "publicHttpOptions",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L71",
+      "source_location": "L37",
       "id": "lib_index_publichttpoptions",
       "community": 1,
       "norm_label": "publichttpoptions"
@@ -14122,7 +14095,7 @@
       "label": "usdaApiKey",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L75",
+      "source_location": "L41",
       "id": "lib_index_usdaapikey",
       "community": 1,
       "norm_label": "usdaapikey"
@@ -14131,7 +14104,7 @@
       "label": "nutritionHttpOptions",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L76",
+      "source_location": "L42",
       "id": "lib_index_nutritionhttpoptions",
       "community": 1,
       "norm_label": "nutritionhttpoptions"
@@ -14140,7 +14113,7 @@
       "label": "googleClientId",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L77",
+      "source_location": "L43",
       "id": "lib_index_googleclientid",
       "community": 1,
       "norm_label": "googleclientid"
@@ -14149,7 +14122,7 @@
       "label": "googleClientSecret",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L78",
+      "source_location": "L44",
       "id": "lib_index_googleclientsecret",
       "community": 1,
       "norm_label": "googleclientsecret"
@@ -14158,7 +14131,7 @@
       "label": "microsoftClientId",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L79",
+      "source_location": "L45",
       "id": "lib_index_microsoftclientid",
       "community": 1,
       "norm_label": "microsoftclientid"
@@ -14167,7 +14140,7 @@
       "label": "microsoftClientSecret",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L80",
+      "source_location": "L46",
       "id": "lib_index_microsoftclientsecret",
       "community": 1,
       "norm_label": "microsoftclientsecret"
@@ -14176,7 +14149,7 @@
       "label": "recommenderApiUrl",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L81",
+      "source_location": "L47",
       "id": "lib_index_recommenderapiurl",
       "community": 1,
       "norm_label": "recommenderapiurl"
@@ -14185,7 +14158,7 @@
       "label": "recommenderApiKey",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L82",
+      "source_location": "L48",
       "id": "lib_index_recommenderapikey",
       "community": 1,
       "norm_label": "recommenderapikey"
@@ -14194,7 +14167,7 @@
       "label": "googleOAuthHttpOptions",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L83",
+      "source_location": "L49",
       "id": "lib_index_googleoauthhttpoptions",
       "community": 1,
       "norm_label": "googleoauthhttpoptions"
@@ -14203,7 +14176,7 @@
       "label": "microsoftOAuthHttpOptions",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L84",
+      "source_location": "L50",
       "id": "lib_index_microsoftoauthhttpoptions",
       "community": 1,
       "norm_label": "microsoftoauthhttpoptions"
@@ -14212,7 +14185,7 @@
       "label": "calendarOAuthSecrets",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L85",
+      "source_location": "L51",
       "id": "lib_index_calendaroauthsecrets",
       "community": 1,
       "norm_label": "calendaroauthsecrets"
@@ -14221,7 +14194,7 @@
       "label": "recommenderHttpOptions",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L91",
+      "source_location": "L57",
       "id": "lib_index_recommenderhttpoptions",
       "community": 1,
       "norm_label": "recommenderhttpoptions"
@@ -14230,7 +14203,7 @@
       "label": "usdaFdcBaseUrl",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L92",
+      "source_location": "L58",
       "id": "lib_index_usdafdcbaseurl",
       "community": 1,
       "norm_label": "usdafdcbaseurl"
@@ -14239,7 +14212,7 @@
       "label": "allowedPhotoMimeTypes",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L95",
+      "source_location": "L61",
       "id": "lib_index_allowedphotomimetypes",
       "community": 1,
       "norm_label": "allowedphotomimetypes"
@@ -14248,34 +14221,34 @@
       "label": "servingGrams",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L103",
+      "source_location": "L69",
       "id": "lib_index_servinggrams",
       "community": 1,
       "norm_label": "servinggrams"
     },
     {
-      "label": "seedPrototypeData()",
+      "label": "seedAppData()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L115",
-      "id": "lib_index_seedprototypedata",
+      "source_location": "L81",
+      "id": "lib_index_seedappdata",
       "community": 114,
-      "norm_label": "seedprototypedata()"
+      "norm_label": "seedappdata()"
     },
     {
-      "label": "getPrototypeData()",
+      "label": "getAppData()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L119",
-      "id": "lib_index_getprototypedata",
+      "source_location": "L85",
+      "id": "lib_index_getappdata",
       "community": 114,
-      "norm_label": "getprototypedata()"
+      "norm_label": "getappdata()"
     },
     {
       "label": "rejectUnsupportedMethod()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L133",
+      "source_location": "L99",
       "id": "lib_index_rejectunsupportedmethod",
       "community": 1,
       "norm_label": "rejectunsupportedmethod()"
@@ -14284,7 +14257,7 @@
       "label": "rejectUnsupportedReviewMethod()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L145",
+      "source_location": "L111",
       "id": "lib_index_rejectunsupportedreviewmethod",
       "community": 1,
       "norm_label": "rejectunsupportedreviewmethod()"
@@ -14293,7 +14266,7 @@
       "label": "ensureRecipesSeeded()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L159",
+      "source_location": "L125",
       "id": "lib_index_ensurerecipesseeded",
       "community": 1,
       "norm_label": "ensurerecipesseeded()"
@@ -14302,7 +14275,7 @@
       "label": "listRecipes()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L169",
+      "source_location": "L135",
       "id": "lib_index_listrecipes",
       "community": 1,
       "norm_label": "listrecipes()"
@@ -14311,7 +14284,7 @@
       "label": "recommenderDietaryTags",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L176",
+      "source_location": "L142",
       "id": "lib_index_recommenderdietarytags",
       "community": 1,
       "norm_label": "recommenderdietarytags"
@@ -14320,7 +14293,7 @@
       "label": "recommenderTagAliases",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L177",
+      "source_location": "L143",
       "id": "lib_index_recommendertagaliases",
       "community": 1,
       "norm_label": "recommendertagaliases"
@@ -14329,7 +14302,7 @@
       "label": "canonicalRecommenderTag()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L181",
+      "source_location": "L147",
       "id": "lib_index_canonicalrecommendertag",
       "community": 1,
       "norm_label": "canonicalrecommendertag()"
@@ -14338,7 +14311,7 @@
       "label": "canonicalRecommenderTags()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L188",
+      "source_location": "L154",
       "id": "lib_index_canonicalrecommendertags",
       "community": 35,
       "norm_label": "canonicalrecommendertags()"
@@ -14347,7 +14320,7 @@
       "label": "toRecommenderRecipePayload()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L193",
+      "source_location": "L159",
       "id": "lib_index_torecommenderrecipepayload",
       "community": 35,
       "norm_label": "torecommenderrecipepayload()"
@@ -14356,7 +14329,7 @@
       "label": "sanitizeReviewInput()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L224",
+      "source_location": "L190",
       "id": "lib_index_sanitizereviewinput",
       "community": 1,
       "norm_label": "sanitizereviewinput()"
@@ -14365,7 +14338,7 @@
       "label": "averageRating()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L239",
+      "source_location": "L205",
       "id": "lib_index_averagerating",
       "community": 1,
       "norm_label": "averagerating()"
@@ -14374,7 +14347,7 @@
       "label": "readRecipeReviews()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L244",
+      "source_location": "L210",
       "id": "lib_index_readrecipereviews",
       "community": 114,
       "norm_label": "readrecipereviews()"
@@ -14383,7 +14356,7 @@
       "label": "appendRecipeReview()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L249",
+      "source_location": "L215",
       "id": "lib_index_appendrecipereview",
       "community": 1,
       "norm_label": "appendrecipereview()"
@@ -14392,7 +14365,7 @@
       "label": "rejectUnsupportedSessionMethod()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L267",
+      "source_location": "L233",
       "id": "lib_index_rejectunsupportedsessionmethod",
       "community": 1,
       "norm_label": "rejectunsupportedsessionmethod()"
@@ -14401,7 +14374,7 @@
       "label": "sendJson()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L283",
+      "source_location": "L248",
       "id": "lib_index_sendjson",
       "community": 1,
       "norm_label": "sendjson()"
@@ -14410,7 +14383,7 @@
       "label": "sendError()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L287",
+      "source_location": "L252",
       "id": "lib_index_senderror",
       "community": 1,
       "norm_label": "senderror()"
@@ -14419,7 +14392,7 @@
       "label": "asRecord()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L291",
+      "source_location": "L256",
       "id": "lib_index_asrecord",
       "community": 35,
       "norm_label": "asrecord()"
@@ -14428,7 +14401,7 @@
       "label": "boundedString()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L297",
+      "source_location": "L262",
       "id": "lib_index_boundedstring",
       "community": 35,
       "norm_label": "boundedstring()"
@@ -14437,7 +14410,7 @@
       "label": "boundedNumber()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L303",
+      "source_location": "L268",
       "id": "lib_index_boundednumber",
       "community": 35,
       "norm_label": "boundednumber()"
@@ -14446,7 +14419,7 @@
       "label": "boundedStringList()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L309",
+      "source_location": "L274",
       "id": "lib_index_boundedstringlist",
       "community": 35,
       "norm_label": "boundedstringlist()"
@@ -14455,7 +14428,7 @@
       "label": "normalizeRecipeList()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L319",
+      "source_location": "L284",
       "id": "lib_index_normalizerecipelist",
       "community": 35,
       "norm_label": "normalizerecipelist()"
@@ -14464,7 +14437,7 @@
       "label": "normalizeDeadline()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L324",
+      "source_location": "L289",
       "id": "lib_index_normalizedeadline",
       "community": 35,
       "norm_label": "normalizedeadline()"
@@ -14473,7 +14446,7 @@
       "label": "normalizeIcsSubscription()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L333",
+      "source_location": "L298",
       "id": "lib_index_normalizeicssubscription",
       "community": 35,
       "norm_label": "normalizeicssubscription()"
@@ -14482,16 +14455,25 @@
       "label": "normalizeCalendarToken()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L354",
+      "source_location": "L319",
       "id": "lib_index_normalizecalendartoken",
       "community": 35,
       "norm_label": "normalizecalendartoken()"
     },
     {
+      "label": "normalizePrivacyConsent()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L336",
+      "id": "lib_index_normalizeprivacyconsent",
+      "community": 35,
+      "norm_label": "normalizeprivacyconsent()"
+    },
+    {
       "label": "normalizeCalendarEvent()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L371",
+      "source_location": "L354",
       "id": "lib_index_normalizecalendarevent",
       "community": 35,
       "norm_label": "normalizecalendarevent()"
@@ -14500,7 +14482,7 @@
       "label": "normalizeRecipeIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L392",
+      "source_location": "L375",
       "id": "lib_index_normalizerecipeingredient",
       "community": 35,
       "norm_label": "normalizerecipeingredient()"
@@ -14509,25 +14491,25 @@
       "label": "normalizeRecipeIngredientList()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L409",
+      "source_location": "L392",
       "id": "lib_index_normalizerecipeingredientlist",
       "community": 35,
       "norm_label": "normalizerecipeingredientlist()"
     },
     {
-      "label": "normalizePrototypeSessionSettings()",
+      "label": "normalizeSessionSettings()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L418",
-      "id": "lib_index_normalizeprototypesessionsettings",
+      "source_location": "L401",
+      "id": "lib_index_normalizesessionsettings",
       "community": 35,
-      "norm_label": "normalizeprototypesessionsettings()"
+      "norm_label": "normalizesessionsettings()"
     },
     {
       "label": "sessionExpiryTimestamp()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L470",
+      "source_location": "L454",
       "id": "lib_index_sessionexpirytimestamp",
       "community": 1,
       "norm_label": "sessionexpirytimestamp()"
@@ -14536,7 +14518,7 @@
       "label": "timestampToIso()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L473",
+      "source_location": "L457",
       "id": "lib_index_timestamptoiso",
       "community": 114,
       "norm_label": "timestamptoiso()"
@@ -14545,52 +14527,16 @@
       "label": "readRequestBody()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L482",
+      "source_location": "L466",
       "id": "lib_index_readrequestbody",
       "community": 35,
       "norm_label": "readrequestbody()"
     },
     {
-      "label": "requestHeader()",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L493",
-      "id": "lib_index_requestheader",
-      "community": 1,
-      "norm_label": "requestheader()"
-    },
-    {
-      "label": "verifiedAccount()",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L513",
-      "id": "lib_index_verifiedaccount",
-      "community": 1,
-      "norm_label": "verifiedaccount()"
-    },
-    {
-      "label": "accountSessionDocId()",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L528",
-      "id": "lib_index_accountsessiondocid",
-      "community": 114,
-      "norm_label": "accountsessiondocid()"
-    },
-    {
-      "label": "accountSessionHandle()",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L536",
-      "id": "lib_index_accountsessionhandle",
-      "community": 114,
-      "norm_label": "accountsessionhandle()"
-    },
-    {
       "label": "rejectUnsupportedRecommenderMethod()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L539",
+      "source_location": "L477",
       "id": "lib_index_rejectunsupportedrecommendermethod",
       "community": 115,
       "norm_label": "rejectunsupportedrecommendermethod()"
@@ -14599,7 +14545,7 @@
       "label": "proxyRecommenderRequest()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L551",
+      "source_location": "L489",
       "id": "lib_index_proxyrecommenderrequest",
       "community": 115,
       "norm_label": "proxyrecommenderrequest()"
@@ -14608,7 +14554,7 @@
       "label": "enrichRecommendedRecipes()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L584",
+      "source_location": "L522",
       "id": "lib_index_enrichrecommendedrecipes",
       "community": 115,
       "norm_label": "enrichrecommendedrecipes()"
@@ -14617,7 +14563,7 @@
       "label": "proxyRecommenderRecommendations()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L619",
+      "source_location": "L557",
       "id": "lib_index_proxyrecommenderrecommendations",
       "community": 115,
       "norm_label": "proxyrecommenderrecommendations()"
@@ -14626,7 +14572,7 @@
       "label": "callRecommenderJson()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L660",
+      "source_location": "L598",
       "id": "lib_index_callrecommenderjson",
       "community": 35,
       "norm_label": "callrecommenderjson()"
@@ -14635,7 +14581,7 @@
       "label": "PLAN_SLOTS",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L682",
+      "source_location": "L620",
       "id": "lib_index_plan_slots",
       "community": 1,
       "norm_label": "plan_slots"
@@ -14644,7 +14590,7 @@
       "label": "toMealSlots()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L683",
+      "source_location": "L621",
       "id": "lib_index_tomealslots",
       "community": 35,
       "norm_label": "tomealslots()"
@@ -14653,7 +14599,7 @@
       "label": "toMealType()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L688",
+      "source_location": "L626",
       "id": "lib_index_tomealtype",
       "community": 35,
       "norm_label": "tomealtype()"
@@ -14662,7 +14608,7 @@
       "label": "recommenderRecipeToMeal()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L692",
+      "source_location": "L630",
       "id": "lib_index_recommenderrecipetomeal",
       "community": 35,
       "norm_label": "recommenderrecipetomeal()"
@@ -14671,7 +14617,7 @@
       "label": "mealToAllocator()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L701",
+      "source_location": "L639",
       "id": "lib_index_mealtoallocator",
       "community": 35,
       "norm_label": "mealtoallocator()"
@@ -14680,7 +14626,7 @@
       "label": "syntheticDays()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L720",
+      "source_location": "L658",
       "id": "lib_index_syntheticdays",
       "community": 35,
       "norm_label": "syntheticdays()"
@@ -14689,7 +14635,7 @@
       "label": "normalizeDayContext()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L735",
+      "source_location": "L673",
       "id": "lib_index_normalizedaycontext",
       "community": 35,
       "norm_label": "normalizedaycontext()"
@@ -14698,7 +14644,7 @@
       "label": "handleAutoPlan()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L750",
+      "source_location": "L688",
       "id": "lib_index_handleautoplan",
       "community": 35,
       "norm_label": "handleautoplan()"
@@ -14707,7 +14653,7 @@
       "label": "rejectUnsupportedNutritionMethod()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L843",
+      "source_location": "L781",
       "id": "lib_index_rejectunsupportednutritionmethod",
       "community": 1,
       "norm_label": "rejectunsupportednutritionmethod()"
@@ -14716,7 +14662,7 @@
       "label": "isRecipeIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L855",
+      "source_location": "L793",
       "id": "lib_index_isrecipeingredient",
       "community": 1,
       "norm_label": "isrecipeingredient()"
@@ -14725,7 +14671,7 @@
       "label": "normalizeIngredientKey()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L865",
+      "source_location": "L803",
       "id": "lib_index_normalizeingredientkey",
       "community": 65,
       "norm_label": "normalizeingredientkey()"
@@ -14734,7 +14680,7 @@
       "label": "openFoodFactsCacheDocId()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L868",
+      "source_location": "L806",
       "id": "lib_index_openfoodfactscachedocid",
       "community": 65,
       "norm_label": "openfoodfactscachedocid()"
@@ -14743,7 +14689,7 @@
       "label": "gramsForIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L871",
+      "source_location": "L809",
       "id": "lib_index_gramsforingredient",
       "community": 1,
       "norm_label": "gramsforingredient()"
@@ -14752,7 +14698,7 @@
       "label": "estimateIngredientNutrition()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L894",
+      "source_location": "L832",
       "id": "lib_index_estimateingredientnutrition",
       "community": 1,
       "norm_label": "estimateingredientnutrition()"
@@ -14761,7 +14707,7 @@
       "label": "roundMacro()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L921",
+      "source_location": "L859",
       "id": "lib_index_roundmacro",
       "community": 74,
       "norm_label": "roundmacro()"
@@ -14770,7 +14716,7 @@
       "label": "totalNutritionFromEstimates()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L924",
+      "source_location": "L862",
       "id": "lib_index_totalnutritionfromestimates",
       "community": 74,
       "norm_label": "totalnutritionfromestimates()"
@@ -14779,7 +14725,7 @@
       "label": "timestampMillis()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L946",
+      "source_location": "L884",
       "id": "lib_index_timestampmillis",
       "community": 65,
       "norm_label": "timestampmillis()"
@@ -14788,7 +14734,7 @@
       "label": "parseCachedProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L955",
+      "source_location": "L893",
       "id": "lib_index_parsecachedproduct",
       "community": 65,
       "norm_label": "parsecachedproduct()"
@@ -14797,7 +14743,7 @@
       "label": "sleep()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L984",
+      "source_location": "L922",
       "id": "lib_index_sleep",
       "community": 65,
       "norm_label": "sleep()"
@@ -14806,7 +14752,7 @@
       "label": "usdaGenericDataTypes",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L992",
+      "source_location": "L930",
       "id": "lib_index_usdagenericdatatypes",
       "community": 1,
       "norm_label": "usdagenericdatatypes"
@@ -14815,7 +14761,7 @@
       "label": "usdaIngredientAliases",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L996",
+      "source_location": "L934",
       "id": "lib_index_usdaingredientaliases",
       "community": 1,
       "norm_label": "usdaingredientaliases"
@@ -14824,7 +14770,7 @@
       "label": "deaccent()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1003",
+      "source_location": "L941",
       "id": "lib_index_deaccent",
       "community": 65,
       "norm_label": "deaccent()"
@@ -14833,7 +14779,7 @@
       "label": "fdcNutrientValue()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1006",
+      "source_location": "L944",
       "id": "lib_index_fdcnutrientvalue",
       "community": 65,
       "norm_label": "fdcnutrientvalue()"
@@ -14842,7 +14788,7 @@
       "label": "fdcToProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1018",
+      "source_location": "L956",
       "id": "lib_index_fdctoproduct",
       "community": 65,
       "norm_label": "fdctoproduct()"
@@ -14851,7 +14797,7 @@
       "label": "searchFdcFoods()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1039",
+      "source_location": "L977",
       "id": "lib_index_searchfdcfoods",
       "community": 65,
       "norm_label": "searchfdcfoods()"
@@ -14860,7 +14806,7 @@
       "label": "fetchUsdaProductForIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1068",
+      "source_location": "L1006",
       "id": "lib_index_fetchusdaproductforingredient",
       "community": 65,
       "norm_label": "fetchusdaproductforingredient()"
@@ -14869,7 +14815,7 @@
       "label": "tryAcquireOpenFoodFactsCacheLock()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1101",
+      "source_location": "L1039",
       "id": "lib_index_tryacquireopenfoodfactscachelock",
       "community": 65,
       "norm_label": "tryacquireopenfoodfactscachelock()"
@@ -14878,7 +14824,7 @@
       "label": "readOpenFoodFactsCachedProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1123",
+      "source_location": "L1061",
       "id": "lib_index_readopenfoodfactscachedproduct",
       "community": 65,
       "norm_label": "readopenfoodfactscachedproduct()"
@@ -14887,7 +14833,7 @@
       "label": "cacheOpenFoodFactsProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1139",
+      "source_location": "L1077",
       "id": "lib_index_cacheopenfoodfactsproduct",
       "community": 65,
       "norm_label": "cacheopenfoodfactsproduct()"
@@ -14896,7 +14842,7 @@
       "label": "findNutritionProductForIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1149",
+      "source_location": "L1087",
       "id": "lib_index_findnutritionproductforingredient",
       "community": 65,
       "norm_label": "findnutritionproductforingredient()"
@@ -14905,7 +14851,7 @@
       "label": "sendSessionJson()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1175",
+      "source_location": "L1113",
       "id": "lib_index_sendsessionjson",
       "community": 114,
       "norm_label": "sendsessionjson()"
@@ -14914,7 +14860,7 @@
       "label": "body",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1233",
+      "source_location": "L1171",
       "id": "lib_index_body",
       "community": 1,
       "norm_label": "body"
@@ -14923,7 +14869,7 @@
       "label": "review",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1239",
+      "source_location": "L1177",
       "id": "lib_index_review",
       "community": 1,
       "norm_label": "review"
@@ -14932,7 +14878,7 @@
       "label": "recipeContent",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1274",
+      "source_location": "L1212",
       "id": "lib_index_recipecontent",
       "community": 1,
       "norm_label": "recipecontent"
@@ -14941,7 +14887,7 @@
       "label": "url",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1306",
+      "source_location": "L1244",
       "id": "lib_index_url",
       "community": 1,
       "norm_label": "url"
@@ -14950,7 +14896,7 @@
       "label": "ingredients",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1338",
+      "source_location": "L1276",
       "id": "lib_index_ingredients",
       "community": 1,
       "norm_label": "ingredients"
@@ -14959,7 +14905,7 @@
       "label": "estimates",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1351",
+      "source_location": "L1289",
       "id": "lib_index_estimates",
       "community": 1,
       "norm_label": "estimates"
@@ -14968,43 +14914,34 @@
       "label": "missingIngredients",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1352",
+      "source_location": "L1290",
       "id": "lib_index_missingingredients",
       "community": 1,
       "norm_label": "missingingredients"
     },
     {
-      "label": "handleAccountSessionGet()",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L1374",
-      "id": "lib_index_handleaccountsessionget",
-      "community": 114,
-      "norm_label": "handleaccountsessionget()"
-    },
-    {
-      "label": "handleAccountSessionDelete()",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L1413",
-      "id": "lib_index_handleaccountsessiondelete",
-      "community": 114,
-      "norm_label": "handleaccountsessiondelete()"
-    },
-    {
       "label": "sessionRef",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1454",
+      "source_location": "L1318",
       "id": "lib_index_sessionref",
       "community": 1,
       "norm_label": "sessionref"
     },
     {
+      "label": "data",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1324",
+      "id": "lib_index_data",
+      "community": 114,
+      "norm_label": "data"
+    },
+    {
       "label": "settings",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1460",
+      "source_location": "L1325",
       "id": "lib_index_settings",
       "community": 1,
       "norm_label": "settings"
@@ -15013,25 +14950,16 @@
       "label": "expiresAt",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1461",
+      "source_location": "L1326",
       "id": "lib_index_expiresat",
       "community": 1,
       "norm_label": "expiresat"
     },
     {
-      "label": "accountRef",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L1481",
-      "id": "lib_index_accountref",
-      "community": 1,
-      "norm_label": "accountref"
-    },
-    {
       "label": "tokenResult",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1576",
+      "source_location": "L1436",
       "id": "lib_index_tokenresult",
       "community": 1,
       "norm_label": "tokenresult"
@@ -15040,7 +14968,7 @@
       "label": "events",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1577",
+      "source_location": "L1437",
       "id": "lib_index_events",
       "community": 1,
       "norm_label": "events"
@@ -15049,7 +14977,7 @@
       "label": "existingTokens",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1582",
+      "source_location": "L1442",
       "id": "lib_index_existingtokens",
       "community": 1,
       "norm_label": "existingtokens"
@@ -15058,7 +14986,7 @@
       "label": "recentCutoff",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1663",
+      "source_location": "L1523",
       "id": "lib_index_recentcutoff",
       "community": 1,
       "norm_label": "recentcutoff"
@@ -15067,25 +14995,16 @@
       "label": "todayIso",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1670",
+      "source_location": "L1530",
       "id": "lib_index_todayiso",
       "community": 1,
       "norm_label": "todayiso"
     },
     {
-      "label": "data",
-      "file_type": "code",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L1672",
-      "id": "lib_index_data",
-      "community": 114,
-      "norm_label": "data"
-    },
-    {
       "label": "filtered",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1681",
+      "source_location": "L1541",
       "id": "lib_index_filtered",
       "community": 1,
       "norm_label": "filtered"
@@ -15094,7 +15013,7 @@
       "label": "allEvents",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1689",
+      "source_location": "L1549",
       "id": "lib_index_allevents",
       "community": 1,
       "norm_label": "allevents"
@@ -15103,7 +15022,7 @@
       "label": "parsed",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1699",
+      "source_location": "L1559",
       "id": "lib_index_parsed",
       "community": 1,
       "norm_label": "parsed"
@@ -15112,7 +15031,7 @@
       "label": "updatedTokens",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1708",
+      "source_location": "L1568",
       "id": "lib_index_updatedtokens",
       "community": 1,
       "norm_label": "updatedtokens"
@@ -15121,7 +15040,7 @@
       "label": "refreshed",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1712",
+      "source_location": "L1572",
       "id": "lib_index_refreshed",
       "community": 1,
       "norm_label": "refreshed"
@@ -15130,7 +15049,7 @@
       "label": "manualDeadlines",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1729",
+      "source_location": "L1589",
       "id": "lib_index_manualdeadlines",
       "community": 1,
       "norm_label": "manualdeadlines"
@@ -15139,7 +15058,7 @@
       "label": "freshDeadlines",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1730",
+      "source_location": "L1590",
       "id": "lib_index_freshdeadlines",
       "community": 1,
       "norm_label": "freshdeadlines"
@@ -15148,7 +15067,7 @@
       "label": "fileBuffer",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1770",
+      "source_location": "L1630",
       "id": "lib_index_filebuffer",
       "community": 1,
       "norm_label": "filebuffer"
@@ -15157,7 +15076,7 @@
       "label": "bucket",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1783",
+      "source_location": "L1643",
       "id": "lib_index_bucket",
       "community": 1,
       "norm_label": "bucket"
@@ -15166,7 +15085,7 @@
       "label": "file",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1784",
+      "source_location": "L1644",
       "id": "lib_index_file",
       "community": 1,
       "norm_label": "file"
@@ -15175,7 +15094,7 @@
       "label": "encodedPath",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1794",
+      "source_location": "L1654",
       "id": "lib_index_encodedpath",
       "community": 1,
       "norm_label": "encodedpath"
@@ -15726,7 +15645,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L1",
       "id": "e2e_deadline_flow_spec_ts",
-      "community": 20,
+      "community": 42,
       "norm_label": "deadline-flow.spec.ts"
     },
     {
@@ -15735,7 +15654,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L9",
       "id": "e2e_deadline_flow_spec_acceptedprivacyconsent",
-      "community": 20,
+      "community": 42,
       "norm_label": "acceptedprivacyconsent"
     },
     {
@@ -15744,43 +15663,52 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L31",
       "id": "e2e_deadline_flow_spec_calendarwarning",
-      "community": 20,
+      "community": 42,
       "norm_label": "calendarwarning"
+    },
+    {
+      "label": "policyPagePromise",
+      "file_type": "code",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L51",
+      "id": "e2e_deadline_flow_spec_policypagepromise",
+      "community": 42,
+      "norm_label": "policypagepromise"
     },
     {
       "label": "desktopNav",
       "file_type": "code",
       "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L56",
+      "source_location": "L65",
       "id": "e2e_deadline_flow_spec_desktopnav",
-      "community": 20,
+      "community": 42,
       "norm_label": "desktopnav"
     },
     {
       "label": "sessionLoaded",
       "file_type": "code",
       "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L148",
+      "source_location": "L157",
       "id": "e2e_deadline_flow_spec_sessionloaded",
-      "community": 20,
+      "community": 42,
       "norm_label": "sessionloaded"
     },
     {
       "label": "chilli",
       "file_type": "code",
       "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L360",
+      "source_location": "L369",
       "id": "e2e_deadline_flow_spec_chilli",
-      "community": 20,
+      "community": 42,
       "norm_label": "chilli"
     },
     {
       "label": "planDays",
       "file_type": "code",
       "source_file": "e2e/deadline-flow.spec.ts",
-      "source_location": "L378",
+      "source_location": "L387",
       "id": "e2e_deadline_flow_spec_plandays",
-      "community": 20,
+      "community": 42,
       "norm_label": "plandays"
     },
     {
@@ -15789,7 +15717,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L1",
       "id": "scripts_ingest_recipes_ts",
-      "community": 24,
+      "community": 3,
       "norm_label": "ingest-recipes.ts"
     },
     {
@@ -15798,7 +15726,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L32",
       "id": "scripts_ingest_recipes_args",
-      "community": 24,
+      "community": 3,
       "norm_label": "args"
     },
     {
@@ -15807,7 +15735,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L33",
       "id": "scripts_ingest_recipes_flag",
-      "community": 24,
+      "community": 3,
       "norm_label": "flag()"
     },
     {
@@ -15816,7 +15744,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L36",
       "id": "scripts_ingest_recipes_option",
-      "community": 24,
+      "community": 3,
       "norm_label": "option()"
     },
     {
@@ -15825,7 +15753,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L41",
       "id": "scripts_ingest_recipes_isdryrun",
-      "community": 24,
+      "community": 3,
       "norm_label": "isdryrun"
     },
     {
@@ -15834,7 +15762,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L44",
       "id": "scripts_ingest_recipes_categoryfilter",
-      "community": 24,
+      "community": 3,
       "norm_label": "categoryfilter"
     },
     {
@@ -15843,7 +15771,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L45",
       "id": "scripts_ingest_recipes_recommenderurloverride",
-      "community": 24,
+      "community": 3,
       "norm_label": "recommenderurloverride"
     },
     {
@@ -15852,7 +15780,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L60",
       "id": "scripts_ingest_recipes_initfirebase",
-      "community": 24,
+      "community": 3,
       "norm_label": "initfirebase()"
     },
     {
@@ -15861,7 +15789,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L80",
       "id": "scripts_ingest_recipes_postrecipesbulk",
-      "community": 24,
+      "community": 3,
       "norm_label": "postrecipesbulk()"
     },
     {
@@ -15870,7 +15798,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L99",
       "id": "scripts_ingest_recipes_writetorecommender",
-      "community": 24,
+      "community": 3,
       "norm_label": "writetorecommender()"
     },
     {
@@ -15879,7 +15807,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L112",
       "id": "scripts_ingest_recipes_writetofirestore",
-      "community": 24,
+      "community": 3,
       "norm_label": "writetofirestore()"
     },
     {
@@ -15888,7 +15816,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L142",
       "id": "scripts_ingest_recipes_progress",
-      "community": 24,
+      "community": 3,
       "norm_label": "progress()"
     },
     {
@@ -15897,7 +15825,7 @@
       "source_file": "scripts/ingest-recipes.ts",
       "source_location": "L153",
       "id": "scripts_ingest_recipes_main",
-      "community": 24,
+      "community": 3,
       "norm_label": "main()"
     },
     {
@@ -16141,7 +16069,7 @@
       "source_file": "scripts/clear-nutrition-cache.ts",
       "source_location": "L1",
       "id": "scripts_clear_nutrition_cache_ts",
-      "community": 59,
+      "community": 148,
       "norm_label": "clear-nutrition-cache.ts"
     },
     {
@@ -16150,7 +16078,7 @@
       "source_file": "scripts/clear-nutrition-cache.ts",
       "source_location": "L26",
       "id": "scripts_clear_nutrition_cache_isdryrun",
-      "community": 59,
+      "community": 148,
       "norm_label": "isdryrun"
     },
     {
@@ -16159,7 +16087,7 @@
       "source_file": "scripts/clear-nutrition-cache.ts",
       "source_location": "L28",
       "id": "scripts_clear_nutrition_cache_main",
-      "community": 59,
+      "community": 148,
       "norm_label": "main()"
     },
     {
@@ -16626,7 +16554,7 @@
       "source_file": "scripts/ingest/openfoodfacts.ts",
       "source_location": "L156",
       "id": "ingest_openfoodfacts_gramsforingredient",
-      "community": 56,
+      "community": 53,
       "norm_label": "gramsforingredient()"
     },
     {
@@ -16635,7 +16563,7 @@
       "source_file": "scripts/ingest/openfoodfacts.ts",
       "source_location": "L179",
       "id": "ingest_openfoodfacts_estimateingredientnutrition",
-      "community": 56,
+      "community": 53,
       "norm_label": "estimateingredientnutrition()"
     },
     {
@@ -16644,7 +16572,7 @@
       "source_file": "scripts/ingest/openfoodfacts.ts",
       "source_location": "L215",
       "id": "ingest_openfoodfacts_roundmacro",
-      "community": 53,
+      "community": 56,
       "norm_label": "roundmacro()"
     },
     {
@@ -16653,7 +16581,7 @@
       "source_file": "scripts/ingest/openfoodfacts.ts",
       "source_location": "L219",
       "id": "ingest_openfoodfacts_totalnutritionfromestimates",
-      "community": 53,
+      "community": 56,
       "norm_label": "totalnutritionfromestimates()"
     },
     {
@@ -16716,7 +16644,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L1",
       "id": "scripts_ingest_prices_ts",
-      "community": 71,
+      "community": 3,
       "norm_label": "prices.ts"
     },
     {
@@ -16725,7 +16653,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L9",
       "id": "ingest_prices_price_table",
-      "community": 71,
+      "community": 3,
       "norm_label": "price_table"
     },
     {
@@ -16734,7 +16662,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L147",
       "id": "ingest_prices_per_item",
-      "community": 71,
+      "community": 3,
       "norm_label": "per_item"
     },
     {
@@ -16743,7 +16671,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L155",
       "id": "ingest_prices_parsefraction",
-      "community": 71,
+      "community": 3,
       "norm_label": "parsefraction()"
     },
     {
@@ -16752,7 +16680,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L167",
       "id": "ingest_prices_measuretograms",
-      "community": 71,
+      "community": 3,
       "norm_label": "measuretograms()"
     },
     {
@@ -16761,7 +16689,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L199",
       "id": "ingest_prices_priceperhundredgrams",
-      "community": 71,
+      "community": 3,
       "norm_label": "priceperhundredgrams()"
     },
     {
@@ -16770,7 +16698,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L216",
       "id": "ingest_prices_ingredientcost",
-      "community": 71,
+      "community": 3,
       "norm_label": "ingredientcost()"
     },
     {
@@ -16779,7 +16707,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L236",
       "id": "ingest_prices_estimatepricepence",
-      "community": 71,
+      "community": 3,
       "norm_label": "estimatepricepence()"
     },
     {
@@ -16788,7 +16716,7 @@
       "source_file": "scripts/ingest/types.ts",
       "source_location": "L1",
       "id": "scripts_ingest_types_ts",
-      "community": 24,
+      "community": 3,
       "norm_label": "types.ts"
     },
     {
@@ -16797,7 +16725,7 @@
       "source_file": "scripts/ingest/types.ts",
       "source_location": "L3",
       "id": "ingest_types_ingredient",
-      "community": 24,
+      "community": 3,
       "norm_label": "ingredient"
     },
     {
@@ -16806,7 +16734,7 @@
       "source_file": "scripts/ingest/types.ts",
       "source_location": "L10",
       "id": "ingest_types_nutrition",
-      "community": 24,
+      "community": 3,
       "norm_label": "nutrition"
     },
     {
@@ -16815,7 +16743,7 @@
       "source_file": "scripts/ingest/types.ts",
       "source_location": "L18",
       "id": "ingest_types_recipein",
-      "community": 56,
+      "community": 3,
       "norm_label": "recipein"
     },
     {
@@ -16824,7 +16752,7 @@
       "source_file": "scripts/ingest/types.ts",
       "source_location": "L41",
       "id": "ingest_types_firestoremeal",
-      "community": 24,
+      "community": 3,
       "norm_label": "firestoremeal"
     },
     {
@@ -16833,7 +16761,7 @@
       "source_file": "scripts/ingest/firebase.ts",
       "source_location": "L1",
       "id": "scripts_ingest_firebase_ts",
-      "community": 59,
+      "community": 148,
       "norm_label": "firebase.ts"
     },
     {
@@ -16842,7 +16770,7 @@
       "source_file": "scripts/ingest/firebase.ts",
       "source_location": "L17",
       "id": "ingest_firebase_initfirebase",
-      "community": 59,
+      "community": 148,
       "norm_label": "initfirebase()"
     },
     {
@@ -22386,7 +22314,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L54",
       "id": "lib_posthog_posthog",
-      "community": 39,
+      "community": 76,
       "norm_label": "posthog"
     },
     {
@@ -22399,67 +22327,148 @@
       "norm_label": "ingredientlabel"
     },
     {
-      "label": "logger_1",
+      "label": "auth_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L12",
+      "source_location": "L39",
       "community": 1,
-      "norm_label": "logger_1",
-      "id": "lib_index_logger_1"
+      "norm_label": "auth_1",
+      "id": "lib_index_auth_1"
     },
     {
-      "label": "appData_1",
+      "label": "logger",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L17",
+      "source_location": "L46",
       "community": 1,
-      "norm_label": "appdata_1",
-      "id": "lib_index_appdata_1"
+      "norm_label": "logger",
+      "id": "lib_index_logger"
     },
     {
-      "label": "appDataRef",
+      "label": "prototypeData_1",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L21",
+      "source_location": "L51",
       "community": 1,
-      "norm_label": "appdataref",
-      "id": "lib_index_appdataref"
+      "norm_label": "prototypedata_1",
+      "id": "lib_index_prototypedata_1"
     },
     {
-      "label": "seedAppData()",
+      "label": "firebaseAuth",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L81",
+      "source_location": "L55",
+      "community": 1,
+      "norm_label": "firebaseauth",
+      "id": "lib_index_firebaseauth"
+    },
+    {
+      "label": "prototypeRef",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L56",
+      "community": 1,
+      "norm_label": "prototyperef",
+      "id": "lib_index_prototyperef"
+    },
+    {
+      "label": "accountSessionsRef",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L62",
+      "community": 1,
+      "norm_label": "accountsessionsref",
+      "id": "lib_index_accountsessionsref"
+    },
+    {
+      "label": "seedPrototypeData()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L115",
       "community": 114,
-      "norm_label": "seedappdata()",
-      "id": "lib_index_seedappdata"
+      "norm_label": "seedprototypedata()",
+      "id": "lib_index_seedprototypedata"
     },
     {
-      "label": "getAppData()",
+      "label": "getPrototypeData()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L85",
+      "source_location": "L119",
       "community": 114,
-      "norm_label": "getappdata()",
-      "id": "lib_index_getappdata"
+      "norm_label": "getprototypedata()",
+      "id": "lib_index_getprototypedata"
     },
     {
-      "label": "normalizePrivacyConsent()",
+      "label": "normalizePrototypeSessionSettings()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L336",
+      "source_location": "L418",
       "community": 35,
-      "norm_label": "normalizeprivacyconsent()",
-      "id": "lib_index_normalizeprivacyconsent"
+      "norm_label": "normalizeprototypesessionsettings()",
+      "id": "lib_index_normalizeprototypesessionsettings"
     },
     {
-      "label": "normalizeSessionSettings()",
+      "label": "requestHeader()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L401",
-      "community": 35,
-      "norm_label": "normalizesessionsettings()",
-      "id": "lib_index_normalizesessionsettings"
+      "source_location": "L493",
+      "community": 1,
+      "norm_label": "requestheader()",
+      "id": "lib_index_requestheader"
+    },
+    {
+      "label": "verifiedAccount()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L513",
+      "community": 1,
+      "norm_label": "verifiedaccount()",
+      "id": "lib_index_verifiedaccount"
+    },
+    {
+      "label": "accountSessionDocId()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L528",
+      "community": 114,
+      "norm_label": "accountsessiondocid()",
+      "id": "lib_index_accountsessiondocid"
+    },
+    {
+      "label": "accountSessionHandle()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L536",
+      "community": 114,
+      "norm_label": "accountsessionhandle()",
+      "id": "lib_index_accountsessionhandle"
+    },
+    {
+      "label": "handleAccountSessionGet()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1374",
+      "community": 114,
+      "norm_label": "handleaccountsessionget()",
+      "id": "lib_index_handleaccountsessionget"
+    },
+    {
+      "label": "handleAccountSessionDelete()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1413",
+      "community": 114,
+      "norm_label": "handleaccountsessiondelete()",
+      "id": "lib_index_handleaccountsessiondelete"
+    },
+    {
+      "label": "accountRef",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1481",
+      "community": 1,
+      "norm_label": "accountref",
+      "id": "lib_index_accountref"
     }
   ],
   "links": [
@@ -32989,9 +32998,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_advanceprep_ts",
-      "target": "deadline_food_advanceprep_advanceprepinfo",
-      "confidence_score": 1.0
+      "target": "deadline_food_advanceprep_advanceprepinfo"
     },
     {
       "relation": "contains",
@@ -32999,9 +33008,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_advanceprep_ts",
-      "target": "deadline_food_advanceprep_detectadvanceprep",
-      "confidence_score": 1.0
+      "target": "deadline_food_advanceprep_detectadvanceprep"
     },
     {
       "relation": "contains",
@@ -33009,9 +33018,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_advanceprep_ts",
-      "target": "deadline_food_advanceprep_getprepsuggestions",
-      "confidence_score": 1.0
+      "target": "deadline_food_advanceprep_getprepsuggestions"
     },
     {
       "relation": "contains",
@@ -33019,9 +33028,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_advanceprep_ts",
-      "target": "deadline_food_advanceprep_prepsuggestion",
-      "confidence_score": 1.0
+      "target": "deadline_food_advanceprep_prepsuggestion"
     },
     {
       "relation": "imports",
@@ -33030,9 +33039,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_advanceprep_ts",
-      "target": "deadline_food_types_meal",
-      "confidence_score": 1.0
+      "target": "deadline_food_types_meal"
     },
     {
       "relation": "imports",
@@ -33041,9 +33050,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_advanceprep_ts",
-      "target": "deadline_food_types_planentry",
-      "confidence_score": 1.0
+      "target": "deadline_food_types_planentry"
     },
     {
       "relation": "imports",
@@ -33052,9 +33061,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_advanceprep_ts",
-      "target": "deadline_food_utils_getmealbyid",
-      "confidence_score": 1.0
+      "target": "deadline_food_utils_getmealbyid"
     },
     {
       "relation": "imports_from",
@@ -33063,9 +33072,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_advanceprep_ts",
-      "target": "src_deadline_food_types_ts",
-      "confidence_score": 1.0
+      "target": "src_deadline_food_types_ts"
     },
     {
       "relation": "imports_from",
@@ -33074,9 +33083,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_advanceprep_ts",
-      "target": "src_deadline_food_utils_ts",
-      "confidence_score": 1.0
+      "target": "src_deadline_food_utils_ts"
     },
     {
       "relation": "imports_from",
@@ -33085,9 +33094,9 @@
       "source_file": "src/deadline-food/screens/CalendarScreen.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_screens_calendarscreen_tsx",
-      "target": "src_deadline_food_advanceprep_ts",
-      "confidence_score": 1.0
+      "target": "src_deadline_food_advanceprep_ts"
     },
     {
       "relation": "calls",
@@ -33096,9 +33105,9 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "deadline_food_advanceprep_getprepsuggestions",
-      "target": "deadline_food_advanceprep_detectadvanceprep",
-      "confidence_score": 1.0
+      "target": "deadline_food_advanceprep_detectadvanceprep"
     },
     {
       "relation": "imports",
@@ -33107,9 +33116,9 @@
       "source_file": "src/deadline-food/screens/CalendarScreen.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_screens_calendarscreen_tsx",
-      "target": "deadline_food_advanceprep_prepsuggestion",
-      "confidence_score": 1.0
+      "target": "deadline_food_advanceprep_prepsuggestion"
     },
     {
       "relation": "calls",
@@ -33129,9 +33138,9 @@
       "source_file": "src/deadline-food/screens/CalendarScreen.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_screens_calendarscreen_tsx",
-      "target": "deadline_food_advanceprep_getprepsuggestions",
-      "confidence_score": 1.0
+      "target": "deadline_food_advanceprep_getprepsuggestions"
     },
     {
       "relation": "contains",
@@ -38110,9 +38119,9 @@
       "source_file": "src/deadline-food/screens/CalendarScreen.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_screens_calendarscreen_tsx",
-      "target": "deadline_food_types_preferences",
-      "confidence_score": 1.0
+      "target": "deadline_food_types_preferences"
     },
     {
       "relation": "imports",
@@ -40138,9 +40147,9 @@
       "source_file": "src/deadline-food/screens/CalendarScreen.tsx",
       "source_location": "L493",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_screens_calendarscreen_tsx",
-      "target": "screens_calendarscreen_prep_time_options",
-      "confidence_score": 1.0
+      "target": "screens_calendarscreen_prep_time_options"
     },
     {
       "relation": "contains",
@@ -40148,9 +40157,9 @@
       "source_file": "src/deadline-food/screens/CalendarScreen.tsx",
       "source_location": "L501",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_deadline_food_screens_calendarscreen_tsx",
-      "target": "screens_calendarscreen_prepremindersuggestions",
-      "confidence_score": 1.0
+      "target": "screens_calendarscreen_prepremindersuggestions"
     },
     {
       "relation": "contains",
@@ -40285,9 +40294,9 @@
       "source_file": "src/deadline-food/screens/CalendarScreen.tsx",
       "source_location": "L510",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "screens_calendarscreen_prepremindersuggestions",
-      "target": "screens_calendarscreen_tolocaliso",
-      "confidence_score": 1.0
+      "target": "screens_calendarscreen_tolocaliso"
     },
     {
       "relation": "calls",
@@ -58474,9 +58483,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "functions_lib_generated_prototypedata_js",
-      "confidence_score": 1.0
+      "target": "functions_lib_generated_prototypedata_js"
     },
     {
       "relation": "imports_from",
@@ -58495,9 +58504,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L1481",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_accountref",
-      "confidence_score": 1.0
+      "target": "lib_index_accountref"
     },
     {
       "relation": "contains",
@@ -58505,9 +58514,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L528",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_accountsessiondocid",
-      "confidence_score": 1.0
+      "target": "lib_index_accountsessiondocid"
     },
     {
       "relation": "contains",
@@ -58515,9 +58524,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L536",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_accountsessionhandle",
-      "confidence_score": 1.0
+      "target": "lib_index_accountsessionhandle"
     },
     {
       "relation": "contains",
@@ -58525,9 +58534,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_accountsessionsref",
-      "confidence_score": 1.0
+      "target": "lib_index_accountsessionsref"
     },
     {
       "relation": "contains",
@@ -58615,9 +58624,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_auth_1",
-      "confidence_score": 1.0
+      "target": "lib_index_auth_1"
     },
     {
       "relation": "contains",
@@ -58935,9 +58944,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L55",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_firebaseauth",
-      "confidence_score": 1.0
+      "target": "lib_index_firebaseauth"
     },
     {
       "relation": "contains",
@@ -58985,9 +58994,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L119",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_getprototypedata",
-      "confidence_score": 1.0
+      "target": "lib_index_getprototypedata"
     },
     {
       "relation": "contains",
@@ -59035,9 +59044,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L1413",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_handleaccountsessiondelete",
-      "confidence_score": 1.0
+      "target": "lib_index_handleaccountsessiondelete"
     },
     {
       "relation": "contains",
@@ -59045,9 +59054,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L1374",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_handleaccountsessionget",
-      "confidence_score": 1.0
+      "target": "lib_index_handleaccountsessionget"
     },
     {
       "relation": "contains",
@@ -59115,9 +59124,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_logger",
-      "confidence_score": 1.0
+      "target": "lib_index_logger"
     },
     {
       "relation": "contains",
@@ -59265,9 +59274,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L418",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_normalizeprototypesessionsettings",
-      "confidence_score": 1.0
+      "target": "lib_index_normalizeprototypesessionsettings"
     },
     {
       "relation": "contains",
@@ -59395,9 +59404,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_prototypedata_1",
-      "confidence_score": 1.0
+      "target": "lib_index_prototypedata_1"
     },
     {
       "relation": "contains",
@@ -59405,9 +59414,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_prototyperef",
-      "confidence_score": 1.0
+      "target": "lib_index_prototyperef"
     },
     {
       "relation": "contains",
@@ -59635,9 +59644,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L493",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_requestheader",
-      "confidence_score": 1.0
+      "target": "lib_index_requestheader"
     },
     {
       "relation": "contains",
@@ -59705,9 +59714,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_seedprototypedata",
-      "confidence_score": 1.0
+      "target": "lib_index_seedprototypedata"
     },
     {
       "relation": "contains",
@@ -59975,31 +59984,31 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L513",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_index_js",
-      "target": "lib_index_verifiedaccount",
-      "confidence_score": 1.0
+      "target": "lib_index_verifiedaccount"
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
-      "source_location": "L122",
+      "source_location": "L88",
       "weight": 1.0,
-      "source": "lib_index_getprototypedata",
-      "target": "lib_index_seedprototypedata",
-      "confidence_score": 1.0
+      "confidence_score": 1.0,
+      "source": "lib_index_getappdata",
+      "target": "lib_index_seedappdata"
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
-      "source_location": "L124",
+      "source_location": "L90",
       "weight": 1.0,
-      "source": "lib_index_getprototypedata",
-      "target": "lib_index_data",
-      "confidence_score": 1.0
+      "confidence_score": 1.0,
+      "source": "lib_index_getappdata",
+      "target": "lib_index_data"
     },
     {
       "relation": "calls",
@@ -60140,9 +60149,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L419",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_index_normalizeprototypesessionsettings",
-      "target": "lib_index_asrecord",
-      "confidence_score": 1.0
+      "target": "lib_index_asrecord"
     },
     {
       "relation": "calls",
@@ -60283,9 +60292,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L435",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_index_normalizeprototypesessionsettings",
-      "target": "lib_index_boundedstring",
-      "confidence_score": 1.0
+      "target": "lib_index_boundedstring"
     },
     {
       "relation": "calls",
@@ -60371,9 +60380,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L433",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_index_normalizeprototypesessionsettings",
-      "target": "lib_index_boundednumber",
-      "confidence_score": 1.0
+      "target": "lib_index_boundednumber"
     },
     {
       "relation": "calls",
@@ -60426,9 +60435,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L439",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_index_normalizeprototypesessionsettings",
-      "target": "lib_index_boundedstringlist",
-      "confidence_score": 1.0
+      "target": "lib_index_boundedstringlist"
     },
     {
       "relation": "calls",
@@ -60448,9 +60457,9 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L451",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_index_normalizeprototypesessionsettings",
-      "target": "lib_index_normalizerecipelist",
-      "confidence_score": 1.0
+      "target": "lib_index_normalizerecipelist"
     },
     {
       "relation": "calls",
@@ -60468,11 +60477,22 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L413",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_normalizesessionsettings",
+      "target": "lib_index_normalizeprivacyconsent"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L443",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_index_normalizeprototypesessionsettings",
-      "target": "lib_index_normalizerecipeingredientlist",
-      "confidence_score": 1.0
+      "target": "lib_index_normalizerecipeingredientlist"
     },
     {
       "relation": "calls",
@@ -60484,17 +60504,6 @@
       "confidence_score": 1.0,
       "source": "lib_index_normalizesessionsettings",
       "target": "lib_index_normalizerecipeingredientlist"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L1384",
-      "weight": 1.0,
-      "source": "lib_index_handleaccountsessionget",
-      "target": "lib_index_normalizeprototypesessionsettings",
-      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -60517,61 +60526,6 @@
       "confidence_score": 1.0,
       "source": "lib_index_handleautoplan",
       "target": "lib_index_readrequestbody"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L515",
-      "weight": 1.0,
-      "source": "lib_index_verifiedaccount",
-      "target": "lib_index_requestheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L537",
-      "weight": 1.0,
-      "source": "lib_index_accountsessionhandle",
-      "target": "lib_index_accountsessiondocid",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L1414",
-      "weight": 1.0,
-      "source": "lib_index_handleaccountsessiondelete",
-      "target": "lib_index_accountsessiondocid",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L1376",
-      "weight": 1.0,
-      "source": "lib_index_handleaccountsessionget",
-      "target": "lib_index_accountsessiondocid",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L1399",
-      "weight": 1.0,
-      "source": "lib_index_handleaccountsessionget",
-      "target": "lib_index_accountsessionhandle",
-      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -60932,9 +60886,20 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L1399",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_index_handleaccountsessionget",
-      "target": "lib_index_sendsessionjson",
-      "confidence_score": 1.0
+      "target": "lib_index_sendsessionjson"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L124",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_getprototypedata",
+      "target": "lib_index_data"
     },
     {
       "relation": "calls",
@@ -60943,19 +60908,8 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L1383",
       "weight": 1.0,
-      "source": "lib_index_handleaccountsessionget",
-      "target": "lib_index_data",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "functions/lib/index.js",
-      "source_location": "L90",
-      "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "lib_index_getappdata",
+      "source": "lib_index_handleaccountsessionget",
       "target": "lib_index_data"
     },
     {
@@ -61668,6 +61622,16 @@
       "confidence_score": 1.0,
       "source": "e2e_deadline_flow_spec_ts",
       "target": "e2e_deadline_flow_spec_plandays"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "e2e/deadline-flow.spec.ts",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "e2e_deadline_flow_spec_ts",
+      "target": "e2e_deadline_flow_spec_policypagepromise",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -70023,24 +69987,79 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
-      "source_location": "L88",
+      "source_location": "L122",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "lib_index_getappdata",
-      "target": "lib_index_seedappdata"
+      "source": "lib_index_getprototypedata",
+      "target": "lib_index_seedprototypedata"
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
-      "source_location": "L413",
+      "source_location": "L1384",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "lib_index_normalizesessionsettings",
-      "target": "lib_index_normalizeprivacyconsent"
+      "source": "lib_index_handleaccountsessionget",
+      "target": "lib_index_normalizeprototypesessionsettings"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L515",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_verifiedaccount",
+      "target": "lib_index_requestheader"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L537",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_accountsessionhandle",
+      "target": "lib_index_accountsessiondocid"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1414",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_handleaccountsessiondelete",
+      "target": "lib_index_accountsessiondocid"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1376",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_handleaccountsessionget",
+      "target": "lib_index_accountsessiondocid"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1399",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_handleaccountsessionget",
+      "target": "lib_index_accountsessionhandle"
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "1fa98c5a7611b507ca3468f825b57e09ae977c12"
+  "built_at_commit": "f108451500d3c8f61427741e5746f69734362f86"
 }

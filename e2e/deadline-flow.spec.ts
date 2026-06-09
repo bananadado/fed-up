@@ -48,6 +48,15 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await page.getByRole("option", { name: "Imperial College London" }).click();
   await expect(page.getByRole("heading", { name: /planning priorities/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /keep costs low/i })).toBeVisible();
+  const policyPagePromise = page.context().waitForEvent("page");
+  await page.getByRole("link", { name: /read the privacy policy/i }).click();
+  const policyPage = await policyPagePromise;
+  await policyPage.waitForLoadState();
+  await expect(policyPage).toHaveURL(/\/privacy-policy$/);
+  await expect(policyPage.getByRole("heading", { name: /fed up privacy policy/i })).toBeVisible();
+  await expect(policyPage.getByRole("checkbox")).toHaveCount(0);
+  await expect(policyPage.getByRole("button", { name: /consent and continue/i })).toHaveCount(0);
+  await policyPage.close();
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: /create my plan/i }).click();
 

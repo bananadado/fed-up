@@ -1,10 +1,9 @@
-import { ArrowLeft, Check, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 import fedUpLogo from "@/assets/fed-up-logo.svg";
-import { cn } from "@/lib/utils";
 import type { AnalyticsProperties } from "@/lib/posthog";
-import { AppButton, Badge } from "../components/primitives";
-import { PRIVACY_CONSENT_TEXT, PRIVACY_POLICY_VERSION } from "../sessionPersistence";
+import { Badge } from "../components/primitives";
+import { PRIVACY_POLICY_VERSION } from "../sessionPersistence";
 import type { Screen } from "../types";
 
 const effectiveDate = "9 June 2026";
@@ -86,18 +85,12 @@ const sections = [
 export function PrivacyPolicyScreen({
   consentRequired,
   hasConsent,
-  accepted,
-  onAcceptedChange,
-  onAccept,
   setScreen,
   previousScreen,
   track,
 }: {
   consentRequired: boolean;
   hasConsent: boolean;
-  accepted: boolean;
-  onAcceptedChange: (accepted: boolean) => void;
-  onAccept: () => void;
   setScreen: (screen: Screen) => void;
   previousScreen: Screen | null;
   track: TrackEvent;
@@ -141,7 +134,7 @@ export function PrivacyPolicyScreen({
           <section className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
             <p className="font-semibold">Consent required</p>
             <p className="mt-1">
-              Existing sessions must consent to the current policy before returning to the meal planner.
+              Return to onboarding to consent to the current policy before using the meal planner.
             </p>
           </section>
         )}
@@ -158,28 +151,6 @@ export function PrivacyPolicyScreen({
             </section>
           ))}
         </article>
-
-        <section className="mt-8 rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
-          <label className="flex items-start gap-3">
-            <input
-              type="checkbox"
-              checked={accepted}
-              onChange={(event) => onAcceptedChange(event.target.checked)}
-              className="mt-1 h-4 w-4 accent-emerald-700"
-            />
-            <span className="text-sm leading-6 text-stone-700">{PRIVACY_CONSENT_TEXT}</span>
-          </label>
-          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className={cn("text-sm", accepted ? "text-emerald-700" : "text-stone-500")}>
-              {accepted ? "Ready to record consent." : "Tick the box to continue."}
-            </p>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <AppButton type="button" disabled={!accepted} className="justify-center" onClick={onAccept}>
-                <Check size={16} /> Consent and continue
-              </AppButton>
-            </div>
-          </div>
-        </section>
       </div>
     </main>
   );

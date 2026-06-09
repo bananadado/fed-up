@@ -505,7 +505,7 @@ function PrepReminderSuggestions({
 }: {
   suggestions: PrepSuggestion[];
   prepReminderTime: string;
-  track: TrackPrototypeEvent;
+  track: TrackEvent;
 }) {
   const todayIso = toLocalIso(new Date());
   const [dateOverrides, setDateOverrides] = useState<Record<string, string>>(() =>

@@ -11,7 +11,6 @@ import {
 } from "./anonymousSessionApi";
 import {
   PRIVACY_POLICY_URL,
-  createPrivacyConsent,
   createSessionSettings,
   hasCurrentPrivacyConsent,
   normalizePreferences,
@@ -113,7 +112,6 @@ export function DeadlineFoodApp() {
   const [icsSubscriptions, setIcsSubscriptions] = useState<IcsSubscription[]>([]);
   const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [privacyConsent, setPrivacyConsentState] = useState<PrivacyConsent | undefined>(undefined);
-  const [policyScreenAccepted, setPolicyScreenAccepted] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
   const [calendarSkipped, setCalendarSkipped] = useState(false);
   // Auto-planning (issue #66): the signature/timestamp the current plan was
@@ -432,9 +430,9 @@ export function DeadlineFoodApp() {
 
     if (onboarded && !hasPrivacyConsent) {
       routeHistory.current = [];
-      pendingHashScreen.current = "privacy-policy";
-      replaceScreenUrl("privacy-policy");
-      const timer = window.setTimeout(() => setScreen("privacy-policy"), 0);
+      pendingHashScreen.current = "onboarding";
+      replaceScreenUrl("onboarding");
+      const timer = window.setTimeout(() => setScreen("onboarding"), 0);
       return () => window.clearTimeout(timer);
     }
 
@@ -457,7 +455,7 @@ export function DeadlineFoodApp() {
 
   // Derive the screen to render: if onboarded, pre-onboarding screens resolve to dashboard immediately
   const activeScreen: Screen = onboarded && !hasPrivacyConsent && screen !== "privacy-policy"
-    ? "privacy-policy"
+    ? "onboarding"
     : (onboarded && hasPrivacyConsent && (screen === "onboarding" || screen === "landing")) ? "dashboard" : screen;
 
   useEffect(() => {
@@ -577,18 +575,6 @@ export function DeadlineFoodApp() {
       <PrivacyPolicyScreen
         consentRequired={onboarded && !hasPrivacyConsent}
         hasConsent={hasPrivacyConsent}
-        accepted={hasPrivacyConsent || policyScreenAccepted}
-        onAcceptedChange={setPolicyScreenAccepted}
-        onAccept={() => {
-          const consent = hasCurrentPrivacyConsent(privacyConsent) ? privacyConsent : createPrivacyConsent();
-          setPrivacyConsent(consent);
-          setPolicyScreenAccepted(false);
-          track("privacy_policy_consented", {
-            source: onboarded ? "policy_gate" : "privacy_policy_screen",
-            privacy_policy_version: consent.policyVersion,
-          });
-          navigateScreen(onboarded ? "dashboard" : "onboarding");
-        }}
         setScreen={navigateScreen}
         previousScreen={previousScreen}
         track={track}
@@ -636,6 +622,7 @@ export function DeadlineFoodApp() {
         setCalendarSkipped={setCalendarSkipped}
         privacyConsent={privacyConsent}
         setPrivacyConsent={setPrivacyConsent}
+        initialStep={onboarded && !hasPrivacyConsent ? 2 : undefined}
       />
     );
   }
