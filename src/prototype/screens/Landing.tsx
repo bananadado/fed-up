@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { AppButton } from "../components/primitives";
 import { GoogleIcon, MicrosoftIcon } from "../components/BrandIcons";
 import type { TrackPrototypeEvent } from "../analytics";
-import type { AccountProviderId, AccountSummary } from "../accountAuth";
+import type { AccountMessageTone, AccountProviderId, AccountSummary } from "../accountAuth";
 
 export function Landing({
   onStart,
@@ -13,6 +13,7 @@ export function Landing({
   account,
   accountBusy,
   accountMessage,
+  accountMessageTone,
   onConnectAccount,
   onSendEmailMagicLink,
 }: {
@@ -21,6 +22,7 @@ export function Landing({
   account: AccountSummary;
   accountBusy: AccountProviderId | "email" | "anonymous" | null;
   accountMessage: string;
+  accountMessageTone: AccountMessageTone;
   onConnectAccount: (provider: AccountProviderId) => void;
   onSendEmailMagicLink: (email: string) => void;
 }) {
@@ -90,7 +92,7 @@ export function Landing({
             </form>
             <p className="mt-1.5 text-xs text-stone-400">Link opens in the same browser. Check spam if it doesn't arrive.</p>
             {accountMessage && (
-              <p className="mt-3 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{accountMessage}</p>
+              <p className={`mt-3 rounded-lg p-3 text-sm ${accountMessageTone === "error" ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800"}`}>{accountMessage}</p>
             )}
           </div>
         )}

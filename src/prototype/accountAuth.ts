@@ -2,6 +2,7 @@ import { initializeApp, getApp, getApps, type FirebaseApp, type FirebaseOptions 
 import {
   browserLocalPersistence,
   connectAuthEmulator,
+  fetchSignInMethodsForEmail,
   getAuth,
   getRedirectResult,
   GoogleAuthProvider,
@@ -36,6 +37,9 @@ const DEFAULT_FIREBASE_PROJECT_ID = "drp03-50059";
 const EMAIL_LINK_STORAGE_KEY = "deadlineFoodEmailForSignIn";
 
 export type AccountProviderId = "google" | "microsoft";
+
+// Tone for account-area notices so the UI can style errors apart from success.
+export type AccountMessageTone = "info" | "error";
 
 export type AccountSummary = {
   configured: boolean;
@@ -248,7 +252,14 @@ export async function completeDeadlineFoodEmailLinkSignIn(): Promise<AccountSumm
       throw new Error("Open the sign-in link in the same browser where you requested it, or request a new link.");
     }
 
-    const result = await signInWithEmailLink(auth, email, emailLink);
+    let result;
+    try {
+      result = await signInWithEmailLink(auth, email, emailLink);
+    } catch (error) {
+      window.localStorage.removeItem(EMAIL_LINK_STORAGE_KEY);
+      cleanEmailLinkFromUrl();
+      throw new Error(friendlyAuthErrorMessage(error, "email"), {cause: error});
+    }
     window.localStorage.removeItem(EMAIL_LINK_STORAGE_KEY);
     cleanEmailLinkFromUrl();
     return userToSummary(result.user);
@@ -285,6 +296,97 @@ function firebaseErrorCode(error: unknown): string {
     "";
 }
 
+function firebaseErrorEmail(error: unknown): string | null {
+  const customData = (error as {customData?: {email?: unknown}} | null)?.customData;
+  return typeof customData?.email === "string" && customData.email.length > 0 ? customData.email : null;
+}
+
+// Maps Firebase sign-in-method identifiers to human labels for conflict messages.
+const SIGN_IN_METHOD_LABELS: Record<string, string> = {
+  "google.com": "Google",
+  "microsoft.com": "Microsoft",
+  "password": "an email and password",
+  "emailLink": "an email sign-in link",
+};
+
+function providerLabel(providerId: AccountProviderId): string {
+  return providerId === "google" ? "Google" : "Microsoft";
+}
+
+function joinWithOr(items: string[]): string {
+  if (items.length <= 1) {
+    return items[0] ?? "";
+  }
+  return `${items.slice(0, -1).join(", ")} or ${items[items.length - 1]}`;
+}
+
+// Turns the known Firebase Auth error codes into copy a user can act on. Unknown
+// codes fall back to a neutral retry message so a raw "auth/…" string never
+// reaches the UI. The original error is preserved as `cause` for debugging.
+function friendlyAuthErrorMessage(error: unknown, label = "this sign-in method"): string {
+  switch (firebaseErrorCode(error)) {
+    case "auth/popup-closed-by-user":
+    case "auth/cancelled-popup-request":
+    case "auth/user-cancelled":
+      return "Sign-in was cancelled.";
+    case "auth/popup-blocked":
+      return "Your browser blocked the sign-in popup. Allow popups for this site, then try again.";
+    case "auth/network-request-failed":
+      return "We couldn't reach the sign-in service. Check your connection and try again.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please wait a minute and try again.";
+    case "auth/user-disabled":
+      return "This account has been disabled.";
+    case "auth/operation-not-allowed":
+      return `${label} sign-in isn't enabled for this app yet.`;
+    case "auth/unauthorized-domain":
+      return "This site isn't authorised for sign-in yet. Please try again later.";
+    case "auth/web-storage-unsupported":
+    case "auth/operation-not-supported-in-this-environment":
+      return "Your browser is blocking the storage sign-in needs. Turn off strict privacy / third-party-cookie blocking, or try another browser.";
+    case "auth/timeout":
+      return "Sign-in timed out. Please try again.";
+    case "auth/invalid-email":
+      return "That doesn't look like a valid email address.";
+    case "auth/missing-email":
+      return "Please enter your email address.";
+    case "auth/quota-exceeded":
+      return "We've sent too many emails for now. Please try again later.";
+    case "auth/invalid-action-code":
+    case "auth/expired-action-code":
+      return "This sign-in link has expired or has already been used. Please request a new one.";
+    case "auth/invalid-credential":
+    case "auth/invalid-verification-code":
+      return "That sign-in didn't work. Please try again.";
+    default:
+      return "Sign-in couldn't be completed. Please try again.";
+  }
+}
+
+// `account-exists-with-different-credential` / `email-already-in-use`: the email
+// belongs to an account created with another provider. Name the original
+// method(s) when the project allows it; otherwise give an actionable hint.
+async function describeExistingAccountConflict(auth: Auth, error: unknown): Promise<string> {
+  const email = firebaseErrorEmail(error);
+  if (email === null) {
+    return "An account already exists with this email using a different sign-in method. Please sign in with the method you used originally.";
+  }
+
+  try {
+    const methods = await fetchSignInMethodsForEmail(auth, email);
+    const labels = [...new Set(
+      methods.map((method) => SIGN_IN_METHOD_LABELS[method]).filter((value): value is string => Boolean(value)),
+    )];
+    if (labels.length > 0) {
+      return `${email} is already registered with ${joinWithOr(labels)}. Please sign in with ${labels[0]} instead.`;
+    }
+  } catch {
+    // Email-enumeration protection (or a network error) hid the method list.
+  }
+
+  return `${email} is already registered with a different sign-in method. Please use the one you signed up with (for example Google, Microsoft, or an email link).`;
+}
+
 export async function linkDeadlineFoodAccount(providerId: AccountProviderId): Promise<AccountSummary> {
   const auth = getDeadlineFoodAuth();
   if (auth === null) {
@@ -304,21 +406,22 @@ export async function linkDeadlineFoodAccount(providerId: AccountProviderId): Pr
     return userToSummary(result.user);
   } catch (error) {
     const code = firebaseErrorCode(error);
-    if (
-      code === "auth/credential-already-in-use" ||
-      code === "auth/email-already-in-use" ||
-      code === "auth/account-exists-with-different-credential" ||
-      code === "auth/provider-already-linked"
-    ) {
+
+    // The credential is this same provider, just already attached to a real
+    // account (e.g. linking an anonymous user whose email is taken). Signing in
+    // with the same provider resolves it.
+    if (code === "auth/credential-already-in-use" || code === "auth/provider-already-linked") {
       const result = await signInWithPopup(auth, provider);
       return userToSummary(result.user);
     }
 
-    if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") {
-      throw new Error("Sign-in was cancelled.", {cause: error});
+    // The email belongs to an account created with a DIFFERENT provider. Retrying
+    // the same provider can never succeed — tell the user which method to use.
+    if (code === "auth/account-exists-with-different-credential" || code === "auth/email-already-in-use") {
+      throw new Error(await describeExistingAccountConflict(auth, error), {cause: error});
     }
 
-    throw error;
+    throw new Error(friendlyAuthErrorMessage(error, providerLabel(providerId)), {cause: error});
   }
 }
 
@@ -330,7 +433,7 @@ export async function sendDeadlineFoodEmailMagicLink(email: string): Promise<voi
 
   const normalizedEmail = email.trim().toLowerCase();
   if (!normalizedEmail || !normalizedEmail.includes("@")) {
-    throw new Error("Enter a valid email address.");
+    throw new Error("Please enter a valid email address.");
   }
 
   // Use origin-only URL so Firebase can append oobCode as query params.
@@ -338,10 +441,14 @@ export async function sendDeadlineFoodEmailMagicLink(email: string): Promise<voi
   // the hash where isSignInWithEmailLink() cannot find them.
   const url = `${window.location.origin}/`;
 
-  await sendSignInLinkToEmail(auth, normalizedEmail, {
-    url,
-    handleCodeInApp: true,
-  });
+  try {
+    await sendSignInLinkToEmail(auth, normalizedEmail, {
+      url,
+      handleCodeInApp: true,
+    });
+  } catch (error) {
+    throw new Error(friendlyAuthErrorMessage(error, "email"), {cause: error});
+  }
   window.localStorage.setItem(EMAIL_LINK_STORAGE_KEY, normalizedEmail);
 }
 

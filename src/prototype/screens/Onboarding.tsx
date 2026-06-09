@@ -24,7 +24,7 @@ import {
 import type { CalendarToken, IcsSubscription } from "../sessionPersistence";
 import type { TrackPrototypeEvent } from "../analytics";
 import { filterFoodPreferenceOptions } from "../preferenceOptions";
-import type { AccountProviderId, AccountSummary } from "../accountAuth";
+import type { AccountMessageTone, AccountProviderId, AccountSummary } from "../accountAuth";
 
 function Progress({ step }: { step: number }) {
   const labels = ["Calendar", "About you", "Preferences", "Save"];
@@ -113,6 +113,7 @@ export function Onboarding({
   sessionId,
   account,
   accountMessage,
+  accountMessageTone,
   accountBusy,
   onConnectAccount,
   onSendEmailMagicLink,
@@ -138,6 +139,7 @@ export function Onboarding({
   sessionId: string;
   account: AccountSummary;
   accountMessage: string;
+  accountMessageTone: AccountMessageTone;
   accountBusy: AccountProviderId | "email" | "anonymous" | null;
   onConnectAccount: (provider: AccountProviderId) => void;
   onSendEmailMagicLink: (email: string) => void;
@@ -918,7 +920,7 @@ export function Onboarding({
                   <p className="text-xs text-emerald-700">Link opens in the same browser. Check spam if it doesn't arrive.</p>
                 </div>
               )}
-              {accountMessage && <p className="mt-3 rounded-lg bg-white p-3 text-sm text-emerald-800">{accountMessage}</p>}
+              {accountMessage && <p className={`mt-3 rounded-lg p-3 text-sm ${accountMessageTone === "error" ? "bg-red-50 text-red-700" : "bg-white text-emerald-800"}`}>{accountMessage}</p>}
             </div>
             <div className="mt-7 grid gap-3 sm:grid-cols-[auto_1fr] sm:items-center">
               <AppButton variant="ghost" className="justify-center" onClick={() => { track("onboarding_step_back_clicked", { step: 3, next_step: 2 }); goToStep(2); }}>
