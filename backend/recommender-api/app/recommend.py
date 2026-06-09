@@ -6,6 +6,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .ability import DIMENSIONS, recipe_targets
+from .normalization import canonical_tags
 
 EXPLORATION_RATE = float(os.environ.get("EXPLORATION_RATE", "0.2"))
 EXPLORATION_TEMPERATURE = float(os.environ.get("EXPLORATION_TEMPERATURE", "0.15"))
@@ -155,12 +156,29 @@ async def _stage1_filter_and_retrieve(
     conditions = []
     params: dict = {}
 
-    allergens = user.get("allergens", [])
+    allergens = canonical_tags(user.get("allergens", []))
+    ingredient_exclusion_patterns: list[str] = []
+    dietary = canonical_tags(user.get("dietary_tags", []))
+
+    for tag in dietary:
+        if tag == "gluten-free":
+            allergens.append("gluten")
+            ingredient_exclusion_patterns.extend(["wheat", "barley", "rye", "flour", "bread", "pasta", "couscous"])
+        elif tag == "dairy-free":
+            allergens.extend(["milk", "dairy"])
+            ingredient_exclusion_patterns.extend(["milk", "cheese", "butter", "yoghurt", "yogurt", "cream"])
+
+    allergens = list(dict.fromkeys(allergens))
     if allergens:
-        conditions.append("NOT (allergens && :allergens)")
+        conditions.append("""
+            NOT EXISTS (
+                SELECT 1 FROM unnest(allergens) AS allergen
+                WHERE lower(allergen) = ANY(:allergens)
+            )
+        """)
         params["allergens"] = allergens
 
-    dislikes = user.get("dislikes", [])
+    dislikes = canonical_tags(user.get("dislikes", []))
     if dislikes:
         conditions.append("""
             NOT EXISTS (
@@ -168,12 +186,43 @@ async def _stage1_filter_and_retrieve(
                 WHERE lower(ing->>'name') = ANY(:dislikes)
             )
         """)
-        params["dislikes"] = [d.lower() for d in dislikes]
+        params["dislikes"] = dislikes
 
-    dietary = user.get("dietary_tags", [])
-    if dietary:
-        conditions.append("dietary_tags @> :dietary")
-        params["dietary"] = dietary
+    dietary_condition_index = 0
+
+    def add_dietary_any_condition(allowed_tags: list[str]) -> None:
+        nonlocal dietary_condition_index
+        key = f"dietary_{dietary_condition_index}"
+        dietary_condition_index += 1
+        conditions.append(f"""
+            EXISTS (
+                SELECT 1 FROM unnest(dietary_tags) AS dietary_tag
+                WHERE lower(dietary_tag) = ANY(:{key})
+            )
+        """)
+        params[key] = allowed_tags
+
+    for tag in dietary:
+        if tag in {"gluten-free", "dairy-free"}:
+            continue
+        if tag == "vegetarian":
+            add_dietary_any_condition(["vegetarian", "vegan"])
+        elif tag == "halal":
+            add_dietary_any_condition(["halal", "vegetarian", "vegan"])
+            ingredient_exclusion_patterns.extend(["pork", "bacon", "ham", "lard", "gelatin", "wine", "beer", "alcohol"])
+        else:
+            add_dietary_any_condition([tag])
+
+    if ingredient_exclusion_patterns:
+        conditions.append("""
+            NOT EXISTS (
+                SELECT 1 FROM jsonb_array_elements(ingredients) AS ing
+                WHERE lower(ing->>'name') LIKE ANY(:ingredient_exclusion_patterns)
+            )
+        """)
+        params["ingredient_exclusion_patterns"] = [
+            f"%{term}%" for term in dict.fromkeys(ingredient_exclusion_patterns)
+        ]
 
     max_time = user.get("max_time_minutes", 60)
     conditions.append("prep_minutes <= :max_time")

@@ -12,7 +12,7 @@ import {
 import { createPrototypeSessionSettings, normalizePreferences, restorePrototypePlan, type CalendarToken, type IcsSubscription } from "./sessionPersistence";
 import { syncRecommenderUser } from "./recommenderApi";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
-import { fetchRecipeCatalogue, setRecipeCatalogue } from "./recipeCatalogue";
+import { fetchRecipeCatalogue, registerPlanMeals, setRecipeCatalogue } from "./recipeCatalogue";
 import { Shell } from "./components/Shell";
 import { CalendarScreen } from "./screens/CalendarScreen";
 import { Dashboard } from "./screens/Dashboard";
@@ -90,11 +90,13 @@ export function DeadlineFoodPrototype() {
   const [icsSubscriptions, setIcsSubscriptions] = useState<IcsSubscription[]>([]);
   const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
+  const [calendarSkipped, setCalendarSkipped] = useState(false);
   // Auto-planning (issue #66): the signature/timestamp the current plan was
   // generated from, so we can detect when it has gone stale.
   const [planSignature, setPlanSignature] = useState<string | undefined>(undefined);
   const [planGeneratedAt, setPlanGeneratedAt] = useState<string | undefined>(undefined);
   const [planGenerating, setPlanGenerating] = useState(false);
+  const [planMeals, setPlanMeals] = useState<Meal[]>([]);
   const [discoverContext, setDiscoverContext] = useState<{ day: string; slot: MealSlot; mealId: string } | null>(null);
   // Bumped once the canonical recipe catalogue is hydrated from Firestore so
   // screens re-read it via mealById/getMealById (issue #123).
@@ -260,8 +262,14 @@ export function DeadlineFoodPrototype() {
           if (snapshot.settings.icsSubscriptions) setIcsSubscriptions(snapshot.settings.icsSubscriptions as IcsSubscription[]);
           if (snapshot.settings.calendarTokens) setCalendarTokens(snapshot.settings.calendarTokens as CalendarToken[]);
           setPlan(restorePrototypePlan(snapshot.settings.plan, initialPlan));
+          if (snapshot.settings.planMeals) {
+            const restoredPlanMeals = snapshot.settings.planMeals as Meal[];
+            registerPlanMeals(restoredPlanMeals);
+            setPlanMeals(restoredPlanMeals);
+          }
           if (snapshot.settings.planSignature) setPlanSignature(snapshot.settings.planSignature);
           if (snapshot.settings.planGeneratedAt) setPlanGeneratedAt(snapshot.settings.planGeneratedAt);
+          if (snapshot.settings.calendarSkipped) setCalendarSkipped(snapshot.settings.calendarSkipped);
         } else if (screenFromHash() === "onboarding") {
           // No saved session but the user refreshed mid-onboarding — enable
           // persistence immediately so choices made before the refresh are
@@ -288,8 +296,10 @@ export function DeadlineFoodPrototype() {
 
   const buildSessionSettings = useCallback((overrides: {
     plan?: PlanEntry[];
+    planMeals?: Meal[];
     planGeneratedAt?: string;
     planSignature?: string;
+    calendarSkipped?: boolean;
   } = {}) => createPrototypeSessionSettings({
     preferences: prefs,
     deadlines,
@@ -301,11 +311,13 @@ export function DeadlineFoodPrototype() {
     discoverRejected,
     discoverReviewedRecipeIds,
     plan: overrides.plan ?? plan,
+    planMeals: overrides.planMeals ?? planMeals,
     calendarEvents,
     icsSubscriptions,
     calendarTokens,
     planSignature: overrides.planSignature ?? planSignature,
     planGeneratedAt: overrides.planGeneratedAt ?? planGeneratedAt,
+    calendarSkipped: overrides.calendarSkipped ?? calendarSkipped,
   }), [
     calendarEvents,
     calendarProvider,
@@ -316,8 +328,10 @@ export function DeadlineFoodPrototype() {
     discoverReviewedRecipeIds,
     discoverSaved,
     icsSubscriptions,
+    calendarSkipped,
     onboarded,
     plan,
+    planMeals,
     planGeneratedAt,
     planSignature,
     prefs,
@@ -432,6 +446,7 @@ export function DeadlineFoodPrototype() {
         throw new Error("Auto-plan generation returned an empty plan.");
       }
       setPlan(result.plan);
+      setPlanMeals(result.meals);
       setPlanGeneratedAt(result.generatedAt);
       setPlanSignature(currentPlanSignature);
       setCanPersistSession(true);
@@ -445,6 +460,7 @@ export function DeadlineFoodPrototype() {
           sessionId,
           buildSessionSettings({
             plan: result.plan,
+            planMeals: result.meals,
             planGeneratedAt: result.generatedAt,
             planSignature: currentPlanSignature,
           }),
@@ -488,6 +504,12 @@ export function DeadlineFoodPrototype() {
     track("recipe_viewed", { meal_id: mealId, source_screen: activeScreen });
     setSelectedMealId(mealId);
     navigateScreen("recipe-detail");
+  }
+
+  function openAddToPlan(mealId: string) {
+    track("recipe_add_to_plan_clicked", { meal_id: mealId, source_screen: activeScreen });
+    try { sessionStorage.setItem("deadlineFood:addToPlanMealId", mealId); } catch { /* sessionStorage unavailable */ }
+    navigateScreen("plan");
   }
 
   function openDiscover(day: string, slot: MealSlot, mealId: string) {
@@ -537,16 +559,17 @@ export function DeadlineFoodPrototype() {
         setCalendarTokens={setCalendarTokens}
         sessionId={sessionId}
         track={track}
+        setCalendarSkipped={setCalendarSkipped}
       />
     );
   }
 
   return (
     <Shell screen={activeScreen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
-      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} />}
+      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarSkipped={calendarSkipped} />}
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
-      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} discoverContext={discoverContext} track={track} />}
+      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} />}
     </Shell>

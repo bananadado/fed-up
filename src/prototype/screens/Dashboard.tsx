@@ -1,5 +1,5 @@
-import { ChevronRight, Clock3, RefreshCcw, Sparkles, Utensils } from "lucide-react";
-import { useState } from "react";
+import { ChevronRight, Clock3, RefreshCcw, ShoppingBasket, Sparkles, Utensils } from "lucide-react";
+import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
@@ -7,6 +7,7 @@ import { BudgetCard } from "../components/BudgetCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal } from "../components/SwapModal";
 import { getMealById, money } from "../utils";
+import { ingredientsFromPlan } from "../shopping";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackPrototypeEvent } from "../analytics";
 
@@ -24,6 +25,7 @@ export function Dashboard({
   onRegenerate,
   openDiscover,
   track,
+  calendarSkipped,
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
@@ -38,8 +40,10 @@ export function Dashboard({
   onRegenerate: () => void;
   openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
   track: TrackPrototypeEvent;
+  calendarSkipped?: boolean;
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
+  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients), [plan, customRecipes, prefs.availableIngredients]);
   const nextMeal = plan
     .flatMap((entry) =>
       entry.meals.map((planMeal) => ({
@@ -84,6 +88,27 @@ export function Dashboard({
           </AppButton>
         </div>
       )}
+      {calendarSkipped && !planStale && (
+        <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 rounded-lg bg-amber-100 p-1.5 text-amber-700">
+              <Sparkles size={16} />
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-amber-900">Calendar not connected</p>
+              <p className="mt-1 text-sm text-amber-800">
+                Your plan was generated without calendar context. Adding a calendar lets Fed Up adapt cooking effort around your busy study days.
+              </p>
+            </div>
+            <AppButton
+              variant="secondary"
+              onClick={() => { track("dashboard_calendar_connect_clicked"); setScreen("calendar"); }}
+            >
+              Connect calendar
+            </AppButton>
+          </div>
+        </div>
+      )}
       <div className="grid gap-5 lg:grid-cols-[.9fr_1.1fr]">
         <div className="space-y-5">
           <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />
@@ -126,6 +151,31 @@ export function Dashboard({
             ) : (
               <p className="mt-3 text-stone-500">No meals planned this week.</p>
             )}
+          </Card>
+          <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4">
+            <div className="flex items-center gap-3">
+              <span className="rounded-lg bg-emerald-50 p-2 text-emerald-700">
+                <ShoppingBasket size={18} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">Shopping list</p>
+                <p className="mt-0.5 text-sm text-stone-500">
+                  {shoppingItems.length === 0 ? "No items yet" : `${shoppingItems.length} items to buy this week`}
+                </p>
+              </div>
+              <AppButton
+                variant="secondary"
+                className="shrink-0 px-3 py-1.5 text-xs"
+                disabled={shoppingItems.length === 0}
+                onClick={() => {
+                  track("dashboard_shopping_list_clicked", { item_count: shoppingItems.length });
+                  try { sessionStorage.setItem("deadlineFood:openShopping", "1"); } catch { /* ignore */ }
+                  setScreen("plan");
+                }}
+              >
+                View list
+              </AppButton>
+            </div>
           </Card>
           <Card className="gap-0 rounded-lg border-emerald-100 bg-emerald-50 p-5">
             <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">

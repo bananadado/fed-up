@@ -113,6 +113,70 @@ describe("buildPlan", () => {
     expect(dinner?.mealId).toBe("safe");
   });
 
+  it("fully enforces vegan requirements even when metadata is inconsistent", () => {
+    const safeVegan = meal({
+      id: "safe-vegan",
+      type: "fallback",
+      tags: ["vegan"],
+      allergens: [],
+      ingredients: [{ name: "lentils" }, { name: "rice" }],
+      mealSlots: ["dinner"],
+    });
+    const eggTaggedVegan = meal({
+      id: "egg-vegan",
+      type: "fallback",
+      tags: ["vegan"],
+      allergens: ["eggs"],
+      ingredients: [{ name: "egg noodles" }],
+      mealSlots: ["dinner"],
+    });
+    const fishWithoutVeganFlag = meal({
+      id: "fish",
+      type: "fallback",
+      tags: [],
+      allergens: ["fish"],
+      ingredients: [{ name: "tuna" }],
+      mealSlots: ["dinner"],
+    });
+    const plantBasedButUntagged = meal({
+      id: "untagged",
+      type: "fallback",
+      tags: [],
+      allergens: [],
+      ingredients: [{ name: "beans" }],
+      mealSlots: ["dinner"],
+    });
+
+    const plan = buildPlan({
+      days: [day({ date: "2026-06-01", stress: 0.8 })],
+      pool: [eggTaggedVegan, fishWithoutVeganFlag, plantBasedButUntagged, safeVegan],
+      avoided: [],
+      dietary: ["Vegan"],
+    });
+
+    const dinner = plan[0].meals.find((m) => m.slot === "dinner");
+    expect(dinner?.mealId).toBe("safe-vegan");
+  });
+
+  it("marks slots unfilled rather than violating vegan requirements", () => {
+    const eggMeal = meal({
+      id: "egg",
+      tags: ["vegan"],
+      allergens: ["eggs"],
+      ingredients: [{ name: "egg" }],
+      mealSlots: ["dinner"],
+    });
+
+    const plan = buildPlan({
+      days: [day({ date: "2026-06-01", stress: 0.8 })],
+      pool: [eggMeal],
+      avoided: [],
+      dietary: ["Vegan"],
+    });
+
+    expect(plan[0].meals).toEqual([]);
+  });
+
   it("leaves a slot unfilled when the pool has nothing for it", () => {
     const plan = buildPlan({
       days: [day({ date: "2026-06-01" })],
