@@ -450,7 +450,10 @@ export function DeadlineFoodPrototype() {
     return snapshot;
   }, [buildSessionSettings, sessionId]);
 
+  const autoPlanAttemptRef = useRef<string | null>(null);
+
   const completeOnboardingAfterAccountCreated = useCallback(() => {
+    autoPlanAttemptRef.current = null;
     enableSessionPersistence();
     setOnboarded(true);
     syncRecommenderUser(sessionId, prefs).catch((error) => {
@@ -480,6 +483,7 @@ export function DeadlineFoodPrototype() {
   const connectAccount = useCallback(async (provider: AccountProviderId) => {
     setAccountBusy(provider);
     notifyAccount("");
+    suppressAuthStateDestinationRef.current = true;
     try {
       // Popup for every provider, including Microsoft: signInWithRedirect drops
       // its result on Firebase JS SDK v12 when the app origin differs from
@@ -499,6 +503,7 @@ export function DeadlineFoodPrototype() {
       notifyAccount(message, "error");
       track("account_link_failed", { provider, error: message });
     } finally {
+      suppressAuthStateDestinationRef.current = false;
       setAccountBusy(null);
     }
   }, [completeOnboardingAfterAccountCreated, notifyAccount, screen, track]);
@@ -704,7 +709,6 @@ export function DeadlineFoodPrototype() {
   // Generate the first plan automatically once onboarded (also upgrades existing
   // users off the seed/mock plan). Thereafter "prompt" mode shows a banner and
   // "auto" mode regenerates silently when the plan goes stale.
-  const autoPlanAttemptRef = useRef<string | null>(null);
   useEffect(() => {
     if (!sessionLoaded || !onboarded || planGenerating) return;
     const needsFirstPlan = planGeneratedAt === undefined;
