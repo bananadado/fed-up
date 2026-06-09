@@ -43,6 +43,31 @@ function priced(
 
 export const DEFAULT_PRICE_PENCE_PER_GRAM = 0.25;
 
+const rejectedTescoSourcePattern =
+  /\b(washing up|soap|cat treat|dog treat|cat food|dog food|webbox|micellar|cleansing|collagen|skin active|skin saints|shampoo|conditioner|deodorant|toothpaste|mouthwash|detergent|cleaner)\b/i;
+
+const usableTescoIngredientPriceTable = tescoIngredientPriceTable.filter((record) => {
+  return !rejectedTescoSourcePattern.test(record.source.source);
+});
+
+export const curatedIngredientPriceTable: IngredientPriceRecord[] = [
+  priced("chicken stock", ["chicken stock", "prepared chicken stock"], 110, 5000),
+  priced("beef stock", ["beef stock", "prepared beef stock"], 110, 5000),
+  priced("vegetable stock", ["vegetable stock", "prepared vegetable stock"], 110, 5000),
+  priced("fish stock", ["fish stock", "prepared fish stock"], 150, 500),
+  priced("lamb stock", ["lamb stock", "prepared lamb stock"], 150, 500),
+  priced("lemon", ["lemon", "lemons"], 30, 120),
+  priced("olive oil", ["olive oil", "extra virgin olive oil"], 550, 1000),
+  priced("turnip", ["turnip", "turnips"], 70, 500),
+  priced("fennel", ["fennel", "fennel bulb"], 85, 300),
+  priced("pandan leaves", ["pandan leaves", "pandan leaf"], 150, 10, "low"),
+  priced("pak choi", ["pak choi", "baby pak choi", "baby pak koi"], 150, 240),
+  priced("pumpkin", ["pumpkin"], 120, 1000),
+  priced("trout", ["trout"], 400, 240),
+  priced("rose water", ["rose water"], 150, 190, "low"),
+  priced("wonton skin", ["wonton skin", "wonton wrapper", "wonton wrappers"], 200, 200, "low"),
+];
+
 export const seededIngredientPriceTable: IngredientPriceRecord[] = [
   priced("chicken breast", ["chicken breast", "chicken", "halal chicken"], 425, 500),
   priced("chicken pieces", ["chicken pieces", "halal chicken pieces", "chicken thigh", "chicken thighs"], 330, 600),
@@ -91,6 +116,7 @@ export const seededIngredientPriceTable: IngredientPriceRecord[] = [
 ];
 
 export const ingredientPriceTable: IngredientPriceRecord[] = [
-  ...tescoIngredientPriceTable,
+  ...curatedIngredientPriceTable,
+  ...usableTescoIngredientPriceTable,
   ...seededIngredientPriceTable,
 ];

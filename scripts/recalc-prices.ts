@@ -10,6 +10,7 @@
  * Usage:
  *   bun scripts/recalc-prices.ts --dry-run
  *   bun scripts/recalc-prices.ts
+ *   bun scripts/recalc-prices.ts --no-recommender --force-firestore
  */
 
 import { FieldValue } from "firebase-admin/firestore";
@@ -32,6 +33,7 @@ function option(name: string): string | undefined {
 const isDryRun = flag("--dry-run");
 const skipRecommender = flag("--no-recommender") || isDryRun;
 const skipFirestore = flag("--no-firestore") || isDryRun;
+const forceFirestore = flag("--force-firestore");
 const baseUrl = recommenderUrl(option("--recommender-url"));
 
 async function main() {
@@ -51,7 +53,11 @@ async function main() {
   }));
 
   const changed = updated.filter((recipe, index) => recipe.price_pence !== recipes[index]?.price_pence);
+  const firestoreUpdates = forceFirestore && !skipFirestore ? updated : changed;
   console.log(`\nRecomputed ${updated.length} recipes (${changed.length} changed)`);
+  if (forceFirestore && !skipFirestore) {
+    console.log(`Firestore force mode enabled: ${firestoreUpdates.length} recipes will be written`);
+  }
 
   for (const recipe of changed.slice(0, 20)) {
     const original = recipes.find((candidate) => candidate.id === recipe.id);
@@ -59,7 +65,7 @@ async function main() {
   }
   if (changed.length > 20) console.log(`  ... ${changed.length - 20} more changed`);
 
-  if (changed.length === 0) {
+  if (changed.length === 0 && firestoreUpdates.length === 0) {
     console.log("Nothing to write.");
     return;
   }
@@ -78,8 +84,8 @@ async function main() {
     console.log("\nWriting to Firestore...");
     const BATCH_SIZE = 400;
     let written = 0;
-    for (let i = 0; i < changed.length; i += BATCH_SIZE) {
-      const chunk = changed.slice(i, i + BATCH_SIZE);
+    for (let i = 0; i < firestoreUpdates.length; i += BATCH_SIZE) {
+      const chunk = firestoreUpdates.slice(i, i + BATCH_SIZE);
       const batch = db.batch();
       for (const recipe of chunk) {
         batch.set(
@@ -98,7 +104,7 @@ async function main() {
       }
       await batch.commit();
       written += chunk.length;
-      process.stdout.write(`  [firestore]   ${written}/${changed.length}\r`);
+      process.stdout.write(`  [firestore]   ${written}/${firestoreUpdates.length}\r`);
     }
     console.log(`\n  [firestore]   ${written} recipes updated`);
   }

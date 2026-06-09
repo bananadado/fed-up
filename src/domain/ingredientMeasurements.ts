@@ -27,10 +27,16 @@ const UNIT_ALIASES = new Map<string, string>([
   ["liters", "l"],
   ["teaspoon", "tsp"],
   ["teaspoons", "tsp"],
+  ["tsps", "tsp"],
   ["tablespoon", "tbsp"],
   ["tablespoons", "tbsp"],
+  ["tablespoonful", "tbsp"],
+  ["tablespoonfuls", "tbsp"],
   ["tbs", "tbsp"],
   ["tbsps", "tbsp"],
+  ["tbls", "tbsp"],
+  ["tblsp", "tbsp"],
+  ["tblspn", "tbsp"],
   ["cups", "cup"],
   ["ounce", "oz"],
   ["ounces", "oz"],
@@ -48,6 +54,10 @@ const UNIT_ALIASES = new Map<string, string>([
   ["portions", "portion"],
   ["servings", "serving"],
   ["pinches", "pinch"],
+  ["sprigs", "sprig"],
+  ["sm", "small"],
+  ["med", "medium"],
+  ["lg", "large"],
 ]);
 
 const WEIGHT_OR_VOLUME_GRAMS: Record<string, number> = {
@@ -73,30 +83,90 @@ const COUNT_UNIT_DEFAULT_GRAMS: Record<string, number> = {
   portion: 100,
   serving: 100,
   pinch: 1,
+  sprig: 1,
 };
 const DEFAULT_SERVING_GRAMS = 100;
+
+const SIZE_UNIT_MULTIPLIER: Record<string, number> = {
+  small: 0.7,
+  medium: 1,
+  large: 1.3,
+};
 
 export const typicalIngredientGrams: Record<string, number> = {
   apple: 150,
   avocado: 160,
+  "bay leaf": 1,
+  "bay leaves": 1,
   banana: 120,
   bread: 40,
   "bread slice": 40,
+  cardamom: 0.3,
+  "cardamom pod": 0.3,
+  "cardamom pods": 0.3,
+  "chicken stock cube": 10,
+  "chicken stock cubes": 10,
+  chilli: 10,
+  chillies: 10,
+  chili: 10,
+  chilies: 10,
+  "birds-eye chillies": 5,
+  "bird eye chillies": 5,
+  cinnamon: 5,
+  "cinnamon stick": 5,
+  "cinnamon sticks": 5,
+  clove: 0.2,
+  cloves: 0.2,
   egg: 58,
   eggs: 58,
   flatbread: 70,
   garlic: 5,
   "garlic clove": 5,
+  "galangal slice": 5,
+  "galangal slices": 5,
   "jacket potato": 250,
+  "juniper berries": 0.2,
+  "juniper berry": 0.2,
   lemon: 120,
+  lemongrass: 40,
+  "lemongrass stalk": 40,
+  "lemongrass stalks": 40,
   lime: 80,
+  "lime leaf": 0.125,
+  "lime leaves": 0.125,
+  "makrut lime leaf": 0.125,
+  "makrut lime leaves": 0.125,
+  "kaffir lime leaf": 0.125,
+  "kaffir lime leaves": 0.125,
   "microwave rice": 250,
+  onion: 110,
+  onions: 110,
+  "pandan leaf": 1,
+  "pandan leaves": 1,
   pepper: 160,
+  peppercorn: 0.1,
+  peppercorns: 0.1,
   potato: 180,
+  prawn: 20,
+  prawns: 20,
+  "king prawn": 20,
+  "king prawns": 20,
+  "raw king prawn": 20,
+  "raw king prawns": 20,
   "rice portion": 180,
+  shrimp: 20,
+  shrimps: 20,
+  shallot: 30,
+  shallots: 30,
+  squid: 150,
+  "spring onion": 15,
+  "spring onions": 15,
+  "star anise": 1,
   tomato: 80,
   "tortilla wrap": 60,
   wrap: 60,
+  "vine leaf": 4,
+  "vine leaves": 4,
 };
 
 function normalizeText(value: string): string {
@@ -105,7 +175,19 @@ function normalizeText(value: string): string {
 
 export function normalizeIngredientUnit(unit: string): string {
   const normalized = normalizeText(unit).replace(/\.$/, "");
-  return UNIT_ALIASES.get(normalized) ?? normalized;
+  const alias = UNIT_ALIASES.get(normalized);
+  if (alias) return alias;
+
+  if (/^(g|gram|grams)\b/.test(normalized)) return "g";
+  if (/^(kg|kilogram|kilograms)\b/.test(normalized)) return "kg";
+  if (/^(ml|millilitre|millilitres|milliliter|milliliters)\b/.test(normalized)) return "ml";
+  if (/^(l|litre|litres|liter|liters)\b/.test(normalized)) return "l";
+  if (/\b(tblsp|tblspn|tablespoon|tablespoons|tbsp|tbsps|tbs)\b/.test(normalized)) return "tbsp";
+  if (/\b(teaspoon|teaspoons|tsp|tsps)\b/.test(normalized)) return "tsp";
+  if (/\b(cup|cups)\b/.test(normalized)) return "cup";
+  if (/\b(sprig|sprigs)\b/.test(normalized)) return "sprig";
+
+  return normalized;
 }
 
 export function parseQuantity(raw: string): number {
@@ -153,6 +235,11 @@ export function gramsForIngredientUnit(
   const gramsPerUnit = WEIGHT_OR_VOLUME_GRAMS[normalizedUnit];
   if (gramsPerUnit !== undefined) return safeQuantity * gramsPerUnit;
 
+  const sizeMultiplier = SIZE_UNIT_MULTIPLIER[normalizedUnit];
+  if (sizeMultiplier !== undefined) {
+    return safeQuantity * (typicalGramsForIngredient(ingredientName) ?? DEFAULT_SERVING_GRAMS) * sizeMultiplier;
+  }
+
   if (normalizedUnit === "slice" && normalizeText(ingredientName).includes("bread")) {
     return safeQuantity * (typicalIngredientGrams.bread ?? 40);
   }
@@ -196,10 +283,6 @@ export function parseMeasureToIngredient(name: string, measure: string): ParsedI
   const quantity = parseQuantity(match[1] ?? "1");
   const rawUnit = (match[2] ?? "").trim();
   const normalizedUnit = normalizeIngredientUnit(rawUnit || "item");
-
-  if (normalizedUnit === "medium" || normalizedUnit === "large" || normalizedUnit === "small") {
-    return { name, quantity, unit: "item", originalMeasure: measure };
-  }
 
   return {
     name,
