@@ -1,4 +1,4 @@
-import type { DeadlineBootstrap, PlanningConstraints, PrototypeMeta } from "@/domain/types";
+import type { DeadlineBootstrap, PlanningConstraints, ProductMeta } from "@/domain/types";
 import { seededMeals } from "./seededMeals";
 
 export const canonicalConstraints: PlanningConstraints = {
@@ -12,14 +12,14 @@ export const canonicalConstraints: PlanningConstraints = {
   preferredLocation: "library",
 };
 
-export const prototypeMeta: PrototypeMeta = {
+export const productMeta: ProductMeta = {
   productName: "Fed Up",
   scenarioName: "Steven's deadline week",
-  disclaimer: "Prototype meal options - availability and prices are illustrative.",
+  disclaimer: "App meal options - availability and prices are illustrative.",
 };
 
 export const deadlineBootstrap: DeadlineBootstrap = {
   meals: seededMeals,
   canonicalConstraints,
-  prototype: prototypeMeta,
+  app: productMeta,
 };

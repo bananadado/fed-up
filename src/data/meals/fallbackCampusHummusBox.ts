@@ -17,7 +17,7 @@ export const fallbackCampusHummusBox: MealOption = {
     summary: "A chilled mezze-style fallback with hummus, grains and vegetables.",
     ingredients: recipeIngredients(["hummus", "grain salad", "carrot sticks", "flatbread"]),
     steps: ["Collect the box from Campus Food Hall.", "Eat cold between classes or study blocks."],
-    prepNotes: "Prototype option: availability and pricing are illustrative.",
+    prepNotes: "App option: availability and pricing are illustrative.",
     whyItFits: "It covers several dietary constraints without requiring cooking.",
   },
 };

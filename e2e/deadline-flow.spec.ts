@@ -1,9 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { defaultDeadlines, initialPlan, initialPreferences, seedMeals } from "../src/prototype/data";
+import { defaultDeadlines, initialPlan, initialPreferences, seedMeals } from "../src/deadline-food/data";
 import {
   ANONYMOUS_SESSION_STORAGE_KEY,
-  createPrototypeSessionSettings,
-} from "../src/prototype/sessionPersistence";
+  createPrivacyConsent,
+  createSessionSettings,
+} from "../src/deadline-food/sessionPersistence";
+
+const acceptedPrivacyConsent = createPrivacyConsent(new Date("2026-06-09T12:00:00.000Z"));
 
 test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }) => {
   // Auto-planning regenerates the plan after onboarding; pin it to the seed plan
@@ -45,6 +48,7 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await page.getByRole("option", { name: "Imperial College London" }).click();
   await expect(page.getByRole("heading", { name: /planning priorities/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /keep costs low/i })).toBeVisible();
+  await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: /create my plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /your week is covered/i })).toBeVisible();
@@ -124,11 +128,12 @@ test("returning users land on dashboard, not the landing or onboarding page", as
   await page.request.put("/api/deadline-food/session", {
     data: {
       sessionId,
-      settings: createPrototypeSessionSettings({
+      settings: createSessionSettings({
         preferences: initialPreferences,
         deadlines: defaultDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
+        privacyConsent: acceptedPrivacyConsent,
       }),
     },
   });
@@ -160,11 +165,12 @@ test("stale onboarding URL resumes returning users at the dashboard", async ({ p
   await page.request.put("/api/deadline-food/session", {
     data: {
       sessionId,
-      settings: createPrototypeSessionSettings({
+      settings: createSessionSettings({
         preferences: initialPreferences,
         deadlines: defaultDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
+        privacyConsent: acceptedPrivacyConsent,
       }),
     },
   });
@@ -196,12 +202,13 @@ test("direct plan refresh restores nav and seeded timetable for returning users 
   await page.request.put("/api/deadline-food/session", {
     data: {
       sessionId,
-      settings: createPrototypeSessionSettings({
+      settings: createSessionSettings({
         preferences: initialPreferences,
         deadlines: defaultDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
         plan: [],
+        privacyConsent: acceptedPrivacyConsent,
       }),
     },
   });
@@ -234,12 +241,13 @@ test("dashboard meal cards have swap action that opens the swap modal", async ({
   await page.request.put("/api/deadline-food/session", {
     data: {
       sessionId,
-      settings: createPrototypeSessionSettings({
+      settings: createSessionSettings({
         preferences: initialPreferences,
         deadlines: defaultDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
         discoverSaved: seedMeals,
+        privacyConsent: acceptedPrivacyConsent,
       }),
     },
   });
@@ -330,11 +338,12 @@ test("auto-planning generates a multi-week plan and flags it stale when settings
   await page.request.put("/api/deadline-food/session", {
     data: {
       sessionId,
-      settings: createPrototypeSessionSettings({
+      settings: createSessionSettings({
         preferences: initialPreferences,
         deadlines: defaultDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
+        privacyConsent: acceptedPrivacyConsent,
       }),
     },
   });

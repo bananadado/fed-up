@@ -20,7 +20,7 @@
 export type MealSlot = "breakfast" | "lunch" | "dinner";
 export type MealType = "cook" | "remix" | "fallback";
 
-/** Subset of the prototype `Meal` the allocator needs. */
+/** Subset of the app `Meal` the allocator needs. */
 export interface AllocatorMeal {
   id: string;
   type: MealType;
