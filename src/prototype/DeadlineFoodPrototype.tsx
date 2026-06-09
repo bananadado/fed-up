@@ -201,6 +201,13 @@ export function DeadlineFoodPrototype() {
   useEffect(() => {
     sessionIdRef.current = sessionId;
   }, [sessionId]);
+  // True while the current sessionId's data is still being loaded into state.
+  // The auto-save effect must not persist until this clears, otherwise switching
+  // sessions (e.g. signing in and adopting the account's linked session) would
+  // write the stale seed state over the account's saved data before its real
+  // settings have loaded. A ref (not state) so the load effect can set it
+  // synchronously before the save effect runs in the same commit.
+  const sessionLoadPendingRef = useRef(true);
   // Share a single destination resolution between onAuthStateChanged and direct
   // sign-in completions. Firebase can complete email/OAuth before our listener
   // observes an anonymous->authenticated transition, so successful sign-in
@@ -332,6 +339,10 @@ export function DeadlineFoodPrototype() {
 
   useEffect(() => {
     let cancelled = false;
+    // Block auto-saves for this sessionId until its data has loaded. Set
+    // synchronously here so the save effect (declared later, runs after this one
+    // in the same commit) observes it immediately on a sessionId change.
+    sessionLoadPendingRef.current = true;
 
     loadAnonymousSessionSettings(sessionId)
       .then(snapshot => {
@@ -388,11 +399,15 @@ export function DeadlineFoodPrototype() {
           setCanPersistSession(true);
         }
 
+        // Data for this sessionId is now in state — saves may resume. Only clear
+        // for the live load (a newer sessionId switch will have set it true again).
+        sessionLoadPendingRef.current = false;
         setSessionLoaded(true);
       })
       .catch(error => {
         if (!cancelled) {
           console.warn("Anonymous session settings could not be loaded.", error);
+          sessionLoadPendingRef.current = false;
           setSessionLoaded(true);
         }
       });
@@ -575,7 +590,7 @@ export function DeadlineFoodPrototype() {
   }, [notifyAccount, saveCurrentSessionNow, track]);
 
   useEffect(() => {
-    if (!sessionLoaded || !canPersistSession) return;
+    if (!sessionLoaded || !canPersistSession || sessionLoadPendingRef.current) return;
 
     const doSave = () => {
       saveAnonymousSessionSettings(

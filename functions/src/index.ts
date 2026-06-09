@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase-admin/app";
 import {getAuth} from "firebase-admin/auth";
-import {FieldValue, getFirestore, Timestamp, type DocumentData, type DocumentReference} from "firebase-admin/firestore";
+import {FieldValue, getFirestore, Timestamp} from "firebase-admin/firestore";
 import {getStorage} from "firebase-admin/storage";
 import {onRequest} from "firebase-functions/v2/https";
 import {onSchedule} from "firebase-functions/v2/scheduler";
@@ -800,7 +800,13 @@ function requestHeader(request: HttpRequest, name: string): string {
   return "";
 }
 
-async function verifiedAuthUid(request: HttpRequest): Promise<string | null> {
+type VerifiedAccount = {uid: string; isAnonymous: boolean};
+
+// Resolves the verified Firebase user for a request, or null when no token is
+// attached. Anonymous Firebase users are reported with isAnonymous=true so
+// callers keep them on session-keyed storage — only a real (signed-in) account
+// owns a uid-keyed record.
+async function verifiedAccount(request: HttpRequest): Promise<VerifiedAccount | null> {
   const authorization = requestHeader(request, "authorization");
 
   if (!authorization) {
@@ -813,52 +819,22 @@ async function verifiedAuthUid(request: HttpRequest): Promise<string | null> {
   }
 
   const decodedToken = await firebaseAuth.verifyIdToken(match[1]);
-  return decodedToken.uid;
+  return {uid: decodedToken.uid, isAnonymous: decodedToken.firebase?.sign_in_provider === "anonymous"};
 }
 
+// Firestore document id for a real account's uid-keyed session record. base64url
+// keeps the raw uid out of the document path while staying deterministic.
 function accountSessionDocId(uid: string): string {
   return Buffer.from(uid).toString("base64url");
 }
 
-function sessionOwnerUid(data: DocumentData | undefined): string | null {
-  return typeof data?.authUid === "string" ? data.authUid : null;
-}
-
-async function pointAccountToSession(uid: string, sessionId: string): Promise<void> {
-  const pointerRef = accountSessionsRef.doc(accountSessionDocId(uid));
-  const pointer = await pointerRef.get();
-
-  await pointerRef.set(
-    {
-      ...(pointer.exists ? {} : {createdAt: FieldValue.serverTimestamp()}),
-      uid,
-      sessionId,
-      updatedAt: FieldValue.serverTimestamp(),
-    },
-    {merge: true},
-  );
-}
-
-async function claimSessionForAccount(
-  uid: string,
-  sessionId: string,
-  sessionRef: DocumentReference,
-): Promise<void> {
-  await sessionRef.set(
-    {
-      authUid: uid,
-      accountLinkedAt: FieldValue.serverTimestamp(),
-      updatedAt: FieldValue.serverTimestamp(),
-    },
-    {merge: true},
-  );
-  await pointAccountToSession(uid, sessionId);
-}
-
-async function accountSessionId(uid: string): Promise<string | null> {
-  const pointer = await accountSessionsRef.doc(accountSessionDocId(uid)).get();
-  const sessionId = pointer.data()?.sessionId;
-  return typeof sessionId === "string" && anonymousSessionIdPattern.test(sessionId) ? sessionId : null;
+// Stable client-facing handle for an account's session. The frontend stores it
+// like any sessionId, but for an authenticated request the backend always keys
+// storage by the verified uid, so the handle is only a transport token. It
+// matches anonymousSessionIdPattern (base64url chars, 38 chars for a 28-char
+// uid) so the existing frontend session-id validation accepts it.
+function accountSessionHandle(uid: string): string {
+  return accountSessionDocId(uid);
 }
 
 function rejectUnsupportedRecommenderMethod(
@@ -1874,19 +1850,75 @@ export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (requ
   }
 });
 
+// Loads a real account's uid-keyed session. On the very first load for an
+// account (no stored record yet) it adopts the anonymous session the request
+// arrived with — the in-progress onboarding the user just built — so signing in
+// mid-onboarding never discards their plan. Later loads (including on a fresh
+// device) just return the synced account record.
+async function handleAccountSessionGet(
+  request: HttpRequest,
+  response: HttpResponse,
+  uid: string,
+): Promise<void> {
+  const accountRef = accountSessionsRef.doc(accountSessionDocId(uid));
+  const snapshot = await accountRef.get();
+  const expiresAt = sessionExpiryTimestamp();
+
+  if (!snapshot.exists) {
+    const requestedSessionId = typeof request.query.sessionId === "string" ? request.query.sessionId : "";
+    if (anonymousSessionIdPattern.test(requestedSessionId)) {
+      const anonSnapshot = await anonymousSessionsRef.doc(requestedSessionId).get();
+      if (anonSnapshot.exists && anonSnapshot.data()?.settings) {
+        const adopted = normalizePrototypeSessionSettings(anonSnapshot.data()?.settings);
+        await accountRef.set(
+          {
+            createdAt: FieldValue.serverTimestamp(),
+            uid,
+            schemaVersion: 1,
+            settingsVersion: prototypeSessionSettingsVersion,
+            settings: adopted,
+            updatedAt: FieldValue.serverTimestamp(),
+            expiresAt,
+          },
+          {merge: true},
+        );
+        sendSessionJson(response, accountSessionHandle(uid), adopted, expiresAt);
+        return;
+      }
+    }
+
+    sendSessionJson(response, accountSessionHandle(uid), null, null);
+    return;
+  }
+
+  const settings = normalizePrototypeSessionSettings(snapshot.data()?.settings);
+  await accountRef.set({updatedAt: FieldValue.serverTimestamp(), expiresAt}, {merge: true});
+  sendSessionJson(response, accountSessionHandle(uid), settings, expiresAt);
+}
+
 export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, response) => {
   if (rejectUnsupportedSessionMethod(request, response)) return;
 
   try {
-    let authUid: string | null;
+    let account: VerifiedAccount | null;
     try {
-      authUid = await verifiedAuthUid(request);
+      account = await verifiedAccount(request);
     } catch {
       response.status(401).json({error: "Invalid Firebase authentication token."});
       return;
     }
 
+    // A real (non-anonymous) account keys its data directly by uid. Anonymous
+    // users — including anonymous Firebase users — stay keyed by the session id
+    // their browser holds in localStorage.
+    const accountUid = account !== null && !account.isAnonymous ? account.uid : null;
+
     if (request.method === "GET" || request.method === "HEAD") {
+      if (accountUid !== null) {
+        await handleAccountSessionGet(request, response, accountUid);
+        return;
+      }
+
       const requestedSessionId = request.query.sessionId;
       const sessionId = typeof requestedSessionId === "string" ? requestedSessionId : "";
 
@@ -1895,58 +1927,18 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
         return;
       }
 
-      let sessionRef = anonymousSessionsRef.doc(sessionId);
-      let snapshot = await sessionRef.get();
-
-      if (authUid !== null) {
-        const linkedSessionId = await accountSessionId(authUid);
-
-        if (linkedSessionId !== null) {
-          sessionRef = anonymousSessionsRef.doc(linkedSessionId);
-          snapshot = await sessionRef.get();
-          const linkedOwnerUid = sessionOwnerUid(snapshot.data());
-          if (snapshot.exists && linkedOwnerUid === null) {
-            await claimSessionForAccount(authUid, linkedSessionId, sessionRef);
-            snapshot = await sessionRef.get();
-          } else if (snapshot.exists && linkedOwnerUid !== authUid) {
-            sessionRef = anonymousSessionsRef.doc(randomUUID());
-            snapshot = await sessionRef.get();
-          }
-        } else if (snapshot.exists) {
-          const requestedOwnerUid = sessionOwnerUid(snapshot.data());
-          if (requestedOwnerUid === null) {
-            await claimSessionForAccount(authUid, sessionId, sessionRef);
-            snapshot = await sessionRef.get();
-          } else if (requestedOwnerUid === authUid) {
-            await pointAccountToSession(authUid, sessionId);
-          } else {
-            sessionRef = anonymousSessionsRef.doc(randomUUID());
-            snapshot = await sessionRef.get();
-          }
-        } else {
-          sessionRef = anonymousSessionsRef.doc(randomUUID());
-          snapshot = await sessionRef.get();
-        }
-      }
+      const sessionRef = anonymousSessionsRef.doc(sessionId);
+      const snapshot = await sessionRef.get();
 
       if (!snapshot.exists) {
-        sendSessionJson(response, sessionRef.id, null, null);
+        sendSessionJson(response, sessionId, null, null);
         return;
       }
 
-      const data = snapshot.data();
-      const settings = normalizePrototypeSessionSettings(data?.settings);
+      const settings = normalizePrototypeSessionSettings(snapshot.data()?.settings);
       const expiresAt = sessionExpiryTimestamp();
-
-      await sessionRef.set(
-        {
-          updatedAt: FieldValue.serverTimestamp(),
-          expiresAt,
-        },
-        {merge: true},
-      );
-
-      sendSessionJson(response, sessionRef.id, settings, expiresAt);
+      await sessionRef.set({updatedAt: FieldValue.serverTimestamp(), expiresAt}, {merge: true});
+      sendSessionJson(response, sessionId, settings, expiresAt);
       return;
     }
 
@@ -1957,12 +1949,6 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       return;
     }
 
-    const requestedSessionId = body?.sessionId;
-    const sessionId =
-      typeof requestedSessionId === "string" &&
-      anonymousSessionIdPattern.test(requestedSessionId) ?
-        requestedSessionId :
-        randomUUID();
     let settings: PrototypeSessionSettings;
 
     try {
@@ -1972,21 +1958,35 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       return;
     }
 
-    let writableSessionId = sessionId;
-    let sessionRef = anonymousSessionsRef.doc(writableSessionId);
-    let existingSession = await sessionRef.get();
+    const expiresAt = sessionExpiryTimestamp();
 
-    if (authUid !== null) {
-      const ownerUid = sessionOwnerUid(existingSession.data());
-
-      if (existingSession.exists && ownerUid !== null && ownerUid !== authUid) {
-        writableSessionId = randomUUID();
-        sessionRef = anonymousSessionsRef.doc(writableSessionId);
-        existingSession = await sessionRef.get();
-      }
+    if (accountUid !== null) {
+      const accountRef = accountSessionsRef.doc(accountSessionDocId(accountUid));
+      const existing = await accountRef.get();
+      await accountRef.set(
+        {
+          ...(existing.exists ? {} : {createdAt: FieldValue.serverTimestamp()}),
+          uid: accountUid,
+          schemaVersion: 1,
+          settingsVersion: prototypeSessionSettingsVersion,
+          settings,
+          updatedAt: FieldValue.serverTimestamp(),
+          expiresAt,
+        },
+        {merge: true},
+      );
+      sendSessionJson(response, accountSessionHandle(accountUid), settings, expiresAt);
+      return;
     }
 
-    const expiresAt = sessionExpiryTimestamp();
+    const requestedSessionId = body?.sessionId;
+    const sessionId =
+      typeof requestedSessionId === "string" &&
+      anonymousSessionIdPattern.test(requestedSessionId) ?
+        requestedSessionId :
+        randomUUID();
+    const sessionRef = anonymousSessionsRef.doc(sessionId);
+    const existingSession = await sessionRef.get();
 
     await sessionRef.set(
       {
@@ -1994,18 +1994,13 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
         schemaVersion: 1,
         settingsVersion: prototypeSessionSettingsVersion,
         settings,
-        ...(authUid === null ? {} : {authUid, accountLinkedAt: FieldValue.serverTimestamp()}),
         updatedAt: FieldValue.serverTimestamp(),
         expiresAt,
       },
       {merge: true},
     );
 
-    if (authUid !== null) {
-      await pointAccountToSession(authUid, writableSessionId);
-    }
-
-    sendSessionJson(response, writableSessionId, settings, expiresAt);
+    sendSessionJson(response, sessionId, settings, expiresAt);
   } catch (error) {
     logger.error("Deadline food session function failed", error);
     response.status(500).json({error: "Anonymous session could not be saved"});

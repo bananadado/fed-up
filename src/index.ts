@@ -5,6 +5,9 @@ import { seededMeals } from "./data/seededMeals";
 
 const sessionRetentionDays = 90;
 const anonymousSessions = new Map<string, { settings: unknown; updatedAt: string; expiresAt: string }>();
+// Real (non-anonymous) accounts key their data directly by Firebase uid, mirroring
+// the uid-keyed accountSessions collection used by the Firebase Functions backend.
+const accountSessions = new Map<string, { settings: unknown; updatedAt: string; expiresAt: string }>();
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const firebaseFunctionsBaseUrl = process.env.BUN_PUBLIC_FIREBASE_FUNCTIONS_BASE_URL?.replace(/\/$/, "");
 const publicEnvKeys = [
@@ -47,6 +50,45 @@ function sessionResponse(sessionId: string, settings: unknown | null, expiresAt:
 
 function expiresAtFromNow() {
   return new Date(Date.now() + sessionRetentionDays * 24 * 60 * 60 * 1000).toISOString();
+}
+
+// Stable client-facing handle for an account's session — base64url(uid), which
+// satisfies sessionIdPattern. Matches accountSessionHandle in the Firebase backend.
+function accountSessionHandle(uid: string): string {
+  return Buffer.from(uid).toString("base64url");
+}
+
+// DEV ONLY: decode (without verifying) the Firebase ID token to read the uid and
+// sign-in provider. The local Bun backend is a dev convenience and has no Firebase
+// Admin SDK; the deployed Firebase Functions backend verifies tokens properly.
+// Anonymous Firebase users are reported with isAnonymous=true so they stay on
+// session-keyed storage.
+function decodeAccountFromRequest(req: Request): { uid: string; isAnonymous: boolean } | null {
+  const authorization = req.headers.get("authorization");
+  if (!authorization) return null;
+
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
+  if (!match?.[1]) return null;
+
+  try {
+    const payloadSegment = match[1].split(".")[1];
+    if (!payloadSegment) return null;
+
+    const payload = JSON.parse(Buffer.from(payloadSegment, "base64url").toString("utf8")) as {
+      sub?: unknown;
+      user_id?: unknown;
+      firebase?: { sign_in_provider?: unknown };
+    };
+
+    const uid =
+      typeof payload.user_id === "string" ? payload.user_id :
+        typeof payload.sub === "string" ? payload.sub : null;
+    if (uid === null) return null;
+
+    return { uid, isAnonymous: payload.firebase?.sign_in_provider === "anonymous" };
+  } catch {
+    return null;
+  }
 }
 
 async function proxyToFirebaseFunction(functionName: string, req: Request): Promise<Response> {
@@ -130,6 +172,33 @@ const server = serve({
 
     "/api/deadline-food/session": {
       async GET(req) {
+        const account = decodeAccountFromRequest(req);
+        const accountUid = account && !account.isAnonymous ? account.uid : null;
+
+        if (accountUid !== null) {
+          let record = accountSessions.get(accountUid);
+
+          // First load for this account: adopt the in-progress anonymous session
+          // the request arrived with, so signing in mid-onboarding keeps the plan.
+          if (record === undefined) {
+            const requestedSessionId = new URL(req.url).searchParams.get("sessionId") ?? "";
+            const anon = sessionIdPattern.test(requestedSessionId)
+              ? anonymousSessions.get(requestedSessionId)
+              : undefined;
+            if (anon?.settings != null) {
+              record = { settings: anon.settings, updatedAt: new Date().toISOString(), expiresAt: expiresAtFromNow() };
+              accountSessions.set(accountUid, record);
+            }
+          }
+
+          if (record !== undefined) {
+            record.expiresAt = expiresAtFromNow();
+            record.updatedAt = new Date().toISOString();
+          }
+
+          return sessionResponse(accountSessionHandle(accountUid), record?.settings ?? null, record?.expiresAt ?? null);
+        }
+
         const sessionId = new URL(req.url).searchParams.get("sessionId");
 
         if (!sessionIdPattern.test(sessionId ?? "")) {
@@ -147,17 +216,30 @@ const server = serve({
       },
       async PUT(req) {
         const payload = await req.json().catch(() => null) as { sessionId?: unknown; settings?: unknown } | null;
-        const sessionId = typeof payload?.sessionId === "string" ? payload.sessionId : "";
-
-        if (!sessionIdPattern.test(sessionId)) {
-          return Response.json({ error: "A valid anonymous session ID is required." }, { status: 400 });
-        }
 
         if (payload?.settings === null || typeof payload?.settings !== "object") {
           return Response.json({ error: "Session settings are required." }, { status: 400 });
         }
 
         const expiresAt = expiresAtFromNow();
+        const account = decodeAccountFromRequest(req);
+        const accountUid = account && !account.isAnonymous ? account.uid : null;
+
+        if (accountUid !== null) {
+          accountSessions.set(accountUid, {
+            settings: payload.settings,
+            updatedAt: new Date().toISOString(),
+            expiresAt,
+          });
+          return sessionResponse(accountSessionHandle(accountUid), payload.settings, expiresAt);
+        }
+
+        const sessionId = typeof payload?.sessionId === "string" ? payload.sessionId : "";
+
+        if (!sessionIdPattern.test(sessionId)) {
+          return Response.json({ error: "A valid anonymous session ID is required." }, { status: 400 });
+        }
+
         anonymousSessions.set(sessionId, {
           settings: payload.settings,
           updatedAt: new Date().toISOString(),
