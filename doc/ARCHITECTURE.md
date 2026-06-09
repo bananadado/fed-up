@@ -52,29 +52,29 @@ bun --hot src/index.ts
 `src/App.tsx` currently renders:
 
 ```tsx
-<DeadlineFoodPrototype />
+<DeadlineFoodApp />
 ```
 
-So the active app is the prototype hash-router, not `src/app/router.tsx`.
+So the active app is the app hash-router, not `src/app/router.tsx`.
 
 ## Frontend Surfaces
 
-### Active Surface: Prototype
+### Active Surface: App
 
 Root:
 
-- `src/prototype/DeadlineFoodPrototype.tsx`
+- `src/deadline-food/DeadlineFoodApp.tsx`
 
-The active prototype uses:
+The active app uses:
 
 - React state hooks, not a global state library.
 - Hash navigation, not React Router.
-- `src/prototype/types.ts` model types.
-- `src/prototype/data.ts` seed data and initial plan.
-- `src/prototype/anonymousSessionApi.ts` for anonymous settings persistence.
-- `src/prototype/nutritionApi.ts` for OpenFoodFacts nutrition calls.
+- `src/deadline-food/types.ts` model types.
+- `src/deadline-food/data.ts` seed data and initial plan.
+- `src/deadline-food/anonymousSessionApi.ts` for anonymous settings persistence.
+- `src/deadline-food/nutritionApi.ts` for OpenFoodFacts nutrition calls.
 
-High-level state owned by `DeadlineFoodPrototype`:
+High-level state owned by `DeadlineFoodApp`:
 
 - `screen`
 - `routeHistory`
@@ -164,12 +164,12 @@ Default Firebase target:
 - Region: `europe-west2`
 - Base URL: `https://europe-west2-drp03-50059.cloudfunctions.net`
 
-## Data Flow: Active Prototype Startup
+## Data Flow: Active App Startup
 
 1. Browser loads `src/frontend.tsx`.
 2. `getOrCreateAnonymousSessionId()` reads or creates `deadlineFoodAnonymousSessionId` in `localStorage`.
 3. PostHog registers the anonymous session ID if PostHog is configured.
-4. `DeadlineFoodPrototype` initializes from local seed data.
+4. `DeadlineFoodApp` initializes from local seed data.
 5. It calls `loadAnonymousSessionSettings(sessionId)`.
 6. The API adapter chooses local Bun session endpoint or Firebase `deadlineFoodSession`.
 7. If settings exist, preferences, deadlines, selected sources, and onboarded state are hydrated.
@@ -197,7 +197,7 @@ Important: plan state and custom recipes are not persisted by this session mecha
 ## Data Flow: Dormant Deadline-Mode Planner
 
 1. `DeadlineModeProvider` loads `/api/deadline-food/bootstrap`.
-2. Bootstrap includes `meals`, `canonicalConstraints`, and `prototype` metadata.
+2. Bootstrap includes `meals`, `canonicalConstraints`, and `app` metadata.
 3. The reducer ranks strategies using `rankStrategies`.
 4. Setup submits `PlanningConstraints`.
 5. Strategy selection calls `generatePlan`.
@@ -207,14 +207,14 @@ Important: plan state and custom recipes are not persisted by this session mecha
 
 ## Data Generation For Firebase
 
-`scripts/export-firebase-prototype-data.ts` copies data from:
+`scripts/export-firebase-app-data.ts` copies data from:
 
 - `src/data/seededScenario.ts`
 - `src/data/seededMeals.ts`
 
 into:
 
-- `functions/src/generated/prototypeData.ts`
+- `functions/src/generated/appData.ts`
 
 This keeps Firebase Functions self-contained after TypeScript build/deploy.
 
@@ -236,7 +236,7 @@ It imports:
 
 - `styles/globals.css`
 
-`styles/globals.css` imports Tailwind and `tw-animate-css`, defines shadcn-style CSS variables, and includes light/dark tokens. The active prototype often uses stone/emerald classes directly. UI primitives live in `src/components/ui/*` and `src/prototype/components/primitives.tsx`.
+`styles/globals.css` imports Tailwind and `tw-animate-css`, defines shadcn-style CSS variables, and includes light/dark tokens. The active app often uses stone/emerald classes directly. UI primitives live in `src/components/ui/*` and `src/deadline-food/components/primitives.tsx`.
 
 ## Build Architecture
 
@@ -273,7 +273,7 @@ Backend:
 ## Architectural Risk Areas
 
 - Two frontend surfaces can cause edits in the wrong tree.
-- Active prototype and dormant planner have different types and seed catalogues.
+- Active app and dormant planner have different types and seed catalogues.
 - Local Bun API session storage differs from Firebase Firestore-backed session storage.
 - Firebase functions are public HTTP functions; validation and rate limiting matter.
 - Firestore rules are locked down, so client SDK additions will fail unless rules/auth are designed.

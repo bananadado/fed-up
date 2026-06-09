@@ -2,7 +2,7 @@
 
 > **Audience:** AI coding agents (especially Codex) and developers implementing the application.  
 > **Document purpose:** Define the product concept, required user experience, MVP scope, implementation constraints, suggested architecture, data model, and acceptance criteria clearly enough that an agent can build the initial application without inventing product decisions.  
-> **Status:** Concept-development / walking-skeleton prototype specification.  
+> **Status:** Concept-development / walking-skeleton app specification.  
 > **Working product name:** **Fed Up**.
 
 ---
@@ -15,7 +15,7 @@ When implementing:
 
 1. **Preserve the product purpose.** This is not a generic recipe application, calorie tracker, food delivery marketplace, or social cooking app.
 2. **Optimise for the deadline-week scenario.** The defining interaction is that a stressed student can rapidly obtain or adapt a healthy, affordable, realistic food plan.
-3. **Keep the first implementation demonstrable.** The initial app is a convincing interactive prototype / walking skeleton suitable for user testing. It does not need real campus provider integrations, real nutritional APIs, or production-grade calendar synchronisation.
+3. **Keep the first implementation demonstrable.** The initial app is a convincing interactive app / walking skeleton suitable for user testing. It does not need real campus provider integrations, real nutritional APIs, or production-grade calendar synchronisation.
 4. **Build vertical slices before broad features.** A complete flow from onboarding inputs → deadline mode → plan → rescue substitution → recalculated budget is more important than many incomplete screens.
 5. **Use deterministic seeded data initially.** Recommendations must be coherent and testable. Do not introduce an LLM recommendation dependency in the MVP.
 6. **Do not implement excluded features unless explicitly asked.** See the non-goals section.
@@ -127,7 +127,7 @@ The application must:
 - make a healthy, affordable action discoverable in seconds during a deadline week;
 - show that recommendations respect limited time and money;
 - allow users to switch to an even lower-effort option without restarting the plan;
-- provide a coherent interactive prototype for user testing;
+- provide a coherent interactive app for user testing;
 - demonstrate technical intelligence through adaptive recommendation logic, not superficial complexity.
 
 ### 4.2 Non-goals for the MVP
@@ -145,9 +145,9 @@ Do **not** build the following in the initial implementation unless a later task
 - a provider-facing administration portal;
 - detailed account management beyond what the demonstration requires.
 
-### 4.3 Product success indicators for prototype testing
+### 4.3 Product success indicators for app testing
 
-During user testing, the prototype is successful if students can:
+During user testing, the app is successful if students can:
 
 - understand what Deadline Mode does without lengthy explanation;
 - configure a deadline-week plan quickly;
@@ -209,7 +209,7 @@ The canonical demo scenario is:
 - The system substitutes a nearby healthy affordable purchased option.
 - The budget total and remaining plan update visibly.
 
-This flow must be fully implemented in the prototype.
+This flow must be fully implemented in the app.
 
 ---
 
@@ -243,7 +243,7 @@ The user should be able to provide:
 
 ### UX requirement
 
-This setup must be lightweight. Avoid an elaborate questionnaire. The ideal prototype interaction is a single concise step or a short two-step flow.
+This setup must be lightweight. Avoid an elaborate questionnaire. The ideal app interaction is a single concise step or a short two-step flow.
 
 ---
 
@@ -389,7 +389,7 @@ For each fallback item display:
 - approximate collection/walking time or convenience label;
 - dietary tags;
 - simple health-oriented tags;
-- availability as prototype/mock data where needed.
+- availability as app/mock data where needed.
 
 ### MVP data approach
 
@@ -397,7 +397,7 @@ Use manually seeded fictionalised or illustrative campus-area options. Do not cl
 
 A UI label should make this clear, e.g.:
 
-> “Prototype meal options — availability and prices are illustrative.”
+> “App meal options — availability and prices are illustrative.”
 
 ---
 
@@ -405,7 +405,7 @@ A UI label should make this clear, e.g.:
 
 The requirements are classified as:
 
-- **MUST**: required for the MVP interactive prototype.
+- **MUST**: required for the MVP interactive app.
 - **SHOULD**: valuable if achievable without undermining the core flow.
 - **COULD**: later enhancement; do not prioritise ahead of MUST features.
 
@@ -467,7 +467,7 @@ The requirements are classified as:
 
 | ID | Priority | Requirement |
 |---|---|---|
-| FR-050 | SHOULD | User can use the prototype without account creation, using local/demo state. |
+| FR-050 | SHOULD | User can use the app without account creation, using local/demo state. |
 | FR-051 | SHOULD | If Firebase Auth is already part of the application, authenticated users can save preferences and plans. |
 | FR-052 | SHOULD | Persist the active plan and substitutions in Firestore for authenticated users. |
 | FR-053 | COULD | Track previous deadline weeks and user follow-through. |
@@ -524,7 +524,7 @@ type PlanStrategy = "prep-once" | "mixed" | "no-cook-rescue";
 
 ### 9.5 Recommended MVP rules
 
-The following logic is adequate for the prototype:
+The following logic is adequate for the app:
 
 #### Strategy feasibility rules
 
@@ -576,7 +576,7 @@ For the MVP, avoid pretending this scoring is scientifically calibrated. If used
 
 ### 10.1 Seed data
 
-The MVP must include enough seeded data for all prototype flows to work reliably.
+The MVP must include enough seeded data for all app flows to work reliably.
 
 Minimum recommended seed catalogue:
 
@@ -589,7 +589,7 @@ Minimum recommended seed catalogue:
 
 ### 10.2 Illustrative fallback examples
 
-Data should be credible but clearly identified as prototype/mock information. Example data shape:
+Data should be credible but clearly identified as app/mock information. Example data shape:
 
 ```ts
 const fallbackOptions: MealOption[] = [
@@ -622,7 +622,7 @@ const fallbackOptions: MealOption[] = [
 
 ### 10.3 Nutrition representation
 
-For the prototype, do not create medical or precise nutrition claims. Use simple user-facing suitability tags such as:
+For the app, do not create medical or precise nutrition claims. Use simple user-facing suitability tags such as:
 
 - balanced;
 - contains vegetables;
@@ -752,7 +752,7 @@ Use supportive neutral messaging. Never present purchased fallback food as a fai
 
 ## 13. UX and Visual Design Principles
 
-The prototype should be appropriate for a student-facing wellbeing/productivity tool.
+The app should be appropriate for a student-facing wellbeing/productivity tool.
 
 ### Required principles
 
@@ -762,7 +762,7 @@ The prototype should be appropriate for a student-facing wellbeing/productivity 
 - **Progressive detail:** show headline recommendation first; detailed information on demand.
 - **Accessible contrast and typography:** meet reasonable accessibility standards.
 - **Responsive layout:** usable at typical phone and desktop widths.
-- **Honest prototype state:** seeded/mock provider information is identified as illustrative.
+- **Honest app state:** seeded/mock provider information is identified as illustrative.
 
 ### Avoid
 
@@ -793,7 +793,7 @@ Codex must inspect the existing repository before installing or changing depende
 
 The application should be usable as a demo even without backend credentials or network dependencies. Therefore:
 
-- seeded meal data may live locally in the app for the initial prototype;
+- seeded meal data may live locally in the app for the initial app;
 - plan generation should run client-side as pure, testable functions;
 - authentication and Firestore persistence are optional integrations unless already configured;
 - real external data integrations are not required.
@@ -863,7 +863,7 @@ type DeadlineModeState = {
 
 ### 15.2 Recommended approach
 
-For the prototype:
+For the app:
 
 - React context plus reducer, or a lightweight existing state solution already present in the repo, is sufficient.
 - Persist demo state to `localStorage` if convenient so the user does not lose a plan on refresh.
@@ -907,13 +907,13 @@ type RescueProposal = {
 
 ## 16. Firebase Data Model — Optional Persistence Layer
 
-Use Firebase only where useful for persistent user plans/preferences. The prototype can function locally first.
+Use Firebase only where useful for persistent user plans/preferences. The app can function locally first.
 
 ### 16.1 Authentication
 
 Potential implementation:
 
-- anonymous/demo mode for prototype testing;
+- anonymous/demo mode for app testing;
 - optional Firebase Auth for saved users;
 - do not require sign-in before the user experiences the central flow.
 
@@ -1023,7 +1023,7 @@ The MVP must handle at least the following cases:
 | Dietary filters remove most options | Show compatible remaining options or communicate insufficient seeded choices. |
 | Selected plan exceeds budget | Display over-budget amount clearly; do not hide it. |
 | Rescue causes plan to exceed budget | Inform user before confirmation and show cheapest feasible alternative. |
-| No fallback matches dietary constraints | Explain that no compatible prototype option is available; do not substitute incorrectly. |
+| No fallback matches dietary constraints | Explain that no compatible app option is available; do not substitute incorrectly. |
 | Refresh after selecting a plan | Prefer preserving current demo plan through local state persistence. |
 
 ---
@@ -1056,7 +1056,7 @@ Where the repository already supports UI testing, test the canonical flow:
 
 ### 19.3 Manual user-test readiness
 
-The built prototype must support a facilitator giving this scenario:
+The built app must support a facilitator giving this scenario:
 
 > “You have multiple deadlines this week, about £24 left for planned meals, and you will be in the library late on at least two days. Set up a plan. Then imagine your meeting overruns and you cannot cook tonight.”
 
@@ -1064,12 +1064,12 @@ The tester should be able to navigate this without developer intervention.
 
 ---
 
-## 20. Analytics / Evaluation Instrumentation — Prototype Level
+## 20. Analytics / Evaluation Instrumentation — App Level
 
 If simple to implement, record local or development-only interaction events:
 
 ```ts
-type PrototypeEvent =
+type DeadlineEvent =
   | { type: "deadline_mode_started" }
   | { type: "strategy_viewed" }
   | { type: "strategy_selected"; strategy: PlanStrategy }
@@ -1084,7 +1084,7 @@ Purpose:
 - determine which strategy students select;
 - gather evidence for concept validation.
 
-Do not introduce invasive tracking or third-party analytics purely for the prototype.
+Do not introduce invasive tracking or third-party analytics purely for the app.
 
 ---
 
@@ -1108,7 +1108,7 @@ The application must:
 - avoid weight-loss or guilt-based messaging;
 - avoid presenting meals as medically “healthy” without evidence;
 - use practical tags rather than precise nutrition claims in the MVP;
-- make prototype data limitations visible;
+- make app data limitations visible;
 - avoid implying that a student has failed when they choose purchased convenience food.
 
 ---
@@ -1126,7 +1126,7 @@ The first convincing build should contain exactly the following coherent vertica
 7. **Rescue interaction** that replaces a meal and updates budget.
 8. **Deterministic domain logic** with unit tests.
 9. **Responsive polished UI** suitable for testing with students.
-10. **Prototype disclaimer** for illustrative provider pricing/availability.
+10. **App disclaimer** for illustrative provider pricing/availability.
 
 This is enough to demonstrate both the design concept and technical sophistication.
 
@@ -1240,7 +1240,7 @@ Implement in this order unless the existing codebase strongly suggests another s
 7. Build strategy comparison screen.
 8. Build plan dashboard and budget summary.
 9. Build rescue dialog/page and substitution confirmation.
-10. Add prototype fallback browse/detail UI where needed.
+10. Add app fallback browse/detail UI where needed.
 11. Polish responsive styling and accessibility.
 12. Integrate Firebase persistence only if already configured or explicitly requested.
 13. Run formatting, lint, tests and production build.

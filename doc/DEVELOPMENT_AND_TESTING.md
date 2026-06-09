@@ -119,7 +119,7 @@ Root scripts from `package.json`:
 | `verify` | `sh scripts/verify-local.sh` | Full verification alias. |
 | `audit` | `sh scripts/audit.sh` | Bun audit with known transitive ignores. |
 | `build` | `bun run build.ts` | Browser production build. |
-| `firebase:data` | `bun run scripts/export-firebase-prototype-data.ts` | Generate function seed data. |
+| `firebase:data` | `bun run scripts/export-firebase-app-data.ts` | Generate function seed data. |
 | `firebase:functions:build` | `bun run firebase:data && cd functions && bun run build` | Generate and build functions. |
 | `firebase:functions:lint` | `bun run firebase:data && cd functions && bun run lint` | Generate and lint functions. |
 | `firebase:emulators` | `bun run firebase:data && cd functions && bun run build && cd .. && firebase emulators:start --only functions,firestore` | Raw emulator start. |
@@ -162,10 +162,10 @@ Current test files:
 - `src/domain/planGenerator.test.ts`
 - `src/lib/posthogConfig.test.ts`
 - `src/lib/timeInput.test.ts`
-- `src/prototype/ingredients.test.ts`
-- `src/prototype/nutrition.test.ts`
-- `src/prototype/sessionPersistence.test.ts`
-- `src/prototype/shopping.test.ts`
+- `src/deadline-food/ingredients.test.ts`
+- `src/deadline-food/nutrition.test.ts`
+- `src/deadline-food/sessionPersistence.test.ts`
+- `src/deadline-food/shopping.test.ts`
 
 Run all:
 
@@ -176,7 +176,7 @@ bun run test:unit
 Run one file:
 
 ```sh
-bun test src/prototype/shopping.test.ts
+bun test src/deadline-food/shopping.test.ts
 ```
 
 ## Domain Tests
@@ -187,7 +187,7 @@ bun run test:domain
 
 These test the dormant deadline-mode pure planner in `src/domain`.
 
-Important: passing domain tests does not prove the active prototype UI uses the domain planner.
+Important: passing domain tests does not prove the active app UI uses the domain planner.
 
 ## E2E Tests
 
@@ -268,7 +268,7 @@ Stages:
 
 1. `dependencies`
 2. `checks`
-3. `prototype`
+3. `app`
 4. `build`
 5. `security`
 6. `backend_deploy`
