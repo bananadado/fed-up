@@ -25,6 +25,8 @@ TODAY = date(2026, 6, 1)
         ("Final Exam: Algorithms", "exam"),
         ("Team standup meeting", "meeting"),
         ("Lecture: Databases", "study"),
+        ("Project supervision", "study"),
+        ("Module workshop", "study"),
         ("Flight to Paris", "travel"),
         ("Birthday party", "social"),
         ("Gym session", "exercise"),
@@ -121,6 +123,26 @@ def test_late_event_removes_free_evening():
                                "end": "2026-06-01T21:00:00"})]
     ctx = daily_context(TODAY, events, [], horizon_days=14)
     assert ctx["free_evening"] is False
+
+
+def test_dense_study_day_raises_stress_without_deadline():
+    events = [
+        normalize_event({
+            "title": "Algorithms lecture",
+            "start": "2026-06-01T09:00:00",
+            "end": "2026-06-01T12:00:00",
+        }),
+        normalize_event({
+            "title": "Systems lab",
+            "start": "2026-06-01T13:00:00",
+            "end": "2026-06-01T17:00:00",
+        }),
+    ]
+    ctx = daily_context(TODAY, events, [], horizon_days=14)
+    calm = daily_context(TODAY, [], [], horizon_days=14)
+    assert ctx["stress"] > calm["stress"]
+    assert ctx["academic_hours"] == 7.0
+    assert ctx["recommended_constraints"]["max_prep_minutes"] < 60
 
 
 def test_distant_deadline_less_pressing_than_near_one():

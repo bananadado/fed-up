@@ -221,11 +221,11 @@ export function Dashboard({
                     </div>
                     <p className="mt-1 truncate text-xs text-stone-500">{entry.context}</p>
                     <div className="mt-3 grid gap-2 sm:grid-cols-3">
-                      {entry.meals.map((planMeal) => {
+                      {entry.meals.map((planMeal, mealIndex) => {
                         const meal = getMealById(planMeal.mealId, customRecipes);
 
                         return (
-                          <div key={planMeal.slot} className="min-w-0 rounded-lg bg-white px-3 py-2">
+                          <div key={`${planMeal.slot}-${mealIndex}`} className="min-w-0 rounded-lg bg-white px-3 py-2">
                             <button
                               type="button"
                               onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, source: "dashboard_upcoming" }); onSelectMeal(planMeal.mealId); }}

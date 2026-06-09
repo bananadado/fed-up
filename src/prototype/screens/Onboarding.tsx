@@ -94,11 +94,22 @@ function InfoTooltip({ children }: { children: ReactNode }) {
   );
 }
 
+function todayIsoDate(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function dateLabel(dateIso: string): string {
+  const parsed = new Date(`${dateIso}T12:00:00`);
+  if (Number.isNaN(parsed.getTime())) return "Upcoming";
+  return parsed.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+}
+
 export function Onboarding({
   setOnboarded,
   setScreen,
   prefs,
   setPrefs,
+  deadlines,
   setDeadlines,
   calendarEvents,
   setCalendarEvents,
@@ -116,6 +127,7 @@ export function Onboarding({
   setScreen: (screen: Screen) => void;
   prefs: Preferences;
   setPrefs: (prefs: Preferences) => void;
+  deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
   calendarEvents: CalendarEvent[];
   setCalendarEvents: (events: CalendarEvent[]) => void;
@@ -141,8 +153,14 @@ export function Onboarding({
   const [importMessage, setImportMessage] = useState("");
   const [importError, setImportError] = useState(false);
   const [importing, setImporting] = useState(false);
-  const [importedDeadlines, setImportedDeadlines] = useState<Deadline[]>([]);
+  const [importedDeadlines, setImportedDeadlines] = useState<Deadline[]>(deadlines);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [manualTitle, setManualTitle] = useState("");
+  const [manualDate, setManualDate] = useState(todayIsoDate);
+  const [manualTime, setManualTime] = useState("17:00");
+  const [manualUrgency, setManualUrgency] = useState<Deadline["urgency"]>("medium");
+  const [manualEffortHours, setManualEffortHours] = useState(3);
+  const [manualMessage, setManualMessage] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
   const [step1Attempted, setStep1Attempted] = useState(false);
   const [step2Attempted, setStep2Attempted] = useState(false);
@@ -152,6 +170,7 @@ export function Onboarding({
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
   const prefsRef = useRef(prefs);
+  const hasCalendarContext = calendarEvents.length > 0 || importedDeadlines.length > 0;
 
   useEffect(() => {
     prefsRef.current = prefs;
@@ -177,9 +196,11 @@ export function Onboarding({
     setCalendarEvents(events);
     if (events.length > 0) setCalendarSkipped(false);
     const asDeadlines = await resolveDeadlinesFromEvents(events);
-    setImportedDeadlines(asDeadlines);
+    const manualDeadlines = deadlines.filter((deadline) => deadline.id.startsWith("manual-onboarding-"));
+    const nextDeadlines = [...manualDeadlines, ...asDeadlines];
+    setImportedDeadlines(nextDeadlines);
     if (asDeadlines.length > 0) {
-      setDeadlines(asDeadlines);
+      setDeadlines(nextDeadlines);
       setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
     } else {
       setImportMessage("No calendar events were found in that import.");
@@ -277,6 +298,38 @@ export function Onboarding({
     updatePrefs({ availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
   }
 
+  function addManualWorkload() {
+    const title = manualTitle.trim();
+    if (!title || !manualDate || !manualTime) {
+      setManualMessage("Add a title, date and time for the workload entry.");
+      return;
+    }
+
+    const nextDeadline: Deadline = {
+      id: `manual-onboarding-${Date.now()}`,
+      title,
+      date: dateLabel(manualDate),
+      time: manualTime,
+      intensity: manualUrgency === "high" ? "High" : manualUrgency === "medium" ? "Medium" : "Low",
+      eventType: "academic",
+      effortHours: manualEffortHours,
+      urgency: manualUrgency,
+      confirmed: true,
+      rawDate: manualDate,
+    };
+
+    setImportedDeadlines([...importedDeadlines, nextDeadline]);
+    setDeadlines([...deadlines, nextDeadline]);
+    setCalendarSkipped(false);
+    setManualTitle("");
+    setManualMessage("Workload added to your in-app calendar.");
+    track("onboarding_manual_workload_added", {
+      urgency: nextDeadline.urgency,
+      effort_hours: nextDeadline.effortHours,
+      date: nextDeadline.rawDate,
+    });
+  }
+
   function finish() {
     try { sessionStorage.removeItem("deadlineFood:onboardingStep"); } catch { /* ignore */ }
     track("onboarding_completed", {
@@ -291,12 +344,18 @@ export function Onboarding({
   }
 
   function continueFromCalendarStep() {
-    if (calendarEvents.length === 0) {
+    if (!hasCalendarContext) {
       track("calendar_skip_confirmation_shown", { provider: calendarProvider });
       setShowCalendarSkipConfirm(true);
       return;
     }
-    track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider });
+    track("onboarding_step_completed", {
+      step: 0,
+      next_step: 1,
+      calendar_choice: calendarProvider,
+      imported_event_count: calendarEvents.length,
+      in_app_workload_count: importedDeadlines.length,
+    });
     goToStep(1);
   }
 
@@ -401,6 +460,74 @@ export function Onboarding({
               </div>
               <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
             </div>
+            <div className="mt-5 rounded-lg border border-stone-200 bg-white p-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-stone-900">Add in-app workload</p>
+                  <p className="mt-1 text-xs leading-5 text-stone-500">Use this for lectures, labs, supervision or deadline work that is not in an external calendar.</p>
+                </div>
+                <Badge tone="amber">Planner signal</Badge>
+              </div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_150px_120px]">
+                <Input
+                  value={manualTitle}
+                  onChange={(e) => setManualTitle(e.target.value)}
+                  placeholder="e.g. Monday lab block"
+                  className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
+                />
+                <Input
+                  type="date"
+                  min={todayIsoDate()}
+                  value={manualDate}
+                  onChange={(e) => setManualDate(e.target.value)}
+                  className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
+                />
+                <Input
+                  type="time"
+                  value={manualTime}
+                  onChange={(e) => setManualTime(e.target.value)}
+                  className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
+                />
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                {(["low", "medium", "high"] as const).map((urgency) => (
+                  <button
+                    key={urgency}
+                    type="button"
+                    onClick={() => setManualUrgency(urgency)}
+                    className={cn(
+                      "rounded-lg border px-3 py-2 text-xs font-semibold capitalize transition",
+                      manualUrgency === urgency ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-500 hover:border-stone-300",
+                    )}
+                  >
+                    {urgency}
+                  </button>
+                ))}
+                <div className="ml-0 flex items-center gap-2 rounded-lg border border-stone-200 px-2 py-1.5 sm:ml-auto">
+                  <button
+                    type="button"
+                    onClick={() => setManualEffortHours(Math.max(0.5, manualEffortHours - 0.5))}
+                    className="h-7 w-7 rounded-md bg-stone-100 text-sm font-bold text-stone-600"
+                    aria-label="Reduce workload effort"
+                  >
+                    -
+                  </button>
+                  <span className="min-w-16 text-center text-sm font-semibold text-stone-800">{manualEffortHours % 1 === 0 ? `${manualEffortHours}h` : `${Math.floor(manualEffortHours)}h 30m`}</span>
+                  <button
+                    type="button"
+                    onClick={() => setManualEffortHours(Math.min(12, manualEffortHours + 0.5))}
+                    className="h-7 w-7 rounded-md bg-stone-100 text-sm font-bold text-stone-600"
+                    aria-label="Increase workload effort"
+                  >
+                    +
+                  </button>
+                </div>
+                <AppButton type="button" variant="secondary" onClick={addManualWorkload}>
+                  Add workload
+                </AppButton>
+              </div>
+              {manualMessage && <p className="mt-3 text-sm text-emerald-800">{manualMessage}</p>}
+            </div>
             {importMessage && (
               <p className={cn("mt-4 rounded-lg p-3 text-sm", importError ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800")}>
                 {importMessage}
@@ -423,7 +550,7 @@ export function Onboarding({
             <p className="mt-4 text-sm text-stone-500">
               Adding a calendar is optional. You can import calendar events any time through Settings or the Calendar menu.
             </p>
-            {calendarEvents.length > 0 && (
+            {importedDeadlines.length > 0 && (
               <div className="mt-7 rounded-lg bg-stone-50 p-4">
                 {(() => {
                   const today = new Date().toISOString().slice(0, 10);
@@ -457,8 +584,8 @@ export function Onboarding({
               </div>
             )}
             <div className="mt-7 flex justify-end">
-              <AppButton variant={calendarEvents.length === 0 ? "secondary" : undefined} onClick={continueFromCalendarStep}>
-                {calendarEvents.length === 0 ? "Skip for now" : "Continue"} <ArrowRight size={16} />
+              <AppButton variant={!hasCalendarContext ? "secondary" : undefined} onClick={continueFromCalendarStep}>
+                {!hasCalendarContext ? "Skip for now" : "Continue"} <ArrowRight size={16} />
               </AppButton>
             </div>
           </Card>
@@ -478,7 +605,7 @@ export function Onboarding({
                 <div>
                   <h3 id="calendar-skip-title" className="text-lg font-bold text-stone-950">Continue without a calendar?</h3>
                   <p className="mt-2 text-sm leading-6 text-stone-600">
-                    No calendar has been imported, so Fed Up will not adapt meals around your real events yet. You can import calendar events any time through Settings or the Calendar menu.
+                    No calendar events or in-app workload entries have been added, so Fed Up will not adapt meals around your real events yet. You can add them any time through Settings or the Calendar menu.
                   </p>
                 </div>
               </div>

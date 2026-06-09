@@ -361,8 +361,8 @@ export function RecipeDetailScreen({
               <div>
                 <h2 className="font-bold">Tags</h2>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {meal.mealSlots.map((slot) => (
-                    <Badge key={slot} tone="green">
+                  {meal.mealSlots.map((slot, slotIndex) => (
+                    <Badge key={`${slot}-${slotIndex}`} tone="green">
                       {slot}
                     </Badge>
                   ))}

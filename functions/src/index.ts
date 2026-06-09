@@ -880,6 +880,49 @@ async function enrichRecommendedRecipes(body: unknown): Promise<unknown> {
   });
 }
 
+const blockedRecommendationRecipePatterns = [
+  /\bdummy\b/i,
+  /\bplaceholder\b/i,
+  /\bsample recipe\b/i,
+  /\btest recipe\b/i,
+  /\bmicrowav(?:e|able)\s+bean\s+burrito\b/i,
+  /\bbean\s+burrito\b/i,
+];
+
+function recommendationRecipeText(item: unknown): string {
+  const scoredRecipe = asRecord(item);
+  const recipe = asRecord(scoredRecipe?.recipe) ?? scoredRecipe;
+  const fields = [
+    recipe?.id,
+    recipe?.name,
+    recipe?.source,
+    recipe?.note,
+  ];
+
+  return fields
+    .filter((field): field is string => typeof field === "string")
+    .join(" ")
+    .toLowerCase();
+}
+
+function isBlockedRecommendationRecipe(item: unknown): boolean {
+  const haystack = recommendationRecipeText(item);
+  return blockedRecommendationRecipePatterns.some((pattern) => pattern.test(haystack));
+}
+
+function filterBlockedRecommendationRecipes(body: unknown): unknown {
+  if (!Array.isArray(body)) {
+    return body;
+  }
+
+  const filtered = body.filter((item) => !isBlockedRecommendationRecipe(item));
+  const removed = body.length - filtered.length;
+  if (removed > 0) {
+    logger.warn("Filtered blocked recommendation recipes", {removed});
+  }
+  return filtered;
+}
+
 async function proxyRecommenderRecommendations(
   request: HttpRequest,
   response: HttpResponse,
@@ -917,6 +960,8 @@ async function proxyRecommenderRecommendations(
     } catch (error) {
       logger.error("Recommendation recipe enrichment failed", {error});
     }
+
+    responseBody = filterBlockedRecommendationRecipes(responseBody);
 
     response.status(upstream.status).json(responseBody);
   } catch (error) {

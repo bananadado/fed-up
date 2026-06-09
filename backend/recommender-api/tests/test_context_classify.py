@@ -58,10 +58,10 @@ def test_classify_events_keyword_batch_is_pure_without_embed_fn():
 # ── classify_events: embedding fallback ──────────────────────────────────────
 
 def test_embedding_refines_generic_titles():
-    events = [{"title": "Dissertation chapter writeup"}]
+    events = [{"title": "Capstone chapter draft"}]
     # Keyword path can't place it -> generic; embedding maps it to deadline.
     assert classify_events(events) == ["generic"]
-    refined = classify_events(events, _stub_embed({"Dissertation chapter writeup": "deadline"}))
+    refined = classify_events(events, _stub_embed({"Capstone chapter draft": "deadline"}))
     assert refined == ["deadline"]
 
 
@@ -98,11 +98,11 @@ def test_context_includes_per_event_classification():
 
 
 def test_context_embedding_promotes_event_to_deadline_and_raises_stress():
-    events = [{"title": "Dissertation chapter", "start": "2026-06-02T18:00:00"}]
+    events = [{"title": "Capstone chapter", "start": "2026-06-02T18:00:00"}]
     plain = extract_context(events, today=TODAY, horizon_days=7)
     embedded = extract_context(
         events, today=TODAY, horizon_days=7,
-        embed_fn=_stub_embed({"Dissertation chapter": "deadline"}),
+        embed_fn=_stub_embed({"Capstone chapter": "deadline"}),
     )
     assert plain["deadlines"] == []
     assert len(embedded["deadlines"]) == 1

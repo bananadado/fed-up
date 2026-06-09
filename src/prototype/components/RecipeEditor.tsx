@@ -259,9 +259,9 @@ function TagEditor({
         className="flex min-h-[40px] cursor-text flex-wrap gap-1.5 rounded-lg border border-stone-200 bg-white p-2 focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-600/20"
         onClick={() => inputRef.current?.focus()}
       >
-        {values.map((tag) => (
+        {values.map((tag, tagIndex) => (
           <span
-            key={tag}
+            key={`${tag}-${tagIndex}`}
             className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800"
           >
             {tag}
@@ -555,7 +555,7 @@ export function RecipeEditor({
           required
           value={form.name}
           onChange={(name) => setForm({ ...form, name })}
-          placeholder="e.g. Microwave bean burrito"
+          placeholder="e.g. Lentil rice bowl"
           error={attempted && errors.name}
           errorMessage="Please enter a recipe name"
         />

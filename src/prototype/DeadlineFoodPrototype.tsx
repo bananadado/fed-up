@@ -548,6 +548,7 @@ export function DeadlineFoodPrototype() {
         setScreen={navigateScreen}
         prefs={prefs}
         setPrefs={setPrefs}
+        deadlines={deadlines}
         setDeadlines={setDeadlines}
         calendarEvents={calendarEvents}
         setCalendarEvents={setCalendarEvents}

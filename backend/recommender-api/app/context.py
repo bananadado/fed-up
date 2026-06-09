@@ -17,10 +17,18 @@ from datetime import date, datetime, timedelta
 
 # Ordered by priority: the first category whose keywords match wins.
 CATEGORY_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
-    ("deadline", ("deadline", "due", "submission", "submit", "coursework", "assignment", "hand-in", "handin")),
+    ("deadline", (
+        "deadline", "due", "submission", "submit", "coursework", "assignment",
+        "assessment", "hand-in", "handin", "problem sheet", "writeup",
+        "write-up", "essay", "report",
+    )),
     ("exam", ("exam", "midterm", "final exam", "quiz", "test", "viva")),
-    ("meeting", ("meeting", "standup", "stand-up", "sync", "call", "1:1", "interview", "supervision")),
-    ("study", ("lecture", "tutorial", "lab", "seminar", "revision", "study", "class")),
+    ("study", (
+        "lecture", "tutorial", "lab", "seminar", "revision", "study", "class",
+        "practical", "workshop", "module", "course", "supervision",
+        "supervisor", "office hours", "dissertation", "thesis",
+    )),
+    ("meeting", ("meeting", "standup", "stand-up", "sync", "call", "1:1", "interview")),
     ("travel", ("flight", "train", "travel", "trip", "commute")),
     ("social", ("party", "dinner", "drinks", "social", "birthday", "lunch with")),
     ("exercise", ("gym", "run", "workout", "exercise", "training", "yoga")),
@@ -40,7 +48,7 @@ ACADEMIC_CATEGORIES = {"deadline", "exam", "study"}
 CATEGORY_ANCHORS: dict[str, str] = {
     "deadline": "coursework deadline, assignment submission, project hand-in, report due",
     "exam": "exam, midterm, final test, quiz, viva assessment",
-    "study": "lecture, tutorial, lab session, seminar, revision class, study session",
+    "study": "lecture, tutorial, lab session, seminar, revision class, study session, supervision, university module",
     "meeting": "meeting, supervisor sync, standup, call, interview, catch up",
     "social": "party, dinner with friends, drinks, birthday, society social, night out",
     "exercise": "gym workout, run, sports training, yoga, swimming",
@@ -268,7 +276,15 @@ def daily_context(target: date, norm_events: list[dict], norm_deadlines: list[di
 
     occupied = sum(e["duration_hours"] for e in same_day)
     meeting_hours = sum(e["duration_hours"] for e in same_day if e["category"] == "meeting")
+    academic_hours = sum(e["duration_hours"] for e in same_day if e["event_type"] == "academic")
+    weighted_event_load = sum(
+        CATEGORY_STRESS.get(e["category"], CATEGORY_STRESS["generic"]) *
+        max(e["duration_hours"], 1.0 if e["all_day"] else 0.5)
+        for e in same_day
+    )
     density = _clamp(occupied / WAKING_HOURS)
+    academic_load = _clamp(academic_hours / 5.0)
+    category_load = _clamp(weighted_event_load / 4.0)
     event_count = len(same_day)
     late_event = any(
         (e["start_hour"] is not None and e["start_hour"] >= EVENING_HOUR) for e in same_day
@@ -285,9 +301,11 @@ def daily_context(target: date, norm_events: list[dict], norm_deadlines: list[di
     deadline_pressure = _clamp(deadline_pressure)
 
     stress = _clamp(
-        0.70 * deadline_pressure
-        + 0.15 * density
-        + 0.10 * _clamp(meeting_hours / 6.0)
+        0.66 * deadline_pressure
+        + 0.24 * academic_load
+        + 0.16 * density
+        + 0.12 * category_load
+        + 0.04 * _clamp(meeting_hours / 6.0)
         + 0.03 * _clamp(event_count / 6.0)
         + 0.02 * (1.0 if late_event else 0.0)
     )
@@ -298,6 +316,7 @@ def daily_context(target: date, norm_events: list[dict], norm_deadlines: list[di
         "available_cooking_energy": round(1.0 - stress, 4),
         "free_evening": not late_event,
         "meeting_hours": round(meeting_hours, 2),
+        "academic_hours": round(academic_hours, 2),
         "calendar_density": round(density, 4),
         "event_count": event_count,
         "hard_deadlines": sum(1 for dl in norm_deadlines if dl["date"] == target),
@@ -339,6 +358,9 @@ def extract_context(
         start = _parse_dt(event.get("start"))
         ev_date = start.date() if start else None
         days_until = (ev_date - today).days if ev_date and ev_date >= today else None
+        effort_hours = EVENT_EFFORT_HOURS.get(category, 0.0)
+        if category == "study":
+            effort_hours = max(effort_hours, min(_event_duration_hours(event), 8.0))
         classified_events.append({
             "index": i,
             "date": ev_date.isoformat() if ev_date else None,
@@ -347,7 +369,7 @@ def extract_context(
             "is_deadline": category in DEADLINE_CATEGORIES,
             "days_until": days_until,
             "urgency": _urgency(days_until) if days_until is not None else "low",
-            "effort_hours": EVENT_EFFORT_HOURS.get(category, 0.0),
+            "effort_hours": effort_hours,
         })
 
     days = [
