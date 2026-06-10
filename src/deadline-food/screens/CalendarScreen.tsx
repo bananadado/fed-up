@@ -138,10 +138,14 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose, use24h }: {
   return (
     <div className="mt-4 rounded-xl border border-amber-200 bg-white p-6 shadow-md">
       <div className="mb-5 flex items-start justify-between gap-4">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-stone-400">Editing event</p>
-          <p className="mt-0.5 text-base font-semibold text-stone-900">{deadline.title}</p>
-          <p className="text-xs text-stone-500">{deadline.date} · {formatDisplayTime(deadline.time, use24h)}</p>
+        <div className="min-w-0 flex-1">
+          <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-stone-400">Editing event</p>
+          <Input
+            value={deadline.title}
+            onChange={(e) => onUpdate({ title: e.target.value })}
+            className="h-auto rounded-lg border-stone-200 bg-white p-2 text-base font-semibold text-stone-900"
+          />
+          <p className="mt-1 text-xs text-stone-500">{deadline.date} · {formatDisplayTime(deadline.time, use24h)}</p>
         </div>
         <button type="button" onClick={onClose} className="rounded-lg p-1.5 text-stone-400 hover:bg-stone-100 hover:text-stone-600">
           <X size={16} />
