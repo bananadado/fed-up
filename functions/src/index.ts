@@ -1,4 +1,5 @@
 import {initializeApp} from "firebase-admin/app";
+import {getAuth} from "firebase-admin/auth";
 import {FieldValue, getFirestore, Timestamp} from "firebase-admin/firestore";
 import {getStorage} from "firebase-admin/storage";
 import {onRequest} from "firebase-functions/v2/https";
@@ -31,12 +32,14 @@ initializeApp();
 setGlobalOptions({region: "europe-west2", maxInstances: 10});
 
 const firestore = getFirestore();
+const firebaseAuth = getAuth();
 const appDataRef = firestore.collection("appData").doc("deadlineFood");
 // Canonical recipe content lives in Firestore (issue #123). pgvector stores only
 // the recipe UID as primary key plus its embedding; reviews are Firestore-only.
 const recipesRef = firestore.collection("recipes");
 const recipeReviewsRef = firestore.collection("recipeReviews");
 const anonymousSessionsRef = firestore.collection("anonymousSessions");
+const accountSessionsRef = firestore.collection("accountSessions");
 const openFoodFactsCacheRef = firestore.collection("openFoodFactsNutritionCache");
 const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
@@ -424,6 +427,8 @@ type HttpRequest = {
   method: string;
   query: Record<string, unknown>;
   body: unknown;
+  headers?: Record<string, unknown>;
+  get?(name: string): string | undefined;
 };
 
 type HttpResponse = {
@@ -857,9 +862,10 @@ function rejectUnsupportedSessionMethod(
     request.method !== "GET" &&
     request.method !== "HEAD" &&
     request.method !== "PUT" &&
-    request.method !== "POST"
+    request.method !== "POST" &&
+    request.method !== "DELETE"
   ) {
-    response.set("Allow", "GET, HEAD, PUT, POST, OPTIONS");
+    response.set("Allow", "GET, HEAD, PUT, POST, DELETE, OPTIONS");
     response.status(405).json({error: "Method not allowed"});
     return true;
   }
@@ -1179,6 +1185,63 @@ function readRequestBody(request: HttpRequest): UnknownRecord | null {
   }
 
   return asRecord(request.body);
+}
+
+function requestHeader(request: HttpRequest, name: string): string {
+  const fromGetter = typeof request.get === "function" ? request.get(name) : undefined;
+  if (typeof fromGetter === "string") {
+    return fromGetter;
+  }
+
+  const lowerName = name.toLowerCase();
+  const value = request.headers?.[lowerName] ?? request.headers?.[name];
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (Array.isArray(value) && typeof value[0] === "string") {
+    return value[0];
+  }
+
+  return "";
+}
+
+type VerifiedAccount = {uid: string; isAnonymous: boolean};
+
+// Resolves the verified Firebase user for a request, or null when no token is
+// attached. Anonymous Firebase users are reported with isAnonymous=true so
+// callers keep them on session-keyed storage — only a real (signed-in) account
+// owns a uid-keyed record.
+async function verifiedAccount(request: HttpRequest): Promise<VerifiedAccount | null> {
+  const authorization = requestHeader(request, "authorization");
+
+  if (!authorization) {
+    return null;
+  }
+
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
+  if (!match?.[1]) {
+    throw new Error("Invalid authorization header.");
+  }
+
+  const decodedToken = await firebaseAuth.verifyIdToken(match[1]);
+  return {uid: decodedToken.uid, isAnonymous: decodedToken.firebase?.sign_in_provider === "anonymous"};
+}
+
+// Firestore document id for a real account's uid-keyed session record. base64url
+// keeps the raw uid out of the document path while staying deterministic.
+function accountSessionDocId(uid: string): string {
+  return Buffer.from(uid).toString("base64url");
+}
+
+// Stable client-facing handle for an account's session. The frontend stores it
+// like any sessionId, but for an authenticated request the backend always keys
+// storage by the verified uid, so the handle is only a transport token. It
+// matches anonymousSessionIdPattern (base64url chars, 38 chars for a 28-char
+// uid) so the existing frontend session-id validation accepts it.
+function accountSessionHandle(uid: string): string {
+  return accountSessionDocId(uid);
 }
 
 function rejectUnsupportedRecommenderMethod(
@@ -2462,11 +2525,101 @@ export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (requ
   }
 });
 
+// Loads a real account's uid-keyed session. On the very first load for an
+// account (no stored record yet) it adopts the anonymous session the request
+// arrived with — the in-progress onboarding the user just built — so signing in
+// mid-onboarding never discards their plan. Later loads (including on a fresh
+// device) just return the synced account record.
+async function handleAccountSessionGet(
+  request: HttpRequest,
+  response: HttpResponse,
+  uid: string,
+): Promise<void> {
+  const accountRef = accountSessionsRef.doc(accountSessionDocId(uid));
+  const snapshot = await accountRef.get();
+
+  if (!snapshot.exists) {
+    const requestedSessionId = typeof request.query.sessionId === "string" ? request.query.sessionId : "";
+    if (anonymousSessionIdPattern.test(requestedSessionId)) {
+      const anonRef = anonymousSessionsRef.doc(requestedSessionId);
+      const anonSnapshot = await anonRef.get();
+      if (anonSnapshot.exists && anonSnapshot.data()?.settings) {
+        const adopted = normalizeSessionSettings(anonSnapshot.data()?.settings);
+        // Account sessions never expire (expiresAt is explicitly deleted so no TTL
+        // policy can reap them); only anonymous sessions carry a rolling TTL.
+        await accountRef.set(
+          {
+            createdAt: FieldValue.serverTimestamp(),
+            uid,
+            schemaVersion: 1,
+            settingsVersion: sessionSettingsVersion,
+            settings: adopted,
+            updatedAt: FieldValue.serverTimestamp(),
+            expiresAt: FieldValue.delete(),
+          },
+          {merge: true},
+        );
+        // The anonymous save has now been migrated into the account record, so
+        // drop the redundant anonymous session document.
+        await anonRef.delete();
+        sendSessionJson(response, accountSessionHandle(uid), adopted, null);
+        return;
+      }
+    }
+
+    sendSessionJson(response, accountSessionHandle(uid), null, null);
+    return;
+  }
+
+  const settings = normalizeSessionSettings(snapshot.data()?.settings);
+  await accountRef.set({updatedAt: FieldValue.serverTimestamp(), expiresAt: FieldValue.delete()}, {merge: true});
+  sendSessionJson(response, accountSessionHandle(uid), settings, null);
+}
+
+// Permanently deletes a signed-in account: its synced profile document and the
+// Firebase Auth user itself. Called via DELETE once the user confirms in
+// Settings. Anonymous sessions have no account to delete — they lapse via TTL.
+async function handleAccountSessionDelete(
+  response: HttpResponse,
+  uid: string,
+): Promise<void> {
+  await accountSessionsRef.doc(accountSessionDocId(uid)).delete();
+  await firebaseAuth.deleteUser(uid);
+  response.status(200).json({deleted: true});
+}
+
 export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, response) => {
   if (rejectUnsupportedSessionMethod(request, response)) return;
 
   try {
+    let account: VerifiedAccount | null;
+    try {
+      account = await verifiedAccount(request);
+    } catch {
+      response.status(401).json({error: "Invalid Firebase authentication token."});
+      return;
+    }
+
+    // A real (non-anonymous) account keys its data directly by uid. Anonymous
+    // users — including anonymous Firebase users — stay keyed by the session id
+    // their browser holds in localStorage.
+    const accountUid = account !== null && !account.isAnonymous ? account.uid : null;
+
+    if (request.method === "DELETE") {
+      if (accountUid === null) {
+        response.status(401).json({error: "A signed-in account is required to delete an account."});
+        return;
+      }
+      await handleAccountSessionDelete(response, accountUid);
+      return;
+    }
+
     if (request.method === "GET" || request.method === "HEAD") {
+      if (accountUid !== null) {
+        await handleAccountSessionGet(request, response, accountUid);
+        return;
+      }
+
       const requestedSessionId = request.query.sessionId;
       const sessionId = typeof requestedSessionId === "string" ? requestedSessionId : "";
 
@@ -2486,15 +2639,7 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       const data = snapshot.data();
       const settings = normalizeSessionSettings(data?.settings);
       const expiresAt = sessionExpiryTimestamp();
-
-      await sessionRef.set(
-        {
-          updatedAt: FieldValue.serverTimestamp(),
-          expiresAt,
-        },
-        {merge: true},
-      );
-
+      await sessionRef.set({updatedAt: FieldValue.serverTimestamp(), expiresAt}, {merge: true});
       sendSessionJson(response, sessionId, settings, expiresAt);
       return;
     }
@@ -2506,12 +2651,6 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       return;
     }
 
-    const requestedSessionId = body?.sessionId;
-    const sessionId =
-      typeof requestedSessionId === "string" &&
-      anonymousSessionIdPattern.test(requestedSessionId) ?
-        requestedSessionId :
-        randomUUID();
     let settings: SessionSettings;
 
     try {
@@ -2521,9 +2660,36 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       return;
     }
 
+    const expiresAt = sessionExpiryTimestamp();
+
+    if (accountUid !== null) {
+      const accountRef = accountSessionsRef.doc(accountSessionDocId(accountUid));
+      const existing = await accountRef.get();
+      // Account sessions never expire — clear any TTL field a previous write left.
+      await accountRef.set(
+        {
+          ...(existing.exists ? {} : {createdAt: FieldValue.serverTimestamp()}),
+          uid: accountUid,
+          schemaVersion: 1,
+          settingsVersion: sessionSettingsVersion,
+          settings,
+          updatedAt: FieldValue.serverTimestamp(),
+          expiresAt: FieldValue.delete(),
+        },
+        {merge: true},
+      );
+      sendSessionJson(response, accountSessionHandle(accountUid), settings, null);
+      return;
+    }
+
+    const requestedSessionId = body?.sessionId;
+    const sessionId =
+      typeof requestedSessionId === "string" &&
+      anonymousSessionIdPattern.test(requestedSessionId) ?
+        requestedSessionId :
+        randomUUID();
     const sessionRef = anonymousSessionsRef.doc(sessionId);
     const existingSession = await sessionRef.get();
-    const expiresAt = sessionExpiryTimestamp();
 
     await sessionRef.set(
       {
