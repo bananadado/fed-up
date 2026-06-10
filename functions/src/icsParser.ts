@@ -1,4 +1,4 @@
-// Synced from src/prototype/calendarImport/icsParser.ts
+// Synced from src/deadline-food/calendarImport/icsParser.ts
 
 export type CalendarEvent = {
   id: string;

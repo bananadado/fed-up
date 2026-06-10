@@ -13,7 +13,7 @@ import { createDeadlineModeCommands, deadlineModeReducer, initialDeadlineModeSta
 import type { DeadlineModeCommands, DeadlineModeState } from "@/application/deadlineMode";
 import { createEventBus } from "@/application/eventBus";
 import { fetchDeadlineBootstrap } from "@/adapters/deadlineFoodApi";
-import type { PrototypeEvent } from "@/domain/types";
+import type { DeadlineEvent } from "@/domain/types";
 
 type DeadlineModeContextValue = {
   state: DeadlineModeState;
@@ -24,7 +24,7 @@ const DeadlineModeContext = createContext<DeadlineModeContextValue | null>(null)
 
 export function DeadlineModeProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(deadlineModeReducer, initialDeadlineModeState);
-  const [eventBus] = useState(() => createEventBus<PrototypeEvent>());
+  const [eventBus] = useState(() => createEventBus<DeadlineEvent>());
 
   useEffect(() => {
     return eventBus.subscribe(event => dispatch(event));
@@ -50,7 +50,7 @@ export function DeadlineModeProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const publish = useCallback((event: PrototypeEvent) => {
+  const publish = useCallback((event: DeadlineEvent) => {
     eventBus.publish(event);
   }, [eventBus]);
 
