@@ -227,7 +227,7 @@ export function PlanScreen({
                                       className="w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                                     >
                                       <div className="flex flex-wrap items-center gap-2">
-                                        {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
+                                        {planMeal?.rescued && <Badge tone="blue">Swapped</Badge>}
                                         {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
                                         {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                         <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
@@ -316,8 +316,9 @@ export function PlanScreen({
                                       <p className="mt-1 text-sm text-stone-500">Choose a meal for this slot.</p>
                                     </div>
                                   )}
-                                  {(planMeal?.batchCook || planMeal?.leftoverOf) && (
+                                  {(planMeal?.rescued || planMeal?.batchCook || planMeal?.leftoverOf) && (
                                     <div className="mt-2 flex flex-wrap gap-1.5">
+                                      {planMeal?.rescued && <Badge tone="blue">Swapped</Badge>}
                                       {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
                                       {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                     </div>
