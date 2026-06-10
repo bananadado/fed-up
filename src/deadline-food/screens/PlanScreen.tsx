@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
 import type { Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
+import { MealThumbnail } from "../components/MealThumbnail";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal, slotLabels } from "../components/SwapModal";
@@ -150,11 +151,14 @@ export function PlanScreen({
       {addToPlanMealId && (() => {
         const meal = discoverSaved.find((m) => m.id === addToPlanMealId) ?? getMealById(addToPlanMealId, customRecipes);
         return (
-          <div className="mb-6 flex items-center justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
-            <p className="text-sm text-emerald-900">
-              <span className="font-semibold">{meal.image} {meal.name}</span>
-              {" "}— tap <strong>Change</strong> on any meal to assign it to that slot.
-            </p>
+	          <div className="mb-6 flex items-center justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
+	            <p className="flex min-w-0 flex-1 items-center gap-2 text-sm text-emerald-900">
+	              <MealThumbnail meal={meal} className="h-8 w-8" iconClassName="text-xl" />
+	              <span className="min-w-0">
+	                <span className="font-semibold">{meal.name}</span>
+	                {" "}— tap <strong>Change</strong> on any meal to assign it to that slot.
+	              </span>
+	            </p>
             <button type="button" onClick={() => setAddToPlanMealId(null)} className="shrink-0 rounded-lg p-1 text-emerald-700 hover:bg-emerald-100" aria-label="Dismiss">
               <X size={16} />
             </button>
@@ -234,9 +238,10 @@ export function PlanScreen({
                                           {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Easy option</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
                                         </Badge>
                                       </div>
-                                      <p className="mt-3 break-words text-sm font-semibold leading-5">
-                                        {meal.image} {meal.name}
-                                      </p>
+	                                      <MealThumbnail meal={meal} className="mt-3 h-24 w-full rounded-lg bg-white" iconClassName="text-5xl" />
+	                                      <p className="mt-3 break-words text-sm font-semibold leading-5">
+	                                        {meal.name}
+	                                      </p>
                                       <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-600">
                                         <span className="flex items-center gap-1">
                                           <Clock3 size={14} /> {meal.time} mins
@@ -303,9 +308,10 @@ export function PlanScreen({
                                   <p className="text-xs font-semibold uppercase text-stone-500">{slotLabels[slot]}</p>
                                   {meal ? (
                                     <button type="button" onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); onSelectMeal(meal.id); }} className="mt-2 w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700">
-                                      <p className="break-words font-semibold leading-5">
-                                        {meal.image} {meal.name}
-                                      </p>
+	                                      <span className="flex items-center gap-3">
+	                                        <MealThumbnail meal={meal} className="h-12 w-12 rounded-lg bg-white" iconClassName="text-3xl" />
+	                                        <span className="min-w-0 flex-1 break-words font-semibold leading-5">{meal.name}</span>
+	                                      </span>
                                       <p className="mt-1 text-sm text-stone-500">
                                         {meal.time} mins - {money(meal.price)}
                                       </p>
