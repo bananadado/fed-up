@@ -2,16 +2,15 @@
 /**
  * Populate the nutrition cache for every ingredient used by any recipe.
  *
- * Reads the recipe list from the recommender, de-duplicates ingredient names,
+ * Reads the recipe list from Firestore by default, de-duplicates ingredient names,
  * looks each one up on USDA FoodData Central, and writes the result into the
  * Firestore `openFoodFactsNutritionCache` collection (the same cache the live
  * `deadlineFoodNutrition` function reads). Each cached product is tagged with
- * its `provider`. Ingredients USDA cannot match are cached as misses and listed
- * in a .txt report.
+ * its `provider`. Ingredients neither USDA nor OpenFoodFacts can match are
+ * cached as misses and listed in a .txt report.
  *
- * OpenFoodFacts is OFF by default — its category search returns nonsense for
- * plain ingredients. Pass --openfoodfacts to re-enable it as a fallback for
- * USDA misses.
+ * OpenFoodFacts fallback is ON by default because this script is a cache
+ * backfill/review tool. Run with --no-openfoodfacts if you only want USDA.
  *
  * Run this BEFORE `recalc-nutrition.ts`.
  *
@@ -19,9 +18,10 @@
  *   bun scripts/populate-nutrition-cache.ts [options]
  *
  * Options:
+ *   --source <name>           firestore | recommender | both (default firestore)
  *   --recommender-url <url>   Override RECOMMENDER_API_URL
- *   --openfoodfacts           Fall back to OpenFoodFacts for USDA misses (noisy;
- *                             off by default)
+ *   --no-openfoodfacts        Do not fall back to OpenFoodFacts for USDA misses
+ *   --openfoodfacts           Deprecated no-op; fallback is now on by default
  *   --delay <ms>              Delay between OpenFoodFacts requests (default 6500;
  *                             only used with --openfoodfacts)
  *   --usda-delay <ms>         Delay between USDA requests (default 1100; the FDC
@@ -43,11 +43,14 @@
 import { initFirebase, getFirestore } from "./ingest/firebase.ts";
 import {
   cacheKeyForName,
+  curatedNutritionProductForIngredient,
+  estimateIngredientNutrition,
   readCachedProduct,
   writeCachedProduct,
 } from "./ingest/openfoodfacts.ts";
-import { listRecipes, recommenderUrl } from "./ingest/recommender.ts";
+import { listRecipes, recommenderUrl, type RecipeOut } from "./ingest/recommender.ts";
 import { resolveIngredientProduct } from "./ingest/resolve.ts";
+import type { Ingredient } from "./ingest/types.ts";
 import { USDA_API_KEY } from "./ingest/usda.ts";
 
 // ── CLI args ───────────────────────────────────────────────────────────────
@@ -63,13 +66,19 @@ function option(name: string): string | undefined {
 
 const isDryRun = flag("--dry-run");
 const force = flag("--force");
-const useOpenFoodFacts = flag("--openfoodfacts");
+const useOpenFoodFacts = !flag("--no-openfoodfacts");
 const delayMs = Number(option("--delay") ?? 6500);
 const usdaDelayMs = Number(option("--usda-delay") ?? 1100);
 const ttlMs = Number(option("--ttl-days") ?? 90) * 24 * 60 * 60 * 1000;
 const missTtlMs = Number(option("--miss-ttl-days") ?? 14) * 24 * 60 * 60 * 1000;
 const unmatchedOut = option("--unmatched-out") ?? "scripts/ingest/unmatched-ingredients.txt";
 const baseUrl = recommenderUrl(option("--recommender-url"));
+const recipeSource = option("--source") ?? "firestore";
+
+type IngredientRecipe = {
+  id: string;
+  ingredients: Ingredient[];
+};
 
 function progress(done: number, total: number, name: string) {
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
@@ -78,6 +87,53 @@ function progress(done: number, total: number, name: string) {
   process.stdout.write(
     `  ${bar} ${String(pct).padStart(3)}% (${done}/${total}) ${name.slice(0, 35).padEnd(35)}\r`,
   );
+}
+
+function isIngredient(value: unknown): value is Ingredient {
+  const ingredient = value as Partial<Ingredient> | null;
+  return (
+    ingredient !== null &&
+    typeof ingredient === "object" &&
+    typeof ingredient.name === "string" &&
+    typeof ingredient.quantity === "number" &&
+    typeof ingredient.unit === "string"
+  );
+}
+
+async function listFirestoreRecipes(): Promise<IngredientRecipe[]> {
+  const snapshot = await getFirestore().collection("recipes").get();
+  return snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: typeof data.id === "string" ? data.id : doc.id,
+      ingredients: Array.isArray(data.ingredients) ? data.ingredients.filter(isIngredient) : [],
+    };
+  });
+}
+
+async function listIngredientRecipes(): Promise<IngredientRecipe[]> {
+  if (!["firestore", "recommender", "both"].includes(recipeSource)) {
+    throw new Error("--source must be firestore, recommender, or both");
+  }
+
+  const recipesById = new Map<string, IngredientRecipe>();
+
+  if (recipeSource === "firestore" || recipeSource === "both") {
+    const recipes = await listFirestoreRecipes();
+    for (const recipe of recipes) recipesById.set(recipe.id, recipe);
+  }
+
+  if (recipeSource === "recommender" || recipeSource === "both") {
+    const recipes: RecipeOut[] = await listRecipes(baseUrl);
+    for (const recipe of recipes) {
+      recipesById.set(recipe.id, {
+        id: recipe.id,
+        ingredients: recipe.ingredients ?? [],
+      });
+    }
+  }
+
+  return [...recipesById.values()];
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
@@ -97,8 +153,8 @@ async function main() {
   initFirebase();
   const db = getFirestore();
 
-  console.log(`\nFetching recipes from ${baseUrl}…`);
-  const recipes = await listRecipes(baseUrl);
+  console.log(`\nFetching recipes from ${recipeSource}${recipeSource !== "firestore" ? ` (${baseUrl})` : ""}…`);
+  const recipes = await listIngredientRecipes();
   console.log(`Fetched ${recipes.length} recipes`);
 
   // Unique ingredient names, keyed by their normalised cache key.
@@ -117,6 +173,7 @@ async function main() {
 
   let matchedUsda = 0;
   let matchedOff = 0;
+  let curatedMatches = 0;
   let cachedHits = 0;
   const unmatched: string[] = [];
   const errors: string[] = [];
@@ -124,16 +181,32 @@ async function main() {
 
   for (const name of unique) {
     const cacheKey = cacheKeyForName(name);
+    const curated = curatedNutritionProductForIngredient(name);
+
+    if (curated) {
+      if (!isDryRun) {
+        await writeCachedProduct(db, cacheKey, curated, ttlMs);
+      }
+      curatedMatches++;
+      matchedUsda++;
+      progress(++done, unique.length, name);
+      continue;
+    }
 
     if (!force) {
       const cached = await readCachedProduct(db, cacheKey);
       if (cached !== undefined) {
-        cachedHits++;
-        if (cached === null) unmatched.push(name);
-        else if (cached.provider === "USDA") matchedUsda++;
-        else matchedOff++;
-        progress(++done, unique.length, name);
-        continue;
+        const isUsable =
+          cached === null ||
+          estimateIngredientNutrition({ name, quantity: 100, unit: "g" }, cached) !== null;
+        if (isUsable) {
+          cachedHits++;
+          if (cached === null) unmatched.push(name);
+          else if (cached.provider === "USDA") matchedUsda++;
+          else matchedOff++;
+          progress(++done, unique.length, name);
+          continue;
+        }
       }
     }
 
@@ -179,6 +252,7 @@ async function main() {
 
   console.log("\n=== Summary ===");
   console.log(`  unique ingredients   ${unique.length}`);
+  console.log(`  curated overrides    ${curatedMatches}`);
   console.log(`  matched (USDA)       ${matchedUsda}`);
   if (useOpenFoodFacts) console.log(`  matched (OFF)        ${matchedOff}`);
   console.log(`  unmatched            ${unmatched.length}`);

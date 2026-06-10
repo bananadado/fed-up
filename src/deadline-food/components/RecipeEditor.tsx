@@ -371,8 +371,13 @@ export function RecipeEditor({
   const hasErrors = errors.name || errors.ingredients || errors.servings || errors.totalCost;
 
   const mealId = meal?.id;
-  const triggerNutritionFetch = useCallback(
-    (sanitised: RecipeIngredient[], source: "auto" | "manual") => {
+  const estimateNutritionFromIngredients = useCallback(
+    (sanitised: RecipeIngredient[], trigger: "auto" | "manual") => {
+      if (sanitised.length === 0) {
+        setNutritionStatus("Add ingredients to estimate nutrition");
+        return;
+      }
+
       if (cancelFetchRef.current) cancelFetchRef.current.cancelled = true;
       const signal = { cancelled: false };
       cancelFetchRef.current = signal;
@@ -400,7 +405,7 @@ export function RecipeEditor({
             ingredient_count: sanitised.length,
             matched_count: nutrition.source?.matchedIngredients?.length ?? 0,
             missing_count: missing.length,
-            trigger: source,
+            trigger,
           });
         })
         .catch((error: unknown) => {
@@ -437,7 +442,7 @@ export function RecipeEditor({
   }
 
   function estimateNutrition() {
-    triggerNutritionFetch(ingredients, "manual");
+    estimateNutritionFromIngredients(ingredients, "manual");
   }
 
   useEffect(() => {
@@ -456,7 +461,7 @@ export function RecipeEditor({
     autoNutritionTimerRef.current = window.setTimeout(() => {
       autoNutritionTimerRef.current = null;
       if (sanitised.length === 0) return;
-      triggerNutritionFetch(sanitised, "auto");
+      estimateNutritionFromIngredients(sanitised, "auto");
     }, 1500);
 
     return () => {
@@ -465,7 +470,7 @@ export function RecipeEditor({
         autoNutritionTimerRef.current = null;
       }
     };
-  }, [form.ingredients, triggerNutritionFetch]);
+  }, [estimateNutritionFromIngredients, form.ingredients]);
 
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null;
@@ -554,7 +559,7 @@ export function RecipeEditor({
   const hasHeader = title || onCancel;
 
   const nutritionStatusText = nutritionLoading
-    ? "Auto-filling from ingredients…"
+    ? "Auto-filling from ingredients..."
     : ingredients.length === 0
       ? "Add ingredients to auto-fill nutrition"
       : nutritionStatus
@@ -717,7 +722,7 @@ export function RecipeEditor({
               disabled={nutritionLoading || ingredients.length === 0}
               className="shrink-0 px-3 py-1.5 text-xs"
             >
-              <RefreshCcw size={13} /> {nutritionLoading ? "Filling…" : "Refresh"}
+              <RefreshCcw size={13} /> {nutritionLoading ? "Filling..." : "Refresh"}
             </AppButton>
           </div>
         </div>

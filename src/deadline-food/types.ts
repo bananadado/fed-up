@@ -19,7 +19,7 @@ export type Nutrition = {
 };
 
 export type NutritionSource = {
-  provider: "manual" | "USDA" | "OpenFoodFacts" | "USDA + OpenFoodFacts";
+  provider: "manual" | "ingredient-nutrition-table" | "USDA" | "OpenFoodFacts" | "USDA + OpenFoodFacts";
   label: string;
   fetchedAt?: string;
   matchedIngredients?: NutritionMatch[];
