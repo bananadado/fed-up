@@ -44,7 +44,7 @@ export function RecipeDetailScreen({
   setDiscoverSaved,
   sharedRecipe,
   account,
-  recipeUnavailable = false,
+  sharedRecipeStatus = "idle",
   setScreen,
   backTo,
   onSelectMeal,
@@ -61,8 +61,10 @@ export function RecipeDetailScreen({
   sharedRecipe?: Meal | null;
   /** Current account — publishing/owning a recipe requires a signed-in account. */
   account: AccountSummary;
-  /** A shared recipe link that resolved to nothing (unpublished/deleted) (#213). */
-  recipeUnavailable?: boolean;
+  /** Resolution state of a `#/recipe/<shareId>` deep link the viewer doesn't
+   * have locally: "loading" while fetching, "unavailable" when it can't be
+   * resolved (unpublished/deleted/broken link) (#213 follow-up). */
+  sharedRecipeStatus?: "idle" | "loading" | "unavailable";
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
   onSelectMeal: (mealId: string) => void;
@@ -135,14 +137,24 @@ export function RecipeDetailScreen({
 
   const computedRating = reviews.length > 0 ? reviewsRating : meal?.rating ?? 0;
 
-  if (recipeUnavailable) {
+  if (sharedRecipeStatus === "loading") {
+    // Resolving a shared link the viewer doesn't have locally — show a neutral
+    // loading state rather than the default recipe (#213 follow-up).
+    return (
+      <div className="mx-auto max-w-2xl text-center text-stone-600">
+        <p className="text-lg font-semibold">Loading recipe…</p>
+      </div>
+    );
+  }
+
+  if (sharedRecipeStatus === "unavailable") {
     // A shared link that resolved to nothing — the recipe was unpublished or
-    // deleted by its owner (#213 follow-up). Neutral, not framed as an error.
+    // deleted by its owner, or the link is broken (#213 follow-up). Neutral.
     return (
       <div className="mx-auto max-w-2xl text-center">
-        <h1 className="text-3xl font-bold">This recipe is no longer available</h1>
+        <h1 className="text-3xl font-bold">This recipe isn't available</h1>
         <p className="mt-3 text-stone-600">
-          The link may be out of date, or its owner has unpublished or removed it.
+          The link may be out of date, or its owner has unpublished or removed the recipe.
         </p>
         <AppButton className="mt-6" onClick={() => setScreen("recipes")}>
           Browse recipes
