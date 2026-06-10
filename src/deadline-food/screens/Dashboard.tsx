@@ -121,7 +121,7 @@ export function Dashboard({
                 <button
                   type="button"
                   onClick={() => { track("dashboard_next_meal_clicked", { meal_id: nextMeal.mealId }); track("meal_card_view_clicked", { day: nextMeal.day, meal_slot: nextMeal.slot, meal_id: nextMeal.mealId, source: "dashboard_next_meal" }); onSelectMeal(nextMeal.mealId); }}
-                  className="mt-4 break-words text-left text-xl font-bold transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                  className="mt-4 block w-full break-words rounded-lg text-left text-xl font-bold transition hover:bg-emerald-50 active:bg-emerald-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                 >
                   {nextMeal.meal.image} {nextMeal.meal.name}
                 </button>
@@ -218,11 +218,11 @@ export function Dashboard({
                         const meal = getMealById(planMeal.mealId, customRecipes);
 
                         return (
-                          <div key={planMeal.slot} className="min-w-0 rounded-lg bg-white px-3 py-2">
+                          <div key={planMeal.slot} className="min-w-0 rounded-lg bg-white px-3 py-2 transition hover:bg-emerald-50 hover:ring-1 hover:ring-emerald-200">
                             <button
                               type="button"
                               onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: planMeal.slot, meal_id: planMeal.mealId, source: "dashboard_upcoming" }); onSelectMeal(planMeal.mealId); }}
-                              className="block w-full text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                              className="block w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                             >
                               <p className="text-[11px] font-semibold uppercase text-stone-500">{planMeal.slot}</p>
                               <p className="mt-1 truncate text-sm font-medium">
