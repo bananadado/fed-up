@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { clockTimeInputPattern } from "@/lib/timeInput";
 import { cookingEffortReason, workloadLabel } from "../workloadModel";
 import type { TrackEvent } from "../analytics";
-import { getMealById } from "../utils";
+import { mealById } from "../utils";
 import {
   buildCookingIcs,
   buildGoogleCalendarUrl,
@@ -277,7 +277,7 @@ function CookingScheduler({
     const byId = new Map<string, Meal>();
     plan.forEach((entry) => {
       entry.meals.forEach((planMeal) => {
-        const meal = getMealById(planMeal.mealId, customRecipes);
+        const meal = mealById(planMeal.mealId, customRecipes);
         if (meal && !byId.has(meal.id)) byId.set(meal.id, meal);
       });
     });
