@@ -128,11 +128,11 @@ async def create_recipe(recipe: RecipeIn, db: AsyncSession = Depends(get_db)):
         text("""
             INSERT INTO recipes (id, name, meal_type, meal_slots, price_pence, prep_minutes,
                 difficulty, dietary_tags, allergens, suitability_tags, ingredients, instructions,
-                cuisine, flavor_profile, techniques, equipment, nutrition, source, note,
+                cuisine, flavor_profile, techniques, equipment, nutrition, source, note, verified,
                 embedding_text, embedding)
             VALUES (:id, :name, :meal_type, :meal_slots, :price_pence, :prep_minutes,
                 :difficulty, :dietary_tags, :allergens, :suitability_tags, CAST(:ingredients AS jsonb), :instructions,
-                :cuisine, :flavor_profile, :techniques, :equipment, CAST(:nutrition AS jsonb), :source, :note,
+                :cuisine, :flavor_profile, :techniques, :equipment, CAST(:nutrition AS jsonb), :source, :note, :verified,
                 :embedding_text, CAST(:embedding AS vector))
             ON CONFLICT (id) DO UPDATE SET
                 name = EXCLUDED.name, meal_type = EXCLUDED.meal_type, meal_slots = EXCLUDED.meal_slots,
@@ -143,6 +143,7 @@ async def create_recipe(recipe: RecipeIn, db: AsyncSession = Depends(get_db)):
                 cuisine = EXCLUDED.cuisine, flavor_profile = EXCLUDED.flavor_profile,
                 techniques = EXCLUDED.techniques, equipment = EXCLUDED.equipment,
                 nutrition = EXCLUDED.nutrition, source = EXCLUDED.source, note = EXCLUDED.note,
+                verified = EXCLUDED.verified,
                 embedding_text = EXCLUDED.embedding_text, embedding = EXCLUDED.embedding,
                 updated_at = now()
         """),
@@ -474,5 +475,6 @@ def _row_to_recipe(row) -> RecipeOut:
         nutrition=nutrition,
         source=d.get("source"),
         note=d.get("note"),
+        verified=bool(d.get("verified", False)),
         embedding_text=d.get("embedding_text"),
     )

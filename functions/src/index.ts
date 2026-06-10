@@ -44,6 +44,28 @@ const accountSessionsRef = firestore.collection("accountSessions");
 const openFoodFactsCacheRef = firestore.collection("openFoodFactsNutritionCache");
 const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
+// Public, URL-safe share slug derived deterministically from the canonical
+// recipe id (#213). Must stay in lockstep with shareIdForRecipe() in
+// src/deadline-food/recipeShare.ts (identical cyrb53 implementation) so links
+// resolve on either side.
+function cyrb53(str: string, seed = 0): number {
+  let h1 = 0xdeadbeef ^ seed;
+  let h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+}
+
+function shareIdForRecipe(recipeId: string): string {
+  return cyrb53(recipeId).toString(36);
+}
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
 const sessionSettingsVersion = 4;
@@ -354,16 +376,49 @@ async function ensureRecipesSeeded(): Promise<void> {
   for (const recipe of appRecipes) {
     batch.set(recipesRef.doc(recipe.id), {
       ...recipe,
+      // All seeded recipes are curated/verified content (#213).
+      verified: true,
+      shareId: shareIdForRecipe(recipe.id),
       updatedAt: FieldValue.serverTimestamp(),
     });
   }
   await batch.commit();
 }
 
+// Retroactively stamp a stable share slug on any recipe doc missing one (#213).
+// Idempotent: only writes docs without a shareId, so it is safe to run on every
+// read and naturally backfills recipes seeded before sharing existed.
+async function ensureShareIds(): Promise<void> {
+  const snapshot = await recipesRef.get();
+  const missing = snapshot.docs.filter((doc) => typeof doc.get("shareId") !== "string");
+  if (missing.length === 0) return;
+
+  const batch = firestore.batch();
+  for (const doc of missing) {
+    batch.set(doc.ref, {shareId: shareIdForRecipe(doc.id)}, {merge: true});
+  }
+  await batch.commit();
+}
+
 async function listRecipes(): Promise<UnknownRecord[]> {
   await ensureRecipesSeeded();
+  await ensureShareIds();
   const snapshot = await recipesRef.get();
   return snapshot.docs.map((doc) => doc.data() as UnknownRecord);
+}
+
+// Fetch a single canonical recipe by its public share slug (#213). Reviews and
+// the derived rating live in the recipeReviews collection, so strip them here
+// just like listRecipes.
+async function recipeByShareId(shareId: string): Promise<UnknownRecord | null> {
+  await ensureRecipesSeeded();
+  await ensureShareIds();
+  const snapshot = await recipesRef.where("shareId", "==", shareId).limit(1).get();
+  if (snapshot.empty) return null;
+  const data = snapshot.docs[0].data() as UnknownRecord;
+  delete data.reviews;
+  delete data.rating;
+  return data;
 }
 
 // Map a canonical app recipe (Firestore shape) to the recommender's
@@ -415,6 +470,7 @@ function toRecommenderRecipePayload(recipe: UnknownRecord): UnknownRecord {
     },
     source: str(recipe.source) || null,
     note: str(recipe.note) || null,
+    verified: recipe.verified === true,
   };
 }
 
@@ -1732,6 +1788,27 @@ export const deadlineFoodRecipes = onRequest(publicHttpOptions, async (request, 
   }
 });
 
+export const deadlineFoodRecipe = onRequest(publicHttpOptions, async (request, response) => {
+  if (rejectUnsupportedMethod(request, response)) return;
+
+  const shareId = typeof request.query.shareId === "string" ? request.query.shareId : "";
+  if (!shareId || !recipeIdPattern.test(shareId)) {
+    response.status(400).json({error: "A valid shareId is required"});
+    return;
+  }
+
+  try {
+    const recipe = await recipeByShareId(shareId);
+    if (!recipe) {
+      response.status(404).json({error: "Recipe not found"});
+      return;
+    }
+    sendJson(response, recipe);
+  } catch (error) {
+    sendError(response, error);
+  }
+});
+
 export const deadlineFoodRecipeReviews = onRequest(publicHttpOptions, async (request, response) => {
   if (rejectUnsupportedReviewMethod(request, response)) return;
 
@@ -1783,6 +1860,11 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
     const recipeContent = {...body};
     delete recipeContent.reviews;
     delete recipeContent.rating;
+    // User-contributed recipes are never verified, regardless of the request
+    // body (#213). Only curated seed content is verified (see ensureRecipesSeeded).
+    recipeContent.verified = false;
+    body.verified = false;
+    recipeContent.shareId = shareIdForRecipe(recipeId);
     await recipesRef.doc(recipeId).set(
       {...recipeContent, updatedAt: FieldValue.serverTimestamp()},
       {merge: true},

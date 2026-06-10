@@ -56,6 +56,10 @@ export type Meal = {
   photoUrl?: string;
   isUserCreated?: boolean;
   published?: boolean;
+  /** Curated/seed content. User-contributed recipes are never verified (#213). */
+  verified?: boolean;
+  /** Public, URL-safe share slug (hash of `id`); set for recipes in Firestore. */
+  shareId?: string;
 };
 
 export type PlanMeal = {

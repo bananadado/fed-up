@@ -161,4 +161,28 @@ describe("recommender API helpers", () => {
 
     expect(meal.photoUrl).toBe("https://storage.googleapis.com/bucket/recipe-photos/custom.jpg");
   });
+
+  test("maps the verified flag from the recommender payload", () => {
+    const base = {
+      id: "r1",
+      name: "Recipe",
+      meal_type: "cook",
+      meal_slots: ["dinner"],
+      price_pence: 250,
+      prep_minutes: 20,
+      dietary_tags: [],
+      allergens: [],
+      suitability_tags: [],
+      ingredients: [],
+      instructions: [],
+      nutrition: null,
+      source: null,
+      note: null,
+    };
+
+    expect(toMeal({ ...base, verified: true }).verified).toBe(true);
+    expect(toMeal({ ...base, verified: false }).verified).toBe(false);
+    // Absent flag (older payloads) is treated as not verified.
+    expect(toMeal(base).verified).toBe(false);
+  });
 });

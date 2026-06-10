@@ -21,7 +21,8 @@ import {
   type IcsSubscription,
   type PrivacyConsent,
 } from "./sessionPersistence";
-import { syncRecommenderUser } from "./recommenderApi";
+import { fetchSharedRecipe, syncRecommenderUser } from "./recommenderApi";
+import { recipeShareToken, shareIdForRecipe } from "./recipeShare";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
 import {
   completeDeadlineFoodEmailLinkSignIn,
@@ -56,6 +57,11 @@ function screenFromLocation(): Screen | null {
 
   if (window.location.pathname.replace(/\/$/, "") === PRIVACY_POLICY_URL) {
     return "privacy-policy";
+  }
+
+  // Deep link to a single recipe by its public share slug (#213).
+  if (recipeShareToken(window.location.hash)) {
+    return "recipe-detail";
   }
 
   const value = window.location.hash.replace("#/", "") as Screen;
@@ -145,6 +151,12 @@ export function DeadlineFoodApp() {
   const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [privacyConsent, setPrivacyConsentState] = useState<PrivacyConsent | undefined>(undefined);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
+  // A recipe fetched from a `#/recipe/<shareId>` deep link that the viewer does
+  // not already have locally (e.g. a friend's shared community recipe) (#213).
+  const [sharedRecipe, setSharedRecipe] = useState<Meal | null>(null);
+  // Bumped on every hashchange/popstate so the deep-link resolver re-runs even
+  // when navigating between two recipe URLs (the screen stays "recipe-detail").
+  const [locationTick, setLocationTick] = useState(0);
   const [calendarSkipped, setCalendarSkipped] = useState(false);
   // Auto-planning (issue #66): the signature/timestamp the current plan was
   // generated from, so we can detect when it has gone stale.
@@ -171,14 +183,14 @@ export function DeadlineFoodApp() {
     setPrivacyConsentState(consent);
   }, [enableSessionPersistence]);
 
-  const navigateScreen = useCallback((nextScreen: Screen) => {
+  const navigateScreen = useCallback((nextScreen: Screen, url?: string) => {
     if (screen === nextScreen) return;
     if (nextScreen !== "recipes") setDiscoverContext(null);
     enableSessionPersistence();
     routeHistory.current = [...routeHistory.current, screen].slice(-20);
     syncPreviousScreen();
     pendingHashScreen.current = nextScreen;
-    window.history.pushState({ screen: nextScreen }, "", urlForScreen(nextScreen));
+    window.history.pushState({ screen: nextScreen }, "", url ?? urlForScreen(nextScreen));
     setScreen(nextScreen);
   }, [enableSessionPersistence, screen, syncPreviousScreen]);
 
@@ -326,6 +338,7 @@ export function DeadlineFoodApp() {
 
   useEffect(() => {
     function onLocationChange() {
+      setLocationTick((tick) => tick + 1);
       const nextScreen = screenFromLocation();
       if (nextScreen) {
         if (pendingHashScreen.current === nextScreen) {
@@ -875,8 +888,48 @@ export function DeadlineFoodApp() {
   function openRecipe(mealId: string) {
     track("recipe_viewed", { meal_id: mealId, source_screen: activeScreen });
     setSelectedMealId(mealId);
-    navigateScreen("recipe-detail");
+    setSharedRecipe(null);
+    // Deep-linkable, shareable URL keyed by the recipe's public share slug (#213).
+    navigateScreen("recipe-detail", `/#/recipe/${shareIdForRecipe(mealId)}`);
   }
+
+  // Resolve a `#/recipe/<shareId>` deep link: prefer a locally-known recipe,
+  // otherwise fetch the shared recipe from the backend (#213). State updates are
+  // made inside promise callbacks so the URL→state sync stays off the
+  // synchronous effect body.
+  useEffect(() => {
+    if (screen !== "recipe-detail") return;
+    const token = recipeShareToken(window.location.hash);
+    if (!token) return;
+    // Already showing the right recipe (e.g. arrived here via openRecipe).
+    if (shareIdForRecipe(selectedMealId) === token) return;
+
+    let cancelled = false;
+    const candidates = [...customRecipes, ...discoverSaved, ...planMeals, ...getRecipeCatalogue()];
+    const local = candidates.find((meal) => shareIdForRecipe(meal.id) === token);
+
+    if (local) {
+      Promise.resolve().then(() => {
+        if (cancelled) return;
+        setSharedRecipe(null);
+        setSelectedMealId(local.id);
+      });
+      return () => { cancelled = true; };
+    }
+
+    fetchSharedRecipe(token)
+      .then((fetched) => {
+        if (!cancelled && fetched) {
+          setSharedRecipe(fetched);
+          setSelectedMealId(fetched.id);
+        }
+      })
+      .catch((error) => {
+        console.warn("Shared recipe could not be loaded.", error);
+      });
+
+    return () => { cancelled = true; };
+  }, [screen, locationTick, catalogueVersion, selectedMealId, customRecipes, discoverSaved, planMeals]);
 
   function openAddToPlan(mealId: string) {
     track("recipe_add_to_plan_clicked", { meal_id: mealId, source_screen: activeScreen });
@@ -978,7 +1031,7 @@ export function DeadlineFoodApp() {
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} unpublishedSavedIds={unpublishedSavedIds} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onLogout={logoutAccount} onDeleteAccount={deleteAccount} track={track} />}
-      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} unpublishedSavedIds={unpublishedSavedIds} track={track} unitSystem={prefs.unitSystem} />}
+      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} sharedRecipe={sharedRecipe} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} unpublishedSavedIds={unpublishedSavedIds} track={track} unitSystem={prefs.unitSystem} />}
     </Shell>
   );
 }

@@ -499,7 +499,11 @@ async def seed():
         headers={"X-Deadline-Food-API-Key": API_KEY},
     ) as client:
         print(f"Seeding {len(SEED_MEALS)} recipes...")
-        resp = await client.post("/recipes/bulk", json=SEED_MEALS)
+        # All seeded recipes are curated/verified content (#213). Stamp them here
+        # so the recommender returns verified=true and Discover's verified-only
+        # default surfaces them rather than treating them as community uploads.
+        verified_meals = [{**meal, "verified": True} for meal in SEED_MEALS]
+        resp = await client.post("/recipes/bulk", json=verified_meals)
         resp.raise_for_status()
         recipes = resp.json()
         print(f"  -> {len(recipes)} recipes created/updated")

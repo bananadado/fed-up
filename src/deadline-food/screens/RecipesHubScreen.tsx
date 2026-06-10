@@ -1,4 +1,4 @@
-import { Plus, RotateCcw, Sparkles, UtensilsCrossed } from "lucide-react";
+import { BadgeCheck, Plus, RotateCcw, Sparkles, UtensilsCrossed } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 import type { Deadline, DiscoverRecommendationState, Meal, MealSlot, Preferences } from "../types";
@@ -7,7 +7,7 @@ import { AppButton, Badge } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { formatIngredient } from "../ingredients";
 import { normalizeIngredientUnit } from "../unitConversion";
-import { money } from "../utils";
+import { isVerified, money } from "../utils";
 import type { TrackEvent } from "../analytics";
 import { DiscoverScreen } from "./DiscoverScreen";
 import { deleteRecommenderRecipe } from "../recommenderApi";
@@ -248,7 +248,11 @@ export function RecipesHubScreen({
                           </div>
                         ) : (
                           <div className="flex flex-col items-end gap-1">
-                            <Badge tone="blue">Saved</Badge>
+                            {isVerified(recipe) ? (
+                              <Badge tone="blue"><BadgeCheck size={13} className="mr-1" /> Verified</Badge>
+                            ) : (
+                              <Badge tone="amber">Community</Badge>
+                            )}
                             {unpublishedSavedIds.has(recipe.id) && <Badge tone="amber">No longer published</Badge>}
                           </div>
                         )}

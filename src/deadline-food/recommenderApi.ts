@@ -19,6 +19,7 @@ type RecommenderRecipe = {
   source: string | null;
   note: string | null;
   photoUrl?: string | null;
+  verified?: boolean;
 };
 
 type ScoredRecipe = {
@@ -166,8 +167,42 @@ export function toMeal(recipe: RecommenderRecipe): Meal {
     source: recipe.source ?? "Recommender",
     note: recipe.note ?? "",
     image: "🍽️",
+    verified: recipe.verified === true,
     ...(recipe.photoUrl ? { photoUrl: recipe.photoUrl } : {}),
   };
+}
+
+/**
+ * Resolve a recipe from its public share slug (#213). Used when opening a
+ * `#/recipe/<shareId>` deep link for a recipe the viewer doesn't already have
+ * locally (e.g. a friend's shared community recipe). Returns null on 404.
+ */
+export async function fetchSharedRecipe(shareId: string): Promise<Meal | null> {
+  const url = new URL(functionUrl("deadlineFoodRecipe", "/api/deadline-food/recipe"));
+  url.searchParams.set("shareId", shareId);
+
+  const response = await fetch(url.toString());
+  if (response.status === 404) return null;
+  if (!response.ok) {
+    throw new Error(`Shared recipe request failed with ${response.status}`);
+  }
+
+  const recipe = (await response.json()) as Partial<Meal> & { id: string; name: string };
+  // The canonical Firestore recipe is already in app `Meal` shape (unlike the
+  // recommender's snake_case payload), so normalise only the fields a fresh
+  // viewer needs and trust the stored values for the rest.
+  return {
+    rating: 0,
+    reviews: [],
+    image: "🍽️",
+    ...recipe,
+    tags: recipe.tags ?? [],
+    allergens: recipe.allergens ?? [],
+    ingredients: recipe.ingredients ?? [],
+    instructions: recipe.instructions ?? [],
+    mealSlots: recipe.mealSlots ?? [],
+    nutrition: recipe.nutrition ?? { calories: 0, protein: 0, carbs: 0, fat: 0 },
+  } as Meal;
 }
 
 export async function fetchRecommenderRecommendations(input: {

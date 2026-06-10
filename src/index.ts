@@ -163,6 +163,12 @@ const server = serve({
       },
     },
 
+    "/api/deadline-food/recipe": {
+      async GET(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipe", req);
+      },
+    },
+
     "/api/deadline-food/recipe-reviews": {
       async GET(req) {
         return proxyToFirebaseFunction("deadlineFoodRecipeReviews", req);

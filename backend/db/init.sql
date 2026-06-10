@@ -21,11 +21,16 @@ CREATE TABLE IF NOT EXISTS recipes (
     nutrition JSONB,
     source TEXT,
     note TEXT,
+    verified BOOLEAN NOT NULL DEFAULT false,  -- curated/seed content vs user-contributed
     embedding_text TEXT,             -- synthesized text used for embedding
     embedding vector(384),           -- bge-small-en-v1.5 = 384 dims
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Backfill the verified column for databases created before #213 (init runs on
+-- every container start; CREATE TABLE IF NOT EXISTS above is a no-op there).
+ALTER TABLE recipes ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT false;
 
 -- User profiles
 CREATE TABLE IF NOT EXISTS users (

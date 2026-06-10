@@ -1,10 +1,10 @@
-import { ArrowUpDown, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, TrendingDown, TrendingUp, X } from "lucide-react";
+import { ArrowUpDown, BadgeCheck, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, TrendingDown, TrendingUp, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
 import { ingredientName } from "../ingredients";
-import { getMealById, money } from "../utils";
+import { getMealById, isVerified, money } from "../utils";
 import type { TrackEvent } from "../analytics";
 import { AppButton, Badge } from "./primitives";
 
@@ -461,6 +461,11 @@ export function SwapModal({
                       <div className="min-w-0 flex-1 p-3">
                         <div className="flex flex-wrap items-center gap-1.5">
                           <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
+                          {isVerified(meal) ? (
+                            <Badge tone="blue"><BadgeCheck size={12} className="mr-1" /> Verified</Badge>
+                          ) : (
+                            <Badge tone="amber">Community</Badge>
+                          )}
                           {savedSet.has(meal.id) && <Badge tone="blue">Saved</Badge>}
                           {isTopMatch && <Badge tone="green">Suggested</Badge>}
                         </div>
