@@ -5,6 +5,8 @@ import { capturePostHogEvent, registerPostHogContext, registerPostHogSession, ty
 import { initialPlan, initialPreferences } from "./data";
 import type { CalendarEvent, CalendarProvider, Deadline, DiscoverRecommendationState, Meal, MealSlot, PlanEntry, Preferences, Screen } from "./types";
 import {
+  clearStoredAnonymousSessionId,
+  deleteAccountProfile,
   getOrCreateAnonymousSessionId,
   loadAnonymousSessionSettings,
   saveAnonymousSessionSettings,
@@ -21,6 +23,19 @@ import {
 } from "./sessionPersistence";
 import { syncRecommenderUser } from "./recommenderApi";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
+import {
+  completeDeadlineFoodEmailLinkSignIn,
+  linkDeadlineFoodAccount,
+  onDeadlineFoodAccountChanged,
+  sendDeadlineFoodEmailMagicLink,
+  signInExistingDeadlineFoodAccount,
+  signOutDeadlineFoodAccount,
+  switchToAnonymousAccountOnThisDevice,
+  type AccountMessageTone,
+  type EmailMagicLinkOptions,
+  type AccountProviderId,
+  type AccountSummary,
+} from "./accountAuth";
 import { fetchRecipeCatalogue, registerPlanMeals, setRecipeCatalogue } from "./recipeCatalogue";
 import { Shell } from "./components/Shell";
 import { CalendarScreen } from "./screens/CalendarScreen";
@@ -86,9 +101,26 @@ function maxTimeBucket(maxTime: number | null): string {
 
 export function DeadlineFoodApp() {
   const posthog = usePostHog();
-  const [sessionId] = useState(() => getOrCreateAnonymousSessionId());
+  const [sessionId, setSessionId] = useState(() => getOrCreateAnonymousSessionId());
   const [sessionLoaded, setSessionLoaded] = useState(false);
   const [canPersistSession, setCanPersistSession] = useState(false);
+  const [account, setAccount] = useState<AccountSummary>({
+    configured: false,
+    uid: null,
+    email: null,
+    displayName: null,
+    isAnonymous: true,
+    providerIds: [],
+  });
+  const [accountMessage, setAccountMessage] = useState("");
+  const [accountMessageTone, setAccountMessageTone] = useState<AccountMessageTone>("info");
+  const [accountBusy, setAccountBusy] = useState<AccountProviderId | "email" | "anonymous" | "logout" | "delete" | null>(null);
+  // Set an account-area notice with a tone so the UI styles errors distinctly
+  // from success/info. Clear with notifyAccount("").
+  const notifyAccount = useCallback((text: string, tone: AccountMessageTone = "info") => {
+    setAccountMessage(text);
+    setAccountMessageTone(tone);
+  }, []);
   const [screen, setScreen] = useState<Screen>(() => screenFromLocation() ?? "landing");
   const routeHistory = useRef<Screen[]>([]);
   const pendingHashScreen = useRef<Screen | null>(null);
@@ -204,6 +236,94 @@ export function DeadlineFoodApp() {
     registerPostHogSession(posthog, sessionId);
   }, [posthog, sessionId]);
 
+  // Read the latest sessionId from inside stable callbacks without re-subscribing.
+  const sessionIdRef = useRef(sessionId);
+  useEffect(() => {
+    sessionIdRef.current = sessionId;
+  }, [sessionId]);
+  // True while the current sessionId's data is still being loaded into state.
+  // The auto-save effect must not persist until this clears, otherwise switching
+  // sessions (e.g. signing in and adopting the account's linked session) would
+  // write the stale seed state over the account's saved data before its real
+  // settings have loaded. A ref (not state) so the load effect can set it
+  // synchronously before the save effect runs in the same commit.
+  const sessionLoadPendingRef = useRef(true);
+  // Share a single destination resolution between onAuthStateChanged and direct
+  // sign-in completions. Firebase can complete email/OAuth before our listener
+  // observes an anonymous->authenticated transition, so successful sign-in
+  // handlers also call resolveSignInDestination explicitly.
+  const signInResolutionPromiseRef = useRef<Promise<void> | null>(null);
+  const suppressAuthStateDestinationRef = useRef(false);
+
+  // Decide where a freshly signed-in user lands. The backend returns the
+  // account's linked session when one exists; if that session is onboarded we
+  // treat this as an existing account and go to the dashboard. Otherwise we keep
+  // the user signed in and run onboarding under that account, so the next save
+  // attaches the session without showing a separate account step.
+  const resolveSignInDestination = useCallback((options: { existingAccount?: boolean } = {}) => {
+    if (signInResolutionPromiseRef.current) return signInResolutionPromiseRef.current;
+
+    const resolution = (async () => {
+      const snapshot = await loadAnonymousSessionSettings(sessionIdRef.current);
+      // Treat the sign-in as a returning user when Firebase reports the account
+      // already existed (options.existingAccount) OR the backend already has an
+      // onboarded plan for it. Either way we skip onboarding and load their
+      // synced session straight onto the dashboard.
+      const hasExistingPlan = options.existingAccount === true || snapshot.settings?.onboarded === true;
+      if (hasExistingPlan) {
+        // setSessionId re-runs the session-load effect, which repopulates all
+        // state (prefs, plan, deadlines…) and sets onboarded from the settings.
+        if (snapshot.sessionId !== sessionIdRef.current) {
+          setSessionId(snapshot.sessionId);
+        }
+        setOnboarded(true);
+        setCanPersistSession(true);
+        notifyAccount("");
+        window.location.hash = "/dashboard";
+      } else {
+        if (snapshot.sessionId !== sessionIdRef.current) {
+          setSessionId(snapshot.sessionId);
+        }
+        setOnboarded(false);
+        setCanPersistSession(true);
+        notifyAccount("");
+        window.location.hash = "/onboarding";
+      }
+    })().catch((error) => {
+      const message = error instanceof Error ? error.message : "Sign-in could not be completed.";
+      notifyAccount(message, "error");
+      signInResolutionPromiseRef.current = null; // allow a retry after a failure
+    });
+
+    signInResolutionPromiseRef.current = resolution;
+    return resolution;
+  }, [notifyAccount]);
+
+  const prevAccountRef = useRef<AccountSummary | null>(null);
+  useEffect(() => {
+    return onDeadlineFoodAccountChanged((nextAccount) => {
+      const prev = prevAccountRef.current;
+      prevAccountRef.current = nextAccount;
+      setAccount(nextAccount);
+      if (nextAccount.isAnonymous) {
+        // Back to anonymous (manual sign-out, or the onboard-as-anonymous path):
+        // allow the next sign-in to resolve a destination again.
+        signInResolutionPromiseRef.current = null;
+        return;
+      }
+      // Detect any anonymous→authenticated transition regardless of which sign-in
+      // path completed it (popup, redirect, email link). A null prev means an
+      // already-authenticated user being restored on load — handled by the
+      // session-load effect, not here.
+      if (prev !== null && prev.isAnonymous) {
+        if (suppressAuthStateDestinationRef.current) {
+          return;
+        }
+        void resolveSignInDestination();
+      }
+    });
+  }, [resolveSignInDestination]);
+
   useEffect(() => {
     function onLocationChange() {
       const nextScreen = screenFromLocation();
@@ -263,10 +383,18 @@ export function DeadlineFoodApp() {
 
   useEffect(() => {
     let cancelled = false;
+    // Block auto-saves for this sessionId until its data has loaded. Set
+    // synchronously here so the save effect (declared later, runs after this one
+    // in the same commit) observes it immediately on a sessionId change.
+    sessionLoadPendingRef.current = true;
 
     loadAnonymousSessionSettings(sessionId)
       .then(snapshot => {
         if (cancelled) return;
+
+        if (snapshot.sessionId !== sessionId) {
+          setSessionId(snapshot.sessionId);
+        }
 
         if (snapshot.settings !== null) {
           setPrefs(normalizePreferences(snapshot.settings.preferences));
@@ -277,7 +405,10 @@ export function DeadlineFoodApp() {
             urgency: d.urgency ?? "medium",
           })));
           setSelectedSources(snapshot.settings.selectedSources);
-          setOnboarded(snapshot.settings.onboarded);
+          // Never downgrade onboarded from true→false: an auth transition
+          // (email link / OAuth redirect) may have already set it to true
+          // before the session network response arrived.
+          setOnboarded(prev => prev || snapshot.settings!.onboarded);
           setCanPersistSession(true);
           if (snapshot.settings.customRecipes) setCustomRecipes(snapshot.settings.customRecipes as Meal[]);
           const restoredDiscoverSaved = snapshot.settings.discoverSaved ?? [];
@@ -318,11 +449,15 @@ export function DeadlineFoodApp() {
           setCanPersistSession(true);
         }
 
+        // Data for this sessionId is now in state — saves may resume. Only clear
+        // for the live load (a newer sessionId switch will have set it true again).
+        sessionLoadPendingRef.current = false;
         setSessionLoaded(true);
       })
       .catch(error => {
         if (!cancelled) {
           console.warn("Anonymous session settings could not be loaded.", error);
+          sessionLoadPendingRef.current = false;
           setSessionLoaded(true);
         }
       });
@@ -382,8 +517,175 @@ export function DeadlineFoodApp() {
     selectedSources,
   ]);
 
+  const saveCurrentSessionNow = useCallback(async () => {
+    const snapshot = await saveAnonymousSessionSettings(sessionId, buildSessionSettings());
+    if (snapshot.sessionId !== sessionId) {
+      setSessionId(snapshot.sessionId);
+    }
+    return snapshot;
+  }, [buildSessionSettings, sessionId]);
+
+  const autoPlanAttemptRef = useRef<string | null>(null);
+
+  const completeOnboardingAfterAccountCreated = useCallback(() => {
+    autoPlanAttemptRef.current = null;
+    enableSessionPersistence();
+    setOnboarded(true);
+    syncRecommenderUser(sessionId, prefs).catch((error) => {
+      console.warn("Recommender user profile could not be created.", error);
+    });
+    navigateScreen("dashboard");
+  }, [enableSessionPersistence, navigateScreen, prefs, sessionId]);
+
   useEffect(() => {
-    if (!sessionLoaded || !canPersistSession) return;
+    // Drive the post-email-link destination ourselves using isNewUser; suppress
+    // the onAuthStateChanged listener so it can't resolve a destination first
+    // (without the isNewUser signal) and win the de-duped resolution race.
+    suppressAuthStateDestinationRef.current = true;
+    completeDeadlineFoodEmailLinkSignIn()
+      .then((completion) => {
+        if (completion) {
+          track("account_linked", { provider: "email" });
+          if (!completion.isNewUser) {
+            // The link matched an account that already existed: go straight to
+            // the dashboard with their synced plan, never back through onboarding.
+            void resolveSignInDestination({ existingAccount: true });
+          } else if (completion.intent === "create") {
+            completeOnboardingAfterAccountCreated();
+          } else {
+            void resolveSignInDestination();
+          }
+        }
+      })
+      .catch((error) => {
+        const message = error instanceof Error ? error.message : "Email sign-in could not be completed.";
+        notifyAccount(message, "error");
+      })
+      .finally(() => {
+        suppressAuthStateDestinationRef.current = false;
+      });
+  }, [completeOnboardingAfterAccountCreated, notifyAccount, resolveSignInDestination, track]);
+
+  const connectAccount = useCallback(async (provider: AccountProviderId) => {
+    setAccountBusy(provider);
+    notifyAccount("");
+    suppressAuthStateDestinationRef.current = true;
+    try {
+      // Popup for every provider, including Microsoft: signInWithRedirect drops
+      // its result on Firebase JS SDK v12 when the app origin differs from
+      // authDomain (browser third-party-storage partitioning), so the redirect
+      // never came back. Popup keeps the page alive and delivers the result via
+      // the opener. In onboarding/settings this is account creation or linking,
+      // not existing-account lookup from the landing page.
+      await linkDeadlineFoodAccount(provider);
+      track("account_linked", { provider });
+      if (screen === "onboarding") {
+        completeOnboardingAfterAccountCreated();
+      } else {
+        notifyAccount("Account connected.");
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Account sign-in failed.";
+      notifyAccount(message, "error");
+      track("account_link_failed", { provider, error: message });
+    } finally {
+      suppressAuthStateDestinationRef.current = false;
+      setAccountBusy(null);
+    }
+  }, [completeOnboardingAfterAccountCreated, notifyAccount, screen, track]);
+
+  const signInToExistingAccount = useCallback(async (provider: AccountProviderId) => {
+    setAccountBusy(provider);
+    notifyAccount("");
+    suppressAuthStateDestinationRef.current = true;
+    try {
+      const result = await signInExistingDeadlineFoodAccount(provider);
+      track("account_linked", { provider });
+      await resolveSignInDestination({ existingAccount: !result.isNewUser });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Account sign-in failed.";
+      notifyAccount(message, "error");
+      track("account_link_failed", { provider, error: message });
+    } finally {
+      suppressAuthStateDestinationRef.current = false;
+      setAccountBusy(null);
+    }
+  }, [notifyAccount, resolveSignInDestination, track]);
+
+  const sendEmailMagicLink = useCallback(async (email: string, options?: EmailMagicLinkOptions) => {
+    setAccountBusy("email");
+    notifyAccount("");
+    try {
+      await sendDeadlineFoodEmailMagicLink(email, options);
+      notifyAccount("Check your email for a sign-in link. Open it in this browser to save your plan.");
+      track("account_magic_link_sent", {});
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Magic link could not be sent.";
+      notifyAccount(message, "error");
+      track("account_magic_link_failed", { error: message });
+    } finally {
+      setAccountBusy(null);
+    }
+  }, [notifyAccount, track]);
+
+  const returnToAnonymousAccount = useCallback(async () => {
+    setAccountBusy("anonymous");
+    notifyAccount("");
+    try {
+      const nextAccount = await switchToAnonymousAccountOnThisDevice();
+      setAccount(nextAccount);
+      await saveCurrentSessionNow();
+      notifyAccount("This device is using an anonymous account again.");
+      track("account_signed_out", {});
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not switch account.";
+      notifyAccount(message, "error");
+    } finally {
+      setAccountBusy(null);
+    }
+  }, [notifyAccount, saveCurrentSessionNow, track]);
+
+  const logoutAccount = useCallback(async () => {
+    setAccountBusy("logout");
+    notifyAccount("");
+    try {
+      await signOutDeadlineFoodAccount();
+      track("account_signed_out", {});
+      clearStoredAnonymousSessionId();
+      window.location.hash = "/landing";
+      window.location.reload();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not log out.";
+      notifyAccount(message, "error");
+      setAccountBusy(null);
+    }
+  }, [notifyAccount, track]);
+
+  const deleteAccount = useCallback(async () => {
+    setAccountBusy("delete");
+    notifyAccount("");
+    try {
+      // Backend deletes the synced profile document AND the Firebase Auth user
+      // (keyed by the verified token), then we clear the now-invalid local
+      // session. Order matters: the DELETE needs the still-valid token.
+      await deleteAccountProfile();
+      await signOutDeadlineFoodAccount();
+      track("account_deleted", {});
+      // The account and its synced session are gone. Start the device over from
+      // a brand new anonymous session by clearing the stored handle and reloading
+      // so every piece of in-memory state re-initialises cleanly.
+      clearStoredAnonymousSessionId();
+      window.location.hash = "/landing";
+      window.location.reload();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not delete account.";
+      notifyAccount(message, "error");
+      setAccountBusy(null);
+    }
+  }, [notifyAccount, track]);
+
+  useEffect(() => {
+    if (!sessionLoaded || !canPersistSession || sessionLoadPendingRef.current) return;
 
     const doSave = () => {
       saveAnonymousSessionSettings(
@@ -533,7 +835,6 @@ export function DeadlineFoodApp() {
   // Generate the first plan automatically once onboarded (also upgrades existing
   // users off the seed/mock plan). Thereafter "prompt" mode shows a banner and
   // "auto" mode regenerates silently when the plan goes stale.
-  const autoPlanAttemptRef = useRef<string | null>(null);
   useEffect(() => {
     if (!sessionLoaded || !onboarded || !hasPrivacyConsent || planGenerating) return;
     const needsFirstPlan = planGeneratedAt === undefined;
@@ -544,8 +845,12 @@ export function DeadlineFoodApp() {
     if (autoPlanAttemptRef.current === currentPlanSignature) return;
     autoPlanAttemptRef.current = currentPlanSignature;
     // Defer so generation runs after commit (not a synchronous setState in the effect).
-    const timer = setTimeout(() => { void regeneratePlan(); }, 0);
-    return () => clearTimeout(timer);
+    let fired = false;
+    const timer = setTimeout(() => { fired = true; void regeneratePlan(); }, 0);
+    return () => {
+      clearTimeout(timer);
+      if (!fired) autoPlanAttemptRef.current = null;
+    };
   }, [sessionLoaded, onboarded, hasPrivacyConsent, planGenerating, planGeneratedAt, planStale, prefs.planRegenMode, currentPlanSignature, regeneratePlan]);
 
   function openRecipe(mealId: string) {
@@ -583,10 +888,16 @@ export function DeadlineFoodApp() {
   }
 
   if (activeScreen === "landing") {
-    return <Landing onStart={() => {
-      enableSessionPersistence();
-      navigateScreen("onboarding");
-    }} track={track} />;
+    return <Landing
+      onStart={() => { notifyAccount(""); enableSessionPersistence(); navigateScreen("onboarding"); }}
+      track={track}
+      account={account}
+      accountBusy={accountBusy}
+      accountMessage={accountMessage}
+      accountMessageTone={accountMessageTone}
+      onConnectAccount={signInToExistingAccount}
+      onSendEmailMagicLink={sendEmailMagicLink}
+    />;
   }
 
   if (activeScreen === "onboarding") {
@@ -594,14 +905,20 @@ export function DeadlineFoodApp() {
       <Onboarding
         setOnboarded={(nextOnboarded) => {
           enableSessionPersistence();
-          setOnboarded(nextOnboarded);
           if (nextOnboarded) {
+            // Allow the first auto-plan to run for this input set even if the
+            // signature was already attempted earlier this session (e.g. when a
+            // user signs in at the start and then finishes onboarding). Without
+            // this reset the auto-plan effect's de-dupe guard suppresses the
+            // first plan generation. Mirrors completeOnboardingAfterAccountCreated.
+            autoPlanAttemptRef.current = null;
             // Create + embed the user profile on the recommender at onboarding
             // time rather than lazily on first Discover load.
             syncRecommenderUser(sessionId, prefs).catch((error) => {
               console.warn("Recommender user profile could not be created.", error);
             });
           }
+          setOnboarded(nextOnboarded);
         }}
         setScreen={navigateScreen}
         prefs={prefs}
@@ -618,6 +935,14 @@ export function DeadlineFoodApp() {
         calendarTokens={calendarTokens}
         setCalendarTokens={setCalendarTokens}
         sessionId={sessionId}
+        account={account}
+        accountMessage={accountMessage}
+        accountMessageTone={accountMessageTone}
+        accountBusy={accountBusy}
+        onConnectAccount={connectAccount}
+        onSendEmailMagicLink={sendEmailMagicLink}
+        onUseAnonymousAccount={returnToAnonymousAccount}
+        onClearAccountMessage={() => notifyAccount("")}
         track={track}
         setCalendarSkipped={setCalendarSkipped}
         privacyConsent={privacyConsent}
@@ -633,7 +958,7 @@ export function DeadlineFoodApp() {
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} prefs={prefs} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} track={track} />}
-      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} track={track} />}
+      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onLogout={logoutAccount} onDeleteAccount={deleteAccount} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} unitSystem={prefs.unitSystem} />}
     </Shell>
   );
