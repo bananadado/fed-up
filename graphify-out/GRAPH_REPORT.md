@@ -1,7 +1,7 @@
-# Graph Report - drp03  (2026-06-09)
+# Graph Report - drp03  (2026-06-10)
 
 ## Corpus Check
-- 220 files · ~165,160 words
+- 220 files · ~165,304 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0b3c0514`
+- Built from commit: `ea22fd59`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -242,8 +242,8 @@ Cohesion: 0.09
 Nodes (20): ANIMAL_ALLERGENS, ANIMAL_INGREDIENT_PATTERNS, buildPlan(), canonicalTag(), canonicalTags(), DAIRY_ALLERGENS, DAIRY_INGREDIENT_PATTERNS, GLUTEN_INGREDIENT_PATTERNS (+12 more)
 
 ### Community 15 - "Community 15"
-Cohesion: 0.14
-Nodes (21): recipeIngredients(), MealOption, MealType, PlannedMeal, RecipeDetails, ValidationResult, fallbackCampusHummusBox, fallbackCampusRiceBowl (+13 more)
+Cohesion: 0.13
+Nodes (22): recipeIngredients(), MealOption, MealType, PlannedMeal, ProductMeta, RecipeDetails, ValidationResult, fallbackCampusHummusBox (+14 more)
 
 ### Community 16 - "Community 16"
 Cohesion: 0.11
@@ -378,8 +378,8 @@ Cohesion: 0.14
 Nodes (17): aliases, components, hooks, lib, ui, utils, iconLibrary, rsc (+9 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.14
-Nodes (13): seededMeals, canonicalConstraints, deadlineBootstrap, productMeta, seedMeals, DeadlineBootstrap, ProductMeta, appRecipes (+5 more)
+Cohesion: 0.15
+Nodes (12): seededMeals, canonicalConstraints, deadlineBootstrap, productMeta, seedMeals, DeadlineBootstrap, appRecipes, outdir (+4 more)
 
 ### Community 50 - "Community 50"
 Cohesion: 0.11
