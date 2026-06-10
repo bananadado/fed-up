@@ -105,12 +105,13 @@ function mealToForm(meal: Meal): EditorForm {
   // Recover the original servings/total cost from an auto-generated note so the
   // note can be rebuilt from the edited price on save.
   const portion = parsePortionNote(meal.note);
+  const servings = meal.servings ?? portion?.servings ?? 1;
   return {
     name: meal.name,
     time: meal.time,
     price: meal.price,
-    totalCost: portion?.totalCost ?? meal.price,
-    servings: meal.servings ?? portion?.servings ?? 1,
+    totalCost: portion?.totalCost ?? Number((meal.price * servings).toFixed(2)),
+    servings,
     ingredients: ingredientDraftsFromIngredients(meal.ingredients),
     tags: [...meal.mealSlots, ...meal.tags],
     allergens: meal.allergens.join(", "),
@@ -420,12 +421,18 @@ export function RecipeEditor({
       setAttempted(true);
       return;
     }
-    const estimate = estimateRecipeCost(ingredients);
-    setForm((prev) => ({ ...prev, totalCost: estimate }));
+    const estimatedTotal = estimateRecipeCost(ingredients);
+    const estimatedPrice = Number((estimatedTotal / servings).toFixed(2));
+    setForm((prev) => ({
+      ...prev,
+      price: estimatedPrice,
+      totalCost: estimatedTotal,
+    }));
     track("recipe_cost_estimated", {
       ...(meal ? { meal_id: meal.id } : {}),
       ingredient_count: ingredients.length,
-      estimated_total: estimate,
+      estimated_total: estimatedTotal,
+      estimated_price: estimatedPrice,
     });
   }
 
@@ -554,6 +561,18 @@ export function RecipeEditor({
         ?? (form.nutritionSource
           ? nutritionSourceSummary(form.nutritionSource)
           : "Will auto-fill when you stop editing ingredients");
+  const costEstimateButton = (
+    <AppButton
+      type="button"
+      variant="secondary"
+      onClick={estimateCostFromIngredients}
+      disabled={ingredients.length === 0}
+      title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
+      className="shrink-0"
+    >
+      <RefreshCcw size={16} /> Estimate cost
+    </AppButton>
+  );
 
   return (
     <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6">
@@ -629,13 +648,18 @@ export function RecipeEditor({
               errorMessage="Must be at least 1"
             />
           ) : (
-            <Field
-              label="Cost / portion (£)"
-              type="number"
-              step="0.05"
-              value={form.price}
-              onChange={(price) => setForm({ ...form, price: +price })}
-            />
+            <div className="flex flex-wrap items-end gap-2">
+              <div className="min-w-[12rem] flex-1">
+                <Field
+                  label="Cost / portion (£)"
+                  type="number"
+                  step="0.05"
+                  value={form.price}
+                  onChange={(price) => setForm({ ...form, price: +price })}
+                />
+              </div>
+              {costEstimateButton}
+            </div>
           )}
         </div>
 
@@ -654,15 +678,7 @@ export function RecipeEditor({
                   errorMessage="Please enter a cost"
                 />
               </div>
-              <AppButton
-                type="button"
-                variant="secondary"
-                onClick={estimateCostFromIngredients}
-                disabled={ingredients.length === 0}
-                title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
-              >
-                <RefreshCcw size={16} /> Estimate from ingredients
-              </AppButton>
+              {costEstimateButton}
             </div>
             <p className="text-xs text-stone-500">
               {ingredients.length === 0

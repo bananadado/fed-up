@@ -91,6 +91,8 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await expect(page.getByRole("heading", { name: /reviews/i })).toBeVisible();
   await page.getByRole("button", { name: /edit recipe/i }).click();
   await expect(page.getByRole("heading", { name: /edit recipe/i })).toBeVisible();
+  await page.getByRole("button", { name: /estimate cost/i }).click();
+  await expect(page.getByLabel("Cost / portion (£)")).toHaveValue("0.8");
   await page.getByRole("button", { name: /save recipe/i }).click();
   await expect(page.getByRole("heading", { name: /ingredients/i })).toBeVisible();
   await page.getByRole("button", { name: "Back to plan", exact: true }).click();
@@ -120,6 +122,9 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await page.getByLabel("Ingredient").nth(2).fill("tomato");
   await page.getByLabel("Amount").nth(2).fill("50");
   await page.getByLabel("Unit").nth(2).selectOption("g");
+  await page.getByRole("button", { name: /estimate cost/i }).click();
+  await expect(page.getByLabel("Total recipe cost (£)")).toHaveValue("0.6");
+  await expect(page.getByText("Estimated cost per portion: £0.20")).toBeVisible();
   await page.getByLabel("Method").fill("Warm the beans.\nFill the wrap.");
   await page.getByRole("button", { name: "Add recipe", exact: true }).click();
   await expect(page.getByText("Microwave bean burrito")).toBeVisible();
