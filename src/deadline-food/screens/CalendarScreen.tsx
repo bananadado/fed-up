@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { AlertTriangle, Bell, CalendarPlus, CalendarClock, ChevronDown, Download, ExternalLink, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight, ChefHat } from "lucide-react";
 import type { CalendarEvent, Deadline, Meal, PlanEntry, Preferences, Screen } from "../types";
 import { getPrepSuggestions, type PrepSuggestion } from "../advancePrep";
@@ -27,6 +27,7 @@ type WorkloadDraft = {
   time: string;
   urgency: Deadline["urgency"] | null;
   effortHours: number;
+  eventType: "academic" | "general";
 };
 
 type FormErrors = {
@@ -115,6 +116,7 @@ function monthPeriodLabel(offset: number): string {
   return d.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
 }
 
+
 // --- DeadlineEditPanel ---
 
 function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
@@ -126,10 +128,14 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
   return (
     <div className="mt-4 rounded-xl border border-amber-200 bg-white p-6 shadow-md">
       <div className="mb-5 flex items-start justify-between gap-4">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-stone-400">Editing event</p>
-          <p className="mt-0.5 text-base font-semibold text-stone-900">{deadline.title}</p>
-          <p className="text-xs text-stone-500">{deadline.date} · {deadline.time}</p>
+        <div className="min-w-0 flex-1">
+          <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-stone-400">Editing event</p>
+          <Input
+            value={deadline.title}
+            onChange={(e) => onUpdate({ title: e.target.value })}
+            className="h-auto rounded-lg border-stone-200 bg-white p-2 text-base font-semibold text-stone-900"
+          />
+          <p className="mt-1 text-xs text-stone-500">{deadline.date} · {deadline.time}</p>
         </div>
         <button type="button" onClick={onClose} className="rounded-lg p-1.5 text-stone-400 hover:bg-stone-100 hover:text-stone-600">
           <X size={16} />
@@ -144,7 +150,8 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
             step="60"
             value={deadline.time}
             onChange={(e) => onUpdate({ time: e.target.value })}
-            className="h-auto rounded-lg border-stone-200 bg-white p-3"
+            onClick={(e) => { if (e.clientX > e.currentTarget.getBoundingClientRect().left + 100) e.currentTarget.showPicker?.(); }}
+            className="h-auto cursor-pointer rounded-lg border-stone-200 bg-white p-3"
           />
           <p className="mt-1.5 text-xs text-stone-400">When this event starts.</p>
         </div>
@@ -176,16 +183,18 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => onUpdate({ effortHours: Math.max(1, deadline.effortHours - 1) })}
-              disabled={deadline.effortHours <= 1}
+              onClick={() => onUpdate({ effortHours: Math.max(0.5, deadline.effortHours - 0.5) })}
+              disabled={deadline.effortHours <= 0.5}
               className="flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:bg-stone-50 disabled:opacity-30"
             >
               <Minus size={14} />
             </button>
-            <span className="min-w-[3.5rem] text-center text-lg font-semibold text-stone-900">{deadline.effortHours}h</span>
+            <span className="min-w-[4rem] text-center text-lg font-semibold text-stone-900">
+              {deadline.effortHours % 1 === 0 ? `${deadline.effortHours}h` : `${Math.floor(deadline.effortHours)}h 30m`}
+            </span>
             <button
               type="button"
-              onClick={() => onUpdate({ effortHours: Math.min(12, deadline.effortHours + 1) })}
+              onClick={() => onUpdate({ effortHours: Math.min(12, deadline.effortHours + 0.5) })}
               disabled={deadline.effortHours >= 12}
               className="flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:bg-stone-50 disabled:opacity-30"
             >
@@ -411,7 +420,8 @@ function CookingScheduler({
                   step="60"
                   value={time}
                   onChange={(e) => { setTime(e.target.value); setError(null); setExportedMethod(null); }}
-                  className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
+                  onClick={(e) => { if (e.clientX > e.currentTarget.getBoundingClientRect().left + 100) e.currentTarget.showPicker?.(); }}
+                  className="mt-2 h-auto cursor-pointer rounded-lg border-stone-200 bg-white p-3"
                 />
               </label>
             </div>
@@ -641,9 +651,22 @@ export function CalendarScreen({
   const [weekOffset, setWeekOffset] = useState(0);
   const [monthOffset, setMonthOffset] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [draft, setDraft] = useState<WorkloadDraft | null>(null);
+  const [draft, setDraft] = useState<WorkloadDraft | null>(() => {
+    try {
+      const saved = sessionStorage.getItem("deadlineFood:calendarDraft");
+      if (saved) return JSON.parse(saved) as WorkloadDraft;
+    } catch { /* sessionStorage unavailable */ }
+    return null;
+  });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const prepSuggestions = useMemo(() => getPrepSuggestions(plan, customRecipes), [plan, customRecipes]);
+
+  useEffect(() => {
+    try {
+      if (draft) sessionStorage.setItem("deadlineFood:calendarDraft", JSON.stringify(draft));
+      else sessionStorage.removeItem("deadlineFood:calendarDraft");
+    } catch { /* sessionStorage unavailable */ }
+  }, [draft]);
 
   const selectedDeadline = deadlines.find((d) => d.id === selectedId) ?? null;
   const weekDays = useMemo(() => getWeekDays(weekOffset), [weekOffset]);
@@ -671,7 +694,7 @@ export function CalendarScreen({
   function startManualWorkload(isoDate: string, label: string) {
     setSelectedId(null);
     setFormErrors({});
-    setDraft({ dayLabel: label, dayIso: isoDate, title: "", time: "", urgency: null, effortHours: 1 });
+    setDraft({ dayLabel: label, dayIso: isoDate, title: "", time: "", urgency: null, effortHours: 1, eventType: "academic" });
     track("calendar_manual_workload_started", { day: isoDate });
   }
 
@@ -697,7 +720,7 @@ export function CalendarScreen({
       rawDate: draft.dayIso,
       time: draft.time.trim(),
       intensity: urgencyLabel[draft.urgency!],
-      eventType: "academic",
+      eventType: draft.eventType,
       effortHours: draft.effortHours,
       urgency: draft.urgency!,
       confirmed: true,
@@ -978,7 +1001,7 @@ export function CalendarScreen({
         <form onSubmit={saveManualWorkload} noValidate className="mt-4 rounded-xl border border-emerald-200 bg-white p-6 shadow-md">
           <div className="mb-5 flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-stone-400">New academic workload</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-stone-400">New event</p>
               <h2 className="mt-1 text-xl font-bold text-stone-950">{draft.dayLabel}</h2>
               <p className="mt-1 text-sm text-stone-500">Add anything Fed Up missed so cooking effort can adapt around it.</p>
             </div>
@@ -992,36 +1015,78 @@ export function CalendarScreen({
             </button>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-[minmax(0,1fr)_140px]">
-            <div>
-              <label className="block">
-                <span className="text-sm font-semibold text-stone-700">Title <span className="text-rose-500">*</span></span>
-                <Input
-                  value={draft.title}
-                  onChange={(e) => { setDraft({ ...draft, title: e.target.value }); setFormErrors((err) => ({ ...err, title: undefined })); }}
-                  placeholder="e.g. Operating Systems coursework"
-                  className={cn("mt-2 h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.title && "border-rose-400")}
-                />
-              </label>
-              {formErrors.title && <p className="mt-1 text-xs text-rose-600">{formErrors.title}</p>}
-            </div>
-            <div>
-              <label className="block">
-                <span className="text-sm font-semibold text-stone-700">Time <span className="text-rose-500">*</span></span>
-                <Input
-                  type="time"
-                  step="60"
-                  value={draft.time}
-                  onChange={(e) => { setDraft({ ...draft, time: e.target.value }); setFormErrors((err) => ({ ...err, time: undefined })); }}
-                  required
-                  className={cn("mt-2 h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
-                />
-              </label>
-              {formErrors.time && <p className="mt-1 text-xs text-rose-600">{formErrors.time}</p>}
-            </div>
+          <div>
+            <p className="mb-2 text-sm font-semibold text-stone-700">Title <span className="text-rose-500">*</span></p>
+            <Input
+              value={draft.title}
+              onChange={(e) => { setDraft({ ...draft, title: e.target.value }); setFormErrors((err) => ({ ...err, title: undefined })); }}
+              placeholder="e.g. Operating Systems coursework"
+              className={cn("h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.title && "border-rose-400")}
+            />
+            {formErrors.title && <p className="mt-1 text-xs text-rose-600">{formErrors.title}</p>}
           </div>
 
-          <div className="mt-5 grid gap-6 sm:grid-cols-2">
+          <div className="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <p className="mb-2 text-sm font-semibold text-stone-700">Time <span className="text-rose-500">*</span></p>
+              <Input
+                type="time"
+                step="60"
+                value={draft.time}
+                onChange={(e) => { setDraft({ ...draft, time: e.target.value }); setFormErrors((err) => ({ ...err, time: undefined })); }}
+                onClick={(e) => { if (e.clientX > e.currentTarget.getBoundingClientRect().left + 100) e.currentTarget.showPicker?.(); }}
+                className={cn("h-auto cursor-pointer rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
+              />
+              {formErrors.time && <p className="mt-1 text-xs text-rose-600">{formErrors.time}</p>}
+            </div>
+
+            <div>
+              <p className="mb-2 text-sm font-semibold text-stone-700">Event type</p>
+              <div className="flex gap-2">
+                {(["academic", "general"] as const).map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => setDraft({ ...draft, eventType: type })}
+                    className={cn(
+                      "flex-1 rounded-lg border py-2 text-sm font-medium capitalize transition",
+                      draft.eventType === type
+                        ? "border-amber-400 bg-amber-50 text-amber-800"
+                        : "border-stone-200 bg-white text-stone-500 hover:bg-stone-50",
+                    )}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-1.5 text-xs text-stone-400">Academic events affect cooking effort.</p>
+            </div>
+
+            <div>
+              <p className="mb-2 text-sm font-semibold text-stone-700">Estimated effort</p>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setDraft({ ...draft, effortHours: Math.max(0.5, draft.effortHours - 0.5) })}
+                  disabled={draft.effortHours <= 0.5}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:bg-stone-50 disabled:opacity-30"
+                >
+                  <Minus size={14} />
+                </button>
+                <span className="min-w-[4rem] text-center text-lg font-semibold text-stone-900">
+                  {draft.effortHours % 1 === 0 ? `${draft.effortHours}h` : `${Math.floor(draft.effortHours)}h 30m`}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setDraft({ ...draft, effortHours: Math.min(12, draft.effortHours + 0.5) })}
+                  disabled={draft.effortHours >= 12}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:bg-stone-50 disabled:opacity-30"
+                >
+                  <Plus size={14} />
+                </button>
+              </div>
+            </div>
+
             <div>
               <p className="mb-2 text-sm font-semibold text-stone-700">Urgency <span className="text-rose-500">*</span></p>
               <div className="flex gap-2">
@@ -1048,31 +1113,6 @@ export function CalendarScreen({
                 ))}
               </div>
               {formErrors.urgency && <p className="mt-1 text-xs text-rose-600">{formErrors.urgency}</p>}
-            </div>
-
-            <div>
-              <p className="mb-2 text-sm font-semibold text-stone-700">Estimated effort</p>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setDraft({ ...draft, effortHours: Math.max(0.5, draft.effortHours - 0.5) })}
-                  disabled={draft.effortHours <= 0.5}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:bg-stone-50 disabled:opacity-30"
-                >
-                  <Minus size={14} />
-                </button>
-                <span className="min-w-[4rem] text-center text-lg font-semibold text-stone-900">
-                  {draft.effortHours % 1 === 0 ? `${draft.effortHours}h` : `${Math.floor(draft.effortHours)}h 30m`}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setDraft({ ...draft, effortHours: Math.min(12, draft.effortHours + 0.5) })}
-                  disabled={draft.effortHours >= 12}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:bg-stone-50 disabled:opacity-30"
-                >
-                  <Plus size={14} />
-                </button>
-              </div>
             </div>
           </div>
 
