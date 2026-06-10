@@ -216,7 +216,7 @@ describe("recommender API helpers", () => {
 
   test("fetchRecipeStates skips the request for an empty id list", async () => {
     let called = false;
-    globalThis.fetch = (async (_input: RequestInfo | URL, _init?: RequestInit) => { called = true; return new Response("{}", { status: 200 }); }) as typeof fetch;
+    globalThis.fetch = (async () => { called = true; return new Response("{}", { status: 200 }); }) as unknown as typeof fetch;
 
     expect(await fetchRecipeStates([])).toEqual({});
     expect(called).toBe(false);
