@@ -9,6 +9,12 @@
     scrollbar-gutter: stable;
   }
 
+  /* scrollbar-gutter: stable already reserves scrollbar space on the html element,
+     so react-remove-scroll's margin-right compensation on body must not double-apply */
+  html body[data-scroll-locked] {
+    margin-right: 0 !important;
+  }
+
   body {
     @apply min-w-[320px] min-h-screen relative m-0 bg-slate-50 text-foreground;
   }
