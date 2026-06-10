@@ -151,7 +151,7 @@ export function Onboarding({
   account: AccountSummary;
   accountMessage: string;
   accountMessageTone: AccountMessageTone;
-  accountBusy: AccountProviderId | "email" | "anonymous" | "delete" | null;
+  accountBusy: AccountProviderId | "email" | "anonymous" | "logout" | "delete" | null;
   onConnectAccount: (provider: AccountProviderId) => void;
   onSendEmailMagicLink: (email: string) => void;
   onUseAnonymousAccount: () => void;

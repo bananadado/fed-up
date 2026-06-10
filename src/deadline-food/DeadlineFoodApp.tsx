@@ -114,7 +114,7 @@ export function DeadlineFoodApp() {
   });
   const [accountMessage, setAccountMessage] = useState("");
   const [accountMessageTone, setAccountMessageTone] = useState<AccountMessageTone>("info");
-  const [accountBusy, setAccountBusy] = useState<AccountProviderId | "email" | "anonymous" | "delete" | null>(null);
+  const [accountBusy, setAccountBusy] = useState<AccountProviderId | "email" | "anonymous" | "logout" | "delete" | null>(null);
   // Set an account-area notice with a tone so the UI styles errors distinctly
   // from success/info. Clear with notifyAccount("").
   const notifyAccount = useCallback((text: string, tone: AccountMessageTone = "info") => {
@@ -278,7 +278,7 @@ export function DeadlineFoodApp() {
         }
         setOnboarded(true);
         setCanPersistSession(true);
-        notifyAccount("Welcome back — your saved plan is synced to this account.");
+        notifyAccount("");
         window.location.hash = "/dashboard";
       } else {
         if (snapshot.sessionId !== sessionIdRef.current) {
@@ -645,6 +645,22 @@ export function DeadlineFoodApp() {
     }
   }, [notifyAccount, saveCurrentSessionNow, track]);
 
+  const logoutAccount = useCallback(async () => {
+    setAccountBusy("logout");
+    notifyAccount("");
+    try {
+      await signOutDeadlineFoodAccount();
+      track("account_signed_out", {});
+      clearStoredAnonymousSessionId();
+      window.location.hash = "/landing";
+      window.location.reload();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not log out.";
+      notifyAccount(message, "error");
+      setAccountBusy(null);
+    }
+  }, [notifyAccount, track]);
+
   const deleteAccount = useCallback(async () => {
     setAccountBusy("delete");
     notifyAccount("");
@@ -942,7 +958,7 @@ export function DeadlineFoodApp() {
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} prefs={prefs} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} track={track} />}
-      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onDeleteAccount={deleteAccount} track={track} />}
+      {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onLogout={logoutAccount} onDeleteAccount={deleteAccount} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} unitSystem={prefs.unitSystem} />}
     </Shell>
   );

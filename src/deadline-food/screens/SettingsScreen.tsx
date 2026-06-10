@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Import, Mail, RotateCcw, UserRound } from "lucide-react";
+import { Import, LogOut, Mail, RotateCcw, UserRound } from "lucide-react";
 import { GoogleIcon, MicrosoftIcon } from "../components/BrandIcons";
 
 import { Card } from "@/components/ui/card";
@@ -46,6 +46,7 @@ export function SettingsScreen({
   accountBusy,
   onConnectAccount,
   onSendEmailMagicLink,
+  onLogout,
   onDeleteAccount,
   track,
 }: {
@@ -65,9 +66,10 @@ export function SettingsScreen({
   account: AccountSummary;
   accountMessage: string;
   accountMessageTone: AccountMessageTone;
-  accountBusy: AccountProviderId | "email" | "anonymous" | "delete" | null;
+  accountBusy: AccountProviderId | "email" | "anonymous" | "logout" | "delete" | null;
   onConnectAccount: (provider: AccountProviderId) => void;
   onSendEmailMagicLink: (email: string, options?: EmailMagicLinkOptions) => void;
+  onLogout: () => void;
   onDeleteAccount: () => void;
   track: TrackEvent;
 }) {
@@ -185,16 +187,29 @@ export function SettingsScreen({
       <p className="mt-2 text-stone-600">Update the limits used for future plans and meal replacements.</p>
       <Card className="mt-7 gap-0 rounded-lg border-stone-200 bg-white p-6">
         <div className="mb-6 rounded-lg border border-emerald-100 bg-emerald-50/70 p-4">
-          <div className="flex items-start gap-3">
-            <div className="rounded-lg bg-white p-2 text-emerald-700">
-              <UserRound size={18} />
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex min-w-0 items-start gap-3">
+              <div className="rounded-lg bg-white p-2 text-emerald-700">
+                <UserRound size={18} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-stone-900">Account</p>
+                <p className="mt-1 break-words text-sm text-stone-600">
+                  {account.configured ? accountLabel : "Anonymous sessions are active. Firebase Auth is not configured."}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="font-semibold text-stone-900">Account</p>
-              <p className="mt-1 break-words text-sm text-stone-600">
-                {account.configured ? accountLabel : "Anonymous sessions are active. Firebase Auth is not configured."}
-              </p>
-            </div>
+            {account.configured && !account.isAnonymous && (
+              <AppButton
+                type="button"
+                variant="secondary"
+                onClick={onLogout}
+                disabled={accountBusy !== null}
+                className="shrink-0 justify-center border-stone-200 bg-white text-stone-700 hover:bg-stone-50"
+              >
+                <LogOut size={15} /> {accountBusy === "logout" ? "Logging out..." : "Log out"}
+              </AppButton>
+            )}
           </div>
           {/* Anonymous session: offer the ways to link/sign in. Once an account
               is attached there is nothing left to link, so we never show these. */}
