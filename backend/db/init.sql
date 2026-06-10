@@ -27,10 +27,9 @@ CREATE TABLE IF NOT EXISTS recipes (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-
--- Backfill the verified column for databases created before #213 (init runs on
--- every container start; CREATE TABLE IF NOT EXISTS above is a no-op there).
-ALTER TABLE recipes ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT false;
+-- Note: for databases created before #213 (where init.sql has already run and is
+-- skipped on restart), the verified column is added in-place by the API's
+-- startup migration in recommender-api/app/main.py (_ensure_verified_column).
 
 -- User profiles
 CREATE TABLE IF NOT EXISTS users (
