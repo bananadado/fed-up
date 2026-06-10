@@ -114,7 +114,7 @@ describe("buildPlan", () => {
     expect(plan.flatMap((entry) => entry.meals).some((m) => m.batchCook)).toBe(false);
   });
 
-  it("high batch mode creates more leftover coverage than balanced mode", () => {
+  it("high batch mode respects the two-day lunch/dinner repeat cap", () => {
     const days = [
       day({ date: "2026-06-01", stress: 0.2 }),
       day({ date: "2026-06-02", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } }),
@@ -139,7 +139,7 @@ describe("buildPlan", () => {
       plan.flatMap((entry) => entry.meals).filter((m) => m.leftoverOf === "batch").length;
 
     expect(leftoverCount(balanced)).toBe(2);
-    expect(leftoverCount(high)).toBe(3);
+    expect(leftoverCount(high)).toBe(2);
   });
 
   it("repeats one breakfast across weekday slots in repeat mode", () => {
@@ -433,6 +433,44 @@ describe("buildPlan", () => {
       second[0].meals.find((m) => m.slot === "dinner")?.mealId,
     );
   });
+
+  it("does not repeat lunch or dinner more than two days in a row when alternatives exist", () => {
+    const days = Array.from({ length: 5 }, (_, i) =>
+      day({ date: `2026-06-${String(i + 1).padStart(2, "0")}`, stress: 0.8 }),
+    );
+    const quickA = meal({ id: "quick-a", type: "fallback", time: 5, mealSlots: ["lunch"] });
+    const quickB = meal({ id: "quick-b", type: "fallback", time: 6, mealSlots: ["lunch"] });
+
+    const plan = buildPlan({
+      days,
+      pool: [quickA, quickB],
+      avoided: [],
+    });
+
+    const lunchIds = plan.map((entry) => entry.meals.find((m) => m.slot === "lunch")?.mealId);
+    expect(lunchIds.slice(0, 3)).not.toEqual(["quick-a", "quick-a", "quick-a"]);
+    expect(lunchIds.slice(0, 3)).not.toEqual(["quick-b", "quick-b", "quick-b"]);
+  });
+
+  it("lightly prefers liked ingredients and penalises dislikes without making them impossible", () => {
+    const rice = meal({ id: "rice", mealSlots: ["dinner"], ingredients: [{ name: "rice" }] });
+    const pasta = meal({ id: "pasta", mealSlots: ["dinner"], ingredients: [{ name: "pasta" }] });
+    const liked = buildPlan({
+      days: [day({ date: "2026-06-01", stress: 0.3 })],
+      pool: [rice, pasta],
+      avoided: [],
+      preferred: ["pasta"],
+    });
+    const onlyDisliked = buildPlan({
+      days: [day({ date: "2026-06-01", stress: 0.3 })],
+      pool: [rice],
+      avoided: [],
+      disliked: ["rice"],
+    });
+
+    expect(liked[0].meals.find((m) => m.slot === "dinner")?.mealId).toBe("pasta");
+    expect(onlyDisliked[0].meals.find((m) => m.slot === "dinner")?.mealId).toBe("rice");
+  });
 });
 
 describe("buildBestPlan", () => {
@@ -459,6 +497,31 @@ describe("buildBestPlan", () => {
 
     expect(result.plan[0].meals.find((m) => m.slot === "lunch")?.mealId).toBe("balanced-lunch");
     expect(result.quality.nutritionScore).toBeGreaterThan(0.8);
+  });
+
+  it("uses custom daily protein goals when scoring plans", () => {
+    const days = [day({ date: "2026-06-01" })];
+    const lowerProtein = meal({
+      id: "lower-protein",
+      mealSlots: ["lunch"],
+      nutrition: { calories: 735, protein: 32, carbs: 80, fat: 18 },
+    });
+    const higherProtein = meal({
+      id: "higher-protein",
+      mealSlots: ["lunch"],
+      nutrition: { calories: 735, protein: 60, carbs: 60, fat: 18 },
+    });
+
+    const result = buildBestPlan({
+      days,
+      pool: [lowerProtein, higherProtein],
+      avoided: [],
+      nutritionTargets: { dailyCalories: 2100, dailyProtein: 150 },
+      candidateCount: 12,
+      variantSeed: 4,
+    });
+
+    expect(result.plan[0].meals.find((m) => m.slot === "lunch")?.mealId).toBe("higher-protein");
   });
 
   it("scores compact shopping lists higher when nutrition and variety are comparable", () => {

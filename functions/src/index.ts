@@ -481,6 +481,9 @@ type SessionSettings = {
     planningHorizonDays: number;
     planRegenMode: "prompt" | "auto";
     planningPriorities?: AutoPlan.PlanningPriorities;
+    nutritionGoals?: AutoPlan.NutritionTargets;
+    unitSystem?: "metric" | "imperial";
+    prepReminderTime?: string;
   };
   deadlines: {
     id: string;
@@ -1115,6 +1118,12 @@ function normalizeSessionSettings(value: unknown): SessionSettings {
       availableIngredients: normalizeRecipeIngredientList(preferences.availableIngredients),
       planningHorizonDays: Math.round(boundedNumber(preferences.planningHorizonDays, 21, 1, 28)),
       planRegenMode: preferences.planRegenMode === "auto" ? "auto" : "prompt",
+      planningPriorities: normalizePlanningPriorities(preferences.planningPriorities),
+      nutritionGoals: normalizeNutritionGoals(preferences.nutritionGoals),
+      unitSystem: preferences.unitSystem === "imperial" ? "imperial" : "metric",
+      prepReminderTime: /^\d{1,2}:\d{2}$/.test(boundedString(preferences.prepReminderTime, "", 12)) ?
+        boundedString(preferences.prepReminderTime, "22:00", 12) :
+        "22:00",
     },
     deadlines: Array.isArray(settings.deadlines) ?
       settings.deadlines
@@ -1580,6 +1589,14 @@ function normalizePlanningPriorities(value: unknown): AutoPlan.PlanningPrioritie
   };
 }
 
+function normalizeNutritionGoals(value: unknown): AutoPlan.NutritionTargets {
+  const raw = asRecord(value);
+  return {
+    dailyCalories: Math.round(boundedNumber(raw?.dailyCalories, 2100, 1200, 4000)),
+    dailyProtein: Math.round(boundedNumber(raw?.dailyProtein, 90, 30, 250)),
+  };
+}
+
 async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Promise<void> {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
@@ -1598,10 +1615,12 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const excludeIds = boundedStringList(body.excludeIds, 250, 80);
   const excludedIds = new Set(excludeIds);
   const dietary = canonicalRecommenderTags(boundedStringList(body.dietary, 40, 80));
+  const likes = canonicalRecommenderTags(boundedStringList(body.likes, 40, 80));
   const dislikes = canonicalRecommenderTags(boundedStringList(body.dislikes, 40, 80));
   const allergens = canonicalRecommenderTags(boundedStringList(body.allergens, 40, 80));
   const weeklyBudgetPence = Math.round(boundedNumber(body.budget, 48, 0, 1000) * 100);
   const planningPriorities = normalizePlanningPriorities(body.planningPriorities);
+  const nutritionGoals = normalizeNutritionGoals(body.nutritionGoals);
   const planVariant = Math.round(boundedNumber(body.planVariant, 0, 0, 1_000_000));
   const previousPlan = Array.isArray(body.previousPlan) ?
     body.previousPlan.map((entry) => asRecord(entry)).filter((entry): entry is UnknownRecord => entry !== null) :
@@ -1678,14 +1697,16 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const {plan, quality} = AutoPlan.buildBestPlan({
     days,
     pool: [...savedAlloc, ...fillAlloc, ...fallbackAlloc],
-    avoided: [...dislikes, ...allergens],
+    avoided: allergens,
+    preferred: likes,
+    disliked: dislikes,
     dietary,
     weeklyBudgetPence,
     planningPriorities,
     variantSeed: planVariant > 0 ? planVariant : undefined,
     previousPlan: previousPlan as unknown as AutoPlan.PlanEntryOut[],
     candidateCount: 12,
-    nutritionTargets: "balanced-defaults",
+    nutritionTargets: nutritionGoals,
     availableIngredients,
   });
 

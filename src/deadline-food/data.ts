@@ -370,6 +370,7 @@ export const initialPreferences: Preferences = {
   planningHorizonDays: 21,
   planRegenMode: "prompt",
   planningPriorities: defaultPlanningPriorities,
+  nutritionGoals: { dailyCalories: 2100, dailyProtein: 90 },
   unitSystem: "metric" as const,
   prepReminderTime: "22:00",
 };

@@ -77,8 +77,10 @@ export interface BuildPlanInput {
   variantSeed?: number;
   previousPlan?: PlanEntryOut[];
   candidateCount?: number;
-  nutritionTargets?: "balanced-defaults";
+  nutritionTargets?: NutritionTargets | "balanced-defaults";
   availableIngredients?: { name: string }[];
+  preferred?: string[];
+  disliked?: string[];
 }
 
 export interface PlanQuality {
@@ -98,6 +100,11 @@ export interface PlanQuality {
 export interface BestPlanResult {
   plan: PlanEntryOut[];
   quality: PlanQuality;
+}
+
+export interface NutritionTargets {
+  dailyCalories: number;
+  dailyProtein: number;
 }
 
 export type PlanningPriorities = {
@@ -131,6 +138,10 @@ const DEFAULT_PRIORITIES: PlanningPriorities = {
   mealRepeats: "balanced",
   ingredientReuse: "balanced",
   campusFallbacks: "when-busy",
+};
+const DEFAULT_NUTRITION_TARGETS: NutritionTargets = {
+  dailyCalories: 2100,
+  dailyProtein: 90,
 };
 
 const TAG_ALIASES: Record<string, string> = {
@@ -456,10 +467,28 @@ function nutritionValue(value: number | undefined): number {
   return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : 0;
 }
 
-function slotNutritionTarget(slot: MealSlot): { calories: number; protein: number } {
-  if (slot === "breakfast") return {calories: 450, protein: 20};
-  if (slot === "lunch") return {calories: 650, protein: 30};
-  return {calories: 750, protein: 35};
+function normalizeNutritionTargets(value: BuildPlanInput["nutritionTargets"]): NutritionTargets {
+  if (value === "balanced-defaults" || value === undefined) return DEFAULT_NUTRITION_TARGETS;
+  const dailyCalories = Number.isFinite(value.dailyCalories) ?
+    value.dailyCalories :
+    DEFAULT_NUTRITION_TARGETS.dailyCalories;
+  const dailyProtein = Number.isFinite(value.dailyProtein) ?
+    value.dailyProtein :
+    DEFAULT_NUTRITION_TARGETS.dailyProtein;
+  return {
+    dailyCalories: Math.min(4000, Math.max(1200, Math.round(dailyCalories))),
+    dailyProtein: Math.min(250, Math.max(30, Math.round(dailyProtein))),
+  };
+}
+
+function slotNutritionTarget(slot: MealSlot, targets: NutritionTargets): { calories: number; protein: number } {
+  if (slot === "breakfast") {
+    return {calories: targets.dailyCalories * 0.25, protein: targets.dailyProtein * 0.25};
+  }
+  if (slot === "lunch") {
+    return {calories: targets.dailyCalories * 0.35, protein: targets.dailyProtein * 0.35};
+  }
+  return {calories: targets.dailyCalories * 0.40, protein: targets.dailyProtein * 0.40};
 }
 
 function ingredientOverlapScore(meal: AllocatorMeal, weekIngredients: Map<string, number>): number {
@@ -520,6 +549,14 @@ function isBatchSlot(
   return priorities.batchCooking === "high" && b === "medium" && day.free_evening;
 }
 
+type SlotStreak = { mealId: string; count: number };
+
+function wouldExceedSlotStreak(meal: AllocatorMeal, slot: MealSlot, slotStreaks: Map<MealSlot, SlotStreak>): boolean {
+  if (slot === "breakfast") return false;
+  const streak = slotStreaks.get(slot);
+  return streak?.mealId === meal.id && streak.count >= 2;
+}
+
 function remainingFillableSlotsInWeek(
   daysLength: number,
   dayIndex: number,
@@ -564,6 +601,8 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
   const priorities = normalizePriorities(input.planningPriorities);
   const avoided = new Set(canonicalTags(input.avoided));
   const dietary = new Set(canonicalTags(input.dietary ?? []));
+  const preferred = new Set(canonicalTags(input.preferred ?? []));
+  const disliked = new Set(canonicalTags(input.disliked ?? []));
   const safePool = input.pool.filter((m) => isSafe(m, avoided) && isDietCompatible(m, dietary));
   const weeklyBudgetPence =
     input.weeklyBudgetPence === undefined || !Number.isFinite(input.weeklyBudgetPence) ?
@@ -578,6 +617,7 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
   const spentByWeek = new Map<number, number>();
   const ingredientsByWeek = new Map<number, Map<string, number>>();
   const breakfastRoutineIds: string[] = [];
+  const slotStreaks = new Map<MealSlot, SlotStreak>();
   const entries: PlanEntryOut[] = [];
 
   input.days.forEach((day, dayIndex) => {
@@ -605,7 +645,8 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
           (l) =>
             l.expiresDayIndex >= dayIndex &&
             l.meal.mealSlots.includes(slot) &&
-            !usedToday.has(l.meal.id),
+            !usedToday.has(l.meal.id) &&
+            !wouldExceedSlotStreak(l.meal, slot, slotStreaks),
         );
         if (idx !== -1) {
           const [used] = leftovers.splice(idx, 1);
@@ -620,6 +661,7 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
             slotUseCounts,
             spentByWeek,
             usedToday,
+            slotStreaks,
             countCost: false,
             recordIngredients: false,
           });
@@ -649,12 +691,18 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
         slotUseCounts,
         weekIngredients,
         priorities,
+        preferred,
+        disliked,
         usedToday,
         dayIndex,
         input.variantSeed,
+        slotStreaks,
       );
 
-      if (!picked) continue; // pool has nothing for this slot — leave it unfilled
+      if (!picked) {
+        slotStreaks.delete(slot);
+        continue; // pool has nothing for this slot — leave it unfilled
+      }
 
       if (slot === "breakfast" && priorities.breakfastRoutine !== "varied") {
         const routineIndex = priorities.breakfastRoutine === "repeat" ? Math.floor(dayIndex / 5) : dayIndex % 2;
@@ -676,6 +724,7 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
         spentByWeek,
         usedToday,
         weekIngredients,
+        slotStreaks,
       });
 
       if (isBatch) {
@@ -728,7 +777,7 @@ function plannedMealEntries(plan: PlanEntryOut[], pool: AllocatorMeal[]): Array<
   return out;
 }
 
-function nutritionScore(plan: PlanEntryOut[], pool: AllocatorMeal[]): number {
+function nutritionScore(plan: PlanEntryOut[], pool: AllocatorMeal[], targets: NutritionTargets): number {
   const placed = plannedMealEntries(plan, pool);
   let targetCalories = 0;
   let targetProtein = 0;
@@ -748,7 +797,7 @@ function nutritionScore(plan: PlanEntryOut[], pool: AllocatorMeal[]): number {
     for (const planMeal of entry.meals) {
       const meal = placed.find((item) => item.entry === entry && item.planMeal === planMeal)?.meal;
       if (!meal) continue;
-      const target = slotNutritionTarget(planMeal.slot);
+      const target = slotNutritionTarget(planMeal.slot, targets);
       targetCalories += target.calories;
       targetProtein += target.protein;
       dayTargetCalories += target.calories;
@@ -848,6 +897,29 @@ function ingredientReuseScore(
   return clamp01((reused / counts.size) / 0.35);
 }
 
+function mealPreferenceOverlap(meal: AllocatorMeal, preferences: Set<string>): number {
+  if (preferences.size === 0) return 0;
+  const keys = new Set([
+    ...ingredientKeys(meal),
+    ...canonicalTags(meal.tags),
+    ...canonicalTags(meal.allergens),
+  ]);
+  let score = 0;
+  for (const preference of preferences) {
+    if (keys.has(preference)) score += 1;
+    else if ([...keys].some((key) => key.includes(preference) || preference.includes(key))) score += 0.5;
+  }
+  return score;
+}
+
+function mealDislikePenalty(meal: AllocatorMeal, disliked: Set<string>): number {
+  return mealPreferenceOverlap(meal, disliked) * 2;
+}
+
+function mealLikeBoost(meal: AllocatorMeal, preferred: Set<string>): number {
+  return mealPreferenceOverlap(meal, preferred);
+}
+
 function varietyScore(plan: PlanEntryOut[], priorities: PlanningPriorities): number {
   const flexible = plan.flatMap((entry) =>
     entry.meals.filter((meal) => meal.slot !== "breakfast" && !meal.leftoverOf),
@@ -920,12 +992,13 @@ function regenerationChangeScore(
 
 export function scorePlan(input: BuildPlanInput, plan: PlanEntryOut[]): PlanQuality {
   const priorities = normalizePriorities(input.planningPriorities);
+  const nutritionTargets = normalizeNutritionTargets(input.nutritionTargets);
   const cost = weeklyCostPence(plan, input.pool);
   const ingredientCounts = ingredientCountsForPlan(plan, input.pool, input.availableIngredients);
   const reusedIngredientGroups = [...ingredientCounts.values()].filter((count) => count > 1).length;
   const regen = regenerationChangeScore(plan, input.previousPlan);
   const quality = {
-    nutritionScore: nutritionScore(plan, input.pool),
+    nutritionScore: nutritionScore(plan, input.pool, nutritionTargets),
     varietyScore: varietyScore(plan, priorities),
     budgetScore: budgetScore(plan, input.pool, input.weeklyBudgetPence),
     shoppingSimplicityScore: shoppingSimplicityScore(plan, input.pool, input.availableIngredients),
@@ -993,6 +1066,7 @@ function recordUse({
   spentByWeek,
   usedToday,
   weekIngredients,
+  slotStreaks,
   countCost = true,
   recordIngredients = true,
 }: {
@@ -1006,6 +1080,7 @@ function recordUse({
   spentByWeek: Map<number, number>;
   usedToday: Set<string>;
   weekIngredients?: Map<string, number>;
+  slotStreaks?: Map<MealSlot, SlotStreak>;
   countCost?: boolean;
   recordIngredients?: boolean;
 }): void {
@@ -1019,6 +1094,13 @@ function recordUse({
   }
   if (recordIngredients && weekIngredients) {
     recordWeekIngredients(meal, weekIngredients);
+  }
+  if (slotStreaks) {
+    const current = slotStreaks.get(slot);
+    slotStreaks.set(slot, {
+      mealId: meal.id,
+      count: current?.mealId === meal.id ? current.count + 1 : 1,
+    });
   }
   usedToday.add(meal.id);
 }
@@ -1035,9 +1117,12 @@ function pickForSlot(
   slotUseCounts: Map<string, number>,
   weekIngredients: Map<string, number>,
   priorities: PlanningPriorities,
+  preferred: Set<string>,
+  disliked: Set<string>,
   usedToday: Set<string>,
   dayIndex: number,
   variantSeed: number | undefined,
+  slotStreaks: Map<MealSlot, SlotStreak>,
 ): AllocatorMeal | null {
   if (candidates.length === 0) return null;
 
@@ -1049,8 +1134,10 @@ function pickForSlot(
 
   const paced = affordable.filter((m) => mealCostPence(m) <= pacedBudgetPence);
   const budgetPool = paced.length > 0 ? paced : affordable;
-  const notUsedToday = budgetPool.filter((m) => !usedToday.has(m.id));
-  const rotationPool = notUsedToday.length > 0 ? notUsedToday : budgetPool;
+  const streakSafe = budgetPool.filter((m) => !wouldExceedSlotStreak(m, slot, slotStreaks));
+  const streakPool = streakSafe.length > 0 ? streakSafe : budgetPool;
+  const notUsedToday = streakPool.filter((m) => !usedToday.has(m.id));
+  const rotationPool = notUsedToday.length > 0 ? notUsedToday : streakPool;
   const hasPacedOptions = paced.length > 0;
 
   const ranked = [...rotationPool].sort((a, c) => {
@@ -1069,6 +1156,12 @@ function pickForSlot(
     const byIngredientReuse =
       ingredientReuseRank(c, weekIngredients, priorities) - ingredientReuseRank(a, weekIngredients, priorities);
     if (byIngredientReuse !== 0) return byIngredientReuse;
+
+    const byDislike = mealDislikePenalty(a, disliked) - mealDislikePenalty(c, disliked);
+    if (byDislike !== 0) return byDislike;
+
+    const byLike = mealLikeBoost(c, preferred) - mealLikeBoost(a, preferred);
+    if (byLike !== 0) return byLike;
 
     if (b === "low" && slot !== "breakfast" && priorities.mealRepeats !== "low-effort") {
       const aSlotUses = slotUseCounts.get(`${slot}:${a.id}`) ?? 0;

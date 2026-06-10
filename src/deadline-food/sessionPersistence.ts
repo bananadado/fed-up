@@ -61,6 +61,7 @@ export type SessionSettings = {
 export function normalizePreferences(raw: Preferences): Preferences {
   const horizon = Number.isFinite(raw.planningHorizonDays) ? raw.planningHorizonDays : 21;
   const priorities = raw.planningPriorities ?? defaultPlanningPriorities;
+  const nutritionGoals = raw.nutritionGoals ?? { dailyCalories: 2100, dailyProtein: 90 };
   return {
     ...raw,
     planningHorizonDays: Math.min(28, Math.max(1, Math.round(horizon))),
@@ -72,9 +73,18 @@ export function normalizePreferences(raw: Preferences): Preferences {
       ingredientReuse: normalizePriority(priorities.ingredientReuse, ["low", "balanced", "high"], defaultPlanningPriorities.ingredientReuse),
       campusFallbacks: normalizePriority(priorities.campusFallbacks, ["off", "when-busy", "allowed"], defaultPlanningPriorities.campusFallbacks),
     },
+    nutritionGoals: {
+      dailyCalories: clampNumber(nutritionGoals.dailyCalories, 2100, 1200, 4000),
+      dailyProtein: clampNumber(nutritionGoals.dailyProtein, 90, 30, 250),
+    },
     unitSystem: raw.unitSystem === "imperial" ? "imperial" : "metric",
     prepReminderTime: /^\d{1,2}:\d{2}$/.test(raw.prepReminderTime ?? "") ? raw.prepReminderTime : "22:00",
   };
+}
+
+function clampNumber(value: unknown, fallback: number, min: number, max: number): number {
+  const numeric = typeof value === "number" && Number.isFinite(value) ? value : fallback;
+  return Math.min(max, Math.max(min, Math.round(numeric)));
 }
 
 function normalizePriority<T extends PlanningPriorities[keyof PlanningPriorities]>(

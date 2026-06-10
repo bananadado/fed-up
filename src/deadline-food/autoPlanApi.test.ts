@@ -31,6 +31,25 @@ describe("computePlanSignature", () => {
 
     expect(computePlanSignature(base)).not.toBe(computePlanSignature(changed));
   });
+
+  test("changes when nutrition goals change", () => {
+    const base = {
+      prefs: initialPreferences,
+      savedRecipes: [],
+      calendarEvents: [],
+      deadlines: [],
+    };
+
+    const changed = {
+      ...base,
+      prefs: {
+        ...initialPreferences,
+        nutritionGoals: { dailyCalories: 2100, dailyProtein: 120 },
+      },
+    };
+
+    expect(computePlanSignature(base)).not.toBe(computePlanSignature(changed));
+  });
 });
 
 describe("buildAutoPlanContextEvents", () => {
@@ -155,6 +174,8 @@ describe("generateAutoPlan", () => {
 
     expect(captured.body?.previousPlan).toEqual(previousPlan);
     expect(captured.body?.availableIngredients).toEqual(prefs.availableIngredients);
+    expect(captured.body?.nutritionGoals).toEqual(prefs.nutritionGoals);
+    expect(captured.body?.likes).toEqual(prefs.likes);
     expect(result.quality?.score).toBe(0.9);
   });
 });

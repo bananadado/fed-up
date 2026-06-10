@@ -966,6 +966,52 @@ export function Onboarding({
                   <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => updatePrefs({ postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
                 </div>
               </PreferenceSection>
+              <PreferenceSection
+                title="Nutrition goals"
+                description="Daily targets used when Fed Up compares otherwise similar plans."
+              >
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="text-sm font-semibold">Calories per day</span>
+                    <Input
+                      value={prefs.nutritionGoals.dailyCalories}
+                      onChange={(event) => updatePrefs({
+                        nutritionGoals: {
+                          ...prefs.nutritionGoals,
+                          dailyCalories: event.target.value === "" ? 2100 : Number(event.target.value),
+                        },
+                      })}
+                      onBlur={() => track("onboarding_preference_changed", { field: "nutrition_goals.daily_calories", value: prefs.nutritionGoals.dailyCalories })}
+                      type="number"
+                      min="1200"
+                      max="4000"
+                      step="50"
+                      className="mt-2"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="text-sm font-semibold">Protein per day</span>
+                    <div className="mt-2 flex items-center rounded-lg border border-stone-200 px-3">
+                      <Input
+                        value={prefs.nutritionGoals.dailyProtein}
+                        onChange={(event) => updatePrefs({
+                          nutritionGoals: {
+                            ...prefs.nutritionGoals,
+                            dailyProtein: event.target.value === "" ? 90 : Number(event.target.value),
+                          },
+                        })}
+                        onBlur={() => track("onboarding_preference_changed", { field: "nutrition_goals.daily_protein", value: prefs.nutritionGoals.dailyProtein })}
+                        type="number"
+                        min="30"
+                        max="250"
+                        step="5"
+                        className="h-auto border-0 p-3 shadow-none focus-visible:ring-0"
+                      />
+                      <span className="text-sm text-stone-500">g</span>
+                    </div>
+                  </label>
+                </div>
+              </PreferenceSection>
             </div>
             <div className="mt-3 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">
               <p className="font-semibold">Why we ask for university and area</p>

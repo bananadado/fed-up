@@ -74,6 +74,8 @@ export function computePlanSignature(input: {
     `mr:${priorities.mealRepeats}`,
     `ir:${priorities.ingredientReuse}`,
     `cf:${priorities.campusFallbacks}`,
+    `nc:${input.prefs.nutritionGoals.dailyCalories}`,
+    `np:${input.prefs.nutritionGoals.dailyProtein}`,
   ];
   return hash(parts.join(";"));
 }
@@ -135,8 +137,10 @@ export async function generateAutoPlan(
       planVariant: input.planVariant,
       previousPlan: input.previousPlan ?? [],
       dietary: input.prefs.dietary,
+      likes: input.prefs.likes,
       dislikes: input.prefs.dislikes,
       allergens: input.prefs.allergens,
+      nutritionGoals: input.prefs.nutritionGoals,
       planningPriorities: input.prefs.planningPriorities,
       availableIngredients: input.prefs.availableIngredients,
     }),

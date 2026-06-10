@@ -104,6 +104,11 @@ export type PlanningPriorities = {
   campusFallbacks: CampusFallbacksPreference;
 };
 
+export type NutritionGoals = {
+  dailyCalories: number;
+  dailyProtein: number;
+};
+
 export type Preferences = {
   maxTime: number | null;
   budget: number;
@@ -122,6 +127,8 @@ export type Preferences = {
   planRegenMode: PlanRegenMode;
   /** Behaviour preferences that reduce cooking and decision load during deadline weeks. */
   planningPriorities: PlanningPriorities;
+  /** Daily nutrition targets used to score generated plans. */
+  nutritionGoals: NutritionGoals;
   unitSystem: "metric" | "imperial";
   /** Time of day (HH:MM) to schedule evening prep reminders, e.g. "22:00". */
   prepReminderTime: string;
