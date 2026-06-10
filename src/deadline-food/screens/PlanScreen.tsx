@@ -278,12 +278,12 @@ export function PlanScreen({
 
                             return (
                               <div key={slot} className="border-l border-stone-200 p-3">
-                                <div className="flex h-full min-h-[178px] flex-col justify-between rounded-lg bg-stone-50 p-3">
+                                <div className="flex h-full min-h-[178px] flex-col justify-between rounded-lg bg-stone-50 p-3 transition hover:bg-emerald-50 hover:ring-1 hover:ring-emerald-200">
                                   {meal ? (
                                     <button
                                       type="button"
                                       onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_desktop" }); onSelectMeal(meal.id); }}
-                                      className="text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                                      className="w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                                     >
                                       <div className="flex flex-wrap items-center gap-2">
                                         {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
@@ -361,10 +361,10 @@ export function PlanScreen({
                               const meal = planMeal ? getMealById(planMeal.mealId, customRecipes) : null;
 
                               return (
-                                <div key={slot} className="rounded-lg bg-stone-50 p-3">
+                                <div key={slot} className="rounded-lg bg-stone-50 p-3 transition hover:bg-emerald-50 hover:ring-1 hover:ring-emerald-200">
                                   <p className="text-xs font-semibold uppercase text-stone-500">{slotLabels[slot]}</p>
                                   {meal ? (
-                                    <button type="button" onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); onSelectMeal(meal.id); }} className="mt-2 w-full text-left">
+                                    <button type="button" onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); onSelectMeal(meal.id); }} className="mt-2 w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700">
                                       <p className="break-words font-semibold leading-5">
                                         {meal.image} {meal.name}
                                       </p>

@@ -60,6 +60,7 @@ export type Meal = {
   image: string;
   photoUrl?: string;
   isUserCreated?: boolean;
+  published?: boolean;
 };
 
 export type PlanMeal = {
