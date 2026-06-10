@@ -371,5 +371,5 @@ export const initialPreferences: Preferences = {
   planRegenMode: "prompt",
   unitSystem: "metric" as const,
   prepReminderTime: "22:00",
-  use24hClock: true,
+  use24hClock: false,
 };

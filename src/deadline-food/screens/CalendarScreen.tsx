@@ -158,6 +158,7 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose, use24h }: {
           <Input
             type="time"
             step="60"
+            lang={use24h ? "en-GB" : "en-US"}
             value={deadline.time}
             onChange={(e) => onUpdate({ time: e.target.value })}
             className="h-auto rounded-lg border-stone-200 bg-white p-3"
@@ -283,11 +284,13 @@ function CookingScheduler({
   customRecipes,
   defaultDateIso,
   track,
+  use24h,
 }: {
   plan: PlanEntry[];
   customRecipes: Meal[];
   defaultDateIso: string;
   track: TrackEvent;
+  use24h: boolean;
 }) {
   // Distinct meals from the current plan, plus any saved custom recipes, so the
   // user schedules cooking for something they actually intend to make.
@@ -427,6 +430,7 @@ function CookingScheduler({
                 <Input
                   type="time"
                   step="60"
+                  lang={use24h ? "en-GB" : "en-US"}
                   value={time}
                   onChange={(e) => { setTime(e.target.value); setError(null); setExportedMethod(null); }}
                   className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
@@ -1040,6 +1044,7 @@ export function CalendarScreen({
               <Input
                 type="time"
                 step="60"
+                lang={prefs.use24hClock ? "en-GB" : "en-US"}
                 value={draft.time}
                 onChange={(e) => { setDraft({ ...draft, time: e.target.value }); setFormErrors((err) => ({ ...err, time: undefined })); }}
                 className={cn("h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
@@ -1155,6 +1160,7 @@ export function CalendarScreen({
         customRecipes={customRecipes}
         defaultDateIso={toLocalIso(new Date())}
         track={track}
+        use24h={prefs.use24hClock}
       />
 
     </div>
