@@ -386,18 +386,23 @@ async function ensureRecipesSeeded(): Promise<void> {
 }
 
 // Retroactively stamp a stable share slug on any recipe doc missing one (#213).
-// Idempotent: only writes docs without a shareId, so it is safe to run on every
-// read and naturally backfills recipes seeded before sharing existed.
+// Idempotent: only writes docs without a shareId. Cached after the first
+// successful check so subsequent calls skip the collection read entirely.
+let shareIdsBackfilled = false;
 async function ensureShareIds(): Promise<void> {
+  if (shareIdsBackfilled) return;
   const snapshot = await recipesRef.get();
   const missing = snapshot.docs.filter((doc) => typeof doc.get("shareId") !== "string");
-  if (missing.length === 0) return;
-
+  if (missing.length === 0) {
+    shareIdsBackfilled = true;
+    return;
+  }
   const batch = firestore.batch();
   for (const doc of missing) {
     batch.set(doc.ref, {shareId: shareIdForRecipe(doc.id)}, {merge: true});
   }
   await batch.commit();
+  shareIdsBackfilled = true;
 }
 
 async function listRecipes(): Promise<UnknownRecord[]> {
@@ -1952,7 +1957,7 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
         return;
       }
       const ownerUid = existing.get("ownerUid");
-      if (typeof ownerUid === "string" && ownerUid !== account.uid) {
+      if (!ownerUid || ownerUid !== account.uid) {
         response.status(403).json({error: "This recipe belongs to another account"});
         return;
       }
@@ -2004,7 +2009,8 @@ export const deadlineFoodRecipeUnpublish = onRequest(recommenderHttpOptions, asy
       response.status(404).json({error: "Recipe not found"});
       return;
     }
-    if (doc.get("ownerUid") !== account.uid) {
+    const ownerUid = doc.get("ownerUid");
+    if (!ownerUid || ownerUid !== account.uid) {
       response.status(403).json({error: "This recipe belongs to another account"});
       return;
     }
@@ -2045,15 +2051,18 @@ export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async 
 
   try {
     const doc = await recipesRef.doc(recipeId).get();
-    if (doc.exists) {
-      if (doc.get("verified") === true) {
-        response.status(403).json({error: "This recipe cannot be deleted"});
-        return;
-      }
-      if (doc.get("ownerUid") !== account.uid) {
-        response.status(403).json({error: "This recipe belongs to another account"});
-        return;
-      }
+    if (!doc.exists) {
+      response.status(404).json({error: "Recipe not found"});
+      return;
+    }
+    if (doc.get("verified") === true) {
+      response.status(403).json({error: "This recipe cannot be deleted"});
+      return;
+    }
+    const ownerUid = doc.get("ownerUid");
+    if (!ownerUid || ownerUid !== account.uid) {
+      response.status(403).json({error: "This recipe belongs to another account"});
+      return;
     }
     await recipesRef.doc(recipeId).delete();
     await recipeReviewsRef.doc(recipeId).delete();
