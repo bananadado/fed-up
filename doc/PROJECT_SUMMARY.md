@@ -2,7 +2,7 @@
 
 ## Product
 
-Fed Up is a student-facing web prototype for food decisions during deadline weeks. Its purpose is to make healthy-ish, affordable, low-effort food the easiest realistic choice when academic pressure disrupts normal routines.
+Fed Up is a student-facing web app for food decisions during deadline weeks. Its purpose is to make healthy-ish, affordable, low-effort food the easiest realistic choice when academic pressure disrupts normal routines.
 
 It is based on [../FED_UP_SPEC.md](../FED_UP_SPEC.md), which defines the concept, MVP constraints, deterministic recommendation logic, seed data requirements, Firebase persistence direction, and acceptance criteria.
 
@@ -50,27 +50,27 @@ The original spec describes this canonical scenario:
 
 ## Current Implementation Snapshot
 
-The repository currently contains both an active broader prototype and a cleaner deadline-mode planner slice.
+The repository currently contains both an active broader app and a cleaner deadline-mode planner slice.
 
-### Active Prototype
+### Active App
 
 Mounted by `src/App.tsx`:
 
 ```tsx
 export function App() {
-  return <DeadlineFoodPrototype />;
+  return <DeadlineFoodApp />;
 }
 ```
 
 Main files:
 
-- `src/prototype/DeadlineFoodPrototype.tsx`
-- `src/prototype/screens/*.tsx`
-- `src/prototype/components/*.tsx`
-- `src/prototype/data.ts`
-- `src/prototype/types.ts`
+- `src/deadline-food/DeadlineFoodApp.tsx`
+- `src/deadline-food/screens/*.tsx`
+- `src/deadline-food/components/*.tsx`
+- `src/deadline-food/data.ts`
+- `src/deadline-food/types.ts`
 
-The active prototype supports:
+The active app supports:
 
 - Landing page.
 - Three-step onboarding.
@@ -106,19 +106,19 @@ This slice more closely matches `FED_UP_SPEC.md`:
 - Pure planner and rescue functions with Bun tests.
 - Data loaded from `/api/deadline-food/bootstrap` or Firebase Functions through `src/adapters/deadlineFoodApi.ts`.
 
-## Active Prototype Screen Summary
+## Active App Screen Summary
 
 | Screen | File | Purpose |
 |---|---|---|
-| Landing | `src/prototype/screens/Landing.tsx` | Product intro and entry CTA. |
-| Onboarding | `src/prototype/screens/Onboarding.tsx` | Calendar source, `.ics` import, preferences, dietary/allergen/dislike/like chips, source priorities. |
-| Dashboard | `src/prototype/screens/Dashboard.tsx` | Deadline Mode summary, budget card, next cooking, upcoming meals. |
-| Calendar | `src/prototype/screens/CalendarScreen.tsx` | Edit workload signals, urgency, effort hours, academic/general classification. |
-| Plan | `src/prototype/screens/PlanScreen.tsx` | Weekly grid, budget, shopping list, meal swap/rescue modal. |
-| Discover | `src/prototype/screens/DiscoverScreen.tsx` | Browse/save/pass recipes and add liked items to plan. |
-| Recipes | `src/prototype/screens/RecipesScreen.tsx` | Add custom recipes and estimate nutrition. |
-| Recipe Detail | `src/prototype/screens/RecipeDetailScreen.tsx` | View/edit recipe details, nutrition, reviews, shopping vendor links. |
-| Settings | `src/prototype/screens/SettingsScreen.tsx` | Update preferences and calendar import settings. |
+| Landing | `src/deadline-food/screens/Landing.tsx` | Product intro and entry CTA. |
+| Onboarding | `src/deadline-food/screens/Onboarding.tsx` | Calendar source, `.ics` import, preferences, dietary/allergen/dislike/like chips, source priorities. |
+| Dashboard | `src/deadline-food/screens/Dashboard.tsx` | Deadline Mode summary, budget card, next cooking, upcoming meals. |
+| Calendar | `src/deadline-food/screens/CalendarScreen.tsx` | Edit workload signals, urgency, effort hours, academic/general classification. |
+| Plan | `src/deadline-food/screens/PlanScreen.tsx` | Weekly grid, budget, shopping list, meal swap/rescue modal. |
+| Discover | `src/deadline-food/screens/DiscoverScreen.tsx` | Browse/save/pass recipes and add liked items to plan. |
+| Recipes | `src/deadline-food/screens/RecipesScreen.tsx` | Add custom recipes and estimate nutrition. |
+| Recipe Detail | `src/deadline-food/screens/RecipeDetailScreen.tsx` | View/edit recipe details, nutrition, reviews, shopping vendor links. |
+| Settings | `src/deadline-food/screens/SettingsScreen.tsx` | Update preferences and calendar import settings. |
 
 ## Backend Summary
 
@@ -129,7 +129,7 @@ Backend code exists in two places:
 
 Supported backend concerns:
 
-- Serve prototype bootstrap meal/scenario data.
+- Serve app bootstrap meal/scenario data.
 - Persist anonymous session settings in Firestore.
 - Estimate recipe nutrition by querying OpenFoodFacts with caching and rate limiting.
 
@@ -139,7 +139,7 @@ Direct Firestore client access is intentionally unavailable because `firestore.r
 
 There are two seed data systems:
 
-1. Active prototype data in `src/prototype/data.ts`.
+1. Active app data in `src/deadline-food/data.ts`.
    - `seedMeals`: active meal catalogue using `Meal`.
    - `initialPlan`: active weekly meal plan.
    - `defaultDeadlines`: active workload scenario.
@@ -149,7 +149,7 @@ There are two seed data systems:
    - `seededMeals`: planner catalogue using `MealOption`.
    - `canonicalConstraints`: spec-aligned planning scenario.
    - `deadlineBootstrap`: API bootstrap payload.
-   - `scripts/export-firebase-prototype-data.ts`: exports this data into `functions/src/generated/prototypeData.ts`.
+   - `scripts/export-firebase-app-data.ts`: exports this data into `functions/src/generated/appData.ts`.
 
 ## Current Quality Gates
 
@@ -167,7 +167,7 @@ Root package scripts:
 
 ## Product Status
 
-The codebase is a prototype/walking skeleton, not production software. It has credible frontend flows and a real Firebase backend path for anonymous persistence and nutrition estimates, but it does not yet have:
+The codebase is a app/walking skeleton, not production software. It has credible frontend flows and a real Firebase backend path for anonymous persistence and nutrition estimates, but it does not yet have:
 
 - Authenticated accounts.
 - User-owned plan persistence.
@@ -179,9 +179,9 @@ The codebase is a prototype/walking skeleton, not production software. It has cr
 ## Implementation Cautions
 
 - Do not assume the React Router pages are visible in the app.
-- Do not assume `src/domain` powers the active prototype.
+- Do not assume `src/domain` powers the active app.
 - Do not add medical or weight-loss claims.
-- Do not remove prototype disclaimers about illustrative meal availability/prices.
+- Do not remove app disclaimers about illustrative meal availability/prices.
 - Do not make Firestore readable from the client without a deliberate auth/rules design.
 - Do not use Node/npm/yarn commands where Bun scripts already exist, except where Firebase function tooling explicitly uses Node-style dependencies.
 

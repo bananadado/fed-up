@@ -127,7 +127,7 @@ Response:
 type DeadlineBootstrap = {
   meals: MealOption[];
   canonicalConstraints: PlanningConstraints;
-  prototype: {
+  app: {
     productName: string;
     disclaimer: string;
     scenarioName: string;
@@ -137,14 +137,14 @@ type DeadlineBootstrap = {
 
 Firebase behaviour:
 
-- Reads `prototypeData/deadlineFood`.
+- Reads `appData/deadlineFood`.
 - If missing, seeds from generated data and returns it.
 - Adds cache header `public, max-age=60, s-maxage=300`.
 
 Errors:
 
 - `405` unsupported method.
-- `500` if prototype data cannot be loaded.
+- `500` if app data cannot be loaded.
 
 ## Meals
 
@@ -211,7 +211,7 @@ Canonical current value:
 
 Frontend client:
 
-- `src/prototype/anonymousSessionApi.ts`
+- `src/deadline-food/anonymousSessionApi.ts`
 
 Logical endpoint:
 
@@ -252,7 +252,7 @@ Response when found:
 ```ts
 {
   sessionId: string;
-  settings: PrototypeSessionSettings;
+  settings: SessionSettings;
   retentionDays: 90;
   expiresAt: string;
 }
@@ -343,7 +343,7 @@ sessions are not deleted here — they lapse via the rolling `expiresAt` TTL.
 
 Frontend client:
 
-- `src/prototype/nutritionApi.ts`
+- `src/deadline-food/nutritionApi.ts`
 
 Request:
 

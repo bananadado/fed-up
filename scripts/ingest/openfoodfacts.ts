@@ -25,7 +25,7 @@ const OFF_BASE_URL = (
 
 const OFF_USER_AGENT =
   process.env["OPENFOODFACTS_USER_AGENT"] ??
-  "DeadlineFoodPrototype/0.1 (recipe nutrition ingestion)";
+  "DeadlineFoodApp/0.1 (recipe nutrition ingestion)";
 
 const OFF_TIMEOUT_MS = 6000;
 
@@ -171,6 +171,8 @@ export function gramsForIngredient(ingredient: Ingredient): number {
     return ingredient.quantity * 240;
   case "can":
     return ingredient.quantity * 400;
+  case "pinch":
+    return ingredient.quantity * 0.3;
   default:
     return ingredient.quantity * (servingGrams[ingredient.name.toLowerCase()] ?? 100);
   }

@@ -64,15 +64,12 @@ assumptions
 ast
 async
 atomic
-atomic
 audio
 audit
 auth
 authenticate
 authentication
 authority
-auto
-autonomous
 auto
 autonomous
 autopilot
@@ -133,13 +130,11 @@ bun
 bunx
 bus
 busy
-busy
 but
 button
 cache
 cached
 calendar
-call
 call
 calls
 camel
@@ -166,14 +161,12 @@ cell
 change
 changes
 cheap
-cheap
 cheapest
 check
 checked
 checklist
 checks
 chicken
-chilli
 chilli
 choice
 choosing
@@ -216,7 +209,6 @@ commands
 commit
 common
 communication
-communication
 communities
 compact
 comparison
@@ -252,7 +244,6 @@ correct
 cors
 cosine
 cost
-costly
 costly
 countable
 counts
@@ -454,7 +445,6 @@ favours
 fdc
 feasibility
 features
-fed
 feed
 fetch
 fewer
@@ -549,6 +539,8 @@ halls
 handle
 handler
 handles
+handling
+haram
 hard
 has
 hash

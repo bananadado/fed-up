@@ -14,10 +14,10 @@ export const fallbackCampusRiceBowl: MealOption = {
   location: "campus",
   illustrativeOnly: true,
   recipe: {
-    summary: "A prototype campus bowl with chicken, rice and vegetables.",
+    summary: "A app campus bowl with chicken, rice and vegetables.",
     ingredients: recipeIngredients(["halal chicken", "rice", "mixed vegetables", "yoghurt dressing"]),
     steps: ["Collect from Campus Food Hall.", "Choose the lighter dressing option if offered."],
-    prepNotes: "Prototype option: availability and pricing are illustrative.",
+    prepNotes: "App option: availability and pricing are illustrative.",
     whyItFits: "It is a practical high-protein fallback when cooking is unrealistic.",
   },
 };
