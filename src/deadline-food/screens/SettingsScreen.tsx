@@ -412,28 +412,6 @@ export function SettingsScreen({
               })}
             </div>
           </div>
-          <div>
-            <span className="text-sm font-semibold">Time format</span>
-            <p className="mt-1 text-sm text-stone-500">How event times are displayed in your calendar.</p>
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              {([
-                { value: false, label: "12h (2:30 PM)" },
-                { value: true, label: "24h (14:30)" },
-              ] as const).map((option) => {
-                const active = prefs.use24hClock === option.value;
-                return (
-                  <button
-                    key={String(option.value)}
-                    type="button"
-                    onClick={() => { track("settings_preference_changed", { field: "use_24h_clock", value: option.value }); setPrefs({ ...prefs, use24hClock: option.value }); }}
-                    className={cn("rounded-lg border px-3 py-2.5 text-sm font-medium transition", active ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300")}
-                  >
-                    {option.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
         </div>
         <div className="mt-6 space-y-5">
           <ChoiceGroup
