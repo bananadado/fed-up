@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 
 import { buildBestPlan, buildPlan, classifyEffort, localDaysFromContextEvents, mergeCalendarPressure, scorePlan, type AllocatorMeal, type DayContext } from "./autoPlan";
-import { prototypeRecipes } from "./generated/prototypeData";
+import { appRecipes } from "./generated/appData";
 
 function meal(partial: Partial<AllocatorMeal> & { id: string }): AllocatorMeal {
   return {
@@ -27,7 +27,7 @@ function day(partial: Partial<DayContext> & { date: string }): DayContext {
   };
 }
 
-function prototypeMealToAllocator(meal: (typeof prototypeRecipes)[number]): AllocatorMeal {
+function appMealToAllocator(meal: (typeof appRecipes)[number]): AllocatorMeal {
   return {
     id: meal.id,
     type: meal.type,
@@ -368,7 +368,7 @@ describe("buildPlan", () => {
       days: Array.from({ length: 7 }, (_, i) =>
         day({ date: `2026-06-${String(i + 1).padStart(2, "0")}`, stress: 0.3 }),
       ),
-      pool: prototypeRecipes.map(prototypeMealToAllocator),
+      pool: appRecipes.map(appMealToAllocator),
       avoided: [],
       weeklyBudgetPence: 4800,
     });

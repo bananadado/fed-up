@@ -15,7 +15,7 @@ export function PlanDashboardPage() {
     return (
       <main className="mx-auto min-h-screen max-w-3xl px-5 py-10">
         <h1 className="text-3xl font-bold text-slate-950">No active deadline-week plan yet.</h1>
-        <p className="mt-3 text-slate-600">Compare strategies and choose one to generate the first prototype plan.</p>
+        <p className="mt-3 text-slate-600">Compare strategies and choose one to generate the first app plan.</p>
         <Button asChild className="mt-6">
           <Link to="/deadline-mode/strategies">Compare strategies</Link>
         </Button>

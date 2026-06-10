@@ -20,7 +20,7 @@
 export type MealSlot = "breakfast" | "lunch" | "dinner";
 export type MealType = "cook" | "remix" | "fallback";
 
-/** Subset of the prototype `Meal` the allocator needs. */
+/** Subset of the app `Meal` the allocator needs. */
 export interface AllocatorMeal {
   id: string;
   type: MealType;
@@ -151,11 +151,25 @@ const MEAT_FISH_INGREDIENT_PATTERNS = [
   "beef", "chicken", "pork", "bacon", "ham", "lamb", "turkey", "duck",
   "fish", "salmon", "tuna", "cod", "prawn", "shrimp", "shellfish",
 ];
-const GLUTEN_INGREDIENT_PATTERNS = ["wheat", "barley", "rye", "flour", "bread", "pasta", "couscous"];
-const DAIRY_INGREDIENT_PATTERNS = ["milk", "cheese", "butter", "yoghurt", "yogurt", "cream"];
-const HALAL_INGREDIENT_PATTERNS = ["pork", "bacon", "ham", "lard", "gelatin", "wine", "beer", "alcohol"];
-const ACADEMIC_EVENT_PATTERN =
-  /\b(deadline|coursework|assignment|exam|quiz|test|submission|assessment|presentation|seminar|lecture|lab|tutorial|study|revision|review)\b/i;
+const GLUTEN_INGREDIENT_PATTERNS = [
+  "wheat", "barley", "rye", "flour", "bread", "pasta", "couscous",
+];
+const DAIRY_INGREDIENT_PATTERNS = [
+  "milk", "cheese", "butter", "yoghurt", "yogurt", "cream",
+];
+const HALAL_INGREDIENT_PATTERNS = [
+  "pork", "bacon", "ham", "lard", "gelatin", "wine", "beer", "alcohol",
+];
+const ACADEMIC_EVENT_PATTERN = new RegExp(
+  "\\b(" +
+    [
+      "deadline", "coursework", "assignment", "exam", "quiz", "test",
+      "submission", "assessment", "presentation", "seminar", "lecture",
+      "lab", "tutorial", "study", "revision", "review",
+    ].join("|") +
+    ")\\b",
+  "i",
+);
 
 function dateFromEventValue(value: string): Date | null {
   const date = new Date(value);
@@ -188,7 +202,13 @@ function startsInEvening(start: string): boolean {
   return Number(match[1]) >= 17;
 }
 
-function contextEventPressure(event: ContextEventInput): { stress: number; hardDeadline: boolean; maxPrep: number; freeEvening: boolean; durationHours: number } {
+function contextEventPressure(event: ContextEventInput): {
+  stress: number;
+  hardDeadline: boolean;
+  maxPrep: number;
+  freeEvening: boolean;
+  durationHours: number;
+} {
   const title = event.title.trim();
   const durationHours = eventDurationHours(event);
   const academic = event.event_type === "academic" || ACADEMIC_EVENT_PATTERN.test(title);
@@ -211,24 +231,24 @@ function contextEventPressure(event: ContextEventInput): { stress: number; hardD
 
   const maxPrep = stress >= 0.8 ? 15 : stress >= 0.62 ? 30 : 45;
   const freeEvening = stress < 0.62 && !event.all_day && !startsInEvening(event.start);
-  return { stress, hardDeadline, maxPrep, freeEvening, durationHours };
+  return {stress, hardDeadline, maxPrep, freeEvening, durationHours};
 }
 
 export function localDaysFromContextEvents(events: ContextEventInput[], horizonDays: number): DayContext[] {
   const today = new Date();
   const dayCount = Math.max(1, Math.round(horizonDays));
-  const days: DayContext[] = Array.from({ length: dayCount }, (_, index) => {
+  const days: DayContext[] = Array.from({length: dayCount}, (_, index) => {
     const date = addDays(today, index).toISOString().slice(0, 10);
     return {
       date,
       stress: 0.3,
       free_evening: true,
       hard_deadlines: 0,
-      recommended_constraints: { max_prep_minutes: 60 },
+      recommended_constraints: {max_prep_minutes: 60},
     };
   });
   const byDate = new Map(days.map((day) => [day.date, day]));
-  const loadByDate = new Map<string, { count: number; durationHours: number }>();
+  const loadByDate = new Map<string, {count: number; durationHours: number}>();
 
   for (const event of events) {
     const raw = event as unknown;
@@ -249,7 +269,7 @@ export function localDaysFromContextEvents(events: ContextEventInput[], horizonD
       urgency: candidate.urgency,
       effort_hours: candidate.effort_hours,
     });
-    const load = loadByDate.get(date) ?? { count: 0, durationHours: 0 };
+    const load = loadByDate.get(date) ?? {count: 0, durationHours: 0};
     load.count += 1;
     load.durationHours += pressure.durationHours;
     loadByDate.set(date, load);
@@ -285,7 +305,11 @@ export function localDaysFromContextEvents(events: ContextEventInput[], horizonD
   return days;
 }
 
-export function mergeCalendarPressure(days: DayContext[], events: ContextEventInput[], horizonDays: number): DayContext[] {
+export function mergeCalendarPressure(
+  days: DayContext[],
+  events: ContextEventInput[],
+  horizonDays: number,
+): DayContext[] {
   if (events.length === 0) return days;
   const localDays = localDaysFromContextEvents(events, horizonDays);
   const localByDate = new Map(localDays.map((day) => [day.date, day]));
@@ -319,11 +343,21 @@ function canonicalTags(values: string[]): string[] {
 
 function normalizePriorities(value: Partial<PlanningPriorities> | undefined): PlanningPriorities {
   return {
-    batchCooking: value?.batchCooking === "off" || value?.batchCooking === "high" ? value.batchCooking : DEFAULT_PRIORITIES.batchCooking,
-    breakfastRoutine: value?.breakfastRoutine === "varied" || value?.breakfastRoutine === "rotate" ? value.breakfastRoutine : DEFAULT_PRIORITIES.breakfastRoutine,
-    mealRepeats: value?.mealRepeats === "varied" || value?.mealRepeats === "low-effort" ? value.mealRepeats : DEFAULT_PRIORITIES.mealRepeats,
-    ingredientReuse: value?.ingredientReuse === "low" || value?.ingredientReuse === "high" ? value.ingredientReuse : DEFAULT_PRIORITIES.ingredientReuse,
-    campusFallbacks: value?.campusFallbacks === "off" || value?.campusFallbacks === "allowed" ? value.campusFallbacks : DEFAULT_PRIORITIES.campusFallbacks,
+    batchCooking: value?.batchCooking === "off" || value?.batchCooking === "high" ?
+      value.batchCooking :
+      DEFAULT_PRIORITIES.batchCooking,
+    breakfastRoutine: value?.breakfastRoutine === "varied" || value?.breakfastRoutine === "rotate" ?
+      value.breakfastRoutine :
+      DEFAULT_PRIORITIES.breakfastRoutine,
+    mealRepeats: value?.mealRepeats === "varied" || value?.mealRepeats === "low-effort" ?
+      value.mealRepeats :
+      DEFAULT_PRIORITIES.mealRepeats,
+    ingredientReuse: value?.ingredientReuse === "low" || value?.ingredientReuse === "high" ?
+      value.ingredientReuse :
+      DEFAULT_PRIORITIES.ingredientReuse,
+    campusFallbacks: value?.campusFallbacks === "off" || value?.campusFallbacks === "allowed" ?
+      value.campusFallbacks :
+      DEFAULT_PRIORITIES.campusFallbacks,
   };
 }
 
@@ -433,7 +467,11 @@ function ingredientOverlapScore(meal: AllocatorMeal, weekIngredients: Map<string
   return ingredientKeys(meal).reduce((score, key) => score + (weekIngredients.has(key) ? 1 : 0), 0);
 }
 
-function ingredientReuseRank(meal: AllocatorMeal, weekIngredients: Map<string, number>, priorities: PlanningPriorities): number {
+function ingredientReuseRank(
+  meal: AllocatorMeal,
+  weekIngredients: Map<string, number>,
+  priorities: PlanningPriorities,
+): number {
   if (priorities.ingredientReuse === "low") return 0;
   const score = ingredientOverlapScore(meal, weekIngredients);
   return priorities.ingredientReuse === "high" ? score * 2 : score;
@@ -469,7 +507,13 @@ function leftoverPortions(meal: AllocatorMeal, priorities: PlanningPriorities): 
   return LEFTOVER_PORTIONS;
 }
 
-function isBatchSlot(meal: AllocatorMeal, priorities: PlanningPriorities, b: Band, day: DayContext, slot: MealSlot): boolean {
+function isBatchSlot(
+  meal: AllocatorMeal,
+  priorities: PlanningPriorities,
+  b: Band,
+  day: DayContext,
+  slot: MealSlot,
+): boolean {
   if (priorities.batchCooking === "off" || slot === "breakfast") return false;
   if (classifyEffort(meal) !== "batch") return false;
   if (b === "low") return true;
@@ -775,7 +819,11 @@ function isPerishableIngredient(key: string): boolean {
   return PERISHABLE_INGREDIENT_PATTERNS.some((pattern) => key.includes(pattern));
 }
 
-function shoppingSimplicityScore(plan: PlanEntryOut[], pool: AllocatorMeal[], availableIngredients: { name: string }[] = []): number {
+function shoppingSimplicityScore(
+  plan: PlanEntryOut[],
+  pool: AllocatorMeal[],
+  availableIngredients: {name: string}[] = [],
+): number {
   const counts = ingredientCountsForPlan(plan, pool, availableIngredients);
   const purchaseMeals = purchasableMealEntries(plan, pool).length;
   if (purchaseMeals === 0) return 1;
@@ -783,11 +831,17 @@ function shoppingSimplicityScore(plan: PlanEntryOut[], pool: AllocatorMeal[], av
   const uniqueScore = counts.size <= targetUnique ? 1 : clamp01(1 - (counts.size - targetUnique) / targetUnique);
   const perishableCount = [...counts.keys()].filter(isPerishableIngredient).length;
   const targetPerishable = Math.max(3, Math.ceil(purchaseMeals * 0.9));
-  const perishableScore = perishableCount <= targetPerishable ? 1 : clamp01(1 - (perishableCount - targetPerishable) / targetPerishable);
+  const perishableScore = perishableCount <= targetPerishable ?
+    1 :
+    clamp01(1 - (perishableCount - targetPerishable) / targetPerishable);
   return uniqueScore * 0.75 + perishableScore * 0.25;
 }
 
-function ingredientReuseScore(plan: PlanEntryOut[], pool: AllocatorMeal[], availableIngredients: { name: string }[] = []): number {
+function ingredientReuseScore(
+  plan: PlanEntryOut[],
+  pool: AllocatorMeal[],
+  availableIngredients: {name: string}[] = [],
+): number {
   const counts = ingredientCountsForPlan(plan, pool, availableIngredients);
   if (counts.size === 0) return 0.5;
   const reused = [...counts.values()].filter((count) => count > 1).length;
@@ -833,7 +887,10 @@ function isFlexibleForRegeneration(meal: PlanMealOut): boolean {
   return meal.slot !== "breakfast" && !meal.leftoverOf;
 }
 
-function regenerationChangeScore(plan: PlanEntryOut[], previousPlan: PlanEntryOut[] | undefined): { score: number; changed: number } {
+function regenerationChangeScore(
+  plan: PlanEntryOut[],
+  previousPlan: PlanEntryOut[] | undefined,
+): {score: number; changed: number} {
   if (!previousPlan || previousPlan.length === 0) return {score: 0.8, changed: 0};
   const previous = new Map<string, string>();
   previousPlan.forEach((entry) => {
@@ -845,7 +902,10 @@ function regenerationChangeScore(plan: PlanEntryOut[], previousPlan: PlanEntryOu
   const current = plan.flatMap((entry) =>
     entry.meals
       .filter(isFlexibleForRegeneration)
-      .map((meal) => ({key: comparablePlanMealKey(entry, meal), mealId: meal.mealId})),
+      .map((meal) => ({
+        key: comparablePlanMealKey(entry, meal),
+        mealId: meal.mealId,
+      })),
   );
   const comparable = current.filter((meal) => previous.has(meal.key));
   if (comparable.length === 0) return {score: 0.8, changed: 0};
@@ -911,7 +971,8 @@ export function buildBestPlan(input: BuildPlanInput): BestPlanResult {
     const candidateQuality = scorePlan(input, candidatePlan);
     if (
       candidateQuality.score > bestQuality.score ||
-      (candidateQuality.score === bestQuality.score && candidateQuality.changedFlexibleSlots > bestQuality.changedFlexibleSlots)
+      (candidateQuality.score === bestQuality.score &&
+        candidateQuality.changedFlexibleSlots > bestQuality.changedFlexibleSlots)
     ) {
       bestPlan = candidatePlan;
       bestQuality = candidateQuality;
@@ -999,7 +1060,9 @@ function pickForSlot(
     }
 
     if (b !== "low") {
-      const byEffort = effortRank(classifyEffort(a), b, slot, priorities) - effortRank(classifyEffort(c), b, slot, priorities);
+      const byEffort =
+        effortRank(classifyEffort(a), b, slot, priorities) -
+        effortRank(classifyEffort(c), b, slot, priorities);
       if (byEffort !== 0) return byEffort;
     }
 
@@ -1018,7 +1081,9 @@ function pickForSlot(
     }
 
     if (b === "low") {
-      const byEffort = effortRank(classifyEffort(a), b, slot, priorities) - effortRank(classifyEffort(c), b, slot, priorities);
+      const byEffort =
+        effortRank(classifyEffort(a), b, slot, priorities) -
+        effortRank(classifyEffort(c), b, slot, priorities);
       if (byEffort !== 0) return byEffort;
     }
 
@@ -1045,7 +1110,9 @@ function pickForSlot(
     const cLastAny = lastUsed.get(`any:${c.id}`) ?? -99;
     if (aLastAny !== cLastAny) return aLastAny - cLastAny;
 
-    const byVariant = variantRank(a, slot, dayIndex, variantSeed) - variantRank(c, slot, dayIndex, variantSeed);
+    const byVariant =
+      variantRank(a, slot, dayIndex, variantSeed) -
+      variantRank(c, slot, dayIndex, variantSeed);
     if (byVariant !== 0) return byVariant;
 
     const byPrice = mealCostPence(a) - mealCostPence(c);
@@ -1067,12 +1134,18 @@ function pickRoutineBreakfast(
   dayIndex: number,
 ): AllocatorMeal | null {
   if (slot !== "breakfast" || priorities.breakfastRoutine === "varied") return null;
-  const routineIndex = priorities.breakfastRoutine === "repeat" ? Math.floor(dayIndex / 5) : dayIndex % 2;
+  const routineIndex = priorities.breakfastRoutine === "repeat" ?
+    Math.floor(dayIndex / 5) :
+    dayIndex % 2;
   const routineId = breakfastRoutineIds[routineIndex];
   if (!routineId) return null;
   const picked = candidates.find((meal) => meal.id === routineId);
   if (!picked) return null;
-  if (picked.time > maxPrep || mealCostPence(picked) > remainingBudgetPence || mealCostPence(picked) > pacedBudgetPence) return null;
+  if (
+    picked.time > maxPrep ||
+    mealCostPence(picked) > remainingBudgetPence ||
+    mealCostPence(picked) > pacedBudgetPence
+  ) return null;
   return picked;
 }
 

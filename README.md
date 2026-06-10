@@ -28,7 +28,7 @@ This runs root lint/typecheck/unit/domain tests, Firebase data generation, funct
 
 ## Anonymous session storage
 
-The prototype persists user settings with anonymous no-sign-in sessions. The
+The app persists user settings with anonymous no-sign-in sessions. The
 browser stores only an opaque session ID; settings are saved through the backend
 to Firestore in `anonymousSessions/{sessionId}`. Stale anonymous records are
 handled with a 90-day `expiresAt` field that should be managed by Firestore TTL.

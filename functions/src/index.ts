@@ -5,7 +5,7 @@ import {onRequest} from "firebase-functions/v2/https";
 import {onSchedule} from "firebase-functions/v2/scheduler";
 import {setGlobalOptions} from "firebase-functions/v2/options";
 import {defineSecret} from "firebase-functions/params";
-import * as logger from "firebase-functions/logger";
+import {error as logError, info as logInfo, warn as logWarn} from "firebase-functions/logger";
 import {randomUUID} from "crypto";
 import * as AutoPlan from "./autoPlan";
 import {parseICSText} from "./icsParser";
@@ -22,16 +22,16 @@ import {
 import {
   canonicalConstraints,
   deadlineBootstrap,
-  prototypeMeta,
-  prototypeRecipes,
+  productMeta,
+  appRecipes,
   seededMeals,
-} from "./generated/prototypeData";
+} from "./generated/appData";
 
 initializeApp();
 setGlobalOptions({region: "europe-west2", maxInstances: 10});
 
 const firestore = getFirestore();
-const prototypeRef = firestore.collection("prototypeData").doc("deadlineFood");
+const appDataRef = firestore.collection("appData").doc("deadlineFood");
 // Canonical recipe content lives in Firestore (issue #123). pgvector stores only
 // the recipe UID as primary key plus its embedding; reviews are Firestore-only.
 const recipesRef = firestore.collection("recipes");
@@ -42,9 +42,11 @@ const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
-const prototypeSessionSettingsVersion = 3;
+const sessionSettingsVersion = 4;
 // Versions whose payloads we can read & migrate forward to the current schema.
-const supportedSessionSettingsVersions = new Set([1, 2, 3]);
+const supportedSessionSettingsVersions = new Set([1, 2, 3, 4]);
+const privacyPolicyVersion = "2026-06-09";
+const privacyPolicyUrl = "/privacy-policy";
 const publicHttpOptions = {cors: true, invoker: "public"} as const;
 // USDA FoodData Central key for live nutrition lookups. Set in production with
 // `firebase functions:secrets:set USDA_API_KEY`; falls back to the heavily
@@ -95,7 +97,7 @@ const openFoodFactsCacheTtlMs = 24 * 60 * 60 * 1000;
 const openFoodFactsMissingCacheTtlMs = 60 * 60 * 1000;
 const openFoodFactsLockTtlMs = 45 * 1000;
 
-type PrototypeData = typeof deadlineBootstrap;
+type AppData = typeof deadlineBootstrap;
 type UnknownRecord = Record<string, unknown>;
 
 type RecipeIngredient = {
@@ -208,8 +210,8 @@ type CalendarEvent = {
   importedAt: string;
 };
 
-type PrototypeSessionSettings = {
-  settingsVersion: typeof prototypeSessionSettingsVersion;
+type SessionSettings = {
+  settingsVersion: typeof sessionSettingsVersion;
   preferences: {
     maxTime: number | null;
     budget: number;
@@ -245,11 +247,20 @@ type PrototypeSessionSettings = {
   discoverRejected: UnknownRecord[];
   discoverReviewedRecipeIds: string[];
   plan: UnknownRecord[];
+  planMeals: UnknownRecord[];
   calendarEvents: CalendarEvent[];
   icsSubscriptions: IcsSubscription[];
   calendarTokens: CalendarToken[];
   planSignature?: string;
   planGeneratedAt?: string;
+  calendarSkipped?: boolean;
+  privacyConsent?: {
+    policyVersion: string;
+    policyUrl: string;
+    acceptedAt: string;
+    consentText: string;
+  };
+  calendarProvider?: string;
 };
 
 const servingGrams: Record<string, number> = {
@@ -265,8 +276,8 @@ const servingGrams: Record<string, number> = {
   "wrap": 60,
 };
 
-async function seedPrototypeData(): Promise<PrototypeData> {
-  await prototypeRef.set(
+async function seedAppData(): Promise<AppData> {
+  await appDataRef.set(
     {
       ...deadlineBootstrap,
       updatedAt: FieldValue.serverTimestamp(),
@@ -277,11 +288,11 @@ async function seedPrototypeData(): Promise<PrototypeData> {
   return deadlineBootstrap;
 }
 
-async function getPrototypeData(): Promise<PrototypeData> {
-  const snapshot = await prototypeRef.get();
+async function getAppData(): Promise<AppData> {
+  const snapshot = await appDataRef.get();
 
   if (!snapshot.exists) {
-    return seedPrototypeData();
+    return seedAppData();
   }
 
   const data = snapshot.data();
@@ -292,9 +303,9 @@ async function getPrototypeData(): Promise<PrototypeData> {
       typeof data?.canonicalConstraints === "object" ?
         data.canonicalConstraints :
         canonicalConstraints,
-    prototype:
-      typeof data?.prototype === "object" ? data.prototype : prototypeMeta,
-  } as PrototypeData;
+    app:
+      typeof data?.app === "object" ? data.app : productMeta,
+  } as AppData;
 }
 
 function rejectUnsupportedMethod(request: HttpRequest, response: HttpResponse): boolean {
@@ -335,7 +346,7 @@ async function ensureRecipesSeeded(): Promise<void> {
   if (!existing.empty) return;
 
   const batch = firestore.batch();
-  for (const recipe of prototypeRecipes) {
+  for (const recipe of appRecipes) {
     batch.set(recipesRef.doc(recipe.id), {
       ...recipe,
       updatedAt: FieldValue.serverTimestamp(),
@@ -350,7 +361,7 @@ async function listRecipes(): Promise<UnknownRecord[]> {
   return snapshot.docs.map((doc) => doc.data() as UnknownRecord);
 }
 
-// Map a canonical prototype recipe (Firestore shape) to the recommender's
+// Map a canonical app recipe (Firestore shape) to the recommender's
 // RecipeIn payload so pgvector can embed it keyed by the recipe UID.
 const recommenderDietaryTags = new Set(["vegetarian", "vegan", "halal", "gluten-free", "dairy-free"]);
 const recommenderTagAliases: Record<string, string> = {
@@ -497,8 +508,8 @@ function sendJson(response: HttpResponse, body: unknown): void {
 }
 
 function sendError(response: HttpResponse, error: unknown): void {
-  logger.error("Deadline food function failed", error);
-  response.status(500).json({error: "Prototype data could not be loaded"});
+  logError("Deadline food function failed", error);
+  response.status(500).json({error: "App data could not be loaded"});
 }
 
 function asRecord(value: unknown): UnknownRecord | null {
@@ -551,7 +562,7 @@ function normalizeRecipeList(value: unknown, maxItems = 100): UnknownRecord[] {
   return value.filter((item): item is UnknownRecord => asRecord(item) !== null).slice(0, maxItems);
 }
 
-function normalizeDeadline(value: unknown): PrototypeSessionSettings["deadlines"][number] | null {
+function normalizeDeadline(value: unknown): SessionSettings["deadlines"][number] | null {
   const deadline = asRecord(value);
 
   if (deadline === null) {
@@ -610,6 +621,27 @@ function normalizeCalendarToken(value: unknown): CalendarToken | null {
     refreshToken,
     expiresAt: boundedString(token.expiresAt, "", 40),
     addedAt: boundedString(token.addedAt, new Date().toISOString(), 40),
+  };
+}
+
+function normalizePrivacyConsent(value: unknown): SessionSettings["privacyConsent"] | undefined {
+  const consent = asRecord(value);
+  if (consent === null) return undefined;
+
+  const policyVersion = boundedString(consent.policyVersion, privacyPolicyVersion, 40);
+  const policyUrl = boundedString(consent.policyUrl, privacyPolicyUrl, 120);
+  const acceptedAt = boundedString(consent.acceptedAt, "", 40);
+  const consentText = boundedString(consent.consentText, "", 500);
+
+  if (!policyVersion || !policyUrl || !acceptedAt || !consentText) {
+    return undefined;
+  }
+
+  return {
+    policyVersion,
+    policyUrl,
+    acceptedAt,
+    consentText,
   };
 }
 
@@ -674,7 +706,7 @@ function normalizeRecipeIngredientList(value: unknown, maxItems = 30): RecipeIng
     .slice(0, maxItems);
 }
 
-function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSettings {
+function normalizeSessionSettings(value: unknown): SessionSettings {
   const settings = asRecord(value);
 
   if (settings === null) {
@@ -691,8 +723,10 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     throw new Error("Session preferences must be an object.");
   }
 
+  const privacyConsent = normalizePrivacyConsent(settings.privacyConsent);
+
   return {
-    settingsVersion: prototypeSessionSettingsVersion,
+    settingsVersion: sessionSettingsVersion,
     preferences: {
       maxTime:
         preferences.maxTime === null ?
@@ -724,8 +758,13 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
     discoverReviewedRecipeIds: boundedStringList(settings.discoverReviewedRecipeIds, 250, 120),
     plan: normalizeRecipeList(settings.plan, 31),
+    planMeals: normalizeRecipeList(settings.planMeals, 200),
     ...(typeof settings.planSignature === "string" ? {planSignature: settings.planSignature.slice(0, 200)} : {}),
     ...(typeof settings.planGeneratedAt === "string" ? {planGeneratedAt: settings.planGeneratedAt.slice(0, 40)} : {}),
+    ...(typeof settings.calendarProvider === "string" ?
+      {calendarProvider: settings.calendarProvider.slice(0, 40)} :
+      {}),
+    ...(typeof settings.calendarSkipped === "boolean" ? {calendarSkipped: settings.calendarSkipped} : {}),
     calendarEvents: Array.isArray(settings.calendarEvents) ?
       settings.calendarEvents
         .map(normalizeCalendarEvent)
@@ -744,6 +783,8 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
         .filter((t): t is NonNullable<typeof t> => t !== null)
         .slice(0, 5) :
       [],
+    calendarSkipped: settings.calendarSkipped === true,
+    ...(privacyConsent ? {privacyConsent} : {}),
   };
 }
 
@@ -823,7 +864,7 @@ async function proxyRecommenderRequest(
       typeof error === "object" && error !== null && "cause" in error ?
         (error as {cause?: unknown}).cause :
         "";
-    logger.error("Recommender API request failed", {
+    logError("Recommender API request failed", {
       path,
       error: String(error instanceof Error ? error.message : error),
       cause: String(errorCause ?? ""),
@@ -918,7 +959,7 @@ function filterBlockedRecommendationRecipes(body: unknown): unknown {
   const filtered = body.filter((item) => !isBlockedRecommendationRecipe(item));
   const removed = body.length - filtered.length;
   if (removed > 0) {
-    logger.warn("Filtered blocked recommendation recipes", {removed});
+    logWarn("Filtered blocked recommendation recipes", {removed});
   }
   return filtered;
 }
@@ -958,14 +999,14 @@ async function proxyRecommenderRecommendations(
     try {
       responseBody = await enrichRecommendedRecipes(body);
     } catch (error) {
-      logger.error("Recommendation recipe enrichment failed", {error});
+      logError("Recommendation recipe enrichment failed", {error});
     }
 
     responseBody = filterBlockedRecommendationRecipes(responseBody);
 
     response.status(upstream.status).json(responseBody);
   } catch (error) {
-    logger.error("Recommender recommendations request failed", {error});
+    logError("Recommender recommendations request failed", {error});
     response.status(502).json({error: "Recommender API could not be reached"});
   }
 }
@@ -989,7 +1030,7 @@ async function callRecommenderJson(path: string, payload: unknown): Promise<unkn
     if (!upstream.ok) return null;
     return (await upstream.json()) as unknown;
   } catch (error) {
-    logger.warn("Recommender call failed during auto-plan", {path, error: String(error)});
+    logWarn("Recommender call failed during auto-plan", {path, error: String(error)});
     return null;
   }
 }
@@ -1005,7 +1046,7 @@ function toMealType(value: unknown): AutoPlan.MealType {
   return value === "fallback" ? "fallback" : value === "remix" ? "remix" : "cook";
 }
 
-// Map a recommender recipe row to the prototype `Meal` shape the frontend renders.
+// Map a recommender recipe row to the app `Meal` shape the frontend renders.
 function recommenderRecipeToMeal(recipe: UnknownRecord): UnknownRecord {
   const dietary = Array.isArray(recipe.dietary_tags) ? recipe.dietary_tags : [];
   const suitability = Array.isArray(recipe.suitability_tags) ?
@@ -1032,7 +1073,7 @@ function recommenderRecipeToMeal(recipe: UnknownRecord): UnknownRecord {
   };
 }
 
-// Extract the allocator-relevant subset from a prototype Meal record.
+// Extract the allocator-relevant subset from a app Meal record.
 function mealToAllocator(meal: UnknownRecord): AutoPlan.AllocatorMeal {
   const ingredients = Array.isArray(meal.ingredients) ?
     meal.ingredients
@@ -1198,7 +1239,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   // Deterministic final fallback: if the user has few/no saved recipes and the
   // recommender is empty or unavailable, still plan from the canonical catalogue.
   const fallbackAlloc: AutoPlan.AllocatorMeal[] = [];
-  for (const recipe of prototypeRecipes) {
+  for (const recipe of appRecipes) {
     const meal = recipe as unknown as UnknownRecord;
     const id = boundedString(meal.id, "", 80);
     if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
@@ -1510,7 +1551,7 @@ async function searchFdcFoods(query: string): Promise<FdcFood[] | null> {
     }
   }
 
-  logger.warn("USDA FDC search failed after retries", {query});
+  logWarn("USDA FDC search failed after retries", {query});
   return null;
 }
 
@@ -1649,7 +1690,7 @@ async function findNutritionProductForIngredient(
     await cacheOpenFoodFactsProduct(cacheKey, product);
     return product;
   } catch (error) {
-    logger.error("USDA lookup failed", {cacheKey, error});
+    logError("USDA lookup failed", {cacheKey, error});
     await openFoodFactsCacheRef.doc(openFoodFactsCacheDocId(cacheKey)).set(
       {
         lockedUntil: FieldValue.delete(),
@@ -1665,7 +1706,7 @@ async function findNutritionProductForIngredient(
 function sendSessionJson(
   response: HttpResponse,
   sessionId: string,
-  settings: PrototypeSessionSettings | null,
+  settings: SessionSettings | null,
   expiresAt: Timestamp | string | null,
 ): void {
   response.status(200).json({
@@ -1680,7 +1721,7 @@ export const deadlineFoodBootstrap = onRequest(publicHttpOptions, async (request
   if (rejectUnsupportedMethod(request, response)) return;
 
   try {
-    sendJson(response, await getPrototypeData());
+    sendJson(response, await getAppData());
   } catch (error) {
     sendError(response, error);
   }
@@ -1690,7 +1731,7 @@ export const deadlineFoodMeals = onRequest(publicHttpOptions, async (request, re
   if (rejectUnsupportedMethod(request, response)) return;
 
   try {
-    const data = await getPrototypeData();
+    const data = await getAppData();
     sendJson(response, data.meals);
   } catch (error) {
     sendError(response, error);
@@ -1701,7 +1742,7 @@ export const deadlineFoodScenario = onRequest(publicHttpOptions, async (request,
   if (rejectUnsupportedMethod(request, response)) return;
 
   try {
-    const data = await getPrototypeData();
+    const data = await getAppData();
     sendJson(response, data.canonicalConstraints);
   } catch (error) {
     sendError(response, error);
@@ -1778,7 +1819,7 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
       {merge: true},
     );
   } catch (error) {
-    logger.error("Recipe could not be written to Firestore", {recipeId, error});
+    logError("Recipe could not be written to Firestore", {recipeId, error});
     response.status(502).json({error: "Recipe could not be saved"});
     return;
   }
@@ -1801,7 +1842,7 @@ export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async 
     await recipesRef.doc(recipeId).delete();
     await recipeReviewsRef.doc(recipeId).delete();
   } catch (error) {
-    logger.error("Recipe could not be deleted from Firestore", {recipeId, error});
+    logError("Recipe could not be deleted from Firestore", {recipeId, error});
     response.status(502).json({error: "Recipe could not be deleted"});
     return;
   }
@@ -1816,7 +1857,7 @@ export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async 
       signal: AbortSignal.timeout(15_000),
     });
   } catch (error) {
-    logger.warn("Recipe could not be deleted from recommender (Firestore deletion succeeded)", {recipeId, error});
+    logWarn("Recipe could not be deleted from recommender (Firestore deletion succeeded)", {recipeId, error});
   }
 
   response.status(204).send("");
@@ -1877,7 +1918,7 @@ export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (requ
     response.set("Cache-Control", "private, max-age=0, no-store");
     response.status(200).json(totalNutritionFromEstimates(estimates, missingIngredients));
   } catch (error) {
-    logger.error("Deadline food nutrition function failed", error);
+    logError("Deadline food nutrition function failed", error);
     response.status(500).json({error: "Nutrition data could not be loaded"});
   }
 });
@@ -1904,7 +1945,7 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       }
 
       const data = snapshot.data();
-      const settings = normalizePrototypeSessionSettings(data?.settings);
+      const settings = normalizeSessionSettings(data?.settings);
       const expiresAt = sessionExpiryTimestamp();
 
       await sessionRef.set(
@@ -1932,10 +1973,10 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       anonymousSessionIdPattern.test(requestedSessionId) ?
         requestedSessionId :
         randomUUID();
-    let settings: PrototypeSessionSettings;
+    let settings: SessionSettings;
 
     try {
-      settings = normalizePrototypeSessionSettings(body.settings);
+      settings = normalizeSessionSettings(body.settings);
     } catch (error) {
       response.status(400).json({error: error instanceof Error ? error.message : "Invalid session settings."});
       return;
@@ -1949,7 +1990,7 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       {
         ...(existingSession.exists ? {} : {createdAt: FieldValue.serverTimestamp()}),
         schemaVersion: 1,
-        settingsVersion: prototypeSessionSettingsVersion,
+        settingsVersion: sessionSettingsVersion,
         settings,
         updatedAt: FieldValue.serverTimestamp(),
         expiresAt,
@@ -1959,7 +2000,7 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
 
     sendSessionJson(response, sessionId, settings, expiresAt);
   } catch (error) {
-    logger.error("Deadline food session function failed", error);
+    logError("Deadline food session function failed", error);
     response.status(500).json({error: "Anonymous session could not be saved"});
   }
 });
@@ -2080,7 +2121,7 @@ export const calendarGoogleExchange = onRequest(googleOAuthHttpOptions, async (r
       expiresAt: tokenResult.expiresAt,
     });
   } catch (error) {
-    logger.error("Google calendar exchange failed", error);
+    logError("Google calendar exchange failed", error);
     const message = error instanceof Error ? error.message : "Google Calendar import failed";
     response.status(502).json({error: message});
   }
@@ -2143,7 +2184,7 @@ export const calendarOutlookExchange = onRequest(microsoftOAuthHttpOptions, asyn
       expiresAt: tokenResult.expiresAt,
     });
   } catch (error) {
-    logger.error("Outlook calendar exchange failed", error);
+    logError("Outlook calendar exchange failed", error);
     const message = error instanceof Error ? error.message : "Outlook Calendar import failed";
     response.status(502).json({error: message});
   }
@@ -2207,7 +2248,7 @@ export const calendarSubscriptionRefresh = onSchedule(
               }
             }
           } catch (e) {
-            logger.warn(`ICS fetch failed for session ${doc.id}`, e);
+            logWarn(`ICS fetch failed for session ${doc.id}`, e);
           }
         }
 
@@ -2238,7 +2279,7 @@ export const calendarSubscriptionRefresh = onSchedule(
               };
             }
           } catch (e) {
-            logger.warn(`OAuth refresh failed for session ${doc.id}, provider ${token.provider}`, e);
+            logWarn(`OAuth refresh failed for session ${doc.id}, provider ${token.provider}`, e);
           }
         }
 
@@ -2261,11 +2302,11 @@ export const calendarSubscriptionRefresh = onSchedule(
         );
         refreshed++;
       } catch (e) {
-        logger.error(`Calendar refresh failed for session ${doc.id}`, e);
+        logError(`Calendar refresh failed for session ${doc.id}`, e);
       }
     }
 
-    logger.info(`Calendar refresh complete: ${refreshed} refreshed, ${pruned} pruned, ${sessions.size} checked`);
+    logInfo(`Calendar refresh complete: ${refreshed} refreshed, ${pruned} pruned, ${sessions.size} checked`);
   },
 );
 
@@ -2313,7 +2354,7 @@ export const deadlineFoodRecipePhoto = onRequest(publicHttpOptions, async (reque
     const safeName = `${randomUUID()}.${ext}`;
     const objectPath = `recipe-photos/${safeName}`;
 
-    logger.info("Uploading recipe photo", {fileName, mimeType, bytes: fileBuffer.length});
+    logInfo("Uploading recipe photo", {fileName, mimeType, bytes: fileBuffer.length});
 
     const bucket = getStorage().bucket(storageBucket);
     const file = bucket.file(objectPath);
@@ -2338,7 +2379,7 @@ export const deadlineFoodRecipePhoto = onRequest(publicHttpOptions, async (reque
     response.set("Cache-Control", "private, max-age=0, no-store");
     response.status(200).json({photoUrl});
   } catch (error) {
-    logger.error("Recipe photo upload failed", error);
+    logError("Recipe photo upload failed", error);
     response.status(500).json({error: "Photo could not be uploaded."});
   }
 });

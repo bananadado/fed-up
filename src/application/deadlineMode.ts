@@ -7,7 +7,7 @@ import type {
   MealOption,
   PlanningConstraints,
   PlanStrategy,
-  PrototypeEvent,
+  DeadlineEvent,
   RankedStrategy,
   RescueProposal,
   WeeklyPlan,
@@ -16,7 +16,7 @@ import type {
 export type DeadlineModeState = {
   meals: MealOption[];
   canonicalConstraints: PlanningConstraints | null;
-  prototype: DeadlineBootstrap["prototype"] | null;
+  app: DeadlineBootstrap["app"] | null;
   constraints: PlanningConstraints | null;
   rankedStrategies: RankedStrategy[];
   recommendedStrategy: PlanStrategy | null;
@@ -25,7 +25,7 @@ export type DeadlineModeState = {
   rescueCandidates: RescueProposal[];
   currentRescueDayId: string | null;
   validationErrors: string[];
-  events: PrototypeEvent[];
+  events: DeadlineEvent[];
   bootstrapped: boolean;
   bootstrapError: string | null;
 };
@@ -34,12 +34,12 @@ export type DeadlineModeInternalAction =
   | { type: "bootstrap_loaded"; bootstrap: DeadlineBootstrap }
   | { type: "bootstrap_failed"; message: string };
 
-export type DeadlineModeAction = PrototypeEvent | DeadlineModeInternalAction;
+export type DeadlineModeAction = DeadlineEvent | DeadlineModeInternalAction;
 
 export const initialDeadlineModeState: DeadlineModeState = {
   meals: [],
   canonicalConstraints: null,
-  prototype: null,
+  app: null,
   constraints: null,
   rankedStrategies: [],
   recommendedStrategy: null,
@@ -53,7 +53,7 @@ export const initialDeadlineModeState: DeadlineModeState = {
   bootstrapError: null,
 };
 
-function withEvent(state: DeadlineModeState, event: PrototypeEvent, changes: Partial<DeadlineModeState>): DeadlineModeState {
+function withEvent(state: DeadlineModeState, event: DeadlineEvent, changes: Partial<DeadlineModeState>): DeadlineModeState {
   return {
     ...state,
     ...changes,
@@ -71,7 +71,7 @@ export function deadlineModeReducer(
         ...state,
         meals: action.bootstrap.meals,
         canonicalConstraints: action.bootstrap.canonicalConstraints,
-        prototype: action.bootstrap.prototype,
+        app: action.bootstrap.app,
         constraints: state.constraints ?? action.bootstrap.canonicalConstraints,
         rankedStrategies: rankStrategies(state.constraints ?? action.bootstrap.canonicalConstraints, action.bootstrap.meals),
         recommendedStrategy: rankStrategies(state.constraints ?? action.bootstrap.canonicalConstraints, action.bootstrap.meals)[0]?.strategy ?? null,
@@ -159,7 +159,7 @@ function eventTime() {
 
 export function createDeadlineModeCommands(
   getState: () => DeadlineModeState,
-  publish: (event: PrototypeEvent) => void,
+  publish: (event: DeadlineEvent) => void,
 ): DeadlineModeCommands {
   return {
     startDeadlineMode() {

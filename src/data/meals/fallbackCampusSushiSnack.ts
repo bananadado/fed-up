@@ -17,7 +17,7 @@ export const fallbackCampusSushiSnack: MealOption = {
     summary: "A portable vegetarian sushi-style snack box.",
     ingredients: recipeIngredients(["vegetable sushi pieces", "soy sauce", "edamame side"]),
     steps: ["Collect from Campus Express.", "Eat cold without preparation."],
-    prepNotes: "Prototype option: availability and pricing are illustrative.",
+    prepNotes: "App option: availability and pricing are illustrative.",
     whyItFits: "It is quick to collect for lunch when queues are short.",
   },
 };

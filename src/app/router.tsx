@@ -17,7 +17,7 @@ function BootstrapBoundary({ children }: { children: ReactNode }) {
     return (
       <main className="grid min-h-screen place-items-center px-5">
         <div className="rounded-lg border border-slate-200 bg-white px-6 py-5 text-slate-700 shadow-sm">
-          Loading prototype data from the internal API...
+          Loading app data from the internal API...
         </div>
       </main>
     );
@@ -27,7 +27,7 @@ function BootstrapBoundary({ children }: { children: ReactNode }) {
     return (
       <main className="grid min-h-screen place-items-center px-5">
         <div className="max-w-xl rounded-lg border border-amber-200 bg-amber-50 px-6 py-5 text-amber-950">
-          Prototype data could not be loaded: {state.bootstrapError}
+          App data could not be loaded: {state.bootstrapError}
         </div>
       </main>
     );

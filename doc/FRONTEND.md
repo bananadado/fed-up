@@ -2,7 +2,7 @@
 
 ## Active Frontend
 
-The active application is `src/prototype/DeadlineFoodPrototype.tsx`, rendered by `src/App.tsx`.
+The active application is `src/deadline-food/DeadlineFoodApp.tsx`, rendered by `src/App.tsx`.
 
 Do not assume `src/app/router.tsx` is active. It is a separate React Router implementation that is currently dormant.
 
@@ -23,9 +23,9 @@ Boot sequence:
 4. It registers the PostHog session ID.
 5. It wraps the app in `PostHogProvider` and `PostHogErrorBoundary`.
 6. It renders `<App />`.
-7. `App` renders `<DeadlineFoodPrototype />`.
+7. `App` renders `<DeadlineFoodApp />`.
 
-## Active Prototype Navigation
+## Active App Navigation
 
 Navigation is hash-based.
 
@@ -51,11 +51,11 @@ URLs look like:
 - `/#/dashboard`
 - `/#/plan`
 
-`DeadlineFoodPrototype.tsx` maintains `routeHistory` and `previousScreen` for back behavior. `Shell.tsx` renders the header, desktop nav, mobile nav, and back button after onboarding.
+`DeadlineFoodApp.tsx` maintains `routeHistory` and `previousScreen` for back behavior. `Shell.tsx` renders the header, desktop nav, mobile nav, and back button after onboarding.
 
-## Active Prototype State
+## Active App State
 
-`DeadlineFoodPrototype` owns the main state:
+`DeadlineFoodApp` owns the main state:
 
 | State | Purpose |
 |---|---|
@@ -91,9 +91,9 @@ Not persisted:
 - selected recipe
 - rescue choices
 
-## Active Prototype Data Model
+## Active App Data Model
 
-Defined in `src/prototype/types.ts`.
+Defined in `src/deadline-food/types.ts`.
 
 Important types:
 
@@ -120,13 +120,13 @@ type MealSlot = "breakfast" | "lunch" | "dinner";
 
 This differs from the dormant planner model in `src/domain/types.ts`.
 
-## Active Prototype Screens
+## Active App Screens
 
 ### Landing
 
 File:
 
-- `src/prototype/screens/Landing.tsx`
+- `src/deadline-food/screens/Landing.tsx`
 
 Purpose:
 
@@ -142,7 +142,7 @@ Events:
 
 File:
 
-- `src/prototype/screens/Onboarding.tsx`
+- `src/deadline-food/screens/Onboarding.tsx`
 
 Three steps:
 
@@ -155,7 +155,7 @@ Calendar behaviour:
 - Supports fake provider selection.
 - Supports `.ics` file import.
 - Parses up to five imported events.
-- Classifies titles as academic/general using `src/prototype/workloadModel.ts`.
+- Classifies titles as academic/general using `src/deadline-food/workloadModel.ts`.
 
 Important controls:
 
@@ -181,7 +181,7 @@ Events include:
 
 File:
 
-- `src/prototype/screens/Dashboard.tsx`
+- `src/deadline-food/screens/Dashboard.tsx`
 
 Purpose:
 
@@ -194,14 +194,14 @@ Purpose:
 
 Supporting logic:
 
-- `src/prototype/healthSignals.ts`
-- `src/prototype/utils.ts`
+- `src/deadline-food/healthSignals.ts`
+- `src/deadline-food/utils.ts`
 
 ### Calendar
 
 File:
 
-- `src/prototype/screens/CalendarScreen.tsx`
+- `src/deadline-food/screens/CalendarScreen.tsx`
 
 Purpose:
 
@@ -212,7 +212,7 @@ Purpose:
 
 Important helper:
 
-- `src/prototype/workloadModel.ts`
+- `src/deadline-food/workloadModel.ts`
 
 Validation:
 
@@ -224,7 +224,7 @@ Validation:
 
 File:
 
-- `src/prototype/screens/PlanScreen.tsx`
+- `src/deadline-food/screens/PlanScreen.tsx`
 
 Purpose:
 
@@ -258,7 +258,7 @@ Shopping list:
 
 File:
 
-- `src/prototype/screens/DiscoverScreen.tsx`
+- `src/deadline-food/screens/DiscoverScreen.tsx`
 
 Purpose:
 
@@ -274,7 +274,7 @@ Current recommendation is simple heuristic sorting, not an LLM.
 
 File:
 
-- `src/prototype/screens/RecipesScreen.tsx`
+- `src/deadline-food/screens/RecipesScreen.tsx`
 
 Purpose:
 
@@ -296,7 +296,7 @@ Custom recipes are kept in component state only.
 
 File:
 
-- `src/prototype/screens/RecipeDetailScreen.tsx`
+- `src/deadline-food/screens/RecipeDetailScreen.tsx`
 
 Purpose:
 
@@ -305,16 +305,16 @@ Purpose:
 - Display tags, allergens, ingredients, method, notes, reviews.
 - Edit seeded or custom meal into the custom recipe list.
 - Refresh nutrition estimates.
-- Leave a prototype review.
+- Leave a app review.
 - Show grocery vendor shopping links for ingredients.
 
-Important: editing a seeded meal saves a custom copy into `customRecipes`; it does not mutate `src/prototype/data.ts`.
+Important: editing a seeded meal saves a custom copy into `customRecipes`; it does not mutate `src/deadline-food/data.ts`.
 
 ### Settings
 
 File:
 
-- `src/prototype/screens/SettingsScreen.tsx`
+- `src/deadline-food/screens/SettingsScreen.tsx`
 
 Purpose:
 
@@ -325,13 +325,13 @@ Purpose:
 
 ## Active Components
 
-Prototype components:
+App components:
 
-- `src/prototype/components/Shell.tsx`
-- `src/prototype/components/BudgetCard.tsx`
-- `src/prototype/components/ShoppingListCard.tsx`
-- `src/prototype/components/IngredientEditor.tsx`
-- `src/prototype/components/primitives.tsx`
+- `src/deadline-food/components/Shell.tsx`
+- `src/deadline-food/components/BudgetCard.tsx`
+- `src/deadline-food/components/ShoppingListCard.tsx`
+- `src/deadline-food/components/IngredientEditor.tsx`
+- `src/deadline-food/components/primitives.tsx`
 
 Shared UI primitives:
 
@@ -344,19 +344,19 @@ Shared UI primitives:
 
 Use these local primitives before adding new UI libraries.
 
-## Active Prototype Helpers
+## Active App Helpers
 
 | File | Purpose |
 |---|---|
-| `src/prototype/utils.ts` | Money formatting, cooking limit display, `.ics` parsing utility, meal lookup, nutrition source display. |
-| `src/prototype/ingredients.ts` | Ingredient drafts, formatting, sanitisation. |
-| `src/prototype/shopping.ts` | Grocery vendors, aggregate ingredients, shopping list labels. |
-| `src/prototype/healthSignals.ts` | Broad protein/veg/fat signals and weekly balance summary. |
-| `src/prototype/workloadModel.ts` | Calendar event classification, workload score, workload labels, effort explanations. |
-| `src/prototype/nutrition.ts` | Client-side nutrition estimate helpers used in tests and mirrored by backend. |
-| `src/prototype/nutritionApi.ts` | Calls the backend nutrition endpoint. |
-| `src/prototype/sessionPersistence.ts` | Anonymous session ID and settings schema. |
-| `src/prototype/anonymousSessionApi.ts` | Load/save anonymous settings through API adapter. |
+| `src/deadline-food/utils.ts` | Money formatting, cooking limit display, `.ics` parsing utility, meal lookup, nutrition source display. |
+| `src/deadline-food/ingredients.ts` | Ingredient drafts, formatting, sanitisation. |
+| `src/deadline-food/shopping.ts` | Grocery vendors, aggregate ingredients, shopping list labels. |
+| `src/deadline-food/healthSignals.ts` | Broad protein/veg/fat signals and weekly balance summary. |
+| `src/deadline-food/workloadModel.ts` | Calendar event classification, workload score, workload labels, effort explanations. |
+| `src/deadline-food/nutrition.ts` | Client-side nutrition estimate helpers used in tests and mirrored by backend. |
+| `src/deadline-food/nutritionApi.ts` | Calls the backend nutrition endpoint. |
+| `src/deadline-food/sessionPersistence.ts` | Anonymous session ID and settings schema. |
+| `src/deadline-food/anonymousSessionApi.ts` | Load/save anonymous settings through API adapter. |
 
 ## Analytics
 
@@ -366,7 +366,7 @@ PostHog files:
 - `src/lib/posthogConfig.ts`
 - `posthog-setup-report.md`
 
-PostHog initializes only when `BUN_PUBLIC_POSTHOG_PROJECT_TOKEN` is available. It registers the anonymous session ID and captures manual events from prototype screens.
+PostHog initializes only when `BUN_PUBLIC_POSTHOG_PROJECT_TOKEN` is available. It registers the anonymous session ID and captures manual events from app screens.
 
 Privacy controls:
 
@@ -377,13 +377,13 @@ Privacy controls:
 
 When adding analytics:
 
-- Use `track("event_name", properties)` in prototype screens.
+- Use `track("event_name", properties)` in app screens.
 - Do not include raw postcode, email, name, full address, session ID, or free-text sensitive content.
 - Prefer aggregate counts and categorical values.
 
 ## Styling And UX
 
-The active prototype uses:
+The active app uses:
 
 - Background `#faf9f5`.
 - Emerald as the primary action/accent family.
@@ -416,7 +416,7 @@ This tree:
 - Uses pure `src/domain` planner logic.
 - Implements the spec's strategy comparison and rescue route.
 
-To mount it intentionally, `src/App.tsx` would need to import and render `AppRouter`. If doing that, update e2e tests because current tests target the active prototype's copy and hash flow.
+To mount it intentionally, `src/App.tsx` would need to import and render `AppRouter`. If doing that, update e2e tests because current tests target the active app's copy and hash flow.
 
 ## Frontend Testing
 
@@ -435,7 +435,7 @@ This exercises:
 - Recipes screen.
 - Returning anonymous session behaviour.
 
-Unit tests under `src/prototype/*.test.ts` cover:
+Unit tests under `src/deadline-food/*.test.ts` cover:
 
 - Ingredients.
 - Nutrition estimate helpers.
@@ -453,7 +453,7 @@ bun run test:e2e
 
 Before changing frontend code:
 
-1. Confirm active prototype or dormant router target.
+1. Confirm active app or dormant router target.
 2. Read the relevant screen and helper files.
 3. Keep state shape changes reflected in tests and session schema if persisted.
 4. Keep budget/time impact visible around swaps.
