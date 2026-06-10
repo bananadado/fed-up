@@ -150,7 +150,8 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose }: {
             step="60"
             value={deadline.time}
             onChange={(e) => onUpdate({ time: e.target.value })}
-            className="h-auto rounded-lg border-stone-200 bg-white p-3"
+            onClick={(e) => e.currentTarget.showPicker?.()}
+            className="h-auto cursor-pointer rounded-lg border-stone-200 bg-white p-3"
           />
           <p className="mt-1.5 text-xs text-stone-400">When this event starts.</p>
         </div>
@@ -419,7 +420,8 @@ function CookingScheduler({
                   step="60"
                   value={time}
                   onChange={(e) => { setTime(e.target.value); setError(null); setExportedMethod(null); }}
-                  className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
+                  onClick={(e) => e.currentTarget.showPicker?.()}
+                  className="mt-2 h-auto cursor-pointer rounded-lg border-stone-200 bg-white p-3"
                 />
               </label>
             </div>
@@ -1032,7 +1034,8 @@ export function CalendarScreen({
                 step="60"
                 value={draft.time}
                 onChange={(e) => { setDraft({ ...draft, time: e.target.value }); setFormErrors((err) => ({ ...err, time: undefined })); }}
-                className={cn("h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
+                onClick={(e) => e.currentTarget.showPicker?.()}
+                className={cn("h-auto cursor-pointer rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
               />
               {formErrors.time && <p className="mt-1 text-xs text-rose-600">{formErrors.time}</p>}
             </div>
