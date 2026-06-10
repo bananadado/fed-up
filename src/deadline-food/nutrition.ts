@@ -1,4 +1,5 @@
 import type { Nutrition, NutritionMatch, RecipeIngredient } from "./types";
+import { gramsForIngredient as ingredientGrams } from "@/domain/ingredientMeasurements";
 
 export type OpenFoodFactsProduct = {
   product_name?: string;
@@ -22,44 +23,12 @@ export type IngredientNutritionEstimate = {
   fat: number;
 };
 
-const servingGrams: Record<string, number> = {
-  banana: 120,
-  bread: 80,
-  egg: 50,
-  eggs: 50,
-  flatbread: 70,
-  "jacket potato": 250,
-  "microwave rice": 250,
-  "rice portion": 180,
-  "tortilla wrap": 60,
-  wrap: 60,
-};
-
 function roundMacro(value: number) {
   return Math.max(0, Math.round(value));
 }
 
 export function gramsForIngredient(ingredient: RecipeIngredient) {
-  switch (ingredient.unit) {
-    case "g":
-      return ingredient.quantity;
-    case "kg":
-      return ingredient.quantity * 1000;
-    case "ml":
-      return ingredient.quantity;
-    case "l":
-      return ingredient.quantity * 1000;
-    case "tsp":
-      return ingredient.quantity * 5;
-    case "tbsp":
-      return ingredient.quantity * 15;
-    case "cup":
-      return ingredient.quantity * 240;
-    case "can":
-      return ingredient.quantity * 400;
-    default:
-      return ingredient.quantity * (servingGrams[ingredient.name.toLowerCase()] ?? 100);
-  }
+  return ingredientGrams(ingredient);
 }
 
 export function estimateIngredientNutrition(

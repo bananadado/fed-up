@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-06-09T15:39:31.010Z",
+  "source": "tesco-playwright",
+  "ingredientSource": {
+    "type": "file",
+    "path": "/tmp/tesco-smoke-ingredients.txt"
+  },
+  "products": [
+    {
+      "searchIngredient": "onions",
+      "productId": "253557034",
+      "productName": "Tesco Brown Onions Loose",
+      "price": "£0.12",
+      "pricePence": 12,
+      "unitPriceText": "£0.99/kg",
+      "unitPriceBasis": "kg",
+      "preferredUnitPrice": true,
+      "sourceUrl": "https://www.tesco.com/shop/en-GB/products/253557034",
+      "scrapedAt": "2026-06-09T15:39:31.007Z",
+      "rank": 1
+    },
+    {
+      "searchIngredient": "onions",
+      "productId": "255736044",
+      "productName": "Tesco Brown Onions 1Kg",
+      "price": "£0.99",
+      "pricePence": 99,
+      "unitPriceText": "£0.99/kg",
+      "unitPriceBasis": "kg",
+      "preferredUnitPrice": true,
+      "packageSize": "1Kg",
+      "sourceUrl": "https://www.tesco.com/shop/en-GB/products/255736044",
+      "scrapedAt": "2026-06-09T15:39:31.007Z",
+      "rank": 2
+    },
+    {
+      "searchIngredient": "onions",
+      "productId": "262645072",
+      "productName": "Tesco Red Onions Pack 1Kg",
+      "price": "£0.95",
+      "pricePence": 95,
+      "unitPriceText": "£0.95/kg",
+      "unitPriceBasis": "kg",
+      "preferredUnitPrice": true,
+      "packageSize": "1Kg",
+      "sourceUrl": "https://www.tesco.com/shop/en-GB/products/262645072",
+      "scrapedAt": "2026-06-09T15:39:31.007Z",
+      "rank": 3
+    }
+  ],
+  "failures": [],
+  "completedIngredients": [
+    "onions"
+  ]
+}
