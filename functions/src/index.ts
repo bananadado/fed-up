@@ -416,6 +416,9 @@ async function recipeByShareId(shareId: string): Promise<UnknownRecord | null> {
   const snapshot = await recipesRef.where("shareId", "==", shareId).limit(1).get();
   if (snapshot.empty) return null;
   const data = snapshot.docs[0].data() as UnknownRecord;
+  // Unpublished user recipes are not shareable (#213 follow-up). Seeds have no
+  // published field (undefined) and stay shareable; only an explicit false hides.
+  if (data.published === false) return null;
   delete data.reviews;
   delete data.rating;
   return data;
@@ -1844,6 +1847,40 @@ export const deadlineFoodRecipeReviews = onRequest(publicHttpOptions, async (req
   }
 });
 
+// Remove a recipe's embedding from the pgvector recommender so it stops being
+// recommended in Discover. Best-effort: callers treat failure as non-fatal.
+async function removeRecipeFromRecommender(recipeId: string): Promise<void> {
+  const url = new URL(`/recipes/${encodeURIComponent(recipeId)}`, recommenderApiUrl.value().replace(/\/$/, ""));
+  await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "X-Deadline-Food-API-Key": recommenderApiKey.value(),
+    },
+    signal: AbortSignal.timeout(15_000),
+  });
+}
+
+// Resolve the signed-in account for a recipe mutation. Publishing/owning a
+// recipe requires a real (non-anonymous) account (#213 follow-up); on failure
+// this writes the response and returns null so the caller can just return.
+async function requireRecipeOwnerAccount(
+  request: HttpRequest,
+  response: HttpResponse,
+): Promise<VerifiedAccount | null> {
+  let account: VerifiedAccount | null;
+  try {
+    account = await verifiedAccount(request);
+  } catch {
+    response.status(401).json({error: "A valid sign-in token is required"});
+    return null;
+  }
+  if (account === null || account.isAnonymous) {
+    response.status(401).json({error: "Sign in to manage published recipes"});
+    return null;
+  }
+  return account;
+}
+
 export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async (request, response) => {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
@@ -1854,7 +1891,26 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
     return;
   }
 
+  // Publishing is an account-owned action: only signed-in users can publish.
+  const account = await requireRecipeOwnerAccount(request, response);
+  if (account === null) return;
+
   try {
+    const existing = await recipesRef.doc(recipeId).get();
+    if (existing.exists) {
+      // Seeds are curated content and have no owner; published user recipes are
+      // owned by their creator. Either way a different caller can't overwrite.
+      if (existing.get("verified") === true) {
+        response.status(403).json({error: "This recipe cannot be modified"});
+        return;
+      }
+      const ownerUid = existing.get("ownerUid");
+      if (typeof ownerUid === "string" && ownerUid !== account.uid) {
+        response.status(403).json({error: "This recipe belongs to another account"});
+        return;
+      }
+    }
+
     // Canonical recipe content -> Firestore (issue #123). Reviews live in the
     // recipeReviews collection only, so strip them (and the derived rating) here.
     const recipeContent = {...body};
@@ -1864,6 +1920,9 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
     // body (#213). Only curated seed content is verified (see ensureRecipesSeeded).
     recipeContent.verified = false;
     body.verified = false;
+    // Server-derived ownership + published state — never trust the client body.
+    recipeContent.ownerUid = account.uid;
+    recipeContent.published = true;
     recipeContent.shareId = shareIdForRecipe(recipeId);
     await recipesRef.doc(recipeId).set(
       {...recipeContent, updatedAt: FieldValue.serverTimestamp()},
@@ -1879,6 +1938,51 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
   await proxyRecommenderRequest(request, response, "/recipes", toRecommenderRecipePayload(body));
 });
 
+export const deadlineFoodRecipeUnpublish = onRequest(recommenderHttpOptions, async (request, response) => {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = asRecord(request.body);
+  const recipeId = typeof body?.recipeId === "string" ? body.recipeId : null;
+  if (!recipeId || !recipeIdPattern.test(recipeId)) {
+    response.status(400).json({error: "A valid recipe id is required"});
+    return;
+  }
+
+  const account = await requireRecipeOwnerAccount(request, response);
+  if (account === null) return;
+
+  try {
+    const doc = await recipesRef.doc(recipeId).get();
+    if (!doc.exists) {
+      response.status(404).json({error: "Recipe not found"});
+      return;
+    }
+    if (doc.get("ownerUid") !== account.uid) {
+      response.status(403).json({error: "This recipe belongs to another account"});
+      return;
+    }
+    // Soft unpublish: keep the canonical doc + reviews so re-publishing restores
+    // them and anyone who already saved the recipe keeps a working local copy.
+    await recipesRef.doc(recipeId).set(
+      {published: false, updatedAt: FieldValue.serverTimestamp()},
+      {merge: true},
+    );
+  } catch (error) {
+    logError("Recipe could not be unpublished in Firestore", {recipeId, error});
+    response.status(502).json({error: "Recipe could not be unpublished"});
+    return;
+  }
+
+  // Drop it from Discover; Firestore stays the source of truth for the content.
+  try {
+    await removeRecipeFromRecommender(recipeId);
+  } catch (error) {
+    logWarn("Recipe could not be removed from recommender (Firestore unpublish succeeded)", {recipeId, error});
+  }
+
+  response.status(200).json({recipeId, published: false});
+});
+
 export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async (request, response) => {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
@@ -1889,7 +1993,21 @@ export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async 
     return;
   }
 
+  const account = await requireRecipeOwnerAccount(request, response);
+  if (account === null) return;
+
   try {
+    const doc = await recipesRef.doc(recipeId).get();
+    if (doc.exists) {
+      if (doc.get("verified") === true) {
+        response.status(403).json({error: "This recipe cannot be deleted"});
+        return;
+      }
+      if (doc.get("ownerUid") !== account.uid) {
+        response.status(403).json({error: "This recipe belongs to another account"});
+        return;
+      }
+    }
     await recipesRef.doc(recipeId).delete();
     await recipeReviewsRef.doc(recipeId).delete();
   } catch (error) {
@@ -1899,14 +2017,7 @@ export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async 
   }
 
   try {
-    const url = new URL(`/recipes/${encodeURIComponent(recipeId)}`, recommenderApiUrl.value().replace(/\/$/, ""));
-    await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "X-Deadline-Food-API-Key": recommenderApiKey.value(),
-      },
-      signal: AbortSignal.timeout(15_000),
-    });
+    await removeRecipeFromRecommender(recipeId);
   } catch (error) {
     logWarn("Recipe could not be deleted from recommender (Firestore deletion succeeded)", {recipeId, error});
   }

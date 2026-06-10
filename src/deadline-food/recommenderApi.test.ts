@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test";
 
-import { deadlineStressFromDeadlines, fetchRecommenderRecommendations, resolveDeadlineStress, toMeal } from "./recommenderApi";
+import { deadlineStressFromDeadlines, fetchRecommenderRecommendations, resolveDeadlineStress, toMeal, unpublishRecommenderRecipe } from "./recommenderApi";
 import type { Deadline } from "./types";
 
 const originalFetch = globalThis.fetch;
@@ -184,5 +184,19 @@ describe("recommender API helpers", () => {
     expect(toMeal({ ...base, verified: false }).verified).toBe(false);
     // Absent flag (older payloads) is treated as not verified.
     expect(toMeal(base).verified).toBe(false);
+  });
+
+  test("unpublishRecommenderRecipe posts the recipe id to the unpublish endpoint", async () => {
+    let captured: { url: string; method?: string; body?: string } | null = null;
+    globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      captured = { url: String(input), method: init?.method, body: init?.body as string };
+      return new Response(JSON.stringify({ recipeId: "custom-1", published: false }), { status: 200 });
+    }) as typeof fetch;
+
+    await unpublishRecommenderRecipe("custom-1");
+
+    expect(captured!.url).toContain("/api/recommender/recipe/unpublish");
+    expect(captured!.method).toBe("POST");
+    expect(JSON.parse(captured!.body as string)).toEqual({ recipeId: "custom-1" });
   });
 });

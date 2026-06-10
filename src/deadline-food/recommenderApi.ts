@@ -1,5 +1,6 @@
 import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
+import { getDeadlineFoodAuthToken } from "./accountAuth";
 import { deadlineToContextEvent, requestDeadlineContext, type ContextEventInput } from "./calendarImport";
 import type { Deadline, Meal, MealSlot, Preferences, RecipeIngredient } from "./types";
 
@@ -120,27 +121,47 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences,
   await readJson(response, "Recommender user sync");
 }
 
+// Publishing, unpublishing and deleting a recipe are account-owned actions, so
+// every mutation carries the caller's Firebase ID token (#213 follow-up). The
+// backend rejects anonymous callers and enforces ownership.
+async function authHeaders(): Promise<Record<string, string>> {
+  const token = await getDeadlineFoodAuthToken().catch(() => null);
+  return token ? { authorization: `Bearer ${token}` } : {};
+}
+
 /**
- * Persist a user-created recipe on creation. The canonical recipe content is
+ * Persist a user-created recipe on publish. The canonical recipe content is
  * written to Firestore (issue #123) and the recommender embeds it keyed by the
  * recipe UID — both handled by the deadlineFoodRecipeCreate function, which
  * receives the canonical Meal and maps it to the recommender payload itself.
- * Fire-and-forget at the call site.
+ * Requires a signed-in account.
  */
 export async function createRecommenderRecipe(meal: Meal): Promise<void> {
   const response = await fetch(functionUrl("deadlineFoodRecipeCreate", "/api/recommender/recipe"), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify(meal),
   });
 
   await readJson(response, "Recommender recipe create");
 }
 
+/** Soft-unpublish: keep the recipe + reviews but remove it from Discover and
+ * share links. Owner-only; requires a signed-in account. */
+export async function unpublishRecommenderRecipe(recipeId: string): Promise<void> {
+  const response = await fetch(functionUrl("deadlineFoodRecipeUnpublish", "/api/recommender/recipe/unpublish"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
+    body: JSON.stringify({ recipeId }),
+  });
+
+  await readJson(response, "Recommender recipe unpublish");
+}
+
 export async function deleteRecommenderRecipe(recipeId: string): Promise<void> {
   const response = await fetch(functionUrl("deadlineFoodRecipeDelete", "/api/recommender/recipe/delete"), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify({ recipeId }),
   });
 

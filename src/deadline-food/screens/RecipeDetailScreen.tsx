@@ -9,10 +9,11 @@ import { ConfirmDialog } from "../components/ConfirmDialog";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { formatIngredient, scaleIngredients } from "../ingredients";
 import { normalizeIngredientUnit } from "../unitConversion";
-import { isVerified, mealById, money, nutritionSourceSummary, sourceUrl } from "../utils";
+import { isRecipeOwnedBy, isVerified, mealById, money, nutritionSourceSummary, sourceUrl } from "../utils";
 import { recipeShareUrl, shareIdForRecipe } from "../recipeShare";
 import { ShoppingListCard } from "../components/ShoppingListCard";
-import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
+import { createRecommenderRecipe, deleteRecommenderRecipe, unpublishRecommenderRecipe } from "../recommenderApi";
+import type { AccountSummary } from "../accountAuth";
 import { fetchRecipeReviews, submitRecipeReview } from "../reviewsApi";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import type { TrackEvent } from "../analytics";
@@ -42,6 +43,8 @@ export function RecipeDetailScreen({
   discoverSaved,
   setDiscoverSaved,
   sharedRecipe,
+  account,
+  recipeUnavailable = false,
   setScreen,
   backTo,
   onSelectMeal,
@@ -56,6 +59,10 @@ export function RecipeDetailScreen({
   setDiscoverSaved: StateSetter<Meal[]>;
   /** A recipe resolved from a deep-link share slug the viewer doesn't own (#213). */
   sharedRecipe?: Meal | null;
+  /** Current account — publishing/owning a recipe requires a signed-in account. */
+  account: AccountSummary;
+  /** A shared recipe link that resolved to nothing (unpublished/deleted) (#213). */
+  recipeUnavailable?: boolean;
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
   onSelectMeal: (mealId: string) => void;
@@ -94,7 +101,8 @@ export function RecipeDetailScreen({
     };
   }, []);
 
-  const isOwn = meal?.isUserCreated === true;
+  const isLoggedIn = account.configured && !!account.uid && !account.isAnonymous;
+  const isOwn = isRecipeOwnedBy(meal, account.uid);
   const isSaved = isOwn || discoverSaved.some((r) => r.id === mealId);
   const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
   // Reviews are owned by Firestore (issue #123): global and persistent, not part
@@ -126,6 +134,22 @@ export function RecipeDetailScreen({
   }, [mealId]);
 
   const computedRating = reviews.length > 0 ? reviewsRating : meal?.rating ?? 0;
+
+  if (recipeUnavailable) {
+    // A shared link that resolved to nothing — the recipe was unpublished or
+    // deleted by its owner (#213 follow-up). Neutral, not framed as an error.
+    return (
+      <div className="mx-auto max-w-2xl text-center">
+        <h1 className="text-3xl font-bold">This recipe is no longer available</h1>
+        <p className="mt-3 text-stone-600">
+          The link may be out of date, or its owner has unpublished or removed it.
+        </p>
+        <AppButton className="mt-6" onClick={() => setScreen("recipes")}>
+          Browse recipes
+        </AppButton>
+      </div>
+    );
+  }
 
   if (!meal) {
     return (
@@ -170,15 +194,25 @@ export function RecipeDetailScreen({
   }
 
   function handlePublish() {
-    saveMeal({ ...selectedMeal, published: true });
+    // Publishing requires a signed-in account so the recipe can be owned (#213).
+    if (!isLoggedIn) {
+      track("custom_recipe_publish_signin_prompt", { meal_id: selectedMeal.id });
+      setScreen("settings");
+      return;
+    }
+    // Stamp the owner locally too so the owner keeps control of the recipe and it
+    // persists in the session library; the backend re-derives ownerUid from the token.
+    saveMeal({ ...selectedMeal, published: true, ownerUid: account.uid ?? undefined });
     track("custom_recipe_published", { meal_id: selectedMeal.id });
   }
 
   function handleUnpublish() {
+    // Soft unpublish: keep the recipe in the library (and on the backend, for
+    // anyone who saved it), just remove it from Discover and share links (#213).
     const unpublished = { ...selectedMeal, published: false };
     setCustomRecipes((recipes) => [unpublished, ...recipes.filter((r) => r.id !== unpublished.id)]);
-    deleteRecommenderRecipe(selectedMeal.id).catch((error) => {
-      console.warn("Recipe could not be unpublished from recommender.", error);
+    unpublishRecommenderRecipe(selectedMeal.id).catch((error) => {
+      console.warn("Recipe could not be unpublished.", error);
     });
     track("custom_recipe_unpublished", { meal_id: selectedMeal.id });
   }
@@ -336,9 +370,15 @@ export function RecipeDetailScreen({
               <Pencil size={16} /> Edit recipe
             </AppButton>
             {isOwn && !selectedMeal.published && (
-              <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={() => setConfirmPublish(true)}>
-                Publish recipe
-              </AppButton>
+              isLoggedIn ? (
+                <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={() => setConfirmPublish(true)}>
+                  Publish recipe
+                </AppButton>
+              ) : (
+                <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={handlePublish}>
+                  Sign in to publish
+                </AppButton>
+              )
             )}
             {isOwn && selectedMeal.published && (
               <AppButton variant="secondary" className="text-stone-500" onClick={() => setConfirmUnpublish(true)}>
