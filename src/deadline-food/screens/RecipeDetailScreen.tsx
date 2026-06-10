@@ -61,6 +61,8 @@ export function RecipeDetailScreen({
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmPublish, setConfirmPublish] = useState(false);
+  const [confirmUnpublish, setConfirmUnpublish] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
   const [localUnitSystem, setLocalUnitSystem] = useState<"metric" | "imperial">(unitSystem);
 
@@ -151,13 +153,27 @@ export function RecipeDetailScreen({
 
   function saveMeal(nextMeal: Meal) {
     setCustomRecipes((recipes) => [nextMeal, ...recipes.filter((recipe) => recipe.id !== nextMeal.id)]);
-    // Re-embed user-created recipes on edit. Seed recipes are shared across all
-    // users on the recommender, so we never overwrite them from a local edit.
-    if (nextMeal.isUserCreated) {
+    // Re-embed only if already published — unpublished recipes stay private until
+    // the user explicitly publishes them.
+    if (nextMeal.isUserCreated && nextMeal.published) {
       createRecommenderRecipe(nextMeal).catch((error) => {
         console.warn("Recipe could not be embedded on the recommender.", error);
       });
     }
+  }
+
+  function handlePublish() {
+    saveMeal({ ...selectedMeal, published: true });
+    track("custom_recipe_published", { meal_id: selectedMeal.id });
+  }
+
+  function handleUnpublish() {
+    const unpublished = { ...selectedMeal, published: false };
+    setCustomRecipes((recipes) => [unpublished, ...recipes.filter((r) => r.id !== unpublished.id)]);
+    deleteRecommenderRecipe(selectedMeal.id).catch((error) => {
+      console.warn("Recipe could not be unpublished from recommender.", error);
+    });
+    track("custom_recipe_unpublished", { meal_id: selectedMeal.id });
   }
 
   function handleEditSubmit(output: RecipeEditorOutput, photoUrl: string | undefined) {
@@ -285,6 +301,16 @@ export function RecipeDetailScreen({
             <AppButton variant="secondary" onClick={() => { track("recipe_edit_started", { meal_id: selectedMeal.id }); setIsEditing(true); }}>
               <Pencil size={16} /> Edit recipe
             </AppButton>
+            {isOwn && !selectedMeal.published && (
+              <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={() => setConfirmPublish(true)}>
+                Publish recipe
+              </AppButton>
+            )}
+            {isOwn && selectedMeal.published && (
+              <AppButton variant="secondary" className="text-stone-500" onClick={() => setConfirmUnpublish(true)}>
+                Unpublish
+              </AppButton>
+            )}
             {isOwn ? (
               <AppButton variant="danger" onClick={() => setConfirmDelete(true)}>
                 <Trash2 size={16} /> Delete recipe
@@ -590,6 +616,27 @@ export function RecipeDetailScreen({
             }
           }}
           onCancel={() => setConfirmDelete(false)}
+        />
+      )}
+
+      {confirmPublish && (
+        <ConfirmDialog
+          title="Publish recipe?"
+          message="This will make your recipe visible to all users in Discover."
+          confirmLabel="Publish"
+          confirmVariant="primary"
+          onConfirm={() => { handlePublish(); setConfirmPublish(false); }}
+          onCancel={() => setConfirmPublish(false)}
+        />
+      )}
+
+      {confirmUnpublish && (
+        <ConfirmDialog
+          title="Unpublish recipe?"
+          message="This will remove your recipe from Discover. It stays in your library."
+          confirmLabel="Unpublish"
+          onConfirm={() => { handleUnpublish(); setConfirmUnpublish(false); }}
+          onCancel={() => setConfirmUnpublish(false)}
         />
       )}
     </div>
