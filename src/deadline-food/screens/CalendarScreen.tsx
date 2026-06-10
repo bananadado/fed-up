@@ -125,17 +125,6 @@ function formatDisplayTime(time: string, use24h: boolean): string {
   return `${h12}:${match[2]} ${period}`;
 }
 
-function normalizeTimeInput(raw: string): string | null {
-  const trimmed = raw.trim();
-  if (clockTimeInputPattern.test(trimmed)) return trimmed;
-  const match = trimmed.match(/^(\d{1,2}):(\d{2})$/);
-  if (match) {
-    const candidate = `${String(match[1]).padStart(2, "0")}:${match[2]}`;
-    if (clockTimeInputPattern.test(candidate)) return candidate;
-  }
-  return null;
-}
-
 // --- DeadlineEditPanel ---
 
 function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose, use24h }: {
@@ -162,12 +151,10 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose, use24h }: {
         <div>
           <p className="mb-2 text-sm font-semibold text-stone-700">Time</p>
           <Input
-            type="text"
-            inputMode="numeric"
-            placeholder="HH:MM"
+            type="time"
+            step="60"
             value={deadline.time}
             onChange={(e) => onUpdate({ time: e.target.value })}
-            onBlur={(e) => { const norm = normalizeTimeInput(e.target.value); if (norm) onUpdate({ time: norm }); }}
             className="h-auto rounded-lg border-stone-200 bg-white p-3"
           />
           <p className="mt-1.5 text-xs text-stone-400">When this event starts.</p>
@@ -1048,12 +1035,10 @@ export function CalendarScreen({
               <label className="block">
                 <span className="text-sm font-semibold text-stone-700">Time <span className="text-rose-500">*</span></span>
                 <Input
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="HH:MM"
+                  type="time"
+                  step="60"
                   value={draft.time}
                   onChange={(e) => { setDraft({ ...draft, time: e.target.value }); setFormErrors((err) => ({ ...err, time: undefined })); }}
-                  onBlur={(e) => { const norm = normalizeTimeInput(e.target.value); if (norm) setDraft((prev) => prev ? { ...prev, time: norm } : prev); }}
                   className={cn("mt-2 h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
                 />
               </label>
