@@ -308,6 +308,33 @@ export function SwapModal({
               )}
             </button>
           </div>
+
+          {/* Active filter chips */}
+          {(selectedSlots.length > 0 || selectedTags.length > 0) && (
+            <div className="mt-2 flex flex-wrap items-center gap-1.5 pb-1">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-stone-400">Showing:</span>
+              {selectedSlots.map((slot) => (
+                <button
+                  key={slot}
+                  type="button"
+                  onClick={() => toggleSlot(slot)}
+                  className="flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-800 transition hover:bg-emerald-200"
+                >
+                  {slotLabels[slot]} <X size={10} />
+                </button>
+              ))}
+              {selectedTags.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => toggleTag(tag)}
+                  className="flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2.5 py-1 text-xs font-medium capitalize text-emerald-800 transition hover:bg-emerald-200"
+                >
+                  {tag} <X size={10} />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Sort panel — fixed, never scrolls */}
