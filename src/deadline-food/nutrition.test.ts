@@ -1,8 +1,13 @@
 import { describe, expect, test } from "bun:test";
 
 import { estimateIngredientNutrition, totalNutritionFromEstimates } from "./nutrition";
+import { gramsForIngredient } from "./nutrition";
 
 describe("nutrition helpers", () => {
+  test("uses the shared ingredient grams converter", () => {
+    expect(Math.round(gramsForIngredient({ name: "cheese", quantity: 2, unit: "oz" }))).toBe(57);
+  });
+
   test("scales OpenFoodFacts per-100g macros by stored quantity", () => {
     const estimate = estimateIngredientNutrition(
       { name: "oats", quantity: 50, unit: "g" },
