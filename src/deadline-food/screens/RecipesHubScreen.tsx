@@ -32,6 +32,7 @@ export function RecipesHubScreen({
   onSelectMeal,
   onAddToPlan,
   discoverContext,
+  unpublishedSavedIds,
   track,
 }: {
   customRecipes: Meal[];
@@ -50,6 +51,7 @@ export function RecipesHubScreen({
   onSelectMeal: (mealId: string) => void;
   onAddToPlan?: (mealId: string) => void;
   discoverContext?: { day: string; slot: MealSlot; mealId: string } | null;
+  unpublishedSavedIds: Set<string>;
   track: TrackEvent;
 }) {
   const [tab, setTab] = useState<Tab>(() => {
@@ -245,7 +247,10 @@ export function RecipesHubScreen({
                             <Badge tone="neutral">{recipe.published ? "Published" : "Unpublished"}</Badge>
                           </div>
                         ) : (
-                          <Badge tone="blue">Saved</Badge>
+                          <div className="flex flex-col items-end gap-1">
+                            <Badge tone="blue">Saved</Badge>
+                            {unpublishedSavedIds.has(recipe.id) && <Badge tone="amber">No longer published</Badge>}
+                          </div>
                         )}
                       </div>
                       <p className="mt-2 break-words font-semibold leading-snug">{recipe.name}</p>

@@ -36,7 +36,7 @@ import {
   type AccountProviderId,
   type AccountSummary,
 } from "./accountAuth";
-import { fetchRecipeCatalogue, registerPlanMeals, setRecipeCatalogue } from "./recipeCatalogue";
+import { fetchRecipeCatalogue, getRecipeCatalogue, registerPlanMeals, registerSessionMeals, setRecipeCatalogue } from "./recipeCatalogue";
 import { Shell } from "./components/Shell";
 import { CalendarScreen } from "./screens/CalendarScreen";
 import { Dashboard } from "./screens/Dashboard";
@@ -155,7 +155,7 @@ export function DeadlineFoodApp() {
   const [discoverContext, setDiscoverContext] = useState<{ day: string; slot: MealSlot; mealId: string } | null>(null);
   // Bumped once the canonical recipe catalogue is hydrated from Firestore so
   // screens re-read it via mealById/getMealById (issue #123).
-  const [, setCatalogueVersion] = useState(0);
+  const [catalogueVersion, setCatalogueVersion] = useState(0);
   const catalogueLoadedRef = useRef(false);
   const hasPrivacyConsent = hasCurrentPrivacyConsent(privacyConsent);
   const syncPreviousScreen = useCallback(() => {
@@ -773,6 +773,25 @@ export function DeadlineFoodApp() {
     return [...byId.values()];
   }, [customRecipes, discoverSaved]);
 
+  // Keep the session-meal fallback registry in sync so mealById/getMealById still
+  // resolve a saved recipe after its creator unpublishes it (issue #200).
+  useEffect(() => {
+    registerSessionMeals(savedRecipes);
+  }, [savedRecipes]);
+
+  // Saved (non-owned) recipes whose creator has since unpublished them — i.e. the
+  // ID is absent from the hydrated public catalogue. Gate on catalogueVersion so
+  // we never flag before/if Firestore hydration completes.
+  const unpublishedSavedIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (catalogueVersion === 0) return ids;
+    const catalogueIds = new Set(getRecipeCatalogue().map((meal) => meal.id));
+    for (const meal of discoverSaved) {
+      if (!meal.isUserCreated && !catalogueIds.has(meal.id)) ids.add(meal.id);
+    }
+    return ids;
+  }, [discoverSaved, catalogueVersion]);
+
   const currentPlanSignature = useMemo(
     () => computePlanSignature({ prefs, savedRecipes, calendarEvents, deadlines, selectedSources }),
     [prefs, savedRecipes, calendarEvents, deadlines, selectedSources],
@@ -957,9 +976,9 @@ export function DeadlineFoodApp() {
       {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarSkipped={calendarSkipped} />}
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} prefs={prefs} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} />}
-      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} track={track} />}
+      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} unpublishedSavedIds={unpublishedSavedIds} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onLogout={logoutAccount} onDeleteAccount={deleteAccount} track={track} />}
-      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} track={track} unitSystem={prefs.unitSystem} />}
+      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} unpublishedSavedIds={unpublishedSavedIds} track={track} unitSystem={prefs.unitSystem} />}
     </Shell>
   );
 }

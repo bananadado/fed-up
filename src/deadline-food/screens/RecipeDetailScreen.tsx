@@ -43,6 +43,7 @@ export function RecipeDetailScreen({
   setScreen,
   backTo,
   onSelectMeal,
+  unpublishedSavedIds,
   track,
   unitSystem = "metric",
 }: {
@@ -54,6 +55,7 @@ export function RecipeDetailScreen({
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
   onSelectMeal: (mealId: string) => void;
+  unpublishedSavedIds: Set<string>;
   track: TrackEvent;
   unitSystem?: "metric" | "imperial";
 }) {
@@ -293,9 +295,12 @@ export function RecipeDetailScreen({
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <AppButton variant="ghost" className="px-0" onClick={() => { track("recipe_back_clicked", { meal_id: selectedMeal.id, back_to: backTo ?? "plan" }); setScreen(backTo ?? "plan"); }}>
-          <ArrowLeft size={16} /> {backLabel(backTo ?? null)}
-        </AppButton>
+        <div className="flex items-center gap-2">
+          <AppButton variant="ghost" className="px-0" onClick={() => { track("recipe_back_clicked", { meal_id: selectedMeal.id, back_to: backTo ?? "plan" }); setScreen(backTo ?? "plan"); }}>
+            <ArrowLeft size={16} /> {backLabel(backTo ?? null)}
+          </AppButton>
+          {unpublishedSavedIds.has(mealId) && <Badge tone="amber">No longer published</Badge>}
+        </div>
         {!isEditing && (
           <div className="flex flex-wrap gap-3">
             <AppButton variant="secondary" onClick={() => { track("recipe_edit_started", { meal_id: selectedMeal.id }); setIsEditing(true); }}>
