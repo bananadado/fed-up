@@ -41,6 +41,34 @@ function appMealToAllocator(meal: (typeof appRecipes)[number]): AllocatorMeal {
   };
 }
 
+function lunchDinnerIds(plan: ReturnType<typeof buildPlan>): string[] {
+  return plan.flatMap((entry) =>
+    entry.meals.filter((plannedMeal) => plannedMeal.slot !== "breakfast").map((plannedMeal) => plannedMeal.mealId),
+  );
+}
+
+function expectNoThreeConsecutiveLunchDinnerRepeats(plan: ReturnType<typeof buildPlan>): void {
+  const ids = lunchDinnerIds(plan);
+  for (let index = 2; index < ids.length; index += 1) {
+    expect([ids[index - 2], ids[index - 1], ids[index]].every((id) => id === ids[index])).toBe(false);
+  }
+}
+
+function maxWeeklyLunchDinnerUses(plan: ReturnType<typeof buildPlan>): number {
+  let max = 0;
+  plan.forEach((entry, dayIndex) => {
+    const weekStart = Math.floor(dayIndex / 7) * 7;
+    const counts = new Map<string, number>();
+    plan.slice(weekStart, weekStart + 7).forEach((weekEntry) => {
+      weekEntry.meals.filter((plannedMeal) => plannedMeal.slot !== "breakfast").forEach((plannedMeal) => {
+        counts.set(plannedMeal.mealId, (counts.get(plannedMeal.mealId) ?? 0) + 1);
+      });
+    });
+    max = Math.max(max, ...counts.values(), 0);
+  });
+  return max;
+}
+
 describe("classifyEffort", () => {
   it("treats fallbacks and remixes as minimal prep", () => {
     expect(classifyEffort(meal({ id: "a", type: "fallback" }))).toBe("minimal");
@@ -114,7 +142,7 @@ describe("buildPlan", () => {
     expect(plan.flatMap((entry) => entry.meals).some((m) => m.batchCook)).toBe(false);
   });
 
-  it("high batch mode respects the two-day lunch/dinner repeat cap", () => {
+  it("high batch mode respects the weekly lunch/dinner repeat cap", () => {
     const days = [
       day({ date: "2026-06-01", stress: 0.2 }),
       day({ date: "2026-06-02", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } }),
@@ -139,7 +167,9 @@ describe("buildPlan", () => {
       plan.flatMap((entry) => entry.meals).filter((m) => m.leftoverOf === "batch").length;
 
     expect(leftoverCount(balanced)).toBe(2);
-    expect(leftoverCount(high)).toBe(2);
+    expect(leftoverCount(high)).toBeLessThanOrEqual(2);
+    expectNoThreeConsecutiveLunchDinnerRepeats(high);
+    expect(maxWeeklyLunchDinnerUses(high)).toBeLessThanOrEqual(3);
   });
 
   it("repeats one breakfast across weekday slots in repeat mode", () => {
@@ -312,7 +342,7 @@ describe("buildPlan", () => {
     expect(plan[0].meals.map((m) => m.slot)).toEqual(["breakfast"]);
   });
 
-  it("does not allocate meals that would exceed the weekly budget", () => {
+  it("relaxes budget before violating hard main-meal variety", () => {
     const expensive = meal({ id: "expensive", type: "fallback", time: 4, pricePence: 600, mealSlots: ["dinner"] });
     const cheap = meal({ id: "cheap", type: "fallback", time: 6, pricePence: 250, mealSlots: ["dinner"] });
     const plan = buildPlan({
@@ -327,27 +357,30 @@ describe("buildPlan", () => {
     });
 
     const dinners = plan.flatMap((entry) => entry.meals.filter((m) => m.slot === "dinner"));
-    expect(dinners.map((m) => m.mealId)).toEqual(["cheap", "cheap"]);
+    expect(dinners.map((m) => m.mealId)).toEqual(["cheap", "cheap", "expensive"]);
+    expectNoThreeConsecutiveLunchDinnerRepeats(plan);
   });
 
-  it("paces spend across the week instead of blowing the budget on the first days", () => {
+  it("paces spend but still breaks repeated main-meal streaks", () => {
     const costly = meal({ id: "costly", type: "fallback", time: 4, pricePence: 400, mealSlots: ["dinner"] });
     const paced = meal({ id: "paced", type: "fallback", time: 6, pricePence: 100, mealSlots: ["dinner"] });
+    const backup = meal({ id: "backup", type: "fallback", time: 7, pricePence: 120, mealSlots: ["dinner"] });
     const plan = buildPlan({
       days: Array.from({ length: 7 }, (_, i) =>
         day({ date: `2026-06-${String(i + 1).padStart(2, "0")}`, stress: 0.8 }),
       ),
-      pool: [costly, paced],
+      pool: [costly, paced, backup],
       avoided: [],
       weeklyBudgetPence: 700,
     });
 
     const dinners = plan.flatMap((entry) => entry.meals.filter((m) => m.slot === "dinner"));
     expect(dinners).toHaveLength(7);
-    expect(dinners.every((m) => m.mealId === "paced")).toBe(true);
+    expect(dinners.map((m) => m.mealId)).toContain("costly");
+    expectNoThreeConsecutiveLunchDinnerRepeats(plan);
   });
 
-  it("paces across slots that can actually be filled", () => {
+  it("leaves slots unfilled rather than violating hard main-meal variety when no alternative exists", () => {
     const dinnerOnly = meal({ id: "dinner-only", pricePence: 285, mealSlots: ["dinner"] });
     const plan = buildPlan({
       days: Array.from({ length: 7 }, (_, i) =>
@@ -359,7 +392,7 @@ describe("buildPlan", () => {
     });
 
     const dinners = plan.flatMap((entry) => entry.meals.filter((m) => m.slot === "dinner"));
-    expect(dinners).toHaveLength(7);
+    expect(dinners).toHaveLength(2);
     expect(dinners.every((m) => m.mealId === "dinner-only")).toBe(true);
   });
 
@@ -370,10 +403,12 @@ describe("buildPlan", () => {
       ),
       pool: appRecipes.map(appMealToAllocator),
       avoided: [],
-      weeklyBudgetPence: 4800,
+      weeklyBudgetPence: 8000,
+      planningPriorities: { campusFallbacks: "allowed" },
     });
 
     expect(plan.flatMap((entry) => entry.meals)).toHaveLength(21);
+    expect(maxWeeklyLunchDinnerUses(plan)).toBeLessThanOrEqual(3);
   });
 
   it("does not keep choosing the same relaxed-day batch cook when alternatives exist", () => {
@@ -405,17 +440,20 @@ describe("buildPlan", () => {
     const quickA = meal({ id: "quick-a", type: "fallback", time: 5, pricePence: 120 });
     const quickB = meal({ id: "quick-b", type: "fallback", time: 6, pricePence: 130 });
     const quickC = meal({ id: "quick-c", type: "fallback", time: 7, pricePence: 140 });
+    const quickD = meal({ id: "quick-d", type: "fallback", time: 8, pricePence: 150 });
+    const quickE = meal({ id: "quick-e", type: "fallback", time: 9, pricePence: 160 });
 
     const plan = buildPlan({
       days,
-      pool: [quickA, quickB, quickC],
+      pool: [quickA, quickB, quickC, quickD, quickE],
       avoided: [],
       weeklyBudgetPence: 5000,
     });
 
     expect(plan[0].meals.map((m) => m.mealId)).toEqual(["quick-a", "quick-b", "quick-c"]);
     const dinnerIds = plan.map((entry) => entry.meals.find((m) => m.slot === "dinner")?.mealId);
-    expect(new Set(dinnerIds)).toEqual(new Set(["quick-a", "quick-b", "quick-c"]));
+    expect(new Set(dinnerIds.filter(Boolean)).size).toBeGreaterThanOrEqual(3);
+    expect(maxWeeklyLunchDinnerUses(plan)).toBeLessThanOrEqual(3);
   });
 
   it("uses variant seeds to offer different similarly valid alternatives on regeneration", () => {
@@ -450,6 +488,39 @@ describe("buildPlan", () => {
     const lunchIds = plan.map((entry) => entry.meals.find((m) => m.slot === "lunch")?.mealId);
     expect(lunchIds.slice(0, 3)).not.toEqual(["quick-a", "quick-a", "quick-a"]);
     expect(lunchIds.slice(0, 3)).not.toEqual(["quick-b", "quick-b", "quick-b"]);
+    expectNoThreeConsecutiveLunchDinnerRepeats(plan);
+  });
+
+  it("applies the three-meal repeat rule across lunch and dinner as one sequence", () => {
+    const days = [
+      day({ date: "2026-06-01", stress: 0.8 }),
+      day({ date: "2026-06-02", stress: 0.8 }),
+    ];
+    const falafel = meal({ id: "falafel", type: "fallback", time: 5, mealSlots: ["lunch", "dinner"] });
+    const noodles = meal({ id: "noodles", type: "fallback", time: 6, mealSlots: ["lunch", "dinner"] });
+
+    const plan = buildPlan({
+      days,
+      pool: [falafel, noodles],
+      avoided: [],
+    });
+
+    expect(lunchDinnerIds(plan).slice(0, 3)).not.toEqual(["falafel", "falafel", "falafel"]);
+    expectNoThreeConsecutiveLunchDinnerRepeats(plan);
+  });
+
+  it("does not use any lunch or dinner meal more than three times per week", () => {
+    const days = Array.from({ length: 7 }, (_, i) =>
+      day({ date: `2026-06-${String(i + 1).padStart(2, "0")}`, stress: 0.8 }),
+    );
+    const pool = ["falafel", "soup", "noodles", "rice", "chilli"].map((id, index) =>
+      meal({ id, type: "fallback", time: 5 + index, mealSlots: ["lunch", "dinner"] }),
+    );
+
+    const plan = buildPlan({ days, pool, avoided: [] });
+
+    expect(maxWeeklyLunchDinnerUses(plan)).toBeLessThanOrEqual(3);
+    expectNoThreeConsecutiveLunchDinnerRepeats(plan);
   });
 
   it("lightly prefers liked ingredients and penalises dislikes without making them impossible", () => {
@@ -524,6 +595,46 @@ describe("buildBestPlan", () => {
     expect(result.plan[0].meals.find((m) => m.slot === "lunch")?.mealId).toBe("higher-protein");
   });
 
+  it("treats nutrition as softer than weekly variety", () => {
+    const days = Array.from({ length: 3 }, (_, index) =>
+      day({ date: `2026-06-${String(index + 1).padStart(2, "0")}`, stress: 0.8 }),
+    );
+    const falafel = meal({
+      id: "falafel",
+      type: "fallback",
+      time: 5,
+      mealSlots: ["lunch", "dinner"],
+      nutrition: { calories: 700, protein: 45, carbs: 70, fat: 20 },
+    });
+    const soup = meal({
+      id: "soup",
+      type: "fallback",
+      time: 6,
+      mealSlots: ["lunch", "dinner"],
+      nutrition: { calories: 520, protein: 18, carbs: 70, fat: 12 },
+    });
+    const pasta = meal({
+      id: "pasta",
+      type: "fallback",
+      time: 7,
+      mealSlots: ["lunch", "dinner"],
+      nutrition: { calories: 620, protein: 20, carbs: 85, fat: 14 },
+    });
+
+    const result = buildBestPlan({
+      days,
+      pool: [falafel, soup, pasta],
+      avoided: [],
+      nutritionTargets: { dailyCalories: 2100, dailyProtein: 120 },
+      candidateCount: 12,
+      variantSeed: 1,
+    });
+
+    expect(new Set(lunchDinnerIds(result.plan))).toEqual(new Set(["falafel", "soup", "pasta"]));
+    expect(result.quality.nutritionScore).toBeLessThan(1);
+    expect(result.quality.hardVarietyViolationCount).toBe(0);
+  });
+
   it("scores compact shopping lists higher when nutrition and variety are comparable", () => {
     const days = [day({ date: "2026-06-01" }), day({ date: "2026-06-02" })];
     const riceBeans = meal({
@@ -559,6 +670,51 @@ describe("buildBestPlan", () => {
 
     expect(scorePlan(input, compact).shoppingSimplicityScore).toBeGreaterThan(scorePlan(input, sprawling).shoppingSimplicityScore);
     expect(scorePlan(input, compact).ingredientReuseScore).toBeGreaterThan(scorePlan(input, sprawling).ingredientReuseScore);
+  });
+
+  it("reports hard variety violations and poor coverage in plan quality", () => {
+    const days = [day({ date: "2026-06-01" }), day({ date: "2026-06-02" })];
+    const falafel = meal({ id: "falafel", mealSlots: ["lunch", "dinner"] });
+    const badPlan = [
+      {
+        day: "Mon 1 Jun",
+        dateIso: "2026-06-01",
+        context: "",
+        meals: [
+          { slot: "lunch" as const, mealId: "falafel" },
+          { slot: "dinner" as const, mealId: "falafel" },
+        ],
+      },
+      {
+        day: "Tue 2 Jun",
+        dateIso: "2026-06-02",
+        context: "",
+        meals: [{ slot: "lunch" as const, mealId: "falafel" }],
+      },
+    ];
+
+    const quality = scorePlan({ days, pool: [falafel], avoided: [] }, badPlan);
+
+    expect(quality.hardVarietyViolationCount).toBe(1);
+    expect(quality.maxConsecutiveLunchDinnerRepeats).toBe(3);
+    expect(quality.coverageScore).toBe(0.5);
+    expect(quality.varietyScore).toBe(0);
+  });
+
+  it("scores a fourth non-breakfast use in the same week as a hard variety violation", () => {
+    const days = Array.from({ length: 4 }, (_, i) => day({ date: `2026-06-${String(i + 1).padStart(2, "0")}` }));
+    const falafel = meal({ id: "falafel", mealSlots: ["dinner"] });
+    const badPlan = days.map((d, index) => ({
+      day: `Day ${index}`,
+      dateIso: d.date,
+      context: "",
+      meals: [{ slot: "dinner" as const, mealId: "falafel" }],
+    }));
+
+    const quality = scorePlan({ days, pool: [falafel], avoided: [] }, badPlan);
+
+    expect(quality.hardVarietyViolationCount).toBeGreaterThanOrEqual(1);
+    expect(quality.varietyScore).toBe(0);
   });
 
   it("does not count leftover meals as extra shopping items", () => {
@@ -623,7 +779,7 @@ describe("buildBestPlan", () => {
     });
 
     expect(result.quality.changedFlexibleSlots).toBeGreaterThan(0);
-    expect(result.quality.changedFlexibleSlots).toBeLessThan(7);
+    expect(result.quality.hardVarietyViolationCount).toBe(0);
   });
 
   it("preserves repeated breakfast routines while scoring candidate plans", () => {

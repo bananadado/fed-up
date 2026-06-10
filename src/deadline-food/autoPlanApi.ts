@@ -2,7 +2,8 @@ import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
 import { type ContextEventInput } from "./calendarImport";
 import { deadlineToContextEvent } from "./calendarImport/deadlineContext";
-import { registerPlanMeals } from "./recipeCatalogue";
+import { getRecipeCatalogue, registerPlanMeals } from "./recipeCatalogue";
+import { repairPlanVariety } from "./planVariety";
 import type { CalendarEvent, Deadline, Meal, PlanEntry, Preferences } from "./types";
 
 export type GenerateAutoPlanInput = {
@@ -23,6 +24,7 @@ export type GenerateAutoPlanInput = {
 
 export type AutoPlanQuality = {
   score: number;
+  coverageScore: number;
   nutritionScore: number;
   varietyScore: number;
   budgetScore: number;
@@ -33,6 +35,9 @@ export type AutoPlanQuality = {
   uniqueIngredientCount: number;
   reusedIngredientGroups: number;
   changedFlexibleSlots: number;
+  uniqueLunchDinnerCount: number;
+  maxConsecutiveLunchDinnerRepeats: number;
+  hardVarietyViolationCount: number;
 };
 
 // Small deterministic FNV-1a hash so the signature stays short and stable
@@ -152,7 +157,16 @@ export async function generateAutoPlan(
   }
 
   const data = (await response.json()) as AutoPlanResponse;
+  const plan = Array.isArray(data.plan) ? data.plan : [];
   const meals = Array.isArray(data.meals) ? data.meals : [];
-  registerPlanMeals(meals);
-  return { plan: Array.isArray(data.plan) ? data.plan : [], meals, generatedAt: data.generatedAt, quality: data.quality };
+  const repaired = repairPlanVariety({
+    plan,
+    backendMeals: meals,
+    savedRecipes: input.savedRecipes,
+    catalogueMeals: getRecipeCatalogue(),
+    prefs: input.prefs,
+    variantSeed: input.planVariant,
+  });
+  registerPlanMeals(repaired.meals);
+  return { plan: repaired.plan, meals: repaired.meals, generatedAt: data.generatedAt, quality: data.quality };
 }
