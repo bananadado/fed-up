@@ -110,6 +110,8 @@ export type Preferences = {
   unitSystem: "metric" | "imperial";
   /** Time of day (HH:MM) to schedule evening prep reminders, e.g. "22:00". */
   prepReminderTime: string;
+  /** Display times in 24-hour format (true) or 12-hour AM/PM (false). */
+  use24hClock: boolean;
 };
 
 export type DiscoverRecommendationStatus = "idle" | "ready" | "exhausted";

@@ -65,6 +65,7 @@ export function normalizePreferences(raw: Preferences): Preferences {
     planRegenMode: raw.planRegenMode === "auto" ? "auto" : "prompt",
     unitSystem: raw.unitSystem === "imperial" ? "imperial" : "metric",
     prepReminderTime: /^\d{1,2}:\d{2}$/.test(raw.prepReminderTime ?? "") ? raw.prepReminderTime : "22:00",
+    use24hClock: raw.use24hClock !== false,
   };
 }
 
