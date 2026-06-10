@@ -1,4 +1,4 @@
-import { ChevronDown, Clock3, Flame, Heart, Layers, RefreshCcw, ShoppingBag, ShoppingBasket, Sparkles, Soup, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Clock3, Flame, Heart, Layers, RefreshCcw, ShoppingBag, ShoppingBasket, Sparkles, Soup, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -224,15 +224,18 @@ export function PlanScreen({
                                     <button
                                       type="button"
                                       onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_desktop" }); onSelectMeal(meal.id); }}
-                                      className="text-left transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+                                      className="group w-full rounded-lg text-left transition hover:bg-emerald-50 hover:ring-1 hover:ring-emerald-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700 active:bg-emerald-100"
                                     >
-                                      <div className="flex flex-wrap items-center gap-2">
-                                        {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
-                                        {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
-                                        {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
-                                        <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
-                                          {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Easy option</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
-                                        </Badge>
+                                      <div className="flex items-start justify-between gap-1">
+                                        <div className="flex flex-wrap items-center gap-2">
+                                          {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
+                                          {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
+                                          {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
+                                          <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
+                                            {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Easy option</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
+                                          </Badge>
+                                        </div>
+                                        <ChevronRight size={14} className="mt-0.5 shrink-0 text-stone-400 transition group-hover:text-emerald-600" />
                                       </div>
                                       <p className="mt-3 break-words text-sm font-semibold leading-5">
                                         {meal.image} {meal.name}
@@ -302,10 +305,13 @@ export function PlanScreen({
                                 <div key={slot} className="rounded-lg bg-stone-50 p-3">
                                   <p className="text-xs font-semibold uppercase text-stone-500">{slotLabels[slot]}</p>
                                   {meal ? (
-                                    <button type="button" onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); onSelectMeal(meal.id); }} className="mt-2 w-full text-left">
-                                      <p className="break-words font-semibold leading-5">
-                                        {meal.image} {meal.name}
-                                      </p>
+                                    <button type="button" onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); onSelectMeal(meal.id); }} className="group mt-2 w-full rounded-md text-left transition active:bg-stone-200">
+                                      <div className="flex items-start justify-between gap-1">
+                                        <p className="break-words font-semibold leading-5">
+                                          {meal.image} {meal.name}
+                                        </p>
+                                        <ChevronRight size={14} className="mt-0.5 shrink-0 text-stone-400 transition group-hover:text-emerald-600" />
+                                      </div>
                                       <p className="mt-1 text-sm text-stone-500">
                                         {meal.time} mins - {money(meal.price)}
                                       </p>
