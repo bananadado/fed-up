@@ -157,6 +157,12 @@ const result = await Bun.build({
     "__BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__": JSON.stringify(
       process.env.BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION ?? "",
     ),
+    "__BUN_PUBLIC_FIREBASE_API_KEY__": JSON.stringify(process.env.BUN_PUBLIC_FIREBASE_API_KEY ?? ""),
+    "__BUN_PUBLIC_FIREBASE_AUTH_DOMAIN__": JSON.stringify(process.env.BUN_PUBLIC_FIREBASE_AUTH_DOMAIN ?? ""),
+    "__BUN_PUBLIC_FIREBASE_APP_ID__": JSON.stringify(process.env.BUN_PUBLIC_FIREBASE_APP_ID ?? ""),
+    "__BUN_PUBLIC_FIREBASE_AUTH_EMULATOR_URL__": JSON.stringify(
+      process.env.BUN_PUBLIC_FIREBASE_AUTH_EMULATOR_URL ?? "",
+    ),
     "__BUN_PUBLIC_POSTHOG_PROJECT_TOKEN__": JSON.stringify(process.env.BUN_PUBLIC_POSTHOG_PROJECT_TOKEN ?? ""),
     "__BUN_PUBLIC_POSTHOG_HOST__": JSON.stringify(process.env.BUN_PUBLIC_POSTHOG_HOST ?? ""),
     "__BUN_PUBLIC_GOOGLE_CLIENT_ID__": JSON.stringify(process.env.BUN_PUBLIC_GOOGLE_CLIENT_ID ?? ""),

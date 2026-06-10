@@ -7,6 +7,7 @@ import {
   SESSION_RETENTION_DAYS,
   type SessionSettings,
 } from "./sessionPersistence";
+import { getDeadlineFoodAuthToken } from "./accountAuth";
 
 type AnonymousSessionResponse = {
   sessionId: string;
@@ -41,6 +42,17 @@ function storeSessionId(sessionId: string): void {
   window.localStorage.setItem(ANONYMOUS_SESSION_STORAGE_KEY, sessionId);
 }
 
+// Drops the locally stored session handle so the next load starts from a brand
+// new anonymous session (used after deleting an account, which must not reuse
+// the deleted account's session handle).
+export function clearStoredAnonymousSessionId(): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.localStorage.removeItem(ANONYMOUS_SESSION_STORAGE_KEY);
+}
+
 export function getOrCreateAnonymousSessionId(): string {
   const existingSessionId = readStoredSessionId();
 
@@ -61,11 +73,21 @@ async function readJson(response: Response, label: string): Promise<AnonymousSes
   return response.json() as Promise<AnonymousSessionResponse>;
 }
 
+async function authHeaders(): Promise<Record<string, string>> {
+  const token = await getDeadlineFoodAuthToken().catch(() => null);
+  return token ? {authorization: `Bearer ${token}`} : {};
+}
+
 export async function loadAnonymousSessionSettings(sessionId: string): Promise<AnonymousSessionResponse> {
   const url = new URL(deadlineFoodEndpointUrl("session"), window.location.origin);
   url.searchParams.set("sessionId", sessionId);
 
-  const body = await readJson(await fetch(url), "Anonymous session load");
+  const body = await readJson(
+    await fetch(url, {
+      headers: await authHeaders(),
+    }),
+    "Anonymous session load",
+  );
 
   if (isAnonymousSessionId(body.sessionId)) {
     storeSessionId(body.sessionId);
@@ -77,6 +99,25 @@ export async function loadAnonymousSessionSettings(sessionId: string): Promise<A
   };
 }
 
+// Permanently deletes the signed-in account's synced profile and its Firebase
+// Auth user (the backend does both, keyed by the verified token's uid). Requires
+// a non-anonymous auth token; throws if the request is rejected.
+export async function deleteAccountProfile(): Promise<void> {
+  const headers = await authHeaders();
+  if (!headers.authorization) {
+    throw new Error("You need to be signed in to delete your account.");
+  }
+
+  const response = await fetch(deadlineFoodEndpointUrl("session"), {
+    method: "DELETE",
+    headers,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Account deletion request failed with ${response.status}`);
+  }
+}
+
 export async function saveAnonymousSessionSettings(
   sessionId: string,
   settings: SessionSettings,
@@ -85,6 +126,7 @@ export async function saveAnonymousSessionSettings(
     await fetch(deadlineFoodEndpointUrl("session"), {
       method: "PUT",
       headers: {
+        ...(await authHeaders()),
         "content-type": "application/json",
       },
       body: JSON.stringify({ sessionId, settings }),
