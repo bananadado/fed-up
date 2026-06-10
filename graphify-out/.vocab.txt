@@ -2,8 +2,10 @@ abilities
 ability
 academic
 acceptance
+accepted
 access
 accessibility
+account
 acquire
 acronym
 across
@@ -14,6 +16,7 @@ active
 add
 adjectives
 admin
+advance
 advanced
 adventurousness
 afte
@@ -22,6 +25,7 @@ against
 agent
 agents
 aggregate
+aggregation
 aliases
 aligned
 all
@@ -40,9 +44,9 @@ anchors
 and
 animal
 animate
-animations
 annotations
 anonymous
+answer
 answers
 any
 api
@@ -72,7 +76,7 @@ authentication
 authority
 auto
 autonomous
-autopilot
+available
 average
 avoid
 away
@@ -145,6 +149,7 @@ candidate
 candidates
 cannot
 canonical
+canonicalize
 capability
 capable
 capitalized
@@ -156,6 +161,7 @@ cat
 catalogue
 categories
 category
+causes
 cautions
 cell
 change
@@ -170,6 +176,7 @@ chicken
 chilli
 choice
 choosing
+chopped
 chromium
 clamp
 clamped
@@ -182,7 +189,6 @@ claude
 clean
 cleanup
 clear
-clearing
 cli
 client
 clipboard
@@ -218,6 +224,7 @@ compiler
 complete
 complexity
 components
+compound
 compute
 computes
 concept
@@ -229,12 +236,14 @@ configure
 configured
 confirm
 conftest
+consent
 const
 constraints
 content
 context
 contracts
 controls
+conversion
 cook
 cooking
 copy
@@ -245,6 +254,7 @@ cors
 cosine
 cost
 costly
+count
 countable
 counts
 couscous
@@ -256,6 +266,8 @@ crunch
 crypto
 css
 cuisine
+cup
+cups
 curl
 current
 cutoff
@@ -344,7 +356,6 @@ down
 download
 draft
 drafts
-driven
 drives
 drp
 dry
@@ -445,6 +456,7 @@ favours
 fdc
 feasibility
 features
+fed
 feed
 fetch
 fewer
@@ -473,6 +485,7 @@ flavor
 flavors
 flavour
 float
+flour
 flow
 flows
 food
@@ -493,6 +506,7 @@ fried
 fro
 from
 frontend
+frozen
 full
 function
 functional
@@ -503,7 +517,6 @@ fuzzy
 gaps
 garbage
 gates
-gcloud
 genera
 general
 generate
@@ -553,6 +566,7 @@ helpers
 heuristic
 high
 highlight
+hint
 hints
 hog
 honesty
@@ -576,6 +590,7 @@ idempotent
 identical
 ids
 illustrative
+imperial
 implementation
 implicit
 implied
@@ -598,6 +613,7 @@ indexes
 indicators
 infer
 inference
+infinite
 info
 information
 ingest
@@ -645,6 +661,7 @@ jobs
 journey
 json
 jsx
+just
 keeps
 key
 keys
@@ -709,10 +726,12 @@ makes
 management
 manifest
 manual
+many
 map
 mapped
 mappings
 maps
+mass
 match
 matches
 matching
@@ -733,7 +752,6 @@ method
 metric
 metrics
 microsoft
-migration
 millis
 mime
 minimal
@@ -776,6 +794,7 @@ neutral
 nev
 never
 node
+nodes
 non
 none
 noodles
@@ -795,7 +814,6 @@ nutrition
 nutty
 nvidia
 object
-objective
 obsidian
 off
 omits
@@ -803,6 +821,7 @@ omitted
 onboarding
 once
 one
+onion
 only
 open
 openfoodfacts
@@ -841,6 +860,7 @@ parsed
 parser
 parses
 part
+parts
 past
 pasta
 path
@@ -879,6 +899,7 @@ plant
 playbook
 playwright
 plugin
+plural
 pluralise
 point
 points
@@ -901,6 +922,7 @@ prep
 preparation
 preparations
 prepare
+preps
 present
 pressing
 pressure
@@ -911,15 +933,16 @@ primitives
 principle
 principles
 priors
+privacy
 private
 problem
-procedural
 product
 products
 profile
 profiles
 progress
 project
+promise
 promotes
 prompt
 properties
@@ -940,6 +963,7 @@ purpose
 push
 put
 python
+qty
 qualitative
 quality
 quantity
@@ -980,7 +1004,6 @@ recompute
 recomputes
 record
 recording
-recovery
 redirect
 reducer
 reduces
@@ -1004,6 +1027,7 @@ remote
 remove
 removes
 repeat
+replace
 report
 repository
 representation
@@ -1027,7 +1051,6 @@ restart
 restore
 result
 results
-retention
 retrieval
 retrieve
 retry
@@ -1057,6 +1080,7 @@ runtime
 safe
 safety
 salad
+salt
 same
 sample
 sanitise
@@ -1099,7 +1123,6 @@ send
 sentence
 separation
 separator
-sequencer
 serve
 server
 service
@@ -1120,21 +1143,25 @@ shift
 shifts
 shopping
 should
+shows
 sided
 signal
 signals
 signature
+significant
 sim
 similar
 similarity
 simpler
 single
 singular
+singularise
 size
 skill
 skip
 sleep
 slice
+sliced
 slot
 slots
 small
@@ -1201,7 +1228,9 @@ subscription
 substitution
 success
 sudo
+sugar
 suggested
+suggestion
 suggestions
 suitability
 suite
@@ -1236,8 +1265,8 @@ tailwindcss
 target
 targets
 task
-tasks
 taste
+tbsp
 technical
 technique
 techniques
@@ -1280,6 +1309,7 @@ tokens
 tolerance
 tone
 tones
+too
 tool
 tooling
 tools
@@ -1304,17 +1334,17 @@ trusted
 truth
 try
 tsconfig
+tsp
 tsx
-ttls
 tuna
 tunnel
 turn
-tutorials
 two
 type
 typecheck
 types
 typescript
+typo
 uid
 unchanged
 unchecked
@@ -1372,6 +1402,7 @@ vendors
 verbatim
 vercel
 verification
+verified
 verify
 version
 versions
@@ -1381,6 +1412,7 @@ view
 views
 visual
 visualiser
+volume
 wait
 warning
 watch

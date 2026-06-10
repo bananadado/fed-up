@@ -10,7 +10,7 @@ import { normalizeIngredientUnit } from "../unitConversion";
 import { money } from "../utils";
 import type { TrackEvent } from "../analytics";
 import { DiscoverScreen } from "./DiscoverScreen";
-import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
+import { deleteRecommenderRecipe } from "../recommenderApi";
 
 type Tab = "saved" | "discover" | "add";
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
@@ -32,6 +32,7 @@ export function RecipesHubScreen({
   onSelectMeal,
   onAddToPlan,
   discoverContext,
+  unpublishedSavedIds,
   track,
 }: {
   customRecipes: Meal[];
@@ -50,6 +51,7 @@ export function RecipesHubScreen({
   onSelectMeal: (mealId: string) => void;
   onAddToPlan?: (mealId: string) => void;
   discoverContext?: { day: string; slot: MealSlot; mealId: string } | null;
+  unpublishedSavedIds: Set<string>;
   track: TrackEvent;
 }) {
   const [tab, setTab] = useState<Tab>(() => {
@@ -97,10 +99,6 @@ export function RecipesHubScreen({
     };
 
     setCustomRecipes((recipes) => [nextRecipe, ...recipes]);
-    // Embed the recipe on the recommender immediately on creation.
-    createRecommenderRecipe(nextRecipe).catch((error) => {
-      console.warn("Recipe could not be embedded on the recommender.", error);
-    });
     track("custom_recipe_added", {
       meal_id: nextRecipe.id,
       minutes: nextRecipe.time,
@@ -243,7 +241,17 @@ export function RecipesHubScreen({
                         ) : (
                           <span className="text-3xl">{recipe.image}</span>
                         )}
-                        <Badge tone={isOwn ? "green" : "blue"}>{isOwn ? "Your recipe" : "Saved"}</Badge>
+                        {isOwn ? (
+                          <div className="flex flex-col items-end gap-1">
+                            <Badge tone="green">Your recipe</Badge>
+                            <Badge tone="neutral">{recipe.published ? "Published" : "Unpublished"}</Badge>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-end gap-1">
+                            <Badge tone="blue">Saved</Badge>
+                            {unpublishedSavedIds.has(recipe.id) && <Badge tone="amber">No longer published</Badge>}
+                          </div>
+                        )}
                       </div>
                       <p className="mt-2 break-words font-semibold leading-snug">{recipe.name}</p>
                       <p className="mt-1 text-sm font-medium text-emerald-700">{money(recipe.price)}</p>
@@ -386,6 +394,7 @@ export function RecipesHubScreen({
           onCancel={() => setConfirmAction(null)}
         />
       )}
+
     </div>
   );
 }
