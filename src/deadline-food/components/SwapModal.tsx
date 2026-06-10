@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
 import { ingredientName } from "../ingredients";
-import { getMealById, isVerified, money } from "../utils";
+import { isVerified, mealById, money } from "../utils";
 import type { TrackEvent } from "../analytics";
 import { AppButton, Badge } from "./primitives";
 
@@ -91,7 +91,10 @@ export function SwapModal({
   const originalDayIndex = plan.findIndex((entry) => entry.day === rescueChoice.day);
   const originalDay = originalDayIndex >= 0 ? plan[originalDayIndex] : undefined;
   const originalPlanMeal = originalDay?.meals.find((meal) => meal.slot === rescueChoice.slot);
-  const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
+  // Nullable resolve: a deleted original should read as "removed", not silently
+  // fall back to the first catalogue recipe (#213 follow-up).
+  const originalMeal = originalPlanMeal ? mealById(originalPlanMeal.mealId, customRecipes) ?? null : null;
+  const originalRemoved = !!originalPlanMeal && !originalMeal;
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
   const savedSet = useMemo(() => new Set((savedRecipes ?? []).map((m) => m.id)), [savedRecipes]);
 
@@ -145,7 +148,7 @@ export function SwapModal({
   const weekStartIndex = originalDayIndex >= 0 ? Math.floor(originalDayIndex / 7) * 7 : 0;
   const affectedWeekEntries = plan.slice(weekStartIndex, weekStartIndex + 7);
   const total = affectedWeekEntries.reduce(
-    (sum, entry) => sum + entry.meals.reduce((daySum, meal) => daySum + getMealById(meal.mealId, customRecipes).price, 0),
+    (sum, entry) => sum + entry.meals.reduce((daySum, meal) => daySum + (mealById(meal.mealId, customRecipes)?.price ?? 0), 0),
     0,
   );
   const newTotal = selectedMeal ? total - (originalMeal?.price ?? 0) + selectedMeal.price : total;
@@ -267,7 +270,7 @@ export function SwapModal({
                 </div>
               </>
             ) : (
-              <p className="break-words font-semibold text-stone-800">No meal allocated</p>
+              <p className="break-words font-semibold text-stone-800">{originalRemoved ? "Previous recipe was removed" : "No meal allocated"}</p>
             )}
           </div>
 

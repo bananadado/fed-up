@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test";
 
-import { deadlineStressFromDeadlines, fetchRecommenderRecommendations, resolveDeadlineStress, toMeal, unpublishRecommenderRecipe } from "./recommenderApi";
+import { deadlineStressFromDeadlines, fetchRecipeStates, fetchRecommenderRecommendations, resolveDeadlineStress, toMeal, unpublishRecommenderRecipe } from "./recommenderApi";
 import type { Deadline } from "./types";
 
 const originalFetch = globalThis.fetch;
@@ -198,5 +198,27 @@ describe("recommender API helpers", () => {
     expect(captured!.url).toContain("/api/recommender/recipe/unpublish");
     expect(captured!.method).toBe("POST");
     expect(JSON.parse(captured!.body as string)).toEqual({ recipeId: "custom-1" });
+  });
+
+  test("fetchRecipeStates posts ids and returns the state map", async () => {
+    let captured: { url: string; body?: string } | null = null;
+    globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      captured = { url: String(input), body: init?.body as string };
+      return new Response(JSON.stringify({ states: { a: "published", b: "unpublished", c: "deleted" } }), { status: 200 });
+    }) as typeof fetch;
+
+    const states = await fetchRecipeStates(["a", "b", "c"]);
+
+    expect(captured!.url).toContain("/api/deadline-food/recipe-states");
+    expect(JSON.parse(captured!.body as string)).toEqual({ ids: ["a", "b", "c"] });
+    expect(states).toEqual({ a: "published", b: "unpublished", c: "deleted" });
+  });
+
+  test("fetchRecipeStates skips the request for an empty id list", async () => {
+    let called = false;
+    globalThis.fetch = (async (_input: RequestInfo | URL, _init?: RequestInit) => { called = true; return new Response("{}", { status: 200 }); }) as typeof fetch;
+
+    expect(await fetchRecipeStates([])).toEqual({});
+    expect(called).toBe(false);
   });
 });

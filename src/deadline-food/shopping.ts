@@ -1,6 +1,6 @@
 import type { Meal, PlanEntry, RecipeIngredient } from "./types";
 import { ITEM_WEIGHT_G, formatIngredient } from "./ingredients";
-import { getMealById } from "./utils";
+import { mealById } from "./utils";
 import { normalizeIngredientUnit } from "./unitConversion";
 
 export type GroceryVendor = {
@@ -256,11 +256,17 @@ export function ingredientsFromPlan(
   customRecipes: Meal[],
   availableIngredients: RecipeIngredient[] = [],
   unitSystem: "metric" | "imperial" = "metric",
+  deletedRecipeIds: Set<string> = new Set(),
 ) {
   const available = new Set(availableIngredients.map((i) => singularise(normaliseIngredient(i.name))));
 
   const rawIngredients = plan.flatMap((entry) =>
-    entry.meals.flatMap((planMeal) => getMealById(planMeal.mealId, customRecipes).ingredients),
+    entry.meals.flatMap((planMeal) => {
+      // A removed recipe (deleted by its owner, or unresolvable) contributes no
+      // shopping items — the slot needs a replacement first (#213 follow-up).
+      const meal = deletedRecipeIds.has(planMeal.mealId) ? undefined : mealById(planMeal.mealId, customRecipes);
+      return meal?.ingredients ?? [];
+    }),
   );
   const normalised = rawIngredients.map((ing) => normalizeIngredientUnit(ing, unitSystem));
 

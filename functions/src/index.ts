@@ -404,7 +404,12 @@ async function listRecipes(): Promise<UnknownRecord[]> {
   await ensureRecipesSeeded();
   await ensureShareIds();
   const snapshot = await recipesRef.get();
-  return snapshot.docs.map((doc) => doc.data() as UnknownRecord);
+  // The catalogue is enumerable to every client, so it must not leak unlisted
+  // content: exclude unpublished user recipes (published === false). Seeds have
+  // no published field and published user recipes (true) are included.
+  return snapshot.docs
+    .map((doc) => doc.data() as UnknownRecord)
+    .filter((data) => data.published !== false);
 }
 
 // Fetch a single canonical recipe by its public share slug (#213). Reviews and
@@ -416,9 +421,9 @@ async function recipeByShareId(shareId: string): Promise<UnknownRecord | null> {
   const snapshot = await recipesRef.where("shareId", "==", shareId).limit(1).get();
   if (snapshot.empty) return null;
   const data = snapshot.docs[0].data() as UnknownRecord;
-  // Unpublished user recipes are not shareable (#213 follow-up). Seeds have no
-  // published field (undefined) and stay shareable; only an explicit false hides.
-  if (data.published === false) return null;
+  // Unpublished recipes are "unlisted", not gone: still reachable by their direct
+  // share link (just not in Discover or the catalogue). Only a deleted recipe —
+  // an absent doc — is unreachable here (404).
   delete data.reviews;
   delete data.rating;
   return data;
@@ -1807,6 +1812,48 @@ export const deadlineFoodRecipe = onRequest(publicHttpOptions, async (request, r
       return;
     }
     sendJson(response, recipe);
+  } catch (error) {
+    sendError(response, error);
+  }
+});
+
+// Report the publish state of recipes the caller already references (saved or
+// planned), so the client can distinguish "unpublished" (still usable) from
+// "deleted" (gone) without enumerating anyone else's content. Status only.
+const MAX_RECIPE_STATE_IDS = 200;
+
+type RecipeState = "published" | "unpublished" | "deleted";
+
+async function recipeStatesForIds(ids: string[]): Promise<Record<string, RecipeState>> {
+  const valid = [...new Set(ids)]
+    .filter((id) => typeof id === "string" && recipeIdPattern.test(id))
+    .slice(0, MAX_RECIPE_STATE_IDS);
+  if (valid.length === 0) return {};
+  const snapshots = await firestore.getAll(...valid.map((id) => recipesRef.doc(id)));
+  const states: Record<string, RecipeState> = {};
+  for (const doc of snapshots) {
+    if (!doc.exists) {
+      states[doc.id] = "deleted";
+    } else {
+      states[doc.id] = doc.get("published") === false ? "unpublished" : "published";
+    }
+  }
+  return states;
+}
+
+export const deadlineFoodRecipeStates = onRequest(publicHttpOptions, async (request, response) => {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = asRecord(request.body);
+  const ids = Array.isArray(body?.ids) ? body.ids.filter((id): id is string => typeof id === "string") : null;
+  if (!ids) {
+    response.status(400).json({error: "An array of recipe ids is required"});
+    return;
+  }
+
+  try {
+    response.set("Cache-Control", "private, max-age=0, no-store");
+    response.status(200).json({states: await recipeStatesForIds(ids)});
   } catch (error) {
     sendError(response, error);
   }

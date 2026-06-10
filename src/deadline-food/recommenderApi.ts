@@ -226,6 +226,27 @@ export async function fetchSharedRecipe(shareId: string): Promise<Meal | null> {
   } as Meal;
 }
 
+export type RecipeState = "published" | "unpublished" | "deleted";
+
+/**
+ * Report the current publish state of recipes the viewer already references
+ * (saved or planned community recipes), so the UI can tell "unpublished" (still
+ * usable, tagged) from "deleted" (gone — pick an alternative). Status only; the
+ * caller already holds the content. Returns {} on failure (treat as published).
+ */
+export async function fetchRecipeStates(ids: string[]): Promise<Record<string, RecipeState>> {
+  if (ids.length === 0) return {};
+
+  const response = await fetch(functionUrl("deadlineFoodRecipeStates", "/api/deadline-food/recipe-states"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids }),
+  });
+
+  const { states } = await readJson<{ states: Record<string, RecipeState> }>(response, "Recipe states");
+  return states ?? {};
+}
+
 export async function fetchRecommenderRecommendations(input: {
   sessionId: string;
   prefs: Preferences;

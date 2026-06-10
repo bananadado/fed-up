@@ -48,7 +48,8 @@ export function RecipeDetailScreen({
   setScreen,
   backTo,
   onSelectMeal,
-  unpublishedSavedIds,
+  deletedRecipeIds,
+  unpublishedRecipeIds,
   track,
   unitSystem = "metric",
 }: {
@@ -68,7 +69,10 @@ export function RecipeDetailScreen({
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
   onSelectMeal: (mealId: string) => void;
-  unpublishedSavedIds: Set<string>;
+  /** Community recipes whose owner deleted them (#213 follow-up). */
+  deletedRecipeIds: Set<string>;
+  /** Community recipes whose owner unpublished them — still usable, just unlisted. */
+  unpublishedRecipeIds: Set<string>;
   track: TrackEvent;
   unitSystem?: "metric" | "imperial";
 }) {
@@ -369,7 +373,11 @@ export function RecipeDetailScreen({
           ) : (
             <Badge tone="amber">Community</Badge>
           )}
-          {unpublishedSavedIds.has(mealId) && <Badge tone="amber">No longer published</Badge>}
+          {deletedRecipeIds.has(mealId) ? (
+            <Badge tone="rose">Removed by owner</Badge>
+          ) : (unpublishedRecipeIds.has(mealId) || selectedMeal.published === false) && !isVerified(selectedMeal) ? (
+            <Badge tone="amber">Unpublished</Badge>
+          ) : null}
         </div>
         {!isEditing && (
           <div className="flex flex-wrap gap-3">
