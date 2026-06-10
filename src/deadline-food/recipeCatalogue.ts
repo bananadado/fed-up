@@ -35,6 +35,24 @@ export function getPlanMeal(id: string): Meal | undefined {
   return planMeals.get(id);
 }
 
+// The user's session-local saved/created recipes (Discover saves + custom
+// recipes). Registered so mealById/getMealById still resolve a recipe the user
+// has saved even after its creator unpublishes it (removed from the public
+// catalogue + recommender). Rebuilt on each call from the full saved set, so an
+// unsaved recipe correctly stops resolving.
+const sessionMeals = new Map<string, Meal>();
+
+export function registerSessionMeals(meals: Meal[]): void {
+  sessionMeals.clear();
+  for (const meal of meals) {
+    if (meal && typeof meal.id === "string" && meal.id) sessionMeals.set(meal.id, meal);
+  }
+}
+
+export function getSessionMeal(id: string): Meal | undefined {
+  return sessionMeals.get(id);
+}
+
 // Firestore documents may be missing array fields if written by a partial-update
 // script (e.g. recalc-nutrition writes only { nutrition, updatedAt }). Guard all
 // array fields so downstream `.some()`/`.filter()` calls never throw. Reject
