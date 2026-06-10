@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `977740b9`
+- Built from commit: `e4749822`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -258,12 +258,12 @@ Cohesion: 0.06
 Nodes (31): ANIMAL_ALLERGENS, ANIMAL_INGREDIENT_PATTERNS, buildPlan(), canonicalTag(), canonicalTags(), DAIRY_ALLERGENS, DAIRY_INGREDIENT_PATTERNS, GLUTEN_INGREDIENT_PATTERNS (+23 more)
 
 ### Community 16 - "Community 16"
-Cohesion: 0.07
-Nodes (18): float, int, str, _candidates(), _profile(), Unit tests for the reactive recommendation engine internals (issue #61).  These, With temperature on, the tail slots should include candidates that would     nev, A user more capable than the recipe requires is not penalised. (+10 more)
+Cohesion: 0.15
+Nodes (19): recipeIngredients(), MealOption, MealType, RecipeDetails, fallbackCampusHummusBox, fallbackCampusRiceBowl, fallbackCampusSushiSnack, fallbackHallsJacketPotato (+11 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.15
-Nodes (17): recipeIngredients(), MealOption, fallbackCampusHummusBox, fallbackCampusRiceBowl, fallbackCampusSushiSnack, fallbackHallsJacketPotato, fallbackLibraryBeanWrap, fallbackLibrarySoupRoll (+9 more)
+Cohesion: 0.07
+Nodes (18): float, int, str, _candidates(), _profile(), Unit tests for the reactive recommendation engine internals (issue #61).  These, With temperature on, the tail slots should include candidates that would     nev, A user more capable than the recipe requires is not penalised. (+10 more)
 
 ### Community 18 - "Community 18"
 Cohesion: 0.16
@@ -286,24 +286,24 @@ Cohesion: 0.10
 Nodes (23): importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), parseICSText(), unfoldLines(), CalendarEvent, estimateIngredientNutrition(), gramsForIngredient() (+15 more)
 
 ### Community 23 - "Community 23"
-Cohesion: 0.10
-Nodes (27): createDeadlineModeCommands(), DeadlineModeAction, DeadlineModeCommands, DeadlineModeInternalAction, deadlineModeReducer(), DeadlineModeState, initialDeadlineModeState, withEvent() (+19 more)
-
-### Community 24 - "Community 24"
 Cohesion: 0.06
 Nodes (28): batchMeal, breakfast, busyDinner, cheap, cook, costly, days, dinner (+20 more)
 
-### Community 25 - "Community 25"
+### Community 24 - "Community 24"
 Cohesion: 0.07
 Nodes (25): AllocatorMeal, ANIMAL_ALLERGENS, ANIMAL_INGREDIENT_PATTERNS, Band, BuildPlanInput, canonicalTag(), classifyEffort(), DAIRY_ALLERGENS (+17 more)
 
-### Community 26 - "Community 26"
+### Community 25 - "Community 25"
 Cohesion: 0.06
 Nodes (30): AI Agent Playbook, Choosing The Correct Frontend Surface, code:sh (bun run lint), code:sh (bun run lint), code:sh (bun run lint), code:sh (bun run test:domain), code:sh (bun run firebase:data), code:sh (bun run verify) (+22 more)
 
-### Community 27 - "Community 27"
+### Community 26 - "Community 26"
 Cohesion: 0.19
 Nodes (27): Endpoint tests for the reactive recommendation engine (issue #61).  Drives ``POS, Under crunch, an easy recipe should out-rank an ambitious one for a     beginner, A swipe_right recomputes the user's taste embedding, after which the     candida, _recommend(), _seed_recipe(), _seed_user(), test_allergens_are_hard_filtered(), test_capitalized_allergens_are_normalized() (+19 more)
+
+### Community 27 - "Community 27"
+Cohesion: 0.17
+Nodes (27): canCook(), canPrepareBase(), createPlannedMealId(), dayLabels, formatDayLabel(), formatMealSlotLabel(), formatPlanItemLabel(), getContextTags() (+19 more)
 
 ### Community 28 - "Community 28"
 Cohesion: 0.07
@@ -322,20 +322,20 @@ Cohesion: 0.07
 Nodes (26): dependencies, firebase-admin, firebase-functions, @google-cloud/functions-framework, devDependencies, eslint, eslint-config-google, eslint-plugin-import (+18 more)
 
 ### Community 32 - "Community 32"
-Cohesion: 0.20
-Nodes (25): canCook(), canPrepareBase(), createPlannedMealId(), dayLabels, formatDayLabel(), formatMealSlotLabel(), formatPlanItemLabel(), getContextTags() (+17 more)
-
-### Community 33 - "Community 33"
 Cohesion: 0.14
 Nodes (16): ClassifiedEvent, ContextEventInput, DailyContext, DeadlineContextResponse, deadlineContextUrl(), deadlinesFromContext(), deadlineToContextEvent(), fetchDeadlineContext() (+8 more)
 
-### Community 34 - "Community 34"
+### Community 33 - "Community 33"
 Cohesion: 0.08
 Nodes (26): scripts, audit, build, dev, firebase:artifacts:setpolicy, firebase:data, firebase:deploy, firebase:dev (+18 more)
 
-### Community 35 - "Community 35"
+### Community 34 - "Community 34"
 Cohesion: 0.12
 Nodes (22): args, bestProposal(), csvRows(), dedupeKey(), estimateReviewPackageGrams(), generatedPriceTableSource(), inputPath, isDryRun (+14 more)
+
+### Community 35 - "Community 35"
+Cohesion: 0.12
+Nodes (19): createDeadlineModeCommands(), DeadlineModeAction, DeadlineModeCommands, DeadlineModeInternalAction, deadlineModeReducer(), DeadlineModeState, initialDeadlineModeState, withEvent() (+11 more)
 
 ### Community 36 - "Community 36"
 Cohesion: 0.08
@@ -498,36 +498,36 @@ Cohesion: 0.19
 Nodes (14): cacheOpenFoodFactsProduct(), deaccent(), fdcNutrientValue(), fdcToProduct(), fetchUsdaProductForIngredient(), findNutritionProductForIngredient(), normalizeIngredientKey(), openFoodFactsCacheDocId() (+6 more)
 
 ### Community 76 - "Community 76"
+Cohesion: 0.18
+Nodes (12): sortByPreferredFallback(), constraints, expectedTotal, plan, ranked, rescued, tightPlan, vegetarianPlan (+4 more)
+
+### Community 77 - "Community 77"
 Cohesion: 0.23
 Nodes (12): score_difficulty(), float, Tests for the heuristic recipe difficulty scorer., test_case_insensitive_technique_matching(), test_fallback_meal_type_reduces_difficulty(), test_legacy_keys_steps_and_type_are_supported(), test_longer_prep_increases_difficulty(), test_more_ingredients_increase_difficulty() (+4 more)
 
-### Community 77 - "Community 77"
+### Community 78 - "Community 78"
 Cohesion: 0.26
 Nodes (11): firebaseFunctionUrl(), calendarFetchIcsUrl(), calendarGoogleExchangeUrl(), calendarOutlookExchangeUrl(), exchangeCodeOnServer(), GoogleExchangeResult, importGoogleCalendar(), isGoogleConfigured() (+3 more)
 
-### Community 78 - "Community 78"
+### Community 79 - "Community 79"
 Cohesion: 0.15
 Nodes (12): chopped, cup, cups, frozen, item, oz, result, slice (+4 more)
 
-### Community 79 - "Community 79"
+### Community 80 - "Community 80"
 Cohesion: 0.18
 Nodes (11): BuildConfigOverrides, buildTime, cliConfig, end, entrypoints, NestedBuildConfig, outputTable, parseArgs() (+3 more)
 
-### Community 80 - "Community 80"
+### Community 81 - "Community 81"
 Cohesion: 0.15
 Nodes (13): 9.1 Design requirement, 9.2 Inputs, 9.3 Meal item model, 9.4 Strategies, 9.5 Recommended MVP rules, 9.6 Optional scoring model for later iteration, code:ts (type PlanningConstraints = {), code:ts (type MealOption = {) (+5 more)
 
-### Community 81 - "Community 81"
+### Community 82 - "Community 82"
 Cohesion: 0.15
 Nodes (13): code:block10 (You are a graphify extraction subagent. Read the files liste), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:block8 (spawn_agent(agent_type="worker", message="Your task is to pe) (+5 more)
 
-### Community 82 - "Community 82"
+### Community 83 - "Community 83"
 Cohesion: 0.18
 Nodes (11): aggregateIngredients(), ingredientsFromPlan(), apple, flourItems, items, meal, mealA, mealB (+3 more)
-
-### Community 83 - "Community 83"
-Cohesion: 0.21
-Nodes (8): strategyLabels, MealType, PlannedMeal, PlanningConstraints, PlanStrategy, RankedStrategy, RecipeDetails, ValidationResult
 
 ### Community 84 - "Community 84"
 Cohesion: 0.24
@@ -635,11 +635,11 @@ Nodes (5): 7.1 Flow A — Enter Deadline Mode, Entry mechanisms, Purpose, Requir
 
 ### Community 113 - "Community 113"
 Cohesion: 0.40
-Nodes (5): 7.3 Flow C — View the Weekly Plan, Interaction requirements, Purpose, Required plan content, Required plan summary
+Nodes (5): 10.1 Seed data, 10.2 Illustrative fallback examples, 10.3 Nutrition representation, 10. Content and Data Requirements, code:ts (const fallbackOptions: MealOption[] = [)
 
 ### Community 114 - "Community 114"
 Cohesion: 0.40
-Nodes (5): 10.1 Seed data, 10.2 Illustrative fallback examples, 10.3 Nutrition representation, 10. Content and Data Requirements, code:ts (const fallbackOptions: MealOption[] = [)
+Nodes (5): 7.3 Flow C — View the Weekly Plan, Interaction requirements, Purpose, Required plan content, Required plan summary
 
 ### Community 115 - "Community 115"
 Cohesion: 0.40
@@ -699,35 +699,35 @@ Nodes (3): 12.2 Deadline Mode setup screen, Design requirements, Must include co
 
 ### Community 132 - "Community 132"
 Cohesion: 0.67
-Nodes (3): 12.5 Rescue substitution UI, Must include, Tone
+Nodes (3): 12.3 Strategy comparison screen, Important, Must include
 
 ### Community 133 - "Community 133"
 Cohesion: 0.67
-Nodes (3): 13. UX and Visual Design Principles, Avoid, Required principles
+Nodes (3): 12.5 Rescue substitution UI, Must include, Tone
 
 ### Community 134 - "Community 134"
 Cohesion: 0.67
-Nodes (3): 21.1 Accessibility, 21.2 Responsible food guidance, 21. Accessibility and Responsible Design Requirements
+Nodes (3): 13. UX and Visual Design Principles, Avoid, Required principles
 
 ### Community 135 - "Community 135"
 Cohesion: 0.67
-Nodes (3): 5.1 Primary user: student under deadline pressure, 5.2 Secondary stakeholders, 5. Target Users and Stakeholders
+Nodes (3): 21.1 Accessibility, 21.2 Responsible food guidance, 21. Accessibility and Responsible Design Requirements
 
 ### Community 136 - "Community 136"
 Cohesion: 0.67
-Nodes (3): 6.1 Experience principle, 6.2 Primary end-to-end demonstration scenario, 6. Core User Experience
+Nodes (3): 5.1 Primary user: student under deadline pressure, 5.2 Secondary stakeholders, 5. Target Users and Stakeholders
 
 ### Community 137 - "Community 137"
 Cohesion: 0.67
-Nodes (3): 7.5 Flow E — Campus Fallback Details, MVP data approach, Required functionality
+Nodes (3): 6.1 Experience principle, 6.2 Primary end-to-end demonstration scenario, 6. Core User Experience
 
 ### Community 138 - "Community 138"
 Cohesion: 0.67
-Nodes (3): 12.4 Plan dashboard screen, Highlight, Must include
+Nodes (3): 7.5 Flow E — Campus Fallback Details, MVP data approach, Required functionality
 
 ### Community 139 - "Community 139"
 Cohesion: 0.67
-Nodes (3): 12.3 Strategy comparison screen, Important, Must include
+Nodes (3): 12.4 Plan dashboard screen, Highlight, Must include
 
 ### Community 141 - "Community 141"
 Cohesion: 0.67
@@ -745,9 +745,9 @@ Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block4 (C
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `RecipeIngredient` connect `Community 22` to `Community 7`, `Community 8`, `Community 44`, `Community 45`, `Community 17`, `Community 83`, `Community 21`, `Community 56`, `Community 59`?**
+- **Why does `RecipeIngredient` connect `Community 22` to `Community 7`, `Community 8`, `Community 44`, `Community 45`, `Community 16`, `Community 21`, `Community 56`, `Community 59`?**
   _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `gramsForIngredient()` connect `Community 56` to `Community 35`, `Community 69`, `Community 22`, `Community 55`?**
+- **Why does `gramsForIngredient()` connect `Community 56` to `Community 34`, `Community 69`, `Community 22`, `Community 55`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Why does `datetime` connect `Community 5` to `Community 2`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
