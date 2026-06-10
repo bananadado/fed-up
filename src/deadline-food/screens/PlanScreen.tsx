@@ -444,6 +444,7 @@ export function PlanScreen({
           savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           suggestedMealId={swapSuggestedMealId ?? undefined}
+          deletedRecipeIds={deletedRecipeIds}
           track={track}
         />
       )}

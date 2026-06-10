@@ -302,6 +302,7 @@ export function Dashboard({
           customRecipes={customRecipes}
           savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
+          deletedRecipeIds={deletedRecipeIds}
           track={track}
         />
       )}

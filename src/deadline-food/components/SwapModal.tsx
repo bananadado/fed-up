@@ -50,6 +50,7 @@ export function SwapModal({
   savedRecipes,
   onSelectMeal,
   suggestedMealId,
+  deletedRecipeIds,
   track,
 }: {
   rescueChoice: { day: string; slot: MealSlot };
@@ -61,6 +62,7 @@ export function SwapModal({
   savedRecipes?: Meal[];
   onSelectMeal: (mealId: string) => void;
   suggestedMealId?: string;
+  deletedRecipeIds?: Set<string>;
   track: TrackEvent;
 }) {
   const [savedFilters] = useState(() => {
@@ -93,8 +95,9 @@ export function SwapModal({
   const originalPlanMeal = originalDay?.meals.find((meal) => meal.slot === rescueChoice.slot);
   // Nullable resolve: a deleted original should read as "removed", not silently
   // fall back to the first catalogue recipe (#213 follow-up).
-  const originalMeal = originalPlanMeal ? mealById(originalPlanMeal.mealId, customRecipes) ?? null : null;
-  const originalRemoved = !!originalPlanMeal && !originalMeal;
+  const originalIsDeleted = !!originalPlanMeal && !!deletedRecipeIds?.has(originalPlanMeal.mealId);
+  const originalMeal = originalPlanMeal && !originalIsDeleted ? mealById(originalPlanMeal.mealId, customRecipes) ?? null : null;
+  const originalRemoved = !!originalPlanMeal && (!mealById(originalPlanMeal.mealId, customRecipes) || originalIsDeleted);
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
   const savedSet = useMemo(() => new Set((savedRecipes ?? []).map((m) => m.id)), [savedRecipes]);
 
@@ -148,7 +151,10 @@ export function SwapModal({
   const weekStartIndex = originalDayIndex >= 0 ? Math.floor(originalDayIndex / 7) * 7 : 0;
   const affectedWeekEntries = plan.slice(weekStartIndex, weekStartIndex + 7);
   const total = affectedWeekEntries.reduce(
-    (sum, entry) => sum + entry.meals.reduce((daySum, meal) => daySum + (mealById(meal.mealId, customRecipes)?.price ?? 0), 0),
+    (sum, entry) => sum + entry.meals.reduce((daySum, meal) => {
+      if (deletedRecipeIds?.has(meal.mealId)) return daySum;
+      return daySum + (mealById(meal.mealId, customRecipes)?.price ?? 0);
+    }, 0),
     0,
   );
   const newTotal = selectedMeal ? total - (originalMeal?.price ?? 0) + selectedMeal.price : total;
