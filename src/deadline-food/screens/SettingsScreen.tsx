@@ -417,8 +417,8 @@ export function SettingsScreen({
             <p className="mt-1 text-sm text-stone-500">How event times are displayed in your calendar.</p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               {([
-                { value: true, label: "24h (14:30)" },
                 { value: false, label: "12h (2:30 PM)" },
+                { value: true, label: "24h (14:30)" },
               ] as const).map((option) => {
                 const active = prefs.use24hClock === option.value;
                 return (

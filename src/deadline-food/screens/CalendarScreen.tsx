@@ -126,6 +126,29 @@ function formatDisplayTime(time: string, use24h: boolean): string {
   return `${h12}:${match[2]} ${period}`;
 }
 
+function normalizeTimeInput(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (clockTimeInputPattern.test(trimmed)) return trimmed;
+  const colonMatch = trimmed.match(/^(\d{1,2}):(\d{1,2})$/);
+  if (colonMatch) {
+    const h = parseInt(colonMatch[1]!, 10);
+    const m = parseInt(colonMatch[2]!, 10);
+    if (h <= 23 && m <= 59) return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  }
+  const digits = trimmed.replace(/\D/g, "");
+  if (digits.length === 3) {
+    const h = parseInt(digits.slice(0, 1), 10);
+    const m = parseInt(digits.slice(1), 10);
+    if (h <= 23 && m <= 59) return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  }
+  if (digits.length === 4) {
+    const h = parseInt(digits.slice(0, 2), 10);
+    const m = parseInt(digits.slice(2), 10);
+    if (h <= 23 && m <= 59) return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  }
+  return null;
+}
+
 // --- DeadlineEditPanel ---
 
 function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose, use24h }: {
@@ -155,14 +178,25 @@ function DeadlineEditPanel({ deadline, onUpdate, onDelete, onClose, use24h }: {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <p className="mb-2 text-sm font-semibold text-stone-700">Time</p>
-          <Input
-            type="time"
-            step="60"
-            lang={use24h ? "en-GB" : "en-US"}
-            value={deadline.time}
-            onChange={(e) => onUpdate({ time: e.target.value })}
-            className="h-auto rounded-lg border-stone-200 bg-white p-3"
-          />
+          {use24h ? (
+            <Input
+              type="text"
+              inputMode="numeric"
+              placeholder="HH:MM"
+              value={deadline.time}
+              onChange={(e) => onUpdate({ time: e.target.value })}
+              onBlur={(e) => { const n = normalizeTimeInput(e.target.value); if (n) onUpdate({ time: n }); }}
+              className="h-auto rounded-lg border-stone-200 bg-white p-3"
+            />
+          ) : (
+            <Input
+              type="time"
+              step="60"
+              value={deadline.time}
+              onChange={(e) => onUpdate({ time: e.target.value })}
+              className="h-auto rounded-lg border-stone-200 bg-white p-3"
+            />
+          )}
           <p className="mt-1.5 text-xs text-stone-400">When this event starts.</p>
         </div>
 
@@ -427,14 +461,25 @@ function CookingScheduler({
             <div>
               <label className="block">
                 <span className="text-sm font-semibold text-stone-700">Start time</span>
-                <Input
-                  type="time"
-                  step="60"
-                  lang={use24h ? "en-GB" : "en-US"}
-                  value={time}
-                  onChange={(e) => { setTime(e.target.value); setError(null); setExportedMethod(null); }}
-                  className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
-                />
+                {use24h ? (
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="HH:MM"
+                    value={time}
+                    onChange={(e) => { setTime(e.target.value); setError(null); setExportedMethod(null); }}
+                    onBlur={(e) => { const n = normalizeTimeInput(e.target.value); if (n) { setTime(n); setError(null); } }}
+                    className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
+                  />
+                ) : (
+                  <Input
+                    type="time"
+                    step="60"
+                    value={time}
+                    onChange={(e) => { setTime(e.target.value); setError(null); setExportedMethod(null); }}
+                    className="mt-2 h-auto rounded-lg border-stone-200 bg-white p-3"
+                  />
+                )}
               </label>
             </div>
           </div>
@@ -1041,14 +1086,25 @@ export function CalendarScreen({
           <div className="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <p className="mb-2 text-sm font-semibold text-stone-700">Time <span className="text-rose-500">*</span></p>
-              <Input
-                type="time"
-                step="60"
-                lang={prefs.use24hClock ? "en-GB" : "en-US"}
-                value={draft.time}
-                onChange={(e) => { setDraft({ ...draft, time: e.target.value }); setFormErrors((err) => ({ ...err, time: undefined })); }}
-                className={cn("h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
-              />
+              {prefs.use24hClock ? (
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="HH:MM"
+                  value={draft.time}
+                  onChange={(e) => { setDraft({ ...draft, time: e.target.value }); setFormErrors((err) => ({ ...err, time: undefined })); }}
+                  onBlur={(e) => { const n = normalizeTimeInput(e.target.value); if (n) setDraft((prev) => prev ? { ...prev, time: n } : prev); }}
+                  className={cn("h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
+                />
+              ) : (
+                <Input
+                  type="time"
+                  step="60"
+                  value={draft.time}
+                  onChange={(e) => { setDraft({ ...draft, time: e.target.value }); setFormErrors((err) => ({ ...err, time: undefined })); }}
+                  className={cn("h-auto rounded-lg border-stone-200 bg-white p-3", formErrors.time && "border-rose-400")}
+                />
+              )}
               {formErrors.time && <p className="mt-1 text-xs text-rose-600">{formErrors.time}</p>}
             </div>
 
