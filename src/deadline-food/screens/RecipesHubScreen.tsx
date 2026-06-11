@@ -1,7 +1,7 @@
 import { BadgeCheck, Plus, RotateCcw, Sparkles, UtensilsCrossed } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
-import type { Deadline, DiscoverRecommendationState, Meal, MealSlot, Preferences } from "../types";
+import type { Deadline, DiscoverRecommendationState, DiscoverRecommendationTrigger, Meal, MealSlot, Preferences } from "../types";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { AppButton, Badge } from "../components/primitives";
 import { ConfirmDialog } from "../components/ConfirmDialog";
@@ -26,6 +26,7 @@ export function RecipesHubScreen({
   setDiscoverReviewedRecipeIds,
   discoverRecommendationState,
   setDiscoverRecommendationState,
+  requestRecommendations,
   prefs,
   deadlines,
   sessionId,
@@ -46,6 +47,7 @@ export function RecipesHubScreen({
   setDiscoverReviewedRecipeIds: StateSetter<string[]>;
   discoverRecommendationState: DiscoverRecommendationState;
   setDiscoverRecommendationState: StateSetter<DiscoverRecommendationState>;
+  requestRecommendations: (trigger: DiscoverRecommendationTrigger, contextOverride?: { day: string; slot: MealSlot; mealId: string } | null) => void;
   prefs: Preferences;
   deadlines: Deadline[];
   sessionId: string;
@@ -153,7 +155,11 @@ export function RecipesHubScreen({
           <button
             key={id}
             type="button"
-            onClick={() => { track("recipes_tab_changed", { tab: id }); setTab(id); }}
+            onClick={() => {
+              track("recipes_tab_changed", { tab: id });
+              if (id === "discover") requestRecommendations("tab_entry", discoverContext ?? null);
+              setTab(id);
+            }}
             className={`rounded-t-lg px-5 py-2.5 text-sm font-semibold transition ${
               tab === id
                 ? "border-b-2 border-emerald-700 text-emerald-800"
@@ -173,7 +179,7 @@ export function RecipesHubScreen({
               <p className="font-semibold text-stone-600">No saved recipes yet</p>
               <p className="mt-1 text-sm text-stone-400">Discover recipes to save them, or add your own.</p>
               <div className="mt-5 flex justify-center gap-3">
-                <AppButton variant="secondary" onClick={() => setTab("discover")}>
+                <AppButton variant="secondary" onClick={() => { requestRecommendations("tab_entry", discoverContext ?? null); setTab("discover"); }}>
                   <Sparkles size={15} /> Browse recipes
                 </AppButton>
                 <AppButton onClick={() => setTab("add")}>
@@ -366,6 +372,7 @@ export function RecipesHubScreen({
           setReviewedRecipeIds={setDiscoverReviewedRecipeIds}
           recommendationState={discoverRecommendationState}
           setRecommendationState={setDiscoverRecommendationState}
+          requestRecommendations={requestRecommendations}
           onSelectMeal={onSelectMeal}
           context={discoverContext}
           track={track}

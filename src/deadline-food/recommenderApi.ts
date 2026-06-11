@@ -31,6 +31,29 @@ type ScoredRecipe = {
 
 export type RecommenderInteractionAction = "swipe_left" | "swipe_right";
 
+export type RecommenderRecommendationMetrics = {
+  totalMs: number;
+  userSyncMs: number;
+  deadlineContextMs: number;
+  recommendationNetworkMs: number;
+  serverTotalMs?: number;
+  serverUpstreamMs?: number;
+  serverHydrationMs?: number;
+  recipeCount: number;
+};
+
+function nowMs(): number {
+  return typeof performance !== "undefined" ? performance.now() : Date.now();
+}
+
+function numericHeader(response: Response, name: string): number | undefined {
+  if (!response.headers) return undefined;
+  const value = response.headers.get(name);
+  if (value === null) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
 async function readJson<T>(response: Response, label: string): Promise<T> {
   if (!response.ok) {
     throw new Error(`${label} request failed with ${response.status}`);
@@ -254,11 +277,27 @@ export async function fetchRecommenderRecommendations(input: {
   excludeIds: string[];
   count?: number;
   signal?: AbortSignal;
+  onMetrics?: (metrics: RecommenderRecommendationMetrics) => void;
 }): Promise<Meal[]> {
-  await syncRecommenderUser(input.sessionId, input.prefs, input.signal);
+  const startedAt = nowMs();
 
-  const deadlineStress = await resolveDeadlineStress(input.deadlines);
+  const userSyncStartedAt = nowMs();
+  const userSyncPromise = syncRecommenderUser(input.sessionId, input.prefs, input.signal)
+    .then(() => nowMs() - userSyncStartedAt);
 
+  const deadlineContextStartedAt = nowMs();
+  const deadlineStressPromise = resolveDeadlineStress(input.deadlines)
+    .then((deadlineStress) => ({
+      deadlineStress,
+      deadlineContextMs: nowMs() - deadlineContextStartedAt,
+    }));
+
+  const [{ deadlineStress, deadlineContextMs }, userSyncMs] = await Promise.all([
+    deadlineStressPromise,
+    userSyncPromise,
+  ]);
+
+  const recommendationStartedAt = nowMs();
   const response = await fetch(functionUrl("deadlineFoodRecommendations", "/api/recommender/recommendations"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -271,6 +310,17 @@ export async function fetchRecommenderRecommendations(input: {
     signal: input.signal,
   });
   const recipes = await readJson<ScoredRecipe[]>(response, "Recommendations");
+  const recommendationNetworkMs = nowMs() - recommendationStartedAt;
+  input.onMetrics?.({
+    totalMs: nowMs() - startedAt,
+    userSyncMs,
+    deadlineContextMs,
+    recommendationNetworkMs,
+    serverTotalMs: numericHeader(response, "x-deadline-food-total-ms"),
+    serverUpstreamMs: numericHeader(response, "x-deadline-food-recommender-ms"),
+    serverHydrationMs: numericHeader(response, "x-deadline-food-hydration-ms"),
+    recipeCount: recipes.length,
+  });
 
   return recipes.map(({ recipe }) => toMeal(recipe));
 }
