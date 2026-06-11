@@ -54,6 +54,7 @@ export function PlanScreen({
   openDiscover,
   deletedRecipeIds,
   unpublishedRecipeIds,
+  recommendedRecipes,
   track,
 }: {
   plan: PlanEntry[];
@@ -73,6 +74,7 @@ export function PlanScreen({
   deletedRecipeIds: Set<string>;
   /** Community recipes whose owner unpublished them — still usable, tagged. */
   unpublishedRecipeIds: Set<string>;
+  recommendedRecipes?: Meal[];
   track: TrackEvent;
 }) {
   const [rescueChoice, setRescueChoice] = useState<RescueChoice>(() => {
@@ -452,6 +454,14 @@ export function PlanScreen({
           onSelectMeal={onSelectMeal}
           suggestedMealId={swapSuggestedMealId ?? undefined}
           deletedRecipeIds={deletedRecipeIds}
+          undiscoveredRecipes={recommendedRecipes ?? []}
+          onGoToDiscover={() => {
+            const current = rescueChoice;
+            setRescueChoice(null);
+            setSwapSuggestedMealId(null);
+            setAddToPlanMealId(null);
+            if (current) openDiscover(current.day, current.slot, "");
+          }}
           track={track}
         />
       )}

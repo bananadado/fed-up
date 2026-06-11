@@ -29,6 +29,7 @@ export function Dashboard({
   calendarSkipped,
   deletedRecipeIds,
   unpublishedRecipeIds,
+  recommendedRecipes,
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
@@ -48,6 +49,7 @@ export function Dashboard({
   deletedRecipeIds: Set<string>;
   /** Community recipes whose owner unpublished them — still usable, tagged. */
   unpublishedRecipeIds: Set<string>;
+  recommendedRecipes?: Meal[];
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds), [plan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds]);
@@ -306,6 +308,12 @@ export function Dashboard({
           savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           deletedRecipeIds={deletedRecipeIds}
+          undiscoveredRecipes={recommendedRecipes ?? []}
+          onGoToDiscover={() => {
+            const current = rescueChoice;
+            setRescueChoice(null);
+            if (current) openDiscover(current.day, current.slot, "");
+          }}
           track={track}
         />
       )}
