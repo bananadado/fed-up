@@ -1,12 +1,14 @@
-import { ArrowUpDown, BadgeCheck, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, TrendingDown, TrendingUp, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowUpDown, BadgeCheck, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, Sparkles, TrendingDown, TrendingUp, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
+import type { Deadline, Meal, MealSlot, PlanEntry, Preferences } from "../types";
+import { fetchRecommenderRecommendations } from "../recommenderApi";
 import { ingredientName } from "../ingredients";
-import { isVerified, mealById, money } from "../utils";
+import { isMealDietaryCompatible, isVerified, mealById, money } from "../utils";
 import type { TrackEvent } from "../analytics";
 import { MealThumbnail } from "./MealThumbnail";
+import { registerPlanMeals } from "../recipeCatalogue";
 import { AppButton, Badge } from "./primitives";
 
 export const slotLabels: Record<MealSlot, string> = {
@@ -52,6 +54,9 @@ export function SwapModal({
   onSelectMeal,
   suggestedMealId,
   deletedRecipeIds,
+  sessionId,
+  deadlines,
+  onGoToDiscover,
   track,
 }: {
   rescueChoice: { day: string; slot: MealSlot };
@@ -64,6 +69,9 @@ export function SwapModal({
   onSelectMeal: (mealId: string) => void;
   suggestedMealId?: string;
   deletedRecipeIds?: Set<string>;
+  sessionId: string;
+  deadlines: Deadline[];
+  onGoToDiscover?: () => void;
   track: TrackEvent;
 }) {
   const [savedFilters] = useState(() => {
@@ -90,6 +98,24 @@ export function SwapModal({
   const [customTagInput, setCustomTagInput] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [showSort, setShowSort] = useState(false);
+  const [undiscoveredPool, setUndiscoveredPool] = useState<Meal[]>([]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const excludeIds = [...customRecipes, ...(savedRecipes ?? [])].map((m) => m.id);
+    fetchRecommenderRecommendations({
+      sessionId,
+      prefs,
+      deadlines,
+      excludeIds,
+      count: 10,
+      mealSlot: rescueChoice.slot,
+      signal: controller.signal,
+    })
+      .then((recipes) => { if (!controller.signal.aborted) setUndiscoveredPool(recipes); })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const originalDayIndex = plan.findIndex((entry) => entry.day === rescueChoice.day);
   const originalDay = originalDayIndex >= 0 ? plan[originalDayIndex] : undefined;
@@ -110,7 +136,8 @@ export function SwapModal({
   ]
     .filter((meal) => meal.id !== originalPlanMeal?.mealId)
     .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
-    .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())));
+    .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
+    .filter((meal) => isMealDietaryCompatible(meal, prefs.dietary));
 
   // Tags available across the full pool (shown in filter panel)
   const availableTags = [...new Set(candidatePool.flatMap((m) => m.tags))].sort();
@@ -145,9 +172,26 @@ export function SwapModal({
     ? allOptions.filter((m) => m.name.toLowerCase().includes(search.toLowerCase()))
     : allOptions;
 
+  const candidatePoolIds = new Set(candidatePool.map((m) => m.id));
+  // undiscoveredPool is fetched slot-specifically on mount, so slot filter is
+  // applied at the API level. Client-side we still apply safety filters + search.
+  const undiscoveredCandidates = undiscoveredPool
+    .filter((m) => isVerified(m))
+    .filter((m) => !candidatePoolIds.has(m.id))
+    .filter((m) => m.id !== originalPlanMeal?.mealId)
+    .filter((m) => !m.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
+    .filter((m) => !m.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
+    .filter((m) => isMealDietaryCompatible(m, prefs.dietary))
+    .filter((m) => selectedSlots.length === 0 || m.mealSlots.some((s) => selectedSlots.includes(s as MealSlot)))
+    .filter((m) => !search.trim() || m.name.toLowerCase().includes(search.toLowerCase()))
+    .slice(0, 3);
+
   // selectedId=null means "use first option as default"
-  const effectiveId = selectedId ?? allOptions[0]?.id ?? null;
-  const selectedMeal = allOptions.find((m) => m.id === effectiveId) ?? allOptions[0] ?? null;
+  const effectiveId = selectedId ?? allOptions[0]?.id ?? undiscoveredCandidates[0]?.id ?? null;
+  const selectedMeal =
+    allOptions.find((m) => m.id === effectiveId) ??
+    undiscoveredCandidates.find((m) => m.id === effectiveId) ??
+    null;
 
   const weekStartIndex = originalDayIndex >= 0 ? Math.floor(originalDayIndex / 7) * 7 : 0;
   const affectedWeekEntries = plan.slice(weekStartIndex, weekStartIndex + 7);
@@ -202,6 +246,8 @@ export function SwapModal({
   }
 
   function confirmSwapWith(meal: Meal) {
+    const source = candidatePool.some((m) => m.id === meal.id) ? "saved" : "undiscovered";
+    if (source === "undiscovered") registerPlanMeals([meal]);
     setPlan(
       plan.map((entry) =>
         entry.day === rescueChoice.day
@@ -220,6 +266,7 @@ export function SwapModal({
       original_meal_id: originalPlanMeal?.mealId,
       replacement_meal_id: meal.id,
       minutes_saved: originalMeal ? Math.max(0, originalMeal.time - meal.time) : undefined,
+      source,
     });
     closeAndReset();
   }
@@ -440,7 +487,7 @@ export function SwapModal({
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-3 pt-3">
           <div className="space-y-2">
             {filteredOptions.length === 0 ? (
-              <p className="py-6 text-center text-sm text-stone-400">No matching meals found</p>
+              <p className="py-4 text-center text-sm text-stone-400">No saved meals match these filters</p>
             ) : (
               filteredOptions.map((meal, index) => {
                 const isSelected = meal.id === effectiveId;
@@ -515,6 +562,84 @@ export function SwapModal({
                   </div>
                 );
               })
+            )}
+            {undiscoveredCandidates.length > 0 && (
+              <div className="pt-2">
+                <div className="mb-2 flex items-center gap-1.5 px-1">
+                  <Sparkles size={13} className="text-violet-600" />
+                  <p className="text-xs font-semibold uppercase tracking-wide text-violet-600">You might also like</p>
+                </div>
+                <div className="space-y-2 rounded-xl border border-violet-200 bg-violet-50 p-2">
+                  {undiscoveredCandidates.map((meal) => {
+                    const isSelected = meal.id === effectiveId;
+                    const diff = originalMeal ? priceDiff(meal.price, originalMeal.price) : { label: `adds ${money(meal.price)}`, sign: "extra" as const };
+                    const DiffIcon = diff.sign === "saving" ? TrendingDown : diff.sign === "extra" ? TrendingUp : null;
+                    const diffColor = diff.sign === "saving" ? "text-emerald-700" : diff.sign === "extra" ? "text-rose-600" : "text-stone-400";
+                    const timeDiff = originalMeal ? originalMeal.time - meal.time : null;
+                    return (
+                      <div
+                        key={meal.id}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => setSelectedId(meal.id)}
+                        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setSelectedId(meal.id); }}
+                        className={`cursor-pointer overflow-hidden rounded-xl transition ${
+                          isSelected
+                            ? "border-2 border-violet-400 bg-violet-100"
+                            : "border border-violet-200 bg-white hover:border-violet-300 hover:bg-violet-50"
+                        }`}
+                      >
+                        <div className="flex items-stretch">
+                          <div className="min-w-0 flex-1 p-3">
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <p className="flex items-center gap-2 break-words font-semibold text-stone-800">
+                                <MealThumbnail meal={meal} className="h-8 w-8" iconClassName="text-xl" />
+                                <span className="min-w-0">{meal.name}</span>
+                              </p>
+                              {isVerified(meal) ? (
+                                <Badge tone="blue"><BadgeCheck size={12} className="mr-1" /> Verified</Badge>
+                              ) : (
+                                <Badge tone="amber">Community</Badge>
+                              )}
+                            </div>
+                            <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
+                              <span className="flex items-center gap-1"><Clock3 size={11} /> {meal.time} min</span>
+                              <span>{money(meal.price)}</span>
+                              {DiffIcon && (
+                                <span className={`flex items-center gap-0.5 font-medium ${diffColor}`}>
+                                  <DiffIcon size={11} /> {diff.label}
+                                </span>
+                              )}
+                              {timeDiff !== null && (
+                                <span className={`flex items-center gap-0.5 font-medium ${timeDiff > 0 ? "text-emerald-700" : timeDiff < 0 ? "text-rose-600" : "text-stone-400"}`}>
+                                  <Clock3 size={11} /> {timeDiff >= 0 ? `saves ${timeDiff} min` : `${Math.abs(timeDiff)} min longer`}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); viewRecipe(meal.id); }}
+                            className="flex shrink-0 items-center justify-center border-l border-violet-200 px-4 text-stone-400 transition hover:bg-violet-100 hover:text-violet-700"
+                            aria-label={`View ${meal.name} recipe`}
+                          >
+                            <Eye size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            {onGoToDiscover && (
+              <button
+                type="button"
+                onClick={() => { track("meal_swap_discover_clicked", { day: rescueChoice.day, meal_slot: rescueChoice.slot }); onGoToDiscover(); }}
+                className="mt-1 w-full py-2.5 text-center text-sm font-medium text-violet-600 hover:text-violet-800"
+              >
+                Find more in Discover →
+              </button>
             )}
           </div>
         </div>

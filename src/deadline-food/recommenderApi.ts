@@ -276,6 +276,7 @@ export async function fetchRecommenderRecommendations(input: {
   deadlines: Deadline[];
   excludeIds: string[];
   count?: number;
+  mealSlot?: string;
   signal?: AbortSignal;
   onMetrics?: (metrics: RecommenderRecommendationMetrics) => void;
 }): Promise<Meal[]> {
@@ -306,6 +307,7 @@ export async function fetchRecommenderRecommendations(input: {
       n: input.count ?? 100,
       deadline_stress: deadlineStress,
       exclude_ids: input.excludeIds,
+      meal_slot: input.mealSlot ?? null,
     }),
     signal: input.signal,
   });
