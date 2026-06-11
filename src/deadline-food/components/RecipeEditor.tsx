@@ -421,7 +421,11 @@ export function RecipeEditor({
       return;
     }
     const estimate = estimateRecipeCost(ingredients);
-    setForm((prev) => ({ ...prev, totalCost: estimate }));
+    if (mode === "create") {
+      setForm((prev) => ({ ...prev, totalCost: estimate }));
+    } else {
+      setForm((prev) => ({ ...prev, price: Number((estimate / servings).toFixed(2)) }));
+    }
     track("recipe_cost_estimated", {
       ...(meal ? { meal_id: meal.id } : {}),
       ingredient_count: ingredients.length,
@@ -673,6 +677,25 @@ export function RecipeEditor({
               Estimated cost per portion: {money(costPerPortion)}
             </p>
           </>
+        )}
+
+        {mode === "edit" && (
+          <div className="flex flex-wrap items-center gap-2">
+            <AppButton
+              type="button"
+              variant="secondary"
+              onClick={estimateCostFromIngredients}
+              disabled={ingredients.length === 0}
+              title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
+            >
+              <RefreshCcw size={16} /> Estimate cost from ingredients
+            </AppButton>
+            <p className="text-xs text-stone-500">
+              {ingredients.length === 0
+                ? "Add ingredients below to estimate a rough cost per portion."
+                : "Fills in a rough cost per portion from illustrative grocery prices — adjust if needed."}
+            </p>
+          </div>
         )}
 
         <div data-field-error={attempted && errors.ingredients || undefined}>
