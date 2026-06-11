@@ -127,6 +127,21 @@ export function ChoiceGroup({
   );
 }
 
+// Strip everything that isn't part of a valid number so letters and stray symbols
+// can never reach the value. Keeps an optional leading minus (only when negatives
+// are allowed) and at most one decimal point (only when decimals are allowed).
+export function sanitiseNumericInput(raw: string, allowDecimal: boolean, allowNegative: boolean): string {
+  const negative = allowNegative && raw.trimStart().startsWith("-");
+  let body = raw.replace(allowDecimal ? /[^0-9.]/g : /[^0-9]/g, "");
+  if (allowDecimal) {
+    const firstDot = body.indexOf(".");
+    if (firstDot !== -1) {
+      body = body.slice(0, firstDot + 1) + body.slice(firstDot + 1).replace(/\./g, "");
+    }
+  }
+  return negative ? `-${body}` : body;
+}
+
 export function Field({
   label,
   value,
@@ -154,29 +169,80 @@ export function Field({
   errorMessage?: string;
   required?: boolean;
 }) {
+  const isNumeric = type === "number";
+  const allowDecimal = isNumeric && (step === "any" || (step?.includes(".") ?? false));
+  // Negatives stay blocked unless a field explicitly opts in with a negative min.
+  const allowNegative = isNumeric && min !== undefined && Number(min) < 0;
+
+  // Numeric fields are rendered as a sanitised text input rather than a native
+  // number input: native inputs (a) show the browser's "Please enter a number"
+  // message instead of letting us reject bad input, and (b) can't surface inline
+  // feedback. We hold the display string locally so intermediate entries like
+  // "0." survive while still emitting the cleaned value to the parent.
+  const [text, setText] = useState(() =>
+    isNumeric ? (value === 0 ? "" : String(value)) : String(value ?? ""),
+  );
+  const [illegal, setIllegal] = useState(false);
+
+  // Show the local text only while it still parses to the current value — that
+  // preserves in-progress entries like "0." or ".5". If the value changed from
+  // outside (e.g. nutrition auto-fill), fall back to the freshly formatted value.
+  const display = (() => {
+    if (!isNumeric) return value;
+    const trimmed = text.trim();
+    const parsed = trimmed === "" || trimmed === "-" ? 0 : Number(trimmed);
+    if (Number.isNaN(parsed)) return text; // mid-entry such as "."
+    if (typeof value === "number" && Number.isNaN(value)) return text;
+    return parsed === value ? text : value === 0 ? "" : String(value);
+  })();
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!isNumeric) {
+      onChange(event.target.value);
+      return;
+    }
+    const raw = event.target.value;
+    const cleaned = sanitiseNumericInput(raw, allowDecimal, allowNegative);
+    // Anything stripped means the user typed a letter or illegal symbol — flag it.
+    setIllegal(cleaned !== raw);
+    setText(cleaned);
+    onChange(cleaned);
+  }
+
+  const invalid = Boolean(error) || illegal;
+  const message =
+    error && errorMessage
+      ? errorMessage
+      : illegal
+        ? "Numbers only — letters and symbols aren't allowed"
+        : null;
+
   return (
-    <Label className="block" data-field-error={error || undefined}>
-      <span className={cn("text-sm font-semibold", error && "text-red-600")}>
+    <Label className="block" data-field-error={invalid || undefined}>
+      <span className={cn("text-sm font-semibold", invalid && "text-red-600")}>
         {label}
         {required && <span className="ml-1 text-red-500">*</span>}
       </span>
       <Input
-        type={type}
-        step={step}
-        min={min}
-        max={max}
-        value={type === "number" && value === 0 ? "" : value}
-        onChange={(event) => onChange(event.target.value)}
-        onKeyDown={type === "number" ? (event) => { if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault(); } : undefined}
-        onBlur={onBlur}
+        type={isNumeric ? "text" : type}
+        inputMode={isNumeric ? (allowDecimal ? "decimal" : "numeric") : undefined}
+        step={isNumeric ? undefined : step}
+        min={isNumeric ? undefined : min}
+        max={isNumeric ? undefined : max}
+        value={display}
+        onChange={handleChange}
+        onBlur={() => {
+          setIllegal(false);
+          onBlur?.();
+        }}
         placeholder={placeholder}
-        aria-invalid={error || undefined}
+        aria-invalid={invalid || undefined}
         className={cn(
           "mt-2 h-auto rounded-lg border-stone-200 bg-white p-3 focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20",
-          error && "border-red-400 bg-red-50 ring-1 ring-red-400 focus-visible:border-red-400 focus-visible:ring-red-400/20",
+          invalid && "border-red-400 bg-red-50 ring-1 ring-red-400 focus-visible:border-red-400 focus-visible:ring-red-400/20",
         )}
       />
-      {error && errorMessage && <p className="mt-1 text-xs font-medium text-red-600">{errorMessage}</p>}
+      {message && <p className="mt-1 text-xs font-medium text-red-600">{message}</p>}
     </Label>
   );
 }
