@@ -168,27 +168,35 @@ export function ShoppingListCard({
         </div>
       </div>
 
-      {showScopeToggle && (
-        <div className="mt-4">
-          <span className="mb-1.5 block text-sm font-medium text-stone-700">Shopping for</span>
-          <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50 p-0.5" role="group" aria-label="Shopping list time range">
-            {SCOPE_OPTIONS.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                aria-pressed={scope === option.value}
-                onClick={() => onScopeChange?.(option.value)}
-                className={cn(
-                  "rounded-md px-3 py-1.5 text-sm font-medium transition",
-                  scope === option.value ? "bg-white text-emerald-800 shadow-sm" : "text-stone-500 hover:text-stone-700",
-                )}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
+      <div className="mt-4 flex items-end justify-between gap-3">
+        <div className="min-w-0">
+          {showScopeToggle && (
+            <>
+              <span className="mb-1.5 block text-sm font-medium text-stone-700">Shopping for</span>
+              <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50 p-0.5" role="group" aria-label="Shopping list time range">
+                {SCOPE_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    aria-pressed={scope === option.value}
+                    onClick={() => onScopeChange?.(option.value)}
+                    className={cn(
+                      "rounded-md px-3 py-1.5 text-sm font-medium transition",
+                      scope === option.value ? "bg-white text-emerald-800 shadow-sm" : "text-stone-500 hover:text-stone-700",
+                    )}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
-      )}
+        <AppButton type="button" variant="secondary" className="shrink-0" onClick={copyList} disabled={!listText}>
+          {copied ? <ClipboardCheck size={16} /> : <ClipboardList size={16} />}
+          {copied ? "Copied" : "Copy list"}
+        </AppButton>
+      </div>
 
       {estimatedCost !== null && items.length > 0 && (
         <div className="mt-4 flex items-baseline justify-between rounded-lg bg-emerald-50 px-3 py-2.5">
@@ -245,20 +253,6 @@ export function ShoppingListCard({
             </AppButton>
           </div>
         ))}
-      </div>
-
-      <div className="mt-4 space-y-1.5">
-        <div className="flex flex-wrap gap-2">
-          <AppButton type="button" variant="secondary" onClick={copyList} disabled={!listText}>
-            {copied ? <ClipboardCheck size={16} /> : <ClipboardList size={16} />}
-            {copied ? "Copied" : "Copy list"}
-          </AppButton>
-        </div>
-        {copyMessage ? (
-          <p className="text-xs font-medium text-emerald-700" aria-live="polite">{copyMessage}</p>
-        ) : (
-          <p className="text-xs text-stone-500">Copies your remaining items as text to paste into a note or a supermarket app.</p>
-        )}
       </div>
     </Card>
   );
