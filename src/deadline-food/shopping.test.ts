@@ -27,12 +27,12 @@ describe("shopping helpers", () => {
     ]);
 
     expect(items).toEqual([
-      { name: "frozen pepper", count: 1, quantity: 0.5, unit: "cup" },
+      { name: "frozen pepper", count: 1, quantity: 118.3, unit: "ml" },
       { name: "tomato", count: 2, quantity: 150, unit: "g" },
       { name: "tomato", count: 1, quantity: 1, unit: "serving" },
     ]);
-    expect(items.map(shoppingItemLabel)).toEqual(["0.5 cups frozen pepper", "150g tomato", "tomato"]);
-    expect(formatShoppingList(items)).toBe("0.5 cups frozen pepper\n150g tomato\ntomato");
+    expect(items.map(shoppingItemLabel)).toEqual(["118.3ml frozen pepper", "150g tomato", "tomato"]);
+    expect(formatShoppingList(items)).toBe("118.3ml frozen pepper\n150g tomato\ntomato");
   });
 
   test("normalises shopping item keys for checklist state", () => {
@@ -225,6 +225,61 @@ describe("shopping helpers", () => {
     ]);
     expect(items[0]?.unit).toBe("g");
     expect(items[0]?.quantity).toBe(500);
+  });
+
+  test("merges unit aliases and compatible mass units onto one line", () => {
+    const items = aggregateIngredients([
+      { name: "flour", quantity: 1, unit: "cups" },
+      { name: "flour", quantity: 4, unit: "tbsp" },
+      { name: "sugar", quantity: 100, unit: "g" },
+      { name: "sugar", quantity: 2, unit: "oz" },
+    ]);
+    expect(items.filter((i) => i.name === "flour")).toHaveLength(1);
+    expect(items.filter((i) => i.name === "sugar")).toHaveLength(1);
+    const sugar = items.find((i) => i.name === "sugar");
+    expect(sugar?.unit).toBe("g");
+    expect(sugar?.quantity).toBe(156.7); // 100g + 2oz (56.7g)
+  });
+
+  test("keeps mass and volume of the same ingredient on separate lines (unsafe to convert)", () => {
+    const items = aggregateIngredients([
+      { name: "yoghurt", quantity: 100, unit: "g" },
+      { name: "yoghurt", quantity: 0.5, unit: "cup" },
+    ]);
+    expect(items).toHaveLength(2);
+    expect(items.some((i) => i.unit === "g")).toBe(true);
+    expect(items.some((i) => i.unit === "ml")).toBe(true);
+  });
+
+  test("merges compatible units in imperial mode and displays imperial units", () => {
+    const mealA = {
+      id: "imp-a",
+      name: "Imp A",
+      type: "cook" as const,
+      mealSlots: ["lunch" as const],
+      time: 15,
+      price: 2,
+      tags: [],
+      ingredients: [{ name: "flour", quantity: 1, unit: "cup" }],
+      allergens: [],
+      nutrition: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+      rating: 0,
+      reviews: [],
+      instructions: [],
+      source: "",
+      note: "",
+      image: "",
+    };
+    const mealB = { ...mealA, id: "imp-b", ingredients: [{ name: "flour", quantity: 2, unit: "tbsp" }] };
+    const plan = [
+      { day: "Mon", context: "Test", meals: [{ slot: "lunch" as const, mealId: "imp-a" }] },
+      { day: "Tue", context: "Test", meals: [{ slot: "lunch" as const, mealId: "imp-b" }] },
+    ];
+
+    const flour = ingredientsFromPlan(plan, [mealA, mealB], [], "imperial").filter((i) => i.name === "flour");
+    expect(flour).toHaveLength(1);
+    expect(flour[0]?.unit).toBe("cup");
+    expect(flour[0]?.quantity).toBeCloseTo(1.13, 1);
   });
 
   test("merges descriptor-unit and prep-unit onion variants via ingredientsFromPlan", () => {

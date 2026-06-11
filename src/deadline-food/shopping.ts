@@ -1,7 +1,14 @@
 import type { Meal, PlanEntry, RecipeIngredient } from "./types";
 import { ITEM_WEIGHT_G, formatIngredient } from "./ingredients";
 import { mealById } from "./utils";
-import { normalizeIngredientUnit } from "./unitConversion";
+import {
+  type UnitDimension,
+  canonicalizeUnit,
+  displayFromBase,
+  normalizeIngredientUnit,
+  toBaseQuantity,
+  unitDimension,
+} from "./unitConversion";
 import { estimateIngredientCostPence } from "@/domain/ingredientCosting";
 
 export type GroceryVendor = {
@@ -112,38 +119,14 @@ function shoppingIngredientName(ingredient: ShoppingIngredient) {
   return typeof ingredient === "string" ? ingredient.trim() : ingredient.name.trim();
 }
 
-// Maps compatible metric units to a single grouping key so g+kg and ml+l merge.
-const MASS_TO_G: Record<string, number> = { g: 1, kg: 1000 };
-const VOLUME_TO_ML: Record<string, number> = { ml: 1, l: 1000 };
-
-function aggregationUnit(unit: string): string {
-  if (unit in MASS_TO_G) return "g";
-  if (unit in VOLUME_TO_ML) return "ml";
-  return unit;
-}
-
-function toBaseQty(quantity: number, unit: string): number {
-  return quantity * (MASS_TO_G[unit] ?? VOLUME_TO_ML[unit] ?? 1);
-}
-
-function fromBaseQty(quantity: number, unit: string): { quantity: number; unit: string } {
-  if (unit === "g") {
-    return quantity >= 1000
-      ? { quantity: Math.round(quantity / 10) / 100, unit: "kg" }
-      : { quantity: Math.round(quantity * 10) / 10, unit: "g" };
-  }
-  if (unit === "ml") {
-    return quantity >= 1000
-      ? { quantity: Math.round(quantity / 10) / 100, unit: "l" }
-      : { quantity: Math.round(quantity * 10) / 10, unit: "ml" };
-  }
-  return { quantity, unit };
-}
-
 function shoppingIngredientKey(ingredient: ShoppingIngredient) {
   if (typeof ingredient === "string") return normaliseIngredient(ingredient);
   const { baseName, sigPrep } = extractIngredientParts(ingredient);
-  const unitPart = aggregationUnit(ingredient.unit);
+  // Mass and volume each collapse to one grouping bucket so any compatible unit
+  // (g+kg+oz, ml+l+cup+tbsp) merges; count units stay distinct by canonical unit
+  // so e.g. "2 servings" and "3 slices" don't combine.
+  const dimension = unitDimension(ingredient.unit);
+  const unitPart = dimension === "count" ? canonicalizeUnit(ingredient.unit) : dimension;
   return sigPrep ? `${baseName}:${unitPart}:${sigPrep}` : `${baseName}:${unitPart}`;
 }
 
@@ -189,8 +172,12 @@ export function groceryVendorById(vendorId: string) {
   return groceryVendors.find((vendor) => vendor.id === vendorId) ?? groceryVendors[0];
 }
 
-export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
+export function aggregateIngredients(
+  ingredients: ShoppingIngredient[],
+  unitSystem: "metric" | "imperial" = "metric",
+) {
   const items = new Map<string, ShoppingItem>();
+  const dimensions = new Map<string, UnitDimension>();
 
   ingredients.forEach((ingredient) => {
     const key = shoppingIngredientKey(ingredient);
@@ -214,26 +201,34 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
       return;
     }
 
-    const baseUnit = aggregationUnit(ingredient.unit);
-    const baseQty = toBaseQty(ingredient.quantity, ingredient.unit);
+    const dimension = unitDimension(ingredient.unit);
+    dimensions.set(key, dimension);
+
+    // Mass/volume accumulate in a metric base (g/ml) so compatible units sum
+    // together; count units (serving, item, slice…) keep their own unit and sum
+    // as-is. Mass and volume never share a key, so 100g + 0.5 cup stay separate.
+    const quantity = dimension === "count"
+      ? ingredient.quantity
+      : toBaseQuantity(ingredient.quantity, ingredient.unit);
+    const unit = dimension === "count" ? canonicalizeUnit(ingredient.unit) : dimension;
 
     items.set(key, current ? {
       ...current,
       count: current.count + 1,
-      quantity: (current.quantity ?? 0) + baseQty,
+      quantity: (current.quantity ?? 0) + quantity,
     } : {
       name,
       count: 1,
-      quantity: baseQty,
-      unit: baseUnit,
+      quantity,
+      unit,
     });
   });
 
-  return [...items.values()]
-    .map((item) => {
-      if (typeof item.quantity === "number" && item.unit) {
-        const d = fromBaseQty(item.quantity, item.unit);
-        return d.unit !== item.unit || d.quantity !== item.quantity ? { ...item, ...d } : item;
+  return [...items.entries()]
+    .map(([key, item]) => {
+      const dimension = dimensions.get(key);
+      if ((dimension === "mass" || dimension === "volume") && typeof item.quantity === "number") {
+        return { ...item, ...displayFromBase(item.quantity, dimension, unitSystem) };
       }
       return item;
     })
@@ -301,7 +296,7 @@ export function ingredientsFromPlan(
   );
   const normalised = rawIngredients.map((ing) => normalizeIngredientUnit(ing, unitSystem));
 
-  return aggregateIngredients(normalised).filter(
+  return aggregateIngredients(normalised, unitSystem).filter(
     (item) => !available.has(item.name) && !ALWAYS_AVAILABLE.has(item.name),
   );
 }

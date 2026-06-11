@@ -215,7 +215,7 @@ export function RecipeDetailScreen({
   const scaledIngredients = scaleIngredients(selectedMeal.ingredients, scaleFactor).map((ing) =>
     normalizeIngredientUnit(ing, localUnitSystem),
   );
-  const shoppingItems = aggregateIngredients(scaledIngredients);
+  const shoppingItems = aggregateIngredients(scaledIngredients, localUnitSystem);
   const isScaled = servings !== baseServings;
 
   function changeServings(delta: number) {
