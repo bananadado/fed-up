@@ -199,9 +199,9 @@ export function IngredientEditor({
       </div>
       <div className="mt-3 space-y-3">
         {ingredients.length === 0 && (
-          <div className="rounded-lg border border-dashed border-stone-200 bg-stone-50 px-3 py-4 text-sm text-stone-500">
+          <p className="select-none px-1 py-2 text-sm italic text-stone-400">
             {emptyMessage}
-          </div>
+          </p>
         )}
         {ingredients.map((ingredient) => (
           <div key={ingredient.id} className="rounded-lg border border-stone-200 bg-stone-50 p-3">

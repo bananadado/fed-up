@@ -20406,7 +20406,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L300",
       "id": "drp03_fed_up_spec_7_3_flow_c_view_the_weekly_plan",
-      "community": 111,
+      "community": 112,
       "norm_label": "7.3 flow c \u2014 view the weekly plan"
     },
     {
@@ -20415,7 +20415,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L302",
       "id": "drp03_fed_up_spec_purpose_302",
-      "community": 111,
+      "community": 112,
       "norm_label": "purpose"
     },
     {
@@ -20424,7 +20424,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L306",
       "id": "drp03_fed_up_spec_required_plan_content",
-      "community": 111,
+      "community": 112,
       "norm_label": "required plan content"
     },
     {
@@ -20433,7 +20433,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L318",
       "id": "drp03_fed_up_spec_required_plan_summary",
-      "community": 111,
+      "community": 112,
       "norm_label": "required plan summary"
     },
     {
@@ -20442,7 +20442,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L327",
       "id": "drp03_fed_up_spec_interaction_requirements",
-      "community": 111,
+      "community": 112,
       "norm_label": "interaction requirements"
     },
     {
@@ -20721,7 +20721,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L575",
       "id": "drp03_fed_up_spec_10_content_and_data_requirements",
-      "community": 112,
+      "community": 111,
       "norm_label": "10. content and data requirements"
     },
     {
@@ -20730,7 +20730,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L577",
       "id": "drp03_fed_up_spec_10_1_seed_data",
-      "community": 112,
+      "community": 111,
       "norm_label": "10.1 seed data"
     },
     {
@@ -20739,7 +20739,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L590",
       "id": "drp03_fed_up_spec_10_2_illustrative_fallback_examples",
-      "community": 112,
+      "community": 111,
       "norm_label": "10.2 illustrative fallback examples"
     },
     {
@@ -20748,7 +20748,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L594",
       "id": "drp03_fed_up_spec_codeblock_5",
-      "community": 112,
+      "community": 111,
       "norm_label": "code:ts (const fallbackoptions: mealoption[] = [)"
     },
     {
@@ -20757,7 +20757,7 @@
       "source_file": "FED_UP_SPEC.md",
       "source_location": "L623",
       "id": "drp03_fed_up_spec_10_3_nutrition_representation",
-      "community": 112,
+      "community": 111,
       "norm_label": "10.3 nutrition representation"
     },
     {
@@ -79106,5 +79106,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2675566a66b7b47fb52913dad9a1cab6a1221bd3"
+  "built_at_commit": "e47dcb9d411d3e6c5b043954f5efb83bc648c097"
 }
