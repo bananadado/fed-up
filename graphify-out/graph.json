@@ -16543,7 +16543,7 @@
       "label": "callRecommenderJson()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L754",
+      "source_location": "L715",
       "id": "lib_index_callrecommenderjson",
       "community": 41,
       "norm_label": "callrecommenderjson()"
@@ -16552,7 +16552,7 @@
       "label": "PLAN_SLOTS",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L776",
+      "source_location": "L737",
       "id": "lib_index_plan_slots",
       "community": 1,
       "norm_label": "plan_slots"
@@ -16561,7 +16561,7 @@
       "label": "toMealSlots()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L777",
+      "source_location": "L738",
       "id": "lib_index_tomealslots",
       "community": 41,
       "norm_label": "tomealslots()"
@@ -16570,7 +16570,7 @@
       "label": "toMealType()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L782",
+      "source_location": "L743",
       "id": "lib_index_tomealtype",
       "community": 41,
       "norm_label": "tomealtype()"
@@ -16579,7 +16579,7 @@
       "label": "recommenderRecipeToMeal()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L786",
+      "source_location": "L747",
       "id": "lib_index_recommenderrecipetomeal",
       "community": 41,
       "norm_label": "recommenderrecipetomeal()"
@@ -16588,7 +16588,7 @@
       "label": "mealToAllocator()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L795",
+      "source_location": "L756",
       "id": "lib_index_mealtoallocator",
       "community": 41,
       "norm_label": "mealtoallocator()"
@@ -16597,7 +16597,7 @@
       "label": "syntheticDays()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L814",
+      "source_location": "L775",
       "id": "lib_index_syntheticdays",
       "community": 41,
       "norm_label": "syntheticdays()"
@@ -16606,7 +16606,7 @@
       "label": "normalizeDayContext()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L829",
+      "source_location": "L790",
       "id": "lib_index_normalizedaycontext",
       "community": 41,
       "norm_label": "normalizedaycontext()"
@@ -16615,7 +16615,7 @@
       "label": "handleAutoPlan()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L844",
+      "source_location": "L805",
       "id": "lib_index_handleautoplan",
       "community": 41,
       "norm_label": "handleautoplan()"
@@ -16624,7 +16624,7 @@
       "label": "rejectUnsupportedNutritionMethod()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L937",
+      "source_location": "L898",
       "id": "lib_index_rejectunsupportednutritionmethod",
       "community": 1,
       "norm_label": "rejectunsupportednutritionmethod()"
@@ -16633,7 +16633,7 @@
       "label": "isRecipeIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L949",
+      "source_location": "L910",
       "id": "lib_index_isrecipeingredient",
       "community": 1,
       "norm_label": "isrecipeingredient()"
@@ -16642,7 +16642,7 @@
       "label": "normalizeIngredientKey()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L959",
+      "source_location": "L920",
       "id": "lib_index_normalizeingredientkey",
       "community": 75,
       "norm_label": "normalizeingredientkey()"
@@ -16651,7 +16651,7 @@
       "label": "openFoodFactsCacheDocId()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L962",
+      "source_location": "L923",
       "id": "lib_index_openfoodfactscachedocid",
       "community": 75,
       "norm_label": "openfoodfactscachedocid()"
@@ -16660,7 +16660,7 @@
       "label": "gramsForIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L965",
+      "source_location": "L926",
       "id": "lib_index_gramsforingredient",
       "community": 1,
       "norm_label": "gramsforingredient()"
@@ -16669,7 +16669,7 @@
       "label": "estimateIngredientNutrition()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L988",
+      "source_location": "L949",
       "id": "lib_index_estimateingredientnutrition",
       "community": 1,
       "norm_label": "estimateingredientnutrition()"
@@ -16678,7 +16678,7 @@
       "label": "roundMacro()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1015",
+      "source_location": "L976",
       "id": "lib_index_roundmacro",
       "community": 1,
       "norm_label": "roundmacro()"
@@ -16687,7 +16687,7 @@
       "label": "totalNutritionFromEstimates()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1018",
+      "source_location": "L979",
       "id": "lib_index_totalnutritionfromestimates",
       "community": 1,
       "norm_label": "totalnutritionfromestimates()"
@@ -16696,7 +16696,7 @@
       "label": "timestampMillis()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1040",
+      "source_location": "L1001",
       "id": "lib_index_timestampmillis",
       "community": 75,
       "norm_label": "timestampmillis()"
@@ -16705,7 +16705,7 @@
       "label": "parseCachedProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1049",
+      "source_location": "L1010",
       "id": "lib_index_parsecachedproduct",
       "community": 75,
       "norm_label": "parsecachedproduct()"
@@ -16714,7 +16714,7 @@
       "label": "sleep()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1078",
+      "source_location": "L1039",
       "id": "lib_index_sleep",
       "community": 75,
       "norm_label": "sleep()"
@@ -16723,7 +16723,7 @@
       "label": "usdaGenericDataTypes",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1086",
+      "source_location": "L1047",
       "id": "lib_index_usdagenericdatatypes",
       "community": 1,
       "norm_label": "usdagenericdatatypes"
@@ -16732,7 +16732,7 @@
       "label": "usdaIngredientAliases",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1090",
+      "source_location": "L1051",
       "id": "lib_index_usdaingredientaliases",
       "community": 1,
       "norm_label": "usdaingredientaliases"
@@ -16741,7 +16741,7 @@
       "label": "deaccent()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1097",
+      "source_location": "L1058",
       "id": "lib_index_deaccent",
       "community": 75,
       "norm_label": "deaccent()"
@@ -16750,7 +16750,7 @@
       "label": "fdcNutrientValue()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1100",
+      "source_location": "L1061",
       "id": "lib_index_fdcnutrientvalue",
       "community": 75,
       "norm_label": "fdcnutrientvalue()"
@@ -16759,7 +16759,7 @@
       "label": "fdcToProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1112",
+      "source_location": "L1073",
       "id": "lib_index_fdctoproduct",
       "community": 75,
       "norm_label": "fdctoproduct()"
@@ -16768,7 +16768,7 @@
       "label": "searchFdcFoods()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1133",
+      "source_location": "L1094",
       "id": "lib_index_searchfdcfoods",
       "community": 75,
       "norm_label": "searchfdcfoods()"
@@ -16777,7 +16777,7 @@
       "label": "fetchUsdaProductForIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1162",
+      "source_location": "L1123",
       "id": "lib_index_fetchusdaproductforingredient",
       "community": 75,
       "norm_label": "fetchusdaproductforingredient()"
@@ -16786,7 +16786,7 @@
       "label": "tryAcquireOpenFoodFactsCacheLock()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1195",
+      "source_location": "L1156",
       "id": "lib_index_tryacquireopenfoodfactscachelock",
       "community": 75,
       "norm_label": "tryacquireopenfoodfactscachelock()"
@@ -16795,7 +16795,7 @@
       "label": "readOpenFoodFactsCachedProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1217",
+      "source_location": "L1178",
       "id": "lib_index_readopenfoodfactscachedproduct",
       "community": 75,
       "norm_label": "readopenfoodfactscachedproduct()"
@@ -16804,7 +16804,7 @@
       "label": "cacheOpenFoodFactsProduct()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1233",
+      "source_location": "L1194",
       "id": "lib_index_cacheopenfoodfactsproduct",
       "community": 75,
       "norm_label": "cacheopenfoodfactsproduct()"
@@ -16813,7 +16813,7 @@
       "label": "findNutritionProductForIngredient()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1243",
+      "source_location": "L1204",
       "id": "lib_index_findnutritionproductforingredient",
       "community": 75,
       "norm_label": "findnutritionproductforingredient()"
@@ -16822,7 +16822,7 @@
       "label": "sendSessionJson()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1269",
+      "source_location": "L1230",
       "id": "lib_index_sendsessionjson",
       "community": 127,
       "norm_label": "sendsessionjson()"
@@ -16831,7 +16831,7 @@
       "label": "recipeStatesForIds()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1346",
+      "source_location": "L1307",
       "id": "lib_index_recipestatesforids",
       "community": 1,
       "norm_label": "recipestatesforids()"
@@ -16840,7 +16840,7 @@
       "label": "body",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1367",
+      "source_location": "L1328",
       "id": "lib_index_body",
       "community": 1,
       "norm_label": "body"
@@ -16849,7 +16849,7 @@
       "label": "review",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1392",
+      "source_location": "L1353",
       "id": "lib_index_review",
       "community": 1,
       "norm_label": "review"
@@ -16858,7 +16858,7 @@
       "label": "removeRecipeFromRecommender()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1417",
+      "source_location": "L1378",
       "id": "lib_index_removerecipefromrecommender",
       "community": 1,
       "norm_label": "removerecipefromrecommender()"
@@ -16867,7 +16867,7 @@
       "label": "requireRecipeOwnerAccount()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1430",
+      "source_location": "L1391",
       "id": "lib_index_requirerecipeowneraccount",
       "community": 130,
       "norm_label": "requirerecipeowneraccount()"
@@ -16876,7 +16876,7 @@
       "label": "ownerUid",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1467",
+      "source_location": "L1428",
       "id": "lib_index_owneruid",
       "community": 1,
       "norm_label": "owneruid"
@@ -16885,7 +16885,7 @@
       "label": "recipeContent",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1475",
+      "source_location": "L1436",
       "id": "lib_index_recipecontent",
       "community": 1,
       "norm_label": "recipecontent"
@@ -16894,7 +16894,7 @@
       "label": "ingredients",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1598",
+      "source_location": "L1559",
       "id": "lib_index_ingredients",
       "community": 1,
       "norm_label": "ingredients"
@@ -16903,7 +16903,7 @@
       "label": "estimates",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1611",
+      "source_location": "L1572",
       "id": "lib_index_estimates",
       "community": 1,
       "norm_label": "estimates"
@@ -16912,7 +16912,7 @@
       "label": "missingIngredients",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1612",
+      "source_location": "L1573",
       "id": "lib_index_missingingredients",
       "community": 1,
       "norm_label": "missingingredients"
@@ -16921,7 +16921,7 @@
       "label": "handleAccountSessionGet()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1634",
+      "source_location": "L1595",
       "id": "lib_index_handleaccountsessionget",
       "community": 127,
       "norm_label": "handleaccountsessionget()"
@@ -16930,7 +16930,7 @@
       "label": "handleAccountSessionDelete()",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1673",
+      "source_location": "L1634",
       "id": "lib_index_handleaccountsessiondelete",
       "community": 127,
       "norm_label": "handleaccountsessiondelete()"
@@ -16939,7 +16939,7 @@
       "label": "sessionRef",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1713",
+      "source_location": "L1674",
       "id": "lib_index_sessionref",
       "community": 1,
       "norm_label": "sessionref"
@@ -16948,7 +16948,7 @@
       "label": "data",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1719",
+      "source_location": "L1680",
       "id": "lib_index_data",
       "community": 127,
       "norm_label": "data"
@@ -16957,7 +16957,7 @@
       "label": "settings",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1720",
+      "source_location": "L1681",
       "id": "lib_index_settings",
       "community": 1,
       "norm_label": "settings"
@@ -16966,7 +16966,7 @@
       "label": "expiresAt",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1721",
+      "source_location": "L1682",
       "id": "lib_index_expiresat",
       "community": 1,
       "norm_label": "expiresat"
@@ -16975,7 +16975,7 @@
       "label": "accountRef",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1741",
+      "source_location": "L1702",
       "id": "lib_index_accountref",
       "community": 1,
       "norm_label": "accountref"
@@ -16984,7 +16984,7 @@
       "label": "tokenResult",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1836",
+      "source_location": "L1797",
       "id": "lib_index_tokenresult",
       "community": 1,
       "norm_label": "tokenresult"
@@ -16993,7 +16993,7 @@
       "label": "events",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1837",
+      "source_location": "L1798",
       "id": "lib_index_events",
       "community": 1,
       "norm_label": "events"
@@ -17002,7 +17002,7 @@
       "label": "existingTokens",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1842",
+      "source_location": "L1803",
       "id": "lib_index_existingtokens",
       "community": 1,
       "norm_label": "existingtokens"
@@ -17011,7 +17011,7 @@
       "label": "recentCutoff",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1923",
+      "source_location": "L1884",
       "id": "lib_index_recentcutoff",
       "community": 1,
       "norm_label": "recentcutoff"
@@ -17020,7 +17020,7 @@
       "label": "todayIso",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1930",
+      "source_location": "L1891",
       "id": "lib_index_todayiso",
       "community": 1,
       "norm_label": "todayiso"
@@ -17029,7 +17029,7 @@
       "label": "filtered",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1941",
+      "source_location": "L1902",
       "id": "lib_index_filtered",
       "community": 1,
       "norm_label": "filtered"
@@ -17038,7 +17038,7 @@
       "label": "allEvents",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1949",
+      "source_location": "L1910",
       "id": "lib_index_allevents",
       "community": 1,
       "norm_label": "allevents"
@@ -17047,7 +17047,7 @@
       "label": "parsed",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1959",
+      "source_location": "L1920",
       "id": "lib_index_parsed",
       "community": 1,
       "norm_label": "parsed"
@@ -17056,7 +17056,7 @@
       "label": "updatedTokens",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1968",
+      "source_location": "L1929",
       "id": "lib_index_updatedtokens",
       "community": 1,
       "norm_label": "updatedtokens"
@@ -17065,7 +17065,7 @@
       "label": "refreshed",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1972",
+      "source_location": "L1933",
       "id": "lib_index_refreshed",
       "community": 1,
       "norm_label": "refreshed"
@@ -17074,7 +17074,7 @@
       "label": "manualDeadlines",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1989",
+      "source_location": "L1950",
       "id": "lib_index_manualdeadlines",
       "community": 1,
       "norm_label": "manualdeadlines"
@@ -17083,7 +17083,7 @@
       "label": "freshDeadlines",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L1990",
+      "source_location": "L1951",
       "id": "lib_index_freshdeadlines",
       "community": 1,
       "norm_label": "freshdeadlines"
@@ -17092,7 +17092,7 @@
       "label": "fileBuffer",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L2030",
+      "source_location": "L1991",
       "id": "lib_index_filebuffer",
       "community": 1,
       "norm_label": "filebuffer"
@@ -17101,7 +17101,7 @@
       "label": "bucket",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L2043",
+      "source_location": "L2004",
       "id": "lib_index_bucket",
       "community": 1,
       "norm_label": "bucket"
@@ -17110,7 +17110,7 @@
       "label": "file",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L2044",
+      "source_location": "L2005",
       "id": "lib_index_file",
       "community": 1,
       "norm_label": "file"
@@ -17119,7 +17119,7 @@
       "label": "encodedPath",
       "file_type": "code",
       "source_file": "functions/lib/index.js",
-      "source_location": "L2054",
+      "source_location": "L2015",
       "id": "lib_index_encodedpath",
       "community": 1,
       "norm_label": "encodedpath"
@@ -55511,9 +55511,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/db/seed.py",
       "source_location": "L495",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_db_seed_py",
-      "target": "db_seed_seed",
-      "confidence_score": 1.0
+      "target": "db_seed_seed"
     },
     {
       "relation": "contains",
@@ -56740,9 +56740,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_bulk_create_recipes",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_bulk_create_recipes"
     },
     {
       "relation": "contains",
@@ -56750,9 +56750,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_create_recipe_computes_difficulty_and_embedding_text",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_create_recipe_computes_difficulty_and_embedding_text"
     },
     {
       "relation": "contains",
@@ -56760,9 +56760,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_create_recipe_is_idempotent_upsert",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_create_recipe_is_idempotent_upsert"
     },
     {
       "relation": "contains",
@@ -56770,9 +56770,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_create_recipe_rejects_missing_required_fields",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_create_recipe_rejects_missing_required_fields"
     },
     {
       "relation": "contains",
@@ -56780,9 +56780,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_embed_unembedded_recipes_job",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_embed_unembedded_recipes_job"
     },
     {
       "relation": "contains",
@@ -56790,9 +56790,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_embed_unembedded_recipes_noop_when_all_embedded",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_embed_unembedded_recipes_noop_when_all_embedded"
     },
     {
       "relation": "contains",
@@ -56800,9 +56800,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L67",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_get_recipe_404",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_get_recipe_404"
     },
     {
       "relation": "contains",
@@ -56810,9 +56810,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_get_recipe_roundtrip",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_get_recipe_roundtrip"
     },
     {
       "relation": "contains",
@@ -56820,9 +56820,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_health_ok",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_health_ok"
     },
     {
       "relation": "contains",
@@ -56830,9 +56830,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_list_recipes_sorted_by_name",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_list_recipes_sorted_by_name"
     },
     {
       "relation": "contains",
@@ -56840,9 +56840,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_recipe_verified_defaults_false_and_roundtrips",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_recipe_verified_defaults_false_and_roundtrips"
     },
     {
       "relation": "contains",
@@ -56850,9 +56850,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L80",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_similar_recipes",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_similar_recipes"
     },
     {
       "relation": "contains",
@@ -56860,9 +56860,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_similar_recipes_404_when_not_embedded",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_similar_recipes_404_when_not_embedded"
     },
     {
       "relation": "contains",
@@ -56870,9 +56870,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L94",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "target": "tests_test_recipes_api_test_stats_counts",
-      "confidence_score": 1.0
+      "target": "tests_test_recipes_api_test_stats_counts"
     },
     {
       "relation": "rationale_for",
@@ -56880,9 +56880,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_recipes_api_rationale_1",
-      "target": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_tests_test_recipes_api_py"
     },
     {
       "relation": "contains",
@@ -62173,9 +62173,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_recommend_recommend",
-      "confidence_score": 1.0
+      "target": "app_recommend_recommend"
     },
     {
       "relation": "contains",
@@ -63376,9 +63376,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_jobs_recompute_user_profile",
-      "confidence_score": 1.0
+      "target": "app_jobs_recompute_user_profile"
     },
     {
       "relation": "contains",
@@ -63561,9 +63561,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_jobs_recompute_all_user_profiles",
-      "confidence_score": 1.0
+      "target": "app_jobs_recompute_all_user_profiles"
     },
     {
       "relation": "contains",
@@ -63713,9 +63713,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_jobs_recompute_co_likes",
-      "confidence_score": 1.0
+      "target": "app_jobs_recompute_co_likes"
     },
     {
       "relation": "contains",
@@ -63778,9 +63778,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_jobs_recompute_trending",
-      "confidence_score": 1.0
+      "target": "app_jobs_recompute_trending"
     },
     {
       "relation": "contains",
@@ -63832,9 +63832,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_jobs_recompute_all_user_embeddings",
-      "confidence_score": 1.0
+      "target": "app_jobs_recompute_all_user_embeddings"
     },
     {
       "relation": "contains",
@@ -63919,9 +63919,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_jobs_embed_unembedded_recipes",
-      "confidence_score": 1.0
+      "target": "app_jobs_embed_unembedded_recipes"
     },
     {
       "relation": "contains",
@@ -64014,9 +64014,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_auth_verify_cloud_function",
-      "confidence_score": 1.0
+      "target": "app_auth_verify_cloud_function"
     },
     {
       "relation": "contains",
@@ -64044,9 +64044,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L199",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_bulk_create_recipes",
-      "confidence_score": 1.0
+      "target": "app_main_bulk_create_recipes"
     },
     {
       "relation": "contains",
@@ -64054,9 +64054,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L356",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_context_deadlines",
-      "confidence_score": 1.0
+      "target": "app_main_context_deadlines"
     },
     {
       "relation": "contains",
@@ -64064,9 +64064,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L150",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_create_recipe",
-      "confidence_score": 1.0
+      "target": "app_main_create_recipe"
     },
     {
       "relation": "contains",
@@ -64074,9 +64074,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L235",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_create_user",
-      "confidence_score": 1.0
+      "target": "app_main_create_user"
     },
     {
       "relation": "contains",
@@ -64084,9 +64084,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L224",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_delete_recipe",
-      "confidence_score": 1.0
+      "target": "app_main_delete_recipe"
     },
     {
       "relation": "contains",
@@ -64094,9 +64094,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_ensure_verified_column",
-      "confidence_score": 1.0
+      "target": "app_main_ensure_verified_column"
     },
     {
       "relation": "contains",
@@ -64104,9 +64104,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L215",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_get_recipe",
-      "confidence_score": 1.0
+      "target": "app_main_get_recipe"
     },
     {
       "relation": "contains",
@@ -64114,9 +64114,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L323",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_get_recommendations",
-      "confidence_score": 1.0
+      "target": "app_main_get_recommendations"
     },
     {
       "relation": "contains",
@@ -64124,9 +64124,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L263",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_get_user",
-      "confidence_score": 1.0
+      "target": "app_main_get_user"
     },
     {
       "relation": "contains",
@@ -64134,9 +64134,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L272",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_get_user_ability",
-      "confidence_score": 1.0
+      "target": "app_main_get_user_ability"
     },
     {
       "relation": "contains",
@@ -64144,9 +64144,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_health",
-      "confidence_score": 1.0
+      "target": "app_main_health"
     },
     {
       "relation": "contains",
@@ -64154,9 +64154,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L376",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_job_embed_recipes",
-      "confidence_score": 1.0
+      "target": "app_main_job_embed_recipes"
     },
     {
       "relation": "contains",
@@ -64164,9 +64164,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L411",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_job_recompute_all",
-      "confidence_score": 1.0
+      "target": "app_main_job_recompute_all"
     },
     {
       "relation": "contains",
@@ -64174,9 +64174,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L397",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_job_recompute_colikes",
-      "confidence_score": 1.0
+      "target": "app_main_job_recompute_colikes"
     },
     {
       "relation": "contains",
@@ -64184,9 +64184,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L404",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_job_recompute_trending",
-      "confidence_score": 1.0
+      "target": "app_main_job_recompute_trending"
     },
     {
       "relation": "contains",
@@ -64194,9 +64194,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L390",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_job_recompute_user_profiles",
-      "confidence_score": 1.0
+      "target": "app_main_job_recompute_user_profiles"
     },
     {
       "relation": "contains",
@@ -64204,9 +64204,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L383",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_job_recompute_users",
-      "confidence_score": 1.0
+      "target": "app_main_job_recompute_users"
     },
     {
       "relation": "contains",
@@ -64214,9 +64214,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_lifespan",
-      "confidence_score": 1.0
+      "target": "app_main_lifespan"
     },
     {
       "relation": "contains",
@@ -64224,9 +64224,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L208",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_list_recipes",
-      "confidence_score": 1.0
+      "target": "app_main_list_recipes"
     },
     {
       "relation": "contains",
@@ -64234,9 +64234,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_log_event",
-      "confidence_score": 1.0
+      "target": "app_main_log_event"
     },
     {
       "relation": "contains",
@@ -64244,9 +64244,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L107",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_log_requests",
-      "confidence_score": 1.0
+      "target": "app_main_log_requests"
     },
     {
       "relation": "contains",
@@ -64254,9 +64254,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L283",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_recompute_profile",
-      "confidence_score": 1.0
+      "target": "app_main_recompute_profile"
     },
     {
       "relation": "contains",
@@ -64264,9 +64264,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L294",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_record_interaction",
-      "confidence_score": 1.0
+      "target": "app_main_record_interaction"
     },
     {
       "relation": "contains",
@@ -64274,9 +64274,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L471",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_row_to_recipe",
-      "confidence_score": 1.0
+      "target": "app_main_row_to_recipe"
     },
     {
       "relation": "contains",
@@ -64284,9 +64284,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L431",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_similar_recipes",
-      "confidence_score": 1.0
+      "target": "app_main_similar_recipes"
     },
     {
       "relation": "contains",
@@ -64294,9 +64294,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L456",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "app_main_stats",
-      "confidence_score": 1.0
+      "target": "app_main_stats"
     },
     {
       "relation": "imports_from",
@@ -64305,9 +64305,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "datetime",
-      "confidence_score": 1.0
+      "target": "datetime"
     },
     {
       "relation": "imports_from",
@@ -64316,9 +64316,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "fastapi",
-      "confidence_score": 1.0
+      "target": "fastapi"
     },
     {
       "relation": "imports_from",
@@ -64327,9 +64327,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_main_py",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_models_py"
     },
     {
       "relation": "calls",
@@ -64503,9 +64503,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_log_event",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_int",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_int"
     },
     {
       "relation": "references",
@@ -64514,9 +64514,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_log_event",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_object",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_object"
     },
     {
       "relation": "references",
@@ -64525,9 +64525,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_log_event",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str"
     },
     {
       "relation": "calls",
@@ -64568,9 +64568,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L431",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_similar_recipes",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_int",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_int"
     },
     {
       "relation": "references",
@@ -64579,9 +64579,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L224",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_delete_recipe",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str"
     },
     {
       "relation": "references",
@@ -64590,9 +64590,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L215",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_get_recipe",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str"
     },
     {
       "relation": "references",
@@ -64601,9 +64601,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L263",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_get_user",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str"
     },
     {
       "relation": "references",
@@ -64612,9 +64612,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L272",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_get_user_ability",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str"
     },
     {
       "relation": "references",
@@ -64623,9 +64623,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L283",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_recompute_profile",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str"
     },
     {
       "relation": "references",
@@ -64634,9 +64634,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L431",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_similar_recipes",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_str"
     },
     {
       "relation": "calls",
@@ -64822,9 +64822,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L107",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_log_requests",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_request",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_request"
     },
     {
       "relation": "contains",
@@ -64854,9 +64854,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_health",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "contains",
@@ -64875,9 +64875,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L199",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_bulk_create_recipes",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64886,9 +64886,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L150",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_create_recipe",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64897,9 +64897,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L235",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_create_user",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64908,9 +64908,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L224",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_delete_recipe",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64919,9 +64919,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L215",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_get_recipe",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64930,9 +64930,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L323",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_get_recommendations",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64941,9 +64941,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L263",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_get_user",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64952,9 +64952,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L272",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_get_user_ability",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64963,9 +64963,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L376",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_job_embed_recipes",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64974,9 +64974,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L411",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_job_recompute_all",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64985,9 +64985,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L397",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_job_recompute_colikes",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -64996,9 +64996,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L404",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_job_recompute_trending",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -65007,9 +65007,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L390",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_job_recompute_user_profiles",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -65018,9 +65018,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L383",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_job_recompute_users",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -65029,9 +65029,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L208",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_list_recipes",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -65040,9 +65040,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L283",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_recompute_profile",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -65051,9 +65051,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L294",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_record_interaction",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -65062,9 +65062,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L431",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_similar_recipes",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "references",
@@ -65073,9 +65073,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/main.py",
       "source_location": "L456",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_main_stats",
-      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession",
-      "confidence_score": 1.0
+      "target": "home_leo_drp_drp03_backend_recommender_api_app_main_py_asyncsession"
     },
     {
       "relation": "calls",
@@ -66789,9 +66789,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_db_get_db",
-      "confidence_score": 1.0
+      "target": "app_db_get_db"
     },
     {
       "relation": "contains",
@@ -67056,9 +67056,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_difficulty_score_difficulty",
-      "confidence_score": 1.0
+      "target": "app_difficulty_score_difficulty"
     },
     {
       "relation": "contains",
@@ -67076,9 +67076,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_calendareventin",
-      "confidence_score": 1.0
+      "target": "app_models_calendareventin"
     },
     {
       "relation": "contains",
@@ -67086,9 +67086,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_contextrequest",
-      "confidence_score": 1.0
+      "target": "app_models_contextrequest"
     },
     {
       "relation": "contains",
@@ -67096,9 +67096,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_ingredient",
-      "confidence_score": 1.0
+      "target": "app_models_ingredient"
     },
     {
       "relation": "contains",
@@ -67106,9 +67106,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_interactionin",
-      "confidence_score": 1.0
+      "target": "app_models_interactionin"
     },
     {
       "relation": "contains",
@@ -67116,9 +67116,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_nutrition",
-      "confidence_score": 1.0
+      "target": "app_models_nutrition"
     },
     {
       "relation": "contains",
@@ -67126,9 +67126,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_recipein",
-      "confidence_score": 1.0
+      "target": "app_models_recipein"
     },
     {
       "relation": "contains",
@@ -67136,9 +67136,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L55",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_recipeout",
-      "confidence_score": 1.0
+      "target": "app_models_recipeout"
     },
     {
       "relation": "contains",
@@ -67146,9 +67146,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L97",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_recommendrequest",
-      "confidence_score": 1.0
+      "target": "app_models_recommendrequest"
     },
     {
       "relation": "contains",
@@ -67156,9 +67156,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L109",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_scoredrecipe",
-      "confidence_score": 1.0
+      "target": "app_models_scoredrecipe"
     },
     {
       "relation": "contains",
@@ -67166,9 +67166,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_userability",
-      "confidence_score": 1.0
+      "target": "app_models_userability"
     },
     {
       "relation": "contains",
@@ -67176,9 +67176,9 @@
       "source_file": "/home/leo/DRP/drp03/backend/recommender-api/app/models.py",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "home_leo_drp_drp03_backend_recommender_api_app_models_py",
-      "target": "app_models_userin",
-      "confidence_score": 1.0
+      "target": "app_models_userin"
     },
     {
       "relation": "inherits",
@@ -68929,9 +68929,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_context_extract_context",
-      "confidence_score": 1.0
+      "target": "app_context_extract_context"
     },
     {
       "relation": "contains",
@@ -69032,9 +69032,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_embeddings_get_model",
-      "confidence_score": 1.0
+      "target": "app_embeddings_get_model"
     },
     {
       "relation": "contains",
@@ -69108,9 +69108,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_embeddings_embed_texts",
-      "confidence_score": 1.0
+      "target": "app_embeddings_embed_texts"
     },
     {
       "relation": "contains",
@@ -69195,9 +69195,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_embeddings_embed_single",
-      "confidence_score": 1.0
+      "target": "app_embeddings_embed_single"
     },
     {
       "relation": "contains",
@@ -69301,9 +69301,9 @@
       "source_file": "backend/recommender-api/app/main.py",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "backend_recommender_api_app_main_py",
-      "target": "app_embeddings_synthesize_recipe_text",
-      "confidence_score": 1.0
+      "target": "app_embeddings_synthesize_recipe_text"
     },
     {
       "relation": "contains",
@@ -76803,9 +76803,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "functions_lib_autoplan_js",
-      "confidence_score": 1.0
+      "target": "functions_lib_autoplan_js"
     },
     {
       "relation": "contains",
@@ -76813,9 +76813,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_autoplan_1",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_autoplan_1"
     },
     {
       "relation": "contains",
@@ -76823,9 +76823,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_batchmeal",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_batchmeal"
     },
     {
       "relation": "contains",
@@ -76833,9 +76833,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_breakfast",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_breakfast"
     },
     {
       "relation": "contains",
@@ -76843,9 +76843,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_bun_test_1",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_bun_test_1"
     },
     {
       "relation": "contains",
@@ -76853,9 +76853,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_busydinner",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_busydinner"
     },
     {
       "relation": "contains",
@@ -76863,9 +76863,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_cook",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_cook"
     },
     {
       "relation": "contains",
@@ -76873,9 +76873,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_day",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_day"
     },
     {
       "relation": "contains",
@@ -76883,9 +76883,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_dinner",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_dinner"
     },
     {
       "relation": "contains",
@@ -76893,9 +76893,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_meal",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_meal"
     },
     {
       "relation": "contains",
@@ -76903,9 +76903,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_minimalmeal",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_minimalmeal"
     },
     {
       "relation": "contains",
@@ -76913,9 +76913,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L66",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_nutty",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_nutty"
     },
     {
       "relation": "contains",
@@ -76923,9 +76923,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L77",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_plan",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_plan"
     },
     {
       "relation": "contains",
@@ -76933,9 +76933,9 @@
       "source_file": "functions/lib/autoPlan.test.js",
       "source_location": "L67",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "functions_lib_autoplan_test_js",
-      "target": "lib_autoplan_test_safe",
-      "confidence_score": 1.0
+      "target": "lib_autoplan_test_safe"
     },
     {
       "relation": "contains",
@@ -87697,5 +87697,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "a3cab50f1c5f8d86513db5a784ea3f565974c4d6"
+  "built_at_commit": "10cc5f2308553feb0f177e2fd119d8e216e90245"
 }
