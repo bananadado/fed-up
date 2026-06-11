@@ -1,10 +1,10 @@
-import { ArrowUpDown, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, TrendingDown, TrendingUp, X } from "lucide-react";
+import { ArrowUpDown, BadgeCheck, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, TrendingDown, TrendingUp, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
 import { ingredientName } from "../ingredients";
-import { getMealById, money } from "../utils";
+import { isVerified, mealById, money } from "../utils";
 import type { TrackEvent } from "../analytics";
 import { MealThumbnail } from "./MealThumbnail";
 import { AppButton, Badge } from "./primitives";
@@ -51,6 +51,7 @@ export function SwapModal({
   savedRecipes,
   onSelectMeal,
   suggestedMealId,
+  deletedRecipeIds,
   track,
 }: {
   rescueChoice: { day: string; slot: MealSlot };
@@ -62,6 +63,7 @@ export function SwapModal({
   savedRecipes?: Meal[];
   onSelectMeal: (mealId: string) => void;
   suggestedMealId?: string;
+  deletedRecipeIds?: Set<string>;
   track: TrackEvent;
 }) {
   const [savedFilters] = useState(() => {
@@ -92,7 +94,11 @@ export function SwapModal({
   const originalDayIndex = plan.findIndex((entry) => entry.day === rescueChoice.day);
   const originalDay = originalDayIndex >= 0 ? plan[originalDayIndex] : undefined;
   const originalPlanMeal = originalDay?.meals.find((meal) => meal.slot === rescueChoice.slot);
-  const originalMeal = originalPlanMeal ? getMealById(originalPlanMeal.mealId, customRecipes) : null;
+  // Nullable resolve: a deleted original should read as "removed", not silently
+  // fall back to the first catalogue recipe (#213 follow-up).
+  const originalIsDeleted = !!originalPlanMeal && !!deletedRecipeIds?.has(originalPlanMeal.mealId);
+  const originalMeal = originalPlanMeal && !originalIsDeleted ? mealById(originalPlanMeal.mealId, customRecipes) ?? null : null;
+  const originalRemoved = !!originalPlanMeal && (!mealById(originalPlanMeal.mealId, customRecipes) || originalIsDeleted);
   const avoided = [...prefs.dislikes, ...prefs.allergens].map((value) => value.toLowerCase());
   const savedSet = useMemo(() => new Set((savedRecipes ?? []).map((m) => m.id)), [savedRecipes]);
 
@@ -146,7 +152,10 @@ export function SwapModal({
   const weekStartIndex = originalDayIndex >= 0 ? Math.floor(originalDayIndex / 7) * 7 : 0;
   const affectedWeekEntries = plan.slice(weekStartIndex, weekStartIndex + 7);
   const total = affectedWeekEntries.reduce(
-    (sum, entry) => sum + entry.meals.reduce((daySum, meal) => daySum + getMealById(meal.mealId, customRecipes).price, 0),
+    (sum, entry) => sum + entry.meals.reduce((daySum, meal) => {
+      if (deletedRecipeIds?.has(meal.mealId)) return daySum;
+      return daySum + (mealById(meal.mealId, customRecipes)?.price ?? 0);
+    }, 0),
     0,
   );
   const newTotal = selectedMeal ? total - (originalMeal?.price ?? 0) + selectedMeal.price : total;
@@ -271,7 +280,7 @@ export function SwapModal({
                 </div>
               </>
             ) : (
-              <p className="break-words font-semibold text-stone-800">No meal allocated</p>
+              <p className="break-words font-semibold text-stone-800">{originalRemoved ? "Previous recipe was removed" : "No meal allocated"}</p>
             )}
           </div>
 
@@ -468,6 +477,11 @@ export function SwapModal({
                             <MealThumbnail meal={meal} className="h-8 w-8" iconClassName="text-xl" />
                             <span className="min-w-0">{meal.name}</span>
                           </p>
+                          {isVerified(meal) ? (
+                            <Badge tone="blue"><BadgeCheck size={12} className="mr-1" /> Verified</Badge>
+                          ) : (
+                            <Badge tone="amber">Community</Badge>
+                          )}
                           {savedSet.has(meal.id) && <Badge tone="blue">Saved</Badge>}
                           {isTopMatch && <Badge tone="green">Suggested</Badge>}
                         </div>

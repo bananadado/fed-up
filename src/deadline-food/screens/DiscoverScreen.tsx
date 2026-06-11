@@ -1,10 +1,10 @@
-import { Clock3, LoaderCircle, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
-import { useEffect, useMemo, useRef, type Dispatch, type SetStateAction } from "react";
+import { BadgeCheck, Clock3, LoaderCircle, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
+import { useEffect, useMemo, useState, useRef, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
 import type { Deadline, DiscoverRecommendationState, Meal, MealSlot, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
-import { formatCookingLimit, money, keyIngredients, sourceUrl } from "../utils";
+import { formatCookingLimit, isVerified, money, keyIngredients, sourceUrl } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackEvent } from "../analytics";
 import { fetchRecommenderRecommendations, recordRecommenderInteraction } from "../recommenderApi";
@@ -59,6 +59,9 @@ export function DiscoverScreen({
   context?: { day: string; slot: MealSlot; mealId: string } | null;
   track: TrackEvent;
 }) {
+  // Verified-only by default so the community feed is opt-in and the recipe
+  // list isn't diluted with unverified content (#213).
+  const [verifiedOnly, setVerifiedOnly] = useState(true);
   const latestRecommendationRequestId = useRef(0);
   const recommendationContextKey = useMemo(
     () => JSON.stringify({ deadlines, prefs, sessionId }),
@@ -81,7 +84,8 @@ export function DiscoverScreen({
   const reviewedRecipeIdSet = useMemo(() => new Set(excludedRecipeIds), [excludedRecipeIds]);
   const candidateRecipes = recommendedRecipes
     .filter((meal) => !customRecipes.some((customMeal) => customMeal.id === meal.id))
-    .filter((meal) => !context || meal.mealSlots.includes(context.slot));
+    .filter((meal) => !context || meal.mealSlots.includes(context.slot))
+    .filter((meal) => !verifiedOnly || isVerified(meal));
 
   const sortedQueue = candidateRecipes
     .filter((meal) => !reviewedRecipeIdSet.has(meal.id))
@@ -188,6 +192,21 @@ export function DiscoverScreen({
         <p className="mt-2 text-stone-600">
           Save or pass on each option. Every suggestion respects your {formatCookingLimit(prefs.maxTime).toLowerCase()} cooking limit or is a nearby campus fallback.
         </p>
+        <div className="mt-4 flex items-center gap-1 rounded-lg border border-stone-200 bg-white p-1" role="group" aria-label="Recipe source filter">
+          {([
+            { value: true, label: "Verified only" },
+            { value: false, label: "All recipes" },
+          ] as const).map((option) => (
+            <button
+              key={String(option.value)}
+              type="button"
+              onClick={() => { setVerifiedOnly(option.value); track("discover_verified_filter_changed", { verified_only: option.value }); }}
+              className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${verifiedOnly === option.value ? "bg-emerald-50 text-emerald-800" : "text-stone-500 hover:text-stone-700"}`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="mx-auto max-w-[480px]">
         <div>
@@ -249,6 +268,11 @@ export function DiscoverScreen({
                   <p className="mt-1 text-sm text-stone-700">{keyIngredients(current.name, current.ingredients, 5)}</p>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
+                  {isVerified(current) ? (
+                    <Badge tone="blue"><BadgeCheck size={13} className="mr-1" /> Verified</Badge>
+                  ) : (
+                    <Badge tone="amber">Community</Badge>
+                  )}
                   {current.mealSlots.map((slot) => (
                     <Badge key={`slot-${slot}`}>{slot.charAt(0).toUpperCase() + slot.slice(1)}</Badge>
                   ))}

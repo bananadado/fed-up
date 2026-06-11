@@ -1,5 +1,6 @@
 import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
+import { getDeadlineFoodAuthToken } from "./accountAuth";
 import { deadlineToContextEvent, requestDeadlineContext, type ContextEventInput } from "./calendarImport";
 import type { Deadline, Meal, MealSlot, Preferences, RecipeIngredient } from "./types";
 
@@ -19,6 +20,7 @@ type RecommenderRecipe = {
   source: string | null;
   note: string | null;
   photoUrl?: string | null;
+  verified?: boolean;
 };
 
 type ScoredRecipe = {
@@ -119,27 +121,47 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences,
   await readJson(response, "Recommender user sync");
 }
 
+// Publishing, unpublishing and deleting a recipe are account-owned actions, so
+// every mutation carries the caller's Firebase ID token (#213 follow-up). The
+// backend rejects anonymous callers and enforces ownership.
+async function authHeaders(): Promise<Record<string, string>> {
+  const token = await getDeadlineFoodAuthToken().catch(() => null);
+  return token ? { authorization: `Bearer ${token}` } : {};
+}
+
 /**
- * Persist a user-created recipe on creation. The canonical recipe content is
+ * Persist a user-created recipe on publish. The canonical recipe content is
  * written to Firestore (issue #123) and the recommender embeds it keyed by the
  * recipe UID — both handled by the deadlineFoodRecipeCreate function, which
  * receives the canonical Meal and maps it to the recommender payload itself.
- * Fire-and-forget at the call site.
+ * Requires a signed-in account.
  */
 export async function createRecommenderRecipe(meal: Meal): Promise<void> {
   const response = await fetch(functionUrl("deadlineFoodRecipeCreate", "/api/recommender/recipe"), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify(meal),
   });
 
   await readJson(response, "Recommender recipe create");
 }
 
+/** Soft-unpublish: keep the recipe + reviews but remove it from Discover and
+ * share links. Owner-only; requires a signed-in account. */
+export async function unpublishRecommenderRecipe(recipeId: string): Promise<void> {
+  const response = await fetch(functionUrl("deadlineFoodRecipeUnpublish", "/api/recommender/recipe/unpublish"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
+    body: JSON.stringify({ recipeId }),
+  });
+
+  await readJson(response, "Recommender recipe unpublish");
+}
+
 export async function deleteRecommenderRecipe(recipeId: string): Promise<void> {
   const response = await fetch(functionUrl("deadlineFoodRecipeDelete", "/api/recommender/recipe/delete"), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify({ recipeId }),
   });
 
@@ -166,8 +188,63 @@ export function toMeal(recipe: RecommenderRecipe): Meal {
     source: recipe.source ?? "Recommender",
     note: recipe.note ?? "",
     image: "🍽️",
+    verified: recipe.verified === true,
     ...(recipe.photoUrl ? { photoUrl: recipe.photoUrl } : {}),
   };
+}
+
+/**
+ * Resolve a recipe from its public share slug (#213). Used when opening a
+ * `#/recipe/<shareId>` deep link for a recipe the viewer doesn't already have
+ * locally (e.g. a friend's shared community recipe). Returns null on 404.
+ */
+export async function fetchSharedRecipe(shareId: string): Promise<Meal | null> {
+  const url = new URL(functionUrl("deadlineFoodRecipe", "/api/deadline-food/recipe"));
+  url.searchParams.set("shareId", shareId);
+
+  const response = await fetch(url.toString());
+  if (response.status === 404) return null;
+  if (!response.ok) {
+    throw new Error(`Shared recipe request failed with ${response.status}`);
+  }
+
+  const recipe = (await response.json()) as Partial<Meal> & { id: string; name: string };
+  // The canonical Firestore recipe is already in app `Meal` shape (unlike the
+  // recommender's snake_case payload), so normalise only the fields a fresh
+  // viewer needs and trust the stored values for the rest.
+  return {
+    rating: 0,
+    reviews: [],
+    image: "🍽️",
+    ...recipe,
+    tags: recipe.tags ?? [],
+    allergens: recipe.allergens ?? [],
+    ingredients: recipe.ingredients ?? [],
+    instructions: recipe.instructions ?? [],
+    mealSlots: recipe.mealSlots ?? [],
+    nutrition: recipe.nutrition ?? { calories: 0, protein: 0, carbs: 0, fat: 0 },
+  } as Meal;
+}
+
+export type RecipeState = "published" | "unpublished" | "deleted";
+
+/**
+ * Report the current publish state of recipes the viewer already references
+ * (saved or planned community recipes), so the UI can tell "unpublished" (still
+ * usable, tagged) from "deleted" (gone — pick an alternative). Status only; the
+ * caller already holds the content. Returns {} on failure (treat as published).
+ */
+export async function fetchRecipeStates(ids: string[]): Promise<Record<string, RecipeState>> {
+  if (ids.length === 0) return {};
+
+  const response = await fetch(functionUrl("deadlineFoodRecipeStates", "/api/deadline-food/recipe-states"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids }),
+  });
+
+  const { states } = await readJson<{ states: Record<string, RecipeState> }>(response, "Recipe states");
+  return states ?? {};
 }
 
 export async function fetchRecommenderRecommendations(input: {

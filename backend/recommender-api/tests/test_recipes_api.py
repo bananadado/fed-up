@@ -68,6 +68,15 @@ def test_get_recipe_404(client):
     assert client.get("/recipes/missing").status_code == 404
 
 
+def test_recipe_verified_defaults_false_and_roundtrips(client):
+    # Curated content is explicitly verified; user uploads default to false (#213).
+    client.post("/recipes", json=sample_recipe(id="seed", name="Seed", verified=True))
+    client.post("/recipes", json=sample_recipe(id="user", name="User"))
+
+    assert client.get("/recipes/seed").json()["verified"] is True
+    assert client.get("/recipes/user").json()["verified"] is False
+
+
 def test_similar_recipes(client):
     client.post("/recipes", json=sample_recipe(id="r1", name="One"))
     client.post("/recipes", json=sample_recipe(id="r2", name="Two"))

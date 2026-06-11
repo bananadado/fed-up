@@ -75,6 +75,38 @@ describe("shopping helpers", () => {
     expect(items.some((item) => item.name === "pasta")).toBe(true);
   });
 
+  test("omits a removed recipe's ingredients from the plan shopping list", () => {
+    const meal = {
+      id: "del-meal",
+      name: "Deleted Meal",
+      type: "cook" as const,
+      mealSlots: ["dinner" as const],
+      time: 10,
+      price: 2,
+      tags: [],
+      ingredients: [{ name: "Rare Spice", quantity: 5, unit: "g" }],
+      allergens: [],
+      nutrition: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+      rating: 0,
+      reviews: [],
+      instructions: [],
+      source: "",
+      note: "",
+      image: "",
+    };
+    const plan = [
+      { day: "Mon", context: "Test", meals: [{ slot: "dinner" as const, mealId: "del-meal" }] },
+    ];
+
+    // Deleted by its owner: even though the local copy resolves, it contributes nothing.
+    const withDeleted = ingredientsFromPlan(plan, [meal], [], "metric", new Set(["del-meal"]));
+    expect(withDeleted.some((item) => item.name.toLowerCase().includes("rare spice"))).toBe(false);
+
+    // An unresolvable id (own delete) is skipped without throwing.
+    const missing = [{ day: "Mon", context: "Test", meals: [{ slot: "dinner" as const, mealId: "gone" }] }];
+    expect(ingredientsFromPlan(missing, [])).toEqual([]);
+  });
+
   test("merges same ingredient with different units via unit conversion in ingredientsFromPlan", () => {
     const mealA = {
       id: "meal-a",
