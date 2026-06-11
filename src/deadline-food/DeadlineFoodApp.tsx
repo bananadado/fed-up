@@ -3,7 +3,7 @@ import { usePostHog } from "@posthog/react";
 
 import { capturePostHogEvent, registerPostHogContext, registerPostHogSession, type AnalyticsProperties } from "@/lib/posthog";
 import { initialPlan, initialPreferences } from "./data";
-import type { CalendarEvent, CalendarProvider, Deadline, DiscoverRecommendationState, Meal, MealSlot, PlanEntry, Preferences, Screen } from "./types";
+import type { CalendarEvent, CalendarProvider, Deadline, DiscoverRecommendationState, DiscoverRecommendationTrigger, Meal, MealSlot, PlanEntry, Preferences, Screen } from "./types";
 import {
   clearStoredAnonymousSessionId,
   deleteAccountProfile,
@@ -21,7 +21,13 @@ import {
   type IcsSubscription,
   type PrivacyConsent,
 } from "./sessionPersistence";
-import { fetchRecipeStates, fetchRecommenderRecommendations, fetchSharedRecipe, syncRecommenderUser, type RecipeState } from "./recommenderApi";
+import {
+  fetchRecommenderRecommendations,
+  fetchRecipeStates,
+  fetchSharedRecipe,
+  syncRecommenderUser,
+  type RecipeState,
+} from "./recommenderApi";
 import { isVerified, mealById } from "./utils";
 import { recipeShareToken, shareIdForRecipe } from "./recipeShare";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
@@ -52,6 +58,12 @@ import { SettingsScreen } from "./screens/SettingsScreen";
 
 const screens: Screen[] = ["landing", "onboarding", "privacy-policy", "dashboard", "calendar", "plan", "recipes", "settings", "recipe-detail"];
 const onboardingScreens = new Set<Screen>(["landing", "onboarding"]);
+const DISCOVER_RECOMMENDATION_BATCH_SIZE = 5;
+
+type DiscoverRecommendationRequest = {
+  contextKey: string;
+  id: number;
+};
 
 function screenFromLocation(): Screen | null {
   if (typeof window === "undefined") return null;
@@ -143,6 +155,7 @@ export function DeadlineFoodApp() {
   const [discoverSaved, setDiscoverSaved] = useState<Meal[]>([]);
   const [discoverRejected, setDiscoverRejected] = useState<Meal[]>([]);
   const [discoverReviewedRecipeIds, setDiscoverReviewedRecipeIds] = useState<string[]>([]);
+  const [discoverContext, setDiscoverContext] = useState<{ day: string; slot: MealSlot; mealId: string } | null>(null);
   const [discoverRecommendationState, setDiscoverRecommendationState] = useState<DiscoverRecommendationState>({
     contextKey: "",
     recipes: [],
@@ -152,6 +165,16 @@ export function DeadlineFoodApp() {
   // Separate from discoverRecommendationState so Discover's swipe queue never
   // depletes what the swap modal can show.
   const [swapSuggestionsPool, setSwapSuggestionsPool] = useState<Meal[]>([]);
+  const latestDiscoverRecommendationRequestId = useRef(0);
+  const discoverRecommendationInFlightRef = useRef<DiscoverRecommendationRequest | null>(null);
+  const discoverQueueInputsRef = useRef({
+    customRecipes,
+    discoverSaved,
+    discoverRejected,
+    discoverReviewedRecipeIds,
+    discoverRecommendationState,
+    discoverContext,
+  });
   const [icsSubscriptions, setIcsSubscriptions] = useState<IcsSubscription[]>([]);
   const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [privacyConsent, setPrivacyConsentState] = useState<PrivacyConsent | undefined>(undefined);
@@ -180,7 +203,6 @@ export function DeadlineFoodApp() {
   const [planGeneratedAt, setPlanGeneratedAt] = useState<string | undefined>(undefined);
   const [planGenerating, setPlanGenerating] = useState(false);
   const [planMeals, setPlanMeals] = useState<Meal[]>([]);
-  const [discoverContext, setDiscoverContext] = useState<{ day: string; slot: MealSlot; mealId: string } | null>(null);
   // Bumped once the canonical recipe catalogue is hydrated from Firestore so
   // screens re-read it via mealById/getMealById (issue #123).
   const [catalogueVersion, setCatalogueVersion] = useState(0);
@@ -209,6 +231,24 @@ export function DeadlineFoodApp() {
     window.history.pushState({ screen: nextScreen }, "", url ?? urlForScreen(nextScreen));
     setScreen(nextScreen);
   }, [enableSessionPersistence, screen, syncPreviousScreen]);
+
+  useEffect(() => {
+    discoverQueueInputsRef.current = {
+      customRecipes,
+      discoverSaved,
+      discoverRejected,
+      discoverReviewedRecipeIds,
+      discoverRecommendationState,
+      discoverContext,
+    };
+  }, [
+    customRecipes,
+    discoverContext,
+    discoverRecommendationState,
+    discoverRejected,
+    discoverReviewedRecipeIds,
+    discoverSaved,
+  ]);
 
   useEffect(() => {
     if (!onboarded || !hasPrivacyConsent || catalogueLoadedRef.current) {
@@ -300,6 +340,113 @@ export function DeadlineFoodApp() {
     },
     [posthog],
   );
+
+  const requestDiscoverRecommendations = useCallback((
+    trigger: DiscoverRecommendationTrigger,
+    contextOverride: { day: string; slot: MealSlot; mealId: string } | null = discoverContext,
+  ) => {
+    const contextKey = JSON.stringify({ deadlines, prefs, sessionId });
+    const currentInputs = discoverQueueInputsRef.current;
+    const currentState = currentInputs.discoverRecommendationState;
+    const existingRecipes = currentState.contextKey === contextKey ? currentState.recipes : [];
+
+    if (discoverRecommendationInFlightRef.current?.contextKey === contextKey) {
+      return;
+    }
+
+    const excludeIds = [...new Set([
+      ...(contextOverride?.mealId ? [contextOverride.mealId] : []),
+      ...currentInputs.discoverReviewedRecipeIds,
+      ...currentInputs.discoverSaved.map((meal) => meal.id),
+      ...currentInputs.discoverRejected.map((meal) => meal.id),
+      ...existingRecipes.map((meal) => meal.id),
+      ...currentInputs.customRecipes.map((meal) => meal.id),
+    ])];
+    const requestId = latestDiscoverRecommendationRequestId.current + 1;
+    latestDiscoverRecommendationRequestId.current = requestId;
+    discoverRecommendationInFlightRef.current = { contextKey, id: requestId };
+    const requestStartedAt = typeof performance !== "undefined" ? performance.now() : Date.now();
+
+    setDiscoverRecommendationState((previous) => ({
+      contextKey,
+      recipes: previous.contextKey === contextKey ? previous.recipes : [],
+      status: "loading",
+      requestStartedAt,
+      requestTrigger: trigger,
+    }));
+
+    fetchRecommenderRecommendations({
+      sessionId,
+      prefs,
+      deadlines,
+      excludeIds,
+      count: DISCOVER_RECOMMENDATION_BATCH_SIZE,
+      onMetrics: (metrics) => {
+        track("discover_recommendation_batch_profiled", {
+          trigger,
+          requested_count: DISCOVER_RECOMMENDATION_BATCH_SIZE,
+          returned_count: metrics.recipeCount,
+          total_ms: Math.round(metrics.totalMs),
+          user_sync_ms: Math.round(metrics.userSyncMs),
+          deadline_context_ms: Math.round(metrics.deadlineContextMs),
+          recommendation_network_ms: Math.round(metrics.recommendationNetworkMs),
+          server_total_ms: metrics.serverTotalMs === undefined ? undefined : Math.round(metrics.serverTotalMs),
+          server_recommender_ms: metrics.serverUpstreamMs === undefined ? undefined : Math.round(metrics.serverUpstreamMs),
+          server_hydration_ms: metrics.serverHydrationMs === undefined ? undefined : Math.round(metrics.serverHydrationMs),
+        });
+      },
+    })
+      .then((recipes) => {
+        if (discoverRecommendationInFlightRef.current?.id !== requestId) return;
+
+        setDiscoverRecommendationState((previous) => {
+          const currentRecipes = previous.contextKey === contextKey ? previous.recipes : [];
+          const latestInputs = discoverQueueInputsRef.current;
+          const latestContext = latestInputs.discoverContext;
+          const latestExcludedIds = [
+            ...(latestContext?.mealId ? [latestContext.mealId] : []),
+            ...latestInputs.discoverReviewedRecipeIds,
+            ...latestInputs.discoverSaved.map((meal) => meal.id),
+            ...latestInputs.discoverRejected.map((meal) => meal.id),
+            ...latestInputs.customRecipes.map((meal) => meal.id),
+          ];
+          const knownIds = new Set([...excludeIds, ...latestExcludedIds, ...currentRecipes.map((meal) => meal.id)]);
+          const newRecipes = recipes.filter((recipe) => !knownIds.has(recipe.id));
+          return {
+            contextKey,
+            recipes: [...currentRecipes, ...newRecipes],
+            status: newRecipes.length > 0 ? "ready" : "exhausted",
+            requestStartedAt,
+            requestTrigger: trigger,
+          };
+        });
+        if (discoverRecommendationInFlightRef.current?.id === requestId) {
+          discoverRecommendationInFlightRef.current = null;
+        }
+      })
+      .catch((error) => {
+        if (discoverRecommendationInFlightRef.current?.id !== requestId) return;
+
+        console.warn("Remote recommendations could not be loaded.", error);
+        track("discover_recommendation_batch_failed", { trigger });
+        setDiscoverRecommendationState((previous) => ({
+          contextKey,
+          recipes: previous.contextKey === contextKey ? previous.recipes : [],
+          status: "exhausted",
+          requestStartedAt,
+          requestTrigger: trigger,
+        }));
+        if (discoverRecommendationInFlightRef.current?.id === requestId) {
+          discoverRecommendationInFlightRef.current = null;
+        }
+      });
+  }, [
+    deadlines,
+    discoverContext,
+    prefs,
+    sessionId,
+    track,
+  ]);
 
   useEffect(() => {
     registerPostHogSession(posthog, sessionId);
@@ -1042,7 +1189,9 @@ export function DeadlineFoodApp() {
 
   function openDiscover(day: string, slot: MealSlot, mealId: string) {
     track("meal_card_discover_clicked", { day, meal_slot: slot, meal_id: mealId });
-    setDiscoverContext({ day, slot, mealId });
+    const nextDiscoverContext = { day, slot, mealId };
+    setDiscoverContext(nextDiscoverContext);
+    requestDiscoverRecommendations("route_entry", nextDiscoverContext);
     navigateScreen("recipes");
   }
 
@@ -1132,7 +1281,7 @@ export function DeadlineFoodApp() {
       {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarSkipped={calendarSkipped} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} recommendedRecipes={swapSuggestionsPool} />}
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} prefs={prefs} setScreen={navigateScreen} track={track} />}
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} recommendedRecipes={swapSuggestionsPool} />}
-      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} />}
+      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} requestRecommendations={requestDiscoverRecommendations} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onLogout={logoutAccount} onDeleteAccount={deleteAccount} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} sharedRecipe={sharedRecipe} account={account} sharedRecipeStatus={sharedRecipeStatus} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} unitSystem={prefs.unitSystem} />}
     </Shell>
