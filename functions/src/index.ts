@@ -44,6 +44,28 @@ const accountSessionsRef = firestore.collection("accountSessions");
 const openFoodFactsCacheRef = firestore.collection("openFoodFactsNutritionCache");
 const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
+// Public, URL-safe share slug derived deterministically from the canonical
+// recipe id (#213). Must stay in lockstep with shareIdForRecipe() in
+// src/deadline-food/recipeShare.ts (identical cyrb53 implementation) so links
+// resolve on either side.
+function cyrb53(str: string, seed = 0): number {
+  let h1 = 0xdeadbeef ^ seed;
+  let h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+}
+
+function shareIdForRecipe(recipeId: string): string {
+  return cyrb53(recipeId).toString(36);
+}
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
 const sessionSettingsVersion = 4;
@@ -354,16 +376,62 @@ async function ensureRecipesSeeded(): Promise<void> {
   for (const recipe of appRecipes) {
     batch.set(recipesRef.doc(recipe.id), {
       ...recipe,
+      // All seeded recipes are curated/verified content (#213).
+      verified: true,
+      shareId: shareIdForRecipe(recipe.id),
       updatedAt: FieldValue.serverTimestamp(),
     });
   }
   await batch.commit();
 }
 
+// Retroactively stamp a stable share slug on any recipe doc missing one (#213).
+// Idempotent: only writes docs without a shareId. Cached after the first
+// successful check so subsequent calls skip the collection read entirely.
+let shareIdsBackfilled = false;
+async function ensureShareIds(): Promise<void> {
+  if (shareIdsBackfilled) return;
+  const snapshot = await recipesRef.get();
+  const missing = snapshot.docs.filter((doc) => typeof doc.get("shareId") !== "string");
+  if (missing.length === 0) {
+    shareIdsBackfilled = true;
+    return;
+  }
+  const batch = firestore.batch();
+  for (const doc of missing) {
+    batch.set(doc.ref, {shareId: shareIdForRecipe(doc.id)}, {merge: true});
+  }
+  await batch.commit();
+  shareIdsBackfilled = true;
+}
+
 async function listRecipes(): Promise<UnknownRecord[]> {
   await ensureRecipesSeeded();
+  await ensureShareIds();
   const snapshot = await recipesRef.get();
-  return snapshot.docs.map((doc) => doc.data() as UnknownRecord);
+  // The catalogue is enumerable to every client, so it must not leak unlisted
+  // content: exclude unpublished user recipes (published === false). Seeds have
+  // no published field and published user recipes (true) are included.
+  return snapshot.docs
+    .map((doc) => doc.data() as UnknownRecord)
+    .filter((data) => data.published !== false);
+}
+
+// Fetch a single canonical recipe by its public share slug (#213). Reviews and
+// the derived rating live in the recipeReviews collection, so strip them here
+// just like listRecipes.
+async function recipeByShareId(shareId: string): Promise<UnknownRecord | null> {
+  await ensureRecipesSeeded();
+  await ensureShareIds();
+  const snapshot = await recipesRef.where("shareId", "==", shareId).limit(1).get();
+  if (snapshot.empty) return null;
+  const data = snapshot.docs[0].data() as UnknownRecord;
+  // Unpublished recipes are "unlisted", not gone: still reachable by their direct
+  // share link (just not in Discover or the catalogue). Only a deleted recipe —
+  // an absent doc — is unreachable here (404).
+  delete data.reviews;
+  delete data.rating;
+  return data;
 }
 
 // Map a canonical app recipe (Firestore shape) to the recommender's
@@ -415,6 +483,7 @@ function toRecommenderRecipePayload(recipe: UnknownRecord): UnknownRecord {
     },
     source: str(recipe.source) || null,
     note: str(recipe.note) || null,
+    verified: recipe.verified === true,
   };
 }
 
@@ -1732,6 +1801,69 @@ export const deadlineFoodRecipes = onRequest(publicHttpOptions, async (request, 
   }
 });
 
+export const deadlineFoodRecipe = onRequest(publicHttpOptions, async (request, response) => {
+  if (rejectUnsupportedMethod(request, response)) return;
+
+  const shareId = typeof request.query.shareId === "string" ? request.query.shareId : "";
+  if (!shareId || !recipeIdPattern.test(shareId)) {
+    response.status(400).json({error: "A valid shareId is required"});
+    return;
+  }
+
+  try {
+    const recipe = await recipeByShareId(shareId);
+    if (!recipe) {
+      response.status(404).json({error: "Recipe not found"});
+      return;
+    }
+    sendJson(response, recipe);
+  } catch (error) {
+    sendError(response, error);
+  }
+});
+
+// Report the publish state of recipes the caller already references (saved or
+// planned), so the client can distinguish "unpublished" (still usable) from
+// "deleted" (gone) without enumerating anyone else's content. Status only.
+const MAX_RECIPE_STATE_IDS = 200;
+
+type RecipeState = "published" | "unpublished" | "deleted";
+
+async function recipeStatesForIds(ids: string[]): Promise<Record<string, RecipeState>> {
+  const valid = [...new Set(ids)]
+    .filter((id) => typeof id === "string" && recipeIdPattern.test(id))
+    .slice(0, MAX_RECIPE_STATE_IDS);
+  if (valid.length === 0) return {};
+  const snapshots = await firestore.getAll(...valid.map((id) => recipesRef.doc(id)));
+  const states: Record<string, RecipeState> = {};
+  for (const doc of snapshots) {
+    if (!doc.exists) {
+      states[doc.id] = "deleted";
+    } else {
+      states[doc.id] = doc.get("published") === false ? "unpublished" : "published";
+    }
+  }
+  return states;
+}
+
+export const deadlineFoodRecipeStates = onRequest(publicHttpOptions, async (request, response) => {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = asRecord(request.body);
+  const ids = Array.isArray(body?.ids) ? body.ids.filter((id): id is string => typeof id === "string") : null;
+  if (!ids) {
+    response.status(400).json({error: "An array of recipe ids is required"});
+    return;
+  }
+
+  try {
+    response.set("Cache-Control", "private, max-age=0, no-store");
+    response.status(200).json({states: await recipeStatesForIds(ids)});
+  } catch (error) {
+    sendError(response, error);
+  }
+});
+
 export const deadlineFoodRecipeReviews = onRequest(publicHttpOptions, async (request, response) => {
   if (rejectUnsupportedReviewMethod(request, response)) return;
 
@@ -1767,6 +1899,40 @@ export const deadlineFoodRecipeReviews = onRequest(publicHttpOptions, async (req
   }
 });
 
+// Remove a recipe's embedding from the pgvector recommender so it stops being
+// recommended in Discover. Best-effort: callers treat failure as non-fatal.
+async function removeRecipeFromRecommender(recipeId: string): Promise<void> {
+  const url = new URL(`/recipes/${encodeURIComponent(recipeId)}`, recommenderApiUrl.value().replace(/\/$/, ""));
+  await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "X-Deadline-Food-API-Key": recommenderApiKey.value(),
+    },
+    signal: AbortSignal.timeout(15_000),
+  });
+}
+
+// Resolve the signed-in account for a recipe mutation. Publishing/owning a
+// recipe requires a real (non-anonymous) account (#213 follow-up); on failure
+// this writes the response and returns null so the caller can just return.
+async function requireRecipeOwnerAccount(
+  request: HttpRequest,
+  response: HttpResponse,
+): Promise<VerifiedAccount | null> {
+  let account: VerifiedAccount | null;
+  try {
+    account = await verifiedAccount(request);
+  } catch {
+    response.status(401).json({error: "A valid sign-in token is required"});
+    return null;
+  }
+  if (account === null || account.isAnonymous) {
+    response.status(401).json({error: "Sign in to manage published recipes"});
+    return null;
+  }
+  return account;
+}
+
 export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async (request, response) => {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
@@ -1777,12 +1943,39 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
     return;
   }
 
+  // Publishing is an account-owned action: only signed-in users can publish.
+  const account = await requireRecipeOwnerAccount(request, response);
+  if (account === null) return;
+
   try {
+    const existing = await recipesRef.doc(recipeId).get();
+    if (existing.exists) {
+      // Seeds are curated content and have no owner; published user recipes are
+      // owned by their creator. Either way a different caller can't overwrite.
+      if (existing.get("verified") === true) {
+        response.status(403).json({error: "This recipe cannot be modified"});
+        return;
+      }
+      const ownerUid = existing.get("ownerUid");
+      if (!ownerUid || ownerUid !== account.uid) {
+        response.status(403).json({error: "This recipe belongs to another account"});
+        return;
+      }
+    }
+
     // Canonical recipe content -> Firestore (issue #123). Reviews live in the
     // recipeReviews collection only, so strip them (and the derived rating) here.
     const recipeContent = {...body};
     delete recipeContent.reviews;
     delete recipeContent.rating;
+    // User-contributed recipes are never verified, regardless of the request
+    // body (#213). Only curated seed content is verified (see ensureRecipesSeeded).
+    recipeContent.verified = false;
+    body.verified = false;
+    // Server-derived ownership + published state — never trust the client body.
+    recipeContent.ownerUid = account.uid;
+    recipeContent.published = true;
+    recipeContent.shareId = shareIdForRecipe(recipeId);
     await recipesRef.doc(recipeId).set(
       {...recipeContent, updatedAt: FieldValue.serverTimestamp()},
       {merge: true},
@@ -1797,6 +1990,52 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
   await proxyRecommenderRequest(request, response, "/recipes", toRecommenderRecipePayload(body));
 });
 
+export const deadlineFoodRecipeUnpublish = onRequest(recommenderHttpOptions, async (request, response) => {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = asRecord(request.body);
+  const recipeId = typeof body?.recipeId === "string" ? body.recipeId : null;
+  if (!recipeId || !recipeIdPattern.test(recipeId)) {
+    response.status(400).json({error: "A valid recipe id is required"});
+    return;
+  }
+
+  const account = await requireRecipeOwnerAccount(request, response);
+  if (account === null) return;
+
+  try {
+    const doc = await recipesRef.doc(recipeId).get();
+    if (!doc.exists) {
+      response.status(404).json({error: "Recipe not found"});
+      return;
+    }
+    const ownerUid = doc.get("ownerUid");
+    if (!ownerUid || ownerUid !== account.uid) {
+      response.status(403).json({error: "This recipe belongs to another account"});
+      return;
+    }
+    // Soft unpublish: keep the canonical doc + reviews so re-publishing restores
+    // them and anyone who already saved the recipe keeps a working local copy.
+    await recipesRef.doc(recipeId).set(
+      {published: false, updatedAt: FieldValue.serverTimestamp()},
+      {merge: true},
+    );
+  } catch (error) {
+    logError("Recipe could not be unpublished in Firestore", {recipeId, error});
+    response.status(502).json({error: "Recipe could not be unpublished"});
+    return;
+  }
+
+  // Drop it from Discover; Firestore stays the source of truth for the content.
+  try {
+    await removeRecipeFromRecommender(recipeId);
+  } catch (error) {
+    logWarn("Recipe could not be removed from recommender (Firestore unpublish succeeded)", {recipeId, error});
+  }
+
+  response.status(200).json({recipeId, published: false});
+});
+
 export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async (request, response) => {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
@@ -1807,7 +2046,24 @@ export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async 
     return;
   }
 
+  const account = await requireRecipeOwnerAccount(request, response);
+  if (account === null) return;
+
   try {
+    const doc = await recipesRef.doc(recipeId).get();
+    if (!doc.exists) {
+      response.status(404).json({error: "Recipe not found"});
+      return;
+    }
+    if (doc.get("verified") === true) {
+      response.status(403).json({error: "This recipe cannot be deleted"});
+      return;
+    }
+    const ownerUid = doc.get("ownerUid");
+    if (!ownerUid || ownerUid !== account.uid) {
+      response.status(403).json({error: "This recipe belongs to another account"});
+      return;
+    }
     await recipesRef.doc(recipeId).delete();
     await recipeReviewsRef.doc(recipeId).delete();
   } catch (error) {
@@ -1817,14 +2073,7 @@ export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async 
   }
 
   try {
-    const url = new URL(`/recipes/${encodeURIComponent(recipeId)}`, recommenderApiUrl.value().replace(/\/$/, ""));
-    await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "X-Deadline-Food-API-Key": recommenderApiKey.value(),
-      },
-      signal: AbortSignal.timeout(15_000),
-    });
+    await removeRecipeFromRecommender(recipeId);
   } catch (error) {
     logWarn("Recipe could not be deleted from recommender (Firestore deletion succeeded)", {recipeId, error});
   }
