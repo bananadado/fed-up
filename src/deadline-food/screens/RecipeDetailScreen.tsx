@@ -1,4 +1,4 @@
-import { ArrowLeft, Bookmark, BookmarkCheck, ChevronDown, Clock3, MessageSquare, Minus, Pencil, Plus, Star, Trash2, Users } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Bookmark, BookmarkCheck, ChevronDown, Clock3, Link2, MessageSquare, Minus, Pencil, Plus, Star, Trash2, Users } from "lucide-react";
 import { useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
@@ -9,9 +9,11 @@ import { ConfirmDialog } from "../components/ConfirmDialog";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { formatIngredient, scaleIngredients } from "../ingredients";
 import { normalizeIngredientUnit } from "../unitConversion";
-import { mealById, money, nutritionSourceSummary, sourceUrl } from "../utils";
+import { isRecipeOwnedBy, isVerified, mealById, money, nutritionSourceSummary, sourceUrl } from "../utils";
+import { recipeShareUrl, shareIdForRecipe } from "../recipeShare";
 import { ShoppingListCard } from "../components/ShoppingListCard";
-import { createRecommenderRecipe, deleteRecommenderRecipe } from "../recommenderApi";
+import { createRecommenderRecipe, deleteRecommenderRecipe, unpublishRecommenderRecipe } from "../recommenderApi";
+import type { AccountSummary } from "../accountAuth";
 import { fetchRecipeReviews, submitRecipeReview } from "../reviewsApi";
 import { aggregateIngredients, groceryVendorById, groceryVendors } from "../shopping";
 import type { TrackEvent } from "../analytics";
@@ -40,10 +42,14 @@ export function RecipeDetailScreen({
   setCustomRecipes,
   discoverSaved,
   setDiscoverSaved,
+  sharedRecipe,
+  account,
+  sharedRecipeStatus = "idle",
   setScreen,
   backTo,
   onSelectMeal,
-  unpublishedSavedIds,
+  deletedRecipeIds,
+  unpublishedRecipeIds,
   track,
   unitSystem = "metric",
 }: {
@@ -52,20 +58,32 @@ export function RecipeDetailScreen({
   setCustomRecipes: StateSetter<Meal[]>;
   discoverSaved: Meal[];
   setDiscoverSaved: StateSetter<Meal[]>;
+  /** A recipe resolved from a deep-link share slug the viewer doesn't own (#213). */
+  sharedRecipe?: Meal | null;
+  /** Current account — publishing/owning a recipe requires a signed-in account. */
+  account: AccountSummary;
+  /** Resolution state of a `#/recipe/<shareId>` deep link the viewer doesn't
+   * have locally: "loading" while fetching, "unavailable" when it can't be
+   * resolved (unpublished/deleted/broken link) (#213 follow-up). */
+  sharedRecipeStatus?: "idle" | "loading" | "unavailable";
   setScreen: (screen: Screen) => void;
   backTo?: Screen | null;
   onSelectMeal: (mealId: string) => void;
-  unpublishedSavedIds: Set<string>;
+  /** Community recipes whose owner deleted them (#213 follow-up). */
+  deletedRecipeIds: Set<string>;
+  /** Community recipes whose owner unpublished them — still usable, just unlisted. */
+  unpublishedRecipeIds: Set<string>;
   track: TrackEvent;
   unitSystem?: "metric" | "imperial";
 }) {
-  const meal = mealById(mealId, customRecipes);
+  const meal = mealById(mealId, customRecipes, sharedRecipe ? [sharedRecipe] : []);
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmPublish, setConfirmPublish] = useState(false);
   const [confirmUnpublish, setConfirmUnpublish] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
   const [localUnitSystem, setLocalUnitSystem] = useState<"metric" | "imperial">(unitSystem);
 
   const baseServings = meal?.servings && meal.servings > 0 ? meal.servings : 1;
@@ -89,7 +107,8 @@ export function RecipeDetailScreen({
     };
   }, []);
 
-  const isOwn = meal?.isUserCreated === true;
+  const isLoggedIn = account.configured && !!account.uid && !account.isAnonymous;
+  const isOwn = isRecipeOwnedBy(meal, account.uid);
   const isSaved = isOwn || discoverSaved.some((r) => r.id === mealId);
   const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
   // Reviews are owned by Firestore (issue #123): global and persistent, not part
@@ -121,6 +140,32 @@ export function RecipeDetailScreen({
   }, [mealId]);
 
   const computedRating = reviews.length > 0 ? reviewsRating : meal?.rating ?? 0;
+
+  if (sharedRecipeStatus === "loading") {
+    // Resolving a shared link the viewer doesn't have locally — show a neutral
+    // loading state rather than the default recipe (#213 follow-up).
+    return (
+      <div className="mx-auto max-w-2xl text-center text-stone-600">
+        <p className="text-lg font-semibold">Loading recipe…</p>
+      </div>
+    );
+  }
+
+  if (sharedRecipeStatus === "unavailable") {
+    // A shared link that resolved to nothing — the recipe was unpublished or
+    // deleted by its owner, or the link is broken (#213 follow-up). Neutral.
+    return (
+      <div className="mx-auto max-w-2xl text-center">
+        <h1 className="text-3xl font-bold">This recipe isn't available</h1>
+        <p className="mt-3 text-stone-600">
+          The link may be out of date, or its owner has unpublished or removed the recipe.
+        </p>
+        <AppButton className="mt-6" onClick={() => setScreen("recipes")}>
+          Browse recipes
+        </AppButton>
+      </div>
+    );
+  }
 
   if (!meal) {
     return (
@@ -165,17 +210,41 @@ export function RecipeDetailScreen({
   }
 
   function handlePublish() {
-    saveMeal({ ...selectedMeal, published: true });
+    // Publishing requires a signed-in account so the recipe can be owned (#213).
+    if (!isLoggedIn) {
+      track("custom_recipe_publish_signin_prompt", { meal_id: selectedMeal.id });
+      setScreen("settings");
+      return;
+    }
+    // Stamp the owner locally too so the owner keeps control of the recipe and it
+    // persists in the session library; the backend re-derives ownerUid from the token.
+    saveMeal({ ...selectedMeal, published: true, ownerUid: account.uid ?? undefined });
     track("custom_recipe_published", { meal_id: selectedMeal.id });
   }
 
   function handleUnpublish() {
+    // Soft unpublish: keep the recipe in the library (and on the backend, for
+    // anyone who saved it), just remove it from Discover and share links (#213).
     const unpublished = { ...selectedMeal, published: false };
     setCustomRecipes((recipes) => [unpublished, ...recipes.filter((r) => r.id !== unpublished.id)]);
-    deleteRecommenderRecipe(selectedMeal.id).catch((error) => {
-      console.warn("Recipe could not be unpublished from recommender.", error);
+    unpublishRecommenderRecipe(selectedMeal.id).catch((error) => {
+      console.warn("Recipe could not be unpublished.", error);
     });
     track("custom_recipe_unpublished", { meal_id: selectedMeal.id });
+  }
+
+  async function copyShareLink() {
+    const url = recipeShareUrl(shareIdForRecipe(selectedMeal.id));
+    try {
+      await navigator.clipboard.writeText(url);
+      setLinkCopied(true);
+      window.setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      // Clipboard unavailable (e.g. insecure context) — fall back to a prompt so
+      // the user can still copy the link manually.
+      window.prompt("Copy this recipe link", url);
+    }
+    track("recipe_share_link_copied", { meal_id: selectedMeal.id });
   }
 
   function handleEditSubmit(output: RecipeEditorOutput, photoUrl: string | undefined) {
@@ -299,17 +368,37 @@ export function RecipeDetailScreen({
           <AppButton variant="ghost" className="px-0" onClick={() => { track("recipe_back_clicked", { meal_id: selectedMeal.id, back_to: backTo ?? "plan" }); setScreen(backTo ?? "plan"); }}>
             <ArrowLeft size={16} /> {backLabel(backTo ?? null)}
           </AppButton>
-          {unpublishedSavedIds.has(mealId) && <Badge tone="amber">No longer published</Badge>}
+          {isVerified(selectedMeal) ? (
+            <Badge tone="blue"><BadgeCheck size={13} className="mr-1" /> Verified</Badge>
+          ) : (
+            <Badge tone="amber">Community</Badge>
+          )}
+          {deletedRecipeIds.has(mealId) ? (
+            <Badge tone="rose">Removed by owner</Badge>
+          ) : (unpublishedRecipeIds.has(mealId) || selectedMeal.published === false) && !isVerified(selectedMeal) ? (
+            <Badge tone="amber">Unpublished</Badge>
+          ) : null}
         </div>
         {!isEditing && (
           <div className="flex flex-wrap gap-3">
+            {(isVerified(selectedMeal) || selectedMeal.published) && (
+              <AppButton variant="secondary" onClick={copyShareLink}>
+                <Link2 size={16} /> {linkCopied ? "Link copied" : "Copy share link"}
+              </AppButton>
+            )}
             <AppButton variant="secondary" onClick={() => { track("recipe_edit_started", { meal_id: selectedMeal.id }); setIsEditing(true); }}>
               <Pencil size={16} /> Edit recipe
             </AppButton>
             {isOwn && !selectedMeal.published && (
-              <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={() => setConfirmPublish(true)}>
-                Publish recipe
-              </AppButton>
+              isLoggedIn ? (
+                <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={() => setConfirmPublish(true)}>
+                  Publish recipe
+                </AppButton>
+              ) : (
+                <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={handlePublish}>
+                  Sign in to publish
+                </AppButton>
+              )
             )}
             {isOwn && selectedMeal.published && (
               <AppButton variant="secondary" className="text-stone-500" onClick={() => setConfirmUnpublish(true)}>
@@ -404,7 +493,7 @@ export function RecipeDetailScreen({
                     </Badge>
                   ))}
                   <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
-                    {meal.type === "fallback" ? "Easy option" : meal.type === "cook" ? "Cook" : "Remix"}
+                    {meal.type === "fallback" ? "Easy option" : meal.type === "cook" ? "Cook" : "Uses leftovers"}
                   </Badge>
                   {meal.tags.map((tag) => (
                     <Badge key={tag} tone="green">

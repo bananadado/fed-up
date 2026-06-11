@@ -5,11 +5,12 @@ import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
 import type { Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
+import { MealThumbnail } from "../components/MealThumbnail";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal, slotLabels } from "../components/SwapModal";
 import { groceryVendorById, groceryVendors, ingredientsFromPlan } from "../shopping";
-import { getMealById, money } from "../utils";
+import { getMealById, mealById, money } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackEvent } from "../analytics";
 
@@ -18,10 +19,14 @@ type RescueChoice = {
   slot: MealSlot;
 } | null;
 
-function dailyTotals(entry: PlanEntry, customRecipes: Meal[]) {
+function dailyTotals(entry: PlanEntry, customRecipes: Meal[], deletedRecipeIds: Set<string>) {
   return entry.meals.reduce(
     (sum, planMeal) => {
-      const { nutrition } = getMealById(planMeal.mealId, customRecipes);
+      // A removed recipe (deleted by its owner, or otherwise unresolvable) is not
+      // counted — the slot needs a replacement (#213 follow-up).
+      const meal = mealById(planMeal.mealId, customRecipes);
+      if (!meal || deletedRecipeIds.has(planMeal.mealId)) return sum;
+      const { nutrition } = meal;
       return {
         calories: sum.calories + nutrition.calories,
         protein: sum.protein + nutrition.protein,
@@ -54,6 +59,8 @@ export function PlanScreen({
   onRegenerate,
   regenMode,
   openDiscover,
+  deletedRecipeIds,
+  unpublishedRecipeIds,
   track,
   calendarWarning,
 }: {
@@ -70,6 +77,10 @@ export function PlanScreen({
   onRegenerate: () => void;
   regenMode: PlanRegenMode;
   openDiscover: (day: string, slot: MealSlot, mealId: string) => void;
+  /** Community recipes whose owner deleted them — render the slot as removed. */
+  deletedRecipeIds: Set<string>;
+  /** Community recipes whose owner unpublished them — still usable, tagged. */
+  unpublishedRecipeIds: Set<string>;
   track: TrackEvent;
   calendarWarning?: string;
 }) {
@@ -101,7 +112,6 @@ export function PlanScreen({
     return false;
   });
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
-  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients, prefs.unitSystem), [plan, customRecipes, prefs.availableIngredients, prefs.unitSystem]);
   const planSummary = useMemo(() => {
     const breakfastCounts = new Map<string, number>();
     const ingredientCounts = new Map<string, number>();
@@ -131,6 +141,7 @@ export function PlanScreen({
 
     return { batchCooks, leftoverMeals, repeatedBreakfasts, reusedIngredientGroups, repeatedBreakfastIds };
   }, [plan, customRecipes]);
+  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds), [plan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds]);
 
   const weeks = useMemo(() => {
     const chunks: PlanEntry[][] = [];
@@ -209,11 +220,14 @@ export function PlanScreen({
       {addToPlanMealId && (() => {
         const meal = discoverSaved.find((m) => m.id === addToPlanMealId) ?? getMealById(addToPlanMealId, customRecipes);
         return (
-          <div className="mb-6 flex items-center justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
-            <p className="text-sm text-emerald-900">
-              <span className="font-semibold">{meal.image} {meal.name}</span>
-              {" "}— tap <strong>Change</strong> on any meal to assign it to that slot.
-            </p>
+	          <div className="mb-6 flex items-center justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
+	            <p className="flex min-w-0 flex-1 items-center gap-2 text-sm text-emerald-900">
+	              <MealThumbnail meal={meal} className="h-8 w-8" iconClassName="text-xl" />
+	              <span className="min-w-0">
+	                <span className="font-semibold">{meal.name}</span>
+	                {" "}— tap <strong>Change</strong> on any meal to assign it to that slot.
+	              </span>
+	            </p>
             <button type="button" onClick={() => setAddToPlanMealId(null)} className="shrink-0 rounded-lg p-1 text-emerald-700 hover:bg-emerald-100" aria-label="Dismiss">
               <X size={16} />
             </button>
@@ -264,7 +278,7 @@ export function PlanScreen({
                           <div className="bg-stone-50 px-4 py-4">
                             <p className="font-bold">{entry.day}</p>
                             {entry.context && <p className="mt-1 text-xs leading-5 text-stone-500">{entry.context}</p>}
-                            {(() => { const t = dailyTotals(entry, customRecipes); return (
+                            {(() => { const t = dailyTotals(entry, customRecipes, deletedRecipeIds); return (
                               <div className="mt-3 space-y-0.5">
                                 <p className="text-xs font-semibold text-stone-700">{t.calories} kcal</p>
                                 <p className="text-xs text-stone-500">{t.protein}g protein</p>
@@ -273,8 +287,13 @@ export function PlanScreen({
                             ); })()}
                           </div>
                           {mealSlots.map((slot) => {
-                            const planMeal = entry.meals.find((meal) => meal.slot === slot);
-                            const meal = planMeal ? getMealById(planMeal.mealId, customRecipes) : null;
+                            const planMeal = entry.meals.find((m) => m.slot === slot);
+                            const resolved = planMeal ? mealById(planMeal.mealId, customRecipes) : null;
+                            // A slot is "removed" when its recipe resolves nowhere (own delete)
+                            // or its owner deleted it (#213 follow-up).
+                            const removed = !!planMeal && (!resolved || deletedRecipeIds.has(planMeal.mealId));
+                            const meal = removed ? null : resolved;
+                            const unpublished = !!meal && !!planMeal && unpublishedRecipeIds.has(planMeal.mealId);
 
                             return (
                               <div key={slot} className="border-l border-stone-200 p-3">
@@ -286,16 +305,18 @@ export function PlanScreen({
                                       className="w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
                                     >
                                       <div className="flex flex-wrap items-center gap-2">
-                                        {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
+                                        {unpublished && <Badge tone="amber">Unpublished</Badge>}
+                                        {planMeal?.rescued && <Badge tone="blue">Swapped</Badge>}
                                         {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
                                         {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                         <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
-                                          {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Easy option</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
+                                          {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Easy option</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Uses leftovers</>}
                                         </Badge>
                                       </div>
-                                      <p className="mt-3 break-words text-sm font-semibold leading-5">
-                                        {meal.image} {meal.name}
-                                      </p>
+	                                      <MealThumbnail meal={meal} className="mt-3 h-24 w-full rounded-lg bg-white" iconClassName="text-5xl" />
+	                                      <p className="mt-3 break-words text-sm font-semibold leading-5">
+	                                        {meal.name}
+	                                      </p>
                                       <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-600">
                                         <span className="flex items-center gap-1">
                                           <Clock3 size={14} /> {meal.time} mins
@@ -314,6 +335,12 @@ export function PlanScreen({
                                         <p className="mt-2 text-xs font-medium text-emerald-700">{planMealReason(planMeal, planSummary.repeatedBreakfastIds)}</p>
                                       )}
                                     </button>
+                                  ) : removed ? (
+                                    <div>
+                                      <Badge tone="rose">Recipe removed</Badge>
+                                      <p className="mt-3 text-sm font-semibold leading-5 text-stone-700">This recipe was deleted</p>
+                                      <p className="mt-2 text-sm text-stone-500">Pick an alternative for this slot.</p>
+                                    </div>
                                   ) : (
                                     <div>
                                       <Badge tone="amber">Unfilled</Badge>
@@ -323,7 +350,7 @@ export function PlanScreen({
                                   )}
                                   <div className="mt-4 flex flex-wrap gap-2">
                                     <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "desktop" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_desktop" }); if (addToPlanMealId) setSwapSuggestedMealId(addToPlanMealId); setRescueChoice({ day: entry.day, slot }); }}>
-                                      <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
+                                      <RefreshCcw size={15} /> {removed ? "Pick an alternative" : meal ? "Change" : "Choose"}
                                     </AppButton>
                                     {meal && (
                                       <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
@@ -342,7 +369,7 @@ export function PlanScreen({
                     <div className="space-y-4 md:hidden">
                       {weekEntries.map((entry) => (
                         <Card key={entry.day} className="gap-0 rounded-lg border-stone-200 bg-white p-4">
-                          {(() => { const t = dailyTotals(entry, customRecipes); return (
+                          {(() => { const t = dailyTotals(entry, customRecipes, deletedRecipeIds); return (
                             <div className="mb-4 flex items-start justify-between gap-3">
                               <div>
                                 <p className="font-bold">{entry.day}</p>
@@ -357,29 +384,41 @@ export function PlanScreen({
                           ); })()}
                           <div className="grid gap-3 sm:grid-cols-3">
                             {mealSlots.map((slot) => {
-                              const planMeal = entry.meals.find((meal) => meal.slot === slot);
-                              const meal = planMeal ? getMealById(planMeal.mealId, customRecipes) : null;
+                              const planMeal = entry.meals.find((m) => m.slot === slot);
+                              const resolved = planMeal ? mealById(planMeal.mealId, customRecipes) : null;
+                              const removed = !!planMeal && (!resolved || deletedRecipeIds.has(planMeal.mealId));
+                              const meal = removed ? null : resolved;
+                              const unpublished = !!meal && !!planMeal && unpublishedRecipeIds.has(planMeal.mealId);
 
                               return (
                                 <div key={slot} className="rounded-lg bg-stone-50 p-3 transition hover:bg-emerald-50 hover:ring-1 hover:ring-emerald-200">
                                   <p className="text-xs font-semibold uppercase text-stone-500">{slotLabels[slot]}</p>
                                   {meal ? (
                                     <button type="button" onClick={() => { track("meal_card_view_clicked", { day: entry.day, meal_slot: slot, meal_id: meal.id, source: "plan_mobile" }); onSelectMeal(meal.id); }} className="mt-2 w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700">
-                                      <p className="break-words font-semibold leading-5">
-                                        {meal.image} {meal.name}
-                                      </p>
+                                      <span className="flex items-center gap-3">
+                                        <MealThumbnail meal={meal} className="h-12 w-12 rounded-lg bg-white" iconClassName="text-3xl" />
+                                        <span className="min-w-0 flex-1 break-words font-semibold leading-5">{meal.name}</span>
+                                      </span>
+                                      {unpublished && <Badge tone="amber" className="mt-1">Unpublished</Badge>}
                                       <p className="mt-1 text-sm text-stone-500">
                                         {meal.time} mins - {money(meal.price)}
                                       </p>
                                     </button>
+                                  ) : removed ? (
+                                    <div className="mt-2">
+                                      <Badge tone="rose">Recipe removed</Badge>
+                                      <p className="mt-2 break-words font-semibold leading-5 text-stone-700">This recipe was deleted</p>
+                                      <p className="mt-1 text-sm text-stone-500">Pick an alternative for this slot.</p>
+                                    </div>
                                   ) : (
                                     <div className="mt-2">
                                       <p className="break-words font-semibold leading-5 text-stone-700">No meal allocated</p>
                                       <p className="mt-1 text-sm text-stone-500">Choose a meal for this slot.</p>
                                     </div>
                                   )}
-                                  {(planMeal?.batchCook || planMeal?.leftoverOf) && (
+                                  {(planMeal?.rescued || planMeal?.batchCook || planMeal?.leftoverOf) && (
                                     <div className="mt-2 flex flex-wrap gap-1.5">
+                                      {planMeal?.rescued && <Badge tone="blue">Swapped</Badge>}
                                       {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
                                       {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                     </div>
@@ -389,7 +428,7 @@ export function PlanScreen({
                                   )}
                                   <div className="mt-3 flex flex-wrap gap-2">
                                     <AppButton aria-label="Change meal" variant="secondary" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => { track("meal_swap_started", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, layout: "mobile" }); track("meal_card_swap_clicked", { day: entry.day, meal_slot: slot, meal_id: meal?.id ?? null, source: "plan_mobile" }); if (addToPlanMealId) setSwapSuggestedMealId(addToPlanMealId); setRescueChoice({ day: entry.day, slot }); }}>
-                                      <RefreshCcw size={15} /> {meal ? "Change" : "Choose"}
+                                      <RefreshCcw size={15} /> {removed ? "Pick an alternative" : meal ? "Change" : "Choose"}
                                     </AppButton>
                                     {meal && (
                                       <AppButton variant="ghost" className="flex-1 justify-center px-3 py-2 text-xs" onClick={() => openDiscover(entry.day, slot, meal.id)}>
@@ -411,7 +450,7 @@ export function PlanScreen({
           })}
         </div>
         <div className="space-y-4">
-          <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} />
+          <BudgetCard plan={plan} customRecipes={customRecipes} budget={prefs.budget} deletedRecipeIds={deletedRecipeIds} />
           <Card className="gap-0 rounded-lg border-stone-200 bg-white p-4">
             <div className="flex items-center gap-3">
               <span className="rounded-lg bg-emerald-50 p-2 text-emerald-700">
@@ -477,6 +516,7 @@ export function PlanScreen({
           savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           suggestedMealId={swapSuggestedMealId ?? undefined}
+          deletedRecipeIds={deletedRecipeIds}
           track={track}
         />
       )}

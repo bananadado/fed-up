@@ -21,7 +21,9 @@ import {
   type IcsSubscription,
   type PrivacyConsent,
 } from "./sessionPersistence";
-import { syncRecommenderUser } from "./recommenderApi";
+import { fetchRecipeStates, fetchSharedRecipe, syncRecommenderUser, type RecipeState } from "./recommenderApi";
+import { isVerified, mealById } from "./utils";
+import { recipeShareToken, shareIdForRecipe } from "./recipeShare";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
 import {
   completeDeadlineFoodEmailLinkSignIn,
@@ -56,6 +58,11 @@ function screenFromLocation(): Screen | null {
 
   if (window.location.pathname.replace(/\/$/, "") === PRIVACY_POLICY_URL) {
     return "privacy-policy";
+  }
+
+  // Deep link to a single recipe by its public share slug (#213).
+  if (recipeShareToken(window.location.hash)) {
+    return "recipe-detail";
   }
 
   const value = window.location.hash.replace("#/", "") as Screen;
@@ -145,6 +152,23 @@ export function DeadlineFoodApp() {
   const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [privacyConsent, setPrivacyConsentState] = useState<PrivacyConsent | undefined>(undefined);
   const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
+  // A recipe fetched from a `#/recipe/<shareId>` deep link that the viewer does
+  // not already have locally (e.g. a friend's shared community recipe) (#213).
+  const [sharedRecipe, setSharedRecipe] = useState<Meal | null>(null);
+  // Resolution state for a `#/recipe/<shareId>` deep link the viewer doesn't
+  // have locally: "loading" while fetching, "unavailable" when it can't be
+  // resolved (unpublished/deleted/broken link or backend error). Prevents the
+  // detail screen from falling back to the default recipe (#213 follow-up).
+  const [sharedRecipeStatus, setSharedRecipeStatus] = useState<"idle" | "loading" | "unavailable">(() => {
+    // Cold-load on a deep link the viewer doesn't obviously have: start in
+    // "loading" so the default recipe never flashes before the resolver runs.
+    if (typeof window === "undefined") return "idle";
+    const token = recipeShareToken(window.location.hash);
+    return token && shareIdForRecipe(selectedMealId) !== token ? "loading" : "idle";
+  });
+  // Bumped on every hashchange/popstate so the deep-link resolver re-runs even
+  // when navigating between two recipe URLs (the screen stays "recipe-detail").
+  const [locationTick, setLocationTick] = useState(0);
   const [calendarSkipped, setCalendarSkipped] = useState(false);
   // Auto-planning (issue #66): the signature/timestamp the current plan was
   // generated from, so we can detect when it has gone stale.
@@ -172,14 +196,14 @@ export function DeadlineFoodApp() {
     setPrivacyConsentState(consent);
   }, [enableSessionPersistence]);
 
-  const navigateScreen = useCallback((nextScreen: Screen) => {
+  const navigateScreen = useCallback((nextScreen: Screen, url?: string) => {
     if (screen === nextScreen) return;
     if (nextScreen !== "recipes") setDiscoverContext(null);
     enableSessionPersistence();
     routeHistory.current = [...routeHistory.current, screen].slice(-20);
     syncPreviousScreen();
     pendingHashScreen.current = nextScreen;
-    window.history.pushState({ screen: nextScreen }, "", urlForScreen(nextScreen));
+    window.history.pushState({ screen: nextScreen }, "", url ?? urlForScreen(nextScreen));
     setScreen(nextScreen);
   }, [enableSessionPersistence, screen, syncPreviousScreen]);
 
@@ -327,6 +351,7 @@ export function DeadlineFoodApp() {
 
   useEffect(() => {
     function onLocationChange() {
+      setLocationTick((tick) => tick + 1);
       const nextScreen = screenFromLocation();
       if (nextScreen) {
         if (pendingHashScreen.current === nextScreen) {
@@ -780,18 +805,47 @@ export function DeadlineFoodApp() {
     registerSessionMeals(savedRecipes);
   }, [savedRecipes]);
 
-  // Saved (non-owned) recipes whose creator has since unpublished them — i.e. the
-  // ID is absent from the hydrated public catalogue. Gate on catalogueVersion so
-  // we never flag before/if Firestore hydration completes.
-  const unpublishedSavedIds = useMemo(() => {
-    const ids = new Set<string>();
-    if (catalogueVersion === 0) return ids;
+  // Community recipes the user saved or planned that have dropped out of the
+  // public catalogue (their owner unpublished or deleted them). We can't tell
+  // "unpublished" (still usable) from "deleted" (gone) from catalogue absence
+  // alone, so reconcile their current state with the backend. Gate on
+  // catalogueVersion so we never flag before Firestore hydration completes.
+  const unlistedCommunityIds = useMemo(() => {
+    if (catalogueVersion === 0) return [] as string[];
     const catalogueIds = new Set(getRecipeCatalogue().map((meal) => meal.id));
-    for (const meal of discoverSaved) {
-      if (!meal.isUserCreated && !catalogueIds.has(meal.id)) ids.add(meal.id);
+    const ids = new Set<string>();
+    const consider = (id: string | undefined, meal: Meal | undefined) => {
+      if (!id || catalogueIds.has(id)) return;
+      // Skip the user's own recipes and curated seeds — only other people's
+      // recipes can be unpublished/deleted out from under the user.
+      if (meal && (meal.isUserCreated || isVerified(meal))) return;
+      ids.add(id);
+    };
+    for (const meal of discoverSaved) consider(meal.id, meal);
+    for (const entry of plan) {
+      for (const planMeal of entry.meals) consider(planMeal.mealId, mealById(planMeal.mealId, customRecipes));
     }
-    return ids;
-  }, [discoverSaved, catalogueVersion]);
+    return [...ids];
+  }, [discoverSaved, plan, customRecipes, catalogueVersion]);
+
+  const [recipeStates, setRecipeStates] = useState<Record<string, RecipeState>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchRecipeStates(unlistedCommunityIds)
+      .then((states) => { if (!cancelled) setRecipeStates(states); })
+      .catch((error) => { console.warn("Recipe states could not be loaded.", error); });
+    return () => { cancelled = true; };
+  }, [unlistedCommunityIds]);
+
+  const deletedRecipeIds = useMemo(
+    () => new Set(Object.keys(recipeStates).filter((id) => recipeStates[id] === "deleted")),
+    [recipeStates],
+  );
+  const unpublishedRecipeIds = useMemo(
+    () => new Set(Object.keys(recipeStates).filter((id) => recipeStates[id] === "unpublished")),
+    [recipeStates],
+  );
 
   const currentPlanSignature = useMemo(
     () => computePlanSignature({ prefs, savedRecipes, calendarEvents, deadlines }),
@@ -891,8 +945,65 @@ export function DeadlineFoodApp() {
   function openRecipe(mealId: string) {
     track("recipe_viewed", { meal_id: mealId, source_screen: activeScreen });
     setSelectedMealId(mealId);
-    navigateScreen("recipe-detail");
+    setSharedRecipe(null);
+    setSharedRecipeStatus("idle");
+    // Deep-linkable, shareable URL keyed by the recipe's public share slug (#213).
+    navigateScreen("recipe-detail", `/#/recipe/${shareIdForRecipe(mealId)}`);
   }
+
+  // Resolve a `#/recipe/<shareId>` deep link: prefer a locally-known recipe,
+  // otherwise fetch the shared recipe from the backend (#213). State updates are
+  // made inside promise callbacks so the URL→state sync stays off the
+  // synchronous effect body.
+  useEffect(() => {
+    if (screen !== "recipe-detail") return;
+    const token = recipeShareToken(window.location.hash);
+    if (!token) return;
+    // Already showing the right recipe (e.g. arrived here via openRecipe).
+    if (shareIdForRecipe(selectedMealId) === token) return;
+
+    let cancelled = false;
+    const candidates = [...customRecipes, ...discoverSaved, ...planMeals, ...getRecipeCatalogue()];
+    const local = candidates.find((meal) => shareIdForRecipe(meal.id) === token);
+
+    if (local) {
+      Promise.resolve().then(() => {
+        if (cancelled) return;
+        setSharedRecipe(null);
+        setSharedRecipeStatus("idle");
+        setSelectedMealId(local.id);
+      });
+      return () => { cancelled = true; };
+    }
+
+    // Foreign recipe: show a loading state rather than the default recipe while
+    // we resolve it, so a slow/failed fetch never surfaces the wrong recipe.
+    Promise.resolve().then(() => { if (!cancelled) setSharedRecipeStatus("loading"); });
+
+    fetchSharedRecipe(token)
+      .then((fetched) => {
+        if (cancelled) return;
+        if (fetched) {
+          setSharedRecipe(fetched);
+          setSharedRecipeStatus("idle");
+          setSelectedMealId(fetched.id);
+        } else {
+          // 404 — unpublished, deleted, or a broken link.
+          setSharedRecipe(null);
+          setSharedRecipeStatus("unavailable");
+        }
+      })
+      .catch((error) => {
+        // Network/backend error — still don't fall back to the default recipe.
+        console.warn("Shared recipe could not be loaded.", error);
+        if (!cancelled) {
+          setSharedRecipe(null);
+          setSharedRecipeStatus("unavailable");
+        }
+      });
+
+    return () => { cancelled = true; };
+  }, [screen, locationTick, catalogueVersion, selectedMealId, customRecipes, discoverSaved, planMeals]);
 
   function openAddToPlan(mealId: string) {
     track("recipe_add_to_plan_clicked", { meal_id: mealId, source_screen: activeScreen });
@@ -988,12 +1099,12 @@ export function DeadlineFoodApp() {
 
   return (
     <Shell screen={activeScreen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
-      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarWarning={calendarContextWarning} calendarSkipped={calendarSkipped} />}
+      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarWarning={calendarContextWarning} calendarSkipped={calendarSkipped} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} />}
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} prefs={prefs} setScreen={navigateScreen} track={track} />}
-      {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} calendarWarning={calendarContextWarning} />}
-      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} unpublishedSavedIds={unpublishedSavedIds} track={track} />}
+      {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} calendarWarning={calendarContextWarning} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} />}
+      {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} setCalendarSkipped={setCalendarSkipped} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onLogout={logoutAccount} onDeleteAccount={deleteAccount} track={track} />}
-      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} unpublishedSavedIds={unpublishedSavedIds} track={track} unitSystem={prefs.unitSystem} />}
+      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} sharedRecipe={sharedRecipe} account={account} sharedRecipeStatus={sharedRecipeStatus} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} unitSystem={prefs.unitSystem} />}
     </Shell>
   );
 }

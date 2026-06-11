@@ -104,7 +104,7 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await expect(page.getByRole("button", { name: /use selected/i })).toBeVisible();
   await expect(page.getByText(/after/i)).toBeVisible();
   await page.getByRole("button", { name: /use selected/i }).click();
-  await expect(page.getByText("Rescued")).toBeVisible();
+  await expect(page.getByText("Swapped").first()).toBeVisible();
 
   await page.getByRole("button", { name: "Recipes", exact: true }).click();
   await page.getByRole("button", { name: "Add Recipe", exact: true }).click();
