@@ -21,7 +21,7 @@ import {
   type IcsSubscription,
   type PrivacyConsent,
 } from "./sessionPersistence";
-import { fetchRecipeStates, fetchSharedRecipe, syncRecommenderUser, type RecipeState } from "./recommenderApi";
+import { fetchRecipeStates, fetchRecommenderRecommendations, fetchSharedRecipe, syncRecommenderUser, type RecipeState } from "./recommenderApi";
 import { isVerified, mealById } from "./utils";
 import { recipeShareToken, shareIdForRecipe } from "./recipeShare";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
@@ -230,6 +230,46 @@ export function DeadlineFoodApp() {
       cancelled = true;
     };
   }, [hasPrivacyConsent, onboarded]);
+
+  // Prefetch recommender suggestions at app level so the meal-swap modal's
+  // "You might also like" section has data without the user having visited
+  // Discover first (#215). Populates the same state DiscoverScreen reads, using
+  // the SAME contextKey order so Discover skips its own first-load fetch.
+  useEffect(() => {
+    if (!onboarded || !hasPrivacyConsent) return;
+    const contextKey = JSON.stringify({ deadlines, prefs, sessionId });
+    // Once any state exists for this context (set by this prefetch or by
+    // DiscoverScreen — including its "exhausted" empty queue), leave it alone.
+    // Only prefetch when the context is new/stale, so we never fight Discover's
+    // consumable queue or resurrect an exhausted one. On prefetch failure no
+    // state is written, so the contextKey stays stale and a later render retries.
+    if (discoverRecommendationState.contextKey === contextKey) return;
+
+    let cancelled = false;
+    const controller = new AbortController();
+    const excludeIds = [...new Set([
+      ...discoverSaved.map((m) => m.id),
+      ...discoverRejected.map((m) => m.id),
+      ...discoverReviewedRecipeIds,
+      ...customRecipes.map((m) => m.id),
+    ])];
+    fetchRecommenderRecommendations({ sessionId, prefs, deadlines, excludeIds, count: 20, signal: controller.signal })
+      .then((recipes) => {
+        // Purely additive: only write on success with recipes, so a failed/empty
+        // prefetch never blocks DiscoverScreen's own first-load.
+        if (!cancelled && recipes.length > 0) {
+          setDiscoverRecommendationState({ contextKey, recipes, status: "ready" });
+        }
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) console.warn("Swap suggestions could not be prefetched.", error);
+      });
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [onboarded, hasPrivacyConsent, deadlines, prefs, sessionId, discoverSaved, discoverRejected, discoverReviewedRecipeIds, customRecipes, discoverRecommendationState]);
 
   const navigateBack = useCallback(() => {
     const fallbackScreen: Screen = "dashboard";
