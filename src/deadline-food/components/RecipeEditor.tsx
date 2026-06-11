@@ -105,12 +105,13 @@ function mealToForm(meal: Meal): EditorForm {
   // Recover the original servings/total cost from an auto-generated note so the
   // note can be rebuilt from the edited price on save.
   const portion = parsePortionNote(meal.note);
+  const servings = meal.servings ?? portion?.servings ?? 1;
   return {
     name: meal.name,
     time: meal.time,
     price: meal.price,
-    totalCost: portion?.totalCost ?? meal.price,
-    servings: meal.servings ?? portion?.servings ?? 1,
+    totalCost: portion?.totalCost ?? Number((meal.price * servings).toFixed(2)),
+    servings,
     ingredients: ingredientDraftsFromIngredients(meal.ingredients),
     tags: [...meal.mealSlots, ...meal.tags],
     allergens: meal.allergens.join(", "),
@@ -259,9 +260,9 @@ function TagEditor({
         className="flex min-h-[40px] cursor-text flex-wrap gap-1.5 rounded-lg border border-stone-200 bg-white p-2 focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-600/20"
         onClick={() => inputRef.current?.focus()}
       >
-        {values.map((tag) => (
+        {values.map((tag, tagIndex) => (
           <span
-            key={tag}
+            key={`${tag}-${tagIndex}`}
             className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800"
           >
             {tag}
@@ -370,8 +371,13 @@ export function RecipeEditor({
   const hasErrors = errors.name || errors.ingredients || errors.servings || errors.totalCost;
 
   const mealId = meal?.id;
-  const triggerNutritionFetch = useCallback(
-    (sanitised: RecipeIngredient[], source: "auto" | "manual") => {
+  const estimateNutritionFromIngredients = useCallback(
+    (sanitised: RecipeIngredient[], trigger: "auto" | "manual") => {
+      if (sanitised.length === 0) {
+        setNutritionStatus("Add ingredients to estimate nutrition");
+        return;
+      }
+
       if (cancelFetchRef.current) cancelFetchRef.current.cancelled = true;
       const signal = { cancelled: false };
       cancelFetchRef.current = signal;
@@ -399,7 +405,7 @@ export function RecipeEditor({
             ingredient_count: sanitised.length,
             matched_count: nutrition.source?.matchedIngredients?.length ?? 0,
             missing_count: missing.length,
-            trigger: source,
+            trigger,
           });
         })
         .catch((error: unknown) => {
@@ -420,17 +426,23 @@ export function RecipeEditor({
       setAttempted(true);
       return;
     }
-    const estimate = estimateRecipeCost(ingredients);
-    setForm((prev) => ({ ...prev, totalCost: estimate }));
+    const estimatedTotal = estimateRecipeCost(ingredients);
+    const estimatedPrice = Number((estimatedTotal / servings).toFixed(2));
+    setForm((prev) => ({
+      ...prev,
+      price: estimatedPrice,
+      totalCost: estimatedTotal,
+    }));
     track("recipe_cost_estimated", {
       ...(meal ? { meal_id: meal.id } : {}),
       ingredient_count: ingredients.length,
-      estimated_total: estimate,
+      estimated_total: estimatedTotal,
+      estimated_price: estimatedPrice,
     });
   }
 
   function estimateNutrition() {
-    triggerNutritionFetch(ingredients, "manual");
+    estimateNutritionFromIngredients(ingredients, "manual");
   }
 
   useEffect(() => {
@@ -449,7 +461,7 @@ export function RecipeEditor({
     autoNutritionTimerRef.current = window.setTimeout(() => {
       autoNutritionTimerRef.current = null;
       if (sanitised.length === 0) return;
-      triggerNutritionFetch(sanitised, "auto");
+      estimateNutritionFromIngredients(sanitised, "auto");
     }, 1500);
 
     return () => {
@@ -458,7 +470,7 @@ export function RecipeEditor({
         autoNutritionTimerRef.current = null;
       }
     };
-  }, [form.ingredients, triggerNutritionFetch]);
+  }, [estimateNutritionFromIngredients, form.ingredients]);
 
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null;
@@ -547,13 +559,25 @@ export function RecipeEditor({
   const hasHeader = title || onCancel;
 
   const nutritionStatusText = nutritionLoading
-    ? "Auto-filling from ingredients…"
+    ? "Auto-filling from ingredients..."
     : ingredients.length === 0
       ? "Add ingredients to auto-fill nutrition"
       : nutritionStatus
         ?? (form.nutritionSource
           ? nutritionSourceSummary(form.nutritionSource)
           : "Will auto-fill when you stop editing ingredients");
+  const costEstimateButton = (
+    <AppButton
+      type="button"
+      variant="secondary"
+      onClick={estimateCostFromIngredients}
+      disabled={ingredients.length === 0}
+      title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
+      className="shrink-0"
+    >
+      <RefreshCcw size={16} /> Estimate cost
+    </AppButton>
+  );
 
   return (
     <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6">
@@ -606,7 +630,7 @@ export function RecipeEditor({
           required
           value={form.name}
           onChange={(name) => setForm({ ...form, name })}
-          placeholder="e.g. Microwave bean burrito"
+          placeholder="e.g. Lentil rice bowl"
           error={attempted && errors.name}
           errorMessage="Please enter a recipe name"
         />
@@ -629,13 +653,18 @@ export function RecipeEditor({
               errorMessage="Must be at least 1"
             />
           ) : (
-            <Field
-              label="Cost / portion (£)"
-              type="number"
-              step="0.05"
-              value={form.price}
-              onChange={(price) => setForm({ ...form, price: +price })}
-            />
+            <div className="flex flex-wrap items-end gap-2">
+              <div className="min-w-[12rem] flex-1">
+                <Field
+                  label="Cost / portion (£)"
+                  type="number"
+                  step="0.05"
+                  value={form.price}
+                  onChange={(price) => setForm({ ...form, price: +price })}
+                />
+              </div>
+              {costEstimateButton}
+            </div>
           )}
         </div>
 
@@ -654,15 +683,7 @@ export function RecipeEditor({
                   errorMessage="Please enter a cost"
                 />
               </div>
-              <AppButton
-                type="button"
-                variant="secondary"
-                onClick={estimateCostFromIngredients}
-                disabled={ingredients.length === 0}
-                title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
-              >
-                <RefreshCcw size={16} /> Estimate from ingredients
-              </AppButton>
+              {costEstimateButton}
             </div>
             <p className="text-xs text-stone-500">
               {ingredients.length === 0
@@ -701,7 +722,7 @@ export function RecipeEditor({
               disabled={nutritionLoading || ingredients.length === 0}
               className="shrink-0 px-3 py-1.5 text-xs"
             >
-              <RefreshCcw size={13} /> {nutritionLoading ? "Filling…" : "Refresh"}
+              <RefreshCcw size={13} /> {nutritionLoading ? "Filling..." : "Refresh"}
             </AppButton>
           </div>
         </div>

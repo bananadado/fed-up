@@ -12,7 +12,11 @@
  */
 
 import type { OpenFoodFactsProduct } from "./openfoodfacts.ts";
-import { findProductForIngredient } from "./openfoodfacts.ts";
+import {
+  curatedNutritionProductForIngredient,
+  estimateIngredientNutrition,
+  findProductForIngredient,
+} from "./openfoodfacts.ts";
 import { findUsdaProductForIngredient } from "./usda.ts";
 
 export type ResolveOptions = {
@@ -43,10 +47,16 @@ export async function resolveIngredientProduct(
   name: string,
   options: ResolveOptions,
 ): Promise<ResolvedProduct> {
+  const curated = curatedNutritionProductForIngredient(name);
+  if (curated) return { product: curated, triedOff: false };
+
+  const probe = { name, quantity: 100, unit: "g" };
   const usda = await findUsdaProductForIngredient(name, async () => {
     await sleep(options.usdaMs);
   });
-  if (usda) return { product: usda, triedOff: false };
+  if (usda && estimateIngredientNutrition(probe, usda)) {
+    return { product: usda, triedOff: false };
+  }
 
   if (!options.useOpenFoodFacts) return { product: null, triedOff: false };
 

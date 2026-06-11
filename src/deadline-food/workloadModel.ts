@@ -1,7 +1,15 @@
 import type { Deadline } from "./types";
 
+const academicEventPatterns = [
+  /\b(coursework|assignment|assessment|submission|submit|deadline|due|hand-?in)\b/i,
+  /\b(exam|midterm|final|quiz|test|viva)\b/i,
+  /\b(lecture|tutorial|seminar|lab|practical|workshop|class|revision|study)\b/i,
+  /\b(module|course|supervision|supervisor|office hours|dissertation|thesis)\b/i,
+  /\b(project|presentation|essay|report|write-?up|problem sheet|review)\b/i,
+];
+
 export function classifyImportedEvent(title: string): Deadline["eventType"] {
-  return /coursework|exam|quiz|deadline|submission|review|presentation|project/i.test(title) ? "academic" : "general";
+  return academicEventPatterns.some((pattern) => pattern.test(title)) ? "academic" : "general";
 }
 
 export function workloadScore(deadline: Deadline): number {

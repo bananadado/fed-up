@@ -34,7 +34,11 @@ export function eventDisplayFields(event: CalendarEvent, index: number): EventDi
     time = startDate!.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
   }
 
-  const rawDate = valid ? startDate!.toISOString().slice(0, 10) : undefined;
+  // Local (not UTC) date so `${rawDate}T${time}` reconstructs the same instant
+  // as the source event when deadlines are turned back into context events.
+  const rawDate = valid
+    ? `${startDate!.getFullYear()}-${String(startDate!.getMonth() + 1).padStart(2, "0")}-${String(startDate!.getDate()).padStart(2, "0")}`
+    : undefined;
 
   return { id: `cal-${event.source}-${index}`, title: event.title, date, time, rawDate };
 }

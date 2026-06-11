@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test";
 
+import { defaultPlanningPriorities } from "./data";
 import { deadlineStressFromDeadlines, fetchRecipeStates, fetchRecommenderRecommendations, resolveDeadlineStress, toMeal, unpublishRecommenderRecipe } from "./recommenderApi";
 import type { Deadline } from "./types";
 
@@ -83,6 +84,8 @@ describe("recommender API helpers", () => {
         availableIngredients: [],
         planningHorizonDays: 21,
         planRegenMode: "prompt",
+        planningPriorities: defaultPlanningPriorities,
+        nutritionGoals: { dailyCalories: 2100, dailyProtein: 90 },
         unitSystem: "metric",
         prepReminderTime: "22:00",
       },
@@ -127,6 +130,8 @@ describe("recommender API helpers", () => {
         availableIngredients: [],
         planningHorizonDays: 21,
         planRegenMode: "prompt",
+        planningPriorities: defaultPlanningPriorities,
+        nutritionGoals: { dailyCalories: 2100, dailyProtein: 90 },
         unitSystem: "metric",
         prepReminderTime: "22:00",
       },

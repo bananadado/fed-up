@@ -2,7 +2,8 @@ import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
 import { type ContextEventInput } from "./calendarImport";
 import { deadlineToContextEvent } from "./calendarImport/deadlineContext";
-import { registerPlanMeals } from "./recipeCatalogue";
+import { getRecipeCatalogue, registerPlanMeals } from "./recipeCatalogue";
+import { repairPlanVariety } from "./planVariety";
 import type { CalendarEvent, Deadline, Meal, PlanEntry, Preferences } from "./types";
 
 export type GenerateAutoPlanInput = {
@@ -15,7 +16,28 @@ export type GenerateAutoPlanInput = {
   deadlines: Deadline[];
   /** Recipe ids to keep out of the recommender gap-fill (e.g. rejected). */
   excludeIds?: string[];
+  /** Explicit regeneration variant; only affects backend tie-breaks. */
+  planVariant?: number;
+  previousPlan?: PlanEntry[];
   signal?: AbortSignal;
+};
+
+export type AutoPlanQuality = {
+  score: number;
+  coverageScore: number;
+  nutritionScore: number;
+  varietyScore: number;
+  budgetScore: number;
+  shoppingSimplicityScore: number;
+  ingredientReuseScore: number;
+  regenerationChangeScore: number;
+  weeklyCostPence: number;
+  uniqueIngredientCount: number;
+  reusedIngredientGroups: number;
+  changedFlexibleSlots: number;
+  uniqueLunchDinnerCount: number;
+  maxConsecutiveLunchDinnerRepeats: number;
+  hardVarietyViolationCount: number;
 };
 
 // Small deterministic FNV-1a hash so the signature stays short and stable
@@ -38,8 +60,8 @@ export function computePlanSignature(input: {
   savedRecipes: Meal[];
   calendarEvents: CalendarEvent[];
   deadlines: Deadline[];
-  selectedSources: string[];
 }): string {
+  const priorities = input.prefs.planningPriorities;
   const parts = [
     `h:${input.prefs.planningHorizonDays}`,
     `t:${input.prefs.maxTime}`,
@@ -50,9 +72,15 @@ export function computePlanSignature(input: {
     `di:${[...input.prefs.dislikes].sort().join(",")}`,
     `al:${[...input.prefs.allergens].sort().join(",")}`,
     `sr:${input.savedRecipes.map((m) => m.id).sort().join(",")}`,
-    `ce:${input.calendarEvents.map((e) => `${e.start}|${e.title}`).sort().join(",")}`,
-    `dl:${input.deadlines.map((d) => `${d.rawDate ?? ""}|${d.urgency}`).sort().join(",")}`,
-    `ss:${[...input.selectedSources].sort().join(",")}`,
+    `ce:${input.calendarEvents.map((e) => `${e.start}|${e.end}|${e.allDay}|${e.title}`).sort().join(",")}`,
+    `dl:${input.deadlines.map((d) => `${d.rawDate ?? ""}|${d.time}|${d.title}|${d.eventType}|${d.urgency}|${d.effortHours}`).sort().join(",")}`,
+    `pc:${priorities.batchCooking}`,
+    `br:${priorities.breakfastRoutine}`,
+    `mr:${priorities.mealRepeats}`,
+    `ir:${priorities.ingredientReuse}`,
+    `cf:${priorities.campusFallbacks}`,
+    `nc:${input.prefs.nutritionGoals.dailyCalories}`,
+    `np:${input.prefs.nutritionGoals.dailyProtein}`,
   ];
   return hash(parts.join(";"));
 }
@@ -60,21 +88,42 @@ export function computePlanSignature(input: {
 type AutoPlanResponse = {
   plan: PlanEntry[];
   meals: Meal[];
+  quality?: AutoPlanQuality;
   generatedAt: string;
 };
 
-function contextEvents(calendarEvents: CalendarEvent[], deadlines: Deadline[]): ContextEventInput[] {
-  if (calendarEvents.length > 0) {
-    return calendarEvents.map((event) => ({
+function contextEventKey(event: ContextEventInput): string {
+  const title = event.title.trim().toLowerCase();
+  // Deadline-derived starts are local-clock strings while calendar starts may
+  // carry a zone suffix, so compare the parsed instant rather than the string.
+  const parsed = new Date(event.start);
+  if (!Number.isNaN(parsed.getTime())) {
+    return `${Math.floor(parsed.getTime() / 60_000)}|${title}`;
+  }
+  return `${event.start}|${title}`;
+}
+
+export function buildAutoPlanContextEvents(calendarEvents: CalendarEvent[], deadlines: Deadline[]): ContextEventInput[] {
+  const events: ContextEventInput[] = deadlines
+    .map(deadlineToContextEvent)
+    .filter((event): event is ContextEventInput => event !== null);
+
+  for (const event of calendarEvents) {
+    events.push({
       title: event.title,
       start: event.start,
       end: event.end || null,
       all_day: event.allDay,
-    }));
+    });
   }
-  return deadlines
-    .map(deadlineToContextEvent)
-    .filter((event): event is ContextEventInput => event !== null);
+
+  const seen = new Set<string>();
+  return events.filter((event) => {
+    const key = contextEventKey(event);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 /**
@@ -86,7 +135,7 @@ function contextEvents(calendarEvents: CalendarEvent[], deadlines: Deadline[]): 
  */
 export async function generateAutoPlan(
   input: GenerateAutoPlanInput,
-): Promise<{ plan: PlanEntry[]; meals: Meal[]; generatedAt: string }> {
+): Promise<{ plan: PlanEntry[]; meals: Meal[]; generatedAt: string; quality?: AutoPlanQuality }> {
   const response = await fetch(firebaseFunctionUrl("deadlineFoodAutoPlan", "/api/deadline-food/auto-plan"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -94,12 +143,18 @@ export async function generateAutoPlan(
       user_id: input.sessionId,
       horizonDays: input.prefs.planningHorizonDays,
       budget: input.prefs.budget,
-      contextEvents: contextEvents(input.calendarEvents, input.deadlines),
+      contextEvents: buildAutoPlanContextEvents(input.calendarEvents, input.deadlines),
       savedRecipes: input.savedRecipes,
       excludeIds: input.excludeIds ?? [],
+      planVariant: input.planVariant,
+      previousPlan: input.previousPlan ?? [],
       dietary: input.prefs.dietary,
+      likes: input.prefs.likes,
       dislikes: input.prefs.dislikes,
       allergens: input.prefs.allergens,
+      nutritionGoals: input.prefs.nutritionGoals,
+      planningPriorities: input.prefs.planningPriorities,
+      availableIngredients: input.prefs.availableIngredients,
     }),
     signal: input.signal,
   });
@@ -109,7 +164,16 @@ export async function generateAutoPlan(
   }
 
   const data = (await response.json()) as AutoPlanResponse;
+  const plan = Array.isArray(data.plan) ? data.plan : [];
   const meals = Array.isArray(data.meals) ? data.meals : [];
-  registerPlanMeals(meals);
-  return { plan: Array.isArray(data.plan) ? data.plan : [], meals, generatedAt: data.generatedAt };
+  const repaired = repairPlanVariety({
+    plan,
+    backendMeals: meals,
+    savedRecipes: input.savedRecipes,
+    catalogueMeals: getRecipeCatalogue(),
+    prefs: input.prefs,
+    variantSeed: input.planVariant,
+  });
+  registerPlanMeals(repaired.meals);
+  return { plan: repaired.plan, meals: repaired.meals, generatedAt: data.generatedAt, quality: data.quality };
 }

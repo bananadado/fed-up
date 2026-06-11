@@ -41,6 +41,17 @@ export async function listRecipes(baseUrl: string): Promise<RecipeOut[]> {
   return (await res.json()) as RecipeOut[];
 }
 
+export async function deleteRecipe(baseUrl: string, recipeId: string): Promise<void> {
+  const res = await fetch(`${baseUrl}/recipes/${encodeURIComponent(recipeId)}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
+  if (!res.ok && res.status !== 404) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Recommender DELETE /recipes/${recipeId} failed ${res.status}: ${body}`);
+  }
+}
+
 /** Upsert recipes in chunks. `onProgress` reports cumulative written count. */
 export async function bulkUpsertRecipes(
   baseUrl: string,

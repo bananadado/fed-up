@@ -59,6 +59,237 @@ export type OpenFoodFactsProduct = {
   };
 };
 
+const zeroMacroNutriments: NonNullable<OpenFoodFactsProduct["nutriments"]> = {
+  "energy-kcal_100g": 0,
+  proteins_100g: 0,
+  carbohydrates_100g: 0,
+  fat_100g: 0,
+};
+
+function usdaNutritionProduct(
+  code: string,
+  productName: string,
+  calories: number,
+  protein: number,
+  carbs: number,
+  fat: number,
+): OpenFoodFactsProduct {
+  return {
+    provider: "USDA",
+    code,
+    product_name: productName,
+    nutriments: {
+      "energy-kcal_100g": calories,
+      proteins_100g: protein,
+      carbohydrates_100g: carbs,
+      fat_100g: fat,
+    },
+  };
+}
+
+const curatedNutritionProducts: Record<string, OpenFoodFactsProduct> = {
+  salt: {
+    provider: "USDA",
+    code: "curated-salt",
+    product_name: "Salt",
+    nutriments: zeroMacroNutriments,
+  },
+  "sea salt": {
+    provider: "USDA",
+    code: "curated-salt",
+    product_name: "Salt",
+    nutriments: zeroMacroNutriments,
+  },
+  "table salt": {
+    provider: "USDA",
+    code: "curated-salt",
+    product_name: "Salt",
+    nutriments: zeroMacroNutriments,
+  },
+  "vegetable stock": {
+    provider: "USDA",
+    code: "curated-vegetable-stock",
+    product_name: "Vegetable stock, prepared",
+    nutriments: {
+      "energy-kcal_100g": 5,
+      proteins_100g: 0.1,
+      carbohydrates_100g: 1,
+      fat_100g: 0,
+    },
+  },
+  "vegetable broth": {
+    provider: "USDA",
+    code: "curated-vegetable-stock",
+    product_name: "Vegetable stock, prepared",
+    nutriments: {
+      "energy-kcal_100g": 5,
+      proteins_100g: 0.1,
+      carbohydrates_100g: 1,
+      fat_100g: 0,
+    },
+  },
+  chickpeas: {
+    provider: "USDA",
+    code: "curated-chickpeas-cooked",
+    product_name: "Chickpeas, cooked, boiled, drained",
+    nutriments: {
+      "energy-kcal_100g": 164,
+      proteins_100g: 8.86,
+      carbohydrates_100g: 27.42,
+      fat_100g: 2.59,
+    },
+  },
+  "garbanzo beans": {
+    provider: "USDA",
+    code: "curated-chickpeas-cooked",
+    product_name: "Chickpeas, cooked, boiled, drained",
+    nutriments: {
+      "energy-kcal_100g": 164,
+      proteins_100g: 8.86,
+      carbohydrates_100g: 27.42,
+      fat_100g: 2.59,
+    },
+  },
+  "dried chickpeas": {
+    provider: "USDA",
+    code: "curated-chickpeas-dry",
+    product_name: "Chickpeas, dry",
+    nutriments: {
+      "energy-kcal_100g": 378,
+      proteins_100g: 20.47,
+      carbohydrates_100g: 62.95,
+      fat_100g: 6.04,
+    },
+  },
+  "harissa spice": {
+    provider: "USDA",
+    code: "curated-harissa-spice",
+    product_name: "Harissa spice blend",
+    nutriments: {
+      "energy-kcal_100g": 282,
+      proteins_100g: 13.46,
+      carbohydrates_100g: 49.7,
+      fat_100g: 14.28,
+    },
+  },
+  "garlic powder": {
+    provider: "USDA",
+    code: "curated-garlic-powder",
+    product_name: "Spices, garlic powder",
+    nutriments: {
+      "energy-kcal_100g": 331,
+      proteins_100g: 16.55,
+      carbohydrates_100g: 72.73,
+      fat_100g: 0.73,
+    },
+  },
+  "garlic granules": {
+    provider: "USDA",
+    code: "curated-garlic-powder",
+    product_name: "Spices, garlic powder",
+    nutriments: {
+      "energy-kcal_100g": 331,
+      proteins_100g: 16.55,
+      carbohydrates_100g: 72.73,
+      fat_100g: 0.73,
+    },
+  },
+  water: usdaNutritionProduct("curated-water", "Water", 0, 0, 0, 0),
+  "boiling water": usdaNutritionProduct("curated-water", "Water", 0, 0, 0, 0),
+  "cold water": usdaNutritionProduct("curated-water", "Water", 0, 0, 0, 0),
+  "warm water": usdaNutritionProduct("curated-water", "Water", 0, 0, 0, 0),
+  "soda water": usdaNutritionProduct("curated-water", "Carbonated water", 0, 0, 0, 0),
+  "rose water": usdaNutritionProduct("curated-water", "Rose water", 0, 0, 0, 0),
+  potatoes: usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "new potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "baby new potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "small potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "charlotte potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "floury potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "jersey royal potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "potato starch": usdaNutritionProduct("curated-potato-starch", "Potato starch", 357, 0.1, 83.3, 0.1),
+  aubergine: usdaNutritionProduct("curated-eggplant-raw", "Eggplant, raw", 25, 0.98, 5.88, 0.18),
+  "baby aubergine": usdaNutritionProduct("curated-eggplant-raw", "Eggplant, raw", 25, 0.98, 5.88, 0.18),
+  "egg plants": usdaNutritionProduct("curated-eggplant-raw", "Eggplant, raw", 25, 0.98, 5.88, 0.18),
+  courgette: usdaNutritionProduct("curated-zucchini-raw", "Zucchini, raw", 17, 1.21, 3.11, 0.32),
+  courgettes: usdaNutritionProduct("curated-zucchini-raw", "Zucchini, raw", 17, 1.21, 3.11, 0.32),
+  "cherry tomatoes": usdaNutritionProduct("curated-tomatoes-raw", "Tomatoes, raw", 18, 0.88, 3.89, 0.2),
+  "chopped tomatoes": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  "canned tomatoes": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  "diced tomatoes": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  "tinned tomatos": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  "plum tomatoes": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  chilli: usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  chili: usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  chillies: usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  chilies: usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "red chilli": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "green chilli": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "birds-eye chillies": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "dried chillies": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "dried red chillies": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "chilli flakes": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "red chilli flakes": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "chilli powder": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "chili powder": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "red chilli powder": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "hot chilli powder": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "pul biber": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  paprika: usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "smoked paprika": usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "hot smoked paprika": usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "sweet smoked paprika": usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "smoky paprika": usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "curry powder": usdaNutritionProduct("curated-curry-powder", "Spices, curry powder", 325, 14.29, 55.83, 14.01),
+  "bay leaf": usdaNutritionProduct("curated-bay-leaf", "Spices, bay leaf", 313, 7.61, 74.97, 8.36),
+  "bay leaves": usdaNutritionProduct("curated-bay-leaf", "Spices, bay leaf", 313, 7.61, 74.97, 8.36),
+  "basil leaves": usdaNutritionProduct("curated-basil-raw", "Basil, fresh", 23, 3.15, 2.65, 0.64),
+  "fresh basil": usdaNutritionProduct("curated-basil-raw", "Basil, fresh", 23, 3.15, 2.65, 0.64),
+  "baby lettuce leaves": usdaNutritionProduct("curated-lettuce-raw", "Lettuce, raw", 15, 1.36, 2.87, 0.15),
+  "cabbage leaves": usdaNutritionProduct("curated-cabbage-raw", "Cabbage, raw", 25, 1.28, 5.8, 0.1),
+  "vine leaves": usdaNutritionProduct("curated-grape-leaves", "Grape leaves, raw", 93, 5.6, 17.3, 2.12),
+  "wild garlic leaves": usdaNutritionProduct("curated-garlic-raw", "Garlic, raw", 149, 6.36, 33.06, 0.5),
+  "lime leaves": usdaNutritionProduct("curated-bay-leaf", "Citrus leaves", 313, 7.61, 74.97, 8.36),
+  "makrut lime leaves": usdaNutritionProduct("curated-bay-leaf", "Citrus leaves", 313, 7.61, 74.97, 8.36),
+  "pandan leaves": usdaNutritionProduct("curated-water", "Pandan leaves", 0, 0, 0, 0),
+  "garlic clove": usdaNutritionProduct("curated-garlic-raw", "Garlic, raw", 149, 6.36, 33.06, 0.5),
+  "garlic cloves": usdaNutritionProduct("curated-garlic-raw", "Garlic, raw", 149, 6.36, 33.06, 0.5),
+  "peppercorns": usdaNutritionProduct("curated-black-pepper", "Spices, pepper, black", 251, 10.4, 64, 3.26),
+  "whole black peppercorns": usdaNutritionProduct("curated-black-pepper", "Spices, pepper, black", 251, 10.4, 64, 3.26),
+  "caraway seed": usdaNutritionProduct("curated-caraway-seed", "Spices, caraway seed", 333, 19.77, 49.9, 14.59),
+  "ground ginger": usdaNutritionProduct("curated-ground-ginger", "Spices, ginger, ground", 335, 8.98, 71.62, 4.24),
+  "ground cardomom": usdaNutritionProduct("curated-cardamom", "Spices, cardamom", 311, 10.76, 68.47, 6.7),
+  "ground annatto": usdaNutritionProduct("curated-annatto", "Spices, annatto seed", 345, 15.8, 52.3, 14.9),
+  "ground oats": usdaNutritionProduct("curated-oats", "Oats", 379, 13.15, 67.7, 6.52),
+  "black treacle": usdaNutritionProduct("curated-molasses", "Molasses", 290, 0, 74.73, 0.1),
+  "apple cider vinegar": usdaNutritionProduct("curated-cider-vinegar", "Vinegar, cider", 21, 0, 0.93, 0),
+  "malt vinegar": usdaNutritionProduct("curated-vinegar", "Vinegar", 18, 0, 0.04, 0),
+  "rice vinegar": usdaNutritionProduct("curated-rice-vinegar", "Rice vinegar", 18, 0, 0.04, 0),
+  "oat milk": usdaNutritionProduct("curated-oat-milk", "Oat milk", 48, 0.8, 6.7, 1.5),
+  "full fat yogurt": usdaNutritionProduct("curated-whole-yogurt", "Yogurt, plain, whole milk", 61, 3.47, 4.66, 3.25),
+  "full fat yoghurt": usdaNutritionProduct("curated-whole-yogurt", "Yogurt, plain, whole milk", 61, 3.47, 4.66, 3.25),
+  "full fat sour cream": usdaNutritionProduct("curated-sour-cream", "Sour cream", 193, 2.07, 4.63, 19.35),
+  "sour cream": usdaNutritionProduct("curated-sour-cream", "Sour cream", 193, 2.07, 4.63, 19.35),
+  "goats cheese": usdaNutritionProduct("curated-goat-cheese", "Cheese, goat", 364, 21.58, 0.12, 29.84),
+  "mozzarella balls": usdaNutritionProduct("curated-mozzarella", "Mozzarella", 280, 27.5, 3.1, 17.1),
+  "melted butter": usdaNutritionProduct("curated-butter", "Butter", 717, 0.85, 0.06, 81.11),
+  "self-raising flour": usdaNutritionProduct("curated-wheat-flour", "Wheat flour", 364, 10.33, 76.31, 0.98),
+  "chestnut mushroom": usdaNutritionProduct("curated-mushrooms", "Mushrooms, raw", 22, 3.09, 3.26, 0.34),
+  "petit pois": usdaNutritionProduct("curated-green-peas", "Peas, green, raw", 81, 5.42, 14.45, 0.4),
+  "raw tiger prawns": usdaNutritionProduct("curated-shrimp", "Shrimp, raw", 85, 20.1, 0, 0.5),
+  "turkey mince": usdaNutritionProduct("curated-ground-turkey", "Turkey, ground, raw", 148, 19.66, 0, 7.66),
+  swede: usdaNutritionProduct("curated-rutabaga", "Rutabaga, raw", 37, 1.08, 8.62, 0.16),
+  sardines: usdaNutritionProduct("curated-sardines", "Sardines", 208, 24.62, 0, 11.45),
+  fries: usdaNutritionProduct("curated-french-fries", "Potatoes, french fried", 312, 3.43, 41.44, 14.73),
+  "fillet of steak": usdaNutritionProduct("curated-beef-steak", "Beef steak, raw", 170, 20.0, 0, 10.0),
+  "water chestnut": usdaNutritionProduct("curated-water-chestnut", "Water chestnuts, raw", 97, 1.4, 23.94, 0.1),
+  "yellow masarepa": usdaNutritionProduct("curated-corn-flour", "Precooked corn flour", 360, 7.0, 79.0, 1.5),
+};
+
+export function curatedNutritionProductForIngredient(name: string): OpenFoodFactsProduct | null {
+  return curatedNutritionProducts[normalizeIngredientKey(name)] ?? null;
+}
+
 type OpenFoodFactsSearchResponse = {
   products?: OpenFoodFactsProduct[];
 };
@@ -160,14 +391,25 @@ export function estimateIngredientNutrition(
 
   if (
     caloriesPer100g === null ||
+    caloriesPer100g < 0 ||
+    caloriesPer100g > 950 ||
     typeof nutriments?.proteins_100g !== "number" ||
     typeof nutriments.carbohydrates_100g !== "number" ||
-    typeof nutriments.fat_100g !== "number"
+    typeof nutriments.fat_100g !== "number" ||
+    nutriments.proteins_100g < -1 ||
+    nutriments.proteins_100g > 100 ||
+    nutriments.carbohydrates_100g < -1 ||
+    nutriments.carbohydrates_100g > 100 ||
+    nutriments.fat_100g < -1 ||
+    nutriments.fat_100g > 100
   ) {
     return null;
   }
 
   const multiplier = grams / 100;
+  const proteinsPer100g = Math.max(0, nutriments.proteins_100g);
+  const carbsPer100g = Math.max(0, nutriments.carbohydrates_100g);
+  const fatPer100g = Math.max(0, nutriments.fat_100g);
 
   return {
     ingredient,
@@ -175,9 +417,9 @@ export function estimateIngredientNutrition(
     provider: product.provider ?? "OpenFoodFacts",
     grams,
     calories: caloriesPer100g * multiplier,
-    protein: nutriments.proteins_100g * multiplier,
-    carbs: nutriments.carbohydrates_100g * multiplier,
-    fat: nutriments.fat_100g * multiplier,
+    protein: proteinsPer100g * multiplier,
+    carbs: carbsPer100g * multiplier,
+    fat: fatPer100g * multiplier,
   };
 }
 

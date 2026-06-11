@@ -72,8 +72,10 @@ The browser never calls `backend/recommender-api` directly. Discover requests us
 calendar context and recommender ranking, then runs a deterministic allocator
 (`functions/src/autoPlan.ts`) that lays saved recipes (recommender gap-fill after)
 across the planning horizon — batch cooks on relaxed days seed leftovers onto busy
-days. Request: `{user_id, horizonDays, contextEvents[], savedRecipes[], excludeIds[],
-dislikes[], allergens[]}`. Response: `{plan: PlanEntry[], meals: Meal[], generatedAt}`.
+days, repeated breakfasts reduce decisions, and fallbacks are controlled by
+`planningPriorities`. Request: `{user_id, horizonDays, contextEvents[],
+savedRecipes[], excludeIds[], dislikes[], allergens[], planningPriorities}`.
+Response: `{plan: PlanEntry[], meals: Meal[], generatedAt}`.
 
 Firebase Functions attach `X-Deadline-Food-API-Key` when calling FastAPI. The shared
 `RECOMMENDER_API_KEY` must be configured in both Firebase Secret Manager and the
@@ -295,6 +297,8 @@ Content-Type: application/json
   }
 }
 ```
+
+`selectedSources` is retained for older sessions. Current planning behaviour is controlled by `preferences.planningPriorities`.
 
 Firebase:
 

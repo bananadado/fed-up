@@ -55,6 +55,18 @@ const UNIT_ALIASES = new Map<string, string>([
   ["servings", "serving"],
   ["pinches", "pinch"],
   ["sprigs", "sprig"],
+  ["clove", "clove"],
+  ["cloves", "clove"],
+  ["bulb", "bulb"],
+  ["bulbs", "bulb"],
+  ["head", "head"],
+  ["heads", "head"],
+  ["bunch", "bunch"],
+  ["bunches", "bunch"],
+  ["leaf", "leaf"],
+  ["leaves", "leaf"],
+  ["stalk", "stalk"],
+  ["stalks", "stalk"],
   ["sm", "small"],
   ["med", "medium"],
   ["lg", "large"],
@@ -84,6 +96,12 @@ const COUNT_UNIT_DEFAULT_GRAMS: Record<string, number> = {
   serving: 100,
   pinch: 1,
   sprig: 1,
+  clove: 5,
+  bulb: 50,
+  head: 50,
+  bunch: 30,
+  leaf: 1,
+  stalk: 40,
 };
 const DEFAULT_SERVING_GRAMS = 100;
 
@@ -96,6 +114,10 @@ const SIZE_UNIT_MULTIPLIER: Record<string, number> = {
 export const typicalIngredientGrams: Record<string, number> = {
   apple: 150,
   avocado: 160,
+  aubergine: 300,
+  aubergines: 300,
+  eggplant: 300,
+  eggplants: 300,
   "bay leaf": 1,
   "bay leaves": 1,
   banana: 120,
@@ -122,6 +144,12 @@ export const typicalIngredientGrams: Record<string, number> = {
   flatbread: 70,
   garlic: 5,
   "garlic clove": 5,
+  "garlic cloves": 5,
+  "garlic bulb": 50,
+  "garlic bulbs": 50,
+  "coriander leaves": 15,
+  coriander: 15,
+  cilantro: 15,
   "galangal slice": 5,
   "galangal slices": 5,
   "jacket potato": 250,
@@ -163,6 +191,7 @@ export const typicalIngredientGrams: Record<string, number> = {
   "spring onions": 15,
   "star anise": 1,
   tomato: 80,
+  tomatoes: 80,
   "tortilla wrap": 60,
   wrap: 60,
   "vine leaf": 4,
@@ -190,8 +219,36 @@ export function normalizeIngredientUnit(unit: string): string {
   return normalized;
 }
 
+const UNICODE_FRACTIONS: Record<string, string> = {
+  "¼": "1/4",
+  "½": "1/2",
+  "¾": "3/4",
+  "⅐": "1/7",
+  "⅑": "1/9",
+  "⅒": "1/10",
+  "⅓": "1/3",
+  "⅔": "2/3",
+  "⅕": "1/5",
+  "⅖": "2/5",
+  "⅗": "3/5",
+  "⅘": "4/5",
+  "⅙": "1/6",
+  "⅚": "5/6",
+  "⅛": "1/8",
+  "⅜": "3/8",
+  "⅝": "5/8",
+  "⅞": "7/8",
+};
+
+function normalizeUnicodeFractions(value: string): string {
+  return value.replace(/[¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞]/g, (fraction) => {
+    const ascii = UNICODE_FRACTIONS[fraction] ?? fraction;
+    return ` ${ascii} `;
+  }).replace(/\s+/g, " ").trim();
+}
+
 export function parseQuantity(raw: string): number {
-  const trimmed = raw.trim();
+  const trimmed = normalizeUnicodeFractions(raw);
   const mixed = trimmed.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
   if (mixed) {
     const whole = Number(mixed[1]);
@@ -258,11 +315,14 @@ export function gramsForIngredient(ingredient: MeasurableIngredient): number {
 }
 
 export function parseMeasureToIngredient(name: string, measure: string): ParsedIngredientMeasure {
-  const normalizedMeasure = normalizeText(measure);
+  const normalizedMeasure = normalizeText(normalizeUnicodeFractions(measure));
   if (
     !normalizedMeasure ||
     normalizedMeasure === "to taste" ||
+    normalizedMeasure === "as required" ||
+    normalizedMeasure === "as needed" ||
     normalizedMeasure === "dash" ||
+    normalizedMeasure === "a dash" ||
     normalizedMeasure === "sprig"
   ) {
     return { name, quantity: 1, unit: "pinch", originalMeasure: measure };
@@ -273,7 +333,7 @@ export function parseMeasureToIngredient(name: string, measure: string): ParsedI
   }
 
   const match = normalizedMeasure.match(
-    /^(\d+(?:\.\d+)?(?:\s+\d+\s*\/\s*\d+)?|\d+\s*\/\s*\d+)\s*([a-z. ]+)?/,
+    /^(\d+\s+\d+\s*\/\s*\d+|\d+\s*\/\s*\d+|\d+(?:\.\d+)?)\s*([a-z. ]+)?/,
   );
 
   if (!match) {

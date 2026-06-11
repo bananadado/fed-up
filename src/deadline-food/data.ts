@@ -1,4 +1,4 @@
-import type { CalendarProvider, Deadline, Meal, MealSlot, PlanEntry, Preferences } from "./types";
+import type { CalendarProvider, Deadline, Meal, MealSlot, PlanEntry, PlanningPriorities, Preferences } from "./types";
 export { universities } from "./universities";
 
 export const calendarProviders: { id: CalendarProvider; name: string; hint: string; recommended: boolean }[] = [
@@ -336,13 +336,13 @@ export const initialPlan: PlanEntry[] = [
   },
 ];
 
-export const sourceOptions = [
-  { id: "budget", name: "Keep costs low", desc: "Prefer low-cost recipes and cheaper swaps" },
-  { id: "bbc", name: "Reliable familiar meals", desc: "Prefer straightforward recipes from trusted sources" },
-  { id: "student", name: "Student-focused cooking", desc: "Prefer minimal equipment and realistic prep" },
-  { id: "own", name: "Use my own recipes", desc: "Include recipes you add yourself" },
-  { id: "campus", name: "Allow campus fallbacks", desc: "Use nearby ready options when cooking is not realistic" },
-];
+export const defaultPlanningPriorities: PlanningPriorities = {
+  batchCooking: "balanced",
+  breakfastRoutine: "repeat",
+  mealRepeats: "balanced",
+  ingredientReuse: "balanced",
+  campusFallbacks: "when-busy",
+};
 
 export const allergens = ["Peanuts", "Tree nuts", "Milk", "Eggs", "Gluten", "Soy", "Sesame", "Shellfish"];
 export const dislikes = ["Mushrooms", "Tofu", "Fish", "Spicy food", "Beans", "Courgette"];
@@ -369,6 +369,8 @@ export const initialPreferences: Preferences = {
   availableIngredients: [],
   planningHorizonDays: 21,
   planRegenMode: "prompt",
+  planningPriorities: defaultPlanningPriorities,
+  nutritionGoals: { dailyCalories: 2100, dailyProtein: 90 },
   unitSystem: "metric" as const,
   prepReminderTime: "22:00",
 };

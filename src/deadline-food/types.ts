@@ -1,5 +1,10 @@
 export type MealType = "cook" | "remix" | "fallback";
 export type MealSlot = "breakfast" | "lunch" | "dinner";
+export type BatchCookingPreference = "off" | "balanced" | "high";
+export type BreakfastRoutinePreference = "varied" | "rotate" | "repeat";
+export type MealRepeatsPreference = "varied" | "balanced" | "low-effort";
+export type IngredientReusePreference = "low" | "balanced" | "high";
+export type CampusFallbacksPreference = "off" | "when-busy" | "allowed";
 
 import type { RecipeIngredient } from "@/domain/types";
 
@@ -14,7 +19,7 @@ export type Nutrition = {
 };
 
 export type NutritionSource = {
-  provider: "manual" | "USDA" | "OpenFoodFacts" | "USDA + OpenFoodFacts";
+  provider: "manual" | "ingredient-nutrition-table" | "USDA" | "OpenFoodFacts" | "USDA + OpenFoodFacts";
   label: string;
   fetchedAt?: string;
   matchedIngredients?: NutritionMatch[];
@@ -98,6 +103,19 @@ export type Deadline = {
 
 export type PlanRegenMode = "prompt" | "auto";
 
+export type PlanningPriorities = {
+  batchCooking: BatchCookingPreference;
+  breakfastRoutine: BreakfastRoutinePreference;
+  mealRepeats: MealRepeatsPreference;
+  ingredientReuse: IngredientReusePreference;
+  campusFallbacks: CampusFallbacksPreference;
+};
+
+export type NutritionGoals = {
+  dailyCalories: number;
+  dailyProtein: number;
+};
+
 export type Preferences = {
   maxTime: number | null;
   budget: number;
@@ -114,6 +132,10 @@ export type Preferences = {
   planningHorizonDays: number;
   /** Whether stale plans prompt the user ("prompt") or regenerate silently ("auto"). */
   planRegenMode: PlanRegenMode;
+  /** Behaviour preferences that reduce cooking and decision load during deadline weeks. */
+  planningPriorities: PlanningPriorities;
+  /** Daily nutrition targets used to score generated plans. */
+  nutritionGoals: NutritionGoals;
   unitSystem: "metric" | "imperial";
   /** Time of day (HH:MM) to schedule evening prep reminders, e.g. "22:00". */
   prepReminderTime: string;

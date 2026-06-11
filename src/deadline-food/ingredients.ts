@@ -1,7 +1,5 @@
 import type { RecipeIngredient } from "./types";
 
-const numberPattern = /^(?<quantity>\d+\s+\d+\/\d+|\d+(?:\.\d+)?|\d+\/\d+)\s*(?<unit>g|kg|ml|l|tbsp|tsp|cup|cups|slice|slices|wrap|wraps|item|items|can|cans|portion|portions|pack|packs)?\s+(?<name>.+)$/i;
-
 export const ingredientUnits = [
   "g",
   "kg",
@@ -14,9 +12,28 @@ export const ingredientUnits = [
   "wrap",
   "item",
   "can",
+  "tin",
   "portion",
   "pack",
   "serving",
+  "pinch",
+  "sprig",
+  "clove",
+  "bulb",
+  "head",
+  "bunch",
+  "leaf",
+  "stalk",
+  "piece",
+  "floret",
+  "fillet",
+  "rasher",
+  "loaf",
+  "oz",
+  "lb",
+  "fl oz",
+  "pint",
+  "qt",
 ] as const;
 
 export const ingredientPreparations = [
@@ -110,15 +127,86 @@ export type IngredientDraft = {
 };
 
 const singularUnits = new Map([
+  ["grams", "g"],
+  ["gram", "g"],
+  ["kilograms", "kg"],
+  ["kilogram", "kg"],
+  ["millilitres", "ml"],
+  ["milliliters", "ml"],
+  ["millilitre", "ml"],
+  ["milliliter", "ml"],
+  ["litres", "l"],
+  ["liters", "l"],
+  ["litre", "l"],
+  ["liter", "l"],
+  ["tablespoons", "tbsp"],
+  ["tablespoon", "tbsp"],
+  ["tbsps", "tbsp"],
+  ["teaspoons", "tsp"],
+  ["teaspoon", "tsp"],
+  ["tsps", "tsp"],
   ["cups", "cup"],
   ["slices", "slice"],
   ["wraps", "wrap"],
   ["items", "item"],
   ["cans", "can"],
+  ["tins", "tin"],
   ["portions", "portion"],
   ["packs", "pack"],
+  ["packets", "pack"],
+  ["servings", "serving"],
+  ["pinches", "pinch"],
+  ["sprigs", "sprig"],
+  ["cloves", "clove"],
+  ["bulbs", "bulb"],
+  ["heads", "head"],
+  ["bunches", "bunch"],
+  ["leaves", "leaf"],
+  ["stalks", "stalk"],
+  ["pieces", "piece"],
+  ["florets", "floret"],
+  ["fillets", "fillet"],
+  ["rashers", "rasher"],
+  ["loaves", "loaf"],
+  ["ounces", "oz"],
+  ["ounce", "oz"],
+  ["pounds", "lb"],
+  ["pound", "lb"],
+  ["lbs", "lb"],
+  ["fluid ounce", "fl oz"],
+  ["fluid ounces", "fl oz"],
+  ["fl. oz", "fl oz"],
+  ["fl. oz.", "fl oz"],
+  ["pints", "pint"],
+  ["quarts", "qt"],
+  ["quart", "qt"],
+  ["qts", "qt"],
 ]);
-const countableUnits = new Set(["slice", "wrap", "item", "can", "portion", "pack"]);
+const countableUnits = new Set([
+  "slice",
+  "wrap",
+  "item",
+  "can",
+  "tin",
+  "portion",
+  "pack",
+  "serving",
+  "pinch",
+  "sprig",
+  "clove",
+  "bulb",
+  "head",
+  "bunch",
+  "leaf",
+  "stalk",
+  "piece",
+  "floret",
+  "fillet",
+  "rasher",
+  "loaf",
+]);
+const ingredientUnitLookup = new Set<string>(ingredientUnits);
+const numberPattern = /^(?<quantity>\d+\s+\d+\/\d+|\d+(?:\.\d+)?|\d+\/\d+)\s*(?<unit>fl\.?\s*oz\.?|fluid ounces?|g|grams?|kg|kilograms?|ml|millilit(?:re|er)s?|l|lit(?:re|er)s?|tbsp|tablespoons?|tbsps?|tsp|teaspoons?|tsps?|cups?|slices?|wraps?|items?|cans?|tins?|portions?|servings?|packs?|packets?|pinches?|sprigs?|cloves?|bulbs?|heads?|bunch(?:es)?|leaves|leaf|stalks?|pieces?|florets?|fillets?|rashers?|loaves|loaf|oz|ounces?|lb|lbs|pints?|qt|quarts?)?\s+(?<name>.+)$/i;
 const preparationLookup = new Set<string>(ingredientPreparations);
 const preparationAliases = new Map([
   ["chop", "chopped"],
@@ -165,8 +253,19 @@ function parseQuantity(value: string) {
 }
 
 function normaliseUnit(value: string | undefined) {
-  const unit = value?.toLowerCase() ?? "serving";
+  const unit = value?.trim().toLowerCase().replace(/\s+/g, " ") ?? "serving";
   return singularUnits.get(unit) ?? unit;
+}
+
+function ingredientUnitForDraft(ingredient: RecipeIngredient) {
+  const unit = normaliseUnit(ingredient.unit);
+  if (ingredientUnitLookup.has(unit)) return unit;
+
+  if (normaliseIngredientName(ingredient.name) === normaliseIngredientName(ingredient.unit)) {
+    return "item";
+  }
+
+  return unit;
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -241,7 +340,7 @@ export function ingredientToDraft(ingredient: RecipeIngredient, index = 0): Ingr
     id: `ingredient-${index}-${ingredient.name}`,
     name: ingredient.name,
     quantity: formatQuantityForInput(ingredient.quantity),
-    unit: ingredient.unit,
+    unit: ingredientUnitForDraft(ingredient),
     preparation: ingredient.preparation ?? "",
   });
 }

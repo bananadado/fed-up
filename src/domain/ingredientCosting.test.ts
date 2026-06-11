@@ -41,10 +41,14 @@ describe("ingredient measurements", () => {
 
   test("parses raw non-standard recipe measures", () => {
     expect(parseMeasureToIngredient("oats", "1 1/2 cups")).toMatchObject({ quantity: 1.5, unit: "cup" });
+    expect(parseMeasureToIngredient("onion", "½ cup")).toMatchObject({ quantity: 0.5, unit: "cup" });
+    expect(parseMeasureToIngredient("red chilli powder", "¼ teaspoon")).toMatchObject({ quantity: 0.25, unit: "tsp" });
     expect(parseMeasureToIngredient("cheese", "2 oz")).toMatchObject({ quantity: 2, unit: "oz" });
     expect(parseMeasureToIngredient("tomatoes", "1 can")).toMatchObject({ quantity: 1, unit: "can" });
     expect(parseMeasureToIngredient("salt", "to taste")).toMatchObject({ quantity: 1, unit: "pinch" });
+    expect(parseMeasureToIngredient("salt", "as required")).toMatchObject({ quantity: 1, unit: "pinch" });
     expect(parseMeasureToIngredient("onion", "1 small")).toMatchObject({ quantity: 1, unit: "small" });
+    expect(gramsForIngredient(parseMeasureToIngredient("aubergine", "1 large"))).toBe(390);
   });
 });
 

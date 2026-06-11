@@ -254,7 +254,7 @@ Shape:
       time: string,
       intensity: string
     }[],
-    selectedSources: string[],
+    selectedSources: string[], // legacy source toggles
     onboarded: boolean
   },
   createdAt: serverTimestamp(),

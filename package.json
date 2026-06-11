@@ -27,6 +27,7 @@
     "firebase:functions:lint": "bun run firebase:data && cd functions && bun run lint",
     "firebase:emulators": "bun run firebase:data && cd functions && bun run build && cd .. && firebase emulators:start --only functions,firestore",
     "firebase:dev": "sh scripts/firebase-local-dev.sh",
+    "recipes:remove-dummy": "bun scripts/remove-dummy-recipes.ts",
     "firebase:artifacts:setpolicy": "firebase functions:artifacts:setpolicy --location europe-west2 --days 7 --force",
     "firebase:deploy": "bun run firebase:data && bun run firebase:artifacts:setpolicy && firebase deploy --only functions,firestore:rules,firestore:indexes"
   },

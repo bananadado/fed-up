@@ -44,7 +44,15 @@ export type DeadlineContextResponse = {
   days: DailyContext[];
 };
 
-export type ContextEventInput = { title: string; start: string; end?: string | null; all_day?: boolean };
+export type ContextEventInput = {
+  title: string;
+  start: string;
+  end?: string | null;
+  all_day?: boolean;
+  event_type?: "academic" | "general";
+  urgency?: "low" | "medium" | "high";
+  effort_hours?: number;
+};
 
 const DEFAULT_HORIZON_DAYS = 14;
 
@@ -83,6 +91,9 @@ export function deadlineToContextEvent(deadline: Deadline): ContextEventInput | 
     title: deadline.title,
     start: hasClockTime ? `${deadline.rawDate}T${deadline.time}:00` : deadline.rawDate,
     all_day: !hasClockTime,
+    event_type: deadline.eventType,
+    urgency: deadline.urgency,
+    effort_hours: deadline.effortHours,
   };
 }
 

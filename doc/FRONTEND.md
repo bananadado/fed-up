@@ -67,7 +67,7 @@ URLs look like:
 | `calendarProvider` | Selected calendar source. |
 | `deadlines` | Workload/deadline signals. |
 | `prefs` | User preferences and constraints. |
-| `selectedSources` | Recipe source/prioritization toggles. |
+| `selectedSources` | Legacy persisted recipe-source toggles; not shown in the active UI. |
 | `plan` | Active weekly plan entries. |
 | `customRecipes` | Recipes added or edited during this session. |
 | `discoverSaved` | Saved Discover meals. |
@@ -78,7 +78,7 @@ Persisted through anonymous session:
 
 - `prefs`
 - `deadlines`
-- `selectedSources`
+- `selectedSources` (legacy compatibility)
 - `onboarded`
 
 Not persisted:
@@ -251,7 +251,7 @@ Meal swap behaviour:
 Shopping list:
 
 - `ShoppingListCard` opens in a right drawer.
-- `ingredientsFromPlan` aggregates plan ingredients.
+- `ingredientsFromPlan` aggregates plan ingredients, counting batch cooks once and skipping planned leftovers.
 - Supports grocery vendor selection and external search links.
 
 ### Discover

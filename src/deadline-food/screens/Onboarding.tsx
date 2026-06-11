@@ -6,12 +6,13 @@ import fedUpLogo from "@/assets/fed-up-logo.svg";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions } from "../data";
+import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
-import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { AppButton, Badge, ChoiceGroup, Field, NumberDraftField, SelectField } from "../components/primitives";
 import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
+import { PlanningPriorityControls } from "../components/PlanningPriorityControls";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
 import {
   icsSubscriptionHints,
@@ -101,16 +102,25 @@ function InfoTooltip({ children }: { children: ReactNode }) {
   );
 }
 
+function todayIsoDate(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function dateLabel(dateIso: string): string {
+  const parsed = new Date(`${dateIso}T12:00:00`);
+  if (Number.isNaN(parsed.getTime())) return "Upcoming";
+  return parsed.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+}
+
 export function Onboarding({
   setOnboarded,
   setScreen,
   prefs,
   setPrefs,
+  deadlines,
   setDeadlines,
   calendarEvents,
   setCalendarEvents,
-  selectedSources,
-  setSelectedSources,
   calendarProvider,
   setCalendarProvider,
   icsSubscriptions,
@@ -136,11 +146,10 @@ export function Onboarding({
   setScreen: (screen: Screen) => void;
   prefs: Preferences;
   setPrefs: (prefs: Preferences) => void;
+  deadlines: Deadline[];
   setDeadlines: (deadlines: Deadline[]) => void;
   calendarEvents: CalendarEvent[];
   setCalendarEvents: (events: CalendarEvent[]) => void;
-  selectedSources: string[];
-  setSelectedSources: (sources: string[]) => void;
   calendarProvider: CalendarProvider;
   setCalendarProvider: (provider: CalendarProvider) => void;
   icsSubscriptions: IcsSubscription[];
@@ -175,8 +184,14 @@ export function Onboarding({
   const [importMessage, setImportMessage] = useState("");
   const [importError, setImportError] = useState(false);
   const [importing, setImporting] = useState(false);
-  const [importedDeadlines, setImportedDeadlines] = useState<Deadline[]>([]);
+  const [importedDeadlines, setImportedDeadlines] = useState<Deadline[]>(deadlines);
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [manualTitle, setManualTitle] = useState("");
+  const [manualDate, setManualDate] = useState(todayIsoDate);
+  const [manualTime, setManualTime] = useState("17:00");
+  const [manualUrgency, setManualUrgency] = useState<Deadline["urgency"]>("medium");
+  const [manualEffortHours, setManualEffortHours] = useState(3);
+  const [manualMessage, setManualMessage] = useState("");
   const [availableIngredientDrafts, setAvailableIngredientDrafts] = useState(() => ingredientDraftsFromIngredients(prefs.availableIngredients, false));
   const [step1Attempted, setStep1Attempted] = useState(false);
   const [step2Attempted, setStep2Attempted] = useState(false);
@@ -188,6 +203,19 @@ export function Onboarding({
   const [privacyAttempted, setPrivacyAttempted] = useState(false);
   const filteredLikes = filterFoodPreferenceOptions(likes, prefs.dietary, "likes");
   const filteredDislikes = filterFoodPreferenceOptions(dislikes, prefs.dietary, "dislikes");
+  const prefsRef = useRef(prefs);
+  const hasCalendarContext = calendarEvents.length > 0 || importedDeadlines.length > 0;
+
+  useEffect(() => {
+    prefsRef.current = prefs;
+  }, [prefs]);
+
+  function updatePrefs(patch: Partial<Preferences>) {
+    const next = { ...prefsRef.current, ...patch };
+    prefsRef.current = next;
+    setPrefs(next);
+  }
+
   const accountLabel = account.email ?? account.displayName ?? (account.isAnonymous ? "Anonymous on this browser" : "Signed in");
   const accountAttached = account.configured && !account.isAnonymous;
   const progressLabels = accountAttached ? ["Calendar", "About you", "Preferences"] : ["Calendar", "About you", "Preferences", "Save"];
@@ -209,10 +237,13 @@ export function Onboarding({
 
   async function handleImportedEvents(events: CalendarEvent[], source: string) {
     setCalendarEvents(events);
+    if (events.length > 0) setCalendarSkipped(false);
     const asDeadlines = await resolveDeadlinesFromEvents(events);
-    setImportedDeadlines(asDeadlines);
+    const manualDeadlines = deadlines.filter((deadline) => deadline.id.startsWith("manual-onboarding-"));
+    const nextDeadlines = [...manualDeadlines, ...asDeadlines];
+    setImportedDeadlines(nextDeadlines);
     if (asDeadlines.length > 0) {
-      setDeadlines(asDeadlines);
+      setDeadlines(nextDeadlines);
       setImportMessage(`${events.length} event${events.length === 1 ? "" : "s"} imported from ${source}.`);
     } else {
       setImportMessage("No calendar events were found in that import.");
@@ -307,7 +338,39 @@ export function Onboarding({
 
   function updateAvailableIngredients(nextDrafts: IngredientDraft[]) {
     setAvailableIngredientDrafts(nextDrafts);
-    setPrefs({ ...prefs, availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
+    updatePrefs({ availableIngredients: sanitiseIngredientDrafts(nextDrafts) });
+  }
+
+  function addManualWorkload() {
+    const title = manualTitle.trim();
+    if (!title || !manualDate || !manualTime) {
+      setManualMessage("Add a title, date and time for the workload entry.");
+      return;
+    }
+
+    const nextDeadline: Deadline = {
+      id: `manual-onboarding-${Date.now()}`,
+      title,
+      date: dateLabel(manualDate),
+      time: manualTime,
+      intensity: manualUrgency === "high" ? "High" : manualUrgency === "medium" ? "Medium" : "Low",
+      eventType: "academic",
+      effortHours: manualEffortHours,
+      urgency: manualUrgency,
+      confirmed: true,
+      rawDate: manualDate,
+    };
+
+    setImportedDeadlines([...importedDeadlines, nextDeadline]);
+    setDeadlines([...deadlines, nextDeadline]);
+    setCalendarSkipped(false);
+    setManualTitle("");
+    setManualMessage("Workload added to your in-app calendar.");
+    track("onboarding_manual_workload_added", {
+      urgency: nextDeadline.urgency,
+      effort_hours: nextDeadline.effortHours,
+      date: nextDeadline.rawDate,
+    });
   }
 
   function finish() {
@@ -321,7 +384,6 @@ export function Onboarding({
     setPrivacyConsent(consent);
     try { sessionStorage.removeItem("deadlineFood:onboardingStep"); } catch { /* ignore */ }
     track("onboarding_completed", {
-      recipe_sources: selectedSources,
       dietary_requirements: prefs.dietary,
       available_ingredient_count: prefs.availableIngredients.length,
       kitchen_access: prefs.kitchen,
@@ -352,12 +414,18 @@ export function Onboarding({
   }
 
   function continueFromCalendarStep() {
-    if (calendarEvents.length === 0) {
+    if (!hasCalendarContext) {
       track("calendar_skip_confirmation_shown", { provider: calendarProvider });
       setShowCalendarSkipConfirm(true);
       return;
     }
-    track("onboarding_step_completed", { step: 0, next_step: 1, calendar_choice: calendarProvider });
+    track("onboarding_step_completed", {
+      step: 0,
+      next_step: 1,
+      calendar_choice: calendarProvider,
+      imported_event_count: calendarEvents.length,
+      in_app_workload_count: importedDeadlines.length,
+    });
     goToStep(1);
   }
 
@@ -467,6 +535,74 @@ export function Onboarding({
               </div>
               <Input ref={fileRef} type="file" accept=".ics,text/calendar" className="hidden" onChange={loadICS} />
             </div>
+            <div className="mt-5 rounded-lg border border-stone-200 bg-white p-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-stone-900">Add in-app workload</p>
+                  <p className="mt-1 text-xs leading-5 text-stone-500">Use this for lectures, labs, supervision or deadline work that is not in an external calendar.</p>
+                </div>
+                <Badge tone="amber">Planner signal</Badge>
+              </div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_150px_120px]">
+                <Input
+                  value={manualTitle}
+                  onChange={(e) => setManualTitle(e.target.value)}
+                  placeholder="e.g. Monday lab block"
+                  className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
+                />
+                <Input
+                  type="date"
+                  min={todayIsoDate()}
+                  value={manualDate}
+                  onChange={(e) => setManualDate(e.target.value)}
+                  className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
+                />
+                <Input
+                  type="time"
+                  value={manualTime}
+                  onChange={(e) => setManualTime(e.target.value)}
+                  className="h-auto rounded-lg border-stone-200 bg-white p-3 text-sm"
+                />
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                {(["low", "medium", "high"] as const).map((urgency) => (
+                  <button
+                    key={urgency}
+                    type="button"
+                    onClick={() => setManualUrgency(urgency)}
+                    className={cn(
+                      "rounded-lg border px-3 py-2 text-xs font-semibold capitalize transition",
+                      manualUrgency === urgency ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-500 hover:border-stone-300",
+                    )}
+                  >
+                    {urgency}
+                  </button>
+                ))}
+                <div className="ml-0 flex items-center gap-2 rounded-lg border border-stone-200 px-2 py-1.5 sm:ml-auto">
+                  <button
+                    type="button"
+                    onClick={() => setManualEffortHours(Math.max(0.5, manualEffortHours - 0.5))}
+                    className="h-7 w-7 rounded-md bg-stone-100 text-sm font-bold text-stone-600"
+                    aria-label="Reduce workload effort"
+                  >
+                    -
+                  </button>
+                  <span className="min-w-16 text-center text-sm font-semibold text-stone-800">{manualEffortHours % 1 === 0 ? `${manualEffortHours}h` : `${Math.floor(manualEffortHours)}h 30m`}</span>
+                  <button
+                    type="button"
+                    onClick={() => setManualEffortHours(Math.min(12, manualEffortHours + 0.5))}
+                    className="h-7 w-7 rounded-md bg-stone-100 text-sm font-bold text-stone-600"
+                    aria-label="Increase workload effort"
+                  >
+                    +
+                  </button>
+                </div>
+                <AppButton type="button" variant="secondary" onClick={addManualWorkload}>
+                  Add workload
+                </AppButton>
+              </div>
+              {manualMessage && <p className="mt-3 text-sm text-emerald-800">{manualMessage}</p>}
+            </div>
             {importMessage && (
               <p className={cn("mt-4 rounded-lg p-3 text-sm", importError ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800")}>
                 {importMessage}
@@ -489,7 +625,7 @@ export function Onboarding({
             <p className="mt-4 text-sm text-stone-500">
               Adding a calendar is optional. You can import calendar events any time through Settings or the Calendar menu.
             </p>
-            {calendarEvents.length > 0 && (
+            {importedDeadlines.length > 0 && (
               <div className="mt-7 rounded-lg bg-stone-50 p-4">
                 {(() => {
                   const today = new Date().toISOString().slice(0, 10);
@@ -523,8 +659,8 @@ export function Onboarding({
               </div>
             )}
             <div className="mt-7 flex justify-end">
-              <AppButton variant={calendarEvents.length === 0 ? "secondary" : undefined} onClick={continueFromCalendarStep}>
-                {calendarEvents.length === 0 ? "Skip for now" : "Continue"} <ArrowRight size={16} />
+              <AppButton variant={!hasCalendarContext ? "secondary" : undefined} onClick={continueFromCalendarStep}>
+                {!hasCalendarContext ? "Skip for now" : "Continue"} <ArrowRight size={16} />
               </AppButton>
             </div>
           </Card>
@@ -544,7 +680,7 @@ export function Onboarding({
                 <div>
                   <h3 id="calendar-skip-title" className="text-lg font-bold text-stone-950">Continue without a calendar?</h3>
                   <p className="mt-2 text-sm leading-6 text-stone-600">
-                    No calendar has been imported, so Fed Up will not adapt meals around your real events yet. You can import calendar events any time through Settings or the Calendar menu.
+                    No calendar events or in-app workload entries have been added, so Fed Up will not adapt meals around your real events yet. You can add them any time through Settings or the Calendar menu.
                   </p>
                 </div>
               </div>
@@ -646,7 +782,7 @@ export function Onboarding({
                 <SelectField
                   label="Current cooking ability"
                   value={prefs.cookingAbility}
-                  onChange={(cookingAbility) => { track("onboarding_preference_changed", { field: "cooking_ability", value: cookingAbility }); setPrefs({ ...prefs, cookingAbility }); }}
+                  onChange={(cookingAbility) => { track("onboarding_preference_changed", { field: "cooking_ability", value: cookingAbility }); updatePrefs({ cookingAbility }); }}
                   options={cookingAbilities.map((ability) => ({ value: ability.id, label: `${ability.name} - ${ability.description}` }))}
                   placeholder="Select cooking ability"
                   required
@@ -660,16 +796,16 @@ export function Onboarding({
                     title="Dietary requirements (leave blank if none)"
                     options={dietary}
                     selected={prefs.dietary}
-                    onToggle={(value) => toggle(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
-                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => setPrefs({ ...prefs, dietary: next }))}
+                    onToggle={(value) => toggle(prefs.dietary, value, (next) => updatePrefs({ dietary: next }))}
+                    onAdd={(value) => addSelection(prefs.dietary, value, (next) => updatePrefs({ dietary: next }))}
                     addPlaceholder="Add a dietary requirement"
                   />
                   <ChoiceGroup
                     title="Allergic to / cannot eat"
                     options={allergens}
                     selected={prefs.allergens}
-                    onToggle={(value) => toggle(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
-                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => setPrefs({ ...prefs, allergens: next }))}
+                    onToggle={(value) => toggle(prefs.allergens, value, (next) => updatePrefs({ allergens: next }))}
+                    onAdd={(value) => addSelection(prefs.allergens, value, (next) => updatePrefs({ allergens: next }))}
                     addPlaceholder="Add an allergy or avoided ingredient"
                     danger
                   />
@@ -683,8 +819,8 @@ export function Onboarding({
                   title=""
                   options={filteredLikes}
                   selected={prefs.likes}
-                  onToggle={(value) => toggle(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
-                  onAdd={(value) => addSelection(prefs.likes, value, (next) => setPrefs({ ...prefs, likes: next }))}
+                  onToggle={(value) => toggle(prefs.likes, value, (next) => updatePrefs({ likes: next }))}
+                  onAdd={(value) => addSelection(prefs.likes, value, (next) => updatePrefs({ likes: next }))}
                   addPlaceholder="Add a meal you often eat"
                 />
               </PreferenceSection>
@@ -696,8 +832,8 @@ export function Onboarding({
                   title=""
                   options={filteredDislikes}
                   selected={prefs.dislikes}
-                  onToggle={(value) => toggle(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
-                  onAdd={(value) => addSelection(prefs.dislikes, value, (next) => setPrefs({ ...prefs, dislikes: next }))}
+                  onToggle={(value) => toggle(prefs.dislikes, value, (next) => updatePrefs({ dislikes: next }))}
+                  onAdd={(value) => addSelection(prefs.dislikes, value, (next) => updatePrefs({ dislikes: next }))}
                   addPlaceholder="Add an ingredient you dislike"
                 />
               </PreferenceSection>
@@ -754,7 +890,7 @@ export function Onboarding({
                       step="15"
                       value={prefs.maxTime ?? 180}
                       disabled={prefs.maxTime === null}
-                      onChange={(event) => setPrefs({ ...prefs, maxTime: +event.target.value })}
+                      onChange={(event) => updatePrefs({ maxTime: +event.target.value })}
                       onMouseUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
                       onKeyUp={() => track("onboarding_preference_changed", { field: "max_time", value: prefs.maxTime })}
                       className="w-full"
@@ -767,7 +903,7 @@ export function Onboarding({
                         type="button"
                         role="switch"
                         aria-checked={prefs.maxTime === null}
-                        onClick={() => { const next = prefs.maxTime === null; track("onboarding_preference_changed", { field: "max_time_unlimited", value: next }); setPrefs({ ...prefs, maxTime: next ? 180 : null }); }}
+                        onClick={() => { const next = prefs.maxTime === null; track("onboarding_preference_changed", { field: "max_time_unlimited", value: next }); updatePrefs({ maxTime: next ? 180 : null }); }}
                         className="flex items-center gap-2 text-sm font-medium text-stone-700"
                       >
                         <span className={cn("relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200", prefs.maxTime === null ? "bg-emerald-600" : "bg-stone-200")}>
@@ -794,7 +930,7 @@ export function Onboarding({
                       <span className="text-stone-500">£</span>
                       <Input
                         value={prefs.budget === 0 ? "" : prefs.budget}
-                        onChange={(event) => setPrefs({ ...prefs, budget: event.target.value === "" ? 0 : Number(event.target.value) })}
+                        onChange={(event) => updatePrefs({ budget: event.target.value === "" ? 0 : Number(event.target.value) })}
                         onKeyDown={(event) => { if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault(); }}
                         onBlur={() => track("onboarding_preference_changed", { field: "budget", value: prefs.budget })}
                         type="number"
@@ -806,7 +942,7 @@ export function Onboarding({
                   <SelectField
                     label="Kitchen access"
                     value={prefs.kitchen}
-                    onChange={(kitchen) => { track("onboarding_preference_changed", { field: "kitchen", value: kitchen }); setPrefs({ ...prefs, kitchen }); }}
+                    onChange={(kitchen) => { track("onboarding_preference_changed", { field: "kitchen", value: kitchen }); updatePrefs({ kitchen }); }}
                     options={[
                       { value: "full", label: "Full kitchen" },
                       { value: "shared", label: "Shared kitchen (often busy)" },
@@ -822,12 +958,42 @@ export function Onboarding({
                   <UniversityField
                     label="Your university"
                     value={prefs.university}
-                    onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
+                    onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); updatePrefs({ university }); }}
                     required
                     error={step2Attempted && !prefs.university}
                     errorMessage="Please select your university"
                   />
-                  <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
+                  <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => updatePrefs({ postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
+                </div>
+              </PreferenceSection>
+              <PreferenceSection
+                title="Nutrition goals"
+                description="Daily targets used when Fed Up compares otherwise similar plans."
+              >
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <NumberDraftField
+                    label="Calories per day"
+                    value={prefs.nutritionGoals.dailyCalories}
+                    onCommit={(dailyCalories) => {
+                      updatePrefs({ nutritionGoals: { ...prefs.nutritionGoals, dailyCalories } });
+                      track("onboarding_preference_changed", { field: "nutrition_goals.daily_calories", value: dailyCalories });
+                    }}
+                    min={1200}
+                    max={4000}
+                    step="50"
+                  />
+                  <NumberDraftField
+                    label="Protein per day"
+                    value={prefs.nutritionGoals.dailyProtein}
+                    onCommit={(dailyProtein) => {
+                      updatePrefs({ nutritionGoals: { ...prefs.nutritionGoals, dailyProtein } });
+                      track("onboarding_preference_changed", { field: "nutrition_goals.daily_protein", value: dailyProtein });
+                    }}
+                    min={30}
+                    max={250}
+                    step="5"
+                    suffix="g"
+                  />
                 </div>
               </PreferenceSection>
             </div>
@@ -859,7 +1025,7 @@ export function Onboarding({
                       <button
                         key={days}
                         type="button"
-                        onClick={() => { track("onboarding_preference_changed", { field: "planning_horizon_days", value: days }); setPrefs({ ...prefs, planningHorizonDays: days }); }}
+                        onClick={() => { track("onboarding_preference_changed", { field: "planning_horizon_days", value: days }); updatePrefs({ planningHorizonDays: days }); }}
                         className={cn("rounded-lg border px-2 py-2.5 text-sm font-medium transition", active ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-stone-200 text-stone-600 hover:border-stone-300")}
                       >
                         {wk} {wk === 1 ? "week" : "weeks"}
@@ -872,29 +1038,7 @@ export function Onboarding({
                 title="Planning Priorities"
                 description="What should we optimise for? You can change this later."
               >
-                <div className="space-y-3">
-                  {sourceOptions.map((source) => {
-                    const active = selectedSources.includes(source.id);
-
-                    return (
-                      <button
-                        key={source.id}
-                        type="button"
-                        onClick={() => {
-                          track("recipe_source_toggled", { source: source.id, selected: !active });
-                          setSelectedSources(active ? selectedSources.filter((value) => value !== source.id) : [...selectedSources, source.id]);
-                        }}
-                        className={cn("flex w-full items-center justify-between gap-4 rounded-lg border p-4 text-left", active ? "border-emerald-600 bg-emerald-50" : "border-stone-200")}
-                      >
-                        <div>
-                          <p className="font-semibold">{source.name}</p>
-                          <p className="text-sm text-stone-500">{source.desc}</p>
-                        </div>
-                        <div className={cn("flex h-6 w-6 shrink-0 items-center justify-center rounded-md border", active ? "border-emerald-700 bg-emerald-700 text-white" : "border-stone-300")}>{active && <Check size={14} />}</div>
-                      </button>
-                    );
-                  })}
-                </div>
+                <PlanningPriorityControls prefs={prefs} setPrefs={setPrefs} track={track} source="onboarding" />
               </PreferenceSection>
             </div>
             <section

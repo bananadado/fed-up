@@ -8,8 +8,7 @@ import {setGlobalOptions} from "firebase-functions/v2/options";
 import {defineSecret} from "firebase-functions/params";
 import {error as logError, info as logInfo, warn as logWarn} from "firebase-functions/logger";
 import {randomUUID} from "crypto";
-import {buildPlan} from "./autoPlan";
-import type * as AutoPlan from "./autoPlan";
+import * as AutoPlan from "./autoPlan";
 import {parseICSText} from "./icsParser";
 import {
   calendarEventsToDeadlines,
@@ -111,11 +110,18 @@ const recommenderHttpOptions = {
 const usdaFdcBaseUrl = (
   process.env.USDA_FDC_BASE_URL ?? "https://api.nal.usda.gov/fdc"
 ).replace(/\/$/, "");
+const openFoodFactsBaseUrl = (
+  process.env.OPENFOODFACTS_BASE_URL ?? "https://world.openfoodfacts.org"
+).replace(/\/$/, "");
+const openFoodFactsUserAgent =
+  process.env.OPENFOODFACTS_USER_AGENT ??
+  "DeadlineFoodApp/0.1 (recipe nutrition)";
 const storageBucket = "drp03-50059.firebasestorage.app";
 const maxPhotoBytes = 5 * 1024 * 1024;
 const allowedPhotoMimeTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 const usdaTimeoutMs = 8000;
+const openFoodFactsTimeoutMs = 6000;
 // The api-umbrella gateway sprays spurious 4xx/429s under load; retry on any
 // non-2xx so transient blips don't surface as missing ingredients.
 const usdaMaxAttempts = 6;
@@ -168,6 +174,248 @@ type OpenFoodFactsProduct = {
     carbohydrates_100g?: number;
     fat_100g?: number;
   };
+};
+
+const zeroNutritionNutriments: NonNullable<OpenFoodFactsProduct["nutriments"]> = {
+  "energy-kcal_100g": 0,
+  "proteins_100g": 0,
+  "carbohydrates_100g": 0,
+  "fat_100g": 0,
+};
+
+function usdaNutritionProduct(
+  code: string,
+  productName: string,
+  calories: number,
+  protein: number,
+  carbs: number,
+  fat: number,
+): OpenFoodFactsProduct {
+  return {
+    "provider": "USDA",
+    code,
+    "product_name": productName,
+    "nutriments": {
+      "energy-kcal_100g": calories,
+      "proteins_100g": protein,
+      "carbohydrates_100g": carbs,
+      "fat_100g": fat,
+    },
+  };
+}
+
+const curatedNutritionProducts: Record<string, OpenFoodFactsProduct> = {
+  "salt": {
+    "provider": "USDA",
+    "code": "curated-salt",
+    "product_name": "Salt",
+    "nutriments": zeroNutritionNutriments,
+  },
+  "sea salt": {
+    "provider": "USDA",
+    "code": "curated-salt",
+    "product_name": "Salt",
+    "nutriments": zeroNutritionNutriments,
+  },
+  "table salt": {
+    "provider": "USDA",
+    "code": "curated-salt",
+    "product_name": "Salt",
+    "nutriments": zeroNutritionNutriments,
+  },
+  "vegetable stock": {
+    "provider": "USDA",
+    "code": "curated-vegetable-stock",
+    "product_name": "Vegetable stock, prepared",
+    "nutriments": {
+      "energy-kcal_100g": 5,
+      "proteins_100g": 0.1,
+      "carbohydrates_100g": 1,
+      "fat_100g": 0,
+    },
+  },
+  "vegetable broth": {
+    "provider": "USDA",
+    "code": "curated-vegetable-stock",
+    "product_name": "Vegetable stock, prepared",
+    "nutriments": {
+      "energy-kcal_100g": 5,
+      "proteins_100g": 0.1,
+      "carbohydrates_100g": 1,
+      "fat_100g": 0,
+    },
+  },
+  "chickpeas": {
+    "provider": "USDA",
+    "code": "curated-chickpeas-cooked",
+    "product_name": "Chickpeas, cooked, boiled, drained",
+    "nutriments": {
+      "energy-kcal_100g": 164,
+      "proteins_100g": 8.86,
+      "carbohydrates_100g": 27.42,
+      "fat_100g": 2.59,
+    },
+  },
+  "garbanzo beans": {
+    "provider": "USDA",
+    "code": "curated-chickpeas-cooked",
+    "product_name": "Chickpeas, cooked, boiled, drained",
+    "nutriments": {
+      "energy-kcal_100g": 164,
+      "proteins_100g": 8.86,
+      "carbohydrates_100g": 27.42,
+      "fat_100g": 2.59,
+    },
+  },
+  "dried chickpeas": {
+    "provider": "USDA",
+    "code": "curated-chickpeas-dry",
+    "product_name": "Chickpeas, dry",
+    "nutriments": {
+      "energy-kcal_100g": 378,
+      "proteins_100g": 20.47,
+      "carbohydrates_100g": 62.95,
+      "fat_100g": 6.04,
+    },
+  },
+  "harissa spice": {
+    "provider": "USDA",
+    "code": "curated-harissa-spice",
+    "product_name": "Harissa spice blend",
+    "nutriments": {
+      "energy-kcal_100g": 282,
+      "proteins_100g": 13.46,
+      "carbohydrates_100g": 49.7,
+      "fat_100g": 14.28,
+    },
+  },
+  "garlic powder": {
+    "provider": "USDA",
+    "code": "curated-garlic-powder",
+    "product_name": "Spices, garlic powder",
+    "nutriments": {
+      "energy-kcal_100g": 331,
+      "proteins_100g": 16.55,
+      "carbohydrates_100g": 72.73,
+      "fat_100g": 0.73,
+    },
+  },
+  "garlic granules": {
+    "provider": "USDA",
+    "code": "curated-garlic-powder",
+    "product_name": "Spices, garlic powder",
+    "nutriments": {
+      "energy-kcal_100g": 331,
+      "proteins_100g": 16.55,
+      "carbohydrates_100g": 72.73,
+      "fat_100g": 0.73,
+    },
+  },
+  "water": usdaNutritionProduct("curated-water", "Water", 0, 0, 0, 0),
+  "boiling water": usdaNutritionProduct("curated-water", "Water", 0, 0, 0, 0),
+  "cold water": usdaNutritionProduct("curated-water", "Water", 0, 0, 0, 0),
+  "warm water": usdaNutritionProduct("curated-water", "Water", 0, 0, 0, 0),
+  "soda water": usdaNutritionProduct("curated-water", "Carbonated water", 0, 0, 0, 0),
+  "rose water": usdaNutritionProduct("curated-water", "Rose water", 0, 0, 0, 0),
+  "potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "new potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "baby new potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "small potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "charlotte potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "floury potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "jersey royal potatoes": usdaNutritionProduct("curated-potato-raw", "Potatoes, raw", 77, 2.05, 17.49, 0.09),
+  "potato starch": usdaNutritionProduct("curated-potato-starch", "Potato starch", 357, 0.1, 83.3, 0.1),
+  "aubergine": usdaNutritionProduct("curated-eggplant-raw", "Eggplant, raw", 25, 0.98, 5.88, 0.18),
+  "baby aubergine": usdaNutritionProduct("curated-eggplant-raw", "Eggplant, raw", 25, 0.98, 5.88, 0.18),
+  "egg plants": usdaNutritionProduct("curated-eggplant-raw", "Eggplant, raw", 25, 0.98, 5.88, 0.18),
+  "courgette": usdaNutritionProduct("curated-zucchini-raw", "Zucchini, raw", 17, 1.21, 3.11, 0.32),
+  "courgettes": usdaNutritionProduct("curated-zucchini-raw", "Zucchini, raw", 17, 1.21, 3.11, 0.32),
+  "cherry tomatoes": usdaNutritionProduct("curated-tomatoes-raw", "Tomatoes, raw", 18, 0.88, 3.89, 0.2),
+  "chopped tomatoes": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  "canned tomatoes": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  "diced tomatoes": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  "tinned tomatos": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  "plum tomatoes": usdaNutritionProduct("curated-tomatoes-canned", "Tomatoes, canned", 20, 0.95, 4.0, 0.12),
+  "chilli": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "chili": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "chillies": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "chilies": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "red chilli": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "green chilli": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "birds-eye chillies": usdaNutritionProduct("curated-hot-pepper-raw", "Peppers, hot, raw", 40, 1.87, 8.81, 0.44),
+  "dried chillies":
+    usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "dried red chillies":
+    usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "chilli flakes":
+    usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "red chilli flakes":
+    usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "chilli powder":
+    usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "chili powder": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "red chilli powder":
+    usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "hot chilli powder":
+    usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "pul biber": usdaNutritionProduct("curated-cayenne-pepper", "Spices, pepper, red or cayenne", 318, 12, 56.6, 17.3),
+  "paprika": usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "smoked paprika": usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "hot smoked paprika": usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "sweet smoked paprika": usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "smoky paprika": usdaNutritionProduct("curated-paprika", "Spices, paprika", 282, 14.1, 54, 12.9),
+  "curry powder": usdaNutritionProduct("curated-curry-powder", "Spices, curry powder", 325, 14.29, 55.83, 14.01),
+  "bay leaf": usdaNutritionProduct("curated-bay-leaf", "Spices, bay leaf", 313, 7.61, 74.97, 8.36),
+  "bay leaves": usdaNutritionProduct("curated-bay-leaf", "Spices, bay leaf", 313, 7.61, 74.97, 8.36),
+  "basil leaves": usdaNutritionProduct("curated-basil-raw", "Basil, fresh", 23, 3.15, 2.65, 0.64),
+  "fresh basil": usdaNutritionProduct("curated-basil-raw", "Basil, fresh", 23, 3.15, 2.65, 0.64),
+  "baby lettuce leaves": usdaNutritionProduct("curated-lettuce-raw", "Lettuce, raw", 15, 1.36, 2.87, 0.15),
+  "cabbage leaves": usdaNutritionProduct("curated-cabbage-raw", "Cabbage, raw", 25, 1.28, 5.8, 0.1),
+  "vine leaves": usdaNutritionProduct("curated-grape-leaves", "Grape leaves, raw", 93, 5.6, 17.3, 2.12),
+  "wild garlic leaves": usdaNutritionProduct("curated-garlic-raw", "Garlic, raw", 149, 6.36, 33.06, 0.5),
+  "lime leaves": usdaNutritionProduct("curated-bay-leaf", "Citrus leaves", 313, 7.61, 74.97, 8.36),
+  "makrut lime leaves": usdaNutritionProduct("curated-bay-leaf", "Citrus leaves", 313, 7.61, 74.97, 8.36),
+  "pandan leaves": usdaNutritionProduct("curated-water", "Pandan leaves", 0, 0, 0, 0),
+  "garlic clove": usdaNutritionProduct("curated-garlic-raw", "Garlic, raw", 149, 6.36, 33.06, 0.5),
+  "garlic cloves": usdaNutritionProduct("curated-garlic-raw", "Garlic, raw", 149, 6.36, 33.06, 0.5),
+  "peppercorns": usdaNutritionProduct("curated-black-pepper", "Spices, pepper, black", 251, 10.4, 64, 3.26),
+  "whole black peppercorns": usdaNutritionProduct("curated-black-pepper", "Spices, pepper, black", 251, 10.4, 64, 3.26),
+  "caraway seed": usdaNutritionProduct("curated-caraway-seed", "Spices, caraway seed", 333, 19.77, 49.9, 14.59),
+  "ground ginger": usdaNutritionProduct("curated-ground-ginger", "Spices, ginger, ground", 335, 8.98, 71.62, 4.24),
+  "ground cardomom": usdaNutritionProduct("curated-cardamom", "Spices, cardamom", 311, 10.76, 68.47, 6.7),
+  "ground annatto": usdaNutritionProduct("curated-annatto", "Spices, annatto seed", 345, 15.8, 52.3, 14.9),
+  "ground oats": usdaNutritionProduct("curated-oats", "Oats", 379, 13.15, 67.7, 6.52),
+  "black treacle": usdaNutritionProduct("curated-molasses", "Molasses", 290, 0, 74.73, 0.1),
+  "apple cider vinegar": usdaNutritionProduct("curated-cider-vinegar", "Vinegar, cider", 21, 0, 0.93, 0),
+  "malt vinegar": usdaNutritionProduct("curated-vinegar", "Vinegar", 18, 0, 0.04, 0),
+  "rice vinegar": usdaNutritionProduct("curated-rice-vinegar", "Rice vinegar", 18, 0, 0.04, 0),
+  "oat milk": usdaNutritionProduct("curated-oat-milk", "Oat milk", 48, 0.8, 6.7, 1.5),
+  "full fat yogurt": usdaNutritionProduct("curated-whole-yogurt", "Yogurt, plain, whole milk", 61, 3.47, 4.66, 3.25),
+  "full fat yoghurt": usdaNutritionProduct("curated-whole-yogurt", "Yogurt, plain, whole milk", 61, 3.47, 4.66, 3.25),
+  "full fat sour cream": usdaNutritionProduct("curated-sour-cream", "Sour cream", 193, 2.07, 4.63, 19.35),
+  "sour cream": usdaNutritionProduct("curated-sour-cream", "Sour cream", 193, 2.07, 4.63, 19.35),
+  "goats cheese": usdaNutritionProduct("curated-goat-cheese", "Cheese, goat", 364, 21.58, 0.12, 29.84),
+  "mozzarella balls": usdaNutritionProduct("curated-mozzarella", "Mozzarella", 280, 27.5, 3.1, 17.1),
+  "melted butter": usdaNutritionProduct("curated-butter", "Butter", 717, 0.85, 0.06, 81.11),
+  "self-raising flour": usdaNutritionProduct("curated-wheat-flour", "Wheat flour", 364, 10.33, 76.31, 0.98),
+  "chestnut mushroom": usdaNutritionProduct("curated-mushrooms", "Mushrooms, raw", 22, 3.09, 3.26, 0.34),
+  "petit pois": usdaNutritionProduct("curated-green-peas", "Peas, green, raw", 81, 5.42, 14.45, 0.4),
+  "raw tiger prawns": usdaNutritionProduct("curated-shrimp", "Shrimp, raw", 85, 20.1, 0, 0.5),
+  "turkey mince": usdaNutritionProduct("curated-ground-turkey", "Turkey, ground, raw", 148, 19.66, 0, 7.66),
+  "swede": usdaNutritionProduct("curated-rutabaga", "Rutabaga, raw", 37, 1.08, 8.62, 0.16),
+  "sardines": usdaNutritionProduct("curated-sardines", "Sardines", 208, 24.62, 0, 11.45),
+  "fries": usdaNutritionProduct("curated-french-fries", "Potatoes, french fried", 312, 3.43, 41.44, 14.73),
+  "fillet of steak": usdaNutritionProduct("curated-beef-steak", "Beef steak, raw", 170, 20.0, 0, 10.0),
+  "water chestnut": usdaNutritionProduct("curated-water-chestnut", "Water chestnuts, raw", 97, 1.4, 23.94, 0.1),
+  "yellow masarepa": usdaNutritionProduct("curated-corn-flour", "Precooked corn flour", 360, 7.0, 79.0, 1.5),
+};
+
+function curatedNutritionProductForIngredient(name: string): OpenFoodFactsProduct | null {
+  return curatedNutritionProducts[normalizeIngredientKey(name)] ?? null;
+}
+
+type OpenFoodFactsSearchResponse = {
+  products?: OpenFoodFactsProduct[];
 };
 
 type IngredientNutritionEstimate = {
@@ -254,6 +502,10 @@ type SessionSettings = {
     availableIngredients: RecipeIngredient[];
     planningHorizonDays: number;
     planRegenMode: "prompt" | "auto";
+    planningPriorities?: AutoPlan.PlanningPriorities;
+    nutritionGoals?: AutoPlan.NutritionTargets;
+    unitSystem?: "metric" | "imperial";
+    prepReminderTime?: string;
   };
   deadlines: {
     id: string;
@@ -290,15 +542,131 @@ type SessionSettings = {
   calendarProvider?: string;
 };
 
-const servingGrams: Record<string, number> = {
+const gramsPerOunce = 28.3495;
+const gramsPerPound = 453.592;
+const gramsPerUkPint = 568.261;
+const defaultServingGrams = 100;
+
+const nutritionUnitAliases = new Map<string, string>([
+  ["gram", "g"],
+  ["grams", "g"],
+  ["kilogram", "kg"],
+  ["kilograms", "kg"],
+  ["millilitre", "ml"],
+  ["millilitres", "ml"],
+  ["milliliter", "ml"],
+  ["milliliters", "ml"],
+  ["litre", "l"],
+  ["litres", "l"],
+  ["liter", "l"],
+  ["liters", "l"],
+  ["teaspoon", "tsp"],
+  ["teaspoons", "tsp"],
+  ["tablespoon", "tbsp"],
+  ["tablespoons", "tbsp"],
+  ["tblsp", "tbsp"],
+  ["tblspn", "tbsp"],
+  ["tbs", "tbsp"],
+  ["cups", "cup"],
+  ["ounce", "oz"],
+  ["ounces", "oz"],
+  ["pound", "lb"],
+  ["pounds", "lb"],
+  ["pints", "pint"],
+  ["items", "item"],
+  ["slices", "slice"],
+  ["cans", "can"],
+  ["tins", "tin"],
+  ["servings", "serving"],
+  ["pinches", "pinch"],
+  ["cloves", "clove"],
+  ["sprigs", "sprig"],
+  ["bulbs", "bulb"],
+  ["heads", "head"],
+  ["leaves", "leaf"],
+]);
+
+const nutritionWeightOrVolumeGrams: Record<string, number> = {
+  "g": 1,
+  "kg": 1000,
+  "ml": 1,
+  "l": 1000,
+  "oz": gramsPerOunce,
+  "lb": gramsPerPound,
+  "tsp": 5,
+  "tbsp": 15,
+  "cup": 240,
+  "pint": gramsPerUkPint,
+};
+
+const nutritionCountUnitDefaultGrams: Record<string, number> = {
+  "item": 100,
+  "slice": 30,
+  "can": 400,
+  "tin": 400,
+  "serving": 100,
+  "pinch": 1,
+  "clove": 5,
+  "sprig": 1,
+  "bulb": 50,
+  "head": 50,
+  "leaf": 1,
+};
+
+const nutritionSizeUnitMultiplier: Record<string, number> = {
+  "small": 0.7,
+  "medium": 1,
+  "large": 1.3,
+};
+
+const nutritionTypicalIngredientGrams: Record<string, number> = {
+  "aubergine": 300,
+  "aubergines": 300,
+  "eggplant": 300,
+  "eggplants": 300,
   "banana": 120,
-  "bread": 80,
-  "egg": 50,
-  "eggs": 50,
+  "bay leaf": 1,
+  "bay leaves": 1,
+  "bread": 40,
+  "bread slice": 40,
+  "cardamom": 0.3,
+  "cardamom pod": 0.3,
+  "cardamom pods": 0.3,
+  "chilli": 10,
+  "chillies": 10,
+  "chili": 10,
+  "chilies": 10,
+  "coriander": 15,
+  "coriander leaves": 15,
+  "egg": 58,
+  "eggs": 58,
   "flatbread": 70,
+  "garlic": 5,
+  "garlic clove": 5,
+  "garlic cloves": 5,
+  "garlic bulb": 50,
+  "garlic bulbs": 50,
   "jacket potato": 250,
+  "lemon": 120,
+  "lime": 80,
+  "lime leaf": 0.125,
+  "lime leaves": 0.125,
   "microwave rice": 250,
+  "onion": 110,
+  "onions": 110,
+  "pepper": 160,
+  "peppercorn": 0.1,
+  "peppercorns": 0.1,
+  "potato": 180,
+  "prawn": 20,
+  "prawns": 20,
   "rice portion": 180,
+  "shallot": 30,
+  "shallots": 30,
+  "spring onion": 15,
+  "spring onions": 15,
+  "tomato": 80,
+  "tomatoes": 80,
   "tortilla wrap": 60,
   "wrap": 60,
 };
@@ -819,6 +1187,12 @@ function normalizeSessionSettings(value: unknown): SessionSettings {
       availableIngredients: normalizeRecipeIngredientList(preferences.availableIngredients),
       planningHorizonDays: Math.round(boundedNumber(preferences.planningHorizonDays, 21, 1, 28)),
       planRegenMode: preferences.planRegenMode === "auto" ? "auto" : "prompt",
+      planningPriorities: normalizePlanningPriorities(preferences.planningPriorities),
+      nutritionGoals: normalizeNutritionGoals(preferences.nutritionGoals),
+      unitSystem: preferences.unitSystem === "imperial" ? "imperial" : "metric",
+      prepReminderTime: /^\d{1,2}:\d{2}$/.test(boundedString(preferences.prepReminderTime, "", 12)) ?
+        boundedString(preferences.prepReminderTime, "22:00", 12) :
+        "22:00",
     },
     deadlines: Array.isArray(settings.deadlines) ?
       settings.deadlines
@@ -1053,6 +1427,49 @@ async function enrichRecommendedRecipes(body: unknown): Promise<unknown> {
   });
 }
 
+const blockedRecommendationRecipePatterns = [
+  /\bdummy\b/i,
+  /\bplaceholder\b/i,
+  /\bsample recipe\b/i,
+  /\btest recipe\b/i,
+  /\bmicrowav(?:e|able)\s+bean\s+burrito\b/i,
+  /\bbean\s+burrito\b/i,
+];
+
+function recommendationRecipeText(item: unknown): string {
+  const scoredRecipe = asRecord(item);
+  const recipe = asRecord(scoredRecipe?.recipe) ?? scoredRecipe;
+  const fields = [
+    recipe?.id,
+    recipe?.name,
+    recipe?.source,
+    recipe?.note,
+  ];
+
+  return fields
+    .filter((field): field is string => typeof field === "string")
+    .join(" ")
+    .toLowerCase();
+}
+
+function isBlockedRecommendationRecipe(item: unknown): boolean {
+  const haystack = recommendationRecipeText(item);
+  return blockedRecommendationRecipePatterns.some((pattern) => pattern.test(haystack));
+}
+
+function filterBlockedRecommendationRecipes(body: unknown): unknown {
+  if (!Array.isArray(body)) {
+    return body;
+  }
+
+  const filtered = body.filter((item) => !isBlockedRecommendationRecipe(item));
+  const removed = body.length - filtered.length;
+  if (removed > 0) {
+    logWarn("Filtered blocked recommendation recipes", {removed});
+  }
+  return filtered;
+}
+
 async function proxyRecommenderRecommendations(
   request: HttpRequest,
   response: HttpResponse,
@@ -1090,6 +1507,8 @@ async function proxyRecommenderRecommendations(
     } catch (error) {
       logError("Recommendation recipe enrichment failed", {error});
     }
+
+    responseBody = filterBlockedRecommendationRecipes(responseBody);
 
     response.status(upstream.status).json(responseBody);
   } catch (error) {
@@ -1174,9 +1593,19 @@ function mealToAllocator(meal: UnknownRecord): AutoPlan.AllocatorMeal {
     mealSlots: toMealSlots(meal.mealSlots),
     time: boundedNumber(meal.time, 20, 0, 600),
     pricePence: Math.round(boundedNumber(meal.price, 0, 0, 100000) * 100),
+    servings: Math.round(boundedNumber(meal.servings, 0, 0, 100)),
     tags: Array.isArray(meal.tags) ? meal.tags.filter((t): t is string => typeof t === "string") : [],
     allergens: Array.isArray(meal.allergens) ? meal.allergens.filter((a): a is string => typeof a === "string") : [],
     ingredients,
+    nutrition: (() => {
+      const nutrition = asRecord(meal.nutrition);
+      return {
+        calories: boundedNumber(nutrition?.calories, 0, 0, 5000),
+        protein: boundedNumber(nutrition?.protein, 0, 0, 500),
+        carbs: boundedNumber(nutrition?.carbs, 0, 0, 1000),
+        fat: boundedNumber(nutrition?.fat, 0, 0, 500),
+      };
+    })(),
   };
 }
 
@@ -1212,6 +1641,31 @@ function normalizeDayContext(value: unknown): AutoPlan.DayContext | null {
   };
 }
 
+function normalizePlanningPriorities(value: unknown): AutoPlan.PlanningPriorities {
+  const raw = asRecord(value);
+  const batchCooking = boundedString(raw?.batchCooking, "balanced", 20);
+  const breakfastRoutine = boundedString(raw?.breakfastRoutine, "repeat", 20);
+  const mealRepeats = boundedString(raw?.mealRepeats, "balanced", 20);
+  const ingredientReuse = boundedString(raw?.ingredientReuse, "balanced", 20);
+  const campusFallbacks = boundedString(raw?.campusFallbacks, "when-busy", 20);
+
+  return {
+    batchCooking: batchCooking === "off" || batchCooking === "high" ? batchCooking : "balanced",
+    breakfastRoutine: breakfastRoutine === "varied" || breakfastRoutine === "rotate" ? breakfastRoutine : "repeat",
+    mealRepeats: mealRepeats === "varied" || mealRepeats === "low-effort" ? mealRepeats : "balanced",
+    ingredientReuse: ingredientReuse === "low" || ingredientReuse === "high" ? ingredientReuse : "balanced",
+    campusFallbacks: campusFallbacks === "off" || campusFallbacks === "allowed" ? campusFallbacks : "when-busy",
+  };
+}
+
+function normalizeNutritionGoals(value: unknown): AutoPlan.NutritionTargets {
+  const raw = asRecord(value);
+  return {
+    dailyCalories: Math.round(boundedNumber(raw?.dailyCalories, 2100, 1200, 4000)),
+    dailyProtein: Math.round(boundedNumber(raw?.dailyProtein, 90, 30, 250)),
+  };
+}
+
 async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Promise<void> {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
@@ -1230,9 +1684,41 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const excludeIds = boundedStringList(body.excludeIds, 250, 80);
   const excludedIds = new Set(excludeIds);
   const dietary = canonicalRecommenderTags(boundedStringList(body.dietary, 40, 80));
+  const likes = canonicalRecommenderTags(boundedStringList(body.likes, 40, 80));
   const dislikes = canonicalRecommenderTags(boundedStringList(body.dislikes, 40, 80));
   const allergens = canonicalRecommenderTags(boundedStringList(body.allergens, 40, 80));
   const weeklyBudgetPence = Math.round(boundedNumber(body.budget, 48, 0, 1000) * 100);
+  const planningPriorities = normalizePlanningPriorities(body.planningPriorities);
+  const nutritionGoals = normalizeNutritionGoals(body.nutritionGoals);
+  const planVariant = Math.round(boundedNumber(body.planVariant, 0, 0, 1_000_000));
+  // Sanitize to the shape the scorer walks (`entry.meals[].slot/mealId`) so a
+  // malformed payload can't crash plan generation.
+  const previousPlan: AutoPlan.PlanEntryOut[] = (Array.isArray(body.previousPlan) ? body.previousPlan : [])
+    .map((entry) => asRecord(entry))
+    .filter((entry): entry is UnknownRecord =>
+      entry !== null && typeof entry.dateIso === "string" && Array.isArray(entry.meals))
+    .map((entry) => ({
+      day: boundedString(entry.day, "", 40),
+      dateIso: boundedString(entry.dateIso, "", 10),
+      context: "",
+      meals: (entry.meals as unknown[])
+        .map((meal) => asRecord(meal))
+        .filter((meal): meal is UnknownRecord =>
+          meal !== null &&
+          (meal.slot === "breakfast" || meal.slot === "lunch" || meal.slot === "dinner") &&
+          typeof meal.mealId === "string")
+        .map((meal) => ({
+          slot: meal.slot as AutoPlan.MealSlot,
+          mealId: boundedString(meal.mealId, "", 80),
+          ...(typeof meal.leftoverOf === "string" ? {leftoverOf: boundedString(meal.leftoverOf, "", 80)} : {}),
+        })),
+    }));
+  const availableIngredients = Array.isArray(body.availableIngredients) ?
+    body.availableIngredients
+      .map((ingredient) => asRecord(ingredient))
+      .filter((ingredient): ingredient is UnknownRecord => ingredient !== null)
+      .map((ingredient) => ({name: boundedString(ingredient.name, "", 120)})) :
+    [];
 
   // 1. Per-day calendar context across the horizon (#65). horizon_days produces
   // horizon_days+1 entries (incl. today), so request one fewer than we need.
@@ -1245,7 +1731,11 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     days = rawDays.map(normalizeDayContext).filter((d): d is AutoPlan.DayContext => d !== null);
   }
   if (days.length === 0) {
-    days = syntheticDays(horizonDays);
+    days = contextEvents.length > 0 ?
+      AutoPlan.localDaysFromContextEvents(contextEvents as AutoPlan.ContextEventInput[], horizonDays) :
+      syntheticDays(horizonDays);
+  } else if (contextEvents.length > 0) {
+    days = AutoPlan.mergeCalendarPressure(days, contextEvents as AutoPlan.ContextEventInput[], horizonDays);
   }
   days = days.slice(0, horizonDays);
 
@@ -1258,12 +1748,13 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const savedAlloc = savedRecipes.map(mealToAllocator).filter((m) => m.id);
 
   const avgStress = days.reduce((sum, d) => sum + d.stress, 0) / (days.length || 1);
+  const peakStress = days.reduce((max, d) => Math.max(max, d.stress), 0);
   const fillAlloc: AutoPlan.AllocatorMeal[] = [];
   if (userId) {
     const fill = await callRecommenderJson("/recommend", {
       user_id: userId,
       n: 60,
-      deadline_stress: avgStress,
+      deadline_stress: Math.max(avgStress, peakStress),
       budget_pence: weeklyBudgetPence,
       exclude_ids: excludeIds,
     });
@@ -1291,12 +1782,20 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     fallbackAlloc.push(mealToAllocator(meal));
   }
 
-  const plan = buildPlan({
+  const {plan, quality} = AutoPlan.buildBestPlan({
     days,
     pool: [...savedAlloc, ...fillAlloc, ...fallbackAlloc],
-    avoided: [...dislikes, ...allergens],
+    avoided: allergens,
+    preferred: likes,
+    disliked: dislikes,
     dietary,
     weeklyBudgetPence,
+    planningPriorities,
+    variantSeed: planVariant > 0 ? planVariant : undefined,
+    previousPlan,
+    candidateCount: 12,
+    nutritionTargets: nutritionGoals,
+    availableIngredients,
   });
 
   // 3. Return only the meals actually placed, so the client can resolve them.
@@ -1307,7 +1806,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const meals = [...usedIds].map((id) => mealsById.get(id)).filter((m): m is UnknownRecord => m !== undefined);
 
   response.set("Cache-Control", "private, max-age=0, no-store");
-  response.status(200).json({plan, meals, generatedAt: new Date().toISOString()});
+  response.status(200).json({plan, meals, quality, generatedAt: new Date().toISOString()});
 }
 
 function rejectUnsupportedNutritionMethod(
@@ -1346,31 +1845,125 @@ function normalizeIngredientKey(name: string): string {
   return name.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+const openFoodFactsCookingAdjectives = new Set([
+  "baby",
+  "canned",
+  "chopped",
+  "cooked",
+  "diced",
+  "dried",
+  "frozen",
+  "grated",
+  "large",
+  "medium",
+  "minced",
+  "organic",
+  "raw",
+  "sliced",
+  "small",
+  "tinned",
+  "whole",
+]);
+
+const openFoodFactsIrregularTerms: Record<string, string[]> = {
+  "berry": ["berries"],
+  "berries": ["berries"],
+  "courgette": ["courgettes", "zucchini"],
+  "egg": ["eggs"],
+  "pepper": ["peppers"],
+  "potato": ["potatoes"],
+  "tomato": ["tomatoes"],
+};
+
+function openFoodFactsCategoryTag(term: string): string {
+  return normalizeIngredientKey(term)
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function uniqueOpenFoodFactsTerms(terms: string[]): string[] {
+  return [...new Set(terms.map(openFoodFactsCategoryTag).filter(Boolean))];
+}
+
+function openFoodFactsCategoryTerms(name: string): string[] {
+  const key = normalizeIngredientKey(name);
+  const terms = [key, ...(openFoodFactsIrregularTerms[key] ?? [])];
+  const words = key.split(" ");
+
+  if (words.length > 1 && words[0] && openFoodFactsCookingAdjectives.has(words[0])) {
+    const stripped = words.slice(1).join(" ");
+    terms.push(stripped, ...(openFoodFactsIrregularTerms[stripped] ?? []));
+  }
+
+  if (words.length > 1 && words[0] && words[0].length > 2) {
+    terms.push(words[0], ...(openFoodFactsIrregularTerms[words[0]] ?? []));
+  }
+
+  return uniqueOpenFoodFactsTerms(terms);
+}
+
 function openFoodFactsCacheDocId(cacheKey: string): string {
   return Buffer.from(cacheKey).toString("base64url");
 }
 
+function normalizeMeasureText(value: string): string {
+  return value.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function normalizeIngredientUnit(unit: string): string {
+  const normalized = normalizeMeasureText(unit).replace(/\.$/, "");
+  const alias = nutritionUnitAliases.get(normalized);
+  if (alias) return alias;
+
+  if (/^(g|gram|grams)\b/.test(normalized)) return "g";
+  if (/^(kg|kilogram|kilograms)\b/.test(normalized)) return "kg";
+  if (/^(ml|millilitre|millilitres|milliliter|milliliters)\b/.test(normalized)) return "ml";
+  if (/^(l|litre|litres|liter|liters)\b/.test(normalized)) return "l";
+  if (/\b(tblsp|tblspn|tablespoon|tablespoons|tbsp|tbsps|tbs)\b/.test(normalized)) return "tbsp";
+  if (/\b(teaspoon|teaspoons|tsp|tsps)\b/.test(normalized)) return "tsp";
+  if (/\b(cup|cups)\b/.test(normalized)) return "cup";
+  if (/\b(pinch|pinches)\b/.test(normalized)) return "pinch";
+  if (/\b(clove|cloves)\b/.test(normalized)) return "clove";
+
+  return normalized;
+}
+
+function typicalNutritionGramsForIngredient(name: string): number | undefined {
+  const normalized = normalizeMeasureText(name);
+  const direct = nutritionTypicalIngredientGrams[normalized];
+  if (direct !== undefined) return direct;
+
+  const match = Object.entries(nutritionTypicalIngredientGrams)
+    .filter(([key]) => normalized.includes(key))
+    .sort((a, b) => b[0].length - a[0].length)[0];
+
+  return match?.[1];
+}
+
 function gramsForIngredient(ingredient: RecipeIngredient): number {
-  switch (ingredient.unit) {
-  case "g":
-    return ingredient.quantity;
-  case "kg":
-    return ingredient.quantity * 1000;
-  case "ml":
-    return ingredient.quantity;
-  case "l":
-    return ingredient.quantity * 1000;
-  case "tsp":
-    return ingredient.quantity * 5;
-  case "tbsp":
-    return ingredient.quantity * 15;
-  case "cup":
-    return ingredient.quantity * 240;
-  case "can":
-    return ingredient.quantity * 400;
-  default:
-    return ingredient.quantity * (servingGrams[ingredient.name.toLowerCase()] ?? 100);
+  const safeQuantity =
+    Number.isFinite(ingredient.quantity) && ingredient.quantity > 0 ? ingredient.quantity : 0;
+  if (safeQuantity === 0) return 0;
+
+  const normalizedUnit = normalizeIngredientUnit(ingredient.unit);
+  const gramsPerUnit = nutritionWeightOrVolumeGrams[normalizedUnit];
+  if (gramsPerUnit !== undefined) return safeQuantity * gramsPerUnit;
+
+  const sizeMultiplier = nutritionSizeUnitMultiplier[normalizedUnit];
+  if (sizeMultiplier !== undefined) {
+    return safeQuantity *
+      (typicalNutritionGramsForIngredient(ingredient.name) ?? defaultServingGrams) *
+      sizeMultiplier;
   }
+
+  const countDefault = nutritionCountUnitDefaultGrams[normalizedUnit];
+  if (countDefault !== undefined) {
+    if (normalizedUnit === "pinch") return safeQuantity * countDefault;
+    return safeQuantity * (typicalNutritionGramsForIngredient(ingredient.name) ?? countDefault);
+  }
+
+  return safeQuantity * (typicalNutritionGramsForIngredient(ingredient.name) ?? defaultServingGrams);
 }
 
 function estimateIngredientNutrition(
@@ -1388,14 +1981,25 @@ function estimateIngredientNutrition(
 
   if (
     caloriesPer100g === null ||
+    caloriesPer100g < 0 ||
+    caloriesPer100g > 950 ||
     typeof nutriments?.proteins_100g !== "number" ||
     typeof nutriments.carbohydrates_100g !== "number" ||
-    typeof nutriments.fat_100g !== "number"
+    typeof nutriments.fat_100g !== "number" ||
+    nutriments.proteins_100g < -1 ||
+    nutriments.proteins_100g > 100 ||
+    nutriments.carbohydrates_100g < -1 ||
+    nutriments.carbohydrates_100g > 100 ||
+    nutriments.fat_100g < -1 ||
+    nutriments.fat_100g > 100
   ) {
     return null;
   }
 
   const multiplier = grams / 100;
+  const proteinsPer100g = Math.max(0, nutriments.proteins_100g);
+  const carbsPer100g = Math.max(0, nutriments.carbohydrates_100g);
+  const fatPer100g = Math.max(0, nutriments.fat_100g);
 
   return {
     ingredient,
@@ -1403,9 +2007,9 @@ function estimateIngredientNutrition(
     provider: product.provider ?? "OpenFoodFacts",
     grams,
     calories: caloriesPer100g * multiplier,
-    protein: nutriments.proteins_100g * multiplier,
-    carbs: nutriments.carbohydrates_100g * multiplier,
-    fat: nutriments.fat_100g * multiplier,
+    protein: proteinsPer100g * multiplier,
+    carbs: carbsPer100g * multiplier,
+    fat: fatPer100g * multiplier,
   };
 }
 
@@ -1628,6 +2232,62 @@ async function fetchUsdaProductForIngredient(
   return rawGeneric ?? anyGeneric ?? fallback;
 }
 
+function compactOpenFoodFactsProduct(product: OpenFoodFactsProduct): OpenFoodFactsProduct {
+  const nutriments = product.nutriments;
+  return {
+    ...(product.code ? {code: product.code} : {}),
+    ...(product.product_name ? {product_name: product.product_name} : {}),
+    provider: "OpenFoodFacts",
+    nutriments: {
+      ...(typeof nutriments?.["energy-kcal_100g"] === "number" ?
+        {"energy-kcal_100g": nutriments["energy-kcal_100g"]} :
+        {}),
+      ...(typeof nutriments?.energy_100g === "number" ? {energy_100g: nutriments.energy_100g} : {}),
+      ...(nutriments?.energy_unit ? {energy_unit: nutriments.energy_unit} : {}),
+      ...(typeof nutriments?.proteins_100g === "number" ?
+        {proteins_100g: nutriments.proteins_100g} :
+        {}),
+      ...(typeof nutriments?.carbohydrates_100g === "number" ?
+        {carbohydrates_100g: nutriments.carbohydrates_100g} :
+        {}),
+      ...(typeof nutriments?.fat_100g === "number" ? {fat_100g: nutriments.fat_100g} : {}),
+    },
+  };
+}
+
+async function searchOpenFoodFactsProducts(categoryTag: string): Promise<OpenFoodFactsProduct[]> {
+  const url = new URL("/api/v2/search", openFoodFactsBaseUrl);
+  url.searchParams.set("categories_tags_en", categoryTag);
+  url.searchParams.set("page", "1");
+  url.searchParams.set("page_size", "5");
+  url.searchParams.set("sort_by", "popularity_key");
+  url.searchParams.set("fields", "code,product_name,nutriments");
+
+  const response = await fetch(url, {
+    headers: {"Accept": "application/json", "User-Agent": openFoodFactsUserAgent},
+    signal: AbortSignal.timeout(openFoodFactsTimeoutMs),
+  }).catch(() => null);
+
+  if (!response?.ok) return [];
+
+  const payload = await response.json().catch(() => null) as OpenFoodFactsSearchResponse | null;
+  return payload?.products ?? [];
+}
+
+async function fetchOpenFoodFactsProductForIngredient(
+  ingredient: RecipeIngredient,
+): Promise<OpenFoodFactsProduct | null> {
+  const probe = {...ingredient, quantity: 100, unit: "g"};
+
+  for (const tag of openFoodFactsCategoryTerms(ingredient.name)) {
+    const products = await searchOpenFoodFactsProducts(tag);
+    const match = products.find((product) => estimateIngredientNutrition(probe, product) !== null);
+    if (match) return compactOpenFoodFactsProduct(match);
+  }
+
+  return null;
+}
+
 async function tryAcquireOpenFoodFactsCacheLock(
   cacheKey: string,
 ): Promise<boolean> {
@@ -1710,10 +2370,19 @@ async function findNutritionProductForIngredient(
   ingredient: RecipeIngredient,
 ): Promise<OpenFoodFactsProduct | null> {
   const cacheKey = normalizeIngredientKey(ingredient.name);
+  const curatedProduct = curatedNutritionProductForIngredient(ingredient.name);
+
+  if (curatedProduct) {
+    await cacheOpenFoodFactsProduct(cacheKey, curatedProduct);
+    return curatedProduct;
+  }
+
   const cachedProduct = await readOpenFoodFactsCachedProduct(cacheKey, false);
 
   if (cachedProduct !== undefined) {
-    return cachedProduct;
+    if (cachedProduct === null || estimateIngredientNutrition(ingredient, cachedProduct) !== null) {
+      return cachedProduct;
+    }
   }
 
   const acquiredLock = await tryAcquireOpenFoodFactsCacheLock(cacheKey);
@@ -1724,11 +2393,15 @@ async function findNutritionProductForIngredient(
   }
 
   try {
-    const product = await fetchUsdaProductForIngredient(ingredient);
+    const usdaProduct = await fetchUsdaProductForIngredient(ingredient);
+    const product =
+      usdaProduct && estimateIngredientNutrition(ingredient, usdaProduct) !== null ?
+        usdaProduct :
+        await fetchOpenFoodFactsProductForIngredient(ingredient);
     await cacheOpenFoodFactsProduct(cacheKey, product);
     return product;
   } catch (error) {
-    logError("USDA lookup failed", {cacheKey, error});
+    logError("Nutrition lookup failed", {cacheKey, error});
     await openFoodFactsCacheRef.doc(openFoodFactsCacheDocId(cacheKey)).set(
       {
         lockedUntil: FieldValue.delete(),
@@ -2128,7 +2801,7 @@ export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (requ
 
     if (estimates.length === 0) {
       response.status(502).json({
-        error: "USDA did not return usable nutrition data for these ingredients.",
+        error: "USDA and OpenFoodFacts did not return usable nutrition data for these ingredients.",
       });
       return;
     }

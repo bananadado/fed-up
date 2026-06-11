@@ -7,6 +7,7 @@ import {
   createPrivacyConsent,
   hasCurrentPrivacyConsent,
   isAnonymousSessionId,
+  normalizePreferences,
   PRIVACY_CONSENT_TEXT,
   PRIVACY_POLICY_URL,
   PRIVACY_POLICY_VERSION,
@@ -51,6 +52,19 @@ describe("anonymous app session persistence", () => {
     });
     expect(hasCurrentPrivacyConsent(consent)).toBe(true);
     expect(hasCurrentPrivacyConsent({ ...consent, policyVersion: "2025-01-01" })).toBe(false);
+  });
+
+  test("normalizes missing planning priorities for older sessions", () => {
+    const legacyPreferences = { ...initialPreferences };
+    delete (legacyPreferences as Partial<typeof initialPreferences>).planningPriorities;
+
+    expect(normalizePreferences(legacyPreferences).planningPriorities).toEqual({
+      batchCooking: "balanced",
+      breakfastRoutine: "repeat",
+      mealRepeats: "balanced",
+      ingredientReuse: "balanced",
+      campusFallbacks: "when-busy",
+    });
   });
 
   test("falls back when persisted plan data is empty or malformed", () => {

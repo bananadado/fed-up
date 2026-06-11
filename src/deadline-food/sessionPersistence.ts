@@ -1,4 +1,5 @@
-import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences } from "./types";
+import { defaultPlanningPriorities } from "./data";
+import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, PlanningPriorities, Preferences } from "./types";
 
 export const ANONYMOUS_SESSION_STORAGE_KEY = "deadlineFoodAnonymousSessionId";
 export const SESSION_SETTINGS_VERSION = 4;
@@ -59,13 +60,39 @@ export type SessionSettings = {
  */
 export function normalizePreferences(raw: Preferences): Preferences {
   const horizon = Number.isFinite(raw.planningHorizonDays) ? raw.planningHorizonDays : 21;
+  const priorities = raw.planningPriorities ?? defaultPlanningPriorities;
+  const nutritionGoals = raw.nutritionGoals ?? { dailyCalories: 2100, dailyProtein: 90 };
   return {
     ...raw,
     planningHorizonDays: Math.min(28, Math.max(1, Math.round(horizon))),
     planRegenMode: raw.planRegenMode === "auto" ? "auto" : "prompt",
+    planningPriorities: {
+      batchCooking: normalizePriority(priorities.batchCooking, ["off", "balanced", "high"], defaultPlanningPriorities.batchCooking),
+      breakfastRoutine: normalizePriority(priorities.breakfastRoutine, ["varied", "rotate", "repeat"], defaultPlanningPriorities.breakfastRoutine),
+      mealRepeats: normalizePriority(priorities.mealRepeats, ["varied", "balanced", "low-effort"], defaultPlanningPriorities.mealRepeats),
+      ingredientReuse: normalizePriority(priorities.ingredientReuse, ["low", "balanced", "high"], defaultPlanningPriorities.ingredientReuse),
+      campusFallbacks: normalizePriority(priorities.campusFallbacks, ["off", "when-busy", "allowed"], defaultPlanningPriorities.campusFallbacks),
+    },
+    nutritionGoals: {
+      dailyCalories: clampNumber(nutritionGoals.dailyCalories, 2100, 1200, 4000),
+      dailyProtein: clampNumber(nutritionGoals.dailyProtein, 90, 30, 250),
+    },
     unitSystem: raw.unitSystem === "imperial" ? "imperial" : "metric",
     prepReminderTime: /^\d{1,2}:\d{2}$/.test(raw.prepReminderTime ?? "") ? raw.prepReminderTime : "22:00",
   };
+}
+
+function clampNumber(value: unknown, fallback: number, min: number, max: number): number {
+  const numeric = typeof value === "number" && Number.isFinite(value) ? value : fallback;
+  return Math.min(max, Math.max(min, Math.round(numeric)));
+}
+
+function normalizePriority<T extends PlanningPriorities[keyof PlanningPriorities]>(
+  value: unknown,
+  allowed: readonly T[],
+  fallback: T,
+): T {
+  return allowed.includes(value as T) ? (value as T) : fallback;
 }
 
 const sessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;

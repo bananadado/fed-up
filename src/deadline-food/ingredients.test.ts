@@ -3,6 +3,7 @@ import { describe, expect, test } from "bun:test";
 import {
   createIngredientDraft,
   formatIngredient,
+  ingredientDraftsFromIngredients,
   parseIngredients,
   sanitiseIngredientDrafts,
   scaleIngredients,
@@ -86,6 +87,20 @@ describe("recipe ingredient helpers", () => {
     expect(formatIngredient({ name: "garlic", quantity: 3, unit: "clove" })).toBe("3 cloves garlic");
     expect(formatIngredient({ name: "parsley", quantity: 2, unit: "bunch" })).toBe("2 bunches parsley");
     expect(formatIngredient({ name: "salt", quantity: 2, unit: "pinch" })).toBe("2 pinches salt");
+  });
+
+  test("keeps count units valid when stored ingredients are opened in the editor", () => {
+    expect(
+      ingredientDraftsFromIngredients([
+        { name: "garlic", quantity: 6, unit: "cloves" },
+        { name: "salt", quantity: 1, unit: "pinch" },
+        { name: "green chilli", quantity: 1, unit: "green chilli" },
+      ], false).map(({ name, quantity, unit }) => ({ name, quantity, unit })),
+    ).toEqual([
+      { name: "garlic", quantity: "6", unit: "clove" },
+      { name: "salt", quantity: "1", unit: "pinch" },
+      { name: "green chilli", quantity: "1", unit: "item" },
+    ]);
   });
 
   test("returns ingredients unchanged for a factor of 1 or an invalid factor", () => {

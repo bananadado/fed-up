@@ -11,7 +11,8 @@ import { fetchRecommenderRecommendations, recordRecommenderInteraction } from ".
 
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
 
-const RECOMMENDATION_BATCH_SIZE = 5;
+const RECOMMENDATION_BATCH_SIZE = 10;
+const MAX_EMPTY_RECOMMENDATION_BATCHES = 3;
 
 function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
   if (rating === 0) return null;
@@ -63,9 +64,15 @@ export function DiscoverScreen({
   // list isn't diluted with unverified content (#213).
   const [verifiedOnly, setVerifiedOnly] = useState(true);
   const latestRecommendationRequestId = useRef(0);
+  const emptyRecommendationBatchAttempts = useRef(0);
+  const [blockedReturnedRecipeState, setBlockedReturnedRecipeState] = useState({ contextKey: "", ids: [] as string[] });
   const recommendationContextKey = useMemo(
     () => JSON.stringify({ deadlines, prefs, sessionId }),
     [deadlines, prefs, sessionId],
+  );
+  const blockedReturnedRecipeIds = useMemo(
+    () => blockedReturnedRecipeState.contextKey === recommendationContextKey ? blockedReturnedRecipeState.ids : [],
+    [blockedReturnedRecipeState, recommendationContextKey],
   );
   const recommendedRecipes = useMemo(
     () => recommendationState.contextKey === recommendationContextKey ? recommendationState.recipes : [],
@@ -99,8 +106,9 @@ export function DiscoverScreen({
       ...excludedRecipeIds,
       ...recommendedRecipes.map((meal) => meal.id),
       ...customRecipes.map((meal) => meal.id),
+      ...blockedReturnedRecipeIds,
     ])],
-    [customRecipes, excludedRecipeIds, recommendedRecipes],
+    [blockedReturnedRecipeIds, customRecipes, excludedRecipeIds, recommendedRecipes],
   );
 
   useEffect(() => {
@@ -122,6 +130,31 @@ export function DiscoverScreen({
       .then((recipes) => {
         if (!cancelled && latestRecommendationRequestId.current === requestId) {
           const usableRecipes = recipes.filter((recipe) => !excludedAtRequest.has(recipe.id));
+          const usableRecipeIds = new Set(usableRecipes.map((recipe) => recipe.id));
+          const unusableRecipeIds = recipes
+            .filter((recipe) => !usableRecipeIds.has(recipe.id))
+            .map((recipe) => recipe.id);
+          if (unusableRecipeIds.length > 0) {
+            setBlockedReturnedRecipeState((state) => ({
+              contextKey: recommendationContextKey,
+              ids: [...new Set([
+                ...(state.contextKey === recommendationContextKey ? state.ids : []),
+                ...unusableRecipeIds,
+              ])],
+            }));
+          }
+
+          if (usableRecipes.length === 0 && emptyRecommendationBatchAttempts.current < MAX_EMPTY_RECOMMENDATION_BATCHES - 1) {
+            emptyRecommendationBatchAttempts.current += 1;
+            setRecommendationState({
+              contextKey: recommendationContextKey,
+              recipes: [],
+              status: "ready",
+            });
+            return;
+          }
+
+          emptyRecommendationBatchAttempts.current = 0;
           setRecommendationState({
             contextKey: recommendationContextKey,
             recipes: usableRecipes,
@@ -173,8 +206,16 @@ export function DiscoverScreen({
     const savedRecipeIds = new Set(saved.map((meal) => meal.id));
     setReviewedRecipeIds([]);
     setRejected([]);
+    emptyRecommendationBatchAttempts.current = 0;
+    setBlockedReturnedRecipeState({ contextKey: "", ids: [] });
     setRecommendationState({ contextKey: "", recipes: [], status: "idle" });
     track("discover_queue_restarted", { queue_size: candidateRecipes.filter((meal) => !savedRecipeIds.has(meal.id)).length });
+  }
+
+  function askForMoreRecipes() {
+    emptyRecommendationBatchAttempts.current = 0;
+    setRecommendationState({ contextKey: recommendationContextKey, recipes: [], status: "idle" });
+    track("discover_more_requested", { reviewed_count: reviewedRecipeIds.length });
   }
 
   const showRecommendationLoading = sortedQueue.length === 0 && shouldLoadRecommendationBatch;
@@ -302,9 +343,13 @@ export function DiscoverScreen({
           ) : (
             <Card className="gap-0 rounded-lg border-stone-200 bg-white p-10 text-center">
               <Sparkles className="mx-auto text-emerald-700" />
-              <p className="mt-4 font-semibold">You have reviewed today's suggestions.</p>
-              <AppButton variant="secondary" className="mt-4" onClick={restartReviewQueue}>
-                Restart
+              <p className="mt-4 font-semibold">No fresh recipe ideas found yet.</p>
+              <p className="mt-2 text-sm text-stone-500">Ask for more to keep your saved and passed recipes out of the queue.</p>
+              <AppButton className="mt-4" onClick={askForMoreRecipes}>
+                Ask for more recipes
+              </AppButton>
+              <AppButton variant="secondary" className="mt-3" onClick={restartReviewQueue}>
+                Review from start
               </AppButton>
             </Card>
           )}
