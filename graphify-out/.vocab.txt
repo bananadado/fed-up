@@ -1,6 +1,7 @@
 abilities
 ability
 academic
+accept
 acceptance
 accepted
 access
@@ -26,6 +27,7 @@ agent
 agents
 aggregate
 aggregation
+alias
 aliases
 aligned
 all
@@ -62,6 +64,7 @@ are
 areas
 args
 artifacts
+assert
 assign
 assisted
 assumptions
@@ -85,6 +88,7 @@ backend
 badge
 balance
 band
+banner
 base
 based
 baseline
@@ -99,8 +103,10 @@ beginner
 behaviour
 behavioural
 behaviours
+belongs
 below
 benchmark
+best
 between
 blank
 blend
@@ -119,6 +125,7 @@ bowl
 box
 branch
 branches
+brand
 breakdown
 breakfast
 browse
@@ -163,8 +170,10 @@ categories
 category
 causes
 cautions
+cdp
 cell
 change
+changed
 changes
 cheap
 cheapest
@@ -189,10 +198,12 @@ claude
 clean
 cleanup
 clear
+clearing
 cli
 client
 clipboard
 close
+closed
 cloud
 cloudflare
 cloudflared
@@ -205,6 +216,7 @@ colikes
 collaborative
 collections
 color
+column
 columns
 com
 combine
@@ -222,6 +234,8 @@ compatible
 compile
 compiler
 complete
+completed
+completion
 complexity
 components
 compound
@@ -235,7 +249,9 @@ config
 configure
 configured
 confirm
+conflict
 conftest
+connect
 consent
 const
 constraints
@@ -245,6 +261,7 @@ contracts
 controls
 conversion
 cook
+cookie
 cooking
 copy
 core
@@ -253,6 +270,7 @@ correct
 cors
 cosine
 cost
+costing
 costly
 count
 countable
@@ -265,12 +283,15 @@ critical
 crunch
 crypto
 css
+csv
 cuisine
 cup
 cups
+curated
 curl
 current
 cutoff
+cyrb
 daily
 dairy
 dashboard
@@ -286,6 +307,8 @@ deadlines
 debounce
 decision
 deck
+decode
+dedupe
 deeper
 default
 defaults
@@ -293,15 +316,18 @@ deferred
 definition
 delay
 delete
+deleted
 deliberately
 demands
 demonstration
+denied
 dependencies
 deploy
 deployment
 derivation
 derive
 derived
+describe
 described
 description
 descriptions
@@ -317,6 +343,7 @@ detection
 deterministic
 dev
 development
+device
 dialog
 dicts
 didn
@@ -371,6 +398,7 @@ editing
 editor
 effort
 egg
+email
 embe
 embed
 embedded
@@ -409,6 +437,7 @@ eslint
 eslintrc
 estimate
 estimates
+evaluate
 evaluation
 even
 evening
@@ -446,11 +475,13 @@ extraction
 facts
 fail
 failure
+failures
 fake
 fall
 fallback
 falls
 fallthrough
+false
 fast
 favours
 fdc
@@ -478,6 +509,7 @@ firestore
 first
 fiscal
 fish
+five
 fixed
 fixtures
 flag
@@ -503,6 +535,7 @@ framework
 free
 fresh
 fried
+friendly
 fro
 from
 frontend
@@ -517,6 +550,7 @@ fuzzy
 gaps
 garbage
 gates
+gcloud
 genera
 general
 generate
@@ -533,6 +567,7 @@ globals
 gluten
 goals
 google
+goto
 gpg
 gpu
 grained
@@ -582,8 +617,8 @@ http
 https
 hub
 hummus
-hundred
 icon
+icons
 ics
 idempotency
 idempotent
@@ -658,6 +693,7 @@ iteration
 jacket
 job
 jobs
+join
 journey
 json
 jsx
@@ -694,6 +730,7 @@ liking
 limit
 limits
 lines
+link
 links
 lint
 linting
@@ -721,6 +758,7 @@ lowers
 lucide
 lunch
 macro
+magic
 main
 makes
 management
@@ -731,6 +769,8 @@ map
 mapped
 mappings
 maps
+mark
+marketplace
 mass
 match
 matches
@@ -741,7 +781,10 @@ mcp
 meal
 meals
 means
+measurable
 measure
+measurements
+measures
 meat
 mechanisms
 memory
@@ -752,6 +795,7 @@ method
 metric
 metrics
 microsoft
+migration
 millis
 mime
 minimal
@@ -774,6 +818,7 @@ most
 mount
 mounted
 multi
+multiplier
 must
 mvp
 name
@@ -846,6 +891,8 @@ overreaching
 override
 overrides
 overview
+owned
+owner
 paced
 package
 pad
@@ -927,6 +974,7 @@ present
 pressing
 pressure
 price
+priced
 prices
 primary
 primitives
@@ -948,7 +996,9 @@ prompt
 properties
 property
 proposal
+proposals
 proposition
+props
 prototype
 provider
 providers
@@ -1051,6 +1101,7 @@ restart
 restore
 result
 results
+retention
 retrieval
 retrieve
 retry
@@ -1068,6 +1119,7 @@ roll
 root
 round
 roundtrip
+roundtrips
 route
 router
 routes
@@ -1089,6 +1141,7 @@ save
 scalar
 scale
 scales
+scan
 scenario
 scheduler
 schema
@@ -1116,6 +1169,7 @@ seed
 seeded
 seen
 select
+selected
 selection
 selectors
 semantic
@@ -1136,6 +1190,7 @@ settings
 setup
 shadcn
 shape
+share
 shared
 sharpens
 shell
@@ -1145,6 +1200,7 @@ shopping
 should
 shows
 sided
+sign
 signal
 signals
 signature
@@ -1165,6 +1221,7 @@ sliced
 slot
 slots
 small
+smoke
 smoky
 snack
 snapshot
@@ -1195,6 +1252,7 @@ start
 startup
 state
 statement
+states
 stats
 status
 stays
@@ -1216,6 +1274,7 @@ strips
 stron
 structural
 structure
+structured
 stub
 student
 study
@@ -1275,6 +1334,7 @@ template
 templating
 term
 terms
+tesco
 test
 tester
 testing
@@ -1291,6 +1351,7 @@ then
 these
 this
 threshold
+thumbnail
 tiers
 tight
 tightens
@@ -1336,6 +1397,7 @@ try
 tsconfig
 tsp
 tsx
+ttls
 tuna
 tunnel
 turn
@@ -1344,6 +1406,7 @@ type
 typecheck
 types
 typescript
+typical
 typo
 uid
 unchanged
@@ -1361,6 +1424,7 @@ units
 universities
 university
 unknown
+unpublish
 unsupported
 untagged
 untitled
@@ -1372,6 +1436,7 @@ upload
 upsert
 urgency
 url
+usable
 usage
 usda
 use
