@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 2797 nodes, 5127 edges, 154 communities. Commit: 5487046</p>
+<p class="subtitle">Generated from graphify knowledge graph: 2797 nodes, 5127 edges, 155 communities. Commit: 2675566</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -73,11 +73,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#tests-fixtures">Tests &amp; Fixtures</a>
     <a href="#community-0">Community 0</a>
     <a href="#community-2">Community 2</a>
-    <a href="#community-16">Community 16</a>
+    <a href="#community-12">Community 12</a>
     <a href="#community-18">Community 18</a>
-    <a href="#community-26">Community 26</a>
+    <a href="#community-25">Community 25</a>
+    <a href="#community-30">Community 30</a>
     <a href="#community-31">Community 31</a>
-    <a href="#community-33">Community 33</a>
     <a href="#other">Other</a>
 </div>
 
@@ -92,7 +92,7 @@ flowchart LR
     class BUILD_GRAPH_321CBB04 module;
     ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>35 nodes</small>")
     class ANALYSIS_CLUSTERING_C79796DA module;
-    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>28 nodes</small>")
+    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>5 nodes</small>")
     class OUTPUTS_DOCS_ED82387C module;
     CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>172 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
@@ -100,36 +100,36 @@ flowchart LR
     class INGEST_CACHE_UPDATE_FF457338 module;
     SERVE_API_35EC8E86("Serving API<br/><small>371 nodes</small>")
     class SERVE_API_35EC8E86 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>945 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>932 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
     COMMUNITY_0_B056AD3D("Community 0<br/><small>95 nodes</small>")
     class COMMUNITY_0_B056AD3D module;
     COMMUNITY_2_8C8DF7B9("Community 2<br/><small>91 nodes</small>")
     class COMMUNITY_2_8C8DF7B9 module;
-    COMMUNITY_16_BD3EE841("Community 16<br/><small>43 nodes</small>")
-    class COMMUNITY_16_BD3EE841 module;
+    COMMUNITY_12_82F13F05("Community 12<br/><small>46 nodes</small>")
+    class COMMUNITY_12_82F13F05 module;
     COMMUNITY_18_A335126F("Community 18<br/><small>40 nodes</small>")
     class COMMUNITY_18_A335126F module;
-    COMMUNITY_26_029F571A("Community 26<br/><small>32 nodes</small>")
-    class COMMUNITY_26_029F571A module;
+    COMMUNITY_25_B1CFFD78("Community 25<br/><small>32 nodes</small>")
+    class COMMUNITY_25_B1CFFD78 module;
+    COMMUNITY_30_9CA2CA2E("Community 30<br/><small>28 nodes</small>")
+    class COMMUNITY_30_9CA2CA2E module;
     COMMUNITY_31_2075BEB2("Community 31<br/><small>28 nodes</small>")
     class COMMUNITY_31_2075BEB2 module;
-    COMMUNITY_33_03CF07C5("Community 33<br/><small>27 nodes</small>")
-    class COMMUNITY_33_03CF07C5 module;
-    OTHER_D0941E68("Other<br/><small>478 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>510 nodes</small>")
     class OTHER_D0941E68 module;
     COMMUNITY_0_B056AD3D -->|contains x71| OTHER_D0941E68
-    TESTS_FIXTURES_B84B1DCC -->|imports x70| SERVE_API_35EC8E86
     COMMUNITY_2_8C8DF7B9 -->|contains x63| OTHER_D0941E68
-    SERVE_API_35EC8E86 -->|imports x38| TESTS_FIXTURES_B84B1DCC
-    TESTS_FIXTURES_B84B1DCC -->|imports x33| OTHER_D0941E68
-    COMMUNITY_18_A335126F -->|imports x29| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x62| SERVE_API_35EC8E86
+    TESTS_FIXTURES_B84B1DCC -->|imports x36| OTHER_D0941E68
+    SERVE_API_35EC8E86 -->|imports x34| TESTS_FIXTURES_B84B1DCC
+    OTHER_D0941E68 -->|imports x33| TESTS_FIXTURES_B84B1DCC
+    COMMUNITY_18_A335126F -->|imports x28| TESTS_FIXTURES_B84B1DCC
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x24| TESTS_FIXTURES_B84B1DCC
-    COMMUNITY_16_BD3EE841 -->|imports x19| SERVE_API_35EC8E86
-    COMMUNITY_33_03CF07C5 -->|contains x18| TESTS_FIXTURES_B84B1DCC
+    COMMUNITY_12_82F13F05 -->|imports x20| SERVE_API_35EC8E86
     TESTS_FIXTURES_B84B1DCC -->|imports x16| COMMUNITY_18_A335126F
-    COMMUNITY_16_BD3EE841 -->|contains x12| TESTS_FIXTURES_B84B1DCC
+    COMMUNITY_31_2075BEB2 -->|imports x10| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x10| SERVE_API_35EC8E86
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,19 +146,19 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>232</td><td><code>34, 35, 45, 49, 51, 55, 59, 60, 63, 74, 86, 89, 90, 113, 135, 143</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>35</td><td><code>20</code></td></tr><tr><td>Outputs &amp; Docs</td><td>28</td><td><code>44, 112</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>172</td><td><code>27, 39, 42, 50, 52, 58, 76, 102, 120, 121, 122, 137, 138</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>180</td><td><code>15, 21, 32, 47, 56, 57, 66</code></td></tr><tr><td>Serving API</td><td>371</td><td><code>1, 3, 11, 12, 14, 36, 46, 84, 141</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>945</td><td><code>4, 5, 6, 7, 8, 9, 10, 13, 17, 19, 22, 23, 24, 25, 28, 29, 30, 38, 43, 54, 64, 69, 70, 73, 77, 78, 79, 87, 104, 115</code></td></tr><tr><td>Community 0</td><td>95</td><td><code>0</code></td></tr><tr><td>Community 2</td><td>91</td><td><code>2</code></td></tr><tr><td>Community 16</td><td>43</td><td><code>16</code></td></tr><tr><td>Community 18</td><td>40</td><td><code>18</code></td></tr><tr><td>Community 26</td><td>32</td><td><code>26</code></td></tr><tr><td>Community 31</td><td>28</td><td><code>31</code></td></tr><tr><td>Community 33</td><td>27</td><td><code>33</code></td></tr><tr><td>Other</td><td>478</td><td><code>37, 40, 41, 48, 53, 61, 62, 65, 67, 68, 71, 72, 75, 80, 81, 82, 83, 85, 88, 91, 92, 100, 101, 103, 93, 94, 95, 96, 97, 98, 99, 105, 106, 107, 108, 109, 110, 111, 114, 116, 117, 118, 119, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 136, 139, 140, 142, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153</code></td></tr>
+      <tr><td>Graph Build</td><td>232</td><td><code>33, 34, 43, 47, 50, 55, 59, 60, 63, 74, 87, 90, 91, 114, 136, 144</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>35</td><td><code>20</code></td></tr><tr><td>Outputs &amp; Docs</td><td>5</td><td><code>113</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>172</td><td><code>26, 38, 41, 48, 52, 58, 76, 103, 121, 122, 123, 138, 139</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>180</td><td><code>16, 21, 32, 45, 56, 57, 66</code></td></tr><tr><td>Serving API</td><td>371</td><td><code>1, 3, 11, 13, 15, 35, 44, 85, 142</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>932</td><td><code>4, 5, 6, 7, 8, 9, 10, 14, 17, 19, 22, 23, 24, 27, 28, 29, 37, 42, 51, 54, 64, 69, 70, 73, 77, 79, 80, 88, 105, 116</code></td></tr><tr><td>Community 0</td><td>95</td><td><code>0</code></td></tr><tr><td>Community 2</td><td>91</td><td><code>2</code></td></tr><tr><td>Community 12</td><td>46</td><td><code>12</code></td></tr><tr><td>Community 18</td><td>40</td><td><code>18</code></td></tr><tr><td>Community 25</td><td>32</td><td><code>25</code></td></tr><tr><td>Community 30</td><td>28</td><td><code>30</code></td></tr><tr><td>Community 31</td><td>28</td><td><code>31</code></td></tr><tr><td>Other</td><td>510</td><td><code>36, 39, 40, 46, 49, 53, 61, 62, 65, 67, 68, 71, 72, 75, 78, 81, 82, 83, 84, 86, 89, 92, 93, 100, 101, 102, 104, 94, 95, 96, 97, 98, 99, 106, 107, 108, 109, 110, 111, 112, 115, 117, 118, 119, 120, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 137, 140, 141, 143, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154</code></td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Core Flow</h4>
-    <div class="arrow-chain">Graph Build -&gt; Analysis &amp; Clustering -&gt; Serving API -&gt; Tests &amp; Fixtures -&gt; Other -&gt; Ingestion &amp; Updates -&gt; Outputs &amp; Docs</div>
+    <div class="arrow-chain">Graph Build -&gt; Analysis &amp; Clustering -&gt; Serving API -&gt; Tests &amp; Fixtures -&gt; Other -&gt; Community 12 -&gt; Community 31</div>
   </div>
 </div>
 <div class="grid">
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>2797 nodes · 5127 edges · 154 communities (140 shown, 14 thin omitted)</li>
+      <li>2797 nodes · 5127 edges · 155 communities (141 shown, 14 thin omitted)</li>
       <li>Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 87 edges (avg confidence: 0.8)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `cn()` - 49 edges</li>
@@ -852,66 +852,26 @@ flowchart LR
 
 <!-- ====== 4. Outputs & Docs ====== -->
 <h2 id="outputs-docs">4. Outputs &amp; Docs</h2>
-<p>Outputs &amp; Docs groups implementation around indexts, posthog, setup, datats, mostly in src/index.ts, posthog-setup-report.md, src/data/seededScenario.ts. This section covers 28 nodes and 32 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Outputs &amp; Docs groups implementation around posthog, setup, reportmd, report, mostly in posthog-setup-report.md. This section covers 5 nodes and 4 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Outputs &amp; Docs (28 nodes, 32 edges)
-    subgraph outputs_docs_src_index_ts_4ab5396f["src/index.ts"]
-        src_index_ts_75473e42("index.ts")
-        src_index_ts_src_index_accountsessionhandle_e001cc53("accountSessionHandle()<br/><small>src/index.ts</small>")
-        src_index_accountsessions_0dfe2b19("accountSessions<br/><small>src/index.ts</small>")
-        src_index_anonymoussessions_28ccb310("anonymousSessions<br/><small>src/index.ts</small>")
-        src_index_decodeaccountfromrequest_571f79e7("decodeAccountFromRequest()<br/><small>src/index.ts</small>")
-        src_index_expiresatfromnow_01931673("expiresAtFromNow()<br/><small>src/index.ts</small>")
-        src_index_firebasefunctionsbaseurl_ba22375a("firebaseFunctionsBaseUrl<br/><small>src/index.ts</small>")
-    end
-    subgraph outputs_docs_scripts_export_firebase_app_data_ts_df486d40["scripts/export-firebase-app-data.ts"]
-        scripts_export_firebase_app_data_ts_c36381fa("export-firebase-app-data.ts")
-        scripts_export_firebase_app_data_apprecipes_e6ffe24b("appRecipes<br/><small>scripts/export-firebase-app-data.ts</small>")
-        scripts_export_firebase_app_data_outdir_175f5650("outdir<br/><small>scripts/export-firebase-app-data.ts</small>")
-        scripts_export_firebase_app_data_outfile_ed08c3ee("outfile<br/><small>scripts/export-firebase-app-data.ts</small>")
-    end
-    subgraph outputs_docs_src_data_seededScenario_ts_17e19a0c["src/data/seededScenario.ts"]
-        data_seededscenario_canonicalconstraints_6c4bda76("canonicalConstraints<br/><small>src/data/seededScenario.ts</small>")
-        data_seededscenario_productmeta_a44d269c("productMeta<br/><small>src/data/seededScenario.ts</small>")
-        src_data_seededscenario_ts_6e2580a5("seededScenario.ts")
-        data_seededscenario_deadlinebootstrap_6cc3e858("deadlineBootstrap<br/><small>src/data/seededScenario.ts</small>")
-    end
-    data_seededmeals_seededmeals_455a52c1("seededMeals<br/><small>src/data/seededMeals.ts</small>")
-    deadline_food_data_seedmeals_579484f0("seedMeals<br/><small>src/deadline-food/data.ts</small>")
-    domain_types_productmeta_be5711e3("ProductMeta<br/><small>src/domain/types.ts</small>")
-    src_index_ts_75473e42 -->|imports| data_seededmeals_seededmeals_455a52c1
-    src_index_ts_75473e42 -->|imports| data_seededscenario_deadlinebootstrap_6cc3e858
-    src_index_ts_75473e42 -->|imports| src_data_seededscenario_ts_6e2580a5
-    data_seededmeals_seededmeals_455a52c1 -->|imports| scripts_export_firebase_app_data_ts_c36381fa
-    data_seededmeals_seededmeals_455a52c1 -->|imports| src_data_seededscenario_ts_6e2580a5
-    src_data_seededscenario_ts_6e2580a5 -->|imports| scripts_export_firebase_app_data_ts_c36381fa
-    src_data_seededscenario_ts_6e2580a5 -->|imports| domain_types_productmeta_be5711e3
-    data_seededscenario_canonicalconstraints_6c4bda76 -->|imports| scripts_export_firebase_app_data_ts_c36381fa
-    data_seededscenario_productmeta_a44d269c -->|imports| scripts_export_firebase_app_data_ts_c36381fa
-    data_seededscenario_deadlinebootstrap_6cc3e858 -->|imports| scripts_export_firebase_app_data_ts_c36381fa
-    deadline_food_data_seedmeals_579484f0 -->|imports| scripts_export_firebase_app_data_ts_c36381fa
-    %% Omitted for readability: 10 nodes, 0 edges
-    class src_index_ts_75473e42 module;
-    class src_index_ts_src_index_accountsessionhandle_e001cc53 function;
-    class src_index_accountsessions_0dfe2b19 function;
-    class src_index_anonymoussessions_28ccb310 async;
-    class src_index_decodeaccountfromrequest_571f79e7 function;
-    class src_index_expiresatfromnow_01931673 function;
-    class src_index_firebasefunctionsbaseurl_ba22375a function;
-    class scripts_export_firebase_app_data_ts_c36381fa module;
-    class scripts_export_firebase_app_data_apprecipes_e6ffe24b function;
-    class scripts_export_firebase_app_data_outdir_175f5650 function;
-    class scripts_export_firebase_app_data_outfile_ed08c3ee function;
-    class data_seededscenario_canonicalconstraints_6c4bda76 function;
-    class data_seededscenario_productmeta_a44d269c function;
-    class src_data_seededscenario_ts_6e2580a5 module;
-    class data_seededscenario_deadlinebootstrap_6cc3e858 function;
-    class data_seededmeals_seededmeals_455a52c1 function;
-    class deadline_food_data_seedmeals_579484f0 function;
-    class domain_types_productmeta_be5711e3 klass;
+    %% Section: Outputs &amp; Docs (5 nodes, 4 edges)
+    drp03_posthog_setup_report_posthog_setup_report_17dad8bd("PostHog setup report<br/><small>posthog-setup-report.md</small>")
+    posthog_setup_report_md_ad142219("posthog-setup-report.md")
+    drp03_posthog_setup_report_enabled_posthog_featu_da0976b5("Enabled PostHog Features<br/><small>posthog-setup-report.md</small>")
+    drp03_posthog_setup_report_instrumented_events_aac1279e("Instrumented Events<br/><small>posthog-setup-report.md</small>")
+    drp03_posthog_setup_report_journey_dimensions_073aa9ac("Journey Dimensions<br/><small>posthog-setup-report.md</small>")
+    posthog_setup_report_md_ad142219 -->|contains| drp03_posthog_setup_report_posthog_setup_report_17dad8bd
+    drp03_posthog_setup_report_posthog_setup_report_17dad8bd -->|contains| drp03_posthog_setup_report_enabled_posthog_featu_da0976b5
+    drp03_posthog_setup_report_posthog_setup_report_17dad8bd -->|contains| drp03_posthog_setup_report_instrumented_events_aac1279e
+    drp03_posthog_setup_report_posthog_setup_report_17dad8bd -->|contains| drp03_posthog_setup_report_journey_dimensions_073aa9ac
+    class drp03_posthog_setup_report_posthog_setup_report_17dad8bd concept;
+    class posthog_setup_report_md_ad142219 concept;
+    class drp03_posthog_setup_report_enabled_posthog_featu_da0976b5 concept;
+    class drp03_posthog_setup_report_instrumented_events_aac1279e concept;
+    class drp03_posthog_setup_report_journey_dimensions_073aa9ac concept;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -935,190 +895,6 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>index.ts</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>deadlineBootstrap</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small><br><code>seededMeals</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small><br><code>seededScenario.ts</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
-  <td>Module file in src/index.ts.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>anonymousSessions</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-async">Async</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>anonymousSessions node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>accountSessions</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>accountSessions node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>firebaseFunctionsBaseUrl</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>firebaseFunctionsBaseUrl node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>publicEnvKeys</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>publicEnvKeys node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>publicEnvJson()</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>publicEnvJson() node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>sessionResponse()</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>sessionResponse() node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>expiresAtFromNow()</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>expiresAtFromNow() node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>accountSessionHandle()</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>accountSessionHandle() node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>decodeAccountFromRequest()</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>decodeAccountFromRequest() node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>proxyToFirebaseFunction()</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>proxyToFirebaseFunction() node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>server</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>server node in src/index.ts.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>seededMeals</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>index.ts</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><code>export-firebase-app-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small><br><code>seededScenario.ts</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
-  <td>seededMeals node in src/data/seededMeals.ts.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>seededScenario.ts</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>index.ts</code><br><small style="color:var(--muted)">src/index.ts</small><br><code>seededMeals</code><br><small style="color:var(--muted)">src/data/seededMeals.ts</small></td>
-  <td><code>export-firebase-app-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small><br><code>ProductMeta</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
-  <td>Module file in src/data/seededScenario.ts.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>canonicalConstraints</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>export-firebase-app-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small></td>
-  <td>canonicalConstraints node in src/data/seededScenario.ts.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>productMeta</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>export-firebase-app-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small></td>
-  <td>productMeta node in src/data/seededScenario.ts.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>deadlineBootstrap</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>index.ts</code><br><small style="color:var(--muted)">src/index.ts</small></td>
-  <td><code>export-firebase-app-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small></td>
-  <td>deadlineBootstrap node in src/data/seededScenario.ts.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>ProductMeta</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>seededScenario.ts</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>ProductMeta node in src/domain/types.ts.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>seedMeals</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>export-firebase-app-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small></td>
-  <td>seedMeals node in src/deadline-food/data.ts.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>export-firebase-app-data.ts</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>canonicalConstraints</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small><br><code>deadlineBootstrap</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small><br><code>productMeta</code><br><small style="color:var(--muted)">src/data/seededScenario.ts</small><br>+3 more</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in scripts/export-firebase-app-data.ts.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>appRecipes</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>appRecipes node in scripts/export-firebase-app-data.ts.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>outdir</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>outdir node in scripts/export-firebase-app-data.ts.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>outfile</code><br><small style="color:var(--muted)">scripts/export-firebase-app-data.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>outfile node in scripts/export-firebase-app-data.ts.</td>
-</tr>
-<tr>
-  <td>24</td>
   <td><code>posthog-setup-report.md</code><br><small style="color:var(--muted)">posthog-setup-report.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1126,7 +902,7 @@ flowchart LR
   <td>Documentation node describing posthog-setup-report.md.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>2</td>
   <td><code>PostHog setup report</code><br><small style="color:var(--muted)">posthog-setup-report.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1134,7 +910,7 @@ flowchart LR
   <td>Documentation node describing PostHog setup report.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>3</td>
   <td><code>Enabled PostHog Features</code><br><small style="color:var(--muted)">posthog-setup-report.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1142,7 +918,7 @@ flowchart LR
   <td>Documentation node describing Enabled PostHog Features.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>4</td>
   <td><code>Journey Dimensions</code><br><small style="color:var(--muted)">posthog-setup-report.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1150,7 +926,7 @@ flowchart LR
   <td>Documentation node describing Journey Dimensions.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>5</td>
   <td><code>Instrumented Events</code><br><small style="color:var(--muted)">posthog-setup-report.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1164,18 +940,12 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/index.ts</code></td><td>12 nodes</td></tr>
-<tr><td><code>posthog-setup-report.md</code></td><td>5 nodes</td></tr>
-<tr><td><code>scripts/export-firebase-app-data.ts</code></td><td>4 nodes</td></tr>
-<tr><td><code>src/data/seededScenario.ts</code></td><td>4 nodes</td></tr>
-<tr><td><code>src/data/seededMeals.ts</code></td><td>1 nodes</td></tr>
-<tr><td><code>src/deadline-food/data.ts</code></td><td>1 nodes</td></tr>
-<tr><td><code>src/domain/types.ts</code></td><td>1 nodes</td></tr>
+      <tr><td><code>posthog-setup-report.md</code></td><td>5 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x21, imports x9, imports x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -2247,12 +2017,12 @@ flowchart LR
 
 <!-- ====== 8. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">8. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around deadline, food, test, api, mostly in doc/DEVELOPMENT_AND_TESTING.md, src/deadline-food/accountAuth.ts, recommender-api/tests/test_recommend_unit.py. This section covers 945 nodes and 1988 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around deadline, food, test, api, mostly in doc/DEVELOPMENT_AND_TESTING.md, src/deadline-food/accountAuth.ts, recommender-api/tests/test_recommend_unit.py. This section covers 932 nodes and 1967 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (945 nodes, 1988 edges)
+    %% Section: Tests &amp; Fixtures (932 nodes, 1967 edges)
     subgraph tests_fixtures_src_domain_ingredientCosting_ts_d00216e7["src/domain/ingredientCosting.ts"]
         domain_ingredientcosting_normalizename_13df8459("normalizeName()<br/><small>src/domain/ingredientCosting.ts</small>")
         domain_ingredientcosting_findingredientpricereco_819f5994("findIngredientPriceRecord()<br/><small>src/domain/ingredientCosting.ts</small>")
@@ -2266,27 +2036,29 @@ flowchart LR
         tests_test_recommend_api_recommend_1bfbc378("_recommend()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
         tests_test_recommend_api_seed_recipe_4ae5d63f("_seed_recipe()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
     end
-    subgraph tests_fixtures_src_domain_planGenerator_ts_00543f85["src/domain/planGenerator.ts"]
-        domain_plangenerator_explainstrategy_faaf09ef("explainStrategy()<br/><small>src/domain/planGenerator.ts</small>")
-        domain_plangenerator_generateplan_f683d764("generatePlan()<br/><small>src/domain/planGenerator.ts</small>")
+    subgraph tests_fixtures_src_lib_posthog_ts_d9bf054d["src/lib/posthog.ts"]
+        lib_posthog_compactproperties_472c4d3d("compactProperties()<br/><small>src/lib/posthog.ts</small>")
+        lib_posthog_captureposthogevent_c6f2b4d4("capturePostHogEvent()<br/><small>src/lib/posthog.ts</small>")
+        lib_posthog_registerposthogcontext_3a2e9754("registerPostHogContext()<br/><small>src/lib/posthog.ts</small>")
     end
     ingest_prices_estimatepricepence_2e707348("estimatePricePence()<br/><small>scripts/ingest/prices.ts</small>")
     src_deadline_food_deadlinefoodapp_tsx_271a67e1("DeadlineFoodApp.tsx")
     deadline_food_costestimate_estimaterecipecost_edfe2aab("estimateRecipeCost()<br/><small>src/deadline-food/costEstimate.ts</small>")
     src_deadline_food_data_ts_a51f3f2c("data.ts")
     deadline_food_utils_money_50e48a6c("money()<br/><small>src/deadline-food/utils.ts</small>")
-    domain_constraints_sortbypreferredfallback_38c880cc("sortByPreferredFallback()<br/><small>src/domain/constraints.ts</small>")
-    domain_rescueplanner_findrescueoptions_e7090f48("findRescueOptions()<br/><small>src/domain/rescuePlanner.ts</small>")
-    domain_rescueplanner_findrescueoptions_e7090f48 -->|calls| domain_constraints_sortbypreferredfallback_38c880cc
-    domain_plangenerator_explainstrategy_faaf09ef -->|calls| domain_plangenerator_generateplan_f683d764
+    lib_publicenv_readbrowserpublicenv_81d34c99("readBrowserPublicEnv()<br/><small>src/lib/publicEnv.ts</small>")
     domain_ingredientcosting_normalizename_13df8459 -->|calls| domain_ingredientcosting_findingredientpricereco_819f5994
     domain_ingredientcosting_findingredientpricereco_819f5994 -->|calls| domain_ingredientcosting_estimateingredientcostp_2ded2ead
     domain_ingredientcosting_roundpencetonearestfive_8ff6776b -->|calls| domain_ingredientcosting_estimaterecipecostpence_ea1fc68a
     domain_ingredientcosting_estimaterecipecostpence_ea1fc68a -->|calls| deadline_food_costestimate_estimaterecipecost_edfe2aab
     domain_ingredientcosting_estimaterecipecostpence_ea1fc68a -->|calls| domain_ingredientcosting_estimaterawmeasurescost_23e6e627
     domain_ingredientcosting_estimaterawmeasurescost_23e6e627 -->|calls| ingest_prices_estimatepricepence_2e707348
+    lib_posthog_compactproperties_472c4d3d -->|calls| lib_posthog_captureposthogevent_c6f2b4d4
+    lib_posthog_compactproperties_472c4d3d -->|calls| lib_posthog_registerposthogcontext_3a2e9754
+    lib_posthog_registerposthogcontext_3a2e9754 -->|imports| src_deadline_food_deadlinefoodapp_tsx_271a67e1
+    lib_posthog_captureposthogevent_c6f2b4d4 -->|imports| src_deadline_food_deadlinefoodapp_tsx_271a67e1
     src_deadline_food_data_ts_a51f3f2c -->|imports| src_deadline_food_deadlinefoodapp_tsx_271a67e1
-    %% Omitted for readability: 927 nodes, 0 edges
+    %% Omitted for readability: 914 nodes, 0 edges
     class domain_ingredientcosting_normalizename_13df8459 function;
     class domain_ingredientcosting_findingredientpricereco_819f5994 function;
     class domain_ingredientcosting_estimateingredientcostp_2ded2ead function;
@@ -2296,15 +2068,15 @@ flowchart LR
     class tests_test_recommend_api_seed_user_20dec82f test;
     class tests_test_recommend_api_recommend_1bfbc378 test;
     class tests_test_recommend_api_seed_recipe_4ae5d63f test;
-    class domain_plangenerator_explainstrategy_faaf09ef function;
-    class domain_plangenerator_generateplan_f683d764 function;
+    class lib_posthog_compactproperties_472c4d3d function;
+    class lib_posthog_captureposthogevent_c6f2b4d4 function;
+    class lib_posthog_registerposthogcontext_3a2e9754 function;
     class ingest_prices_estimatepricepence_2e707348 function;
     class src_deadline_food_deadlinefoodapp_tsx_271a67e1 ui;
     class deadline_food_costestimate_estimaterecipecost_edfe2aab test;
     class src_deadline_food_data_ts_a51f3f2c module;
     class deadline_food_utils_money_50e48a6c function;
-    class domain_constraints_sortbypreferredfallback_38c880cc function;
-    class domain_rescueplanner_findrescueoptions_e7090f48 function;
+    class lib_publicenv_readbrowserpublicenv_81d34c99 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -2585,7 +2357,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x768, imports x485, calls x370, imports x191. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x764, imports x474, calls x365, imports x190. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3246,31 +3018,31 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 11. Community 16 ====== -->
-<h2 id="community-16">11. Community 16</h2>
-<p>Community 16 groups implementation around data, meals, domain, ingredientsts, mostly in src/domain/ingredients.ts, src/domain/types.ts, data/meals/remixChickenSaladBox.ts. This section covers 43 nodes and 116 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 11. Community 12 ====== -->
+<h2 id="community-12">11. Community 12</h2>
+<p>Community 12 groups implementation around data, meals, domain, typests, mostly in src/domain/types.ts, src/domain/ingredients.ts, data/meals/remixChickenSaladBox.ts. This section covers 46 nodes and 119 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 16 (43 nodes, 116 edges)
-    subgraph community_16_data_meals_fallbackCampusHummusBox_139414a4["data/meals/fallbackCampusHummusBox.ts"]
+    %% Section: Community 12 (46 nodes, 119 edges)
+    subgraph community_12_data_meals_fallbackCampusHummusBox_d80b852a["data/meals/fallbackCampusHummusBox.ts"]
         src_data_meals_fallbackcampushummusbox_ts_04d9b7db("fallbackCampusHummusBox.ts")
         meals_fallbackcampushummusbox_fallbackcampushumm_079781f9("fallbackCampusHummusBox<br/><small>data/meals/fallbackCampusHummusBox.ts</small>")
     end
-    subgraph community_16_data_meals_fallbackCampusRiceBowl_t_dbcd50b3["data/meals/fallbackCampusRiceBowl.ts"]
+    subgraph community_12_data_meals_fallbackCampusRiceBowl_t_470465a0["data/meals/fallbackCampusRiceBowl.ts"]
         src_data_meals_fallbackcampusricebowl_ts_bbb1ebd1("fallbackCampusRiceBowl.ts")
         meals_fallbackcampusricebowl_fallbackcampusriceb_eda72dff("fallbackCampusRiceBowl<br/><small>data/meals/fallbackCampusRiceBowl.ts</small>")
     end
-    subgraph community_16_data_meals_fallbackCampusSushiSnack_941daa83["data/meals/fallbackCampusSushiSnack.ts"]
+    subgraph community_12_data_meals_fallbackCampusSushiSnack_33996521["data/meals/fallbackCampusSushiSnack.ts"]
         src_data_meals_fallbackcampussushisnack_ts_ad3a7dba("fallbackCampusSushiSnack.ts")
         meals_fallbackcampussushisnack_fallbackcampussus_a81c3c1d("fallbackCampusSushiSnack<br/><small>data/meals/fallbackCampusSushiSnack.ts</small>")
     end
-    subgraph community_16_data_meals_fallbackHallsJacketPotat_1dc65838["data/meals/fallbackHallsJacketPotato.ts"]
+    subgraph community_12_data_meals_fallbackHallsJacketPotat_2012b714["data/meals/fallbackHallsJacketPotato.ts"]
         src_data_meals_fallbackhallsjacketpotato_ts_dec8457b("fallbackHallsJacketPotato.ts")
         meals_fallbackhallsjacketpotato_fallbackhallsjac_9186ce16("fallbackHallsJacketPotato<br/><small>data/meals/fallbackHallsJacketPotato.ts</small>")
     end
-    subgraph community_16_data_meals_fallbackLibraryBeanWrap_b0d58760["data/meals/fallbackLibraryBeanWrap.ts"]
+    subgraph community_12_data_meals_fallbackLibraryBeanWrap_f66049ed["data/meals/fallbackLibraryBeanWrap.ts"]
         src_data_meals_fallbacklibrarybeanwrap_ts_e57e77ce("fallbackLibraryBeanWrap.ts")
         meals_fallbacklibrarybeanwrap_fallbacklibrarybea_e2b63631("fallbackLibraryBeanWrap<br/><small>data/meals/fallbackLibraryBeanWrap.ts</small>")
     end
@@ -3299,7 +3071,7 @@ flowchart LR
     src_data_seededmeals_ts_204303a7 -->|imports| src_data_meals_fallbackcampussushisnack_ts_ad3a7dba
     src_data_seededmeals_ts_204303a7 -->|imports| src_data_meals_fallbackhallsjacketpotato_ts_dec8457b
     src_data_seededmeals_ts_204303a7 -->|imports| src_data_meals_fallbacklibrarybeanwrap_ts_e57e77ce
-    %% Omitted for readability: 25 nodes, 0 edges
+    %% Omitted for readability: 28 nodes, 0 edges
     class src_data_meals_fallbackcampushummusbox_ts_04d9b7db module;
     class meals_fallbackcampushummusbox_fallbackcampushumm_079781f9 function;
     class src_data_meals_fallbackcampusricebowl_ts_bbb1ebd1 module;
@@ -3586,8 +3358,8 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/domain/ingredients.ts</code></td><td>6 nodes</td></tr>
-<tr><td><code>src/domain/types.ts</code></td><td>6 nodes</td></tr>
+      <tr><td><code>src/domain/types.ts</code></td><td>9 nodes</td></tr>
+<tr><td><code>src/domain/ingredients.ts</code></td><td>6 nodes</td></tr>
 <tr><td><code>data/meals/fallbackCampusHummusBox.ts</code></td><td>2 nodes</td></tr>
 <tr><td><code>data/meals/fallbackCampusRiceBowl.ts</code></td><td>2 nodes</td></tr>
 <tr><td><code>data/meals/fallbackCampusSushiSnack.ts</code></td><td>2 nodes</td></tr>
@@ -3598,7 +3370,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x46, imports x45, contains x25. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x46, imports x45, contains x28. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3957,14 +3729,14 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 13. Community 26 ====== -->
-<h2 id="community-26">13. Community 26</h2>
-<p>Community 26 groups implementation around autoplants, functions, ingredient, patterns, mostly in functions/src/autoPlan.ts. This section covers 32 nodes and 33 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 13. Community 25 ====== -->
+<h2 id="community-25">13. Community 25</h2>
+<p>Community 25 groups implementation around autoplants, functions, ingredient, patterns, mostly in functions/src/autoPlan.ts. This section covers 32 nodes and 33 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 26 (32 nodes, 33 edges)
+    %% Section: Community 25 (32 nodes, 33 edges)
     src_autoplan_canonicaltag_ec94d4c3("canonicalTag()<br/><small>functions/src/autoPlan.ts</small>")
     src_autoplan_mealcostpence_449e983c("mealCostPence()<br/><small>functions/src/autoPlan.ts</small>")
     src_autoplan_includesanypattern_6951986b("includesAnyPattern()<br/><small>functions/src/autoPlan.ts</small>")
@@ -4282,14 +4054,14 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 14. Community 31 ====== -->
-<h2 id="community-31">14. Community 31</h2>
-<p>Community 31 groups implementation around frontendmd, doc, active, frontend, mostly in doc/FRONTEND.md. This section covers 28 nodes and 27 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 14. Community 30 ====== -->
+<h2 id="community-30">14. Community 30</h2>
+<p>Community 30 groups implementation around frontendmd, doc, active, frontend, mostly in doc/FRONTEND.md. This section covers 28 nodes and 27 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 31 (28 nodes, 27 edges)
+    %% Section: Community 30 (28 nodes, 27 edges)
     doc_frontend_frontend_documentation_12cf8961("Frontend Documentation<br/><small>doc/FRONTEND.md</small>")
     doc_frontend_active_app_screens_10f9f8dd("Active App Screens<br/><small>doc/FRONTEND.md</small>")
     doc_frontend_active_app_data_model_b75cfc24("Active App Data Model<br/><small>doc/FRONTEND.md</small>")
@@ -4606,20 +4378,21 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 15. Community 33 ====== -->
-<h2 id="community-33">15. Community 33</h2>
-<p>Community 33 groups implementation around domain, constraintsts, plangeneratorts, typests, mostly in src/domain/constraints.ts, src/domain/planGenerator.ts, src/domain/types.ts. This section covers 27 nodes and 63 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 15. Community 31 ====== -->
+<h2 id="community-31">15. Community 31</h2>
+<p>Community 31 groups implementation around domain, plangeneratorts, constraintsts, cheapest, mostly in src/domain/planGenerator.ts, src/domain/constraints.ts. This section covers 28 nodes and 69 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 33 (27 nodes, 63 edges)
-    subgraph community_33_src_domain_planGenerator_ts_05aae15a["src/domain/planGenerator.ts"]
+    %% Section: Community 31 (28 nodes, 69 edges)
+    subgraph community_31_src_domain_planGenerator_ts_24a83cab["src/domain/planGenerator.ts"]
         src_domain_plangenerator_ts_2aee0cb5("planGenerator.ts")
         domain_plangenerator_buildplanmeal_45c2b1f3("buildPlanMeal()<br/><small>src/domain/planGenerator.ts</small>")
-        domain_plangenerator_cheapest_71b6b1af("cheapest()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_compatiblemeals_5fca7da1("compatibleMeals()<br/><small>src/domain/planGenerator.ts</small>")
+        domain_plangenerator_cheapest_71b6b1af("cheapest()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_getplanitems_b3ab50e4("getPlanItems()<br/><small>src/domain/planGenerator.ts</small>")
+        domain_plangenerator_explainstrategy_faaf09ef("explainStrategy()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_buildmixedplan_dce6b48f("buildMixedPlan()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_buildpreponceplan_7f45a509("buildPrepOncePlan()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_pickfallback_50168c3d("pickFallback()<br/><small>src/domain/planGenerator.ts</small>")
@@ -4627,15 +4400,14 @@ flowchart LR
         domain_plangenerator_pickremix_8e8340fd("pickRemix()<br/><small>src/domain/planGenerator.ts</small>")
         domain_plangenerator_buildnocookplan_968223f7("buildNoCookPlan()<br/><small>src/domain/planGenerator.ts</small>")
     end
-    subgraph community_33_src_domain_constraints_ts_7ad6efba["src/domain/constraints.ts"]
+    subgraph community_31_src_domain_constraints_ts_55bb68a2["src/domain/constraints.ts"]
         domain_constraints_getmealslotsforconstraints_ff9d403d("getMealSlotsForConstraints()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_getplanningdayids_9e7d9cb7("getPlanningDayIds()<br/><small>src/domain/constraints.ts</small>")
+        domain_constraints_matchesdietarytags_2ab3caaf("matchesDietaryTags()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_createplannedmealid_3ee3e50d("createPlannedMealId()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_formatdaylabel_d297a48d("formatDayLabel()<br/><small>src/domain/constraints.ts</small>")
         domain_constraints_formatmealslotlabel_4178208e("formatMealSlotLabel()<br/><small>src/domain/constraints.ts</small>")
-        domain_constraints_formatplanitemlabel_3648ec0a("formatPlanItemLabel()<br/><small>src/domain/constraints.ts</small>")
     end
-    domain_types_validationresult_2cfc4bd4("ValidationResult<br/><small>src/domain/types.ts</small>")
     domain_plangenerator_cheapest_71b6b1af -->|calls| domain_plangenerator_buildmixedplan_dce6b48f
     domain_plangenerator_cheapest_71b6b1af -->|calls| domain_plangenerator_buildpreponceplan_7f45a509
     domain_plangenerator_cheapest_71b6b1af -->|calls| domain_plangenerator_pickfallback_50168c3d
@@ -4648,24 +4420,25 @@ flowchart LR
     domain_plangenerator_getplanitems_b3ab50e4 -->|calls| domain_constraints_getplanningdayids_9e7d9cb7
     domain_plangenerator_compatiblemeals_5fca7da1 -->|calls| domain_plangenerator_buildmixedplan_dce6b48f
     domain_plangenerator_compatiblemeals_5fca7da1 -->|calls| domain_plangenerator_buildpreponceplan_7f45a509
+    domain_plangenerator_compatiblemeals_5fca7da1 -->|calls| domain_constraints_matchesdietarytags_2ab3caaf
     domain_plangenerator_compatiblemeals_5fca7da1 -->|calls| domain_plangenerator_pickfallback_50168c3d
     domain_plangenerator_compatiblemeals_5fca7da1 -->|calls| domain_plangenerator_pickquickcook_89b945c9
     domain_plangenerator_compatiblemeals_5fca7da1 -->|calls| domain_plangenerator_pickremix_8e8340fd
     domain_plangenerator_buildplanmeal_45c2b1f3 -->|calls| domain_constraints_createplannedmealid_3ee3e50d
     domain_plangenerator_buildplanmeal_45c2b1f3 -->|calls| domain_constraints_formatdaylabel_d297a48d
     domain_plangenerator_buildplanmeal_45c2b1f3 -->|calls| domain_constraints_formatmealslotlabel_4178208e
-    domain_plangenerator_buildplanmeal_45c2b1f3 -->|calls| domain_constraints_formatplanitemlabel_3648ec0a
     domain_plangenerator_buildplanmeal_45c2b1f3 -->|calls| domain_constraints_getmealslotsforconstraints_ff9d403d
-    domain_constraints_formatdaylabel_d297a48d -->|calls| domain_constraints_formatplanitemlabel_3648ec0a
-    domain_constraints_formatmealslotlabel_4178208e -->|calls| domain_constraints_formatplanitemlabel_3648ec0a
     domain_constraints_getmealslotsforconstraints_ff9d403d -->|calls| domain_constraints_createplannedmealid_3ee3e50d
     src_domain_plangenerator_ts_2aee0cb5 -->|imports| domain_constraints_createplannedmealid_3ee3e50d
-    %% Omitted for readability: 9 nodes, 5 edges
+    src_domain_plangenerator_ts_2aee0cb5 -->|imports| domain_constraints_formatdaylabel_d297a48d
+    src_domain_plangenerator_ts_2aee0cb5 -->|imports| domain_constraints_formatmealslotlabel_4178208e
+    %% Omitted for readability: 10 nodes, 3 edges
     class src_domain_plangenerator_ts_2aee0cb5 module;
     class domain_plangenerator_buildplanmeal_45c2b1f3 function;
-    class domain_plangenerator_cheapest_71b6b1af function;
     class domain_plangenerator_compatiblemeals_5fca7da1 function;
+    class domain_plangenerator_cheapest_71b6b1af function;
     class domain_plangenerator_getplanitems_b3ab50e4 function;
+    class domain_plangenerator_explainstrategy_faaf09ef function;
     class domain_plangenerator_buildmixedplan_dce6b48f function;
     class domain_plangenerator_buildpreponceplan_7f45a509 function;
     class domain_plangenerator_pickfallback_50168c3d function;
@@ -4674,11 +4447,10 @@ flowchart LR
     class domain_plangenerator_buildnocookplan_968223f7 function;
     class domain_constraints_getmealslotsforconstraints_ff9d403d function;
     class domain_constraints_getplanningdayids_9e7d9cb7 function;
+    class domain_constraints_matchesdietarytags_2ab3caaf function;
     class domain_constraints_createplannedmealid_3ee3e50d function;
     class domain_constraints_formatdaylabel_d297a48d function;
     class domain_constraints_formatmealslotlabel_4178208e function;
-    class domain_constraints_formatplanitemlabel_3648ec0a function;
-    class domain_types_validationresult_2cfc4bd4 klass;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -4737,7 +4509,7 @@ flowchart LR
   <td><code>compatibleMeals()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>buildMixedPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>buildPrepOncePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>pickFallback()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br>+2 more</td>
+  <td><code>buildMixedPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>buildPrepOncePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>matchesDietaryTags()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br>+3 more</td>
   <td>compatibleMeals() node in src/domain/planGenerator.ts.</td>
 </tr>
 <tr>
@@ -4777,7 +4549,7 @@ flowchart LR
   <td><code>buildPrepOncePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>cheapest()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>compatibleMeals()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>getPlanItems()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
-  <td><code>canPrepareBase()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
+  <td><code>canPrepareBase()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>generatePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td>buildPrepOncePlan() node in src/domain/planGenerator.ts.</td>
 </tr>
 <tr>
@@ -4785,7 +4557,7 @@ flowchart LR
   <td><code>buildMixedPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>cheapest()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>compatibleMeals()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>getPlanItems()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
-  <td><code>canCook()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>canPrepareBase()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
+  <td><code>canCook()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>canPrepareBase()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>generatePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td>buildMixedPlan() node in src/domain/planGenerator.ts.</td>
 </tr>
 <tr>
@@ -4793,30 +4565,30 @@ flowchart LR
   <td><code>buildNoCookPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>getPlanItems()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
-  <td>No direct outbound edge</td>
+  <td><code>generatePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td>buildNoCookPlan() node in src/domain/planGenerator.ts.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>MealSlot</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
-  <td><code>constraints.ts</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
-  <td>MealSlot node in src/domain/types.ts.</td>
+  <td><code>explainStrategy()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>generatePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
+  <td>explainStrategy() node in src/domain/planGenerator.ts.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>ValidationResult</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>constraints.ts</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
-  <td>ValidationResult node in src/domain/types.ts.</td>
+  <td><code>generatePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>buildMixedPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>buildNoCookPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>buildPrepOncePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br>+1 more</td>
+  <td>No direct outbound edge</td>
+  <td>generatePlan() node in src/domain/planGenerator.ts.</td>
 </tr>
 <tr>
   <td>15</td>
   <td><code>constraints.ts</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
-  <td><code>MealSlot</code><br><small style="color:var(--muted)">src/domain/types.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>ValidationResult</code><br><small style="color:var(--muted)">src/domain/types.ts</small></td>
+  <td><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
   <td>No direct outbound edge</td>
   <td>Module file in src/domain/constraints.ts.</td>
 </tr>
@@ -4886,6 +4658,14 @@ flowchart LR
 </tr>
 <tr>
   <td>24</td>
+  <td><code>matchesDietaryTags()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>compatibleMeals()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>matchesDietaryTags() node in src/domain/constraints.ts.</td>
+</tr>
+<tr>
+  <td>25</td>
   <td><code>canCook()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildMixedPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4893,7 +4673,7 @@ flowchart LR
   <td>canCook() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>26</td>
   <td><code>canPrepareBase()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildMixedPlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>buildPrepOncePlan()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4901,7 +4681,7 @@ flowchart LR
   <td>canPrepareBase() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>27</td>
   <td><code>getMealSlotsForConstraints()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildPlanMeal()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>getPlanItems()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4909,7 +4689,7 @@ flowchart LR
   <td>getMealSlotsForConstraints() node in src/domain/constraints.ts.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>28</td>
   <td><code>createPlannedMealId()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>buildPlanMeal()</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small><br><code>getMealSlotsForConstraints()</code><br><small style="color:var(--muted)">src/domain/constraints.ts</small><br><code>planGenerator.ts</code><br><small style="color:var(--muted)">src/domain/planGenerator.ts</small></td>
@@ -4923,26 +4703,25 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/domain/constraints.ts</code></td><td>13 nodes</td></tr>
-<tr><td><code>src/domain/planGenerator.ts</code></td><td>12 nodes</td></tr>
-<tr><td><code>src/domain/types.ts</code></td><td>2 nodes</td></tr>
+      <tr><td><code>src/domain/constraints.ts</code></td><td>14 nodes</td></tr>
+<tr><td><code>src/domain/planGenerator.ts</code></td><td>14 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: calls x27, contains x23, imports x12, imports x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x32, contains x26, imports x10, imports x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around functions, fed, specmd, indexjs, mostly in FED_UP_SPEC.md, functions/lib/index.js, functions/src/index.ts. This section covers 478 nodes and 541 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around functions, fed, specmd, indexts, mostly in FED_UP_SPEC.md, functions/lib/index.js, functions/src/index.ts. This section covers 510 nodes and 581 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (478 nodes, 541 edges)
+    %% Section: Other (510 nodes, 581 edges)
     subgraph other_src_domain_ingredientMeasurements_ts_fdb9e24a["src/domain/ingredientMeasurements.ts"]
         domain_ingredientmeasurements_normalizetext_565e599f("normalizeText()<br/><small>src/domain/ingredientMeasurements.ts</small>")
         domain_ingredientmeasurements_gramsforingredient_3737c9ce("gramsForIngredientUnit()<br/><small>src/domain/ingredientMeasurements.ts</small>")
@@ -4950,12 +4729,6 @@ flowchart LR
         domain_ingredientmeasurements_parsemeasuretoingr_ce5d5187("parseMeasureToIngredient()<br/><small>src/domain/ingredientMeasurements.ts</small>")
         domain_ingredientmeasurements_typicalgramsforing_c1dfbbb4("typicalGramsForIngredient()<br/><small>src/domain/ingredientMeasurements.ts</small>")
         domain_ingredientmeasurements_parsequantity_20780bf9("parseQuantity()<br/><small>src/domain/ingredientMeasurements.ts</small>")
-    end
-    subgraph other_src_deadline_food_unitConversion_ts_6bc25e42["src/deadline-food/unitConversion.ts"]
-        deadline_food_unitconversion_canonicalizeunit_492f790e("canonicalizeUnit()<br/><small>src/deadline-food/unitConversion.ts</small>")
-        deadline_food_unitconversion_cleanembeddedingred_d4c9f5f5("cleanEmbeddedIngredient()<br/><small>src/deadline-food/unitConversion.ts</small>")
-        deadline_food_unitconversion_normalizeingredient_580f9a43("normalizeIngredientUnit()<br/><small>src/deadline-food/unitConversion.ts</small>")
-        deadline_food_unitconversion_metricvolumedisplay_e7de2058("metricVolumeDisplay()<br/><small>src/deadline-food/unitConversion.ts</small>")
     end
     subgraph other_functions_lib_index_js_c34dee45["functions/lib/index.js"]
         lib_index_asrecord_ee234b0f("asRecord()<br/><small>functions/lib/index.js</small>")
@@ -4969,6 +4742,12 @@ flowchart LR
     end
     sources_themealdb_parsemeasuretoingredient_4a945a43("parseMeasureToIngredient()<br/><small>ingest/sources/themealdb.ts</small>")
     scripts_import_tesco_prices_parsepackagegrams_0a594c73("parsePackageGrams()<br/><small>scripts/import-tesco-prices.ts</small>")
+    application_deadlinemode_deadlinemodereducer_7430197f("deadlineModeReducer()<br/><small>src/application/deadlineMode.ts</small>")
+    domain_constraints_sortbypreferredfallback_38c880cc("sortByPreferredFallback()<br/><small>src/domain/constraints.ts</small>")
+    domain_recommendationrules_rankstrategies_2a9948a8("rankStrategies()<br/><small>src/domain/recommendationRules.ts</small>")
+    domain_rescueplanner_findrescueoptions_e7090f48("findRescueOptions()<br/><small>src/domain/rescuePlanner.ts</small>")
+    domain_rescueplanner_findrescueoptions_e7090f48 -->|calls| domain_constraints_sortbypreferredfallback_38c880cc
+    domain_recommendationrules_rankstrategies_2a9948a8 -->|calls| application_deadlinemode_deadlinemodereducer_7430197f
     domain_ingredientmeasurements_normalizetext_565e599f -->|calls| domain_ingredientmeasurements_gramsforingredient_3737c9ce
     domain_ingredientmeasurements_normalizetext_565e599f -->|calls| domain_ingredientmeasurements_normalizeingredien_1759bfd9
     domain_ingredientmeasurements_normalizetext_565e599f -->|calls| domain_ingredientmeasurements_parsemeasuretoingr_ce5d5187
@@ -4979,21 +4758,13 @@ flowchart LR
     domain_ingredientmeasurements_typicalgramsforing_c1dfbbb4 -->|calls| domain_ingredientmeasurements_gramsforingredient_3737c9ce
     domain_ingredientmeasurements_parsemeasuretoingr_ce5d5187 -->|calls| scripts_import_tesco_prices_parsepackagegrams_0a594c73
     domain_ingredientmeasurements_parsemeasuretoingr_ce5d5187 -->|calls| sources_themealdb_parsemeasuretoingredient_4a945a43
-    deadline_food_unitconversion_canonicalizeunit_492f790e -->|calls| deadline_food_unitconversion_cleanembeddedingred_d4c9f5f5
-    deadline_food_unitconversion_canonicalizeunit_492f790e -->|calls| deadline_food_unitconversion_normalizeingredient_580f9a43
-    deadline_food_unitconversion_metricvolumedisplay_e7de2058 -->|calls| deadline_food_unitconversion_normalizeingredient_580f9a43
-    deadline_food_unitconversion_cleanembeddedingred_d4c9f5f5 -->|calls| deadline_food_unitconversion_normalizeingredient_580f9a43
-    %% Omitted for readability: 460 nodes, 0 edges
+    %% Omitted for readability: 492 nodes, 0 edges
     class domain_ingredientmeasurements_normalizetext_565e599f function;
     class domain_ingredientmeasurements_gramsforingredient_3737c9ce function;
     class domain_ingredientmeasurements_normalizeingredien_1759bfd9 function;
     class domain_ingredientmeasurements_parsemeasuretoingr_ce5d5187 function;
     class domain_ingredientmeasurements_typicalgramsforing_c1dfbbb4 function;
     class domain_ingredientmeasurements_parsequantity_20780bf9 function;
-    class deadline_food_unitconversion_canonicalizeunit_492f790e function;
-    class deadline_food_unitconversion_cleanembeddedingred_d4c9f5f5 function;
-    class deadline_food_unitconversion_normalizeingredient_580f9a43 function;
-    class deadline_food_unitconversion_metricvolumedisplay_e7de2058 function;
     class lib_index_asrecord_ee234b0f function;
     class lib_index_boundedstring_8bbbb209 function;
     class lib_index_boundednumber_fb360176 function;
@@ -5002,6 +4773,10 @@ flowchart LR
     class src_index_boundednumber_9827874f function;
     class sources_themealdb_parsemeasuretoingredient_4a945a43 function;
     class scripts_import_tesco_prices_parsepackagegrams_0a594c73 function;
+    class application_deadlinemode_deadlinemodereducer_7430197f function;
+    class domain_constraints_sortbypreferredfallback_38c880cc function;
+    class domain_recommendationrules_rankstrategies_2a9948a8 function;
+    class domain_rescueplanner_findrescueoptions_e7090f48 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -5282,7 +5057,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x289, calls x229, imports x11, imports x5. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x311, calls x233, imports x23, imports x7. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5296,7 +5071,7 @@ flowchart LR
       <tr><td>Nodes</td><td>2797</td></tr>
       <tr><td>Edges</td><td>5127</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>154</td></tr>
+      <tr><td>Communities</td><td>155</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
@@ -5312,7 +5087,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-11 15:29 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-11 15:37 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
