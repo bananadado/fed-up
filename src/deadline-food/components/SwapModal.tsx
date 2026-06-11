@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
 import { ingredientName } from "../ingredients";
-import { isVerified, mealById, money } from "../utils";
+import { isMealDietaryCompatible, isVerified, mealById, money } from "../utils";
 import type { TrackEvent } from "../analytics";
 import { MealThumbnail } from "./MealThumbnail";
 import { registerPlanMeals } from "../recipeCatalogue";
@@ -115,7 +115,8 @@ export function SwapModal({
   ]
     .filter((meal) => meal.id !== originalPlanMeal?.mealId)
     .filter((meal) => !meal.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
-    .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())));
+    .filter((meal) => !meal.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
+    .filter((meal) => isMealDietaryCompatible(meal, prefs.dietary));
 
   // Tags available across the full pool (shown in filter panel)
   const availableTags = [...new Set(candidatePool.flatMap((m) => m.tags))].sort();
@@ -157,6 +158,7 @@ export function SwapModal({
     .filter((m) => m.id !== originalPlanMeal?.mealId)
     .filter((m) => !m.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
     .filter((m) => !m.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
+    .filter((m) => isMealDietaryCompatible(m, prefs.dietary))
     .filter((m) => selectedSlots.length === 0 || m.mealSlots.some((s) => selectedSlots.includes(s as MealSlot)))
     .filter((m) => !search.trim() || m.name.toLowerCase().includes(search.toLowerCase()))
     .slice(0, 3);
