@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-06-11)
 
 ## Corpus Check
-- 236 files · ~378,700 words
+- 236 files · ~378,697 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2675566a`
+- Built from commit: `e47dcb9d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -619,11 +619,11 @@ Nodes (5): 7.1 Flow A — Enter Deadline Mode, Entry mechanisms, Purpose, Requir
 
 ### Community 111 - "Community 111"
 Cohesion: 0.40
-Nodes (5): 7.3 Flow C — View the Weekly Plan, Interaction requirements, Purpose, Required plan content, Required plan summary
+Nodes (5): 10.1 Seed data, 10.2 Illustrative fallback examples, 10.3 Nutrition representation, 10. Content and Data Requirements, code:ts (const fallbackOptions: MealOption[] = [)
 
 ### Community 112 - "Community 112"
 Cohesion: 0.40
-Nodes (5): 10.1 Seed data, 10.2 Illustrative fallback examples, 10.3 Nutrition representation, 10. Content and Data Requirements, code:ts (const fallbackOptions: MealOption[] = [)
+Nodes (5): 7.3 Flow C — View the Weekly Plan, Interaction requirements, Purpose, Required plan content, Required plan summary
 
 ### Community 113 - "Community 113"
 Cohesion: 0.40
