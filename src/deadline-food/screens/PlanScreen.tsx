@@ -243,11 +243,11 @@ export function PlanScreen({
                                     >
                                       <div className="flex flex-wrap items-center gap-2">
                                         {unpublished && <Badge tone="amber">Unpublished</Badge>}
-                                        {planMeal?.rescued && <Badge tone="blue">Rescued</Badge>}
+                                        {planMeal?.rescued && <Badge tone="blue">Swapped</Badge>}
                                         {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
                                         {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                         <Badge tone={meal.type === "fallback" ? "amber" : meal.type === "cook" ? "green" : "neutral"}>
-                                          {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Easy option</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Remix</>}
+                                          {meal.type === "fallback" ? <><ShoppingBag size={11} className="mr-1 inline" />Easy option</> : meal.type === "cook" ? <><Flame size={11} className="mr-1 inline" />Cook</> : <><Layers size={11} className="mr-1 inline" />Uses leftovers</>}
                                         </Badge>
                                       </div>
                                       <p className="mt-3 break-words text-sm font-semibold leading-5">
@@ -348,8 +348,9 @@ export function PlanScreen({
                                       <p className="mt-1 text-sm text-stone-500">Choose a meal for this slot.</p>
                                     </div>
                                   )}
-                                  {(planMeal?.batchCook || planMeal?.leftoverOf) && (
+                                  {(planMeal?.rescued || planMeal?.batchCook || planMeal?.leftoverOf) && (
                                     <div className="mt-2 flex flex-wrap gap-1.5">
+                                      {planMeal?.rescued && <Badge tone="blue">Swapped</Badge>}
                                       {planMeal?.batchCook && <Badge tone="green"><Soup size={11} className="mr-1 inline" />Batch cook</Badge>}
                                       {planMeal?.leftoverOf && <Badge tone="blue"><Layers size={11} className="mr-1 inline" />Leftovers</Badge>}
                                     </div>
