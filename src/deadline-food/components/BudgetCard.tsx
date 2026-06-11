@@ -1,24 +1,30 @@
 import { cn } from "@/lib/utils";
 import type { Meal, PlanEntry } from "../types";
-import { getMealById, money } from "../utils";
+import { mealById, money } from "../utils";
 
-function entryTotal(entry: PlanEntry, customRecipes: Meal[]): number {
-  return entry.meals.reduce((daySum, meal) => daySum + getMealById(meal.mealId, customRecipes).price, 0);
+function entryTotal(entry: PlanEntry, customRecipes: Meal[], deletedRecipeIds: Set<string>): number {
+  return entry.meals.reduce((daySum, planMeal) => {
+    // A removed recipe contributes nothing — the slot needs a replacement (#213).
+    if (deletedRecipeIds.has(planMeal.mealId)) return daySum;
+    return daySum + (mealById(planMeal.mealId, customRecipes)?.price ?? 0);
+  }, 0);
 }
 
 export function BudgetCard({
   plan,
   customRecipes,
   budget,
+  deletedRecipeIds,
 }: {
   plan: PlanEntry[];
   customRecipes: Meal[];
   budget: number;
+  deletedRecipeIds: Set<string>;
 }) {
   const weekCount = Math.max(1, Math.ceil(plan.length / 7));
   const weeks = Array.from({ length: weekCount }, (_, index) => {
     const entries = plan.slice(index * 7, index * 7 + 7);
-    const total = entries.reduce((sum, entry) => sum + entryTotal(entry, customRecipes), 0);
+    const total = entries.reduce((sum, entry) => sum + entryTotal(entry, customRecipes, deletedRecipeIds), 0);
     const remaining = budget - total;
     const percent = Math.min(100, Math.round((total / Math.max(budget, 1)) * 100));
     const start = entries[0]?.day;

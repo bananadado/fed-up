@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from .auth import verify_cloud_function
 from .context import extract_context
-from .db import get_db
+from .db import engine, get_db
 from .difficulty import score_difficulty
 from .embeddings import embed_single, embed_texts, synthesize_recipe_text
 from .jobs import (
@@ -50,8 +50,37 @@ def log_event(level: int, event: str, **fields: object) -> None:
     logger.log(level, "%s %s", event, json.dumps(fields, default=str, sort_keys=True))
 
 
+async def _ensure_verified_column():
+    """Idempotent startup migration for the recipes.verified column (#213).
+
+    init.sql only runs on a fresh Postgres data directory, and deploy.sh just
+    rebuilds/restarts containers against the persistent volume — so existing
+    deployments never get the column from the schema file. Add it here on boot.
+    Runs exactly once: when the column is first created, pre-existing curated
+    recipes are marked verified (user uploads, keyed ``custom-*``, stay
+    community). On every later boot the column already exists and this no-ops.
+    """
+    if engine.dialect.name != "postgresql":
+        return  # SQLite test backend has no information_schema / recipes table
+    async with engine.begin() as conn:
+        exists = await conn.scalar(text(
+            "SELECT 1 FROM information_schema.columns "
+            "WHERE table_name = 'recipes' AND column_name = 'verified'"
+        ))
+        if exists:
+            return
+        await conn.execute(text(
+            "ALTER TABLE recipes ADD COLUMN verified BOOLEAN NOT NULL DEFAULT false"
+        ))
+        await conn.execute(text(
+            "UPDATE recipes SET verified = true WHERE id NOT LIKE 'custom-%'"
+        ))
+        log_event(logging.INFO, "migration_applied", migration="recipes_verified")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await _ensure_verified_column()
     from .embeddings import get_model
     log_event(logging.INFO, "model_load_started")
     get_model()
@@ -128,11 +157,11 @@ async def create_recipe(recipe: RecipeIn, db: AsyncSession = Depends(get_db)):
         text("""
             INSERT INTO recipes (id, name, meal_type, meal_slots, price_pence, prep_minutes,
                 difficulty, dietary_tags, allergens, suitability_tags, ingredients, instructions,
-                cuisine, flavor_profile, techniques, equipment, nutrition, source, note,
+                cuisine, flavor_profile, techniques, equipment, nutrition, source, note, verified,
                 embedding_text, embedding)
             VALUES (:id, :name, :meal_type, :meal_slots, :price_pence, :prep_minutes,
                 :difficulty, :dietary_tags, :allergens, :suitability_tags, CAST(:ingredients AS jsonb), :instructions,
-                :cuisine, :flavor_profile, :techniques, :equipment, CAST(:nutrition AS jsonb), :source, :note,
+                :cuisine, :flavor_profile, :techniques, :equipment, CAST(:nutrition AS jsonb), :source, :note, :verified,
                 :embedding_text, CAST(:embedding AS vector))
             ON CONFLICT (id) DO UPDATE SET
                 name = EXCLUDED.name, meal_type = EXCLUDED.meal_type, meal_slots = EXCLUDED.meal_slots,
@@ -143,6 +172,7 @@ async def create_recipe(recipe: RecipeIn, db: AsyncSession = Depends(get_db)):
                 cuisine = EXCLUDED.cuisine, flavor_profile = EXCLUDED.flavor_profile,
                 techniques = EXCLUDED.techniques, equipment = EXCLUDED.equipment,
                 nutrition = EXCLUDED.nutrition, source = EXCLUDED.source, note = EXCLUDED.note,
+                verified = EXCLUDED.verified,
                 embedding_text = EXCLUDED.embedding_text, embedding = EXCLUDED.embedding,
                 updated_at = now()
         """),
@@ -474,5 +504,6 @@ def _row_to_recipe(row) -> RecipeOut:
         nutrition=nutrition,
         source=d.get("source"),
         note=d.get("note"),
+        verified=bool(d.get("verified", False)),
         embedding_text=d.get("embedding_text"),
     )

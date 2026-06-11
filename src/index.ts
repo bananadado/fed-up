@@ -163,6 +163,18 @@ const server = serve({
       },
     },
 
+    "/api/deadline-food/recipe": {
+      async GET(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipe", req);
+      },
+    },
+
+    "/api/deadline-food/recipe-states": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipeStates", req);
+      },
+    },
+
     "/api/deadline-food/recipe-reviews": {
       async GET(req) {
         return proxyToFirebaseFunction("deadlineFoodRecipeReviews", req);
@@ -288,6 +300,12 @@ const server = serve({
     "/api/recommender/recipe/delete": {
       async POST(req) {
         return proxyToFirebaseFunction("deadlineFoodRecipeDelete", req);
+      },
+    },
+
+    "/api/recommender/recipe/unpublish": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodRecipeUnpublish", req);
       },
     },
 

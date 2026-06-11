@@ -21,11 +21,15 @@ CREATE TABLE IF NOT EXISTS recipes (
     nutrition JSONB,
     source TEXT,
     note TEXT,
+    verified BOOLEAN NOT NULL DEFAULT false,  -- curated/seed content vs user-contributed
     embedding_text TEXT,             -- synthesized text used for embedding
     embedding vector(384),           -- bge-small-en-v1.5 = 384 dims
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+-- Note: for databases created before #213 (where init.sql has already run and is
+-- skipped on restart), the verified column is added in-place by the API's
+-- startup migration in recommender-api/app/main.py (_ensure_verified_column).
 
 -- User profiles
 CREATE TABLE IF NOT EXISTS users (

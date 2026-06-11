@@ -36,6 +36,7 @@ class RecipeIn(BaseModel):
     nutrition: Nutrition | None = None
     source: str | None = None
     note: str | None = None
+    verified: bool = False
 
     @field_validator(
         "dietary_tags",

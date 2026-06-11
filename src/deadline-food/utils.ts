@@ -56,9 +56,30 @@ export function formatCookingLimit(minutes: number | null) {
   return `${minutes} min`;
 }
 
-export function mealById(id: string, customRecipes: Meal[]) {
+/**
+ * Whether a recipe is curated/verified content rather than user-contributed
+ * (#213). Backend-sourced recipes carry an explicit `verified` flag; local seed
+ * data has no flag and is verified iff it was not user-created, so seeds read as
+ * verified without having to stamp every entry.
+ */
+export function isVerified(meal: Meal): boolean {
+  return meal.verified === true || (meal.verified === undefined && !meal.isUserCreated);
+}
+
+/**
+ * Whether the given account owns this recipe (#213 follow-up). Locally-created
+ * recipes are owned; a recipe opened via share link is owned when its stored
+ * ownerUid matches the signed-in account, so an owner keeps control across
+ * devices. Used to gate publish/unpublish/delete controls.
+ */
+export function isRecipeOwnedBy(meal: Meal | undefined | null, accountUid: string | null | undefined): boolean {
+  if (!meal) return false;
+  return meal.isUserCreated === true || (!!meal.ownerUid && meal.ownerUid === accountUid);
+}
+
+export function mealById(id: string, customRecipes: Meal[], extra: Meal[] = []) {
   return (
-    [...customRecipes, ...getRecipeCatalogue()].find((meal) => meal.id === id) ??
+    [...extra, ...customRecipes, ...getRecipeCatalogue()].find((meal) => meal.id === id) ??
     getPlanMeal(id) ??
     getSessionMeal(id)
   );
