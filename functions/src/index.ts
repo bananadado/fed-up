@@ -1059,8 +1059,14 @@ async function proxyRecommenderRecommendations(
 ): Promise<void> {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
+  const startedAt = Date.now();
+  let upstreamMs = 0;
+  let hydrationMs = 0;
+  let returnedRecipeCount = 0;
+
   try {
     const url = new URL("/recommend", recommenderApiUrl.value().replace(/\/$/, ""));
+    const upstreamStartedAt = Date.now();
     const upstream = await fetch(url, {
       method: "POST",
       headers: {
@@ -1073,11 +1079,22 @@ async function proxyRecommenderRecommendations(
     });
     const contentType = upstream.headers.get("content-type") ?? "application/json";
     const bodyText = await upstream.text();
+    upstreamMs = Date.now() - upstreamStartedAt;
 
     response.set("Cache-Control", "private, max-age=0, no-store");
     response.set("Content-Type", contentType);
+    response.set("Access-Control-Expose-Headers", "X-Deadline-Food-Recommender-Ms, X-Deadline-Food-Hydration-Ms, X-Deadline-Food-Total-Ms");
+    response.set("X-Deadline-Food-Recommender-Ms", String(upstreamMs));
 
     if (!upstream.ok || !contentType.includes("application/json")) {
+      const totalMs = Date.now() - startedAt;
+      response.set("X-Deadline-Food-Hydration-Ms", "0");
+      response.set("X-Deadline-Food-Total-Ms", String(totalMs));
+      logWarn("Recommender recommendations upstream returned non-json or error", {
+        status: upstream.status,
+        upstreamMs,
+        totalMs,
+      });
       response.status(upstream.status).send(bodyText);
       return;
     }
@@ -1086,14 +1103,37 @@ async function proxyRecommenderRecommendations(
     let responseBody = body;
 
     try {
+      const hydrationStartedAt = Date.now();
       responseBody = await enrichRecommendedRecipes(body);
+      hydrationMs = Date.now() - hydrationStartedAt;
     } catch (error) {
       logError("Recommendation recipe enrichment failed", {error});
     }
 
+    returnedRecipeCount = Array.isArray(responseBody) ? responseBody.length : 0;
+    const totalMs = Date.now() - startedAt;
+    response.set("X-Deadline-Food-Hydration-Ms", String(hydrationMs));
+    response.set("X-Deadline-Food-Total-Ms", String(totalMs));
+    logInfo("Recommender recommendations profiled", {
+      upstreamMs,
+      hydrationMs,
+      totalMs,
+      returnedRecipeCount,
+    });
     response.status(upstream.status).json(responseBody);
   } catch (error) {
-    logError("Recommender recommendations request failed", {error});
+    const totalMs = Date.now() - startedAt;
+    logError("Recommender recommendations request failed", {
+      error,
+      upstreamMs,
+      hydrationMs,
+      totalMs,
+      returnedRecipeCount,
+    });
+    response.set("Access-Control-Expose-Headers", "X-Deadline-Food-Recommender-Ms, X-Deadline-Food-Hydration-Ms, X-Deadline-Food-Total-Ms");
+    response.set("X-Deadline-Food-Recommender-Ms", String(upstreamMs));
+    response.set("X-Deadline-Food-Hydration-Ms", String(hydrationMs));
+    response.set("X-Deadline-Food-Total-Ms", String(totalMs));
     response.status(502).json({error: "Recommender API could not be reached"});
   }
 }
