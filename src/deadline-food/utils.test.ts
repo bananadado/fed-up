@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
-import { keyIngredients, sourceUrl } from "./utils";
+import { isRecipeOwnedBy, isVerified, keyIngredients, sourceUrl } from "./utils";
+import type { Meal } from "./types";
 
 describe("keyIngredients", () => {
   const serving = (name: string) => ({ name, quantity: 1, unit: "serving" as const });
@@ -68,5 +69,43 @@ describe("sourceUrl", () => {
     expect(sourceUrl("   ")).toBeNull();
     expect(sourceUrl(undefined)).toBeNull();
     expect(sourceUrl(null)).toBeNull();
+  });
+});
+
+describe("isVerified", () => {
+  const meal = (overrides: Partial<Meal>): Meal => ({ id: "x", isUserCreated: false, ...overrides } as Meal);
+
+  test("explicit verified flag wins", () => {
+    expect(isVerified(meal({ verified: true }))).toBe(true);
+    expect(isVerified(meal({ verified: false, isUserCreated: false }))).toBe(false);
+  });
+
+  test("seed data without a flag is verified unless user-created", () => {
+    expect(isVerified(meal({ isUserCreated: false }))).toBe(true);
+    expect(isVerified(meal({ isUserCreated: true }))).toBe(false);
+  });
+
+  test("a user-created recipe is never verified by the implicit rule", () => {
+    expect(isVerified(meal({ isUserCreated: true, verified: undefined }))).toBe(false);
+  });
+});
+
+describe("isRecipeOwnedBy", () => {
+  const meal = (overrides: Partial<Meal>): Meal => ({ id: "x", ...overrides } as Meal);
+
+  test("locally-created recipes are owned regardless of account", () => {
+    expect(isRecipeOwnedBy(meal({ isUserCreated: true }), null)).toBe(true);
+    expect(isRecipeOwnedBy(meal({ isUserCreated: true }), "uid-1")).toBe(true);
+  });
+
+  test("a shared recipe is owned only when ownerUid matches the account", () => {
+    expect(isRecipeOwnedBy(meal({ ownerUid: "uid-1" }), "uid-1")).toBe(true);
+    expect(isRecipeOwnedBy(meal({ ownerUid: "uid-1" }), "uid-2")).toBe(false);
+    expect(isRecipeOwnedBy(meal({ ownerUid: "uid-1" }), null)).toBe(false);
+  });
+
+  test("seed/community recipes with no owner are not owned", () => {
+    expect(isRecipeOwnedBy(meal({}), "uid-1")).toBe(false);
+    expect(isRecipeOwnedBy(undefined, "uid-1")).toBe(false);
   });
 });
