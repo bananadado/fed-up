@@ -1,8 +1,9 @@
 import { ArrowUpDown, BadgeCheck, Clock3, Eye, Layers, PiggyBank, Search, ShoppingBag, ShoppingCart, Flame, SlidersHorizontal, Sparkles, TrendingDown, TrendingUp, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
+import type { Deadline, Meal, MealSlot, PlanEntry, Preferences } from "../types";
+import { fetchRecommenderRecommendations } from "../recommenderApi";
 import { ingredientName } from "../ingredients";
 import { isMealDietaryCompatible, isVerified, mealById, money } from "../utils";
 import type { TrackEvent } from "../analytics";
@@ -53,7 +54,8 @@ export function SwapModal({
   onSelectMeal,
   suggestedMealId,
   deletedRecipeIds,
-  undiscoveredRecipes,
+  sessionId,
+  deadlines,
   onGoToDiscover,
   track,
 }: {
@@ -67,7 +69,8 @@ export function SwapModal({
   onSelectMeal: (mealId: string) => void;
   suggestedMealId?: string;
   deletedRecipeIds?: Set<string>;
-  undiscoveredRecipes?: Meal[];
+  sessionId: string;
+  deadlines: Deadline[];
   onGoToDiscover?: () => void;
   track: TrackEvent;
 }) {
@@ -95,6 +98,24 @@ export function SwapModal({
   const [customTagInput, setCustomTagInput] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [showSort, setShowSort] = useState(false);
+  const [undiscoveredPool, setUndiscoveredPool] = useState<Meal[]>([]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const excludeIds = [...customRecipes, ...(savedRecipes ?? [])].map((m) => m.id);
+    fetchRecommenderRecommendations({
+      sessionId,
+      prefs,
+      deadlines,
+      excludeIds,
+      count: 10,
+      mealSlot: rescueChoice.slot,
+      signal: controller.signal,
+    })
+      .then((recipes) => { if (!controller.signal.aborted) setUndiscoveredPool(recipes); })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const originalDayIndex = plan.findIndex((entry) => entry.day === rescueChoice.day);
   const originalDay = originalDayIndex >= 0 ? plan[originalDayIndex] : undefined;
@@ -152,26 +173,18 @@ export function SwapModal({
     : allOptions;
 
   const candidatePoolIds = new Set(candidatePool.map((m) => m.id));
-  // Safety + search filters applied once; slot filter handled in two-pass below.
-  const undiscoveredBase = (undiscoveredRecipes ?? [])
+  // undiscoveredPool is fetched slot-specifically on mount, so slot filter is
+  // applied at the API level. Client-side we still apply safety filters + search.
+  const undiscoveredCandidates = undiscoveredPool
     .filter((m) => isVerified(m))
     .filter((m) => !candidatePoolIds.has(m.id))
     .filter((m) => m.id !== originalPlanMeal?.mealId)
     .filter((m) => !m.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
     .filter((m) => !m.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
     .filter((m) => isMealDietaryCompatible(m, prefs.dietary))
-    .filter((m) => !search.trim() || m.name.toLowerCase().includes(search.toLowerCase()));
-  // Slot-matched recipes first; cross-slot fills remaining spots so breakfast
-  // swaps still show suggestions even when very few breakfast recipes exist.
-  const slotMatchedIds = new Set(
-    undiscoveredBase
-      .filter((m) => selectedSlots.length === 0 || m.mealSlots.some((s) => selectedSlots.includes(s as MealSlot)))
-      .map((m) => m.id),
-  );
-  const undiscoveredCandidates = [
-    ...undiscoveredBase.filter((m) => slotMatchedIds.has(m.id)),
-    ...undiscoveredBase.filter((m) => !slotMatchedIds.has(m.id)),
-  ].slice(0, 3);
+    .filter((m) => selectedSlots.length === 0 || m.mealSlots.some((s) => selectedSlots.includes(s as MealSlot)))
+    .filter((m) => !search.trim() || m.name.toLowerCase().includes(search.toLowerCase()))
+    .slice(0, 3);
 
   // selectedId=null means "use first option as default"
   const effectiveId = selectedId ?? allOptions[0]?.id ?? undiscoveredCandidates[0]?.id ?? null;

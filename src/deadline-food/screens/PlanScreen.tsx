@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
-import type { Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
+import type { Deadline, Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { MealThumbnail } from "../components/MealThumbnail";
 import { ShoppingListCard } from "../components/ShoppingListCard";
@@ -54,7 +54,8 @@ export function PlanScreen({
   openDiscover,
   deletedRecipeIds,
   unpublishedRecipeIds,
-  recommendedRecipes,
+  sessionId,
+  deadlines,
   track,
 }: {
   plan: PlanEntry[];
@@ -74,7 +75,8 @@ export function PlanScreen({
   deletedRecipeIds: Set<string>;
   /** Community recipes whose owner unpublished them — still usable, tagged. */
   unpublishedRecipeIds: Set<string>;
-  recommendedRecipes?: Meal[];
+  sessionId: string;
+  deadlines: Deadline[];
   track: TrackEvent;
 }) {
   const [rescueChoice, setRescueChoice] = useState<RescueChoice>(() => {
@@ -454,7 +456,8 @@ export function PlanScreen({
           onSelectMeal={onSelectMeal}
           suggestedMealId={swapSuggestedMealId ?? undefined}
           deletedRecipeIds={deletedRecipeIds}
-          undiscoveredRecipes={recommendedRecipes ?? []}
+          sessionId={sessionId}
+          deadlines={deadlines}
           onGoToDiscover={() => {
             const current = rescueChoice;
             setRescueChoice(null);
