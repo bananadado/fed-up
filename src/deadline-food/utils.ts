@@ -66,6 +66,17 @@ export function isVerified(meal: Meal): boolean {
   return meal.verified === true || (meal.verified === undefined && !meal.isUserCreated);
 }
 
+export function isMealDietaryCompatible(meal: Meal, dietary: string[]): boolean {
+  if (dietary.length === 0) return true;
+  const d = dietary.map((x) => x.toLowerCase());
+  const tags = meal.tags.map((t) => t.toLowerCase());
+  if (d.includes("vegan") && !tags.includes("vegan")) return false;
+  if (d.includes("vegetarian") && !tags.includes("vegetarian") && !tags.includes("vegan")) return false;
+  if (d.includes("halal") && !tags.includes("halal") && !tags.includes("vegetarian") && !tags.includes("vegan")) return false;
+  // gluten-free / dairy-free already covered by allergen check in `avoided`
+  return true;
+}
+
 /**
  * Whether the given account owns this recipe (#213 follow-up). Locally-created
  * recipes are owned; a recipe opened via share link is owned when its stored
