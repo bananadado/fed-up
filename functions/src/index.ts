@@ -108,6 +108,9 @@ const recommenderHttpOptions = {
   secrets: [recommenderApiUrl, recommenderApiKey],
   timeoutSeconds: 60,
 };
+const recommenderProfileHeaders =
+  "X-Deadline-Food-Recommender-Ms, X-Deadline-Food-Hydration-Ms, " +
+  "X-Deadline-Food-Total-Ms";
 const usdaFdcBaseUrl = (
   process.env.USDA_FDC_BASE_URL ?? "https://api.nal.usda.gov/fdc"
 ).replace(/\/$/, "");
@@ -1083,7 +1086,7 @@ async function proxyRecommenderRecommendations(
 
     response.set("Cache-Control", "private, max-age=0, no-store");
     response.set("Content-Type", contentType);
-    response.set("Access-Control-Expose-Headers", "X-Deadline-Food-Recommender-Ms, X-Deadline-Food-Hydration-Ms, X-Deadline-Food-Total-Ms");
+    response.set("Access-Control-Expose-Headers", recommenderProfileHeaders);
     response.set("X-Deadline-Food-Recommender-Ms", String(upstreamMs));
 
     if (!upstream.ok || !contentType.includes("application/json")) {
@@ -1130,7 +1133,7 @@ async function proxyRecommenderRecommendations(
       totalMs,
       returnedRecipeCount,
     });
-    response.set("Access-Control-Expose-Headers", "X-Deadline-Food-Recommender-Ms, X-Deadline-Food-Hydration-Ms, X-Deadline-Food-Total-Ms");
+    response.set("Access-Control-Expose-Headers", recommenderProfileHeaders);
     response.set("X-Deadline-Food-Recommender-Ms", String(upstreamMs));
     response.set("X-Deadline-Food-Hydration-Ms", String(hydrationMs));
     response.set("X-Deadline-Food-Total-Ms", String(totalMs));
