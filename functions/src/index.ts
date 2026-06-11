@@ -1622,9 +1622,28 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const planningPriorities = normalizePlanningPriorities(body.planningPriorities);
   const nutritionGoals = normalizeNutritionGoals(body.nutritionGoals);
   const planVariant = Math.round(boundedNumber(body.planVariant, 0, 0, 1_000_000));
-  const previousPlan = Array.isArray(body.previousPlan) ?
-    body.previousPlan.map((entry) => asRecord(entry)).filter((entry): entry is UnknownRecord => entry !== null) :
-    [];
+  // Sanitize to the shape the scorer walks (`entry.meals[].slot/mealId`) so a
+  // malformed payload can't crash plan generation.
+  const previousPlan: AutoPlan.PlanEntryOut[] = (Array.isArray(body.previousPlan) ? body.previousPlan : [])
+    .map((entry) => asRecord(entry))
+    .filter((entry): entry is UnknownRecord =>
+      entry !== null && typeof entry.dateIso === "string" && Array.isArray(entry.meals))
+    .map((entry) => ({
+      day: boundedString(entry.day, "", 40),
+      dateIso: boundedString(entry.dateIso, "", 10),
+      context: "",
+      meals: (entry.meals as unknown[])
+        .map((meal) => asRecord(meal))
+        .filter((meal): meal is UnknownRecord =>
+          meal !== null &&
+          (meal.slot === "breakfast" || meal.slot === "lunch" || meal.slot === "dinner") &&
+          typeof meal.mealId === "string")
+        .map((meal) => ({
+          slot: meal.slot as AutoPlan.MealSlot,
+          mealId: boundedString(meal.mealId, "", 80),
+          ...(typeof meal.leftoverOf === "string" ? {leftoverOf: boundedString(meal.leftoverOf, "", 80)} : {}),
+        })),
+    }));
   const availableIngredients = Array.isArray(body.availableIngredients) ?
     body.availableIngredients
       .map((ingredient) => asRecord(ingredient))
@@ -1704,7 +1723,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     weeklyBudgetPence,
     planningPriorities,
     variantSeed: planVariant > 0 ? planVariant : undefined,
-    previousPlan: previousPlan as unknown as AutoPlan.PlanEntryOut[],
+    previousPlan,
     candidateCount: 12,
     nutritionTargets: nutritionGoals,
     availableIngredients,

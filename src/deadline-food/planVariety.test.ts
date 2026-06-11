@@ -137,4 +137,90 @@ describe("repairPlanVariety", () => {
     expectNoMoreThanThreePerWeek(repaired.plan);
     expect(repaired.plan.flatMap((entry) => entry.meals).filter((plannedMeal) => plannedMeal.mealId === "falafel")).toHaveLength(3);
   });
+
+  test("keeps a repeated meal instead of leaving a hole when the pool has no alternative", () => {
+    const falafel = meal({ id: "falafel" });
+    const plan: PlanEntry[] = [{
+      day: "Day 1",
+      dateIso: "2026-06-01",
+      context: "",
+      meals: [
+        { slot: "lunch", mealId: "falafel" },
+        { slot: "dinner", mealId: "falafel" },
+      ],
+    }];
+
+    const repaired = repairPlanVariety({
+      plan,
+      backendMeals: [falafel],
+      savedRecipes: [],
+      catalogueMeals: [falafel],
+      prefs: initialPreferences,
+      variantSeed: 1,
+    });
+
+    expect(mainMealIds(repaired.plan)).toEqual(["falafel", "falafel"]);
+    expect(repaired.changed).toBe(false);
+  });
+
+  test("still drops a slot when the meal violates allergens and nothing safe exists", () => {
+    const peanutNoodles = meal({ id: "peanut-noodles", allergens: ["peanuts"] });
+    const plan: PlanEntry[] = [{
+      day: "Day 1",
+      dateIso: "2026-06-01",
+      context: "",
+      meals: [{ slot: "dinner", mealId: "peanut-noodles" }],
+    }];
+
+    const repaired = repairPlanVariety({
+      plan,
+      backendMeals: [peanutNoodles],
+      savedRecipes: [],
+      catalogueMeals: [peanutNoodles],
+      prefs: { ...initialPreferences, allergens: ["Peanuts"] },
+      variantSeed: 1,
+    });
+
+    expect(repaired.plan[0]?.meals).toHaveLength(0);
+    expect(repaired.changed).toBe(true);
+  });
+
+  test("clears leftover flags whose batch-cook origin was repaired away", () => {
+    const soup = meal({ id: "soup" });
+    const falafel = meal({ id: "falafel" });
+    const rice = meal({ id: "rice" });
+    const plan: PlanEntry[] = [
+      {
+        day: "Day 1",
+        dateIso: "2026-06-01",
+        context: "",
+        meals: [
+          { slot: "lunch", mealId: "soup" },
+          // Same-day duplicate, so the batch-cook origin gets replaced.
+          { slot: "dinner", mealId: "soup", batchCook: true },
+        ],
+      },
+      {
+        day: "Day 2",
+        dateIso: "2026-06-02",
+        context: "",
+        meals: [{ slot: "lunch", mealId: "soup", leftoverOf: "soup" }],
+      },
+    ];
+
+    const repaired = repairPlanVariety({
+      plan,
+      backendMeals: [soup],
+      savedRecipes: [],
+      catalogueMeals: [soup, falafel, rice],
+      prefs: initialPreferences,
+      variantSeed: 1,
+    });
+
+    expect(repaired.changed).toBe(true);
+    expect(repaired.plan[0]?.meals[1]?.mealId).not.toBe("soup");
+    const keptLeftover = repaired.plan[1]?.meals[0];
+    expect(keptLeftover?.mealId).toBe("soup");
+    expect(keptLeftover?.leftoverOf).toBeUndefined();
+  });
 });

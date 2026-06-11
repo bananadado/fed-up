@@ -181,6 +181,79 @@ export function Field({
   );
 }
 
+/**
+ * Number input that keeps a free-text draft while typing (so the field can be
+ * cleared) and only commits a clamped value on blur or Enter.
+ */
+export function NumberDraftField({
+  label,
+  labelClassName,
+  value,
+  onCommit,
+  min,
+  max,
+  step,
+  suffix,
+}: {
+  label: string;
+  labelClassName?: string;
+  value: number;
+  onCommit: (value: number) => void;
+  min: number;
+  max: number;
+  step?: string;
+  suffix?: string;
+}) {
+  const [draft, setDraft] = useState(String(value));
+  const [lastValue, setLastValue] = useState(value);
+  if (value !== lastValue) {
+    setLastValue(value);
+    setDraft(String(value));
+  }
+
+  function commit() {
+    const numeric = Number(draft);
+    if (draft.trim() === "" || !Number.isFinite(numeric)) {
+      setDraft(String(value));
+      return;
+    }
+    const clamped = Math.min(max, Math.max(min, Math.round(numeric)));
+    setDraft(String(clamped));
+    if (clamped !== value) onCommit(clamped);
+  }
+
+  const input = (
+    <Input
+      type="number"
+      min={String(min)}
+      max={String(max)}
+      step={step}
+      value={draft}
+      onChange={(event) => setDraft(event.target.value)}
+      onKeyDown={(event) => {
+        if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault();
+        if (event.key === "Enter") event.currentTarget.blur();
+      }}
+      onBlur={commit}
+      className={suffix ? "h-auto border-0 p-3 shadow-none focus-visible:ring-0" : "mt-2"}
+    />
+  );
+
+  return (
+    <Label className="block">
+      <span className={labelClassName ?? "text-sm font-semibold"}>{label}</span>
+      {suffix ? (
+        <div className="mt-2 flex items-center rounded-lg border border-stone-200 px-3">
+          {input}
+          <span className="text-sm text-stone-500">{suffix}</span>
+        </div>
+      ) : (
+        input
+      )}
+    </Label>
+  );
+}
+
 export function SelectField({
   label,
   value,

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 
 import { initialPreferences } from "./data";
 import { buildAutoPlanContextEvents, computePlanSignature, generateAutoPlan } from "./autoPlanApi";
+import { eventDisplayFields } from "./calendarImport/eventsToDeadlines";
 
 const originalFetch = globalThis.fetch;
 
@@ -120,6 +121,40 @@ describe("buildAutoPlanContextEvents", () => {
           date: "Tue 9 Jun",
           rawDate: "2026-06-09",
           time: "16:00",
+          intensity: "High",
+          eventType: "academic",
+          effortHours: 6,
+          urgency: "high",
+        },
+      ],
+    );
+
+    expect(events).toHaveLength(1);
+    expect(events[0]).toMatchObject({ urgency: "high", effort_hours: 6 });
+  });
+
+  test("dedupes zoned calendar starts against local-clock workload rows", () => {
+    // Real imports produce zoned starts (ICS) while deadline rows rebuild the
+    // start from rawDate + local clock time — the key must match the instant.
+    const calendarEvent = {
+      id: "google-1",
+      title: "Coursework deadline",
+      description: "",
+      location: "",
+      start: "2026-06-09T15:00:00Z",
+      end: "",
+      allDay: false,
+      recurrence: "",
+      source: "google" as const,
+      importedAt: "2026-06-08T12:00:00Z",
+    };
+    const fields = eventDisplayFields(calendarEvent, 1);
+
+    const events = buildAutoPlanContextEvents(
+      [calendarEvent],
+      [
+        {
+          ...fields,
           intensity: "High",
           eventType: "academic",
           effortHours: 6,

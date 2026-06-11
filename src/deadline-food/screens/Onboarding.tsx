@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
-import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { AppButton, Badge, ChoiceGroup, Field, NumberDraftField, SelectField } from "../components/primitives";
 import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
@@ -971,45 +971,29 @@ export function Onboarding({
                 description="Daily targets used when Fed Up compares otherwise similar plans."
               >
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <label className="block">
-                    <span className="text-sm font-semibold">Calories per day</span>
-                    <Input
-                      value={prefs.nutritionGoals.dailyCalories}
-                      onChange={(event) => updatePrefs({
-                        nutritionGoals: {
-                          ...prefs.nutritionGoals,
-                          dailyCalories: event.target.value === "" ? 2100 : Number(event.target.value),
-                        },
-                      })}
-                      onBlur={() => track("onboarding_preference_changed", { field: "nutrition_goals.daily_calories", value: prefs.nutritionGoals.dailyCalories })}
-                      type="number"
-                      min="1200"
-                      max="4000"
-                      step="50"
-                      className="mt-2"
-                    />
-                  </label>
-                  <label className="block">
-                    <span className="text-sm font-semibold">Protein per day</span>
-                    <div className="mt-2 flex items-center rounded-lg border border-stone-200 px-3">
-                      <Input
-                        value={prefs.nutritionGoals.dailyProtein}
-                        onChange={(event) => updatePrefs({
-                          nutritionGoals: {
-                            ...prefs.nutritionGoals,
-                            dailyProtein: event.target.value === "" ? 90 : Number(event.target.value),
-                          },
-                        })}
-                        onBlur={() => track("onboarding_preference_changed", { field: "nutrition_goals.daily_protein", value: prefs.nutritionGoals.dailyProtein })}
-                        type="number"
-                        min="30"
-                        max="250"
-                        step="5"
-                        className="h-auto border-0 p-3 shadow-none focus-visible:ring-0"
-                      />
-                      <span className="text-sm text-stone-500">g</span>
-                    </div>
-                  </label>
+                  <NumberDraftField
+                    label="Calories per day"
+                    value={prefs.nutritionGoals.dailyCalories}
+                    onCommit={(dailyCalories) => {
+                      updatePrefs({ nutritionGoals: { ...prefs.nutritionGoals, dailyCalories } });
+                      track("onboarding_preference_changed", { field: "nutrition_goals.daily_calories", value: dailyCalories });
+                    }}
+                    min={1200}
+                    max={4000}
+                    step="50"
+                  />
+                  <NumberDraftField
+                    label="Protein per day"
+                    value={prefs.nutritionGoals.dailyProtein}
+                    onCommit={(dailyProtein) => {
+                      updatePrefs({ nutritionGoals: { ...prefs.nutritionGoals, dailyProtein } });
+                      track("onboarding_preference_changed", { field: "nutrition_goals.daily_protein", value: dailyProtein });
+                    }}
+                    min={30}
+                    max={250}
+                    step="5"
+                    suffix="g"
+                  />
                 </div>
               </PreferenceSection>
             </div>

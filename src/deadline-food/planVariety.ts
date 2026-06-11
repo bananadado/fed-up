@@ -177,14 +177,23 @@ export function repairPlanVariety({
   const repairedPlan = plan.map((entry, dayIndex) => {
     let sameDayMainMealId: string | null = null;
     const weekIndex = Math.floor(dayIndex / 7);
+
+    function recordPlacement(mealId: string) {
+      mainMealHistory.push(mealId);
+      weeklyMealUseCounts.set(
+        weeklyMealUseKey(weekIndex, mealId),
+        (weeklyMealUseCounts.get(weeklyMealUseKey(weekIndex, mealId)) ?? 0) + 1,
+      );
+      sameDayMainMealId = mealId;
+    }
+
     const meals = entry.meals.flatMap((planMeal, mealIndex) => {
       if (!MAIN_SLOTS.includes(planMeal.slot)) return [planMeal];
 
       const currentMeal = byId.get(planMeal.mealId);
-      let mealId = planMeal.mealId;
       const needsRepair = shouldRepairMainMeal(
         currentMeal,
-        mealId,
+        planMeal.mealId,
         mainMealHistory,
         sameDayMainMealId,
         weekIndex,
@@ -192,54 +201,72 @@ export function repairPlanVariety({
         prefs,
       );
 
-      if (needsRepair) {
-        const candidates = pool.filter((meal) =>
-          meal.mealSlots.includes(planMeal.slot) &&
-          meal.id !== mealId &&
-          meal.id !== sameDayMainMealId &&
-          !wouldCreateThirdMainMealRepeat(meal.id, mainMealHistory) &&
-          !wouldExceedWeeklyMainMealLimit(meal.id, weekIndex, weeklyMealUseCounts),
-        );
-        const replacement = pickDeterministicRandom(
-          candidates,
-          `${variantSeed}:${entry.dateIso ?? entry.day}:${planMeal.slot}:${dayIndex}:${mealIndex}:${mainMealHistory.join("|")}`,
-        );
-        if (!replacement) {
-          changed = true;
-          return [];
-        }
-        mealId = replacement.id;
-        usedMeals.set(replacement.id, replacement);
-        changed = true;
-      } else if (currentMeal) {
+      if (!needsRepair && currentMeal) {
         usedMeals.set(currentMeal.id, currentMeal);
-        mainMealHistory.push(mealId);
-        weeklyMealUseCounts.set(
-          weeklyMealUseKey(weekIndex, mealId),
-          (weeklyMealUseCounts.get(weeklyMealUseKey(weekIndex, mealId)) ?? 0) + 1,
-        );
-        sameDayMainMealId = mealId;
+        recordPlacement(currentMeal.id);
         return [planMeal];
       }
 
-      mainMealHistory.push(mealId);
-      weeklyMealUseCounts.set(
-        weeklyMealUseKey(weekIndex, mealId),
-        (weeklyMealUseCounts.get(weeklyMealUseKey(weekIndex, mealId)) ?? 0) + 1,
+      const candidates = pool.filter((meal) =>
+        meal.mealSlots.includes(planMeal.slot) &&
+        meal.id !== planMeal.mealId &&
+        meal.id !== sameDayMainMealId &&
+        !wouldCreateThirdMainMealRepeat(meal.id, mainMealHistory) &&
+        !wouldExceedWeeklyMainMealLimit(meal.id, weekIndex, weeklyMealUseCounts),
       );
-      sameDayMainMealId = mealId;
-      return [{
-        slot: planMeal.slot,
-        mealId,
-        ...(planMeal.rescued ? { rescued: planMeal.rescued } : {}),
-      }];
+      const replacement = pickDeterministicRandom(
+        candidates,
+        `${variantSeed}:${entry.dateIso ?? entry.day}:${planMeal.slot}:${dayIndex}:${mealIndex}:${mainMealHistory.join("|")}`,
+      );
+
+      if (replacement) {
+        changed = true;
+        usedMeals.set(replacement.id, replacement);
+        recordPlacement(replacement.id);
+        return [{
+          slot: planMeal.slot,
+          mealId: replacement.id,
+          ...(planMeal.rescued ? { rescued: planMeal.rescued } : {}),
+        }];
+      }
+
+      if (!currentMeal) {
+        // The meal fails the user's diet/allergen hard filters and nothing
+        // safe can replace it — dropping the slot is the only correct option.
+        changed = true;
+        return [];
+      }
+
+      // Variety violation but no compliant alternative in the pool: keep the
+      // original meal — a repeated meal beats a hole in the plan.
+      usedMeals.set(currentMeal.id, currentMeal);
+      recordPlacement(currentMeal.id);
+      return [planMeal];
     });
 
     return { ...entry, meals };
   });
 
+  // Repairs can replace a batch-cook origin while its leftovers survive; clear
+  // leftover flags with no earlier batch cook of the same meal so the plan UI
+  // doesn't describe a chain that no longer exists. (A batch cook without
+  // surviving leftovers stays flagged — the backend legitimately emits those
+  // when leftovers expire unused.)
+  const batchCookedSoFar = new Set<string>();
+  const coherentPlan = repairedPlan.map((entry) => ({
+    ...entry,
+    meals: entry.meals.map((planMeal) => {
+      if (planMeal.batchCook) batchCookedSoFar.add(planMeal.mealId);
+      if (planMeal.leftoverOf && !batchCookedSoFar.has(planMeal.leftoverOf)) {
+        changed = true;
+        return { ...planMeal, leftoverOf: undefined };
+      }
+      return planMeal;
+    }),
+  }));
+
   return {
-    plan: repairedPlan,
+    plan: coherentPlan,
     meals: [...usedMeals.values()],
     changed,
   };

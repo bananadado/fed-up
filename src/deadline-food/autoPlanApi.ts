@@ -93,7 +93,14 @@ type AutoPlanResponse = {
 };
 
 function contextEventKey(event: ContextEventInput): string {
-  return `${event.start}|${event.title.trim().toLowerCase()}`;
+  const title = event.title.trim().toLowerCase();
+  // Deadline-derived starts are local-clock strings while calendar starts may
+  // carry a zone suffix, so compare the parsed instant rather than the string.
+  const parsed = new Date(event.start);
+  if (!Number.isNaN(parsed.getTime())) {
+    return `${Math.floor(parsed.getTime() / 60_000)}|${title}`;
+  }
+  return `${event.start}|${title}`;
 }
 
 export function buildAutoPlanContextEvents(calendarEvents: CalendarEvent[], deadlines: Deadline[]): ContextEventInput[] {
@@ -103,10 +110,10 @@ export function buildAutoPlanContextEvents(calendarEvents: CalendarEvent[], dead
 
   for (const event of calendarEvents) {
     events.push({
-    title: event.title,
-    start: event.start,
-    end: event.end || null,
-    all_day: event.allDay,
+      title: event.title,
+      start: event.start,
+      end: event.end || null,
+      all_day: event.allDay,
     });
   }
 

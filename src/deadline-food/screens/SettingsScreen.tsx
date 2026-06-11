@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
-import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
+import { AppButton, ChoiceGroup, Field, NumberDraftField, SelectField } from "../components/primitives";
 import { UniversityField } from "../components/UniversityField";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
@@ -420,47 +420,31 @@ export function SettingsScreen({
             <span className="text-sm font-semibold">Nutrition goals</span>
             <p className="mt-1 text-sm text-stone-500">Used to score generated plans.</p>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <label className="block">
-                <span className="text-xs font-semibold uppercase text-stone-500">Calories per day</span>
-                <Input
-                  value={prefs.nutritionGoals.dailyCalories}
-                  onChange={(event) => setPrefs({
-                    ...prefs,
-                    nutritionGoals: {
-                      ...prefs.nutritionGoals,
-                      dailyCalories: event.target.value === "" ? 2100 : Number(event.target.value),
-                    },
-                  })}
-                  onBlur={() => track("settings_preference_changed", { field: "nutrition_goals.daily_calories", value: prefs.nutritionGoals.dailyCalories })}
-                  type="number"
-                  min="1200"
-                  max="4000"
-                  step="50"
-                  className="mt-2"
-                />
-              </label>
-              <label className="block">
-                <span className="text-xs font-semibold uppercase text-stone-500">Protein per day</span>
-                <div className="mt-2 flex items-center rounded-lg border border-stone-200 px-3">
-                  <Input
-                    value={prefs.nutritionGoals.dailyProtein}
-                    onChange={(event) => setPrefs({
-                      ...prefs,
-                      nutritionGoals: {
-                        ...prefs.nutritionGoals,
-                        dailyProtein: event.target.value === "" ? 90 : Number(event.target.value),
-                      },
-                    })}
-                    onBlur={() => track("settings_preference_changed", { field: "nutrition_goals.daily_protein", value: prefs.nutritionGoals.dailyProtein })}
-                    type="number"
-                    min="30"
-                    max="250"
-                    step="5"
-                    className="h-auto border-0 p-3 shadow-none focus-visible:ring-0"
-                  />
-                  <span className="text-sm text-stone-500">g</span>
-                </div>
-              </label>
+              <NumberDraftField
+                label="Calories per day"
+                labelClassName="text-xs font-semibold uppercase text-stone-500"
+                value={prefs.nutritionGoals.dailyCalories}
+                onCommit={(dailyCalories) => {
+                  setPrefs({ ...prefs, nutritionGoals: { ...prefs.nutritionGoals, dailyCalories } });
+                  track("settings_preference_changed", { field: "nutrition_goals.daily_calories", value: dailyCalories });
+                }}
+                min={1200}
+                max={4000}
+                step="50"
+              />
+              <NumberDraftField
+                label="Protein per day"
+                labelClassName="text-xs font-semibold uppercase text-stone-500"
+                value={prefs.nutritionGoals.dailyProtein}
+                onCommit={(dailyProtein) => {
+                  setPrefs({ ...prefs, nutritionGoals: { ...prefs.nutritionGoals, dailyProtein } });
+                  track("settings_preference_changed", { field: "nutrition_goals.daily_protein", value: dailyProtein });
+                }}
+                min={30}
+                max={250}
+                step="5"
+                suffix="g"
+              />
             </div>
           </div>
         </div>
