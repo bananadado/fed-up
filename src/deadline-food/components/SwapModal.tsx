@@ -6,6 +6,7 @@ import type { Meal, MealSlot, PlanEntry, Preferences } from "../types";
 import { ingredientName } from "../ingredients";
 import { isVerified, mealById, money } from "../utils";
 import type { TrackEvent } from "../analytics";
+import { MealThumbnail } from "./MealThumbnail";
 import { AppButton, Badge } from "./primitives";
 
 export const slotLabels: Record<MealSlot, string> = {
@@ -269,7 +270,10 @@ export function SwapModal({
             <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-stone-400">Current</p>
             {originalMeal ? (
               <>
-                <p className="break-words font-semibold text-stone-800">{originalMeal.image} {originalMeal.name}</p>
+                <p className="flex items-center gap-2 break-words font-semibold text-stone-800">
+                  <MealThumbnail meal={originalMeal} className="h-6 w-6" iconClassName="text-base" />
+                  <span className="min-w-0">{originalMeal.name}</span>
+                </p>
                 <div className="mt-1 flex items-center gap-3 text-xs text-stone-500">
                   <span className="flex items-center gap-1"><Clock3 size={12} /> {originalMeal.time} min</span>
                   <span>{money(originalMeal.price)}</span>
@@ -469,7 +473,10 @@ export function SwapModal({
                     <div className="flex items-stretch">
                       <div className="min-w-0 flex-1 p-3">
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <p className="break-words font-semibold text-stone-800">{meal.image} {meal.name}</p>
+                          <p className="flex items-center gap-2 break-words font-semibold text-stone-800">
+                            <MealThumbnail meal={meal} className="h-8 w-8" iconClassName="text-xl" />
+                            <span className="min-w-0">{meal.name}</span>
+                          </p>
                           {isVerified(meal) ? (
                             <Badge tone="blue"><BadgeCheck size={12} className="mr-1" /> Verified</Badge>
                           ) : (
