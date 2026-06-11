@@ -635,9 +635,44 @@ function boundedStringList(
     .slice(0, maxItems);
 }
 
-function normalizeRecipeList(value: unknown, maxItems = 100): UnknownRecord[] {
+function normalizeRecipeList(
+  value: unknown,
+  maxItems = 100,
+  transform?: (recipe: UnknownRecord) => UnknownRecord,
+): UnknownRecord[] {
   if (!Array.isArray(value)) return [];
-  return value.filter((item): item is UnknownRecord => asRecord(item) !== null).slice(0, maxItems);
+  const items = value
+    .filter((item): item is UnknownRecord => asRecord(item) !== null)
+    .slice(0, maxItems);
+  return transform ? items.map(transform) : items;
+}
+
+// Negative numbers are never valid for any nutrition macro, time, cost or serving
+// count and would corrupt the broad nutrition/budget signals. Clamp them to 0 on the
+// write path so a crafted payload can never persist a negative value, mirroring the
+// client-side validation in RecipeEditor.
+function clampStoredRecipeNumbers(recipe: UnknownRecord): UnknownRecord {
+  const clampNonNegative = (record: UnknownRecord, keys: readonly string[]): UnknownRecord => {
+    let next: UnknownRecord = record;
+    for (const key of keys) {
+      const current = record[key];
+      if (typeof current === "number" && Number.isFinite(current) && current < 0) {
+        if (next === record) next = {...record};
+        next[key] = 0;
+      }
+    }
+    return next;
+  };
+
+  const result = clampNonNegative(recipe, ["time", "price", "totalCost", "servings"]);
+  const nutrition = asRecord(result.nutrition);
+  if (nutrition !== null) {
+    const clampedNutrition = clampNonNegative(nutrition, ["calories", "protein", "carbs", "fat"]);
+    if (clampedNutrition !== nutrition) {
+      return {...result, nutrition: clampedNutrition};
+    }
+  }
+  return result;
 }
 
 function normalizeDeadline(value: unknown): SessionSettings["deadlines"][number] | null {
@@ -831,9 +866,9 @@ function normalizeSessionSettings(value: unknown): SessionSettings {
       [],
     selectedSources: boundedStringList(settings.selectedSources),
     onboarded: settings.onboarded === true,
-    customRecipes: normalizeRecipeList(settings.customRecipes),
-    discoverSaved: normalizeRecipeList(settings.discoverSaved),
-    discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
+    customRecipes: normalizeRecipeList(settings.customRecipes, 100, clampStoredRecipeNumbers),
+    discoverSaved: normalizeRecipeList(settings.discoverSaved, 100, clampStoredRecipeNumbers),
+    discoverRejected: normalizeRecipeList(settings.discoverRejected, 3, clampStoredRecipeNumbers),
     discoverReviewedRecipeIds: boundedStringList(settings.discoverReviewedRecipeIds, 250, 120),
     plan: normalizeRecipeList(settings.plan, 31),
     planMeals: normalizeRecipeList(settings.planMeals, 200),
