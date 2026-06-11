@@ -119,12 +119,15 @@ export type Preferences = {
   prepReminderTime: string;
 };
 
-export type DiscoverRecommendationStatus = "idle" | "ready" | "exhausted";
+export type DiscoverRecommendationStatus = "idle" | "loading" | "ready" | "exhausted";
+export type DiscoverRecommendationTrigger = "route_entry" | "tab_entry" | "screen_mount" | "refill";
 
 export type DiscoverRecommendationState = {
   contextKey: string;
   recipes: Meal[];
   status: DiscoverRecommendationStatus;
+  requestStartedAt?: number;
+  requestTrigger?: DiscoverRecommendationTrigger;
 };
 
 export type Screen = "landing" | "onboarding" | "privacy-policy" | "dashboard" | "calendar" | "plan" | "recipes" | "settings" | "recipe-detail";
