@@ -51,6 +51,25 @@ describe("computePlanSignature", () => {
 
     expect(computePlanSignature(base)).not.toBe(computePlanSignature(changed));
   });
+
+  test("changes when liked ingredients change", () => {
+    const base = {
+      prefs: initialPreferences,
+      savedRecipes: [],
+      calendarEvents: [],
+      deadlines: [],
+    };
+
+    const changed = {
+      ...base,
+      prefs: {
+        ...initialPreferences,
+        likes: [...initialPreferences.likes, "halloumi"],
+      },
+    };
+
+    expect(computePlanSignature(base)).not.toBe(computePlanSignature(changed));
+  });
 });
 
 describe("buildAutoPlanContextEvents", () => {

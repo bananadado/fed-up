@@ -135,6 +135,7 @@ type Band = "high" | "medium" | "low";
 const SLOTS: MealSlot[] = ["breakfast", "lunch", "dinner"];
 const LEFTOVER_PORTIONS = 2;
 const LEFTOVER_SHELF_DAYS = 3;
+const DEFAULT_BATCH_SERVINGS = 4; // assumed yield when a batch-tagged recipe omits servings
 const RECENT_REPEAT_DAYS = 3;
 const MAX_NON_BREAKFAST_MEAL_USES_PER_WEEK = 3;
 const DEFAULT_PRIORITIES: PlanningPriorities = {
@@ -535,10 +536,17 @@ function allowsFallback(meal: AllocatorMeal, priorities: PlanningPriorities, b: 
   return b === "high" || day.hard_deadlines > 0;
 }
 
+// How many portions a single batch cook actually yields. One portion is eaten
+// fresh; the rest become leftovers, so leftovers can never exceed servings - 1.
+function batchYield(meal: AllocatorMeal): number {
+  return Math.round(meal.servings ?? DEFAULT_BATCH_SERVINGS);
+}
+
 function leftoverPortions(meal: AllocatorMeal, priorities: PlanningPriorities): number {
   if (priorities.batchCooking === "off") return 0;
-  if (priorities.batchCooking === "high") return Math.max(3, Math.round(meal.servings ?? 0) - 1);
-  return LEFTOVER_PORTIONS;
+  const available = Math.max(0, batchYield(meal) - 1);
+  if (priorities.batchCooking === "high") return available; // use the whole batch
+  return Math.min(LEFTOVER_PORTIONS, available); // balanced: keep a couple of meals
 }
 
 function isBatchSlot(
@@ -550,6 +558,9 @@ function isBatchSlot(
 ): boolean {
   if (priorities.batchCooking === "off" || slot === "breakfast") return false;
   if (classifyEffort(meal) !== "batch") return false;
+  // An explicitly single-serving recipe cannot produce a leftover, so don't
+  // promise one. Unset servings fall back to DEFAULT_BATCH_SERVINGS.
+  if (meal.servings !== undefined && meal.servings < 2) return false;
   if (b === "low") return true;
   return priorities.batchCooking === "high" && b === "medium" && day.free_evening;
 }
@@ -684,7 +695,10 @@ export function buildPlan(input: BuildPlanInput): PlanEntryOut[] {
             spentByWeek,
             usedToday,
             mainMealHistory,
-            countCost: false,
+            // Each consumed portion costs its per-portion price (matches the
+            // dashboard BudgetCard), but ingredients are bought once at the
+            // batch cook, so the leftover does not re-add to the shopping list.
+            countCost: true,
             recordIngredients: false,
           });
           continue;
@@ -861,7 +875,10 @@ function purchasableMealEntries(plan: PlanEntryOut[], pool: AllocatorMeal[]) {
 }
 
 function weeklyCostPence(plan: PlanEntryOut[], pool: AllocatorMeal[]): number {
-  return purchasableMealEntries(plan, pool).reduce((sum, {meal}) => sum + mealCostPence(meal), 0);
+  // Cost model: per-portion price × portions consumed. Every eaten slot,
+  // including leftovers, is charged one portion's price — consistent with
+  // RecipeEditor (price is per portion) and the dashboard BudgetCard.
+  return plannedMealEntries(plan, pool).reduce((sum, {meal}) => sum + mealCostPence(meal), 0);
 }
 
 function ingredientCountsForPlan(
@@ -1026,7 +1043,9 @@ function varietyScore(plan: PlanEntryOut[], priorities: PlanningPriorities): num
 function budgetScore(plan: PlanEntryOut[], pool: AllocatorMeal[], weeklyBudgetPence: number | undefined): number {
   if (weeklyBudgetPence === undefined || !Number.isFinite(weeklyBudgetPence) || weeklyBudgetPence <= 0) return 0.85;
   const weekSpend = new Map<number, number>();
-  for (const {weekIndex, meal} of purchasableMealEntries(plan, pool)) {
+  // Score budget fit against the same per-portion-consumed cost the user sees;
+  // leftovers count so batch-heavy plans are not ranked as artificially cheap.
+  for (const {weekIndex, meal} of plannedMealEntries(plan, pool)) {
     weekSpend.set(weekIndex, (weekSpend.get(weekIndex) ?? 0) + mealCostPence(meal));
   }
   const ratios = [...weekSpend.values()].map((spend) => spend / weeklyBudgetPence);

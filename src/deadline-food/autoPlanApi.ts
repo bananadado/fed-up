@@ -69,6 +69,7 @@ export function computePlanSignature(input: {
     `a:${input.prefs.cookingAbility}`,
     `b:${input.prefs.budget}`,
     `dt:${[...input.prefs.dietary].sort().join(",")}`,
+    `li:${[...input.prefs.likes].sort().join(",")}`,
     `di:${[...input.prefs.dislikes].sort().join(",")}`,
     `al:${[...input.prefs.allergens].sort().join(",")}`,
     `sr:${input.savedRecipes.map((m) => m.id).sort().join(",")}`,

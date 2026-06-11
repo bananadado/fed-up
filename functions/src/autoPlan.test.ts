@@ -172,6 +172,38 @@ describe("buildPlan", () => {
     expect(maxWeeklyLunchDinnerUses(high)).toBeLessThanOrEqual(3);
   });
 
+  it("never mints more leftovers than the recipe's servings", () => {
+    const twoServe = meal({ id: "two", tags: ["batch-friendly"], servings: 2, time: 20, mealSlots: ["dinner"] });
+    const days = [
+      day({ date: "2026-06-01", stress: 0.2 }), // relaxed -> batch cook dinner
+      day({ date: "2026-06-02", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } }),
+      day({ date: "2026-06-03", stress: 0.8, recommended_constraints: { max_prep_minutes: 15 } }),
+    ];
+    const high = buildPlan({
+      days,
+      pool: [breakfast, twoServe, minimalMeal],
+      avoided: [],
+      planningPriorities: { batchCooking: "high" },
+    });
+
+    // 2 servings = 1 fresh cook + at most 1 leftover, even on "high".
+    const leftovers = high.flatMap((entry) => entry.meals).filter((m) => m.leftoverOf === "two").length;
+    expect(leftovers).toBe(1);
+  });
+
+  it("does not batch an explicitly single-serving recipe", () => {
+    const single = meal({ id: "single", tags: ["batch-friendly"], servings: 1, time: 20, mealSlots: ["dinner"] });
+    const plan = buildPlan({
+      days: [day({ date: "2026-06-01", stress: 0.2 })],
+      pool: [breakfast, single, minimalMeal],
+      avoided: [],
+      planningPriorities: { batchCooking: "high" },
+    });
+
+    expect(plan.flatMap((entry) => entry.meals).some((m) => m.batchCook)).toBe(false);
+    expect(plan.flatMap((entry) => entry.meals).some((m) => m.leftoverOf === "single")).toBe(false);
+  });
+
   it("repeats one breakfast across weekday slots in repeat mode", () => {
     const otherBreakfast = meal({ id: "other-bfast", type: "cook", time: 7, mealSlots: ["breakfast"] });
     const plan = buildPlan({
@@ -732,6 +764,25 @@ describe("buildBestPlan", () => {
     const quality = scorePlan({ days: [day({ date: "2026-06-01" }), day({ date: "2026-06-02" })], pool: [batch], avoided: [] }, plan);
 
     expect(quality.uniqueIngredientCount).toBe(3);
+  });
+
+  it("charges every consumed portion, including leftovers, at per-portion price", () => {
+    const batch = meal({
+      id: "batch",
+      tags: ["batch-friendly"],
+      mealSlots: ["dinner"],
+      pricePence: 300,
+      ingredients: [{ name: "rice" }, { name: "lentils" }],
+    });
+    const plan = [
+      { day: "Mon 1 Jun", dateIso: "2026-06-01", context: "", meals: [{ slot: "dinner" as const, mealId: "batch", batchCook: true }] },
+      { day: "Tue 2 Jun", dateIso: "2026-06-02", context: "", meals: [{ slot: "dinner" as const, mealId: "batch", leftoverOf: "batch" }] },
+    ];
+
+    const quality = scorePlan({ days: [day({ date: "2026-06-01" }), day({ date: "2026-06-02" })], pool: [batch], avoided: [] }, plan);
+
+    // Per-portion-consumed cost model: fresh cook + leftover are both charged.
+    expect(quality.weeklyCostPence).toBe(600);
   });
 
   it("reduces shopping item count for available ingredients", () => {
