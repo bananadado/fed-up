@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { AlertTriangle, Bell, CalendarPlus, CalendarClock, ChevronDown, Download, ExternalLink, Pencil, Trash2, X, Minus, Plus, ChevronLeft, ChevronRight, ChefHat } from "lucide-react";
 import type { CalendarEvent, Deadline, Meal, PlanEntry, Preferences, Screen } from "../types";
 import { getPrepSuggestions, type PrepSuggestion } from "../advancePrep";
+import { MealThumbnail } from "../components/MealThumbnail";
 import { AppButton, Badge } from "../components/primitives";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -570,7 +571,10 @@ function PrepReminderSuggestions({
           <div key={s.meal.id} className="rounded-lg border border-stone-200 bg-stone-50 p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="font-semibold text-stone-900">{s.meal.image} {s.meal.name}</p>
+                <p className="flex items-center gap-2 font-semibold text-stone-900">
+                  <MealThumbnail meal={s.meal} className="h-6 w-6" iconClassName="text-base" />
+                  <span className="min-w-0">{s.meal.name}</span>
+                </p>
                 <p className="mt-0.5 text-xs text-stone-500">{s.prep.reason} · planned {s.entry.day}</p>
               </div>
             </div>
