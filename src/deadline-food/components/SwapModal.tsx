@@ -152,16 +152,26 @@ export function SwapModal({
     : allOptions;
 
   const candidatePoolIds = new Set(candidatePool.map((m) => m.id));
-  const undiscoveredCandidates = (undiscoveredRecipes ?? [])
+  // Safety + search filters applied once; slot filter handled in two-pass below.
+  const undiscoveredBase = (undiscoveredRecipes ?? [])
     .filter((m) => isVerified(m))
     .filter((m) => !candidatePoolIds.has(m.id))
     .filter((m) => m.id !== originalPlanMeal?.mealId)
     .filter((m) => !m.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
     .filter((m) => !m.allergens.some((allergen) => avoided.includes(allergen.toLowerCase())))
     .filter((m) => isMealDietaryCompatible(m, prefs.dietary))
-    .filter((m) => selectedSlots.length === 0 || m.mealSlots.some((s) => selectedSlots.includes(s as MealSlot)))
-    .filter((m) => !search.trim() || m.name.toLowerCase().includes(search.toLowerCase()))
-    .slice(0, 3);
+    .filter((m) => !search.trim() || m.name.toLowerCase().includes(search.toLowerCase()));
+  // Slot-matched recipes first; cross-slot fills remaining spots so breakfast
+  // swaps still show suggestions even when very few breakfast recipes exist.
+  const slotMatchedIds = new Set(
+    undiscoveredBase
+      .filter((m) => selectedSlots.length === 0 || m.mealSlots.some((s) => selectedSlots.includes(s as MealSlot)))
+      .map((m) => m.id),
+  );
+  const undiscoveredCandidates = [
+    ...undiscoveredBase.filter((m) => slotMatchedIds.has(m.id)),
+    ...undiscoveredBase.filter((m) => !slotMatchedIds.has(m.id)),
+  ].slice(0, 3);
 
   // selectedId=null means "use first option as default"
   const effectiveId = selectedId ?? allOptions[0]?.id ?? undiscoveredCandidates[0]?.id ?? null;
