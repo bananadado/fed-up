@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useRef, type Dispatch, type SetStateActio
 import { Card } from "@/components/ui/card";
 import type { Deadline, DiscoverRecommendationState, Meal, MealSlot, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
+import { AllergenTag } from "../components/AllergenTag";
 import { formatCookingLimit, isVerified, money, keyIngredients, sourceUrl } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackEvent } from "../analytics";
@@ -282,10 +283,17 @@ export function DiscoverScreen({
                   {mealHealthSignals(current).map((signal) => (
                     <Badge key={`health-${signal}`} tone="blue">{signal}</Badge>
                   ))}
-                  {current.allergens.map((allergen) => (
-                    <Badge key={`allergen-${allergen}`} tone="rose">{allergen}</Badge>
-                  ))}
                 </div>
+                {current.allergens.length > 0 ? (
+                  <div className="mt-4">
+                    <p className="text-xs font-semibold uppercase text-stone-500">Allergens</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {current.allergens.map((allergen) => (
+                        <AllergenTag key={`allergen-${allergen}`} allergen={allergen} />
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
                 <div className="mt-6 grid grid-cols-2 gap-3">
                   <AppButton type="button" variant="secondary" className="h-14 justify-center text-stone-600" onClick={() => decideCurrentRecipe(false)}>
                     <ThumbsDown size={18} /> Pass

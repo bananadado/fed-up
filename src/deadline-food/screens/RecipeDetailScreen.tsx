@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import type { Meal, RecipeReview, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
+import { AllergenTag } from "../components/AllergenTag";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { formatIngredient, scaleIngredients } from "../ingredients";
@@ -535,7 +536,7 @@ export function RecipeDetailScreen({
               <div>
                 <h2 className="font-bold">Allergens</h2>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {meal.allergens.length === 0 ? <Badge>No listed allergens</Badge> : meal.allergens.map((allergen) => <Badge key={allergen} tone="rose">{allergen}</Badge>)}
+                  {meal.allergens.length === 0 ? <Badge>No listed allergens</Badge> : meal.allergens.map((allergen) => <AllergenTag key={allergen} allergen={allergen} />)}
                 </div>
               </div>
             </aside>
