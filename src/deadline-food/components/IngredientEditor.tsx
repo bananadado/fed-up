@@ -12,7 +12,7 @@ import {
   sanitiseIngredientQuantity,
   type IngredientDraft,
 } from "../ingredients";
-import { AppButton } from "./primitives";
+import { AppButton, sanitiseNumericInput } from "./primitives";
 
 function IngredientCombobox({
   value,
@@ -227,13 +227,14 @@ export function IngredientEditor({
               <Label className="block min-w-0">
                 <span className="text-xs font-semibold text-stone-600">Amount</span>
                 <Input
-                  type="number"
+                  type="text"
                   inputMode="decimal"
-                  min="0"
-                  step="any"
                   value={ingredient.quantity}
-                  onChange={(event) => updateIngredient(ingredient.id, { quantity: event.target.value })}
-                  onKeyDown={(event) => { if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault(); }}
+                  onChange={(event) =>
+                    updateIngredient(ingredient.id, {
+                      quantity: sanitiseNumericInput(event.target.value, true, false),
+                    })
+                  }
                   onBlur={() => updateIngredient(ingredient.id, { quantity: formatQuantityForInput(sanitiseIngredientQuantity(ingredient.quantity)) })}
                   placeholder="100"
                   className="mt-1 h-auto rounded-lg border-stone-200 bg-white px-3 py-2 text-sm focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20"
