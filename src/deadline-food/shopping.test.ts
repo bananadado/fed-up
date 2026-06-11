@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
-import { aggregateIngredients, formatShoppingList, groceryVendorById, ingredientsFromPlan, shoppingItemKey, shoppingItemLabel } from "./shopping";
+import { aggregateIngredients, estimateShoppingListCost, formatShoppingList, groceryVendorById, ingredientsFromPlan, scopePlanEntries, shoppingItemKey, shoppingItemLabel } from "./shopping";
+import type { PlanEntry } from "./types";
 
 describe("shopping helpers", () => {
   test("aggregates duplicate ingredients case-insensitively", () => {
@@ -273,5 +274,47 @@ describe("shopping helpers", () => {
     expect(groceryVendorById("tesco").searchUrl("chia seeds")).toBe(
       "https://www.tesco.com/groceries/en-GB/search?query=chia%20seeds&inputType=free+text",
     );
+  });
+});
+
+describe("shopping scope", () => {
+  const day = (n: number): PlanEntry => ({ day: `Day ${n}`, context: "", meals: [] });
+  const plan = Array.from({ length: 10 }, (_, i) => day(i + 1));
+
+  test("week scope keeps the first 7 day entries", () => {
+    const scoped = scopePlanEntries(plan, "week");
+    expect(scoped).toHaveLength(7);
+    expect(scoped[0]?.day).toBe("Day 1");
+    expect(scoped[6]?.day).toBe("Day 7");
+  });
+
+  test("all scope keeps the full plan", () => {
+    expect(scopePlanEntries(plan, "all")).toHaveLength(10);
+  });
+
+  test("week scope tolerates plans shorter than the horizon", () => {
+    const short = plan.slice(0, 3);
+    expect(scopePlanEntries(short, "week")).toHaveLength(3);
+  });
+});
+
+describe("estimateShoppingListCost", () => {
+  test("returns 0 for an empty list", () => {
+    expect(estimateShoppingListCost([])).toBe(0);
+  });
+
+  test("sums per-item estimates in pounds and grows with the list", () => {
+    const small = estimateShoppingListCost([{ name: "rice", count: 1, quantity: 500, unit: "g" }]);
+    const large = estimateShoppingListCost([
+      { name: "rice", count: 1, quantity: 500, unit: "g" },
+      { name: "chicken breast", count: 1, quantity: 600, unit: "g" },
+    ]);
+    expect(small).toBeGreaterThan(0);
+    expect(large).toBeGreaterThan(small);
+    expect(Number(large.toFixed(2))).toBe(large);
+  });
+
+  test("estimates count-only items via a generic measure", () => {
+    expect(estimateShoppingListCost([{ name: "onion", count: 3 }])).toBeGreaterThan(0);
   });
 });

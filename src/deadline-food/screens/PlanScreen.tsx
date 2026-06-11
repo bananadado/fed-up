@@ -9,7 +9,7 @@ import { MealThumbnail } from "../components/MealThumbnail";
 import { ShoppingListCard } from "../components/ShoppingListCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal, slotLabels } from "../components/SwapModal";
-import { groceryVendorById, groceryVendors, ingredientsFromPlan } from "../shopping";
+import { SHOPPING_SCOPE_DAYS, groceryVendorById, groceryVendors, ingredientsFromPlan, scopePlanEntries, type ShoppingScope } from "../shopping";
 import { getMealById, mealById, money } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackEvent } from "../analytics";
@@ -103,7 +103,22 @@ export function PlanScreen({
     return false;
   });
   const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
-  const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds), [plan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds]);
+  const [shoppingScope, setShoppingScope] = useState<ShoppingScope>(() => {
+    try {
+      return window.localStorage.getItem("deadline-food:plan-shopping-scope") === "all" ? "all" : "week";
+    } catch { return "week"; }
+  });
+  // Only worth scoping when the plan runs longer than one shopping trip.
+  const canScopeShopping = plan.length > SHOPPING_SCOPE_DAYS;
+  const effectiveScope: ShoppingScope = canScopeShopping ? shoppingScope : "all";
+  const scopedPlan = useMemo(() => scopePlanEntries(plan, effectiveScope), [plan, effectiveScope]);
+  const shoppingItems = useMemo(() => ingredientsFromPlan(scopedPlan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds), [scopedPlan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds]);
+
+  function handleShoppingScopeChange(next: ShoppingScope) {
+    setShoppingScope(next);
+    try { window.localStorage.setItem("deadline-food:plan-shopping-scope", next); } catch { /* localStorage unavailable */ }
+    track("shopping_scope_changed", { scope: next, item_count: shoppingItems.length });
+  }
 
   const weeks = useMemo(() => {
     const chunks: PlanEntry[][] = [];
@@ -394,7 +409,9 @@ export function PlanScreen({
               <div className="min-w-0 flex-1">
                 <p className="font-bold">Shopping list</p>
                 <p className="mt-0.5 text-sm text-stone-500">
-                  {shoppingItems.length === 0 ? "No items yet" : `${shoppingItems.length} items this week`}
+                  {shoppingItems.length === 0
+                    ? "No items yet"
+                    : `${shoppingItems.length} items ${effectiveScope === "week" ? "for the next 7 days" : "across the full plan"}`}
                 </p>
               </div>
               <AppButton
@@ -423,8 +440,13 @@ export function PlanScreen({
             <div className="flex-1 overflow-y-auto p-5">
               <ShoppingListCard
                 title="Shopping list"
-                description="Ingredients still needed across your planned meals for the week."
+                description={effectiveScope === "week"
+                  ? "Ingredients still needed for your next 7 days of planned meals."
+                  : "Ingredients still needed across all your planned meals."}
                 items={shoppingItems}
+                scope={canScopeShopping ? effectiveScope : undefined}
+                onScopeChange={canScopeShopping ? handleShoppingScopeChange : undefined}
+                showEstimatedCost
                 selectedVendor={groceryVendorById(shoppingVendorId)}
                 vendors={groceryVendors}
                 onSelectVendor={setShoppingVendorId}

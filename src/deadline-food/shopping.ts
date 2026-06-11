@@ -2,6 +2,7 @@ import type { Meal, PlanEntry, RecipeIngredient } from "./types";
 import { ITEM_WEIGHT_G, formatIngredient } from "./ingredients";
 import { mealById } from "./utils";
 import { normalizeIngredientUnit } from "./unitConversion";
+import { estimateIngredientCostPence } from "@/domain/ingredientCosting";
 
 export type GroceryVendor = {
   id: string;
@@ -249,6 +250,36 @@ export function shoppingItemKey(value: ShoppingItem | string) {
   }
 
   return value.unit ? `${normaliseIngredient(value.name)}:${value.unit}` : normaliseIngredient(value.name);
+}
+
+/** How the shopping list is scoped: the next week's trip, or the whole plan. */
+export type ShoppingScope = "week" | "all";
+
+/** Day entries counted as the "next shopping trip" horizon when scoped to a week. */
+export const SHOPPING_SCOPE_DAYS = 7;
+
+/**
+ * Narrow a plan to the entries one shopping trip should cover. Plan entries are
+ * one-per-day and ordered forward from today, so "week" keeps the next
+ * {@link SHOPPING_SCOPE_DAYS} entries and "all" keeps the full plan.
+ */
+export function scopePlanEntries(plan: PlanEntry[], scope: ShoppingScope): PlanEntry[] {
+  return scope === "week" ? plan.slice(0, SHOPPING_SCOPE_DAYS) : plan;
+}
+
+/**
+ * Rough illustrative total for a shopping list, in pounds. Sums per-ingredient
+ * estimates from the shared cost table (no per-recipe floor) so the figure tracks
+ * exactly the items shown. Count-only items fall back to a generic "item" measure.
+ */
+export function estimateShoppingListCost(items: ShoppingItem[]): number {
+  const pence = items.reduce((sum, item) => {
+    const measurable = typeof item.quantity === "number" && item.unit
+      ? { name: item.name, quantity: item.quantity, unit: item.unit }
+      : { name: item.name, quantity: item.count, unit: "item" };
+    return sum + estimateIngredientCostPence(measurable).pricePence;
+  }, 0);
+  return Number((pence / 100).toFixed(2));
 }
 
 export function ingredientsFromPlan(
