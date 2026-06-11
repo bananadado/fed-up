@@ -152,6 +152,7 @@ export function SwapModal({
 
   const candidatePoolIds = new Set(candidatePool.map((m) => m.id));
   const undiscoveredCandidates = (undiscoveredRecipes ?? [])
+    .filter((m) => isVerified(m))
     .filter((m) => !candidatePoolIds.has(m.id))
     .filter((m) => m.id !== originalPlanMeal?.mealId)
     .filter((m) => !m.ingredients.some((ingredient) => avoided.includes(ingredientName(ingredient).toLowerCase())))
