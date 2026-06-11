@@ -235,7 +235,9 @@ export function NumberDraftField({
         if (event.key === "Enter") event.currentTarget.blur();
       }}
       onBlur={commit}
-      className={suffix ? "h-auto border-0 p-3 shadow-none focus-visible:ring-0" : "mt-2"}
+      className={suffix
+        ? "h-auto rounded-lg border-0 bg-transparent p-3 shadow-none focus-visible:ring-0"
+        : "mt-2 h-auto rounded-lg border-stone-200 bg-white p-3 focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20"}
     />
   );
 
@@ -243,7 +245,7 @@ export function NumberDraftField({
     <Label className="block">
       <span className={labelClassName ?? "text-sm font-semibold"}>{label}</span>
       {suffix ? (
-        <div className="mt-2 flex items-center rounded-lg border border-stone-200 px-3">
+        <div className="mt-2 flex items-center rounded-lg border border-stone-200 bg-white pr-3 transition-[color,box-shadow] focus-within:border-emerald-600 focus-within:ring-[3px] focus-within:ring-emerald-600/20">
           {input}
           <span className="text-sm text-stone-500">{suffix}</span>
         </div>
