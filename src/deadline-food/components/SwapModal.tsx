@@ -466,7 +466,7 @@ export function SwapModal({
                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setSelectedId(meal.id); }}
                     className={`cursor-pointer overflow-hidden rounded-xl transition ${
                       isSelected
-                        ? "border-2 border-emerald-400 bg-emerald-50"
+                        ? "border-2 border-emerald-500 bg-white"
                         : "border border-stone-200 bg-stone-50 hover:border-stone-300 hover:bg-white"
                     }`}
                   >
@@ -527,7 +527,7 @@ export function SwapModal({
             const timeDiff = originalMeal ? originalMeal.time - selectedMeal.time : null;
             const pDiff = originalMeal ? priceDiff(selectedMeal.price, originalMeal.price) : { label: `adds ${money(selectedMeal.price)}`, sign: "extra" as const };
             return (
-              <div className="mb-3 rounded-xl bg-emerald-900 px-4 py-3 text-white">
+              <div className="mb-3 rounded-xl bg-stone-900 px-4 py-3 text-white">
                 <div className="grid grid-cols-3 gap-2">
                   <div>
                     <p className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
