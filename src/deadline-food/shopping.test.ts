@@ -57,6 +57,45 @@ describe("shopping helpers", () => {
     expect(items[0]?.quantity).toBe(2.27);
   });
 
+  test("merges irregular plural / singular forms (bay leaf) (#251 follow-up)", () => {
+    const items = aggregateIngredients([
+      { name: "bay leaves", quantity: 2, unit: "item" },
+      { name: "bay leaf", quantity: 4, unit: "item" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(shoppingItemLabel(items[0]!)).toBe("6 bay leaves");
+  });
+
+  test("merges volume and weight of the same ingredient via density (#251 follow-up)", () => {
+    // flour density ≈ 0.53 g/ml: 2700ml → 1431g, + 590g = 2021g.
+    const items = aggregateIngredients([
+      { name: "flour", quantity: 2.7, unit: "l" },
+      { name: "flour", quantity: 590, unit: "g" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.unit).toBe("kg");
+    expect(items[0]?.quantity).toBeCloseTo(2.02, 1);
+  });
+
+  test("drops a vague count of an uncountable food when a measured amount exists (#251 follow-up)", () => {
+    const items = aggregateIngredients([
+      { name: "oil", quantity: 369.7, unit: "ml" },
+      { name: "oil", quantity: 1, unit: "serving" },
+      { name: "oil", quantity: 1, unit: "serving" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(shoppingItemLabel(items[0]!)).toBe("369.7ml oil");
+  });
+
+  test("shows an uncountable food with no measured amount as a bare name (#251 follow-up)", () => {
+    const items = aggregateIngredients([
+      { name: "plain flour", quantity: 1, unit: "serving" },
+      { name: "plain flour", quantity: 1, unit: "serving" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(shoppingItemLabel(items[0]!)).toBe("plain flour");
+  });
+
   test("normalises shopping item keys for checklist state", () => {
     expect(shoppingItemKey("  Oat Milk ")).toBe("oat milk");
     expect(shoppingItemKey({ name: "Tomato", count: 1, quantity: 100, unit: "g" })).toBe("tomato:g");

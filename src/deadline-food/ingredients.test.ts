@@ -39,6 +39,11 @@ describe("recipe ingredient helpers", () => {
     expect(formatIngredient({ name: "scallions", quantity: 3, unit: "item", preparation: "chopped" })).toBe("3 chopped scallions");
   });
 
+  test("uses irregular plurals for head nouns like leaf (#251 follow-up)", () => {
+    expect(formatIngredient({ name: "bay leaf", quantity: 3, unit: "item" })).toBe("3 bay leaves");
+    expect(formatIngredient({ name: "garlic", quantity: 2, unit: "item" })).toBe("2 garlic");
+  });
+
   test("sanitises structured ingredient drafts for OpenFoodFacts matching", () => {
     expect(
       sanitiseIngredientDrafts([

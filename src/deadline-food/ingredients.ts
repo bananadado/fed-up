@@ -348,24 +348,72 @@ export function formatIngredient(ingredient: RecipeIngredient | string) {
   return `${quantity} ${pluraliseUnit(ingredient.unit, ingredient.quantity)} ${preparation}${ingredient.name}`;
 }
 
-// Mass/uncountable food nouns that read wrong when pluralised ("4 bacons").
+// Mass/uncountable food nouns that read wrong when pluralised or counted
+// ("4 bacons", "2 oils"). Matched on the head (last) noun so "plain flour" and
+// "olive oil" are covered. Deliberately excludes whole vegetables that ARE
+// countable (cabbage, broccoli, …) so "2 cabbages" still reads naturally.
 const UNCOUNTABLE_INGREDIENT_NAMES = new Set([
-  "bacon", "beef", "pork", "chicken", "lamb", "fish", "tuna", "salmon", "ham",
-  "rice", "pasta", "couscous", "bread", "flour", "sugar", "salt", "pepper",
-  "butter", "oil", "water", "milk", "cream", "cheese", "yoghurt", "yogurt",
-  "honey", "jam", "garlic", "ginger", "spinach", "broccoli", "cauliflower",
-  "cabbage", "lettuce", "celery", "sweetcorn", "corn", "hummus", "tofu",
-  "mayonnaise", "ketchup", "mustard", "stock", "broth", "wine", "vinegar",
+  "bacon", "beef", "pork", "lamb", "mince", "fish", "tuna", "salmon", "ham",
+  "rice", "pasta", "couscous", "quinoa", "bread", "flour", "cornflour",
+  "cornstarch", "sugar", "salt", "pepper", "butter", "oil", "ghee", "water",
+  "milk", "cream", "cheese", "yoghurt", "yogurt", "honey", "syrup", "jam",
+  "garlic", "ginger", "spinach", "hummus", "tofu", "mayonnaise", "ketchup",
+  "mustard", "stock", "broth", "wine", "vinegar", "oats", "cocoa", "chocolate",
 ]);
+
+// Irregular plurals that simple "+s" rules get wrong ("bay leafs" → "leaves").
+const IRREGULAR_PLURALS: Record<string, string> = {
+  leaf: "leaves", loaf: "loaves", half: "halves", knife: "knives",
+  potato: "potatoes", tomato: "tomatoes", chilli: "chillies", chili: "chilies",
+};
+
+// Approximate density (grams per millilitre) for ingredients commonly measured
+// by both volume and weight, so the shopping list can merge e.g. "590g flour"
+// with "2.7l flour". Matched on the head noun.
+export const INGREDIENT_DENSITY_G_PER_ML: Record<string, number> = {
+  flour: 0.53, cornflour: 0.54, cornstarch: 0.54, sugar: 0.85, oil: 0.92,
+  ghee: 0.91, butter: 0.91, honey: 1.42, syrup: 1.37, milk: 1.03, water: 1.0,
+  cream: 1.01, yoghurt: 1.03, yogurt: 1.03, rice: 0.85, salt: 1.2, oats: 0.41,
+  cocoa: 0.52, breadcrumbs: 0.4,
+};
 
 // Measurement-unit abbreviations are invariant: "2 tbsp", not "2 tbsps".
 const INVARIANT_UNITS = new Set(["tbsp", "tsp", "g", "kg", "ml", "l", "oz", "lb", "fl oz"]);
 
+function headNoun(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  return (parts[parts.length - 1] ?? name).toLowerCase();
+}
+
+/** True for mass/uncountable foods that should not be pluralised or shown with
+ *  a whole-item count (flour, oil, garlic, …). */
+export function isUncountableFood(name: string): boolean {
+  return UNCOUNTABLE_INGREDIENT_NAMES.has(headNoun(name));
+}
+
+/** Pluralise an ingredient's head noun, respecting uncountable and irregular
+ *  forms. "bay leaf" → "bay leaves", "berry" → "berries", "oil" → "oil". */
+export function pluraliseFoodName(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  const last = parts[parts.length - 1];
+  if (!last) return name;
+  const head = last.toLowerCase();
+  let plural: string;
+  if (UNCOUNTABLE_INGREDIENT_NAMES.has(head)) plural = head;
+  else if (IRREGULAR_PLURALS[head]) plural = IRREGULAR_PLURALS[head]!;
+  else if (head.endsWith("s") || head.endsWith("ss")) plural = head;
+  else if (head.endsWith("y") && !/[aeiou]y$/.test(head)) plural = `${head.slice(0, -1)}ies`;
+  else if (/(ch|sh|x|z)$/.test(head)) plural = `${head}es`;
+  else if (head.endsWith("fe")) plural = `${head.slice(0, -2)}ves`;
+  else if (head.endsWith("f")) plural = `${head.slice(0, -1)}ves`;
+  else plural = `${head}s`;
+  // Preserve the original casing of the first letter.
+  parts[parts.length - 1] = /^[A-Z]/.test(last) ? plural.charAt(0).toUpperCase() + plural.slice(1) : plural;
+  return parts.join(" ");
+}
+
 function pluraliseIngredientName(name: string) {
-  if (UNCOUNTABLE_INGREDIENT_NAMES.has(name.toLowerCase())) return name;
-  if (name.endsWith("s")) return name;
-  if (name.endsWith("y")) return `${name.slice(0, -1)}ies`;
-  return `${name}s`;
+  return pluraliseFoodName(name);
 }
 
 function pluraliseUnit(unit: string, quantity: number): string {
