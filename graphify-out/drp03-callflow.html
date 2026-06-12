@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 2945 nodes, 5885 edges, 164 communities. Commit: 68957fb</p>
+<p class="subtitle">Generated from graphify knowledge graph: 2945 nodes, 5885 edges, 164 communities. Commit: 2e10aea</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -1567,12 +1567,12 @@ flowchart LR
 
 <!-- ====== 6. Ingestion & Updates ====== -->
 <h2 id="ingest-cache-update">6. Ingestion &amp; Updates</h2>
-<p>Ingestion &amp; Updates groups implementation around scripts, ingest, pricests, fetch, mostly in scripts/fetch-tesco-prices.ts, scripts/ingest/openfoodfacts.ts, ingest/sources/themealdb.ts. This section covers 180 nodes and 329 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Ingestion &amp; Updates groups implementation around scripts, ingest, pricests, fetch, mostly in scripts/fetch-tesco-prices.ts, scripts/ingest/openfoodfacts.ts, ingest/sources/themealdb.ts. This section covers 180 nodes and 327 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Ingestion &amp; Updates (180 nodes, 329 edges)
+    %% Section: Ingestion &amp; Updates (180 nodes, 327 edges)
     subgraph ingest_cache_update_scripts_ingest_openfoodfacts_6f1d8700["scripts/ingest/openfoodfacts.ts"]
         ingest_openfoodfacts_cachekeyforname_87eabe8e("cacheKeyForName()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
         ingest_openfoodfacts_readcachedproduct_e441acea("readCachedProduct()<br/><small>scripts/ingest/openfoodfacts.ts</small>")
@@ -1670,7 +1670,7 @@ flowchart LR
   <td><code>fetch-tesco-prices.ts</code><br><small style="color:var(--muted)">scripts/fetch-tesco-prices.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>firebase.ts</code><br><small style="color:var(--muted)">scripts/ingest/firebase.ts</small><br><code>Ingredient</code><br><small style="color:var(--muted)">scripts/ingest/types.ts</small><br><code>initFirebase()</code><br><small style="color:var(--muted)">scripts/ingest/firebase.ts</small><br>+4 more</td>
+  <td><code>firebase.ts</code><br><small style="color:var(--muted)">scripts/ingest/firebase.ts</small><br><code>initFirebase()</code><br><small style="color:var(--muted)">scripts/ingest/firebase.ts</small><br><code>listRecipes()</code><br><small style="color:var(--muted)">scripts/ingest/recommender.ts</small><br>+3 more</td>
   <td>Module file in scripts/fetch-tesco-prices.ts.</td>
 </tr>
 <tr>
@@ -1924,7 +1924,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x165, calls x87, imports x53, imports x24. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x164, calls x88, imports x51, imports x24. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -2283,12 +2283,12 @@ flowchart LR
 
 <!-- ====== 8. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">8. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around deadline, food, test, home, mostly in drp03/doc/DEVELOPMENT_AND_TESTING.md, src/deadline-food/accountAuth.ts, recommender-api/tests/test_recommend_unit.py. This section covers 902 nodes and 1892 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around deadline, food, test, home, mostly in drp03/doc/DEVELOPMENT_AND_TESTING.md, src/deadline-food/accountAuth.ts, recommender-api/tests/test_recommend_unit.py. This section covers 902 nodes and 1891 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (902 nodes, 1892 edges)
+    %% Section: Tests &amp; Fixtures (902 nodes, 1891 edges)
     subgraph tests_fixtures_recommender_api_app_context_py_a28e41e7["recommender-api/app/context.py"]
         app_context_event_type_c86f1a17("event_type()<br/><small>recommender-api/app/context.py</small>")
         app_context_extract_context_e036a2f0("extract_context()<br/><small>recommender-api/app/context.py</small>")
@@ -2300,18 +2300,17 @@ flowchart LR
         app_context_event_duration_hours_cc1405f2("_event_duration_hours()<br/><small>recommender-api/app/context.py</small>")
         app_context_parse_dt_1c710fbe("_parse_dt()<br/><small>recommender-api/app/context.py</small>")
         app_context_extract_deadlines_8d2bb60d("extract_deadlines()<br/><small>recommender-api/app/context.py</small>")
+        date_e927d067("date<br/><small>recommender-api/app/context.py</small>")
+        app_context_urgency_9ec389c3("_urgency()<br/><small>recommender-api/app/context.py</small>")
     end
     subgraph tests_fixtures_recommender_api_tests_test_recomm_acf4a69b["recommender-api/tests/test_recommend_api.py"]
         tests_test_recommend_api_seed_user_20dec82f("_seed_user()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
         tests_test_recommend_api_recommend_1bfbc378("_recommend()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
         tests_test_recommend_api_seed_recipe_4ae5d63f("_seed_recipe()<br/><small>recommender-api/tests/test_recommend_api.py</small>")
     end
-    ingest_prices_estimatepricepence_2e707348("estimatePricePence()<br/><small>scripts/ingest/prices.ts</small>")
     src_deadline_food_deadlinefoodapp_tsx_271a67e1("DeadlineFoodApp.tsx")
     deadline_food_accountauth_getdeadlinefoodauth_de06c40f("getDeadlineFoodAuth()<br/><small>src/deadline-food/accountAuth.ts</small>")
     src_deadline_food_analytics_ts_ca1a71e7("analytics.ts")
-    domain_ingredientcosting_estimaterawmeasurescost_23e6e627("estimateRawMeasuresCostPence()<br/><small>src/domain/ingredientCosting.ts</small>")
-    ingest_prices_estimatepricepence_2e707348 -->|calls| domain_ingredientcosting_estimaterawmeasurescost_23e6e627
     app_context_event_type_c86f1a17 -->|calls| app_context_extract_context_e036a2f0
     app_context_event_type_c86f1a17 -->|calls| app_context_normalize_event_c6e3d7d7
     app_context_classify_event_961bed45 -->|calls| app_context_classify_events_eaf08158
@@ -2325,6 +2324,9 @@ flowchart LR
     app_context_parse_dt_1c710fbe -->|calls| app_context_normalize_event_c6e3d7d7
     app_context_normalize_event_c6e3d7d7 -->|calls| app_context_extract_context_e036a2f0
     app_context_normalize_event_c6e3d7d7 -->|calls| app_context_extract_deadlines_8d2bb60d
+    app_context_normalize_event_c6e3d7d7 -->|calls| date_e927d067
+    app_context_urgency_9ec389c3 -->|calls| app_context_extract_context_e036a2f0
+    app_context_urgency_9ec389c3 -->|calls| app_context_extract_deadlines_8d2bb60d
     app_context_extract_deadlines_8d2bb60d -->|calls| app_context_extract_context_e036a2f0
     %% Omitted for readability: 884 nodes, 0 edges
     class app_context_event_type_c86f1a17 function;
@@ -2337,14 +2339,14 @@ flowchart LR
     class app_context_event_duration_hours_cc1405f2 function;
     class app_context_parse_dt_1c710fbe function;
     class app_context_extract_deadlines_8d2bb60d function;
+    class date_e927d067 function;
+    class app_context_urgency_9ec389c3 function;
     class tests_test_recommend_api_seed_user_20dec82f test;
     class tests_test_recommend_api_recommend_1bfbc378 test;
     class tests_test_recommend_api_seed_recipe_4ae5d63f test;
-    class ingest_prices_estimatepricepence_2e707348 function;
     class src_deadline_food_deadlinefoodapp_tsx_271a67e1 ui;
     class deadline_food_accountauth_getdeadlinefoodauth_de06c40f function;
     class src_deadline_food_analytics_ts_ca1a71e7 module;
-    class domain_ingredientcosting_estimaterawmeasurescost_23e6e627 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -2625,7 +2627,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x885, imports x337, calls x329, imports x124. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x884, imports x338, calls x328, imports x124. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5395,7 +5397,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-11 18:31 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-12 13:26 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
