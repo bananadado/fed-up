@@ -1,7 +1,15 @@
 import type { Meal, PlanEntry, RecipeIngredient } from "./types";
 import { INGREDIENT_DENSITY_G_PER_ML, ITEM_WEIGHT_G, formatIngredient, isUncountableFood, pluraliseFoodName } from "./ingredients";
 import { mealById } from "./utils";
-import { normalizeIngredientUnit } from "./unitConversion";
+import {
+  type UnitDimension,
+  canonicalizeUnit,
+  displayFromBase,
+  normalizeIngredientUnit,
+  toBaseQuantity,
+  unitDimension,
+} from "./unitConversion";
+import { estimateIngredientCostPence } from "@/domain/ingredientCosting";
 
 export type GroceryVendor = {
   id: string;
@@ -119,9 +127,6 @@ function shoppingIngredientName(ingredient: ShoppingIngredient) {
   return typeof ingredient === "string" ? ingredient.trim() : ingredient.name.trim();
 }
 
-// Maps compatible metric units to a single grouping key so g+kg and ml+l merge.
-const MASS_TO_G: Record<string, number> = { g: 1, kg: 1000 };
-const VOLUME_TO_ML: Record<string, number> = { ml: 1, l: 1000 };
 // Generic "one whole unit" measures. Folding these into a single dimension lets
 // "2 item" + "0.5 whole" of the same ingredient merge instead of splitting on
 // the incidental unit word. Specific count units (clove, slice, wrap, can…)
@@ -129,35 +134,19 @@ const VOLUME_TO_ML: Record<string, number> = { ml: 1, l: 1000 };
 const COUNT_LIKE_UNITS = new Set(["item", "items", "serving", "servings", "whole", "piece", "pieces", "count"]);
 
 function aggregationUnit(unit: string): string {
-  if (unit in MASS_TO_G) return "g";
-  if (unit in VOLUME_TO_ML) return "ml";
-  if (COUNT_LIKE_UNITS.has(unit)) return "count";
-  return unit;
-}
-
-function toBaseQty(quantity: number, unit: string): number {
-  return quantity * (MASS_TO_G[unit] ?? VOLUME_TO_ML[unit] ?? 1);
-}
-
-function fromBaseQty(quantity: number, unit: string): { quantity: number; unit: string } {
-  if (unit === "g") {
-    return quantity >= 1000
-      ? { quantity: Math.round(quantity / 10) / 100, unit: "kg" }
-      : { quantity: Math.round(quantity * 10) / 10, unit: "g" };
-  }
-  if (unit === "ml") {
-    return quantity >= 1000
-      ? { quantity: Math.round(quantity / 10) / 100, unit: "l" }
-      : { quantity: Math.round(quantity * 10) / 10, unit: "ml" };
-  }
-  // The "count" base renders through the natural-plural "serving" path.
-  if (unit === "count") return { quantity: Math.round(quantity * 100) / 100, unit: "serving" };
-  return { quantity, unit };
+  const dimension = unitDimension(unit);
+  if (dimension !== "count") return dimension;
+  const canonical = canonicalizeUnit(unit);
+  const normalized = unit.trim().toLowerCase().replace(/\s+/g, " ");
+  return COUNT_LIKE_UNITS.has(canonical) || COUNT_LIKE_UNITS.has(normalized) ? "count" : canonical;
 }
 
 function shoppingIngredientKey(ingredient: ShoppingIngredient) {
   if (typeof ingredient === "string") return normaliseIngredient(ingredient);
   const { baseName, sigPrep } = extractIngredientParts(ingredient);
+  // Mass and volume each collapse to one grouping bucket so any compatible unit
+  // (g+kg+oz, ml+l+cup+tbsp) merges; count units stay distinct by canonical unit
+  // so e.g. "2 servings" and "3 slices" don't combine.
   const unitPart = aggregationUnit(ingredient.unit);
   return sigPrep ? `${baseName}:${unitPart}:${sigPrep}` : `${baseName}:${unitPart}`;
 }
@@ -197,8 +186,12 @@ export function groceryVendorById(vendorId: string) {
   return groceryVendors.find((vendor) => vendor.id === vendorId) ?? groceryVendors[0];
 }
 
-export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
+export function aggregateIngredients(
+  ingredients: ShoppingIngredient[],
+  unitSystem: "metric" | "imperial" = "metric",
+) {
   const items = new Map<string, ShoppingItem>();
+  const dimensions = new Map<string, UnitDimension>();
 
   ingredients.forEach((ingredient) => {
     const key = shoppingIngredientKey(ingredient);
@@ -222,18 +215,26 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
       return;
     }
 
-    const baseUnit = aggregationUnit(ingredient.unit);
-    const baseQty = toBaseQty(ingredient.quantity, ingredient.unit);
+    const dimension = unitDimension(ingredient.unit);
+    dimensions.set(key, dimension);
+
+    // Mass/volume accumulate in a metric base (g/ml) so compatible units sum
+    // together; count units (serving, item, slice…) keep their own unit and sum
+    // as-is. Mass and volume never share a key, so 100g + 0.5 cup stay separate.
+    const quantity = dimension === "count"
+      ? ingredient.quantity
+      : toBaseQuantity(ingredient.quantity, ingredient.unit);
+    const unit = aggregationUnit(ingredient.unit);
 
     items.set(key, current ? {
       ...current,
       count: current.count + 1,
-      quantity: (current.quantity ?? 0) + baseQty,
+      quantity: (current.quantity ?? 0) + quantity,
     } : {
       name,
       count: 1,
-      quantity: baseQty,
-      unit: baseUnit,
+      quantity,
+      unit,
     });
   });
 
@@ -242,13 +243,13 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
   // counts, density for volumes — so "17 carrots" + "907g carrots" or
   // "590g flour" + "2.7l flour" collapse into one row (shown in g/kg with a
   // "~N" hint where applicable). Dimensions we cannot convert stay separate.
-  type Bucket = { count?: [string, ShoppingItem]; ml?: [string, ShoppingItem]; g?: [string, ShoppingItem] };
+  type Bucket = { count?: [string, ShoppingItem]; volume?: [string, ShoppingItem]; mass?: [string, ShoppingItem] };
   const buckets = new Map<string, Bucket>();
   for (const [key, item] of items) {
     const bucket = buckets.get(item.name) ?? {};
     if (item.unit === "count") bucket.count = [key, item];
-    else if (item.unit === "ml") bucket.ml = [key, item];
-    else if (item.unit === "g") bucket.g = [key, item];
+    else if (item.unit === "volume") bucket.volume = [key, item];
+    else if (item.unit === "mass") bucket.mass = [key, item];
     buckets.set(item.name, bucket);
   }
   for (const [name, bucket] of buckets) {
@@ -256,14 +257,14 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
     const perItemGrams = ITEM_WEIGHT_G[name] ?? ITEM_WEIGHT_G[head];
     const density = INGREDIENT_DENSITY_G_PER_ML[head];
     const parts: Array<{ key: string; item: ShoppingItem; grams: number }> = [];
-    if (bucket.g) parts.push({ key: bucket.g[0], item: bucket.g[1], grams: bucket.g[1].quantity ?? 0 });
-    if (bucket.ml && density !== undefined) parts.push({ key: bucket.ml[0], item: bucket.ml[1], grams: (bucket.ml[1].quantity ?? 0) * density });
+    if (bucket.mass) parts.push({ key: bucket.mass[0], item: bucket.mass[1], grams: bucket.mass[1].quantity ?? 0 });
+    if (bucket.volume && density !== undefined) parts.push({ key: bucket.volume[0], item: bucket.volume[1], grams: (bucket.volume[1].quantity ?? 0) * density });
     if (bucket.count && perItemGrams !== undefined) parts.push({ key: bucket.count[0], item: bucket.count[1], grams: (bucket.count[1].quantity ?? 0) * perItemGrams });
     if (parts.length < 2) continue;
     const totalGrams = parts.reduce((sum, p) => sum + p.grams, 0);
     const totalCount = parts.reduce((sum, p) => sum + p.item.count, 0);
     for (const p of parts) items.delete(p.key);
-    items.set(`${name}:g`, { name, count: totalCount, quantity: totalGrams, unit: "g" });
+    items.set(`${name}:mass`, { name, count: totalCount, quantity: totalGrams, unit: "mass" });
   }
 
   // Drop vague count amounts for uncountable foods that already have a measured
@@ -278,11 +279,14 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
     }
   }
 
-  return [...items.values()]
-    .map((item) => {
-      if (typeof item.quantity === "number" && item.unit) {
-        const d = fromBaseQty(item.quantity, item.unit);
-        return d.unit !== item.unit || d.quantity !== item.quantity ? { ...item, ...d } : item;
+  return [...items.entries()]
+    .map(([key, item]) => {
+      const dimension = dimensions.get(key) ?? (item.unit === "mass" || item.unit === "volume" ? item.unit : undefined);
+      if ((dimension === "mass" || dimension === "volume") && typeof item.quantity === "number") {
+        return { ...item, ...displayFromBase(item.quantity, dimension, unitSystem) };
+      }
+      if (item.unit === "count" && typeof item.quantity === "number") {
+        return { ...item, quantity: Math.round(item.quantity * 100) / 100, unit: "serving" };
       }
       return item;
     })
@@ -299,6 +303,36 @@ export function shoppingItemKey(value: ShoppingItem | string) {
   }
 
   return value.unit ? `${normaliseIngredient(value.name)}:${value.unit}` : normaliseIngredient(value.name);
+}
+
+/** How the shopping list is scoped: the next week's trip, or the whole plan. */
+export type ShoppingScope = "week" | "all";
+
+/** Day entries counted as the "next shopping trip" horizon when scoped to a week. */
+export const SHOPPING_SCOPE_DAYS = 7;
+
+/**
+ * Narrow a plan to the entries one shopping trip should cover. Plan entries are
+ * one-per-day and ordered forward from today, so "week" keeps the next
+ * {@link SHOPPING_SCOPE_DAYS} entries and "all" keeps the full plan.
+ */
+export function scopePlanEntries(plan: PlanEntry[], scope: ShoppingScope): PlanEntry[] {
+  return scope === "week" ? plan.slice(0, SHOPPING_SCOPE_DAYS) : plan;
+}
+
+/**
+ * Rough illustrative total for a shopping list, in pounds. Sums per-ingredient
+ * estimates from the shared cost table (no per-recipe floor) so the figure tracks
+ * exactly the items shown. Count-only items fall back to a generic "item" measure.
+ */
+export function estimateShoppingListCost(items: ShoppingItem[]): number {
+  const pence = items.reduce((sum, item) => {
+    const measurable = typeof item.quantity === "number" && item.unit
+      ? { name: item.name, quantity: item.quantity, unit: item.unit }
+      : { name: item.name, quantity: item.count, unit: "item" };
+    return sum + estimateIngredientCostPence(measurable).pricePence;
+  }, 0);
+  return Number((pence / 100).toFixed(2));
 }
 
 export function ingredientsFromPlan(
@@ -320,7 +354,7 @@ export function ingredientsFromPlan(
   );
   const normalised = rawIngredients.map((ing) => normalizeIngredientUnit(ing, unitSystem));
 
-  return aggregateIngredients(normalised).filter(
+  return aggregateIngredients(normalised, unitSystem).filter(
     (item) => !available.has(item.name) && !ALWAYS_AVAILABLE.has(item.name),
   );
 }
