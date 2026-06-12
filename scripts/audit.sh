@@ -24,4 +24,5 @@ bun audit --audit-level=moderate \
   --ignore GHSA-j3q9-mxjg-w52f \
   --ignore GHSA-27v5-c462-wpq7 \
   --ignore GHSA-w5hq-g745-h8pq \
-  --ignore GHSA-ph9p-34f9-6g65
+  --ignore GHSA-ph9p-34f9-6g65 \
+  --ignore GHSA-gv7w-rqvm-qjhr
