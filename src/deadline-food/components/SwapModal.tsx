@@ -204,8 +204,9 @@ export function SwapModal({
   );
   const newTotal = selectedMeal ? total - (originalMeal?.price ?? 0) + selectedMeal.price : total;
 
-  const isDefaultSlots = selectedSlots.length === 1 && selectedSlots[0] === rescueChoice.slot;
-  const activeFilterCount = selectedTags.length + (isDefaultSlots ? 0 : 1);
+  // Badge count mirrors the rendered "Showing:" chips exactly, so removing a
+  // chip always lowers it (never raises) and the opening slot reads as 1 (#270).
+  const activeFilterCount = selectedSlots.length + selectedTags.length;
 
   function closeAndReset() {
     onClose();
