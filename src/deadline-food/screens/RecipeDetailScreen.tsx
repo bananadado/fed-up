@@ -30,6 +30,36 @@ function ratingLabel(rating: number) {
   return rating > 0 ? `${rating.toFixed(1)} / 5` : "No ratings yet";
 }
 
+function StarRatingInput({ value, onChange }: { value: number; onChange: (rating: number) => void }) {
+  const [hovered, setHovered] = useState(0);
+  const active = hovered || value;
+  return (
+    <div className="block">
+      <span className="text-sm font-semibold">Rating</span>
+      <div className="mt-2 flex items-center gap-1" role="radiogroup" aria-label="Rating" onMouseLeave={() => setHovered(0)}>
+        {Array.from({ length: 5 }, (_, i) => {
+          const star = i + 1;
+          return (
+            <button
+              key={star}
+              type="button"
+              role="radio"
+              aria-checked={value === star}
+              aria-label={`${star} star${star > 1 ? "s" : ""}`}
+              className="rounded-sm p-0.5 text-amber-400 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+              onClick={() => onChange(star)}
+              onMouseEnter={() => setHovered(star)}
+            >
+              <Star size={24} className={star <= active ? "fill-amber-400 text-amber-400" : "fill-stone-200 text-stone-200"} />
+            </button>
+          );
+        })}
+        <span className="ml-1 text-sm font-medium text-stone-600">{active} / 5</span>
+      </div>
+    </div>
+  );
+}
+
 
 function backLabel(backTo: Screen | null): string {
   if (backTo === "recipes") return "Back to recipes";
@@ -593,9 +623,9 @@ export function RecipeDetailScreen({
         <Card className="gap-0 rounded-lg border-stone-200 bg-white p-6">
           <h2 className="text-xl font-bold">Reviews</h2>
           <form className="mt-5 space-y-4" onSubmit={leaveReview}>
-            <div className="grid gap-3 sm:grid-cols-[1fr_120px]">
+            <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
               <Field label="Name" value={review.author} onChange={(author) => setReview({ ...review, author })} />
-              <Field label="Rating" type="number" value={review.rating} onChange={(rating) => setReview({ ...review, rating: +rating })} />
+              <StarRatingInput value={review.rating} onChange={(rating) => setReview({ ...review, rating })} />
             </div>
             <label className="block">
               <span className="text-sm font-semibold">Review</span>

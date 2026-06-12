@@ -873,7 +873,7 @@ export const appRecipes = [
       "carbs": 74,
       "fat": 14
     },
-    "servings": 2,
+    "servings": 1,
     "instructions": [
       "Chop the vegetables and spread them on a tray.",
       "Add chickpeas, oil and seasoning, then roast until tender.",
@@ -930,6 +930,7 @@ export const appRecipes = [
       "carbs": 58,
       "fat": 15
     },
+    "servings": 1,
     "instructions": [
       "Warm the wrap if you have time.",
       "Add hummus, leftover traybake and salad.",
@@ -985,6 +986,7 @@ export const appRecipes = [
       "carbs": 68,
       "fat": 18
     },
+    "servings": 1,
     "instructions": [
       "Boil or soak the noodles according to the pack.",
       "Fry tofu with ginger until browned.",
@@ -1041,6 +1043,7 @@ export const appRecipes = [
       "carbs": 79,
       "fat": 17
     },
+    "servings": 1,
     "instructions": [
       "Cook pasta until just tender.",
       "Stir through lentils, pesto and spinach.",
@@ -1092,6 +1095,7 @@ export const appRecipes = [
       "carbs": 62,
       "fat": 13
     },
+    "servings": 1,
     "instructions": [
       "Pick up from the cafe chiller.",
       "Check the label against your allergy settings.",
@@ -1144,6 +1148,7 @@ export const appRecipes = [
       "carbs": 78,
       "fat": 22
     },
+    "servings": 1,
     "instructions": [
       "Order the standard bowl.",
       "Choose the lighter dressing if you want a lower-fat option.",
@@ -1194,6 +1199,7 @@ export const appRecipes = [
       "carbs": 70,
       "fat": 18
     },
+    "servings": 1,
     "instructions": [
       "Pick up from the hot counter.",
       "Ask for sauce on the side if available.",
@@ -1237,6 +1243,7 @@ export const appRecipes = [
       "carbs": 84,
       "fat": 9
     },
+    "servings": 1,
     "instructions": [
       "Microwave the rice and dhal packs.",
       "Stir halfway through heating.",
@@ -1292,6 +1299,7 @@ export const appRecipes = [
       "carbs": 58,
       "fat": 11
     },
+    "servings": 1,
     "instructions": [
       "Mix oats, oat milk and chia seeds in a jar.",
       "Refrigerate overnight.",
@@ -1342,6 +1350,7 @@ export const appRecipes = [
       "carbs": 38,
       "fat": 18
     },
+    "servings": 1,
     "instructions": [
       "Toast the bread.",
       "Scramble eggs in a pan or microwave-safe bowl.",
@@ -1393,6 +1402,7 @@ export const appRecipes = [
       "carbs": 64,
       "fat": 8
     },
+    "servings": 1,
     "instructions": [
       "Pick up from the campus shop.",
       "Check the label against your allergy settings.",
@@ -1444,6 +1454,7 @@ export const appRecipes = [
       "carbs": 49,
       "fat": 9
     },
+    "servings": 1,
     "instructions": [
       "Pick up chilled.",
       "Check the label for nut traces.",

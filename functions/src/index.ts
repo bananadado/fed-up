@@ -107,6 +107,9 @@ const recommenderHttpOptions = {
   secrets: [recommenderApiUrl, recommenderApiKey],
   timeoutSeconds: 60,
 };
+const recommenderProfileHeaders =
+  "X-Deadline-Food-Recommender-Ms, X-Deadline-Food-Hydration-Ms, " +
+  "X-Deadline-Food-Total-Ms";
 const usdaFdcBaseUrl = (
   process.env.USDA_FDC_BASE_URL ?? "https://api.nal.usda.gov/fdc"
 ).replace(/\/$/, "");
@@ -1000,9 +1003,44 @@ function boundedStringList(
     .slice(0, maxItems);
 }
 
-function normalizeRecipeList(value: unknown, maxItems = 100): UnknownRecord[] {
+function normalizeRecipeList(
+  value: unknown,
+  maxItems = 100,
+  transform?: (recipe: UnknownRecord) => UnknownRecord,
+): UnknownRecord[] {
   if (!Array.isArray(value)) return [];
-  return value.filter((item): item is UnknownRecord => asRecord(item) !== null).slice(0, maxItems);
+  const items = value
+    .filter((item): item is UnknownRecord => asRecord(item) !== null)
+    .slice(0, maxItems);
+  return transform ? items.map(transform) : items;
+}
+
+// Negative numbers are never valid for any nutrition macro, time, cost or serving
+// count and would corrupt the broad nutrition/budget signals. Clamp them to 0 on the
+// write path so a crafted payload can never persist a negative value, mirroring the
+// client-side validation in RecipeEditor.
+function clampStoredRecipeNumbers(recipe: UnknownRecord): UnknownRecord {
+  const clampNonNegative = (record: UnknownRecord, keys: readonly string[]): UnknownRecord => {
+    let next: UnknownRecord = record;
+    for (const key of keys) {
+      const current = record[key];
+      if (typeof current === "number" && Number.isFinite(current) && current < 0) {
+        if (next === record) next = {...record};
+        next[key] = 0;
+      }
+    }
+    return next;
+  };
+
+  const result = clampNonNegative(recipe, ["time", "price", "totalCost", "servings"]);
+  const nutrition = asRecord(result.nutrition);
+  if (nutrition !== null) {
+    const clampedNutrition = clampNonNegative(nutrition, ["calories", "protein", "carbs", "fat"]);
+    if (clampedNutrition !== nutrition) {
+      return {...result, nutrition: clampedNutrition};
+    }
+  }
+  return result;
 }
 
 function normalizeDeadline(value: unknown): SessionSettings["deadlines"][number] | null {
@@ -1202,9 +1240,9 @@ function normalizeSessionSettings(value: unknown): SessionSettings {
       [],
     selectedSources: boundedStringList(settings.selectedSources),
     onboarded: settings.onboarded === true,
-    customRecipes: normalizeRecipeList(settings.customRecipes),
-    discoverSaved: normalizeRecipeList(settings.discoverSaved),
-    discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
+    customRecipes: normalizeRecipeList(settings.customRecipes, 100, clampStoredRecipeNumbers),
+    discoverSaved: normalizeRecipeList(settings.discoverSaved, 100, clampStoredRecipeNumbers),
+    discoverRejected: normalizeRecipeList(settings.discoverRejected, 3, clampStoredRecipeNumbers),
     discoverReviewedRecipeIds: boundedStringList(settings.discoverReviewedRecipeIds, 250, 120),
     plan: normalizeRecipeList(settings.plan, 31),
     planMeals: normalizeRecipeList(settings.planMeals, 200),
@@ -1399,11 +1437,20 @@ async function enrichRecommendedRecipes(body: unknown): Promise<unknown> {
   const uniqueIds = [...new Set(recipeIds)];
   const snapshots = await firestore.getAll(...uniqueIds.map((id) => recipesRef.doc(id)));
   const photosByRecipeId = new Map<string, string>();
+  // Servings is canonical recipe metadata the recommender doesn't store, so
+  // hydrate it from Firestore here (issue #189) rather than round-tripping it
+  // through pgvector — same approach as photoUrl above.
+  const servingsByRecipeId = new Map<string, number>();
 
   snapshots.forEach((snapshot) => {
+    if (!snapshot.exists) return;
     const photoUrl = snapshot.data()?.photoUrl;
-    if (snapshot.exists && typeof photoUrl === "string" && photoUrl.trim()) {
+    if (typeof photoUrl === "string" && photoUrl.trim()) {
       photosByRecipeId.set(snapshot.id, photoUrl);
+    }
+    const servings = snapshot.data()?.servings;
+    if (typeof servings === "number" && Number.isFinite(servings)) {
+      servingsByRecipeId.set(snapshot.id, servings);
     }
   });
 
@@ -1412,8 +1459,9 @@ async function enrichRecommendedRecipes(body: unknown): Promise<unknown> {
     const recipe = asRecord(scoredRecipe?.recipe);
     const recipeId = typeof recipe?.id === "string" ? recipe.id : "";
     const photoUrl = photosByRecipeId.get(recipeId);
+    const servings = servingsByRecipeId.get(recipeId);
 
-    if (!scoredRecipe || !recipe || !photoUrl) {
+    if (!scoredRecipe || !recipe || (photoUrl === undefined && servings === undefined)) {
       return item;
     }
 
@@ -1421,7 +1469,8 @@ async function enrichRecommendedRecipes(body: unknown): Promise<unknown> {
       ...scoredRecipe,
       recipe: {
         ...recipe,
-        photoUrl,
+        ...(photoUrl !== undefined ? {photoUrl} : {}),
+        ...(servings !== undefined ? {servings} : {}),
       },
     };
   });
@@ -1476,8 +1525,14 @@ async function proxyRecommenderRecommendations(
 ): Promise<void> {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
+  const startedAt = Date.now();
+  let upstreamMs = 0;
+  let hydrationMs = 0;
+  let returnedRecipeCount = 0;
+
   try {
     const url = new URL("/recommend", recommenderApiUrl.value().replace(/\/$/, ""));
+    const upstreamStartedAt = Date.now();
     const upstream = await fetch(url, {
       method: "POST",
       headers: {
@@ -1490,11 +1545,22 @@ async function proxyRecommenderRecommendations(
     });
     const contentType = upstream.headers.get("content-type") ?? "application/json";
     const bodyText = await upstream.text();
+    upstreamMs = Date.now() - upstreamStartedAt;
 
     response.set("Cache-Control", "private, max-age=0, no-store");
     response.set("Content-Type", contentType);
+    response.set("Access-Control-Expose-Headers", recommenderProfileHeaders);
+    response.set("X-Deadline-Food-Recommender-Ms", String(upstreamMs));
 
     if (!upstream.ok || !contentType.includes("application/json")) {
+      const totalMs = Date.now() - startedAt;
+      response.set("X-Deadline-Food-Hydration-Ms", "0");
+      response.set("X-Deadline-Food-Total-Ms", String(totalMs));
+      logWarn("Recommender recommendations upstream returned non-json or error", {
+        status: upstream.status,
+        upstreamMs,
+        totalMs,
+      });
       response.status(upstream.status).send(bodyText);
       return;
     }
@@ -1503,16 +1569,39 @@ async function proxyRecommenderRecommendations(
     let responseBody = body;
 
     try {
+      const hydrationStartedAt = Date.now();
       responseBody = await enrichRecommendedRecipes(body);
+      hydrationMs = Date.now() - hydrationStartedAt;
     } catch (error) {
       logError("Recommendation recipe enrichment failed", {error});
     }
 
     responseBody = filterBlockedRecommendationRecipes(responseBody);
 
+    returnedRecipeCount = Array.isArray(responseBody) ? responseBody.length : 0;
+    const totalMs = Date.now() - startedAt;
+    response.set("X-Deadline-Food-Hydration-Ms", String(hydrationMs));
+    response.set("X-Deadline-Food-Total-Ms", String(totalMs));
+    logInfo("Recommender recommendations profiled", {
+      upstreamMs,
+      hydrationMs,
+      totalMs,
+      returnedRecipeCount,
+    });
     response.status(upstream.status).json(responseBody);
   } catch (error) {
-    logError("Recommender recommendations request failed", {error});
+    const totalMs = Date.now() - startedAt;
+    logError("Recommender recommendations request failed", {
+      error,
+      upstreamMs,
+      hydrationMs,
+      totalMs,
+      returnedRecipeCount,
+    });
+    response.set("Access-Control-Expose-Headers", recommenderProfileHeaders);
+    response.set("X-Deadline-Food-Recommender-Ms", String(upstreamMs));
+    response.set("X-Deadline-Food-Hydration-Ms", String(hydrationMs));
+    response.set("X-Deadline-Food-Total-Ms", String(totalMs));
     response.status(502).json({error: "Recommender API could not be reached"});
   }
 }
@@ -1750,6 +1839,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   const avgStress = days.reduce((sum, d) => sum + d.stress, 0) / (days.length || 1);
   const peakStress = days.reduce((max, d) => Math.max(max, d.stress), 0);
   const fillAlloc: AutoPlan.AllocatorMeal[] = [];
+  const fillIds: string[] = [];
   if (userId) {
     const fill = await callRecommenderJson("/recommend", {
       user_id: userId,
@@ -1766,9 +1856,25 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
         if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
         const meal = recommenderRecipeToMeal(recipe);
         mealsById.set(id, meal);
+        fillIds.push(id);
         fillAlloc.push(mealToAllocator(meal));
       }
     }
+  }
+
+  // The recommender doesn't store servings, so hydrate it from the canonical
+  // Firestore docs onto the recommender-fill meals (issue #189) — mirrors
+  // enrichRecommendedRecipes. Saved recipes and the appRecipes fallback already
+  // carry servings, so only the fill meals need patching.
+  if (fillIds.length > 0) {
+    const snapshots = await firestore.getAll(...fillIds.map((id) => recipesRef.doc(id)));
+    snapshots.forEach((snapshot) => {
+      const servings = snapshot.data()?.servings;
+      const meal = mealsById.get(snapshot.id);
+      if (meal && typeof servings === "number" && Number.isFinite(servings)) {
+        mealsById.set(snapshot.id, {...meal, servings});
+      }
+    });
   }
 
   // Deterministic final fallback: if the user has few/no saved recipes and the

@@ -368,7 +368,21 @@ export function RecipeEditor({
     servings: mode === "create" && Number(form.servings) < 1,
     totalCost: mode === "create" && totalCost <= 0,
   };
-  const hasErrors = errors.name || errors.ingredients || errors.servings || errors.totalCost;
+  // Negative numbers are never valid for any nutrition or cost/time field and would
+  // corrupt the broad nutrition signals shown elsewhere. Flag them immediately (not
+  // gated on submit) so the user gets inline feedback, and block save below.
+  const negative = {
+    time: Number(form.time) < 0,
+    price: mode === "edit" && Number(form.price) < 0,
+    totalCost: mode === "create" && Number(form.totalCost) < 0,
+    calories: Number(form.calories) < 0,
+    protein: Number(form.protein) < 0,
+    carbs: Number(form.carbs) < 0,
+    fat: Number(form.fat) < 0,
+  };
+  const hasNegative = Object.values(negative).some(Boolean);
+  const hasErrors =
+    errors.name || errors.ingredients || errors.servings || errors.totalCost || hasNegative;
 
   const mealId = meal?.id;
   const estimateNutritionFromIngredients = useCallback(
@@ -518,7 +532,7 @@ export function RecipeEditor({
     const nextPrice =
       mode === "create"
         ? Number((totalCost / nextServings).toFixed(2))
-        : Number(form.price) || 0;
+        : Math.max(0, Number(form.price) || 0);
     const nextTotalCost =
       mode === "create"
         ? Number(totalCost.toFixed(2))
@@ -639,13 +653,17 @@ export function RecipeEditor({
           <Field
             label="Time (mins)"
             type="number"
+            min="0"
             value={form.time}
             onChange={(time) => setForm({ ...form, time: +time })}
+            error={negative.time}
+            errorMessage="Cannot be negative"
           />
           {mode === "create" ? (
             <Field
               label="Servings"
               type="number"
+              min="1"
               required
               value={form.servings}
               onChange={(s) => setForm({ ...form, servings: +s })}
@@ -659,8 +677,11 @@ export function RecipeEditor({
                   label="Cost / portion (£)"
                   type="number"
                   step="0.05"
+                  min="0"
                   value={form.price}
                   onChange={(price) => setForm({ ...form, price: +price })}
+                  error={negative.price}
+                  errorMessage="Cannot be negative"
                 />
               </div>
               {costEstimateButton}
@@ -676,11 +697,12 @@ export function RecipeEditor({
                   label="Total recipe cost (£)"
                   type="number"
                   step="0.05"
+                  min="0"
                   required
                   value={form.totalCost}
                   onChange={(cost) => setForm({ ...form, totalCost: +cost })}
-                  error={attempted && errors.totalCost}
-                  errorMessage="Please enter a cost"
+                  error={(attempted && errors.totalCost) || negative.totalCost}
+                  errorMessage={negative.totalCost ? "Cannot be negative" : "Please enter a cost"}
                 />
               </div>
               {costEstimateButton}
@@ -694,6 +716,25 @@ export function RecipeEditor({
               Estimated cost per portion: {money(costPerPortion)}
             </p>
           </>
+        )}
+
+        {mode === "edit" && (
+          <div className="flex flex-wrap items-center gap-2">
+            <AppButton
+              type="button"
+              variant="secondary"
+              onClick={estimateCostFromIngredients}
+              disabled={ingredients.length === 0}
+              title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
+            >
+              <RefreshCcw size={16} /> Estimate cost from ingredients
+            </AppButton>
+            <p className="text-xs text-stone-500">
+              {ingredients.length === 0
+                ? "Add ingredients below to estimate a rough cost per portion."
+                : "Fills in a rough cost per portion from illustrative grocery prices — adjust if needed."}
+            </p>
+          </div>
         )}
 
         <div data-field-error={attempted && errors.ingredients || undefined}>
@@ -731,26 +772,38 @@ export function RecipeEditor({
           <Field
             label="Calories"
             type="number"
+            min="0"
             value={form.calories}
             onChange={(calories) => setForm({ ...form, calories: +calories })}
+            error={negative.calories}
+            errorMessage="Cannot be negative"
           />
           <Field
             label="Protein (g)"
             type="number"
+            min="0"
             value={form.protein}
             onChange={(protein) => setForm({ ...form, protein: +protein })}
+            error={negative.protein}
+            errorMessage="Cannot be negative"
           />
           <Field
             label="Carbs (g)"
             type="number"
+            min="0"
             value={form.carbs}
             onChange={(carbs) => setForm({ ...form, carbs: +carbs })}
+            error={negative.carbs}
+            errorMessage="Cannot be negative"
           />
           <Field
             label="Fat (g)"
             type="number"
+            min="0"
             value={form.fat}
             onChange={(fat) => setForm({ ...form, fat: +fat })}
+            error={negative.fat}
+            errorMessage="Cannot be negative"
           />
         </div>
 

@@ -1,18 +1,65 @@
-import { BadgeCheck, Clock3, LoaderCircle, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
-import { useEffect, useMemo, useState, useRef, type Dispatch, type SetStateAction } from "react";
+import { BadgeCheck, Clock3, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Deadline, DiscoverRecommendationState, Meal, MealSlot, Preferences } from "../types";
+import type { Deadline, DiscoverRecommendationState, DiscoverRecommendationTrigger, Meal, MealSlot, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
 import { formatCookingLimit, isVerified, money, keyIngredients, sourceUrl } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackEvent } from "../analytics";
-import { fetchRecommenderRecommendations, recordRecommenderInteraction } from "../recommenderApi";
+import { recordRecommenderInteraction } from "../recommenderApi";
 
 type StateSetter<T> = Dispatch<SetStateAction<T>>;
 
-const RECOMMENDATION_BATCH_SIZE = 10;
-const MAX_EMPTY_RECOMMENDATION_BATCHES = 3;
+const DISCOVER_REFILL_QUEUE_THRESHOLD = 2;
+
+function nowMs(): number {
+  return typeof performance !== "undefined" ? performance.now() : Date.now();
+}
+
+function SkeletonBar({ className = "" }: { className?: string }) {
+  return <div className={`animate-pulse rounded-full bg-stone-200 ${className}`} />;
+}
+
+function RecipeCardSkeleton() {
+  return (
+    <Card className="gap-0 overflow-hidden rounded-lg border-stone-200 bg-white shadow-sm" aria-label="Loading recipe suggestions">
+      <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-emerald-50 via-stone-100 to-amber-50">
+        <div className="absolute inset-0 animate-pulse bg-white/30" />
+        <div className="absolute bottom-4 left-4 right-4">
+          <SkeletonBar className="h-3 w-28 bg-white/70" />
+        </div>
+      </div>
+      <div className="p-6">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 space-y-2">
+            <SkeletonBar className="h-5 w-4/5" />
+            <SkeletonBar className="h-5 w-2/3" />
+          </div>
+          <SkeletonBar className="h-4 w-20" />
+        </div>
+        <div className="mt-4 flex items-center gap-4">
+          <SkeletonBar className="h-4 w-20" />
+          <SkeletonBar className="h-4 w-14" />
+        </div>
+        <div className="mt-4 rounded-lg bg-stone-50 p-3">
+          <SkeletonBar className="h-3 w-28" />
+          <SkeletonBar className="mt-3 h-4 w-full" />
+          <SkeletonBar className="mt-2 h-4 w-3/4" />
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <SkeletonBar className="h-6 w-20" />
+          <SkeletonBar className="h-6 w-16" />
+          <SkeletonBar className="h-6 w-24" />
+        </div>
+        <div className="mt-6 grid grid-cols-2 gap-3">
+          <SkeletonBar className="h-14 rounded-lg" />
+          <SkeletonBar className="h-14 rounded-lg" />
+        </div>
+      </div>
+    </Card>
+  );
+}
 
 function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
   if (rating === 0) return null;
@@ -40,6 +87,7 @@ export function DiscoverScreen({
   setReviewedRecipeIds,
   recommendationState,
   setRecommendationState,
+  requestRecommendations,
   onSelectMeal,
   context,
   track,
@@ -56,6 +104,7 @@ export function DiscoverScreen({
   setReviewedRecipeIds: StateSetter<string[]>;
   recommendationState: DiscoverRecommendationState;
   setRecommendationState: StateSetter<DiscoverRecommendationState>;
+  requestRecommendations: (trigger: DiscoverRecommendationTrigger, contextOverride?: { day: string; slot: MealSlot; mealId: string } | null) => void;
   onSelectMeal: (mealId: string) => void;
   context?: { day: string; slot: MealSlot; mealId: string } | null;
   track: TrackEvent;
@@ -63,16 +112,11 @@ export function DiscoverScreen({
   // Verified-only by default so the community feed is opt-in and the recipe
   // list isn't diluted with unverified content (#213).
   const [verifiedOnly, setVerifiedOnly] = useState(true);
-  const latestRecommendationRequestId = useRef(0);
-  const emptyRecommendationBatchAttempts = useRef(0);
-  const [blockedReturnedRecipeState, setBlockedReturnedRecipeState] = useState({ contextKey: "", ids: [] as string[] });
+  const waitingForFirstCardRef = useRef(false);
+  const firstCardMetricKeyRef = useRef("");
   const recommendationContextKey = useMemo(
     () => JSON.stringify({ deadlines, prefs, sessionId }),
     [deadlines, prefs, sessionId],
-  );
-  const blockedReturnedRecipeIds = useMemo(
-    () => blockedReturnedRecipeState.contextKey === recommendationContextKey ? blockedReturnedRecipeState.ids : [],
-    [blockedReturnedRecipeState, recommendationContextKey],
   );
   const recommendedRecipes = useMemo(
     () => recommendationState.contextKey === recommendationContextKey ? recommendationState.recipes : [],
@@ -94,92 +138,47 @@ export function DiscoverScreen({
     .filter((meal) => !context || meal.mealSlots.includes(context.slot))
     .filter((meal) => !verifiedOnly || isVerified(meal));
 
-  const sortedQueue = candidateRecipes
-    .filter((meal) => !reviewedRecipeIdSet.has(meal.id))
-    .sort((a, b) => Number(b.tags.includes("high protein")) - Number(a.tags.includes("high protein")) || a.time - b.time);
-  const current = sortedQueue[0];
+  const visibleQueue = candidateRecipes.filter((meal) => !reviewedRecipeIdSet.has(meal.id));
+  const current = visibleQueue[0];
   const shouldLoadRecommendationBatch =
     recommendationStatus === "idle" ||
-    (recommendationStatus === "ready" && sortedQueue.length === 0);
-  const recommendationExcludeIds = useMemo(
-    () => [...new Set([
-      ...excludedRecipeIds,
-      ...recommendedRecipes.map((meal) => meal.id),
-      ...customRecipes.map((meal) => meal.id),
-      ...blockedReturnedRecipeIds,
-    ])],
-    [blockedReturnedRecipeIds, customRecipes, excludedRecipeIds, recommendedRecipes],
-  );
+    (recommendationStatus === "ready" && visibleQueue.length <= DISCOVER_REFILL_QUEUE_THRESHOLD);
 
   useEffect(() => {
     if (!shouldLoadRecommendationBatch) return;
 
-    let cancelled = false;
-    const requestId = latestRecommendationRequestId.current + 1;
-    latestRecommendationRequestId.current = requestId;
-    const controller = new AbortController();
-    const excludedAtRequest = new Set(recommendationExcludeIds);
-    fetchRecommenderRecommendations({
-      sessionId,
-      prefs,
-      deadlines,
-      excludeIds: recommendationExcludeIds,
-      count: RECOMMENDATION_BATCH_SIZE,
-      signal: controller.signal,
-    })
-      .then((recipes) => {
-        if (!cancelled && latestRecommendationRequestId.current === requestId) {
-          const usableRecipes = recipes.filter((recipe) => !excludedAtRequest.has(recipe.id));
-          const usableRecipeIds = new Set(usableRecipes.map((recipe) => recipe.id));
-          const unusableRecipeIds = recipes
-            .filter((recipe) => !usableRecipeIds.has(recipe.id))
-            .map((recipe) => recipe.id);
-          if (unusableRecipeIds.length > 0) {
-            setBlockedReturnedRecipeState((state) => ({
-              contextKey: recommendationContextKey,
-              ids: [...new Set([
-                ...(state.contextKey === recommendationContextKey ? state.ids : []),
-                ...unusableRecipeIds,
-              ])],
-            }));
-          }
+    requestRecommendations(recommendationStatus === "idle" ? "screen_mount" : "refill", context ?? null);
+  }, [context, recommendationStatus, requestRecommendations, shouldLoadRecommendationBatch]);
 
-          if (usableRecipes.length === 0 && emptyRecommendationBatchAttempts.current < MAX_EMPTY_RECOMMENDATION_BATCHES - 1) {
-            emptyRecommendationBatchAttempts.current += 1;
-            setRecommendationState({
-              contextKey: recommendationContextKey,
-              recipes: [],
-              status: "ready",
-            });
-            return;
-          }
+  useEffect(() => {
+    const waitingForRemoteCard = !current && (recommendationStatus === "idle" || recommendationStatus === "loading");
+    if (waitingForRemoteCard) {
+      waitingForFirstCardRef.current = true;
+      return;
+    }
 
-          emptyRecommendationBatchAttempts.current = 0;
-          setRecommendationState({
-            contextKey: recommendationContextKey,
-            recipes: usableRecipes,
-            status: usableRecipes.length > 0 ? "ready" : "exhausted",
-          });
-        }
-      })
-      .catch((error) => {
-        if (controller.signal.aborted) return;
+    if (!current || !waitingForFirstCardRef.current) return;
 
-        if (!cancelled && latestRecommendationRequestId.current === requestId) {
-          console.warn("Remote recommendations could not be loaded.", error);
-          setRecommendationState({
-            contextKey: recommendationContextKey,
-            recipes: [],
-            status: "exhausted",
-          });
-        }
-      });
+    const metricKey = `${recommendationContextKey}:${recommendationState.requestStartedAt ?? "unknown"}`;
+    if (firstCardMetricKeyRef.current === metricKey) return;
 
-    return () => {
-      cancelled = true;
-      controller.abort();
-    };
-  }, [deadlines, prefs, recommendationContextKey, recommendationExcludeIds, sessionId, setRecommendationState, shouldLoadRecommendationBatch]);
+    firstCardMetricKeyRef.current = metricKey;
+    waitingForFirstCardRef.current = false;
+    track("discover_first_recipe_card_visible", {
+      meal_id: current.id,
+      queue_size: visibleQueue.length,
+      request_trigger: recommendationState.requestTrigger,
+      time_to_first_recipe_card_ms: recommendationState.requestStartedAt === undefined ? undefined : Math.round(nowMs() - recommendationState.requestStartedAt),
+    });
+  }, [
+    current,
+    recommendationContextKey,
+    recommendationState.requestStartedAt,
+    recommendationState.requestTrigger,
+    recommendationStatus,
+    track,
+    visibleQueue.length,
+  ]);
 
   function decideCurrentRecipe(like: boolean) {
     if (!current) return;
@@ -206,19 +205,13 @@ export function DiscoverScreen({
     const savedRecipeIds = new Set(saved.map((meal) => meal.id));
     setReviewedRecipeIds([]);
     setRejected([]);
-    emptyRecommendationBatchAttempts.current = 0;
-    setBlockedReturnedRecipeState({ contextKey: "", ids: [] });
     setRecommendationState({ contextKey: "", recipes: [], status: "idle" });
     track("discover_queue_restarted", { queue_size: candidateRecipes.filter((meal) => !savedRecipeIds.has(meal.id)).length });
   }
 
-  function askForMoreRecipes() {
-    emptyRecommendationBatchAttempts.current = 0;
-    setRecommendationState({ contextKey: recommendationContextKey, recipes: [], status: "idle" });
-    track("discover_more_requested", { reviewed_count: reviewedRecipeIds.length });
-  }
-
-  const showRecommendationLoading = sortedQueue.length === 0 && shouldLoadRecommendationBatch;
+  const showRecommendationLoading =
+    visibleQueue.length === 0 &&
+    (recommendationStatus === "idle" || recommendationStatus === "loading" || shouldLoadRecommendationBatch);
 
   return (
     <div>
@@ -252,10 +245,7 @@ export function DiscoverScreen({
       <div className="mx-auto max-w-[480px]">
         <div>
           {showRecommendationLoading ? (
-            <Card className="gap-0 rounded-lg border-stone-200 bg-white p-10 text-center">
-              <LoaderCircle className="mx-auto animate-spin text-emerald-700" />
-              <p className="mt-4 font-semibold">Finding recipe ideas...</p>
-            </Card>
+            <RecipeCardSkeleton />
           ) : current ? (
             <Card className="gap-0 overflow-hidden rounded-lg border-stone-200 bg-white shadow-sm">
               <button
@@ -343,13 +333,9 @@ export function DiscoverScreen({
           ) : (
             <Card className="gap-0 rounded-lg border-stone-200 bg-white p-10 text-center">
               <Sparkles className="mx-auto text-emerald-700" />
-              <p className="mt-4 font-semibold">No fresh recipe ideas found yet.</p>
-              <p className="mt-2 text-sm text-stone-500">Ask for more to keep your saved and passed recipes out of the queue.</p>
-              <AppButton className="mt-4" onClick={askForMoreRecipes}>
-                Ask for more recipes
-              </AppButton>
-              <AppButton variant="secondary" className="mt-3" onClick={restartReviewQueue}>
-                Review from start
+              <p className="mt-4 font-semibold">You have reviewed today's suggestions.</p>
+              <AppButton variant="secondary" className="mt-4" onClick={restartReviewQueue}>
+                Restart
               </AppButton>
             </Card>
           )}

@@ -2,7 +2,7 @@ import { ChevronRight, Clock3, RefreshCcw, ShoppingBasket, Sparkles, Utensils } 
 import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
-import type { Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
+import type { Deadline, Meal, MealSlot, PlanEntry, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { MealThumbnail } from "../components/MealThumbnail";
 import { AppButton, Badge } from "../components/primitives";
@@ -30,6 +30,8 @@ export function Dashboard({
   calendarSkipped,
   deletedRecipeIds,
   unpublishedRecipeIds,
+  sessionId,
+  deadlines,
 }: {
   prefs: Preferences;
   plan: PlanEntry[];
@@ -50,6 +52,8 @@ export function Dashboard({
   deletedRecipeIds: Set<string>;
   /** Community recipes whose owner unpublished them — still usable, tagged. */
   unpublishedRecipeIds: Set<string>;
+  sessionId: string;
+  deadlines: Deadline[];
 }) {
   const [rescueChoice, setRescueChoice] = useState<{ day: string; slot: MealSlot } | null>(null);
   const shoppingItems = useMemo(() => ingredientsFromPlan(plan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds), [plan, customRecipes, prefs.availableIngredients, prefs.unitSystem, deletedRecipeIds]);
@@ -315,6 +319,13 @@ export function Dashboard({
           savedRecipes={discoverSaved}
           onSelectMeal={onSelectMeal}
           deletedRecipeIds={deletedRecipeIds}
+          sessionId={sessionId}
+          deadlines={deadlines}
+          onGoToDiscover={() => {
+            const current = rescueChoice;
+            setRescueChoice(null);
+            if (current) openDiscover(current.day, current.slot, "");
+          }}
           track={track}
         />
       )}

@@ -1087,6 +1087,11 @@ export function Onboarding({
                   <ArrowLeft size={16} /> Back
                 </AppButton>
                 <AppButton className="justify-center py-3" onClick={() => {
+                  if (!privacyAccepted) {
+                    setPrivacyAttempted(true);
+                    track("privacy_policy_consent_missing", { source: "onboarding_step2_continue" });
+                    return;
+                  }
                   if (!prefs.kitchen || !prefs.university) {
                     setStep2Attempted(true);
                     setShowStep2SkipConfirm(true);

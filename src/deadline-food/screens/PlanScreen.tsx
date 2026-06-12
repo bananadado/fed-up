@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
-import type { Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
+import type { Deadline, Meal, MealSlot, PlanEntry, PlanRegenMode, Preferences, Screen } from "../types";
 import { BudgetCard } from "../components/BudgetCard";
 import { MealThumbnail } from "../components/MealThumbnail";
 import { ShoppingListCard } from "../components/ShoppingListCard";
@@ -61,6 +61,8 @@ export function PlanScreen({
   openDiscover,
   deletedRecipeIds,
   unpublishedRecipeIds,
+  sessionId,
+  deadlines,
   track,
   calendarWarning,
 }: {
@@ -81,6 +83,8 @@ export function PlanScreen({
   deletedRecipeIds: Set<string>;
   /** Community recipes whose owner unpublished them — still usable, tagged. */
   unpublishedRecipeIds: Set<string>;
+  sessionId: string;
+  deadlines: Deadline[];
   track: TrackEvent;
   calendarWarning?: string;
 }) {
@@ -517,6 +521,15 @@ export function PlanScreen({
           onSelectMeal={onSelectMeal}
           suggestedMealId={swapSuggestedMealId ?? undefined}
           deletedRecipeIds={deletedRecipeIds}
+          sessionId={sessionId}
+          deadlines={deadlines}
+          onGoToDiscover={() => {
+            const current = rescueChoice;
+            setRescueChoice(null);
+            setSwapSuggestedMealId(null);
+            setAddToPlanMealId(null);
+            if (current) openDiscover(current.day, current.slot, "");
+          }}
           track={track}
         />
       )}

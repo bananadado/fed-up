@@ -951,3 +951,15 @@ describe("mergeCalendarPressure", () => {
     expect(merged[0].recommended_constraints.max_prep_minutes).toBe(15);
   });
 });
+
+describe("canonical recipe seed", () => {
+  it("carries a numeric servings on every recipe (#189)", () => {
+    // Servings is the canonical auto-plan fallback source; the generator must not
+    // drop it from the seed (regenerate via `bun run firebase:data`).
+    expect(appRecipes.length).toBeGreaterThan(0);
+    for (const recipe of appRecipes) {
+      expect(typeof recipe.servings).toBe("number");
+      expect(Number.isFinite(recipe.servings) && recipe.servings > 0).toBe(true);
+    }
+  });
+});

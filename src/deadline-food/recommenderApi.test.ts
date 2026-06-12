@@ -191,6 +191,29 @@ describe("recommender API helpers", () => {
     expect(toMeal(base).verified).toBe(false);
   });
 
+  test("carries servings hydrated onto the recommender payload (#189)", () => {
+    const base = {
+      id: "r1",
+      name: "Recipe",
+      meal_type: "cook",
+      meal_slots: ["dinner"],
+      price_pence: 250,
+      prep_minutes: 20,
+      dietary_tags: [],
+      allergens: [],
+      suitability_tags: [],
+      ingredients: [],
+      instructions: [],
+      nutrition: null,
+      source: null,
+      note: null,
+    };
+
+    expect(toMeal({ ...base, servings: 4 }).servings).toBe(4);
+    // The recommender doesn't store servings, so older/unhydrated payloads omit it.
+    expect(toMeal(base).servings).toBeUndefined();
+  });
+
   test("unpublishRecommenderRecipe posts the recipe id to the unpublish endpoint", async () => {
     let captured: { url: string; method?: string; body?: string } | null = null;
     globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
