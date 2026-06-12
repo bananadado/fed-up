@@ -1395,7 +1395,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L1",
       "id": "e2e_deadline_flow_spec_ts",
-      "community": 36,
+      "community": 72,
       "norm_label": "deadline-flow.spec.ts"
     },
     {
@@ -1404,7 +1404,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L9",
       "id": "e2e_deadline_flow_spec_acceptedprivacyconsent",
-      "community": 36,
+      "community": 72,
       "norm_label": "acceptedprivacyconsent"
     },
     {
@@ -1413,7 +1413,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L31",
       "id": "e2e_deadline_flow_spec_calendarwarning",
-      "community": 36,
+      "community": 72,
       "norm_label": "calendarwarning"
     },
     {
@@ -1422,7 +1422,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L51",
       "id": "e2e_deadline_flow_spec_policypagepromise",
-      "community": 36,
+      "community": 72,
       "norm_label": "policypagepromise"
     },
     {
@@ -1431,7 +1431,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L67",
       "id": "e2e_deadline_flow_spec_desktopnav",
-      "community": 36,
+      "community": 72,
       "norm_label": "desktopnav"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L159",
       "id": "e2e_deadline_flow_spec_sessionloaded",
-      "community": 36,
+      "community": 72,
       "norm_label": "sessionloaded"
     },
     {
@@ -1449,7 +1449,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L371",
       "id": "e2e_deadline_flow_spec_chilli",
-      "community": 36,
+      "community": 72,
       "norm_label": "chilli"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_file": "e2e/deadline-flow.spec.ts",
       "source_location": "L389",
       "id": "e2e_deadline_flow_spec_plandays",
-      "community": 36,
+      "community": 72,
       "norm_label": "plandays"
     },
     {
@@ -2781,7 +2781,7 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L1025",
       "id": "lib_index_gramsforingredient",
-      "community": 1,
+      "community": 174,
       "norm_label": "gramsforingredient()"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_file": "functions/lib/index.js",
       "source_location": "L1048",
       "id": "lib_index_estimateingredientnutrition",
-      "community": 1,
+      "community": 174,
       "norm_label": "estimateingredientnutrition()"
     },
     {
@@ -3357,7 +3357,7 @@
       "source_file": "functions/lib/autoPlan.js",
       "source_location": "L51",
       "id": "lib_autoplan_canonicaltags",
-      "community": 14,
+      "community": 165,
       "norm_label": "canonicaltags()"
     },
     {
@@ -3402,7 +3402,7 @@
       "source_file": "functions/lib/autoPlan.js",
       "source_location": "L86",
       "id": "lib_autoplan_hastag",
-      "community": 14,
+      "community": 165,
       "norm_label": "hastag()"
     },
     {
@@ -3411,7 +3411,7 @@
       "source_file": "functions/lib/autoPlan.js",
       "source_location": "L89",
       "id": "lib_autoplan_hasanyallergen",
-      "community": 14,
+      "community": 165,
       "norm_label": "hasanyallergen()"
     },
     {
@@ -3420,7 +3420,7 @@
       "source_file": "functions/lib/autoPlan.js",
       "source_location": "L92",
       "id": "lib_autoplan_hasanyingredient",
-      "community": 14,
+      "community": 165,
       "norm_label": "hasanyingredient()"
     },
     {
@@ -3429,7 +3429,7 @@
       "source_file": "functions/lib/autoPlan.js",
       "source_location": "L95",
       "id": "lib_autoplan_isdietcompatible",
-      "community": 14,
+      "community": 165,
       "norm_label": "isdietcompatible()"
     },
     {
@@ -3456,7 +3456,7 @@
       "source_file": "functions/lib/autoPlan.js",
       "source_location": "L143",
       "id": "lib_autoplan_mealcostpence",
-      "community": 14,
+      "community": 171,
       "norm_label": "mealcostpence()"
     },
     {
@@ -3483,7 +3483,7 @@
       "source_file": "functions/lib/autoPlan.js",
       "source_location": "L174",
       "id": "lib_autoplan_buildplan",
-      "community": 14,
+      "community": 165,
       "norm_label": "buildplan()"
     },
     {
@@ -3492,7 +3492,7 @@
       "source_file": "functions/lib/autoPlan.js",
       "source_location": "L260",
       "id": "lib_autoplan_recorduse",
-      "community": 14,
+      "community": 171,
       "norm_label": "recorduse()"
     },
     {
@@ -7794,7 +7794,7 @@
       "source_file": "scripts/ingest/types.ts",
       "source_location": "L3",
       "id": "ingest_types_ingredient",
-      "community": 54,
+      "community": 59,
       "norm_label": "ingredient"
     },
     {
@@ -7983,7 +7983,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L24",
       "id": "ingest_prices_estimatepricepence",
-      "community": 20,
+      "community": 54,
       "norm_label": "estimatepricepence()"
     },
     {
@@ -7992,7 +7992,7 @@
       "source_file": "scripts/ingest/prices.ts",
       "source_location": "L31",
       "id": "ingest_prices_estimatestructuredpricepence",
-      "community": 33,
+      "community": 54,
       "norm_label": "estimatestructuredpricepence()"
     },
     {
@@ -12333,7 +12333,7 @@
       "source_file": "src/frontend.tsx",
       "source_location": "L1",
       "id": "src_frontend_tsx",
-      "community": 26,
+      "community": 74,
       "norm_label": "frontend.tsx"
     },
     {
@@ -12450,7 +12450,7 @@
       "source_file": "src/App.tsx",
       "source_location": "L1",
       "id": "src_app_tsx",
-      "community": 26,
+      "community": 74,
       "norm_label": "app.tsx"
     },
     {
@@ -12459,7 +12459,7 @@
       "source_file": "src/App.tsx",
       "source_location": "L4",
       "id": "src_app_app",
-      "community": 26,
+      "community": 74,
       "norm_label": "app()"
     },
     {
@@ -12774,7 +12774,7 @@
       "source_file": "src/domain/rescuePlanner.ts",
       "source_location": "L1",
       "id": "src_domain_rescueplanner_ts",
-      "community": 16,
+      "community": 24,
       "norm_label": "rescueplanner.ts"
     },
     {
@@ -12783,7 +12783,7 @@
       "source_file": "src/domain/rescuePlanner.ts",
       "source_location": "L4",
       "id": "domain_rescueplanner_findrescueoptions",
-      "community": 16,
+      "community": 24,
       "norm_label": "findrescueoptions()"
     },
     {
@@ -12792,7 +12792,7 @@
       "source_file": "src/domain/rescuePlanner.ts",
       "source_location": "L34",
       "id": "domain_rescueplanner_applyrescueswap",
-      "community": 16,
+      "community": 24,
       "norm_label": "applyrescueswap()"
     },
     {
@@ -12900,7 +12900,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L20",
       "id": "domain_types_recipeingredient",
-      "community": 7,
+      "community": 131,
       "norm_label": "recipeingredient"
     },
     {
@@ -12936,7 +12936,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L63",
       "id": "domain_types_weeklyplan",
-      "community": 16,
+      "community": 24,
       "norm_label": "weeklyplan"
     },
     {
@@ -12945,7 +12945,7 @@
       "source_file": "src/domain/types.ts",
       "source_location": "L74",
       "id": "domain_types_rescueproposal",
-      "community": 16,
+      "community": 24,
       "norm_label": "rescueproposal"
     },
     {
@@ -13233,7 +13233,7 @@
       "source_file": "src/domain/planGenerator.test.ts",
       "source_location": "L1",
       "id": "src_domain_plangenerator_test_ts",
-      "community": 16,
+      "community": 24,
       "norm_label": "plangenerator.test.ts"
     },
     {
@@ -13242,7 +13242,7 @@
       "source_file": "src/domain/planGenerator.test.ts",
       "source_location": "L17",
       "id": "domain_plangenerator_test_ranked",
-      "community": 16,
+      "community": 24,
       "norm_label": "ranked"
     },
     {
@@ -13251,7 +13251,7 @@
       "source_file": "src/domain/planGenerator.test.ts",
       "source_location": "L23",
       "id": "domain_plangenerator_test_constraints",
-      "community": 16,
+      "community": 24,
       "norm_label": "constraints"
     },
     {
@@ -13260,7 +13260,7 @@
       "source_file": "src/domain/planGenerator.test.ts",
       "source_location": "L47",
       "id": "domain_plangenerator_test_vegetarianplan",
-      "community": 16,
+      "community": 24,
       "norm_label": "vegetarianplan"
     },
     {
@@ -13269,7 +13269,7 @@
       "source_file": "src/domain/planGenerator.test.ts",
       "source_location": "L55",
       "id": "domain_plangenerator_test_plan",
-      "community": 16,
+      "community": 24,
       "norm_label": "plan"
     },
     {
@@ -13278,7 +13278,7 @@
       "source_file": "src/domain/planGenerator.test.ts",
       "source_location": "L56",
       "id": "domain_plangenerator_test_expectedtotal",
-      "community": 16,
+      "community": 24,
       "norm_label": "expectedtotal"
     },
     {
@@ -13287,7 +13287,7 @@
       "source_file": "src/domain/planGenerator.test.ts",
       "source_location": "L75",
       "id": "domain_plangenerator_test_rescued",
-      "community": 16,
+      "community": 24,
       "norm_label": "rescued"
     },
     {
@@ -13296,7 +13296,7 @@
       "source_file": "src/domain/planGenerator.test.ts",
       "source_location": "L93",
       "id": "domain_plangenerator_test_tightplan",
-      "community": 16,
+      "community": 24,
       "norm_label": "tightplan"
     },
     {
@@ -13449,7 +13449,7 @@
       "source_file": "src/deadline-food/costEstimate.test.ts",
       "source_location": "L1",
       "id": "src_deadline_food_costestimate_test_ts",
-      "community": 54,
+      "community": 131,
       "norm_label": "costestimate.test.ts"
     },
     {
@@ -13458,7 +13458,7 @@
       "source_file": "src/deadline-food/costEstimate.test.ts",
       "source_location": "L40",
       "id": "deadline_food_costestimate_test_ingredients",
-      "community": 54,
+      "community": 131,
       "norm_label": "ingredients"
     },
     {
@@ -13467,7 +13467,7 @@
       "source_file": "src/deadline-food/analytics.ts",
       "source_location": "L1",
       "id": "src_deadline_food_analytics_ts",
-      "community": 28,
+      "community": 4,
       "norm_label": "analytics.ts"
     },
     {
@@ -13476,7 +13476,7 @@
       "source_file": "src/deadline-food/analytics.ts",
       "source_location": "L3",
       "id": "deadline_food_analytics_trackevent",
-      "community": 28,
+      "community": 4,
       "norm_label": "trackevent"
     },
     {
@@ -13746,7 +13746,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L1",
       "id": "src_deadline_food_sessionpersistence_ts",
-      "community": 36,
+      "community": 72,
       "norm_label": "sessionpersistence.ts"
     },
     {
@@ -13755,7 +13755,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L10",
       "id": "deadline_food_sessionpersistence_icssubscription",
-      "community": 36,
+      "community": 15,
       "norm_label": "icssubscription"
     },
     {
@@ -13764,7 +13764,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L16",
       "id": "deadline_food_sessionpersistence_calendartoken",
-      "community": 36,
+      "community": 15,
       "norm_label": "calendartoken"
     },
     {
@@ -13773,7 +13773,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L23",
       "id": "deadline_food_sessionpersistence_privacyconsent",
-      "community": 36,
+      "community": 72,
       "norm_label": "privacyconsent"
     },
     {
@@ -13791,7 +13791,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L60",
       "id": "deadline_food_sessionpersistence_normalizepreferences",
-      "community": 36,
+      "community": 72,
       "norm_label": "normalizepreferences()"
     },
     {
@@ -13818,7 +13818,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L85",
       "id": "deadline_food_sessionpersistence_createprivacyconsent",
-      "community": 36,
+      "community": 72,
       "norm_label": "createprivacyconsent()"
     },
     {
@@ -13836,7 +13836,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L98",
       "id": "deadline_food_sessionpersistence_createsessionsettings",
-      "community": 36,
+      "community": 72,
       "norm_label": "createsessionsettings()"
     },
     {
@@ -13845,7 +13845,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L141",
       "id": "deadline_food_sessionpersistence_mealslots",
-      "community": 36,
+      "community": 72,
       "norm_label": "mealslots"
     },
     {
@@ -13854,7 +13854,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L143",
       "id": "deadline_food_sessionpersistence_isplanentry",
-      "community": 36,
+      "community": 72,
       "norm_label": "isplanentry()"
     },
     {
@@ -13863,7 +13863,7 @@
       "source_file": "src/deadline-food/sessionPersistence.ts",
       "source_location": "L165",
       "id": "deadline_food_sessionpersistence_restoresessionplan",
-      "community": 36,
+      "community": 72,
       "norm_label": "restoresessionplan()"
     },
     {
@@ -13872,7 +13872,7 @@
       "source_file": "src/deadline-food/utils.ts",
       "source_location": "L1",
       "id": "src_deadline_food_utils_ts",
-      "community": 4,
+      "community": 28,
       "norm_label": "utils.ts"
     },
     {
@@ -13881,7 +13881,7 @@
       "source_file": "src/deadline-food/utils.ts",
       "source_location": "L5",
       "id": "deadline_food_utils_parseics",
-      "community": 4,
+      "community": 28,
       "norm_label": "parseics()"
     },
     {
@@ -13926,7 +13926,7 @@
       "source_file": "src/deadline-food/utils.ts",
       "source_location": "L69",
       "id": "deadline_food_utils_ismealdietarycompatible",
-      "community": 4,
+      "community": 28,
       "norm_label": "ismealdietarycompatible()"
     },
     {
@@ -13953,7 +13953,7 @@
       "source_file": "src/deadline-food/utils.ts",
       "source_location": "L99",
       "id": "deadline_food_utils_getmealbyid",
-      "community": 4,
+      "community": 29,
       "norm_label": "getmealbyid()"
     },
     {
@@ -13962,7 +13962,7 @@
       "source_file": "src/deadline-food/utils.ts",
       "source_location": "L109",
       "id": "deadline_food_utils_nutritionsourcesummary",
-      "community": 7,
+      "community": 28,
       "norm_label": "nutritionsourcesummary()"
     },
     {
@@ -13980,7 +13980,7 @@
       "source_file": "src/deadline-food/utils.ts",
       "source_location": "L137",
       "id": "deadline_food_utils_name_stopwords",
-      "community": 4,
+      "community": 28,
       "norm_label": "name_stopwords"
     },
     {
@@ -13998,7 +13998,7 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L1",
       "id": "src_deadline_food_advanceprep_ts",
-      "community": 4,
+      "community": 29,
       "norm_label": "advanceprep.ts"
     },
     {
@@ -14007,7 +14007,7 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L4",
       "id": "deadline_food_advanceprep_advanceprepinfo",
-      "community": 4,
+      "community": 29,
       "norm_label": "advanceprepinfo"
     },
     {
@@ -14016,7 +14016,7 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L13",
       "id": "deadline_food_advanceprep_detectadvanceprep",
-      "community": 4,
+      "community": 29,
       "norm_label": "detectadvanceprep()"
     },
     {
@@ -14034,7 +14034,7 @@
       "source_file": "src/deadline-food/advancePrep.ts",
       "source_location": "L36",
       "id": "deadline_food_advanceprep_getprepsuggestions",
-      "community": 4,
+      "community": 29,
       "norm_label": "getprepsuggestions()"
     },
     {
@@ -14304,7 +14304,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L8",
       "id": "deadline_food_types_nutrition",
-      "community": 7,
+      "community": 131,
       "norm_label": "nutrition"
     },
     {
@@ -14313,7 +14313,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L16",
       "id": "deadline_food_types_nutritionsource",
-      "community": 7,
+      "community": 131,
       "norm_label": "nutritionsource"
     },
     {
@@ -14367,7 +14367,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L86",
       "id": "deadline_food_types_deadline",
-      "community": 4,
+      "community": 29,
       "norm_label": "deadline"
     },
     {
@@ -14403,7 +14403,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L123",
       "id": "deadline_food_types_discoverrecommendationtrigger",
-      "community": 28,
+      "community": 4,
       "norm_label": "discoverrecommendationtrigger"
     },
     {
@@ -14412,7 +14412,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L125",
       "id": "deadline_food_types_discoverrecommendationstate",
-      "community": 28,
+      "community": 4,
       "norm_label": "discoverrecommendationstate"
     },
     {
@@ -14421,7 +14421,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L133",
       "id": "deadline_food_types_screen",
-      "community": 4,
+      "community": 36,
       "norm_label": "screen"
     },
     {
@@ -14430,7 +14430,7 @@
       "source_file": "src/deadline-food/types.ts",
       "source_location": "L135",
       "id": "deadline_food_types_calendarprovider",
-      "community": 36,
+      "community": 78,
       "norm_label": "calendarprovider"
     },
     {
@@ -14529,7 +14529,7 @@
       "source_file": "src/deadline-food/data.ts",
       "source_location": "L13",
       "id": "deadline_food_data_defaultdeadlines",
-      "community": 36,
+      "community": 72,
       "norm_label": "defaultdeadlines"
     },
     {
@@ -14538,7 +14538,7 @@
       "source_file": "src/deadline-food/data.ts",
       "source_location": "L19",
       "id": "deadline_food_data_seedmeals",
-      "community": 36,
+      "community": 72,
       "norm_label": "seedmeals"
     },
     {
@@ -14547,7 +14547,7 @@
       "source_file": "src/deadline-food/data.ts",
       "source_location": "L302",
       "id": "deadline_food_data_initialplan",
-      "community": 36,
+      "community": 72,
       "norm_label": "initialplan"
     },
     {
@@ -14610,7 +14610,7 @@
       "source_file": "src/deadline-food/data.ts",
       "source_location": "L369",
       "id": "deadline_food_data_initialpreferences",
-      "community": 36,
+      "community": 72,
       "norm_label": "initialpreferences"
     },
     {
@@ -14916,7 +14916,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L249",
       "id": "deadline_food_ingredients_ingredientdraftsfromingredients",
-      "community": 7,
+      "community": 15,
       "norm_label": "ingredientdraftsfromingredients()"
     },
     {
@@ -14934,7 +14934,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L272",
       "id": "deadline_food_ingredients_sanitiseingredientdrafts",
-      "community": 7,
+      "community": 15,
       "norm_label": "sanitiseingredientdrafts()"
     },
     {
@@ -14952,7 +14952,7 @@
       "source_file": "src/deadline-food/ingredients.ts",
       "source_location": "L297",
       "id": "deadline_food_ingredients_scaleingredients",
-      "community": 28,
+      "community": 7,
       "norm_label": "scaleingredients()"
     },
     {
@@ -15024,7 +15024,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L1",
       "id": "src_deadline_food_shopping_test_ts",
-      "community": 49,
+      "community": 164,
       "norm_label": "shopping.test.ts"
     },
     {
@@ -15033,7 +15033,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L21",
       "id": "deadline_food_shopping_test_items",
-      "community": 49,
+      "community": 164,
       "norm_label": "items"
     },
     {
@@ -15042,7 +15042,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L43",
       "id": "deadline_food_shopping_test_plan",
-      "community": 49,
+      "community": 164,
       "norm_label": "plan"
     },
     {
@@ -15051,7 +15051,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L49",
       "id": "deadline_food_shopping_test_meal",
-      "community": 49,
+      "community": 164,
       "norm_label": "meal"
     },
     {
@@ -15060,7 +15060,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L102",
       "id": "deadline_food_shopping_test_withdeleted",
-      "community": 49,
+      "community": 164,
       "norm_label": "withdeleted"
     },
     {
@@ -15069,7 +15069,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L106",
       "id": "deadline_food_shopping_test_missing",
-      "community": 49,
+      "community": 164,
       "norm_label": "missing"
     },
     {
@@ -15078,7 +15078,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L111",
       "id": "deadline_food_shopping_test_meala",
-      "community": 49,
+      "community": 164,
       "norm_label": "meala"
     },
     {
@@ -15087,7 +15087,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L129",
       "id": "deadline_food_shopping_test_mealb",
-      "community": 49,
+      "community": 164,
       "norm_label": "mealb"
     },
     {
@@ -15096,7 +15096,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L138",
       "id": "deadline_food_shopping_test_flouritems",
-      "community": 49,
+      "community": 164,
       "norm_label": "flouritems"
     },
     {
@@ -15105,7 +15105,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L180",
       "id": "deadline_food_shopping_test_apple",
-      "community": 49,
+      "community": 164,
       "norm_label": "apple"
     },
     {
@@ -15114,7 +15114,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L184",
       "id": "deadline_food_shopping_test_onion",
-      "community": 49,
+      "community": 164,
       "norm_label": "onion"
     },
     {
@@ -15123,7 +15123,7 @@
       "source_file": "src/deadline-food/shopping.test.ts",
       "source_location": "L256",
       "id": "deadline_food_shopping_test_onionitems",
-      "community": 49,
+      "community": 164,
       "norm_label": "onionitems"
     },
     {
@@ -15303,7 +15303,7 @@
       "source_file": "src/deadline-food/recipeCatalogue.ts",
       "source_location": "L20",
       "id": "deadline_food_recipecatalogue_getrecipecatalogue",
-      "community": 4,
+      "community": 29,
       "norm_label": "getrecipecatalogue()"
     },
     {
@@ -15330,7 +15330,7 @@
       "source_file": "src/deadline-food/recipeCatalogue.ts",
       "source_location": "L34",
       "id": "deadline_food_recipecatalogue_getplanmeal",
-      "community": 4,
+      "community": 36,
       "norm_label": "getplanmeal()"
     },
     {
@@ -15357,7 +15357,7 @@
       "source_file": "src/deadline-food/recipeCatalogue.ts",
       "source_location": "L52",
       "id": "deadline_food_recipecatalogue_getsessionmeal",
-      "community": 4,
+      "community": 36,
       "norm_label": "getsessionmeal()"
     },
     {
@@ -15375,7 +15375,7 @@
       "source_file": "src/deadline-food/recipeCatalogue.ts",
       "source_location": "L78",
       "id": "deadline_food_recipecatalogue_fetchrecipecatalogue",
-      "community": 36,
+      "community": 169,
       "norm_label": "fetchrecipecatalogue()"
     },
     {
@@ -15510,7 +15510,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L1",
       "id": "src_deadline_food_reviewsapi_ts",
-      "community": 78,
+      "community": 169,
       "norm_label": "reviewsapi.ts"
     },
     {
@@ -15519,7 +15519,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L8",
       "id": "deadline_food_reviewsapi_recipereviewsresult",
-      "community": 78,
+      "community": 169,
       "norm_label": "recipereviewsresult"
     },
     {
@@ -15528,7 +15528,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L13",
       "id": "deadline_food_reviewsapi_reviewsurl",
-      "community": 78,
+      "community": 169,
       "norm_label": "reviewsurl()"
     },
     {
@@ -15537,7 +15537,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L17",
       "id": "deadline_food_reviewsapi_readjson",
-      "community": 78,
+      "community": 169,
       "norm_label": "readjson()"
     },
     {
@@ -15546,7 +15546,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L29",
       "id": "deadline_food_reviewsapi_fetchrecipereviews",
-      "community": 78,
+      "community": 169,
       "norm_label": "fetchrecipereviews()"
     },
     {
@@ -15555,7 +15555,7 @@
       "source_file": "src/deadline-food/reviewsApi.ts",
       "source_location": "L35",
       "id": "deadline_food_reviewsapi_submitrecipereview",
-      "community": 78,
+      "community": 169,
       "norm_label": "submitrecipereview()"
     },
     {
@@ -15564,7 +15564,7 @@
       "source_file": "src/deadline-food/nutritionApi.ts",
       "source_location": "L1",
       "id": "src_deadline_food_nutritionapi_ts",
-      "community": 7,
+      "community": 131,
       "norm_label": "nutritionapi.ts"
     },
     {
@@ -15573,7 +15573,7 @@
       "source_file": "src/deadline-food/nutritionApi.ts",
       "source_location": "L4",
       "id": "deadline_food_nutritionapi_fetchopenfoodfactsnutrition",
-      "community": 7,
+      "community": 131,
       "norm_label": "fetchopenfoodfactsnutrition()"
     },
     {
@@ -15690,7 +15690,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L6",
       "id": "deadline_food_shopping_groceryvendor",
-      "community": 49,
+      "community": 168,
       "norm_label": "groceryvendor"
     },
     {
@@ -15699,7 +15699,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L12",
       "id": "deadline_food_shopping_shoppingitem",
-      "community": 49,
+      "community": 168,
       "norm_label": "shoppingitem"
     },
     {
@@ -15708,7 +15708,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L20",
       "id": "deadline_food_shopping_groceryvendors",
-      "community": 49,
+      "community": 28,
       "norm_label": "groceryvendors"
     },
     {
@@ -15861,7 +15861,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L150",
       "id": "deadline_food_shopping_pluralise",
-      "community": 49,
+      "community": 164,
       "norm_label": "pluralise()"
     },
     {
@@ -15870,7 +15870,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L157",
       "id": "deadline_food_shopping_shoppingitemlabel",
-      "community": 49,
+      "community": 164,
       "norm_label": "shoppingitemlabel()"
     },
     {
@@ -15906,7 +15906,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L191",
       "id": "deadline_food_shopping_aggregateingredients",
-      "community": 49,
+      "community": 28,
       "norm_label": "aggregateingredients()"
     },
     {
@@ -15915,7 +15915,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L242",
       "id": "deadline_food_shopping_formatshoppinglist",
-      "community": 49,
+      "community": 168,
       "norm_label": "formatshoppinglist()"
     },
     {
@@ -15924,7 +15924,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L246",
       "id": "deadline_food_shopping_shoppingitemkey",
-      "community": 49,
+      "community": 168,
       "norm_label": "shoppingitemkey()"
     },
     {
@@ -15933,7 +15933,7 @@
       "source_file": "src/deadline-food/shopping.ts",
       "source_location": "L254",
       "id": "deadline_food_shopping_ingredientsfromplan",
-      "community": 49,
+      "community": 4,
       "norm_label": "ingredientsfromplan()"
     },
     {
@@ -16095,7 +16095,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L1",
       "id": "src_deadline_food_sessionpersistence_test_ts",
-      "community": 36,
+      "community": 72,
       "norm_label": "sessionpersistence.test.ts"
     },
     {
@@ -16104,7 +16104,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L25",
       "id": "deadline_food_sessionpersistence_test_privacyconsent",
-      "community": 36,
+      "community": 72,
       "norm_label": "privacyconsent"
     },
     {
@@ -16113,7 +16113,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L26",
       "id": "deadline_food_sessionpersistence_test_settings",
-      "community": 36,
+      "community": 72,
       "norm_label": "settings"
     },
     {
@@ -16122,7 +16122,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L44",
       "id": "deadline_food_sessionpersistence_test_consent",
-      "community": 36,
+      "community": 72,
       "norm_label": "consent"
     },
     {
@@ -16131,7 +16131,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L57",
       "id": "deadline_food_sessionpersistence_test_fallbackplan",
-      "community": 36,
+      "community": 72,
       "norm_label": "fallbackplan"
     },
     {
@@ -16140,7 +16140,7 @@
       "source_file": "src/deadline-food/sessionPersistence.test.ts",
       "source_location": "L77",
       "id": "deadline_food_sessionpersistence_test_persistedplan",
-      "community": 36,
+      "community": 72,
       "norm_label": "persistedplan"
     },
     {
@@ -16509,7 +16509,7 @@
       "source_file": "src/deadline-food/costEstimate.ts",
       "source_location": "L1",
       "id": "src_deadline_food_costestimate_ts",
-      "community": 54,
+      "community": 131,
       "norm_label": "costestimate.ts"
     },
     {
@@ -16518,7 +16518,7 @@
       "source_file": "src/deadline-food/costEstimate.ts",
       "source_location": "L9",
       "id": "deadline_food_costestimate_estimaterecipecost",
-      "community": 54,
+      "community": 131,
       "norm_label": "estimaterecipecost()"
     },
     {
@@ -16563,7 +16563,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L1",
       "id": "src_deadline_food_unitconversion_test_ts",
-      "community": 63,
+      "community": 167,
       "norm_label": "unitconversion.test.ts"
     },
     {
@@ -16572,7 +16572,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L7",
       "id": "deadline_food_unitconversion_test_cup",
-      "community": 63,
+      "community": 167,
       "norm_label": "cup"
     },
     {
@@ -16581,7 +16581,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L11",
       "id": "deadline_food_unitconversion_test_tbsp",
-      "community": 63,
+      "community": 167,
       "norm_label": "tbsp"
     },
     {
@@ -16590,7 +16590,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L17",
       "id": "deadline_food_unitconversion_test_result",
-      "community": 63,
+      "community": 167,
       "norm_label": "result"
     },
     {
@@ -16599,7 +16599,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L53",
       "id": "deadline_food_unitconversion_test_item",
-      "community": 63,
+      "community": 167,
       "norm_label": "item"
     },
     {
@@ -16608,7 +16608,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L57",
       "id": "deadline_food_unitconversion_test_slice",
-      "community": 63,
+      "community": 167,
       "norm_label": "slice"
     },
     {
@@ -16617,7 +16617,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L63",
       "id": "deadline_food_unitconversion_test_cups",
-      "community": 63,
+      "community": 167,
       "norm_label": "cups"
     },
     {
@@ -16626,7 +16626,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L69",
       "id": "deadline_food_unitconversion_test_typo",
-      "community": 63,
+      "community": 167,
       "norm_label": "typo"
     },
     {
@@ -16635,7 +16635,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L109",
       "id": "deadline_food_unitconversion_test_tsp",
-      "community": 63,
+      "community": 167,
       "norm_label": "tsp"
     },
     {
@@ -16644,7 +16644,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L138",
       "id": "deadline_food_unitconversion_test_oz",
-      "community": 63,
+      "community": 167,
       "norm_label": "oz"
     },
     {
@@ -16653,7 +16653,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L151",
       "id": "deadline_food_unitconversion_test_sliced",
-      "community": 63,
+      "community": 167,
       "norm_label": "sliced"
     },
     {
@@ -16662,7 +16662,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L155",
       "id": "deadline_food_unitconversion_test_chopped",
-      "community": 63,
+      "community": 167,
       "norm_label": "chopped"
     },
     {
@@ -16671,7 +16671,7 @@
       "source_file": "src/deadline-food/unitConversion.test.ts",
       "source_location": "L161",
       "id": "deadline_food_unitconversion_test_frozen",
-      "community": 63,
+      "community": 167,
       "norm_label": "frozen"
     },
     {
@@ -16959,7 +16959,7 @@
       "source_file": "src/deadline-food/components/ConfirmDialog.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_confirmdialog_tsx",
-      "community": 28,
+      "community": 4,
       "norm_label": "confirmdialog.tsx"
     },
     {
@@ -16968,7 +16968,7 @@
       "source_file": "src/deadline-food/components/ConfirmDialog.tsx",
       "source_location": "L3",
       "id": "components_confirmdialog_confirmdialog",
-      "community": 28,
+      "community": 4,
       "norm_label": "confirmdialog()"
     },
     {
@@ -16977,7 +16977,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_recipeeditor_tsx",
-      "community": 7,
+      "community": 131,
       "norm_label": "recipeeditor.tsx"
     },
     {
@@ -16986,7 +16986,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L21",
       "id": "components_recipeeditor_meal_slot_options",
-      "community": 7,
+      "community": 131,
       "norm_label": "meal_slot_options"
     },
     {
@@ -16995,7 +16995,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L22",
       "id": "components_recipeeditor_meal_slot_set",
-      "community": 7,
+      "community": 131,
       "norm_label": "meal_slot_set"
     },
     {
@@ -17004,7 +17004,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L27",
       "id": "components_recipeeditor_formatportionnote",
-      "community": 7,
+      "community": 131,
       "norm_label": "formatportionnote()"
     },
     {
@@ -17013,7 +17013,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L34",
       "id": "components_recipeeditor_parseportionnote",
-      "community": 7,
+      "community": 131,
       "norm_label": "parseportionnote()"
     },
     {
@@ -17022,7 +17022,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L47",
       "id": "components_recipeeditor_tag_options",
-      "community": 7,
+      "community": 131,
       "norm_label": "tag_options"
     },
     {
@@ -17031,7 +17031,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L65",
       "id": "components_recipeeditor_editorform",
-      "community": 7,
+      "community": 131,
       "norm_label": "editorform"
     },
     {
@@ -17040,7 +17040,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L83",
       "id": "components_recipeeditor_recipeeditoroutput",
-      "community": 28,
+      "community": 4,
       "norm_label": "recipeeditoroutput"
     },
     {
@@ -17049,7 +17049,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L104",
       "id": "components_recipeeditor_mealtoform",
-      "community": 7,
+      "community": 131,
       "norm_label": "mealtoform()"
     },
     {
@@ -17067,7 +17067,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L149",
       "id": "components_recipeeditor_splitlist",
-      "community": 7,
+      "community": 131,
       "norm_label": "splitlist()"
     },
     {
@@ -17076,7 +17076,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L156",
       "id": "components_recipeeditor_positivenumber",
-      "community": 7,
+      "community": 28,
       "norm_label": "positivenumber()"
     },
     {
@@ -17085,7 +17085,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L162",
       "id": "components_recipeeditor_tageditor",
-      "community": 7,
+      "community": 131,
       "norm_label": "tageditor()"
     },
     {
@@ -17094,7 +17094,7 @@
       "source_file": "src/deadline-food/components/RecipeEditor.tsx",
       "source_location": "L328",
       "id": "components_recipeeditor_recipeeditor",
-      "community": 7,
+      "community": 28,
       "norm_label": "recipeeditor()"
     },
     {
@@ -17103,7 +17103,7 @@
       "source_file": "src/deadline-food/components/IngredientEditor.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_ingredienteditor_tsx",
-      "community": 15,
+      "community": 7,
       "norm_label": "ingredienteditor.tsx"
     },
     {
@@ -17112,7 +17112,7 @@
       "source_file": "src/deadline-food/components/IngredientEditor.tsx",
       "source_location": "L17",
       "id": "components_ingredienteditor_ingredientcombobox",
-      "community": 15,
+      "community": 7,
       "norm_label": "ingredientcombobox()"
     },
     {
@@ -17166,7 +17166,7 @@
       "source_file": "src/deadline-food/components/UniversityField.tsx",
       "source_location": "L8",
       "id": "components_universityfield_universityfield",
-      "community": 35,
+      "community": 15,
       "norm_label": "universityfield()"
     },
     {
@@ -17274,7 +17274,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L28",
       "id": "components_primitives_badge",
-      "community": 36,
+      "community": 4,
       "norm_label": "badge()"
     },
     {
@@ -17283,7 +17283,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L36",
       "id": "components_primitives_appbutton",
-      "community": 15,
+      "community": 4,
       "norm_label": "appbutton()"
     },
     {
@@ -17301,7 +17301,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L133",
       "id": "components_primitives_sanitisenumericinput",
-      "community": 15,
+      "community": 7,
       "norm_label": "sanitisenumericinput()"
     },
     {
@@ -17310,7 +17310,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L145",
       "id": "components_primitives_field",
-      "community": 7,
+      "community": 15,
       "norm_label": "field()"
     },
     {
@@ -17319,7 +17319,7 @@
       "source_file": "src/deadline-food/components/primitives.tsx",
       "source_location": "L250",
       "id": "components_primitives_selectfield",
-      "community": 35,
+      "community": 15,
       "norm_label": "selectfield()"
     },
     {
@@ -17328,7 +17328,7 @@
       "source_file": "src/deadline-food/components/ShoppingListCard.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_shoppinglistcard_tsx",
-      "community": 49,
+      "community": 168,
       "norm_label": "shoppinglistcard.tsx"
     },
     {
@@ -17337,7 +17337,7 @@
       "source_file": "src/deadline-food/components/ShoppingListCard.tsx",
       "source_location": "L9",
       "id": "components_shoppinglistcard_writeclipboardtext",
-      "community": 49,
+      "community": 168,
       "norm_label": "writeclipboardtext()"
     },
     {
@@ -17346,7 +17346,7 @@
       "source_file": "src/deadline-food/components/ShoppingListCard.tsx",
       "source_location": "L26",
       "id": "components_shoppinglistcard_currentitemkeys",
-      "community": 49,
+      "community": 168,
       "norm_label": "currentitemkeys()"
     },
     {
@@ -17355,7 +17355,7 @@
       "source_file": "src/deadline-food/components/ShoppingListCard.tsx",
       "source_location": "L30",
       "id": "components_shoppinglistcard_readstoredcheckeditems",
-      "community": 49,
+      "community": 168,
       "norm_label": "readstoredcheckeditems()"
     },
     {
@@ -17364,7 +17364,7 @@
       "source_file": "src/deadline-food/components/ShoppingListCard.tsx",
       "source_location": "L58",
       "id": "components_shoppinglistcard_writestoredcheckeditems",
-      "community": 49,
+      "community": 168,
       "norm_label": "writestoredcheckeditems()"
     },
     {
@@ -17373,7 +17373,7 @@
       "source_file": "src/deadline-food/components/ShoppingListCard.tsx",
       "source_location": "L74",
       "id": "components_shoppinglistcard_shoppinglistcard",
-      "community": 49,
+      "community": 28,
       "norm_label": "shoppinglistcard()"
     },
     {
@@ -17382,7 +17382,7 @@
       "source_file": "src/deadline-food/components/Shell.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_components_shell_tsx",
-      "community": 28,
+      "community": 4,
       "norm_label": "shell.tsx"
     },
     {
@@ -17391,7 +17391,7 @@
       "source_file": "src/deadline-food/components/Shell.tsx",
       "source_location": "L9",
       "id": "components_shell_shell",
-      "community": 28,
+      "community": 4,
       "norm_label": "shell()"
     },
     {
@@ -17634,7 +17634,7 @@
       "source_file": "src/deadline-food/screens/DiscoverScreen.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_screens_discoverscreen_tsx",
-      "community": 28,
+      "community": 4,
       "norm_label": "discoverscreen.tsx"
     },
     {
@@ -17643,7 +17643,7 @@
       "source_file": "src/deadline-food/screens/DiscoverScreen.tsx",
       "source_location": "L12",
       "id": "screens_discoverscreen_statesetter",
-      "community": 28,
+      "community": 4,
       "norm_label": "statesetter"
     },
     {
@@ -17652,7 +17652,7 @@
       "source_file": "src/deadline-food/screens/DiscoverScreen.tsx",
       "source_location": "L16",
       "id": "screens_discoverscreen_nowms",
-      "community": 28,
+      "community": 4,
       "norm_label": "nowms()"
     },
     {
@@ -17661,7 +17661,7 @@
       "source_file": "src/deadline-food/screens/DiscoverScreen.tsx",
       "source_location": "L20",
       "id": "screens_discoverscreen_skeletonbar",
-      "community": 28,
+      "community": 4,
       "norm_label": "skeletonbar()"
     },
     {
@@ -17670,7 +17670,7 @@
       "source_file": "src/deadline-food/screens/DiscoverScreen.tsx",
       "source_location": "L24",
       "id": "screens_discoverscreen_recipecardskeleton",
-      "community": 28,
+      "community": 4,
       "norm_label": "recipecardskeleton()"
     },
     {
@@ -17679,7 +17679,7 @@
       "source_file": "src/deadline-food/screens/DiscoverScreen.tsx",
       "source_location": "L64",
       "id": "screens_discoverscreen_starrating",
-      "community": 28,
+      "community": 4,
       "norm_label": "starrating()"
     },
     {
@@ -17697,7 +17697,7 @@
       "source_file": "src/deadline-food/screens/RecipesHubScreen.tsx",
       "source_location": "L1",
       "id": "src_deadline_food_screens_recipeshubscreen_tsx",
-      "community": 28,
+      "community": 4,
       "norm_label": "recipeshubscreen.tsx"
     },
     {
@@ -17706,7 +17706,7 @@
       "source_file": "src/deadline-food/screens/RecipesHubScreen.tsx",
       "source_location": "L15",
       "id": "screens_recipeshubscreen_tab",
-      "community": 28,
+      "community": 4,
       "norm_label": "tab"
     },
     {
@@ -17715,7 +17715,7 @@
       "source_file": "src/deadline-food/screens/RecipesHubScreen.tsx",
       "source_location": "L16",
       "id": "screens_recipeshubscreen_statesetter",
-      "community": 28,
+      "community": 4,
       "norm_label": "statesetter"
     },
     {
@@ -17724,7 +17724,7 @@
       "source_file": "src/deadline-food/screens/RecipesHubScreen.tsx",
       "source_location": "L18",
       "id": "screens_recipeshubscreen_recipeshubscreen",
-      "community": 28,
+      "community": 4,
       "norm_label": "recipeshubscreen()"
     },
     {
@@ -17796,7 +17796,7 @@
       "source_file": "src/deadline-food/screens/PlanScreen.tsx",
       "source_location": "L41",
       "id": "screens_planscreen_planscreen",
-      "community": 36,
+      "community": 28,
       "norm_label": "planscreen()"
     },
     {
@@ -17904,7 +17904,7 @@
       "source_file": "src/deadline-food/screens/Onboarding.tsx",
       "source_location": "L59",
       "id": "screens_onboarding_preferencesection",
-      "community": 35,
+      "community": 15,
       "norm_label": "preferencesection()"
     },
     {
@@ -17931,7 +17931,7 @@
       "source_file": "src/deadline-food/calendarImport/types.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_types_ts",
-      "community": 3,
+      "community": 78,
       "norm_label": "types.ts"
     },
     {
@@ -17940,7 +17940,7 @@
       "source_file": "src/deadline-food/calendarImport/types.ts",
       "source_location": "L3",
       "id": "calendarimport_types_calendarevent",
-      "community": 3,
+      "community": 78,
       "norm_label": "calendarevent"
     },
     {
@@ -18138,7 +18138,7 @@
       "source_file": "src/deadline-food/calendarImport/googleCalendar.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_googlecalendar_ts",
-      "community": 131,
+      "community": 78,
       "norm_label": "googlecalendar.ts"
     },
     {
@@ -18147,7 +18147,7 @@
       "source_file": "src/deadline-food/calendarImport/googleCalendar.ts",
       "source_location": "L9",
       "id": "calendarimport_googlecalendar_window",
-      "community": 131,
+      "community": 78,
       "norm_label": "window"
     },
     {
@@ -18156,7 +18156,7 @@
       "source_file": "src/deadline-food/calendarImport/googleCalendar.ts",
       "source_location": "L38",
       "id": "calendarimport_googlecalendar_loadgis",
-      "community": 131,
+      "community": 78,
       "norm_label": "loadgis()"
     },
     {
@@ -18165,7 +18165,7 @@
       "source_file": "src/deadline-food/calendarImport/googleCalendar.ts",
       "source_location": "L57",
       "id": "calendarimport_googlecalendar_requestcode",
-      "community": 131,
+      "community": 78,
       "norm_label": "requestcode()"
     },
     {
@@ -18174,7 +18174,7 @@
       "source_file": "src/deadline-food/calendarImport/googleCalendar.ts",
       "source_location": "L80",
       "id": "calendarimport_googlecalendar_googleexchangeresult",
-      "community": 131,
+      "community": 78,
       "norm_label": "googleexchangeresult"
     },
     {
@@ -18183,7 +18183,7 @@
       "source_file": "src/deadline-food/calendarImport/googleCalendar.ts",
       "source_location": "L86",
       "id": "calendarimport_googlecalendar_exchangecodeonserver",
-      "community": 131,
+      "community": 78,
       "norm_label": "exchangecodeonserver()"
     },
     {
@@ -18192,7 +18192,7 @@
       "source_file": "src/deadline-food/calendarImport/googleCalendar.ts",
       "source_location": "L105",
       "id": "calendarimport_googlecalendar_isgoogleconfigured",
-      "community": 131,
+      "community": 78,
       "norm_label": "isgoogleconfigured()"
     },
     {
@@ -18201,7 +18201,7 @@
       "source_file": "src/deadline-food/calendarImport/googleCalendar.ts",
       "source_location": "L109",
       "id": "calendarimport_googlecalendar_importgooglecalendar",
-      "community": 131,
+      "community": 78,
       "norm_label": "importgooglecalendar()"
     },
     {
@@ -18210,7 +18210,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_icsparser_ts",
-      "community": 72,
+      "community": 78,
       "norm_label": "icsparser.ts"
     },
     {
@@ -18219,7 +18219,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L4",
       "id": "calendarimport_icsparser_unfoldlines",
-      "community": 72,
+      "community": 78,
       "norm_label": "unfoldlines()"
     },
     {
@@ -18228,7 +18228,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L8",
       "id": "calendarimport_icsparser_extractfield",
-      "community": 72,
+      "community": 78,
       "norm_label": "extractfield()"
     },
     {
@@ -18237,7 +18237,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L13",
       "id": "calendarimport_icsparser_parseicsdatetime",
-      "community": 72,
+      "community": 78,
       "norm_label": "parseicsdatetime()"
     },
     {
@@ -18246,7 +18246,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L30",
       "id": "calendarimport_icsparser_unescapeicsvalue",
-      "community": 72,
+      "community": 78,
       "norm_label": "unescapeicsvalue()"
     },
     {
@@ -18255,7 +18255,7 @@
       "source_file": "src/deadline-food/calendarImport/icsParser.ts",
       "source_location": "L38",
       "id": "calendarimport_icsparser_parseicstext",
-      "community": 72,
+      "community": 78,
       "norm_label": "parseicstext()"
     },
     {
@@ -18264,7 +18264,7 @@
       "source_file": "src/deadline-food/calendarImport/index.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_index_ts",
-      "community": 3,
+      "community": 78,
       "norm_label": "index.ts"
     },
     {
@@ -18282,7 +18282,7 @@
       "source_file": "src/deadline-food/calendarImport/calendarApi.ts",
       "source_location": "L3",
       "id": "calendarimport_calendarapi_calendarfetchicsurl",
-      "community": 72,
+      "community": 78,
       "norm_label": "calendarfetchicsurl()"
     },
     {
@@ -18417,7 +18417,7 @@
       "source_file": "src/deadline-food/calendarImport/appleCalendar.ts",
       "source_location": "L1",
       "id": "src_deadline_food_calendarimport_applecalendar_ts",
-      "community": 72,
+      "community": 78,
       "norm_label": "applecalendar.ts"
     },
     {
@@ -18426,7 +18426,7 @@
       "source_file": "src/deadline-food/calendarImport/appleCalendar.ts",
       "source_location": "L6",
       "id": "calendarimport_applecalendar_normalizewebcalurl",
-      "community": 72,
+      "community": 15,
       "norm_label": "normalizewebcalurl()"
     },
     {
@@ -18435,7 +18435,7 @@
       "source_file": "src/deadline-food/calendarImport/appleCalendar.ts",
       "source_location": "L14",
       "id": "calendarimport_applecalendar_issubscriptionurl",
-      "community": 72,
+      "community": 15,
       "norm_label": "issubscriptionurl()"
     },
     {
@@ -18444,7 +18444,7 @@
       "source_file": "src/deadline-food/calendarImport/appleCalendar.ts",
       "source_location": "L24",
       "id": "calendarimport_applecalendar_importfromsubscriptionurl",
-      "community": 72,
+      "community": 15,
       "norm_label": "importfromsubscriptionurl()"
     },
     {
@@ -18453,7 +18453,7 @@
       "source_file": "src/deadline-food/calendarImport/appleCalendar.ts",
       "source_location": "L51",
       "id": "calendarimport_applecalendar_icssubscriptionhints",
-      "community": 72,
+      "community": 15,
       "norm_label": "icssubscriptionhints"
     },
     {
@@ -18480,7 +18480,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L1",
       "id": "src_lib_posthog_ts",
-      "community": 26,
+      "community": 36,
       "norm_label": "posthog.ts"
     },
     {
@@ -18489,7 +18489,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L8",
       "id": "lib_posthog_readbunpublicenv",
-      "community": 26,
+      "community": 36,
       "norm_label": "readbunpublicenv()"
     },
     {
@@ -18498,7 +18498,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L14",
       "id": "lib_posthog_token",
-      "community": 26,
+      "community": 36,
       "norm_label": "token"
     },
     {
@@ -18507,7 +18507,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L19",
       "id": "lib_posthog_host",
-      "community": 26,
+      "community": 36,
       "norm_label": "host"
     },
     {
@@ -18516,7 +18516,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L28",
       "id": "lib_posthog_analyticsproperty",
-      "community": 26,
+      "community": 36,
       "norm_label": "analyticsproperty"
     },
     {
@@ -18534,7 +18534,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L31",
       "id": "lib_posthog_compactproperties",
-      "community": 26,
+      "community": 36,
       "norm_label": "compactproperties()"
     },
     {
@@ -18543,7 +18543,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L37",
       "id": "lib_posthog_registerposthogsession",
-      "community": 26,
+      "community": 36,
       "norm_label": "registerposthogsession()"
     },
     {
@@ -18552,7 +18552,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L42",
       "id": "lib_posthog_registerposthogcontext",
-      "community": 26,
+      "community": 36,
       "norm_label": "registerposthogcontext()"
     },
     {
@@ -18561,7 +18561,7 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L46",
       "id": "lib_posthog_captureposthogevent",
-      "community": 26,
+      "community": 36,
       "norm_label": "captureposthogevent()"
     },
     {
@@ -18570,7 +18570,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L1",
       "id": "src_lib_posthogconfig_test_ts",
-      "community": 26,
+      "community": 170,
       "norm_label": "posthogconfig.test.ts"
     },
     {
@@ -18579,7 +18579,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L7",
       "id": "lib_posthogconfig_test_startsessionrecordingcalls",
-      "community": 26,
+      "community": 170,
       "norm_label": "startsessionrecordingcalls"
     },
     {
@@ -18588,7 +18588,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L8",
       "id": "lib_posthogconfig_test_config",
-      "community": 26,
+      "community": 170,
       "norm_label": "config"
     },
     {
@@ -18597,7 +18597,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L10",
       "id": "lib_posthogconfig_test_loadedposthog",
-      "community": 26,
+      "community": 170,
       "norm_label": "loadedposthog"
     },
     {
@@ -18606,7 +18606,7 @@
       "source_file": "src/lib/posthogConfig.test.ts",
       "source_location": "L12",
       "id": "lib_posthogconfig_test_client",
-      "community": 26,
+      "community": 170,
       "norm_label": "client"
     },
     {
@@ -18615,7 +18615,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L1",
       "id": "src_lib_posthogconfig_ts",
-      "community": 26,
+      "community": 170,
       "norm_label": "posthogconfig.ts"
     },
     {
@@ -18624,7 +18624,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L3",
       "id": "lib_posthogconfig_personaldataproperties",
-      "community": 26,
+      "community": 170,
       "norm_label": "personaldataproperties"
     },
     {
@@ -18633,7 +18633,7 @@
       "source_file": "src/lib/posthogConfig.ts",
       "source_location": "L14",
       "id": "lib_posthogconfig_createposthogconfig",
-      "community": 26,
+      "community": 170,
       "norm_label": "createposthogconfig()"
     },
     {
@@ -19542,7 +19542,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L122",
       "id": "adapters_deadlinefoodapi_deadlinefoodendpointurl",
-      "community": 74,
+      "community": 53,
       "norm_label": "deadlinefoodendpointurl()"
     },
     {
@@ -19551,7 +19551,7 @@
       "source_file": "src/adapters/deadlineFoodApi.ts",
       "source_location": "L130",
       "id": "adapters_deadlinefoodapi_firebasefunctionurl",
-      "community": 78,
+      "community": 169,
       "norm_label": "firebasefunctionurl()"
     },
     {
@@ -25554,8 +25554,764 @@
       "source_file": "src/lib/posthog.ts",
       "source_location": "L54",
       "id": "lib_posthog_posthog",
-      "community": 26,
+      "community": 74,
       "norm_label": "posthog"
+    },
+    {
+      "label": "AutoPlan",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L48",
+      "community": 1,
+      "norm_label": "autoplan",
+      "id": "lib_index_autoplan"
+    },
+    {
+      "label": "openFoodFactsBaseUrl",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L118",
+      "community": 1,
+      "norm_label": "openfoodfactsbaseurl",
+      "id": "lib_index_openfoodfactsbaseurl"
+    },
+    {
+      "label": "zeroNutritionNutriments",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L131",
+      "community": 1,
+      "norm_label": "zeronutritionnutriments",
+      "id": "lib_index_zeronutritionnutriments"
+    },
+    {
+      "label": "usdaNutritionProduct()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L137",
+      "community": 1,
+      "norm_label": "usdanutritionproduct()",
+      "id": "lib_index_usdanutritionproduct"
+    },
+    {
+      "label": "curatedNutritionProducts",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L150",
+      "community": 1,
+      "norm_label": "curatednutritionproducts",
+      "id": "lib_index_curatednutritionproducts"
+    },
+    {
+      "label": "curatedNutritionProductForIngredient()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L348",
+      "community": 73,
+      "norm_label": "curatednutritionproductforingredient()",
+      "id": "lib_index_curatednutritionproductforingredient"
+    },
+    {
+      "label": "nutritionUnitAliases",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L356",
+      "community": 1,
+      "norm_label": "nutritionunitaliases",
+      "id": "lib_index_nutritionunitaliases"
+    },
+    {
+      "label": "nutritionWeightOrVolumeGrams",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L394",
+      "community": 1,
+      "norm_label": "nutritionweightorvolumegrams",
+      "id": "lib_index_nutritionweightorvolumegrams"
+    },
+    {
+      "label": "nutritionCountUnitDefaultGrams",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L406",
+      "community": 1,
+      "norm_label": "nutritioncountunitdefaultgrams",
+      "id": "lib_index_nutritioncountunitdefaultgrams"
+    },
+    {
+      "label": "nutritionSizeUnitMultiplier",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L419",
+      "community": 1,
+      "norm_label": "nutritionsizeunitmultiplier",
+      "id": "lib_index_nutritionsizeunitmultiplier"
+    },
+    {
+      "label": "nutritionTypicalIngredientGrams",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L424",
+      "community": 1,
+      "norm_label": "nutritiontypicalingredientgrams",
+      "id": "lib_index_nutritiontypicalingredientgrams"
+    },
+    {
+      "label": "blockedRecommendationRecipePatterns",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1091",
+      "community": 1,
+      "norm_label": "blockedrecommendationrecipepatterns",
+      "id": "lib_index_blockedrecommendationrecipepatterns"
+    },
+    {
+      "label": "recommendationRecipeText()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1099",
+      "community": 41,
+      "norm_label": "recommendationrecipetext()",
+      "id": "lib_index_recommendationrecipetext"
+    },
+    {
+      "label": "isBlockedRecommendationRecipe()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1114",
+      "community": 41,
+      "norm_label": "isblockedrecommendationrecipe()",
+      "id": "lib_index_isblockedrecommendationrecipe"
+    },
+    {
+      "label": "filterBlockedRecommendationRecipes()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1118",
+      "community": 128,
+      "norm_label": "filterblockedrecommendationrecipes()",
+      "id": "lib_index_filterblockedrecommendationrecipes"
+    },
+    {
+      "label": "normalizePlanningPriorities()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1310",
+      "community": 41,
+      "norm_label": "normalizeplanningpriorities()",
+      "id": "lib_index_normalizeplanningpriorities"
+    },
+    {
+      "label": "normalizeNutritionGoals()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1325",
+      "community": 41,
+      "norm_label": "normalizenutritiongoals()",
+      "id": "lib_index_normalizenutritiongoals"
+    },
+    {
+      "label": "openFoodFactsCookingAdjectives",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1507",
+      "community": 1,
+      "norm_label": "openfoodfactscookingadjectives",
+      "id": "lib_index_openfoodfactscookingadjectives"
+    },
+    {
+      "label": "openFoodFactsIrregularTerms",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1526",
+      "community": 1,
+      "norm_label": "openfoodfactsirregularterms",
+      "id": "lib_index_openfoodfactsirregularterms"
+    },
+    {
+      "label": "openFoodFactsCategoryTag()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1535",
+      "community": 73,
+      "norm_label": "openfoodfactscategorytag()",
+      "id": "lib_index_openfoodfactscategorytag"
+    },
+    {
+      "label": "uniqueOpenFoodFactsTerms()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1541",
+      "community": 73,
+      "norm_label": "uniqueopenfoodfactsterms()",
+      "id": "lib_index_uniqueopenfoodfactsterms"
+    },
+    {
+      "label": "openFoodFactsCategoryTerms()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1544",
+      "community": 73,
+      "norm_label": "openfoodfactscategoryterms()",
+      "id": "lib_index_openfoodfactscategoryterms"
+    },
+    {
+      "label": "normalizeMeasureText()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1561",
+      "community": 174,
+      "norm_label": "normalizemeasuretext()",
+      "id": "lib_index_normalizemeasuretext"
+    },
+    {
+      "label": "normalizeIngredientUnit()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1564",
+      "community": 174,
+      "norm_label": "normalizeingredientunit()",
+      "id": "lib_index_normalizeingredientunit"
+    },
+    {
+      "label": "typicalNutritionGramsForIngredient()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1589",
+      "community": 174,
+      "norm_label": "typicalnutritiongramsforingredient()",
+      "id": "lib_index_typicalnutritiongramsforingredient"
+    },
+    {
+      "label": "compactOpenFoodFactsProduct()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1840",
+      "community": 73,
+      "norm_label": "compactopenfoodfactsproduct()",
+      "id": "lib_index_compactopenfoodfactsproduct"
+    },
+    {
+      "label": "searchOpenFoodFactsProducts()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1850",
+      "community": 73,
+      "norm_label": "searchopenfoodfactsproducts()",
+      "id": "lib_index_searchopenfoodfactsproducts"
+    },
+    {
+      "label": "fetchOpenFoodFactsProductForIngredient()",
+      "file_type": "code",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1867",
+      "community": 73,
+      "norm_label": "fetchopenfoodfactsproductforingredient()",
+      "id": "lib_index_fetchopenfoodfactsproductforingredient"
+    },
+    {
+      "label": "DEFAULT_PRIORITIES",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L33",
+      "community": 14,
+      "norm_label": "default_priorities",
+      "id": "lib_autoplan_default_priorities"
+    },
+    {
+      "label": "DEFAULT_NUTRITION_TARGETS",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L40",
+      "community": 14,
+      "norm_label": "default_nutrition_targets",
+      "id": "lib_autoplan_default_nutrition_targets"
+    },
+    {
+      "label": "ACADEMIC_EVENT_PATTERN",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L69",
+      "community": 14,
+      "norm_label": "academic_event_pattern",
+      "id": "lib_autoplan_academic_event_pattern"
+    },
+    {
+      "label": "dateFromEventValue()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L76",
+      "community": 172,
+      "norm_label": "datefromeventvalue()",
+      "id": "lib_autoplan_datefromeventvalue"
+    },
+    {
+      "label": "isoDateFromEventStart()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L80",
+      "community": 172,
+      "norm_label": "isodatefromeventstart()",
+      "id": "lib_autoplan_isodatefromeventstart"
+    },
+    {
+      "label": "addDays()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L88",
+      "community": 14,
+      "norm_label": "adddays()",
+      "id": "lib_autoplan_adddays"
+    },
+    {
+      "label": "eventDurationHours()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L91",
+      "community": 172,
+      "norm_label": "eventdurationhours()",
+      "id": "lib_autoplan_eventdurationhours"
+    },
+    {
+      "label": "startsInEvening()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L100",
+      "community": 172,
+      "norm_label": "startsinevening()",
+      "id": "lib_autoplan_startsinevening"
+    },
+    {
+      "label": "contextEventPressure()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L106",
+      "community": 172,
+      "norm_label": "contexteventpressure()",
+      "id": "lib_autoplan_contexteventpressure"
+    },
+    {
+      "label": "localDaysFromContextEvents()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L137",
+      "community": 172,
+      "norm_label": "localdaysfromcontextevents()",
+      "id": "lib_autoplan_localdaysfromcontextevents"
+    },
+    {
+      "label": "mergeCalendarPressure()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L202",
+      "community": 172,
+      "norm_label": "mergecalendarpressure()",
+      "id": "lib_autoplan_mergecalendarpressure"
+    },
+    {
+      "label": "normalizePriorities()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L225",
+      "community": 165,
+      "norm_label": "normalizepriorities()",
+      "id": "lib_autoplan_normalizepriorities"
+    },
+    {
+      "label": "clamp01()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L336",
+      "community": 166,
+      "norm_label": "clamp01()",
+      "id": "lib_autoplan_clamp01"
+    },
+    {
+      "label": "ingredientKeys()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L341",
+      "community": 165,
+      "norm_label": "ingredientkeys()",
+      "id": "lib_autoplan_ingredientkeys"
+    },
+    {
+      "label": "nutritionValue()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L344",
+      "community": 173,
+      "norm_label": "nutritionvalue()",
+      "id": "lib_autoplan_nutritionvalue"
+    },
+    {
+      "label": "normalizeNutritionTargets()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L347",
+      "community": 166,
+      "norm_label": "normalizenutritiontargets()",
+      "id": "lib_autoplan_normalizenutritiontargets"
+    },
+    {
+      "label": "slotNutritionTarget()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L361",
+      "community": 173,
+      "norm_label": "slotnutritiontarget()",
+      "id": "lib_autoplan_slotnutritiontarget"
+    },
+    {
+      "label": "ingredientOverlapScore()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L370",
+      "community": 165,
+      "norm_label": "ingredientoverlapscore()",
+      "id": "lib_autoplan_ingredientoverlapscore"
+    },
+    {
+      "label": "ingredientReuseRank()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L375",
+      "community": 165,
+      "norm_label": "ingredientreuserank()",
+      "id": "lib_autoplan_ingredientreuserank"
+    },
+    {
+      "label": "recordWeekIngredients()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L381",
+      "community": 171,
+      "norm_label": "recordweekingredients()",
+      "id": "lib_autoplan_recordweekingredients"
+    },
+    {
+      "label": "variantRank()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L387",
+      "community": 14,
+      "norm_label": "variantrank()",
+      "id": "lib_autoplan_variantrank"
+    },
+    {
+      "label": "allowsFallback()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L398",
+      "community": 14,
+      "norm_label": "allowsfallback()",
+      "id": "lib_autoplan_allowsfallback"
+    },
+    {
+      "label": "batchYield()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L409",
+      "community": 14,
+      "norm_label": "batchyield()",
+      "id": "lib_autoplan_batchyield"
+    },
+    {
+      "label": "leftoverPortions()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L413",
+      "community": 14,
+      "norm_label": "leftoverportions()",
+      "id": "lib_autoplan_leftoverportions"
+    },
+    {
+      "label": "isBatchSlot()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L421",
+      "community": 14,
+      "norm_label": "isbatchslot()",
+      "id": "lib_autoplan_isbatchslot"
+    },
+    {
+      "label": "wouldCreateMainMealRepeat()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L434",
+      "community": 14,
+      "norm_label": "wouldcreatemainmealrepeat()",
+      "id": "lib_autoplan_wouldcreatemainmealrepeat"
+    },
+    {
+      "label": "weeklyMealUseKey()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L441",
+      "community": 171,
+      "norm_label": "weeklymealusekey()",
+      "id": "lib_autoplan_weeklymealusekey"
+    },
+    {
+      "label": "wouldExceedWeeklyNonBreakfastLimit()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L444",
+      "community": 171,
+      "norm_label": "wouldexceedweeklynonbreakfastlimit()",
+      "id": "lib_autoplan_wouldexceedweeklynonbreakfastlimit"
+    },
+    {
+      "label": "mealById()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L594",
+      "community": 173,
+      "norm_label": "mealbyid()",
+      "id": "lib_autoplan_mealbyid"
+    },
+    {
+      "label": "plannedMealEntries()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L597",
+      "community": 173,
+      "norm_label": "plannedmealentries()",
+      "id": "lib_autoplan_plannedmealentries"
+    },
+    {
+      "label": "nutritionScore()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L610",
+      "community": 173,
+      "norm_label": "nutritionscore()",
+      "id": "lib_autoplan_nutritionscore"
+    },
+    {
+      "label": "purchasableMealEntries()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L662",
+      "community": 166,
+      "norm_label": "purchasablemealentries()",
+      "id": "lib_autoplan_purchasablemealentries"
+    },
+    {
+      "label": "weeklyCostPence()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L665",
+      "community": 173,
+      "norm_label": "weeklycostpence()",
+      "id": "lib_autoplan_weeklycostpence"
+    },
+    {
+      "label": "ingredientCountsForPlan()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L671",
+      "community": 166,
+      "norm_label": "ingredientcountsforplan()",
+      "id": "lib_autoplan_ingredientcountsforplan"
+    },
+    {
+      "label": "PERISHABLE_INGREDIENT_PATTERNS",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L684",
+      "community": 14,
+      "norm_label": "perishable_ingredient_patterns",
+      "id": "lib_autoplan_perishable_ingredient_patterns"
+    },
+    {
+      "label": "isPerishableIngredient()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L689",
+      "community": 14,
+      "norm_label": "isperishableingredient()",
+      "id": "lib_autoplan_isperishableingredient"
+    },
+    {
+      "label": "shoppingSimplicityScore()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L692",
+      "community": 166,
+      "norm_label": "shoppingsimplicityscore()",
+      "id": "lib_autoplan_shoppingsimplicityscore"
+    },
+    {
+      "label": "ingredientReuseScore()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L706",
+      "community": 166,
+      "norm_label": "ingredientreusescore()",
+      "id": "lib_autoplan_ingredientreusescore"
+    },
+    {
+      "label": "mealPreferenceOverlap()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L713",
+      "community": 165,
+      "norm_label": "mealpreferenceoverlap()",
+      "id": "lib_autoplan_mealpreferenceoverlap"
+    },
+    {
+      "label": "mealDislikePenalty()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L730",
+      "community": 165,
+      "norm_label": "mealdislikepenalty()",
+      "id": "lib_autoplan_mealdislikepenalty"
+    },
+    {
+      "label": "mealLikeBoost()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L733",
+      "community": 165,
+      "norm_label": "meallikeboost()",
+      "id": "lib_autoplan_meallikeboost"
+    },
+    {
+      "label": "mainMealSequence()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L736",
+      "community": 166,
+      "norm_label": "mainmealsequence()",
+      "id": "lib_autoplan_mainmealsequence"
+    },
+    {
+      "label": "maxConsecutiveMainMealRepeats()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L739",
+      "community": 166,
+      "norm_label": "maxconsecutivemainmealrepeats()",
+      "id": "lib_autoplan_maxconsecutivemainmealrepeats"
+    },
+    {
+      "label": "weeklyNonBreakfastMealOverage()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L755",
+      "community": 166,
+      "norm_label": "weeklynonbreakfastmealoverage()",
+      "id": "lib_autoplan_weeklynonbreakfastmealoverage"
+    },
+    {
+      "label": "hardVarietyViolationCount()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L769",
+      "community": 166,
+      "norm_label": "hardvarietyviolationcount()",
+      "id": "lib_autoplan_hardvarietyviolationcount"
+    },
+    {
+      "label": "coverageScore()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L774",
+      "community": 166,
+      "norm_label": "coveragescore()",
+      "id": "lib_autoplan_coveragescore"
+    },
+    {
+      "label": "varietyScore()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L781",
+      "community": 166,
+      "norm_label": "varietyscore()",
+      "id": "lib_autoplan_varietyscore"
+    },
+    {
+      "label": "budgetScore()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L808",
+      "community": 171,
+      "norm_label": "budgetscore()",
+      "id": "lib_autoplan_budgetscore"
+    },
+    {
+      "label": "comparablePlanMealKey()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L826",
+      "community": 14,
+      "norm_label": "comparableplanmealkey()",
+      "id": "lib_autoplan_comparableplanmealkey"
+    },
+    {
+      "label": "isFlexibleForRegeneration()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L829",
+      "community": 14,
+      "norm_label": "isflexibleforregeneration()",
+      "id": "lib_autoplan_isflexibleforregeneration"
+    },
+    {
+      "label": "regenerationChangeScore()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L832",
+      "community": 166,
+      "norm_label": "regenerationchangescore()",
+      "id": "lib_autoplan_regenerationchangescore"
+    },
+    {
+      "label": "scorePlan()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L858",
+      "community": 166,
+      "norm_label": "scoreplan()",
+      "id": "lib_autoplan_scoreplan"
+    },
+    {
+      "label": "buildBestPlan()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L907",
+      "community": 165,
+      "norm_label": "buildbestplan()",
+      "id": "lib_autoplan_buildbestplan"
+    },
+    {
+      "label": "rankCandidates()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L955",
+      "community": 14,
+      "norm_label": "rankcandidates()",
+      "id": "lib_autoplan_rankcandidates"
+    },
+    {
+      "label": "pickRoutineBreakfast()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L1069",
+      "community": 171,
+      "norm_label": "pickroutinebreakfast()",
+      "id": "lib_autoplan_pickroutinebreakfast"
+    },
+    {
+      "label": "recentRepeatPenalty()",
+      "file_type": "code",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L1087",
+      "community": 14,
+      "norm_label": "recentrepeatpenalty()",
+      "id": "lib_autoplan_recentrepeatpenalty"
     },
     {
       "label": "firestore",
@@ -29082,6 +29838,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_autoplan"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L15",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -29097,6 +29863,16 @@
       "confidence_score": 1.0,
       "source": "functions_lib_index_js",
       "target": "lib_index_averagerating"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1091",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_blockedrecommendationrecipepatterns"
     },
     {
       "relation": "contains",
@@ -29222,11 +29998,41 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L1840",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_compactopenfoodfactsproduct"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L14",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_index_js",
       "target": "lib_index_crypto_1"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L348",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_curatednutritionproductforingredient"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L150",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_curatednutritionproducts"
     },
     {
       "relation": "contains",
@@ -29372,6 +30178,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L1867",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_fetchopenfoodfactsproductforingredient"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L1153",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -29397,6 +30213,16 @@
       "confidence_score": 1.0,
       "source": "functions_lib_index_js",
       "target": "lib_index_filebuffer"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1118",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_filterblockedrecommendationrecipes"
     },
     {
       "relation": "contains",
@@ -29572,6 +30398,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L1114",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_isblockedrecommendationrecipe"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L940",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -29722,6 +30558,46 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L1564",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_normalizeingredientunit"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1561",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_normalizemeasuretext"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1325",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_normalizenutritiongoals"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1310",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_normalizeplanningpriorities"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L437",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -29772,11 +30648,71 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L406",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_nutritioncountunitdefaultgrams"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L66",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_index_js",
       "target": "lib_index_nutritionhttpoptions"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L419",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_nutritionsizeunitmultiplier"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L424",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_nutritiontypicalingredientgrams"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L356",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_nutritionunitaliases"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L394",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_nutritionweightorvolumegrams"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L118",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_openfoodfactsbaseurl"
     },
     {
       "relation": "contains",
@@ -29797,6 +30733,46 @@
       "confidence_score": 1.0,
       "source": "functions_lib_index_js",
       "target": "lib_index_openfoodfactscacheref"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1535",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_openfoodfactscategorytag"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1544",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_openfoodfactscategoryterms"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1507",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_openfoodfactscookingadjectives"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1526",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_openfoodfactsirregularterms"
     },
     {
       "relation": "contains",
@@ -29977,6 +30953,16 @@
       "confidence_score": 1.0,
       "source": "functions_lib_index_js",
       "target": "lib_index_recipestatesforids"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1099",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_recommendationrecipetext"
     },
     {
       "relation": "contains",
@@ -30177,6 +31163,16 @@
       "confidence_score": 1.0,
       "source": "functions_lib_index_js",
       "target": "lib_index_searchfdcfoods"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1850",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_searchopenfoodfactsproducts"
     },
     {
       "relation": "contains",
@@ -30402,6 +31398,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L1589",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_typicalnutritiongramsforingredient"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1541",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_uniqueopenfoodfactsterms"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L1959",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -30452,11 +31468,31 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L137",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_usdanutritionproduct"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L598",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_index_js",
       "target": "lib_index_verifiedaccount"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L131",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_index_js",
+      "target": "lib_index_zeronutritionnutriments"
     },
     {
       "relation": "calls",
@@ -30694,6 +31730,28 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L1326",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_normalizenutritiongoals",
+      "target": "lib_index_asrecord"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1311",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_normalizeplanningpriorities",
+      "target": "lib_index_asrecord"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L438",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -30742,6 +31800,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "lib_index_readrequestbody",
+      "target": "lib_index_asrecord"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1101",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_recommendationrecipetext",
       "target": "lib_index_asrecord"
     },
     {
@@ -30819,6 +31888,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "lib_index_normalizeicssubscription",
+      "target": "lib_index_boundedstring"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1312",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_normalizeplanningpriorities",
       "target": "lib_index_boundedstring"
     },
     {
@@ -30907,6 +31987,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "lib_index_normalizedeadline",
+      "target": "lib_index_boundednumber"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1328",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_normalizenutritiongoals",
       "target": "lib_index_boundednumber"
     },
     {
@@ -31007,6 +32098,28 @@
       "confidence_score": 1.0,
       "source": "lib_index_handleaccountsessionget",
       "target": "lib_index_normalizesessionsettings"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L902",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_normalizesessionsettings",
+      "target": "lib_index_normalizenutritiongoals"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L901",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_normalizesessionsettings",
+      "target": "lib_index_normalizeplanningpriorities"
     },
     {
       "relation": "calls",
@@ -31145,6 +32258,17 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L1179",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_proxyrecommenderrecommendations",
+      "target": "lib_index_filterblockedrecommendationrecipes"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L860",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -31233,10 +32357,65 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L1355",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_handleautoplan",
+      "target": "lib_index_normalizenutritiongoals"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1354",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_handleautoplan",
+      "target": "lib_index_normalizeplanningpriorities"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L350",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_curatednutritionproductforingredient",
+      "target": "lib_index_normalizeingredientkey"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L1236",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "lib_index_findnutritionproductforingredient",
+      "target": "lib_index_normalizeingredientkey"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1536",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_openfoodfactscategorytag",
+      "target": "lib_index_normalizeingredientkey"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1546",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_openfoodfactscategoryterms",
       "target": "lib_index_normalizeingredientkey"
     },
     {
@@ -31293,6 +32472,39 @@
       "confidence_score": 1.0,
       "source": "lib_index_estimateingredientnutrition",
       "target": "lib_index_gramsforingredient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1604",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_gramsforingredient",
+      "target": "lib_index_normalizeingredientunit"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1611",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_gramsforingredient",
+      "target": "lib_index_typicalnutritiongramsforingredient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1935",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_findnutritionproductforingredient",
+      "target": "lib_index_estimateingredientnutrition"
     },
     {
       "relation": "calls",
@@ -31453,6 +32665,28 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/index.js",
+      "source_location": "L1928",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_findnutritionproductforingredient",
+      "target": "lib_index_curatednutritionproductforingredient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1948",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_findnutritionproductforingredient",
+      "target": "lib_index_fetchopenfoodfactsproductforingredient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
       "source_location": "L1650",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -31469,6 +32703,36 @@
       "confidence_score": 1.0,
       "source": "lib_index_handleaccountsessionget",
       "target": "lib_index_data"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L69",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_academic_event_pattern"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L88",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_adddays"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L398",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_allowsfallback"
     },
     {
       "relation": "contains",
@@ -31504,6 +32768,36 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L409",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_batchyield"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L808",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_budgetscore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L907",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_buildbestplan"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L174",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -31534,6 +32828,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L336",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_clamp01"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L58",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -31544,11 +32848,41 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L826",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_comparableplanmealkey"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L106",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_contexteventpressure"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L134",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_autoplan_js",
       "target": "lib_autoplan_contextlabel"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L774",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_coveragescore"
     },
     {
       "relation": "contains",
@@ -31574,6 +32908,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L76",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_datefromeventvalue"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L128",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -31584,11 +32928,41 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_default_nutrition_targets"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_default_priorities"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L162",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_autoplan_js",
       "target": "lib_autoplan_effortrank"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L91",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_eventdurationhours"
     },
     {
       "relation": "contains",
@@ -31609,6 +32983,16 @@
       "confidence_score": 1.0,
       "source": "functions_lib_autoplan_js",
       "target": "lib_autoplan_halal_ingredient_patterns"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L769",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_hardvarietyviolationcount"
     },
     {
       "relation": "contains",
@@ -31654,11 +33038,101 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L671",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_ingredientcountsforplan"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L341",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_ingredientkeys"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L370",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_ingredientoverlapscore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L375",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_ingredientreuserank"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L706",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_ingredientreusescore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L421",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_isbatchslot"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L95",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_autoplan_js",
       "target": "lib_autoplan_isdietcompatible"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L829",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_isflexibleforregeneration"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L80",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_isodatefromeventstart"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L689",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_isperishableingredient"
     },
     {
       "relation": "contains",
@@ -31674,11 +33148,91 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L413",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_leftoverportions"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L137",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_localdaysfromcontextevents"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L736",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_mainmealsequence"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L739",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_maxconsecutivemainmealrepeats"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L594",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_mealbyid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L143",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_autoplan_js",
       "target": "lib_autoplan_mealcostpence"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L730",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_mealdislikepenalty"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L733",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_meallikeboost"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L713",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_mealpreferenceoverlap"
     },
     {
       "relation": "contains",
@@ -31694,11 +33248,121 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L202",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_mergecalendarpressure"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L347",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_normalizenutritiontargets"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L225",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_normalizepriorities"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L610",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_nutritionscore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L344",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_nutritionvalue"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L684",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_perishable_ingredient_patterns"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L270",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_autoplan_js",
       "target": "lib_autoplan_pickforslot"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L1069",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_pickroutinebreakfast"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L597",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_plannedmealentries"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L662",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_purchasablemealentries"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L955",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_rankcandidates"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L1087",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_recentrepeatpenalty"
     },
     {
       "relation": "contains",
@@ -31714,11 +33378,61 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L381",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_recordweekingredients"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L832",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_regenerationchangescore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L146",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_autoplan_js",
       "target": "lib_autoplan_remainingfillableslotsinweek"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L858",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_scoreplan"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L692",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_shoppingsimplicityscore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L361",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_slotnutritiontarget"
     },
     {
       "relation": "contains",
@@ -31734,6 +33448,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L100",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_startsinevening"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L27",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -31744,11 +33468,81 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L387",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_variantrank"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L781",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_varietyscore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L32",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "functions_lib_autoplan_js",
       "target": "lib_autoplan_vegetarian_allergens"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L665",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_weeklycostpence"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L441",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_weeklymealusekey"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L755",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_weeklynonbreakfastmealoverage"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L434",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_wouldcreatemainmealrepeat"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L444",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "functions_lib_autoplan_js",
+      "target": "lib_autoplan_wouldexceedweeklynonbreakfastlimit"
     },
     {
       "relation": "calls",
@@ -31799,6 +33593,61 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L673",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_ingredientcountsforplan",
+      "target": "lib_autoplan_canonicaltags"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L342",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_ingredientkeys",
+      "target": "lib_autoplan_canonicaltags"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L718",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_mealpreferenceoverlap",
+      "target": "lib_autoplan_canonicaltags"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L424",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_isbatchslot",
+      "target": "lib_autoplan_classifyeffort"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L1091",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_recentrepeatpenalty",
+      "target": "lib_autoplan_classifyeffort"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L97",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -31832,11 +33681,88 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L816",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_budgetscore",
+      "target": "lib_autoplan_mealcostpence"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L1082",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_pickroutinebreakfast",
+      "target": "lib_autoplan_mealcostpence"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
       "source_location": "L267",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "lib_autoplan_recorduse",
       "target": "lib_autoplan_mealcostpence"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L910",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_buildbestplan",
+      "target": "lib_autoplan_buildplan"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L484",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_buildplan",
+      "target": "lib_autoplan_normalizepriorities"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L948",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_recorduse",
+      "target": "lib_autoplan_recordweekingredients"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L941",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_recorduse",
+      "target": "lib_autoplan_weeklymealusekey"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L1050",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_pickforslot",
+      "target": "lib_autoplan_rankcandidates"
     },
     {
       "relation": "contains",
@@ -88149,6 +90075,688 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1115",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_isblockedrecommendationrecipe",
+      "target": "lib_index_recommendationrecipetext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1556",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_openfoodfactscategoryterms",
+      "target": "lib_index_uniqueopenfoodfactsterms"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1869",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_fetchopenfoodfactsproductforingredient",
+      "target": "lib_index_openfoodfactscategoryterms"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1565",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_normalizeingredientunit",
+      "target": "lib_index_normalizemeasuretext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1590",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_typicalnutritiongramsforingredient",
+      "target": "lib_index_normalizemeasuretext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1873",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_fetchopenfoodfactsproductforingredient",
+      "target": "lib_index_compactopenfoodfactsproduct"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/index.js",
+      "source_location": "L1870",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_index_fetchopenfoodfactsproductforingredient",
+      "target": "lib_index_searchopenfoodfactsproducts"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L94",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_eventdurationhours",
+      "target": "lib_autoplan_datefromeventvalue"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L86",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_isodatefromeventstart",
+      "target": "lib_autoplan_datefromeventvalue"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L160",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_localdaysfromcontextevents",
+      "target": "lib_autoplan_isodatefromeventstart"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L109",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_contexteventpressure",
+      "target": "lib_autoplan_eventdurationhours"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L134",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_contexteventpressure",
+      "target": "lib_autoplan_startsinevening"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L166",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_localdaysfromcontextevents",
+      "target": "lib_autoplan_contexteventpressure"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L205",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_mergecalendarpressure",
+      "target": "lib_autoplan_localdaysfromcontextevents"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L859",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_normalizepriorities"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L824",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_budgetscore",
+      "target": "lib_autoplan_clamp01"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L779",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_coveragescore",
+      "target": "lib_autoplan_clamp01"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L711",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_ingredientreusescore",
+      "target": "lib_autoplan_clamp01"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L647",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_nutritionscore",
+      "target": "lib_autoplan_clamp01"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L854",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_regenerationchangescore",
+      "target": "lib_autoplan_clamp01"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L698",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_shoppingsimplicityscore",
+      "target": "lib_autoplan_clamp01"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L789",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_varietyscore",
+      "target": "lib_autoplan_clamp01"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L676",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_ingredientcountsforplan",
+      "target": "lib_autoplan_ingredientkeys"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L373",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_ingredientoverlapscore",
+      "target": "lib_autoplan_ingredientkeys"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L717",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_mealpreferenceoverlap",
+      "target": "lib_autoplan_ingredientkeys"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L383",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_recordweekingredients",
+      "target": "lib_autoplan_ingredientkeys"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L635",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_nutritionscore",
+      "target": "lib_autoplan_nutritionvalue"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L860",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_normalizenutritiontargets"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L630",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_nutritionscore",
+      "target": "lib_autoplan_slotnutritiontarget"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L378",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_ingredientreuserank",
+      "target": "lib_autoplan_ingredientoverlapscore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L416",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_leftoverportions",
+      "target": "lib_autoplan_batchyield"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L448",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_wouldexceedweeklynonbreakfastlimit",
+      "target": "lib_autoplan_weeklymealusekey"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L598",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_plannedmealentries",
+      "target": "lib_autoplan_mealbyid"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L815",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_budgetscore",
+      "target": "lib_autoplan_plannedmealentries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L612",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_nutritionscore",
+      "target": "lib_autoplan_plannedmealentries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L663",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_purchasablemealentries",
+      "target": "lib_autoplan_plannedmealentries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L669",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_weeklycostpence",
+      "target": "lib_autoplan_plannedmealentries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L868",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_nutritionscore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L675",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_ingredientcountsforplan",
+      "target": "lib_autoplan_purchasablemealentries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L694",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_shoppingsimplicityscore",
+      "target": "lib_autoplan_purchasablemealentries"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L861",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_weeklycostpence"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L707",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_ingredientreusescore",
+      "target": "lib_autoplan_ingredientcountsforplan"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L862",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_ingredientcountsforplan"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L693",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_shoppingsimplicityscore",
+      "target": "lib_autoplan_ingredientcountsforplan"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L871",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_shoppingsimplicityscore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L872",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_ingredientreusescore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L731",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_mealdislikepenalty",
+      "target": "lib_autoplan_mealpreferenceoverlap"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L734",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_meallikeboost",
+      "target": "lib_autoplan_mealpreferenceoverlap"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L743",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_maxconsecutivemainmealrepeats",
+      "target": "lib_autoplan_mainmealsequence"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L865",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_mainmealsequence"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L784",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_varietyscore",
+      "target": "lib_autoplan_mainmealsequence"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L770",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_hardvarietyviolationcount",
+      "target": "lib_autoplan_maxconsecutivemainmealrepeats"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L879",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_maxconsecutivemainmealrepeats"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L790",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_varietyscore",
+      "target": "lib_autoplan_maxconsecutivemainmealrepeats"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L772",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_hardvarietyviolationcount",
+      "target": "lib_autoplan_weeklynonbreakfastmealoverage"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L880",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_hardvarietyviolationcount"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L782",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_varietyscore",
+      "target": "lib_autoplan_hardvarietyviolationcount"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L867",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_coveragescore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L869",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_varietyscore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L870",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_budgetscore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L864",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_scoreplan",
+      "target": "lib_autoplan_regenerationchangescore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/lib/autoPlan.js",
+      "source_location": "L911",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_autoplan_buildbestplan",
+      "target": "lib_autoplan_scoreplan"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
       "source_file": "functions/src/index.ts",
       "source_location": "L679",
       "weight": 1.0,
@@ -88290,5 +90898,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2e10aea1ba912a210edf352f3524818bc90bf024"
+  "built_at_commit": "6e995cbcda8c4cee2f9309e749fc1308925984bd"
 }
