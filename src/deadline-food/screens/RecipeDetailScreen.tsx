@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import type { Meal, RecipeReview, Screen } from "../types";
 import { AppButton, Badge, Field } from "../components/primitives";
+import { AllergenTag } from "../components/AllergenTag";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { RecipeEditor, type RecipeEditorOutput } from "../components/RecipeEditor";
 import { formatIngredient, scaleIngredients } from "../ingredients";
@@ -535,7 +536,7 @@ export function RecipeDetailScreen({
               <div>
                 <h2 className="font-bold">Allergens</h2>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {meal.allergens.length === 0 ? <Badge>No listed allergens</Badge> : meal.allergens.map((allergen) => <Badge key={allergen} tone="rose">{allergen}</Badge>)}
+                  {meal.allergens.length === 0 ? <Badge>No listed allergens</Badge> : meal.allergens.map((allergen) => <AllergenTag key={allergen} allergen={allergen} />)}
                 </div>
               </div>
             </aside>
@@ -595,8 +596,8 @@ export function RecipeDetailScreen({
                     </p>
                   )}
                   <ul className="mt-4 grid gap-2">
-                    {scaledIngredients.map((ingredient) => (
-                      <li key={`${ingredient.name}-${ingredient.quantity}-${ingredient.unit}-${ingredient.preparation ?? ""}`} className="rounded-lg bg-stone-50 px-3 py-2 text-stone-700">
+                    {scaledIngredients.map((ingredient, index) => (
+                      <li key={index} className="rounded-lg bg-stone-50 px-3 py-2 text-stone-700">
                         {formatIngredient(ingredient)}
                       </li>
                     ))}
