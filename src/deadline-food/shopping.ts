@@ -1,5 +1,5 @@
 import type { Meal, PlanEntry, RecipeIngredient } from "./types";
-import { ITEM_WEIGHT_G, formatIngredient } from "./ingredients";
+import { INGREDIENT_DENSITY_G_PER_ML, ITEM_WEIGHT_G, formatIngredient, isUncountableFood, pluraliseFoodName } from "./ingredients";
 import { mealById } from "./utils";
 import {
   type UnitDimension,
@@ -78,8 +78,16 @@ function normaliseIngredient(value: string) {
 
 const NON_PLURAL_S = new Set(["hummus", "couscous", "asparagus"]);
 
+// "knives"/"wives"/"lives" singularise to -fe; most -ves words to -f.
+const VES_TO_FE = new Set(["knives", "wives", "lives"]);
+
 function singularise(name: string): string {
   if (NON_PLURAL_S.has(name)) return name;
+  if (name.endsWith("ves") && name.length > 4) {
+    // leaves → leaf, loaves → loaf, halves → half, knives → knife
+    const lastWord = name.split(/\s+/).pop() ?? name;
+    return `${name.slice(0, -3)}${VES_TO_FE.has(lastWord) ? "fe" : "f"}`;
+  }
   if (name.endsWith("ies") && name.length > 4) return `${name.slice(0, -3)}y`;
   if (name.endsWith("oes") && name.length > 3) return name.slice(0, -2);
   if (name.endsWith("s") && !name.endsWith("ss") && name.length > 3) return name.slice(0, -1);
@@ -119,31 +127,39 @@ function shoppingIngredientName(ingredient: ShoppingIngredient) {
   return typeof ingredient === "string" ? ingredient.trim() : ingredient.name.trim();
 }
 
+// Generic "one whole unit" measures. Folding these into a single dimension lets
+// "2 item" + "0.5 whole" of the same ingredient merge instead of splitting on
+// the incidental unit word. Specific count units (clove, slice, wrap, can…)
+// stay distinct — half a clove and half an onion are not interchangeable.
+const COUNT_LIKE_UNITS = new Set(["item", "items", "serving", "servings", "whole", "piece", "pieces", "count"]);
+
+function aggregationUnit(unit: string): string {
+  const dimension = unitDimension(unit);
+  if (dimension !== "count") return dimension;
+  const canonical = canonicalizeUnit(unit);
+  const normalized = unit.trim().toLowerCase().replace(/\s+/g, " ");
+  return COUNT_LIKE_UNITS.has(canonical) || COUNT_LIKE_UNITS.has(normalized) ? "count" : canonical;
+}
+
 function shoppingIngredientKey(ingredient: ShoppingIngredient) {
   if (typeof ingredient === "string") return normaliseIngredient(ingredient);
   const { baseName, sigPrep } = extractIngredientParts(ingredient);
   // Mass and volume each collapse to one grouping bucket so any compatible unit
   // (g+kg+oz, ml+l+cup+tbsp) merges; count units stay distinct by canonical unit
   // so e.g. "2 servings" and "3 slices" don't combine.
-  const dimension = unitDimension(ingredient.unit);
-  const unitPart = dimension === "count" ? canonicalizeUnit(ingredient.unit) : dimension;
+  const unitPart = aggregationUnit(ingredient.unit);
   return sigPrep ? `${baseName}:${unitPart}:${sigPrep}` : `${baseName}:${unitPart}`;
 }
 
 
-function pluralise(name: string): string {
-  if (name.endsWith("y") && !/[aeiou]y$/i.test(name)) return `${name.slice(0, -1)}ies`;
-  if (name.endsWith("o") && !name.endsWith("oo")) return `${name}es`;
-  if (!name.endsWith("s")) return `${name}s`;
-  return name;
-}
-
 export function shoppingItemLabel(item: ShoppingItem) {
   if (typeof item.quantity === "number" && item.unit) {
     if (item.unit === "serving") {
-      if (item.quantity <= 1) return item.name;
+      // Uncountable foods (oil, flour, garlic…) read wrong as "2 oils"; show the
+      // bare name — a count of whole units is meaningless for them.
+      if (item.quantity <= 1 || isUncountableFood(item.name)) return item.name;
       const qty = Number.isInteger(item.quantity) ? String(item.quantity) : item.quantity.toFixed(1);
-      return `${qty} ${pluralise(item.name)}`;
+      return `${qty} ${pluraliseFoodName(item.name)}`;
     }
     return formatIngredient({ name: item.name, quantity: item.quantity, unit: item.unit });
   }
@@ -152,9 +168,7 @@ export function shoppingItemLabel(item: ShoppingItem) {
 }
 
 function hintPlural(name: string, count: number): string {
-  if (count === 1) return name;
-  if (name.endsWith("o") && !name.endsWith("oo")) return `${name}es`;
-  return `${name}s`;
+  return count === 1 ? name : pluraliseFoodName(name);
 }
 
 export function countHint(item: ShoppingItem): string | null {
@@ -210,7 +224,7 @@ export function aggregateIngredients(
     const quantity = dimension === "count"
       ? ingredient.quantity
       : toBaseQuantity(ingredient.quantity, ingredient.unit);
-    const unit = dimension === "count" ? canonicalizeUnit(ingredient.unit) : dimension;
+    const unit = aggregationUnit(ingredient.unit);
 
     items.set(key, current ? {
       ...current,
@@ -224,11 +238,55 @@ export function aggregateIngredients(
     });
   });
 
+  // Reconcile count / volume / mass measures of the same ingredient into a
+  // single weight where conversion factors are known — per-item weight for
+  // counts, density for volumes — so "17 carrots" + "907g carrots" or
+  // "590g flour" + "2.7l flour" collapse into one row (shown in g/kg with a
+  // "~N" hint where applicable). Dimensions we cannot convert stay separate.
+  type Bucket = { count?: [string, ShoppingItem]; volume?: [string, ShoppingItem]; mass?: [string, ShoppingItem] };
+  const buckets = new Map<string, Bucket>();
+  for (const [key, item] of items) {
+    const bucket = buckets.get(item.name) ?? {};
+    if (item.unit === "count") bucket.count = [key, item];
+    else if (item.unit === "volume") bucket.volume = [key, item];
+    else if (item.unit === "mass") bucket.mass = [key, item];
+    buckets.set(item.name, bucket);
+  }
+  for (const [name, bucket] of buckets) {
+    const head = name.split(/\s+/).pop() ?? name;
+    const perItemGrams = ITEM_WEIGHT_G[name] ?? ITEM_WEIGHT_G[head];
+    const density = INGREDIENT_DENSITY_G_PER_ML[head];
+    const parts: Array<{ key: string; item: ShoppingItem; grams: number }> = [];
+    if (bucket.mass) parts.push({ key: bucket.mass[0], item: bucket.mass[1], grams: bucket.mass[1].quantity ?? 0 });
+    if (bucket.volume && density !== undefined) parts.push({ key: bucket.volume[0], item: bucket.volume[1], grams: (bucket.volume[1].quantity ?? 0) * density });
+    if (bucket.count && perItemGrams !== undefined) parts.push({ key: bucket.count[0], item: bucket.count[1], grams: (bucket.count[1].quantity ?? 0) * perItemGrams });
+    if (parts.length < 2) continue;
+    const totalGrams = parts.reduce((sum, p) => sum + p.grams, 0);
+    const totalCount = parts.reduce((sum, p) => sum + p.item.count, 0);
+    for (const p of parts) items.delete(p.key);
+    items.set(`${name}:mass`, { name, count: totalCount, quantity: totalGrams, unit: "mass" });
+  }
+
+  // Drop vague count amounts for uncountable foods that already have a measured
+  // amount — a "sprinkle of flour" next to "200g flour" needs no extra row.
+  const measuredNames = new Set<string>();
+  for (const item of items.values()) {
+    if (item.unit && item.unit !== "count") measuredNames.add(item.name);
+  }
+  for (const [key, item] of [...items]) {
+    if (item.unit === "count" && isUncountableFood(item.name) && measuredNames.has(item.name)) {
+      items.delete(key);
+    }
+  }
+
   return [...items.entries()]
     .map(([key, item]) => {
-      const dimension = dimensions.get(key);
+      const dimension = dimensions.get(key) ?? (item.unit === "mass" || item.unit === "volume" ? item.unit : undefined);
       if ((dimension === "mass" || dimension === "volume") && typeof item.quantity === "number") {
         return { ...item, ...displayFromBase(item.quantity, dimension, unitSystem) };
+      }
+      if (item.unit === "count" && typeof item.quantity === "number") {
+        return { ...item, quantity: Math.round(item.quantity * 100) / 100, unit: "serving" };
       }
       return item;
     })

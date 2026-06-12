@@ -24,7 +24,25 @@ const UNIT_ALIASES: Record<string, string> = {
 
 export function canonicalizeUnit(unit: string): string {
   const normalized = unit.trim().toLowerCase().replace(/\s+/g, " ");
-  return UNIT_ALIASES[normalized] ?? normalized;
+  const alias = UNIT_ALIASES[normalized];
+  if (alias) return alias;
+
+  // Recognise known measurement units even when a descriptor trails the unit
+  // word (e.g. "cup boiling", "cups warm", "cup, divided"). These variants are
+  // common for liquids like water in raw/recommender measures and would
+  // otherwise fall through unconverted — showing as cups under both the g/ml
+  // and oz/cup settings. Mirrors the ingest-side normalisation in
+  // src/domain/ingredientMeasurements.ts. The leading prep-word case (e.g.
+  // "cloves crushed") is already handled earlier by splitCompoundUnit.
+  if (/\bfl\.?\s*oz\b/.test(normalized)) return "fl oz";
+  if (/\b(cups?)\b/.test(normalized)) return "cup";
+  if (/\b(tbsps?|tablespoons?)\b/.test(normalized)) return "tbsp";
+  if (/\b(tsps?|teaspoons?)\b/.test(normalized)) return "tsp";
+  if (/\b(qts?|quarts?)\b/.test(normalized)) return "qt";
+  if (/^(millilitres?|milliliters?|ml)\b/.test(normalized)) return "ml";
+  if (/^(litres?|liters?|l)\b/.test(normalized)) return "l";
+
+  return normalized;
 }
 
 const VOLUME_UNITS = new Set(["ml", "l", "tsp", "tbsp", "cup", "fl oz", "qt"]);

@@ -18,6 +18,11 @@ import {
 
 import { Badge } from "./primitives";
 
+const ALLERGEN_DISPLAY: Record<string, string> = {
+  peanut: "peanuts",
+  egg: "eggs",
+};
+
 // Standard menu-style allergen iconography. Keys are matched against a
 // normalized (lowercased, singularized) allergen name so that data variants
 // like "eggs"/"egg" or "soy"/"soya" resolve to the same icon.
@@ -49,10 +54,11 @@ function allergenIcon(allergen: string): LucideIcon {
  */
 export function AllergenTag({ allergen, className = "" }: { allergen: string; className?: string }) {
   const icon = allergenIcon(allergen);
+  const display = ALLERGEN_DISPLAY[allergen.trim().toLowerCase()] ?? allergen;
   return (
     <Badge tone="rose" className={className}>
       {createElement(icon, { size: 13, className: "mr-1 shrink-0", "aria-hidden": true })}
-      Contains {allergen}
+      Contains {display}
     </Badge>
   );
 }
