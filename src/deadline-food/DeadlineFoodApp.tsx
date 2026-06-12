@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { usePostHog } from "@posthog/react";
 
 import { capturePostHogEvent, registerPostHogContext, registerPostHogSession, type AnalyticsProperties } from "@/lib/posthog";
@@ -142,6 +142,11 @@ export function DeadlineFoodApp() {
   }, []);
   const [screen, setScreen] = useState<Screen>(() => screenFromLocation() ?? "landing");
   const routeHistory = useRef<Screen[]>([]);
+  // Last-known scroll offset per screen, and the offset to apply after the next
+  // screen render (null ⇒ scroll to top). Lets Back restore the prior scroll
+  // position instead of resetting to the top (#275).
+  const scrollPositions = useRef<Map<Screen, number>>(new Map());
+  const pendingScroll = useRef<number | null>(null);
   const pendingHashScreen = useRef<Screen | null>(null);
   const [previousScreen, setPreviousScreen] = useState<Screen | null>(null);
   const [onboarded, setOnboarded] = useState(false);
@@ -221,6 +226,8 @@ export function DeadlineFoodApp() {
     if (screen === nextScreen) return;
     if (nextScreen !== "recipes") setDiscoverContext(null);
     enableSessionPersistence();
+    scrollPositions.current.set(screen, window.scrollY);
+    pendingScroll.current = 0;
     routeHistory.current = [...routeHistory.current, screen].slice(-20);
     syncPreviousScreen();
     pendingHashScreen.current = nextScreen;
@@ -324,6 +331,8 @@ export function DeadlineFoodApp() {
       return;
     }
 
+    scrollPositions.current.set(screen, window.scrollY);
+    pendingScroll.current = scrollPositions.current.get(nextScreen) ?? 0;
     pendingHashScreen.current = nextScreen;
     window.history.pushState({ screen: nextScreen }, "", urlForScreen(nextScreen));
     setScreen(nextScreen);
@@ -551,16 +560,26 @@ export function DeadlineFoodApp() {
             return currentScreen;
           }
 
+          scrollPositions.current.set(currentScreen, window.scrollY);
           if (routeHistory.current.at(-1) === nextScreen) {
+            // Back (browser back button / popstate): restore the prior offset.
             routeHistory.current.pop();
+            pendingScroll.current = scrollPositions.current.get(nextScreen) ?? 0;
           } else {
             routeHistory.current = [...routeHistory.current, currentScreen].slice(-20);
+            pendingScroll.current = 0;
           }
 
           syncPreviousScreen();
           return nextScreen;
         });
       }
+    }
+
+    // Manage scroll restoration ourselves (#275); otherwise the browser's
+    // native restoration fights the per-screen offsets we apply below.
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
     }
 
     window.addEventListener("hashchange", onLocationChange);
@@ -972,8 +991,13 @@ export function DeadlineFoodApp() {
     ? "onboarding"
     : (onboarded && hasPrivacyConsent && (screen === "onboarding" || screen === "landing")) ? "dashboard" : screen;
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  // Apply the scroll offset queued by the last navigation: top for forward
+  // navigation, the saved offset when going Back (#275). useLayoutEffect runs
+  // before paint so the restore doesn't flash at the top first.
+  useLayoutEffect(() => {
+    const target = pendingScroll.current ?? 0;
+    pendingScroll.current = null;
+    window.scrollTo(0, target);
   }, [activeScreen]);
 
   // Saved-recipe pool for auto-planning: Discover saves + custom recipes, deduped.
