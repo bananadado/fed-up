@@ -11,6 +11,7 @@ type RecommenderRecipe = {
   meal_slots: string[];
   price_pence: number;
   prep_minutes: number;
+  servings?: number;
   dietary_tags: string[];
   allergens: string[];
   suitability_tags: string[];
@@ -201,6 +202,7 @@ export function toMeal(recipe: RecommenderRecipe): Meal {
     ),
     time: recipe.prep_minutes,
     price: recipe.price_pence / 100,
+    ...(typeof recipe.servings === "number" ? { servings: recipe.servings } : {}),
     tags: [...new Set([...recipe.dietary_tags, ...recipe.suitability_tags])],
     allergens: recipe.allergens,
     ingredients: recipe.ingredients,
@@ -276,6 +278,7 @@ export async function fetchRecommenderRecommendations(input: {
   deadlines: Deadline[];
   excludeIds: string[];
   count?: number;
+  mealSlot?: string;
   signal?: AbortSignal;
   onMetrics?: (metrics: RecommenderRecommendationMetrics) => void;
 }): Promise<Meal[]> {
@@ -306,6 +309,7 @@ export async function fetchRecommenderRecommendations(input: {
       n: input.count ?? 100,
       deadline_stress: deadlineStress,
       exclude_ids: input.excludeIds,
+      meal_slot: input.mealSlot ?? null,
     }),
     signal: input.signal,
   });

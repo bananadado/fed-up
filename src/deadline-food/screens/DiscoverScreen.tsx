@@ -111,8 +111,20 @@ export function DiscoverScreen({
   track: TrackEvent;
 }) {
   // Verified-only by default so the community feed is opt-in and the recipe
-  // list isn't diluted with unverified content (#213).
-  const [verifiedOnly, setVerifiedOnly] = useState(true);
+  // list isn't diluted with unverified content (#213). Persisted across
+  // navigation so opening a recipe and going Back keeps the chosen tab (#275),
+  // mirroring how RecipesHubScreen persists its outer tab.
+  const [verifiedOnly, setVerifiedOnly] = useState<boolean>(() => {
+    try {
+      const stored = sessionStorage.getItem("deadlineFood:discoverVerifiedOnly");
+      if (stored === "false") return false;
+      if (stored === "true") return true;
+    } catch { /* ignore */ }
+    return true;
+  });
+  useEffect(() => {
+    try { sessionStorage.setItem("deadlineFood:discoverVerifiedOnly", String(verifiedOnly)); } catch { /* ignore */ }
+  }, [verifiedOnly]);
   const waitingForFirstCardRef = useRef(false);
   const firstCardMetricKeyRef = useRef("");
   const recommendationContextKey = useMemo(

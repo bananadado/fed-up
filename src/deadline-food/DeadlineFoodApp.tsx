@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { usePostHog } from "@posthog/react";
 
 import { capturePostHogEvent, registerPostHogContext, registerPostHogSession, type AnalyticsProperties } from "@/lib/posthog";
@@ -142,6 +142,11 @@ export function DeadlineFoodApp() {
   }, []);
   const [screen, setScreen] = useState<Screen>(() => screenFromLocation() ?? "landing");
   const routeHistory = useRef<Screen[]>([]);
+  // Last-known scroll offset per screen, and the offset to apply after the next
+  // screen render (null ⇒ scroll to top). Lets Back restore the prior scroll
+  // position instead of resetting to the top (#275).
+  const scrollPositions = useRef<Map<Screen, number>>(new Map());
+  const pendingScroll = useRef<number | null>(null);
   const pendingHashScreen = useRef<Screen | null>(null);
   const [previousScreen, setPreviousScreen] = useState<Screen | null>(null);
   const [onboarded, setOnboarded] = useState(false);
@@ -221,7 +226,17 @@ export function DeadlineFoodApp() {
     if (screen === nextScreen) return;
     if (nextScreen !== "recipes") setDiscoverContext(null);
     enableSessionPersistence();
-    routeHistory.current = [...routeHistory.current, screen].slice(-20);
+    scrollPositions.current.set(screen, window.scrollY);
+    if (routeHistory.current.at(-1) === nextScreen) {
+      // Navigating to the screen we came from (e.g. an in-content "Back to plan"
+      // button): treat as Back — pop history and restore that screen's saved
+      // scroll offset rather than resetting to the top (#275).
+      routeHistory.current.pop();
+      pendingScroll.current = scrollPositions.current.get(nextScreen) ?? 0;
+    } else {
+      routeHistory.current = [...routeHistory.current, screen].slice(-20);
+      pendingScroll.current = 0;
+    }
     syncPreviousScreen();
     pendingHashScreen.current = nextScreen;
     window.history.pushState({ screen: nextScreen }, "", url ?? urlForScreen(nextScreen));
@@ -271,6 +286,46 @@ export function DeadlineFoodApp() {
     };
   }, [hasPrivacyConsent, onboarded]);
 
+  // Prefetch recommender suggestions at app level so the meal-swap modal's
+  // "You might also like" section has data without the user having visited
+  // Discover first (#215). Populates the same state DiscoverScreen reads, using
+  // the SAME contextKey order so Discover skips its own first-load fetch.
+  useEffect(() => {
+    if (!onboarded || !hasPrivacyConsent) return;
+    const contextKey = JSON.stringify({ deadlines, prefs, sessionId });
+    // Once any state exists for this context (set by this prefetch or by
+    // DiscoverScreen — including its "exhausted" empty queue), leave it alone.
+    // Only prefetch when the context is new/stale, so we never fight Discover's
+    // consumable queue or resurrect an exhausted one. On prefetch failure no
+    // state is written, so the contextKey stays stale and a later render retries.
+    if (discoverRecommendationState.contextKey === contextKey) return;
+
+    let cancelled = false;
+    const controller = new AbortController();
+    const excludeIds = [...new Set([
+      ...discoverSaved.map((m) => m.id),
+      ...discoverRejected.map((m) => m.id),
+      ...discoverReviewedRecipeIds,
+      ...customRecipes.map((m) => m.id),
+    ])];
+    fetchRecommenderRecommendations({ sessionId, prefs, deadlines, excludeIds, count: 30, signal: controller.signal })
+      .then((recipes) => {
+        // Purely additive: only write on success with recipes, so a failed/empty
+        // prefetch never blocks DiscoverScreen's own first-load.
+        if (!cancelled && recipes.length > 0) {
+          setDiscoverRecommendationState({ contextKey, recipes, status: "ready" });
+        }
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) console.warn("Swap suggestions could not be prefetched.", error);
+      });
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [onboarded, hasPrivacyConsent, deadlines, prefs, sessionId, discoverSaved, discoverRejected, discoverReviewedRecipeIds, customRecipes, discoverRecommendationState]);
+
   const navigateBack = useCallback(() => {
     const fallbackScreen: Screen = "dashboard";
     let nextScreen = routeHistory.current.pop() ?? fallbackScreen;
@@ -284,6 +339,8 @@ export function DeadlineFoodApp() {
       return;
     }
 
+    scrollPositions.current.set(screen, window.scrollY);
+    pendingScroll.current = scrollPositions.current.get(nextScreen) ?? 0;
     pendingHashScreen.current = nextScreen;
     window.history.pushState({ screen: nextScreen }, "", urlForScreen(nextScreen));
     setScreen(nextScreen);
@@ -511,16 +568,26 @@ export function DeadlineFoodApp() {
             return currentScreen;
           }
 
+          scrollPositions.current.set(currentScreen, window.scrollY);
           if (routeHistory.current.at(-1) === nextScreen) {
+            // Back (browser back button / popstate): restore the prior offset.
             routeHistory.current.pop();
+            pendingScroll.current = scrollPositions.current.get(nextScreen) ?? 0;
           } else {
             routeHistory.current = [...routeHistory.current, currentScreen].slice(-20);
+            pendingScroll.current = 0;
           }
 
           syncPreviousScreen();
           return nextScreen;
         });
       }
+    }
+
+    // Manage scroll restoration ourselves (#275); otherwise the browser's
+    // native restoration fights the per-screen offsets we apply below.
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
     }
 
     window.addEventListener("hashchange", onLocationChange);
@@ -932,8 +999,13 @@ export function DeadlineFoodApp() {
     ? "onboarding"
     : (onboarded && hasPrivacyConsent && (screen === "onboarding" || screen === "landing")) ? "dashboard" : screen;
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  // Apply the scroll offset queued by the last navigation: top for forward
+  // navigation, the saved offset when going Back (#275). useLayoutEffect runs
+  // before paint so the restore doesn't flash at the top first.
+  useLayoutEffect(() => {
+    const target = pendingScroll.current ?? 0;
+    pendingScroll.current = null;
+    window.scrollTo(0, target);
   }, [activeScreen]);
 
   // Saved-recipe pool for auto-planning: Discover saves + custom recipes, deduped.
@@ -1233,9 +1305,9 @@ export function DeadlineFoodApp() {
 
   return (
     <Shell screen={activeScreen} setScreen={navigateScreen} previousScreen={previousScreen} onBack={navigateBack} onboarded={onboarded} track={track}>
-      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarSkipped={calendarSkipped} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} />}
+      {activeScreen === "dashboard" && <Dashboard prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} openDiscover={openDiscover} track={track} calendarSkipped={calendarSkipped} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} sessionId={sessionId} deadlines={deadlines} />}
       {activeScreen === "calendar" && <CalendarScreen deadlines={deadlines} setDeadlines={setDeadlines} calendarEvents={calendarEvents} plan={plan} customRecipes={customRecipes} prefs={prefs} setScreen={navigateScreen} track={track} />}
-      {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} />}
+      {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} sessionId={sessionId} deadlines={deadlines} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} requestRecommendations={requestDiscoverRecommendations} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onLogout={logoutAccount} onDeleteAccount={deleteAccount} track={track} />}
       {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} sharedRecipe={sharedRecipe} account={account} sharedRecipeStatus={sharedRecipeStatus} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} unitSystem={prefs.unitSystem} />}
