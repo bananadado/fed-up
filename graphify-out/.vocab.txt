@@ -48,7 +48,6 @@ animal
 animate
 annotations
 anonymous
-answer
 answers
 any
 api
@@ -89,6 +88,7 @@ badge
 balance
 band
 banner
+bar
 base
 based
 baseline
@@ -168,7 +168,6 @@ cat
 catalogue
 categories
 category
-causes
 cautions
 cdp
 cell
@@ -648,7 +647,6 @@ indexes
 indicators
 infer
 inference
-infinite
 info
 information
 ingest
@@ -697,7 +695,6 @@ join
 journey
 json
 jsx
-just
 keeps
 key
 keys
@@ -764,7 +761,6 @@ makes
 management
 manifest
 manual
-many
 map
 mapped
 mappings
@@ -839,7 +835,6 @@ neutral
 nev
 never
 node
-nodes
 non
 none
 noodles
@@ -854,6 +849,8 @@ note
 notes
 now
 number
+numbers
+numeric
 nutrient
 nutrition
 nutty
@@ -1198,7 +1195,6 @@ shift
 shifts
 shopping
 should
-shows
 sided
 sign
 signal
@@ -1213,6 +1209,7 @@ single
 singular
 singularise
 size
+skeleton
 skill
 skip
 sleep
@@ -1370,7 +1367,6 @@ tokens
 tolerance
 tone
 tones
-too
 tool
 tooling
 tools
