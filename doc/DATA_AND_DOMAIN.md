@@ -4,16 +4,16 @@
 
 The repo currently has two separate model systems.
 
-### Active Prototype Model
+### Active App Model
 
 Files:
 
-- `src/prototype/types.ts`
-- `src/prototype/data.ts`
+- `src/deadline-food/types.ts`
+- `src/deadline-food/data.ts`
 
 Used by:
 
-- Active UI rendered through `DeadlineFoodPrototype`.
+- Active UI rendered through `DeadlineFoodApp`.
 
 Core types:
 
@@ -66,11 +66,11 @@ Important entities:
 
 Do not mix these models without an explicit migration plan.
 
-## Active Prototype Seed Data
+## Active App Seed Data
 
 File:
 
-- `src/prototype/data.ts`
+- `src/deadline-food/data.ts`
 
 Exports:
 
@@ -115,11 +115,11 @@ Active `defaultDeadlines` include:
 - Design review.
 - Databases quiz.
 
-These dates are prototype scenario labels, not dynamic current dates.
+These dates are app scenario labels, not dynamic current dates.
 
-## Active Prototype Plan Logic
+## Active App Plan Logic
 
-The active prototype does not currently call a pure planner to generate plans. It starts from `initialPlan` and lets the user mutate it locally.
+The active app does not currently call a pure planner to generate plans. It starts from `initialPlan` and lets the user mutate it locally.
 
 Plan totals:
 
@@ -128,7 +128,7 @@ Plan totals:
 
 Plan rescue/swap:
 
-- Implemented in `src/prototype/screens/PlanScreen.tsx`.
+- Implemented in `src/deadline-food/screens/PlanScreen.tsx`.
 - Filters alternatives by slot, dislikes, and allergens.
 - Sorts by liked tags, time, and price.
 - Updates the specific meal slot on confirmation.
@@ -147,13 +147,13 @@ Health signals:
   - high protein
 - `weeklyBalanceSummary` counts protein and fruit/veg signals across the plan.
 
-These are broad prototype signals, not medical nutrition claims.
+These are broad app signals, not medical nutrition claims.
 
-## Active Prototype Workload Logic
+## Active App Workload Logic
 
 File:
 
-- `src/prototype/workloadModel.ts`
+- `src/deadline-food/workloadModel.ts`
 
 Functions:
 
@@ -179,12 +179,12 @@ Labels:
 - Academic but lower score: Light academic task.
 - General: General calendar event.
 
-## Active Prototype Nutrition Logic
+## Active App Nutrition Logic
 
 Files:
 
-- `src/prototype/nutrition.ts`
-- `src/prototype/nutritionApi.ts`
+- `src/deadline-food/nutrition.ts`
+- `src/deadline-food/nutritionApi.ts`
 - `functions/src/index.ts`
 
 Client helper functions:
@@ -390,12 +390,12 @@ bun run test:domain
 
 File:
 
-- `src/prototype/sessionPersistence.ts`
+- `src/deadline-food/sessionPersistence.ts`
 
 Settings version:
 
 ```ts
-PROTOTYPE_SESSION_SETTINGS_VERSION = 1
+SESSION_SETTINGS_VERSION = 1
 ```
 
 Settings shape:
@@ -423,9 +423,9 @@ Retention:
 
 ## Data Change Checklist
 
-When changing active prototype meals or initial plan:
+When changing active app meals or initial plan:
 
-1. Edit `src/prototype/data.ts`.
+1. Edit `src/deadline-food/data.ts`.
 2. Update tests if assumptions change.
 3. Check active e2e selectors if display copy changes.
 4. Run `bun run test:unit` and relevant e2e.
@@ -435,12 +435,12 @@ When changing dormant deadline-mode planner meals:
 1. Edit `src/data/meals/*.ts` or `src/data/seededMeals.ts`.
 2. Run `bun run test:domain`.
 3. Run `bun run firebase:data`.
-4. Check generated `functions/src/generated/prototypeData.ts`.
+4. Check generated `functions/src/generated/appData.ts`.
 5. Run functions build if deploying.
 
 When changing session schema:
 
-1. Bump `PROTOTYPE_SESSION_SETTINGS_VERSION` if breaking.
+1. Bump `SESSION_SETTINGS_VERSION` if breaking.
 2. Update frontend normalization and backend normalization.
 3. Update `docs/anonymous-session-storage.md` and this doc.
 4. Add backward compatibility or explicit migration behaviour.

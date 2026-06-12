@@ -1,11 +1,12 @@
 import {initializeApp} from "firebase-admin/app";
+import {getAuth} from "firebase-admin/auth";
 import {FieldValue, getFirestore, Timestamp} from "firebase-admin/firestore";
 import {getStorage} from "firebase-admin/storage";
 import {onRequest} from "firebase-functions/v2/https";
 import {onSchedule} from "firebase-functions/v2/scheduler";
 import {setGlobalOptions} from "firebase-functions/v2/options";
 import {defineSecret} from "firebase-functions/params";
-import * as logger from "firebase-functions/logger";
+import {error as logError, info as logInfo, warn as logWarn} from "firebase-functions/logger";
 import {randomUUID} from "crypto";
 import {buildPlan} from "./autoPlan";
 import type * as AutoPlan from "./autoPlan";
@@ -23,29 +24,55 @@ import {
 import {
   canonicalConstraints,
   deadlineBootstrap,
-  prototypeMeta,
-  prototypeRecipes,
+  productMeta,
+  appRecipes,
   seededMeals,
-} from "./generated/prototypeData";
+} from "./generated/appData";
 
 initializeApp();
 setGlobalOptions({region: "europe-west2", maxInstances: 10});
 
 const firestore = getFirestore();
-const prototypeRef = firestore.collection("prototypeData").doc("deadlineFood");
+const firebaseAuth = getAuth();
+const appDataRef = firestore.collection("appData").doc("deadlineFood");
 // Canonical recipe content lives in Firestore (issue #123). pgvector stores only
 // the recipe UID as primary key plus its embedding; reviews are Firestore-only.
 const recipesRef = firestore.collection("recipes");
 const recipeReviewsRef = firestore.collection("recipeReviews");
 const anonymousSessionsRef = firestore.collection("anonymousSessions");
+const accountSessionsRef = firestore.collection("accountSessions");
 const openFoodFactsCacheRef = firestore.collection("openFoodFactsNutritionCache");
 const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
+// Public, URL-safe share slug derived deterministically from the canonical
+// recipe id (#213). Must stay in lockstep with shareIdForRecipe() in
+// src/deadline-food/recipeShare.ts (identical cyrb53 implementation) so links
+// resolve on either side.
+function cyrb53(str: string, seed = 0): number {
+  let h1 = 0xdeadbeef ^ seed;
+  let h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+}
+
+function shareIdForRecipe(recipeId: string): string {
+  return cyrb53(recipeId).toString(36);
+}
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
-const prototypeSessionSettingsVersion = 3;
+const sessionSettingsVersion = 4;
 // Versions whose payloads we can read & migrate forward to the current schema.
-const supportedSessionSettingsVersions = new Set([1, 2, 3]);
+const supportedSessionSettingsVersions = new Set([1, 2, 3, 4]);
+const privacyPolicyVersion = "2026-06-09";
+const privacyPolicyUrl = "/privacy-policy";
 const publicHttpOptions = {cors: true, invoker: "public"} as const;
 // USDA FoodData Central key for live nutrition lookups. Set in production with
 // `firebase functions:secrets:set USDA_API_KEY`; falls back to the heavily
@@ -81,6 +108,9 @@ const recommenderHttpOptions = {
   secrets: [recommenderApiUrl, recommenderApiKey],
   timeoutSeconds: 60,
 };
+const recommenderProfileHeaders =
+  "X-Deadline-Food-Recommender-Ms, X-Deadline-Food-Hydration-Ms, " +
+  "X-Deadline-Food-Total-Ms";
 const usdaFdcBaseUrl = (
   process.env.USDA_FDC_BASE_URL ?? "https://api.nal.usda.gov/fdc"
 ).replace(/\/$/, "");
@@ -96,7 +126,7 @@ const openFoodFactsCacheTtlMs = 24 * 60 * 60 * 1000;
 const openFoodFactsMissingCacheTtlMs = 60 * 60 * 1000;
 const openFoodFactsLockTtlMs = 45 * 1000;
 
-type PrototypeData = typeof deadlineBootstrap;
+type AppData = typeof deadlineBootstrap;
 type UnknownRecord = Record<string, unknown>;
 
 type RecipeIngredient = {
@@ -174,6 +204,8 @@ type HttpRequest = {
   method: string;
   query: Record<string, unknown>;
   body: unknown;
+  headers?: Record<string, unknown>;
+  get?(name: string): string | undefined;
 };
 
 type HttpResponse = {
@@ -209,8 +241,8 @@ type CalendarEvent = {
   importedAt: string;
 };
 
-type PrototypeSessionSettings = {
-  settingsVersion: typeof prototypeSessionSettingsVersion;
+type SessionSettings = {
+  settingsVersion: typeof sessionSettingsVersion;
   preferences: {
     maxTime: number | null;
     budget: number;
@@ -245,11 +277,20 @@ type PrototypeSessionSettings = {
   discoverRejected: UnknownRecord[];
   discoverReviewedRecipeIds: string[];
   plan: UnknownRecord[];
+  planMeals: UnknownRecord[];
   calendarEvents: CalendarEvent[];
   icsSubscriptions: IcsSubscription[];
   calendarTokens: CalendarToken[];
   planSignature?: string;
   planGeneratedAt?: string;
+  calendarSkipped?: boolean;
+  privacyConsent?: {
+    policyVersion: string;
+    policyUrl: string;
+    acceptedAt: string;
+    consentText: string;
+  };
+  calendarProvider?: string;
 };
 
 const servingGrams: Record<string, number> = {
@@ -265,8 +306,8 @@ const servingGrams: Record<string, number> = {
   "wrap": 60,
 };
 
-async function seedPrototypeData(): Promise<PrototypeData> {
-  await prototypeRef.set(
+async function seedAppData(): Promise<AppData> {
+  await appDataRef.set(
     {
       ...deadlineBootstrap,
       updatedAt: FieldValue.serverTimestamp(),
@@ -277,11 +318,11 @@ async function seedPrototypeData(): Promise<PrototypeData> {
   return deadlineBootstrap;
 }
 
-async function getPrototypeData(): Promise<PrototypeData> {
-  const snapshot = await prototypeRef.get();
+async function getAppData(): Promise<AppData> {
+  const snapshot = await appDataRef.get();
 
   if (!snapshot.exists) {
-    return seedPrototypeData();
+    return seedAppData();
   }
 
   const data = snapshot.data();
@@ -292,9 +333,9 @@ async function getPrototypeData(): Promise<PrototypeData> {
       typeof data?.canonicalConstraints === "object" ?
         data.canonicalConstraints :
         canonicalConstraints,
-    prototype:
-      typeof data?.prototype === "object" ? data.prototype : prototypeMeta,
-  } as PrototypeData;
+    app:
+      typeof data?.app === "object" ? data.app : productMeta,
+  } as AppData;
 }
 
 function rejectUnsupportedMethod(request: HttpRequest, response: HttpResponse): boolean {
@@ -335,22 +376,68 @@ async function ensureRecipesSeeded(): Promise<void> {
   if (!existing.empty) return;
 
   const batch = firestore.batch();
-  for (const recipe of prototypeRecipes) {
+  for (const recipe of appRecipes) {
     batch.set(recipesRef.doc(recipe.id), {
       ...recipe,
+      // All seeded recipes are curated/verified content (#213).
+      verified: true,
+      shareId: shareIdForRecipe(recipe.id),
       updatedAt: FieldValue.serverTimestamp(),
     });
   }
   await batch.commit();
 }
 
-async function listRecipes(): Promise<UnknownRecord[]> {
-  await ensureRecipesSeeded();
+// Retroactively stamp a stable share slug on any recipe doc missing one (#213).
+// Idempotent: only writes docs without a shareId. Cached after the first
+// successful check so subsequent calls skip the collection read entirely.
+let shareIdsBackfilled = false;
+async function ensureShareIds(): Promise<void> {
+  if (shareIdsBackfilled) return;
   const snapshot = await recipesRef.get();
-  return snapshot.docs.map((doc) => doc.data() as UnknownRecord);
+  const missing = snapshot.docs.filter((doc) => typeof doc.get("shareId") !== "string");
+  if (missing.length === 0) {
+    shareIdsBackfilled = true;
+    return;
+  }
+  const batch = firestore.batch();
+  for (const doc of missing) {
+    batch.set(doc.ref, {shareId: shareIdForRecipe(doc.id)}, {merge: true});
+  }
+  await batch.commit();
+  shareIdsBackfilled = true;
 }
 
-// Map a canonical prototype recipe (Firestore shape) to the recommender's
+async function listRecipes(): Promise<UnknownRecord[]> {
+  await ensureRecipesSeeded();
+  await ensureShareIds();
+  const snapshot = await recipesRef.get();
+  // The catalogue is enumerable to every client, so it must not leak unlisted
+  // content: exclude unpublished user recipes (published === false). Seeds have
+  // no published field and published user recipes (true) are included.
+  return snapshot.docs
+    .map((doc) => doc.data() as UnknownRecord)
+    .filter((data) => data.published !== false);
+}
+
+// Fetch a single canonical recipe by its public share slug (#213). Reviews and
+// the derived rating live in the recipeReviews collection, so strip them here
+// just like listRecipes.
+async function recipeByShareId(shareId: string): Promise<UnknownRecord | null> {
+  await ensureRecipesSeeded();
+  await ensureShareIds();
+  const snapshot = await recipesRef.where("shareId", "==", shareId).limit(1).get();
+  if (snapshot.empty) return null;
+  const data = snapshot.docs[0].data() as UnknownRecord;
+  // Unpublished recipes are "unlisted", not gone: still reachable by their direct
+  // share link (just not in Discover or the catalogue). Only a deleted recipe —
+  // an absent doc — is unreachable here (404).
+  delete data.reviews;
+  delete data.rating;
+  return data;
+}
+
+// Map a canonical app recipe (Firestore shape) to the recommender's
 // RecipeIn payload so pgvector can embed it keyed by the recipe UID.
 const recommenderDietaryTags = new Set(["vegetarian", "vegan", "halal", "gluten-free", "dairy-free"]);
 const recommenderTagAliases: Record<string, string> = {
@@ -399,6 +486,7 @@ function toRecommenderRecipePayload(recipe: UnknownRecord): UnknownRecord {
     },
     source: str(recipe.source) || null,
     note: str(recipe.note) || null,
+    verified: recipe.verified === true,
   };
 }
 
@@ -481,9 +569,10 @@ function rejectUnsupportedSessionMethod(
     request.method !== "GET" &&
     request.method !== "HEAD" &&
     request.method !== "PUT" &&
-    request.method !== "POST"
+    request.method !== "POST" &&
+    request.method !== "DELETE"
   ) {
-    response.set("Allow", "GET, HEAD, PUT, POST, OPTIONS");
+    response.set("Allow", "GET, HEAD, PUT, POST, DELETE, OPTIONS");
     response.status(405).json({error: "Method not allowed"});
     return true;
   }
@@ -497,8 +586,8 @@ function sendJson(response: HttpResponse, body: unknown): void {
 }
 
 function sendError(response: HttpResponse, error: unknown): void {
-  logger.error("Deadline food function failed", error);
-  response.status(500).json({error: "Prototype data could not be loaded"});
+  logError("Deadline food function failed", error);
+  response.status(500).json({error: "App data could not be loaded"});
 }
 
 function asRecord(value: unknown): UnknownRecord | null {
@@ -546,12 +635,47 @@ function boundedStringList(
     .slice(0, maxItems);
 }
 
-function normalizeRecipeList(value: unknown, maxItems = 100): UnknownRecord[] {
+function normalizeRecipeList(
+  value: unknown,
+  maxItems = 100,
+  transform?: (recipe: UnknownRecord) => UnknownRecord,
+): UnknownRecord[] {
   if (!Array.isArray(value)) return [];
-  return value.filter((item): item is UnknownRecord => asRecord(item) !== null).slice(0, maxItems);
+  const items = value
+    .filter((item): item is UnknownRecord => asRecord(item) !== null)
+    .slice(0, maxItems);
+  return transform ? items.map(transform) : items;
 }
 
-function normalizeDeadline(value: unknown): PrototypeSessionSettings["deadlines"][number] | null {
+// Negative numbers are never valid for any nutrition macro, time, cost or serving
+// count and would corrupt the broad nutrition/budget signals. Clamp them to 0 on the
+// write path so a crafted payload can never persist a negative value, mirroring the
+// client-side validation in RecipeEditor.
+function clampStoredRecipeNumbers(recipe: UnknownRecord): UnknownRecord {
+  const clampNonNegative = (record: UnknownRecord, keys: readonly string[]): UnknownRecord => {
+    let next: UnknownRecord = record;
+    for (const key of keys) {
+      const current = record[key];
+      if (typeof current === "number" && Number.isFinite(current) && current < 0) {
+        if (next === record) next = {...record};
+        next[key] = 0;
+      }
+    }
+    return next;
+  };
+
+  const result = clampNonNegative(recipe, ["time", "price", "totalCost", "servings"]);
+  const nutrition = asRecord(result.nutrition);
+  if (nutrition !== null) {
+    const clampedNutrition = clampNonNegative(nutrition, ["calories", "protein", "carbs", "fat"]);
+    if (clampedNutrition !== nutrition) {
+      return {...result, nutrition: clampedNutrition};
+    }
+  }
+  return result;
+}
+
+function normalizeDeadline(value: unknown): SessionSettings["deadlines"][number] | null {
   const deadline = asRecord(value);
 
   if (deadline === null) {
@@ -610,6 +734,27 @@ function normalizeCalendarToken(value: unknown): CalendarToken | null {
     refreshToken,
     expiresAt: boundedString(token.expiresAt, "", 40),
     addedAt: boundedString(token.addedAt, new Date().toISOString(), 40),
+  };
+}
+
+function normalizePrivacyConsent(value: unknown): SessionSettings["privacyConsent"] | undefined {
+  const consent = asRecord(value);
+  if (consent === null) return undefined;
+
+  const policyVersion = boundedString(consent.policyVersion, privacyPolicyVersion, 40);
+  const policyUrl = boundedString(consent.policyUrl, privacyPolicyUrl, 120);
+  const acceptedAt = boundedString(consent.acceptedAt, "", 40);
+  const consentText = boundedString(consent.consentText, "", 500);
+
+  if (!policyVersion || !policyUrl || !acceptedAt || !consentText) {
+    return undefined;
+  }
+
+  return {
+    policyVersion,
+    policyUrl,
+    acceptedAt,
+    consentText,
   };
 }
 
@@ -674,7 +819,7 @@ function normalizeRecipeIngredientList(value: unknown, maxItems = 30): RecipeIng
     .slice(0, maxItems);
 }
 
-function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSettings {
+function normalizeSessionSettings(value: unknown): SessionSettings {
   const settings = asRecord(value);
 
   if (settings === null) {
@@ -691,8 +836,10 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
     throw new Error("Session preferences must be an object.");
   }
 
+  const privacyConsent = normalizePrivacyConsent(settings.privacyConsent);
+
   return {
-    settingsVersion: prototypeSessionSettingsVersion,
+    settingsVersion: sessionSettingsVersion,
     preferences: {
       maxTime:
         preferences.maxTime === null ?
@@ -719,13 +866,18 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
       [],
     selectedSources: boundedStringList(settings.selectedSources),
     onboarded: settings.onboarded === true,
-    customRecipes: normalizeRecipeList(settings.customRecipes),
-    discoverSaved: normalizeRecipeList(settings.discoverSaved),
-    discoverRejected: normalizeRecipeList(settings.discoverRejected, 3),
+    customRecipes: normalizeRecipeList(settings.customRecipes, 100, clampStoredRecipeNumbers),
+    discoverSaved: normalizeRecipeList(settings.discoverSaved, 100, clampStoredRecipeNumbers),
+    discoverRejected: normalizeRecipeList(settings.discoverRejected, 3, clampStoredRecipeNumbers),
     discoverReviewedRecipeIds: boundedStringList(settings.discoverReviewedRecipeIds, 250, 120),
     plan: normalizeRecipeList(settings.plan, 31),
+    planMeals: normalizeRecipeList(settings.planMeals, 200),
     ...(typeof settings.planSignature === "string" ? {planSignature: settings.planSignature.slice(0, 200)} : {}),
     ...(typeof settings.planGeneratedAt === "string" ? {planGeneratedAt: settings.planGeneratedAt.slice(0, 40)} : {}),
+    ...(typeof settings.calendarProvider === "string" ?
+      {calendarProvider: settings.calendarProvider.slice(0, 40)} :
+      {}),
+    ...(typeof settings.calendarSkipped === "boolean" ? {calendarSkipped: settings.calendarSkipped} : {}),
     calendarEvents: Array.isArray(settings.calendarEvents) ?
       settings.calendarEvents
         .map(normalizeCalendarEvent)
@@ -744,6 +896,8 @@ function normalizePrototypeSessionSettings(value: unknown): PrototypeSessionSett
         .filter((t): t is NonNullable<typeof t> => t !== null)
         .slice(0, 5) :
       [],
+    calendarSkipped: settings.calendarSkipped === true,
+    ...(privacyConsent ? {privacyConsent} : {}),
   };
 }
 
@@ -773,6 +927,63 @@ function readRequestBody(request: HttpRequest): UnknownRecord | null {
   }
 
   return asRecord(request.body);
+}
+
+function requestHeader(request: HttpRequest, name: string): string {
+  const fromGetter = typeof request.get === "function" ? request.get(name) : undefined;
+  if (typeof fromGetter === "string") {
+    return fromGetter;
+  }
+
+  const lowerName = name.toLowerCase();
+  const value = request.headers?.[lowerName] ?? request.headers?.[name];
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (Array.isArray(value) && typeof value[0] === "string") {
+    return value[0];
+  }
+
+  return "";
+}
+
+type VerifiedAccount = {uid: string; isAnonymous: boolean};
+
+// Resolves the verified Firebase user for a request, or null when no token is
+// attached. Anonymous Firebase users are reported with isAnonymous=true so
+// callers keep them on session-keyed storage — only a real (signed-in) account
+// owns a uid-keyed record.
+async function verifiedAccount(request: HttpRequest): Promise<VerifiedAccount | null> {
+  const authorization = requestHeader(request, "authorization");
+
+  if (!authorization) {
+    return null;
+  }
+
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
+  if (!match?.[1]) {
+    throw new Error("Invalid authorization header.");
+  }
+
+  const decodedToken = await firebaseAuth.verifyIdToken(match[1]);
+  return {uid: decodedToken.uid, isAnonymous: decodedToken.firebase?.sign_in_provider === "anonymous"};
+}
+
+// Firestore document id for a real account's uid-keyed session record. base64url
+// keeps the raw uid out of the document path while staying deterministic.
+function accountSessionDocId(uid: string): string {
+  return Buffer.from(uid).toString("base64url");
+}
+
+// Stable client-facing handle for an account's session. The frontend stores it
+// like any sessionId, but for an authenticated request the backend always keys
+// storage by the verified uid, so the handle is only a transport token. It
+// matches anonymousSessionIdPattern (base64url chars, 38 chars for a 28-char
+// uid) so the existing frontend session-id validation accepts it.
+function accountSessionHandle(uid: string): string {
+  return accountSessionDocId(uid);
 }
 
 function rejectUnsupportedRecommenderMethod(
@@ -823,7 +1034,7 @@ async function proxyRecommenderRequest(
       typeof error === "object" && error !== null && "cause" in error ?
         (error as {cause?: unknown}).cause :
         "";
-    logger.error("Recommender API request failed", {
+    logError("Recommender API request failed", {
       path,
       error: String(error instanceof Error ? error.message : error),
       cause: String(errorCause ?? ""),
@@ -886,8 +1097,14 @@ async function proxyRecommenderRecommendations(
 ): Promise<void> {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
+  const startedAt = Date.now();
+  let upstreamMs = 0;
+  let hydrationMs = 0;
+  let returnedRecipeCount = 0;
+
   try {
     const url = new URL("/recommend", recommenderApiUrl.value().replace(/\/$/, ""));
+    const upstreamStartedAt = Date.now();
     const upstream = await fetch(url, {
       method: "POST",
       headers: {
@@ -900,11 +1117,22 @@ async function proxyRecommenderRecommendations(
     });
     const contentType = upstream.headers.get("content-type") ?? "application/json";
     const bodyText = await upstream.text();
+    upstreamMs = Date.now() - upstreamStartedAt;
 
     response.set("Cache-Control", "private, max-age=0, no-store");
     response.set("Content-Type", contentType);
+    response.set("Access-Control-Expose-Headers", recommenderProfileHeaders);
+    response.set("X-Deadline-Food-Recommender-Ms", String(upstreamMs));
 
     if (!upstream.ok || !contentType.includes("application/json")) {
+      const totalMs = Date.now() - startedAt;
+      response.set("X-Deadline-Food-Hydration-Ms", "0");
+      response.set("X-Deadline-Food-Total-Ms", String(totalMs));
+      logWarn("Recommender recommendations upstream returned non-json or error", {
+        status: upstream.status,
+        upstreamMs,
+        totalMs,
+      });
       response.status(upstream.status).send(bodyText);
       return;
     }
@@ -913,14 +1141,37 @@ async function proxyRecommenderRecommendations(
     let responseBody = body;
 
     try {
+      const hydrationStartedAt = Date.now();
       responseBody = await enrichRecommendedRecipes(body);
+      hydrationMs = Date.now() - hydrationStartedAt;
     } catch (error) {
-      logger.error("Recommendation recipe enrichment failed", {error});
+      logError("Recommendation recipe enrichment failed", {error});
     }
 
+    returnedRecipeCount = Array.isArray(responseBody) ? responseBody.length : 0;
+    const totalMs = Date.now() - startedAt;
+    response.set("X-Deadline-Food-Hydration-Ms", String(hydrationMs));
+    response.set("X-Deadline-Food-Total-Ms", String(totalMs));
+    logInfo("Recommender recommendations profiled", {
+      upstreamMs,
+      hydrationMs,
+      totalMs,
+      returnedRecipeCount,
+    });
     response.status(upstream.status).json(responseBody);
   } catch (error) {
-    logger.error("Recommender recommendations request failed", {error});
+    const totalMs = Date.now() - startedAt;
+    logError("Recommender recommendations request failed", {
+      error,
+      upstreamMs,
+      hydrationMs,
+      totalMs,
+      returnedRecipeCount,
+    });
+    response.set("Access-Control-Expose-Headers", recommenderProfileHeaders);
+    response.set("X-Deadline-Food-Recommender-Ms", String(upstreamMs));
+    response.set("X-Deadline-Food-Hydration-Ms", String(hydrationMs));
+    response.set("X-Deadline-Food-Total-Ms", String(totalMs));
     response.status(502).json({error: "Recommender API could not be reached"});
   }
 }
@@ -944,7 +1195,7 @@ async function callRecommenderJson(path: string, payload: unknown): Promise<unkn
     if (!upstream.ok) return null;
     return (await upstream.json()) as unknown;
   } catch (error) {
-    logger.warn("Recommender call failed during auto-plan", {path, error: String(error)});
+    logWarn("Recommender call failed during auto-plan", {path, error: String(error)});
     return null;
   }
 }
@@ -960,7 +1211,7 @@ function toMealType(value: unknown): AutoPlan.MealType {
   return value === "fallback" ? "fallback" : value === "remix" ? "remix" : "cook";
 }
 
-// Map a recommender recipe row to the prototype `Meal` shape the frontend renders.
+// Map a recommender recipe row to the app `Meal` shape the frontend renders.
 function recommenderRecipeToMeal(recipe: UnknownRecord): UnknownRecord {
   const dietary = Array.isArray(recipe.dietary_tags) ? recipe.dietary_tags : [];
   const suitability = Array.isArray(recipe.suitability_tags) ?
@@ -987,7 +1238,7 @@ function recommenderRecipeToMeal(recipe: UnknownRecord): UnknownRecord {
   };
 }
 
-// Extract the allocator-relevant subset from a prototype Meal record.
+// Extract the allocator-relevant subset from a app Meal record.
 function mealToAllocator(meal: UnknownRecord): AutoPlan.AllocatorMeal {
   const ingredients = Array.isArray(meal.ingredients) ?
     meal.ingredients
@@ -1110,7 +1361,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
   // Deterministic final fallback: if the user has few/no saved recipes and the
   // recommender is empty or unavailable, still plan from the canonical catalogue.
   const fallbackAlloc: AutoPlan.AllocatorMeal[] = [];
-  for (const recipe of prototypeRecipes) {
+  for (const recipe of appRecipes) {
     const meal = recipe as unknown as UnknownRecord;
     const id = boundedString(meal.id, "", 80);
     if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
@@ -1416,7 +1667,7 @@ async function searchFdcFoods(query: string): Promise<FdcFood[] | null> {
     }
   }
 
-  logger.warn("USDA FDC search failed after retries", {query});
+  logWarn("USDA FDC search failed after retries", {query});
   return null;
 }
 
@@ -1555,7 +1806,7 @@ async function findNutritionProductForIngredient(
     await cacheOpenFoodFactsProduct(cacheKey, product);
     return product;
   } catch (error) {
-    logger.error("USDA lookup failed", {cacheKey, error});
+    logError("USDA lookup failed", {cacheKey, error});
     await openFoodFactsCacheRef.doc(openFoodFactsCacheDocId(cacheKey)).set(
       {
         lockedUntil: FieldValue.delete(),
@@ -1571,7 +1822,7 @@ async function findNutritionProductForIngredient(
 function sendSessionJson(
   response: HttpResponse,
   sessionId: string,
-  settings: PrototypeSessionSettings | null,
+  settings: SessionSettings | null,
   expiresAt: Timestamp | string | null,
 ): void {
   response.status(200).json({
@@ -1586,7 +1837,7 @@ export const deadlineFoodBootstrap = onRequest(publicHttpOptions, async (request
   if (rejectUnsupportedMethod(request, response)) return;
 
   try {
-    sendJson(response, await getPrototypeData());
+    sendJson(response, await getAppData());
   } catch (error) {
     sendError(response, error);
   }
@@ -1596,7 +1847,7 @@ export const deadlineFoodMeals = onRequest(publicHttpOptions, async (request, re
   if (rejectUnsupportedMethod(request, response)) return;
 
   try {
-    const data = await getPrototypeData();
+    const data = await getAppData();
     sendJson(response, data.meals);
   } catch (error) {
     sendError(response, error);
@@ -1607,7 +1858,7 @@ export const deadlineFoodScenario = onRequest(publicHttpOptions, async (request,
   if (rejectUnsupportedMethod(request, response)) return;
 
   try {
-    const data = await getPrototypeData();
+    const data = await getAppData();
     sendJson(response, data.canonicalConstraints);
   } catch (error) {
     sendError(response, error);
@@ -1623,6 +1874,69 @@ export const deadlineFoodRecipes = onRequest(publicHttpOptions, async (request, 
 
   try {
     sendJson(response, await listRecipes());
+  } catch (error) {
+    sendError(response, error);
+  }
+});
+
+export const deadlineFoodRecipe = onRequest(publicHttpOptions, async (request, response) => {
+  if (rejectUnsupportedMethod(request, response)) return;
+
+  const shareId = typeof request.query.shareId === "string" ? request.query.shareId : "";
+  if (!shareId || !recipeIdPattern.test(shareId)) {
+    response.status(400).json({error: "A valid shareId is required"});
+    return;
+  }
+
+  try {
+    const recipe = await recipeByShareId(shareId);
+    if (!recipe) {
+      response.status(404).json({error: "Recipe not found"});
+      return;
+    }
+    sendJson(response, recipe);
+  } catch (error) {
+    sendError(response, error);
+  }
+});
+
+// Report the publish state of recipes the caller already references (saved or
+// planned), so the client can distinguish "unpublished" (still usable) from
+// "deleted" (gone) without enumerating anyone else's content. Status only.
+const MAX_RECIPE_STATE_IDS = 200;
+
+type RecipeState = "published" | "unpublished" | "deleted";
+
+async function recipeStatesForIds(ids: string[]): Promise<Record<string, RecipeState>> {
+  const valid = [...new Set(ids)]
+    .filter((id) => typeof id === "string" && recipeIdPattern.test(id))
+    .slice(0, MAX_RECIPE_STATE_IDS);
+  if (valid.length === 0) return {};
+  const snapshots = await firestore.getAll(...valid.map((id) => recipesRef.doc(id)));
+  const states: Record<string, RecipeState> = {};
+  for (const doc of snapshots) {
+    if (!doc.exists) {
+      states[doc.id] = "deleted";
+    } else {
+      states[doc.id] = doc.get("published") === false ? "unpublished" : "published";
+    }
+  }
+  return states;
+}
+
+export const deadlineFoodRecipeStates = onRequest(publicHttpOptions, async (request, response) => {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = asRecord(request.body);
+  const ids = Array.isArray(body?.ids) ? body.ids.filter((id): id is string => typeof id === "string") : null;
+  if (!ids) {
+    response.status(400).json({error: "An array of recipe ids is required"});
+    return;
+  }
+
+  try {
+    response.set("Cache-Control", "private, max-age=0, no-store");
+    response.status(200).json({states: await recipeStatesForIds(ids)});
   } catch (error) {
     sendError(response, error);
   }
@@ -1663,6 +1977,40 @@ export const deadlineFoodRecipeReviews = onRequest(publicHttpOptions, async (req
   }
 });
 
+// Remove a recipe's embedding from the pgvector recommender so it stops being
+// recommended in Discover. Best-effort: callers treat failure as non-fatal.
+async function removeRecipeFromRecommender(recipeId: string): Promise<void> {
+  const url = new URL(`/recipes/${encodeURIComponent(recipeId)}`, recommenderApiUrl.value().replace(/\/$/, ""));
+  await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "X-Deadline-Food-API-Key": recommenderApiKey.value(),
+    },
+    signal: AbortSignal.timeout(15_000),
+  });
+}
+
+// Resolve the signed-in account for a recipe mutation. Publishing/owning a
+// recipe requires a real (non-anonymous) account (#213 follow-up); on failure
+// this writes the response and returns null so the caller can just return.
+async function requireRecipeOwnerAccount(
+  request: HttpRequest,
+  response: HttpResponse,
+): Promise<VerifiedAccount | null> {
+  let account: VerifiedAccount | null;
+  try {
+    account = await verifiedAccount(request);
+  } catch {
+    response.status(401).json({error: "A valid sign-in token is required"});
+    return null;
+  }
+  if (account === null || account.isAnonymous) {
+    response.status(401).json({error: "Sign in to manage published recipes"});
+    return null;
+  }
+  return account;
+}
+
 export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async (request, response) => {
   if (rejectUnsupportedRecommenderMethod(request, response)) return;
 
@@ -1673,24 +2021,97 @@ export const deadlineFoodRecipeCreate = onRequest(recommenderHttpOptions, async 
     return;
   }
 
+  // Publishing is an account-owned action: only signed-in users can publish.
+  const account = await requireRecipeOwnerAccount(request, response);
+  if (account === null) return;
+
   try {
+    const existing = await recipesRef.doc(recipeId).get();
+    if (existing.exists) {
+      // Seeds are curated content and have no owner; published user recipes are
+      // owned by their creator. Either way a different caller can't overwrite.
+      if (existing.get("verified") === true) {
+        response.status(403).json({error: "This recipe cannot be modified"});
+        return;
+      }
+      const ownerUid = existing.get("ownerUid");
+      if (!ownerUid || ownerUid !== account.uid) {
+        response.status(403).json({error: "This recipe belongs to another account"});
+        return;
+      }
+    }
+
     // Canonical recipe content -> Firestore (issue #123). Reviews live in the
     // recipeReviews collection only, so strip them (and the derived rating) here.
     const recipeContent = {...body};
     delete recipeContent.reviews;
     delete recipeContent.rating;
+    // User-contributed recipes are never verified, regardless of the request
+    // body (#213). Only curated seed content is verified (see ensureRecipesSeeded).
+    recipeContent.verified = false;
+    body.verified = false;
+    // Server-derived ownership + published state — never trust the client body.
+    recipeContent.ownerUid = account.uid;
+    recipeContent.published = true;
+    recipeContent.shareId = shareIdForRecipe(recipeId);
     await recipesRef.doc(recipeId).set(
       {...recipeContent, updatedAt: FieldValue.serverTimestamp()},
       {merge: true},
     );
   } catch (error) {
-    logger.error("Recipe could not be written to Firestore", {recipeId, error});
+    logError("Recipe could not be written to Firestore", {recipeId, error});
     response.status(502).json({error: "Recipe could not be saved"});
     return;
   }
 
   // Embedding keyed by the recipe UID -> pgvector recommender.
   await proxyRecommenderRequest(request, response, "/recipes", toRecommenderRecipePayload(body));
+});
+
+export const deadlineFoodRecipeUnpublish = onRequest(recommenderHttpOptions, async (request, response) => {
+  if (rejectUnsupportedRecommenderMethod(request, response)) return;
+
+  const body = asRecord(request.body);
+  const recipeId = typeof body?.recipeId === "string" ? body.recipeId : null;
+  if (!recipeId || !recipeIdPattern.test(recipeId)) {
+    response.status(400).json({error: "A valid recipe id is required"});
+    return;
+  }
+
+  const account = await requireRecipeOwnerAccount(request, response);
+  if (account === null) return;
+
+  try {
+    const doc = await recipesRef.doc(recipeId).get();
+    if (!doc.exists) {
+      response.status(404).json({error: "Recipe not found"});
+      return;
+    }
+    const ownerUid = doc.get("ownerUid");
+    if (!ownerUid || ownerUid !== account.uid) {
+      response.status(403).json({error: "This recipe belongs to another account"});
+      return;
+    }
+    // Soft unpublish: keep the canonical doc + reviews so re-publishing restores
+    // them and anyone who already saved the recipe keeps a working local copy.
+    await recipesRef.doc(recipeId).set(
+      {published: false, updatedAt: FieldValue.serverTimestamp()},
+      {merge: true},
+    );
+  } catch (error) {
+    logError("Recipe could not be unpublished in Firestore", {recipeId, error});
+    response.status(502).json({error: "Recipe could not be unpublished"});
+    return;
+  }
+
+  // Drop it from Discover; Firestore stays the source of truth for the content.
+  try {
+    await removeRecipeFromRecommender(recipeId);
+  } catch (error) {
+    logWarn("Recipe could not be removed from recommender (Firestore unpublish succeeded)", {recipeId, error});
+  }
+
+  response.status(200).json({recipeId, published: false});
 });
 
 export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async (request, response) => {
@@ -1703,26 +2124,36 @@ export const deadlineFoodRecipeDelete = onRequest(recommenderHttpOptions, async 
     return;
   }
 
+  const account = await requireRecipeOwnerAccount(request, response);
+  if (account === null) return;
+
   try {
+    const doc = await recipesRef.doc(recipeId).get();
+    if (!doc.exists) {
+      response.status(404).json({error: "Recipe not found"});
+      return;
+    }
+    if (doc.get("verified") === true) {
+      response.status(403).json({error: "This recipe cannot be deleted"});
+      return;
+    }
+    const ownerUid = doc.get("ownerUid");
+    if (!ownerUid || ownerUid !== account.uid) {
+      response.status(403).json({error: "This recipe belongs to another account"});
+      return;
+    }
     await recipesRef.doc(recipeId).delete();
     await recipeReviewsRef.doc(recipeId).delete();
   } catch (error) {
-    logger.error("Recipe could not be deleted from Firestore", {recipeId, error});
+    logError("Recipe could not be deleted from Firestore", {recipeId, error});
     response.status(502).json({error: "Recipe could not be deleted"});
     return;
   }
 
   try {
-    const url = new URL(`/recipes/${encodeURIComponent(recipeId)}`, recommenderApiUrl.value().replace(/\/$/, ""));
-    await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "X-Deadline-Food-API-Key": recommenderApiKey.value(),
-      },
-      signal: AbortSignal.timeout(15_000),
-    });
+    await removeRecipeFromRecommender(recipeId);
   } catch (error) {
-    logger.warn("Recipe could not be deleted from recommender (Firestore deletion succeeded)", {recipeId, error});
+    logWarn("Recipe could not be deleted from recommender (Firestore deletion succeeded)", {recipeId, error});
   }
 
   response.status(204).send("");
@@ -1783,16 +2214,106 @@ export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (requ
     response.set("Cache-Control", "private, max-age=0, no-store");
     response.status(200).json(totalNutritionFromEstimates(estimates, missingIngredients));
   } catch (error) {
-    logger.error("Deadline food nutrition function failed", error);
+    logError("Deadline food nutrition function failed", error);
     response.status(500).json({error: "Nutrition data could not be loaded"});
   }
 });
+
+// Loads a real account's uid-keyed session. On the very first load for an
+// account (no stored record yet) it adopts the anonymous session the request
+// arrived with — the in-progress onboarding the user just built — so signing in
+// mid-onboarding never discards their plan. Later loads (including on a fresh
+// device) just return the synced account record.
+async function handleAccountSessionGet(
+  request: HttpRequest,
+  response: HttpResponse,
+  uid: string,
+): Promise<void> {
+  const accountRef = accountSessionsRef.doc(accountSessionDocId(uid));
+  const snapshot = await accountRef.get();
+
+  if (!snapshot.exists) {
+    const requestedSessionId = typeof request.query.sessionId === "string" ? request.query.sessionId : "";
+    if (anonymousSessionIdPattern.test(requestedSessionId)) {
+      const anonRef = anonymousSessionsRef.doc(requestedSessionId);
+      const anonSnapshot = await anonRef.get();
+      if (anonSnapshot.exists && anonSnapshot.data()?.settings) {
+        const adopted = normalizeSessionSettings(anonSnapshot.data()?.settings);
+        // Account sessions never expire (expiresAt is explicitly deleted so no TTL
+        // policy can reap them); only anonymous sessions carry a rolling TTL.
+        await accountRef.set(
+          {
+            createdAt: FieldValue.serverTimestamp(),
+            uid,
+            schemaVersion: 1,
+            settingsVersion: sessionSettingsVersion,
+            settings: adopted,
+            updatedAt: FieldValue.serverTimestamp(),
+            expiresAt: FieldValue.delete(),
+          },
+          {merge: true},
+        );
+        // The anonymous save has now been migrated into the account record, so
+        // drop the redundant anonymous session document.
+        await anonRef.delete();
+        sendSessionJson(response, accountSessionHandle(uid), adopted, null);
+        return;
+      }
+    }
+
+    sendSessionJson(response, accountSessionHandle(uid), null, null);
+    return;
+  }
+
+  const settings = normalizeSessionSettings(snapshot.data()?.settings);
+  await accountRef.set({updatedAt: FieldValue.serverTimestamp(), expiresAt: FieldValue.delete()}, {merge: true});
+  sendSessionJson(response, accountSessionHandle(uid), settings, null);
+}
+
+// Permanently deletes a signed-in account: its synced profile document and the
+// Firebase Auth user itself. Called via DELETE once the user confirms in
+// Settings. Anonymous sessions have no account to delete — they lapse via TTL.
+async function handleAccountSessionDelete(
+  response: HttpResponse,
+  uid: string,
+): Promise<void> {
+  await accountSessionsRef.doc(accountSessionDocId(uid)).delete();
+  await firebaseAuth.deleteUser(uid);
+  response.status(200).json({deleted: true});
+}
 
 export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, response) => {
   if (rejectUnsupportedSessionMethod(request, response)) return;
 
   try {
+    let account: VerifiedAccount | null;
+    try {
+      account = await verifiedAccount(request);
+    } catch {
+      response.status(401).json({error: "Invalid Firebase authentication token."});
+      return;
+    }
+
+    // A real (non-anonymous) account keys its data directly by uid. Anonymous
+    // users — including anonymous Firebase users — stay keyed by the session id
+    // their browser holds in localStorage.
+    const accountUid = account !== null && !account.isAnonymous ? account.uid : null;
+
+    if (request.method === "DELETE") {
+      if (accountUid === null) {
+        response.status(401).json({error: "A signed-in account is required to delete an account."});
+        return;
+      }
+      await handleAccountSessionDelete(response, accountUid);
+      return;
+    }
+
     if (request.method === "GET" || request.method === "HEAD") {
+      if (accountUid !== null) {
+        await handleAccountSessionGet(request, response, accountUid);
+        return;
+      }
+
       const requestedSessionId = request.query.sessionId;
       const sessionId = typeof requestedSessionId === "string" ? requestedSessionId : "";
 
@@ -1810,17 +2331,9 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       }
 
       const data = snapshot.data();
-      const settings = normalizePrototypeSessionSettings(data?.settings);
+      const settings = normalizeSessionSettings(data?.settings);
       const expiresAt = sessionExpiryTimestamp();
-
-      await sessionRef.set(
-        {
-          updatedAt: FieldValue.serverTimestamp(),
-          expiresAt,
-        },
-        {merge: true},
-      );
-
+      await sessionRef.set({updatedAt: FieldValue.serverTimestamp(), expiresAt}, {merge: true});
       sendSessionJson(response, sessionId, settings, expiresAt);
       return;
     }
@@ -1832,30 +2345,51 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
       return;
     }
 
+    let settings: SessionSettings;
+
+    try {
+      settings = normalizeSessionSettings(body.settings);
+    } catch (error) {
+      response.status(400).json({error: error instanceof Error ? error.message : "Invalid session settings."});
+      return;
+    }
+
+    const expiresAt = sessionExpiryTimestamp();
+
+    if (accountUid !== null) {
+      const accountRef = accountSessionsRef.doc(accountSessionDocId(accountUid));
+      const existing = await accountRef.get();
+      // Account sessions never expire — clear any TTL field a previous write left.
+      await accountRef.set(
+        {
+          ...(existing.exists ? {} : {createdAt: FieldValue.serverTimestamp()}),
+          uid: accountUid,
+          schemaVersion: 1,
+          settingsVersion: sessionSettingsVersion,
+          settings,
+          updatedAt: FieldValue.serverTimestamp(),
+          expiresAt: FieldValue.delete(),
+        },
+        {merge: true},
+      );
+      sendSessionJson(response, accountSessionHandle(accountUid), settings, null);
+      return;
+    }
+
     const requestedSessionId = body?.sessionId;
     const sessionId =
       typeof requestedSessionId === "string" &&
       anonymousSessionIdPattern.test(requestedSessionId) ?
         requestedSessionId :
         randomUUID();
-    let settings: PrototypeSessionSettings;
-
-    try {
-      settings = normalizePrototypeSessionSettings(body.settings);
-    } catch (error) {
-      response.status(400).json({error: error instanceof Error ? error.message : "Invalid session settings."});
-      return;
-    }
-
     const sessionRef = anonymousSessionsRef.doc(sessionId);
     const existingSession = await sessionRef.get();
-    const expiresAt = sessionExpiryTimestamp();
 
     await sessionRef.set(
       {
         ...(existingSession.exists ? {} : {createdAt: FieldValue.serverTimestamp()}),
         schemaVersion: 1,
-        settingsVersion: prototypeSessionSettingsVersion,
+        settingsVersion: sessionSettingsVersion,
         settings,
         updatedAt: FieldValue.serverTimestamp(),
         expiresAt,
@@ -1865,7 +2399,7 @@ export const deadlineFoodSession = onRequest(publicHttpOptions, async (request, 
 
     sendSessionJson(response, sessionId, settings, expiresAt);
   } catch (error) {
-    logger.error("Deadline food session function failed", error);
+    logError("Deadline food session function failed", error);
     response.status(500).json({error: "Anonymous session could not be saved"});
   }
 });
@@ -1986,7 +2520,7 @@ export const calendarGoogleExchange = onRequest(googleOAuthHttpOptions, async (r
       expiresAt: tokenResult.expiresAt,
     });
   } catch (error) {
-    logger.error("Google calendar exchange failed", error);
+    logError("Google calendar exchange failed", error);
     const message = error instanceof Error ? error.message : "Google Calendar import failed";
     response.status(502).json({error: message});
   }
@@ -2049,7 +2583,7 @@ export const calendarOutlookExchange = onRequest(microsoftOAuthHttpOptions, asyn
       expiresAt: tokenResult.expiresAt,
     });
   } catch (error) {
-    logger.error("Outlook calendar exchange failed", error);
+    logError("Outlook calendar exchange failed", error);
     const message = error instanceof Error ? error.message : "Outlook Calendar import failed";
     response.status(502).json({error: message});
   }
@@ -2113,7 +2647,7 @@ export const calendarSubscriptionRefresh = onSchedule(
               }
             }
           } catch (e) {
-            logger.warn(`ICS fetch failed for session ${doc.id}`, e);
+            logWarn(`ICS fetch failed for session ${doc.id}`, e);
           }
         }
 
@@ -2144,7 +2678,7 @@ export const calendarSubscriptionRefresh = onSchedule(
               };
             }
           } catch (e) {
-            logger.warn(`OAuth refresh failed for session ${doc.id}, provider ${token.provider}`, e);
+            logWarn(`OAuth refresh failed for session ${doc.id}, provider ${token.provider}`, e);
           }
         }
 
@@ -2167,11 +2701,11 @@ export const calendarSubscriptionRefresh = onSchedule(
         );
         refreshed++;
       } catch (e) {
-        logger.error(`Calendar refresh failed for session ${doc.id}`, e);
+        logError(`Calendar refresh failed for session ${doc.id}`, e);
       }
     }
 
-    logger.info(`Calendar refresh complete: ${refreshed} refreshed, ${pruned} pruned, ${sessions.size} checked`);
+    logInfo(`Calendar refresh complete: ${refreshed} refreshed, ${pruned} pruned, ${sessions.size} checked`);
   },
 );
 
@@ -2219,7 +2753,7 @@ export const deadlineFoodRecipePhoto = onRequest(publicHttpOptions, async (reque
     const safeName = `${randomUUID()}.${ext}`;
     const objectPath = `recipe-photos/${safeName}`;
 
-    logger.info("Uploading recipe photo", {fileName, mimeType, bytes: fileBuffer.length});
+    logInfo("Uploading recipe photo", {fileName, mimeType, bytes: fileBuffer.length});
 
     const bucket = getStorage().bucket(storageBucket);
     const file = bucket.file(objectPath);
@@ -2244,7 +2778,7 @@ export const deadlineFoodRecipePhoto = onRequest(publicHttpOptions, async (reque
     response.set("Cache-Control", "private, max-age=0, no-store");
     response.status(200).json({photoUrl});
   } catch (error) {
-    logger.error("Recipe photo upload failed", error);
+    logError("Recipe photo upload failed", error);
     response.status(500).json({error: "Photo could not be uploaded."});
   }
 });

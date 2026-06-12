@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Seed the recommender DB with meals from both prototype data models.
+"""Seed the recommender DB with meals from both app data models.
 
 Run after the stack is up:
   docker compose exec api python /app/scripts/seed.py
@@ -15,7 +15,7 @@ import httpx
 API = os.environ.get("API_URL", "http://localhost:8000")
 API_KEY = os.environ.get("RECOMMENDER_API_KEY", "")
 
-PROTOTYPE_MEALS = [
+SEED_MEALS = [
     {
         "id": "m1",
         "name": "Roast veg & chickpea traybake",
@@ -498,8 +498,12 @@ async def seed():
         timeout=120,
         headers={"X-Deadline-Food-API-Key": API_KEY},
     ) as client:
-        print(f"Seeding {len(PROTOTYPE_MEALS)} recipes...")
-        resp = await client.post("/recipes/bulk", json=PROTOTYPE_MEALS)
+        print(f"Seeding {len(SEED_MEALS)} recipes...")
+        # All seeded recipes are curated/verified content (#213). Stamp them here
+        # so the recommender returns verified=true and Discover's verified-only
+        # default surfaces them rather than treating them as community uploads.
+        verified_meals = [{**meal, "verified": True} for meal in SEED_MEALS]
+        resp = await client.post("/recipes/bulk", json=verified_meals)
         resp.raise_for_status()
         recipes = resp.json()
         print(f"  -> {len(recipes)} recipes created/updated")

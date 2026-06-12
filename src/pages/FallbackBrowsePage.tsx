@@ -13,7 +13,7 @@ export function FallbackBrowsePage() {
     <main className="mx-auto min-h-screen w-full max-w-6xl px-5 py-8">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-3">
-          <MealTag tone="good">Prototype meal options - availability and prices are illustrative.</MealTag>
+          <MealTag tone="good">App meal options - availability and prices are illustrative.</MealTag>
           <h1 className="text-3xl font-bold text-slate-950 md:text-4xl">Campus fallback catalogue</h1>
           <p className="max-w-3xl text-slate-600">
             Seeded options represent the kind of affordable, low-effort choices the internal API will eventually serve.
