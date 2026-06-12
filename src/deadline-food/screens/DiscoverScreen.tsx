@@ -6,7 +6,7 @@ import type { Deadline, DiscoverRecommendationState, DiscoverRecommendationTrigg
 import { AppButton, Badge } from "../components/primitives";
 import { AllergenTag } from "../components/AllergenTag";
 import { formatCookingLimit, isVerified, money, keyIngredients, sourceUrl } from "../utils";
-import { mealHealthSignals } from "../healthSignals";
+import { mealHealthSignals, qualitativeTags } from "../healthSignals";
 import type { TrackEvent } from "../analytics";
 import { recordRecommenderInteraction } from "../recommenderApi";
 
@@ -320,7 +320,7 @@ export function DiscoverScreen({
                   {current.mealSlots.map((slot) => (
                     <Badge key={`slot-${slot}`}>{slot.charAt(0).toUpperCase() + slot.slice(1)}</Badge>
                   ))}
-                  {current.tags.map((tag) => (
+                  {qualitativeTags(current).map((tag) => (
                     <Badge key={`tag-${tag}`} tone="green">{tag}</Badge>
                   ))}
                   {mealHealthSignals(current).map((signal) => (
