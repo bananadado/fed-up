@@ -4,7 +4,6 @@ from collections.abc import Iterable
 
 
 TAG_ALIASES = {
-    "peanuts": "peanut",
     "eggs": "egg",
 }
 

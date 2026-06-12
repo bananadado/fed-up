@@ -71,7 +71,6 @@ function cookingAbility(ability: string): string {
 }
 
 const recommenderTagAliases: Record<string, string> = {
-  peanuts: "peanut",
   eggs: "egg",
 };
 
