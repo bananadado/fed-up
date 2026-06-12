@@ -17,7 +17,7 @@ describe("shopping helpers", () => {
     ])).toBe("berries\noats x2");
   });
 
-  test("aggregates structured ingredients by canonical name and unit", () => {
+  test("aggregates structured ingredients, merging count into weight via per-item weight", () => {
     const items = aggregateIngredients([
       { name: "tomato", quantity: 100, unit: "g", preparation: "chopped" },
       { name: "tomato", quantity: 50, unit: "g", preparation: "sliced" },
@@ -25,13 +25,36 @@ describe("shopping helpers", () => {
       { name: "pepper", quantity: 0.5, unit: "cup", preparation: "frozen" },
     ]);
 
+    // The serving-count tomato folds into the gram total using tomato's known
+    // per-item weight (123g): 100 + 50 + 123 = 273g, one row instead of two.
     expect(items).toEqual([
       { name: "frozen pepper", count: 1, quantity: 0.5, unit: "cup" },
-      { name: "tomato", count: 2, quantity: 150, unit: "g" },
-      { name: "tomato", count: 1, quantity: 1, unit: "serving" },
+      { name: "tomato", count: 3, quantity: 273, unit: "g" },
     ]);
-    expect(items.map(shoppingItemLabel)).toEqual(["0.5 cups frozen pepper", "150g tomato", "tomato"]);
-    expect(formatShoppingList(items)).toBe("0.5 cups frozen pepper\n150g tomato\ntomato");
+    expect(items.map(shoppingItemLabel)).toEqual(["0.5 cups frozen pepper", "273g tomato"]);
+    expect(formatShoppingList(items)).toBe("0.5 cups frozen pepper\n273g tomato");
+  });
+
+  test("merges count-like unit variants of the same ingredient (#251 follow-up)", () => {
+    // item / serving / whole are interchangeable "one whole unit" measures.
+    const items = aggregateIngredients([
+      { name: "cabbage", quantity: 2, unit: "item" },
+      { name: "cabbage", quantity: 0.5, unit: "serving" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.quantity).toBe(2.5);
+    expect(shoppingItemLabel(items[0]!)).toBe("2.5 cabbages");
+  });
+
+  test("merges a counted produce item with its weighed form (#251 follow-up)", () => {
+    // carrot has a known per-item weight (80g): 17 count → 1360g, + 907 = 2267g.
+    const items = aggregateIngredients([
+      { name: "carrots", quantity: 17, unit: "item" },
+      { name: "carrot", quantity: 907, unit: "g" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.unit).toBe("kg");
+    expect(items[0]?.quantity).toBe(2.27);
   });
 
   test("normalises shopping item keys for checklist state", () => {

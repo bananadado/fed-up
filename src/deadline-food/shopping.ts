@@ -114,10 +114,16 @@ function shoppingIngredientName(ingredient: ShoppingIngredient) {
 // Maps compatible metric units to a single grouping key so g+kg and ml+l merge.
 const MASS_TO_G: Record<string, number> = { g: 1, kg: 1000 };
 const VOLUME_TO_ML: Record<string, number> = { ml: 1, l: 1000 };
+// Generic "one whole unit" measures. Folding these into a single dimension lets
+// "2 item" + "0.5 whole" of the same ingredient merge instead of splitting on
+// the incidental unit word. Specific count units (clove, slice, wrap, can…)
+// stay distinct — half a clove and half an onion are not interchangeable.
+const COUNT_LIKE_UNITS = new Set(["item", "items", "serving", "servings", "whole", "piece", "pieces", "count"]);
 
 function aggregationUnit(unit: string): string {
   if (unit in MASS_TO_G) return "g";
   if (unit in VOLUME_TO_ML) return "ml";
+  if (COUNT_LIKE_UNITS.has(unit)) return "count";
   return unit;
 }
 
@@ -136,6 +142,8 @@ function fromBaseQty(quantity: number, unit: string): { quantity: number; unit: 
       ? { quantity: Math.round(quantity / 10) / 100, unit: "l" }
       : { quantity: Math.round(quantity * 10) / 10, unit: "ml" };
   }
+  // The "count" base renders through the natural-plural "serving" path.
+  if (unit === "count") return { quantity: Math.round(quantity * 100) / 100, unit: "serving" };
   return { quantity, unit };
 }
 
@@ -227,6 +235,27 @@ export function aggregateIngredients(ingredients: ShoppingIngredient[]) {
       unit: baseUnit,
     });
   });
+
+  // Bridge count and weight measures of the same ingredient where a typical
+  // per-item weight is known, so "17 carrots" + "907g carrots" collapse into one
+  // entry (shown in grams with a "~N carrots" hint) instead of two rows that can
+  // never merge. Ingredients without a known weight keep count and weight apart.
+  const countKeyByName = new Map<string, string>();
+  const gramKeyByName = new Map<string, string>();
+  for (const [key, item] of items) {
+    if (item.unit === "count") countKeyByName.set(item.name, key);
+    else if (item.unit === "g") gramKeyByName.set(item.name, key);
+  }
+  for (const [name, countKey] of countKeyByName) {
+    const gramKey = gramKeyByName.get(name);
+    const perItemGrams = ITEM_WEIGHT_G[name];
+    if (gramKey === undefined || perItemGrams === undefined) continue;
+    const countItem = items.get(countKey)!;
+    const gramItem = items.get(gramKey)!;
+    gramItem.quantity = (gramItem.quantity ?? 0) + (countItem.quantity ?? 0) * perItemGrams;
+    gramItem.count += countItem.count;
+    items.delete(countKey);
+  }
 
   return [...items.values()]
     .map((item) => {
