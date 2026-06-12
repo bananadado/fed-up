@@ -63,6 +63,8 @@ function normalizeRecipe(raw: Record<string, unknown>): Meal | null {
   }
   return {
     ...(raw as unknown as Meal),
+    // Guard servings so a malformed value can't reach the RecipeDetail scaler (#189).
+    servings: typeof raw.servings === "number" && Number.isFinite(raw.servings) ? raw.servings : undefined,
     ingredients: Array.isArray(raw.ingredients) ? (raw.ingredients as RecipeIngredient[]) : [],
     allergens: Array.isArray(raw.allergens) ? (raw.allergens as string[]) : [],
     mealSlots: Array.isArray(raw.mealSlots) ? (raw.mealSlots as MealSlot[]) : [],
