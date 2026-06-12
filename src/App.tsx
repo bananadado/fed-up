@@ -1,8 +1,8 @@
-import { DeadlineFoodPrototype } from "@/prototype/DeadlineFoodPrototype";
+import { DeadlineFoodApp } from "@/deadline-food/DeadlineFoodApp";
 import "./index.css";
 
 export function App() {
-  return <DeadlineFoodPrototype />;
+  return <DeadlineFoodApp />;
 }
 
 export default App;

@@ -31,7 +31,7 @@ export function LandingPage() {
             <Link to="/deadline-mode/setup">Activate Deadline Mode</Link>
           </Button>
           <Button asChild size="lg" variant="outline">
-            <Link to="/fallbacks">Browse prototype fallbacks</Link>
+            <Link to="/fallbacks">Browse app fallbacks</Link>
           </Button>
         </div>
       </section>
@@ -54,7 +54,7 @@ export function LandingPage() {
             ))}
           </div>
           <p className="text-sm leading-6 text-slate-600">
-            The prototype starts with Steven's seeded deadline week and lets you adjust budget, kitchen access, late
+            The app starts with Steven's seeded deadline week and lets you adjust budget, kitchen access, late
             campus days and dietary needs.
           </p>
         </CardContent>

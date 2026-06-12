@@ -14,10 +14,10 @@ export const fallbackLibraryBeanWrap: MealOption = {
   location: "library",
   illustrativeOnly: true,
   recipe: {
-    summary: "A prototype cafe wrap with beans, salad and a soft tortilla.",
+    summary: "A app cafe wrap with beans, salad and a soft tortilla.",
     ingredients: recipeIngredients(["bean filling", "salad leaves", "tortilla wrap", "tomato salsa"]),
     steps: ["Collect from the Library Cafe counter.", "Eat cold or ask for it warmed if available."],
-    prepNotes: "Prototype option: availability and pricing are illustrative.",
+    prepNotes: "App option: availability and pricing are illustrative.",
     whyItFits: "It is the fastest compatible fallback near the library.",
   },
 };

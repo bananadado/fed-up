@@ -17,7 +17,7 @@ export const fallbackLibrarySoupRoll: MealOption = {
     summary: "A warm soup and roll fallback for a late library session.",
     ingredients: recipeIngredients(["tomato soup", "wholegrain roll", "pepper sachet"]),
     steps: ["Collect the soup and roll.", "Eat while warm between study blocks."],
-    prepNotes: "Prototype option: availability and pricing are illustrative.",
+    prepNotes: "App option: availability and pricing are illustrative.",
     whyItFits: "It is warm, low-effort and still close to the preferred study area.",
   },
 };

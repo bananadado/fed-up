@@ -6,7 +6,7 @@ This document is for LLM coding agents modifying the repo.
 
 1. Read [RAG_ROOT.md](RAG_ROOT.md).
 2. Check `git status --short`.
-3. Confirm whether the task targets the active prototype or dormant React Router planner.
+3. Confirm whether the task targets the active app or dormant React Router planner.
 4. Inspect the exact files before editing.
 5. Use Bun commands.
 6. Keep edits scoped.
@@ -16,21 +16,21 @@ This document is for LLM coding agents modifying the repo.
 
 Use this rule:
 
-- Active user-visible app: edit `src/prototype/*`.
+- Active user-visible app: edit `src/deadline-food/*`.
 - Strategy comparison and `/deadline-mode/*` routes: edit `src/pages/*`, `src/domain/*`, `src/state/*`, `src/components/deadline-food/*`.
 - If asked to "make the app use the new router", update `src/App.tsx` to render `AppRouter`, then update tests and verify end to end.
 
-Warning: many future bugs will come from changing `src/pages/*` while expecting the active prototype to change. `src/App.tsx` is the source of truth.
+Warning: many future bugs will come from changing `src/pages/*` while expecting the active app to change. `src/App.tsx` is the source of truth.
 
 ## Common Task: Change Landing Or Onboarding
 
 Likely files:
 
-- `src/prototype/screens/Landing.tsx`
-- `src/prototype/screens/Onboarding.tsx`
-- `src/prototype/data.ts`
-- `src/prototype/types.ts`
-- `src/prototype/sessionPersistence.ts` if persisted settings change.
+- `src/deadline-food/screens/Landing.tsx`
+- `src/deadline-food/screens/Onboarding.tsx`
+- `src/deadline-food/data.ts`
+- `src/deadline-food/types.ts`
+- `src/deadline-food/sessionPersistence.ts` if persisted settings change.
 
 Tests:
 
@@ -47,11 +47,11 @@ Check e2e selectors if heading/button text changes.
 
 Likely files:
 
-- `src/prototype/screens/PlanScreen.tsx`
-- `src/prototype/data.ts`
-- `src/prototype/utils.ts`
-- `src/prototype/healthSignals.ts`
-- `src/prototype/shopping.ts`
+- `src/deadline-food/screens/PlanScreen.tsx`
+- `src/deadline-food/data.ts`
+- `src/deadline-food/utils.ts`
+- `src/deadline-food/healthSignals.ts`
+- `src/deadline-food/shopping.ts`
 
 Keep:
 
@@ -64,15 +64,15 @@ Keep:
 Tests:
 
 ```sh
-bun test src/prototype/shopping.test.ts
+bun test src/deadline-food/shopping.test.ts
 bun run test:e2e
 ```
 
-## Common Task: Add Or Edit Active Prototype Meal Data
+## Common Task: Add Or Edit Active App Meal Data
 
 File:
 
-- `src/prototype/data.ts`
+- `src/deadline-food/data.ts`
 
 Required fields for `Meal`:
 
@@ -142,15 +142,15 @@ bun run firebase:data
 cd functions && bun run build
 ```
 
-Do not edit `functions/src/generated/prototypeData.ts` directly.
+Do not edit `functions/src/generated/appData.ts` directly.
 
 ## Common Task: Change Anonymous Session Persistence
 
 Frontend files:
 
-- `src/prototype/sessionPersistence.ts`
-- `src/prototype/anonymousSessionApi.ts`
-- `src/prototype/DeadlineFoodPrototype.tsx`
+- `src/deadline-food/sessionPersistence.ts`
+- `src/deadline-food/anonymousSessionApi.ts`
+- `src/deadline-food/DeadlineFoodApp.tsx`
 
 Backend file:
 
@@ -172,7 +172,7 @@ If schema changes are breaking:
 Tests:
 
 ```sh
-bun test src/prototype/sessionPersistence.test.ts
+bun test src/deadline-food/sessionPersistence.test.ts
 cd functions && bun run build
 ```
 
@@ -180,10 +180,10 @@ cd functions && bun run build
 
 Frontend files:
 
-- `src/prototype/nutrition.ts`
-- `src/prototype/nutritionApi.ts`
-- `src/prototype/screens/RecipesScreen.tsx`
-- `src/prototype/screens/RecipeDetailScreen.tsx`
+- `src/deadline-food/nutrition.ts`
+- `src/deadline-food/nutritionApi.ts`
+- `src/deadline-food/screens/RecipesScreen.tsx`
+- `src/deadline-food/screens/RecipeDetailScreen.tsx`
 
 Backend file:
 
@@ -192,7 +192,7 @@ Backend file:
 Tests:
 
 ```sh
-bun test src/prototype/nutrition.test.ts
+bun test src/deadline-food/nutrition.test.ts
 cd functions && bun run lint && bun run build
 ```
 
@@ -239,11 +239,11 @@ export function App() {
 }
 ```
 
-2. Update e2e tests because current selectors target the active prototype.
+2. Update e2e tests because current selectors target the active app.
 3. Check bootstrap loading in `DeadlineModeProvider`.
 4. Check production Firebase endpoint selection.
 5. Verify browser routes work with Vercel rewrites and Bun fallback.
-6. Decide whether to keep or remove hash prototype code.
+6. Decide whether to keep or remove hash app code.
 
 Run full verification:
 
@@ -298,7 +298,7 @@ bun run lint
 bun run typecheck
 ```
 
-Active prototype behaviour change:
+Active app behaviour change:
 
 ```sh
 bun run lint
@@ -330,13 +330,13 @@ bun run verify
 ## Known Pitfalls
 
 - `src/pages/*` is not active unless `AppRouter` is mounted.
-- `src/domain/*` does not drive the active prototype plan.
+- `src/domain/*` does not drive the active app plan.
 - Local session persistence is in memory only.
 - Firebase save can create a session ID on invalid input, local save rejects it.
 - Firestore direct client access is blocked.
 - PostHog may be undefined if token env is missing; use optional calls.
 - E2E tests use visible text selectors, so copy changes can break tests.
-- Generated Firebase prototype data should not be manually edited.
-- The active prototype stores prices in pounds as numbers; dormant domain stores pence as integers.
+- Generated Firebase app data should not be manually edited.
+- The active app stores prices in pounds as numbers; dormant domain stores pence as integers.
 - Active `MealType` is `cook|remix|fallback`; dormant `MealType` is `prep_base|remix|quick_cook|fallback`.
 
