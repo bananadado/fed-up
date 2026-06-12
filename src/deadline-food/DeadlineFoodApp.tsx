@@ -227,8 +227,16 @@ export function DeadlineFoodApp() {
     if (nextScreen !== "recipes") setDiscoverContext(null);
     enableSessionPersistence();
     scrollPositions.current.set(screen, window.scrollY);
-    pendingScroll.current = 0;
-    routeHistory.current = [...routeHistory.current, screen].slice(-20);
+    if (routeHistory.current.at(-1) === nextScreen) {
+      // Navigating to the screen we came from (e.g. an in-content "Back to plan"
+      // button): treat as Back — pop history and restore that screen's saved
+      // scroll offset rather than resetting to the top (#275).
+      routeHistory.current.pop();
+      pendingScroll.current = scrollPositions.current.get(nextScreen) ?? 0;
+    } else {
+      routeHistory.current = [...routeHistory.current, screen].slice(-20);
+      pendingScroll.current = 0;
+    }
     syncPreviousScreen();
     pendingHashScreen.current = nextScreen;
     window.history.pushState({ screen: nextScreen }, "", url ?? urlForScreen(nextScreen));

@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-06-12)
 
 ## Corpus Check
-- 238 files · ~392,959 words
+- 238 files · ~386,335 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7c8b4ada`
+- Built from commit: `6e995cbc`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -834,11 +834,11 @@ Nodes (5): estimateIngredientNutrition(), gramsForIngredient(), normalizeIngredi
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `RecipeIngredient` connect `Community 131` to `Community 36`, `Community 4`, `Community 6`, `Community 7`, `Community 49`, `Community 83`, `Community 25`, `Community 28`, `Community 63`?**
-  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **Why does `gramsForIngredient()` connect `Community 54` to `Community 40`, `Community 66`, `Community 83`, `Community 58`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `estimateRecipeCostPence()` connect `Community 54` to `Community 131`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+- **Why does `Random` connect `Community 8` to `Community 18`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **Are the 7 inferred relationships involving `AsyncSession` (e.g. with `ContextRequest` and `InteractionIn`) actually correct?**
   _`AsyncSession` has 7 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `database`, `location`, `rules` to the rest of the system?**

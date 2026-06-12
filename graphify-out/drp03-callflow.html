@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 3029 nodes, 6061 edges, 175 communities. Commit: 7c8b4ad</p>
+<p class="subtitle">Generated from graphify knowledge graph: 3029 nodes, 6061 edges, 175 communities. Commit: 6e995cb</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -3119,11 +3119,11 @@ flowchart LR
 </tr>
 <tr>
   <td>12</td>
-  <td><code>AutoPlan</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
-  <td><span class="tag tag-class">Class</span></td>
+  <td><code>autoPlan_1</code><br><small style="color:var(--muted)">functions/lib/index.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>AutoPlan node in functions/lib/index.js.</td>
+  <td>autoPlan_1 node in functions/lib/index.js.</td>
 </tr>
 <tr>
   <td>13</td>
@@ -4372,12 +4372,12 @@ flowchart LR
     lib_autoplan_classifyeffort_9caf92d8("classifyEffort()<br/><small>functions/lib/autoPlan.js</small>")
     lib_autoplan_batchyield_d12515d1("batchYield()<br/><small>functions/lib/autoPlan.js</small>")
     lib_autoplan_canonicaltag_0cf90078("canonicalTag()<br/><small>functions/lib/autoPlan.js</small>")
-    lib_autoplan_rankcandidates_be376911("rankCandidates()<br/><small>functions/lib/autoPlan.js</small>")
+    lib_autoplan_pickforslot_1271d4b6("pickForSlot()<br/><small>functions/lib/autoPlan.js</small>")
     lib_autoplan_includesanypattern_222f34be("includesAnyPattern()<br/><small>functions/lib/autoPlan.js</small>")
     lib_autoplan_isbatchslot_95f80679("isBatchSlot()<br/><small>functions/lib/autoPlan.js</small>")
     lib_autoplan_recentrepeatpenalty_ba82e696("recentRepeatPenalty()<br/><small>functions/lib/autoPlan.js</small>")
+    lib_autoplan_rankcandidates_be376911("rankCandidates()<br/><small>functions/lib/autoPlan.js</small>")
     lib_autoplan_leftoverportions_d0dffc65("leftoverPortions()<br/><small>functions/lib/autoPlan.js</small>")
-    lib_autoplan_pickforslot_1271d4b6("pickForSlot()<br/><small>functions/lib/autoPlan.js</small>")
     lib_autoplan_academic_event_pattern_64504e80("ACADEMIC_EVENT_PATTERN<br/><small>functions/lib/autoPlan.js</small>")
     lib_autoplan_animal_allergens_d7009daa("ANIMAL_ALLERGENS<br/><small>functions/lib/autoPlan.js</small>")
     lib_autoplan_animal_ingredient_patterns_ffb031dd("ANIMAL_INGREDIENT_PATTERNS<br/><small>functions/lib/autoPlan.js</small>")
@@ -4390,18 +4390,18 @@ flowchart LR
     lib_autoplan_canonicaltag_0cf90078 -->|calls| lib_autoplan_includesanypattern_222f34be
     lib_autoplan_classifyeffort_9caf92d8 -->|calls| lib_autoplan_isbatchslot_95f80679
     lib_autoplan_classifyeffort_9caf92d8 -->|calls| lib_autoplan_recentrepeatpenalty_ba82e696
+    lib_autoplan_pickforslot_1271d4b6 -->|calls| lib_autoplan_rankcandidates_be376911
     lib_autoplan_batchyield_d12515d1 -->|calls| lib_autoplan_leftoverportions_d0dffc65
-    lib_autoplan_rankcandidates_be376911 -->|calls| lib_autoplan_pickforslot_1271d4b6
     %% Omitted for readability: 19 nodes, 0 edges
     class lib_autoplan_classifyeffort_9caf92d8 function;
     class lib_autoplan_batchyield_d12515d1 function;
     class lib_autoplan_canonicaltag_0cf90078 function;
-    class lib_autoplan_rankcandidates_be376911 function;
+    class lib_autoplan_pickforslot_1271d4b6 function;
     class lib_autoplan_includesanypattern_222f34be function;
     class lib_autoplan_isbatchslot_95f80679 function;
     class lib_autoplan_recentrepeatpenalty_ba82e696 function;
+    class lib_autoplan_rankcandidates_be376911 function;
     class lib_autoplan_leftoverportions_d0dffc65 function;
-    class lib_autoplan_pickforslot_1271d4b6 function;
     class lib_autoplan_academic_event_pattern_64504e80 klass;
     class lib_autoplan_animal_allergens_d7009daa klass;
     class lib_autoplan_animal_ingredient_patterns_ffb031dd klass;
@@ -4450,22 +4450,6 @@ flowchart LR
 </tr>
 <tr>
   <td>3</td>
-  <td><code>DEFAULT_PRIORITIES</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>DEFAULT_PRIORITIES node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>DEFAULT_NUTRITION_TARGETS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>DEFAULT_NUTRITION_TARGETS node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>5</td>
   <td><code>TAG_ALIASES</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4473,7 +4457,7 @@ flowchart LR
   <td>TAG_ALIASES node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>4</td>
   <td><code>ANIMAL_ALLERGENS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4481,7 +4465,7 @@ flowchart LR
   <td>ANIMAL_ALLERGENS node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>5</td>
   <td><code>VEGETARIAN_ALLERGENS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4489,7 +4473,7 @@ flowchart LR
   <td>VEGETARIAN_ALLERGENS node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>6</td>
   <td><code>DAIRY_ALLERGENS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4497,7 +4481,7 @@ flowchart LR
   <td>DAIRY_ALLERGENS node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>7</td>
   <td><code>ANIMAL_INGREDIENT_PATTERNS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4505,7 +4489,7 @@ flowchart LR
   <td>ANIMAL_INGREDIENT_PATTERNS node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>8</td>
   <td><code>MEAT_FISH_INGREDIENT_PATTERNS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4513,7 +4497,7 @@ flowchart LR
   <td>MEAT_FISH_INGREDIENT_PATTERNS node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>9</td>
   <td><code>GLUTEN_INGREDIENT_PATTERNS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4521,7 +4505,7 @@ flowchart LR
   <td>GLUTEN_INGREDIENT_PATTERNS node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>10</td>
   <td><code>DAIRY_INGREDIENT_PATTERNS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4529,7 +4513,7 @@ flowchart LR
   <td>DAIRY_INGREDIENT_PATTERNS node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>11</td>
   <td><code>HALAL_INGREDIENT_PATTERNS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -4537,23 +4521,7 @@ flowchart LR
   <td>HALAL_INGREDIENT_PATTERNS node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>14</td>
-  <td><code>ACADEMIC_EVENT_PATTERN</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>ACADEMIC_EVENT_PATTERN node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>addDays()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>addDays() node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>16</td>
+  <td>12</td>
   <td><code>canonicalTag()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4561,7 +4529,7 @@ flowchart LR
   <td>canonicalTag() node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>13</td>
   <td><code>includesAnyPattern()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>canonicalTag()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
@@ -4569,7 +4537,7 @@ flowchart LR
   <td>includesAnyPattern() node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>14</td>
   <td><code>classifyEffort()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4577,7 +4545,7 @@ flowchart LR
   <td>classifyEffort() node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>15</td>
   <td><code>band()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4585,7 +4553,7 @@ flowchart LR
   <td>band() node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>16</td>
   <td><code>isSafe()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4593,7 +4561,7 @@ flowchart LR
   <td>isSafe() node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>17</td>
   <td><code>dayLabel()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4601,7 +4569,7 @@ flowchart LR
   <td>dayLabel() node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>18</td>
   <td><code>contextLabel()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4609,55 +4577,7 @@ flowchart LR
   <td>contextLabel() node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>23</td>
-  <td><code>variantRank()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>variantRank() node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>allowsFallback()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>allowsFallback() node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>batchYield()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>leftoverPortions()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td>batchYield() node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>leftoverPortions()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>batchYield()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>leftoverPortions() node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>isBatchSlot()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>classifyEffort()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>isBatchSlot() node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>wouldCreateMainMealRepeat()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>wouldCreateMainMealRepeat() node in functions/lib/autoPlan.js.</td>
-</tr>
-<tr>
-  <td>29</td>
+  <td>19</td>
   <td><code>remainingFillableSlotsInWeek()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4665,12 +4585,92 @@ flowchart LR
   <td>remainingFillableSlotsInWeek() node in functions/lib/autoPlan.js.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>20</td>
   <td><code>effortRank()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>effortRank() node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>pickForSlot()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>rankCandidates()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td>pickForSlot() node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>DEFAULT_PRIORITIES</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>DEFAULT_PRIORITIES node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>DEFAULT_NUTRITION_TARGETS</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>DEFAULT_NUTRITION_TARGETS node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>ACADEMIC_EVENT_PATTERN</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>ACADEMIC_EVENT_PATTERN node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>addDays()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>addDays() node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>variantRank()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>variantRank() node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>allowsFallback()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>allowsFallback() node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>batchYield()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>leftoverPortions()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td>batchYield() node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>leftoverPortions()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>batchYield()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>leftoverPortions() node in functions/lib/autoPlan.js.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>isBatchSlot()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>classifyEffort()</code><br><small style="color:var(--muted)">functions/lib/autoPlan.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>isBatchSlot() node in functions/lib/autoPlan.js.</td>
 </tr>
 </table>
 
@@ -5052,14 +5052,14 @@ flowchart LR
         lib_index_shareidforrecipe_8d56b618("shareIdForRecipe()<br/><small>functions/lib/index.js</small>")
         lib_index_ensurerecipesseeded_49d495c1("ensureRecipesSeeded()<br/><small>functions/lib/index.js</small>")
         lib_index_ensureshareids_2caad596("ensureShareIds()<br/><small>functions/lib/index.js</small>")
-        lib_index_curatednutritionproductforingredient_f4d8ed3d("curatedNutritionProductForIngredient()<br/><small>functions/lib/index.js</small>")
-        lib_index_normalizeingredientkey_dc018ba4("normalizeIngredientKey()<br/><small>functions/lib/index.js</small>")
-        lib_index_findnutritionproductforingredient_8a4770ab("findNutritionProductForIngredient()<br/><small>functions/lib/index.js</small>")
         lib_index_seedappdata_3a7dd4e7("seedAppData()<br/><small>functions/lib/index.js</small>")
         lib_index_getappdata_82e7a2b9("getAppData()<br/><small>functions/lib/index.js</small>")
         lib_index_data_1fd1ff03("data<br/><small>functions/lib/index.js</small>")
         lib_index_listrecipes_94f46f8d("listRecipes()<br/><small>functions/lib/index.js</small>")
         lib_index_recipebyshareid_8cd01d32("recipeByShareId()<br/><small>functions/lib/index.js</small>")
+        lib_index_canonicalrecommendertags_6a4b6677("canonicalRecommenderTags()<br/><small>functions/lib/index.js</small>")
+        lib_index_handleautoplan_a81d5f18("handleAutoPlan()<br/><small>functions/lib/index.js</small>")
+        lib_index_torecommenderrecipepayload_89013296("toRecommenderRecipePayload()<br/><small>functions/lib/index.js</small>")
     end
     src_deadline_food_components_primitives_tsx_ab3a258d("primitives.tsx")
     functions_src_index_ts_src_index_asrecord_f7655683("asRecord()<br/><small>functions/src/index.ts</small>")
@@ -5068,8 +5068,6 @@ flowchart LR
     lib_index_cyrb53_4bdb4d93 -->|calls| lib_index_shareidforrecipe_8d56b618
     lib_index_shareidforrecipe_8d56b618 -->|calls| lib_index_ensurerecipesseeded_49d495c1
     lib_index_shareidforrecipe_8d56b618 -->|calls| lib_index_ensureshareids_2caad596
-    lib_index_curatednutritionproductforingredient_f4d8ed3d -->|calls| lib_index_normalizeingredientkey_dc018ba4
-    lib_index_curatednutritionproductforingredient_f4d8ed3d -->|calls| lib_index_findnutritionproductforingredient_8a4770ab
     lib_index_seedappdata_3a7dd4e7 -->|calls| lib_index_getappdata_82e7a2b9
     lib_index_getappdata_82e7a2b9 -->|calls| lib_index_data_1fd1ff03
     lib_index_ensurerecipesseeded_49d495c1 -->|calls| lib_index_listrecipes_94f46f8d
@@ -5077,7 +5075,11 @@ flowchart LR
     lib_index_ensureshareids_2caad596 -->|calls| lib_index_listrecipes_94f46f8d
     lib_index_ensureshareids_2caad596 -->|calls| lib_index_recipebyshareid_8cd01d32
     lib_index_recipebyshareid_8cd01d32 -->|calls| lib_index_data_1fd1ff03
-    lib_index_normalizeingredientkey_dc018ba4 -->|calls| lib_index_findnutritionproductforingredient_8a4770ab
+    lib_index_canonicalrecommendertags_6a4b6677 -->|calls| lib_index_handleautoplan_a81d5f18
+    lib_index_canonicalrecommendertags_6a4b6677 -->|calls| lib_index_torecommenderrecipepayload_89013296
+    lib_index_torecommenderrecipepayload_89013296 -->|calls| lib_index_asrecord_ee234b0f
+    lib_index_asrecord_ee234b0f -->|calls| lib_index_handleautoplan_a81d5f18
+    lib_index_boundedstring_8bbbb209 -->|calls| lib_index_handleautoplan_a81d5f18
     src_deadline_food_components_primitives_tsx_ab3a258d -->|imports| lib_utils_cn_b8743bb6
     %% Omitted for readability: 786 nodes, 0 edges
     class lib_index_asrecord_ee234b0f function;
@@ -5086,14 +5088,14 @@ flowchart LR
     class lib_index_shareidforrecipe_8d56b618 function;
     class lib_index_ensurerecipesseeded_49d495c1 async;
     class lib_index_ensureshareids_2caad596 function;
-    class lib_index_curatednutritionproductforingredient_f4d8ed3d function;
-    class lib_index_normalizeingredientkey_dc018ba4 function;
-    class lib_index_findnutritionproductforingredient_8a4770ab function;
     class lib_index_seedappdata_3a7dd4e7 function;
     class lib_index_getappdata_82e7a2b9 function;
     class lib_index_data_1fd1ff03 function;
     class lib_index_listrecipes_94f46f8d function;
     class lib_index_recipebyshareid_8cd01d32 function;
+    class lib_index_canonicalrecommendertags_6a4b6677 function;
+    class lib_index_handleautoplan_a81d5f18 function;
+    class lib_index_torecommenderrecipepayload_89013296 function;
     class src_deadline_food_components_primitives_tsx_ab3a258d ui;
     class functions_src_index_ts_src_index_asrecord_f7655683 function;
     class src_apitester_tsx_e67681e5 test;
@@ -5408,7 +5410,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-12 15:58 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-12 16:09 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
