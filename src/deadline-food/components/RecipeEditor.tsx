@@ -719,22 +719,11 @@ export function RecipeEditor({
         )}
 
         {mode === "edit" && (
-          <div className="flex flex-wrap items-center gap-2">
-            <AppButton
-              type="button"
-              variant="secondary"
-              onClick={estimateCostFromIngredients}
-              disabled={ingredients.length === 0}
-              title={ingredients.length === 0 ? "Add at least one ingredient first" : undefined}
-            >
-              <RefreshCcw size={16} /> Estimate cost from ingredients
-            </AppButton>
-            <p className="text-xs text-stone-500">
-              {ingredients.length === 0
-                ? "Add ingredients below to estimate a rough cost per portion."
-                : "Fills in a rough cost per portion from illustrative grocery prices — adjust if needed."}
-            </p>
-          </div>
+          <p className="text-xs text-stone-500">
+            {ingredients.length === 0
+              ? "Add ingredients below to estimate a rough cost per portion."
+              : "Fills in a rough cost per portion from illustrative grocery prices — adjust if needed."}
+          </p>
         )}
 
         <div data-field-error={attempted && errors.ingredients || undefined}>
