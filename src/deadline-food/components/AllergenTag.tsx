@@ -24,8 +24,8 @@ const ALLERGEN_DISPLAY: Record<string, string> = {
 };
 
 // Standard menu-style allergen iconography. Keys are matched against a
-// normalized (lowercased) allergen name so that data variants
-// like "soy"/"soya" resolve to the same icon.
+// normalized (lowercased, singularized) allergen name so that data variants
+// like "eggs"/"egg" or "soy"/"soya" resolve to the same icon.
 const ALLERGEN_ICONS: Array<{ match: RegExp; icon: LucideIcon }> = [
   { match: /peanut/, icon: Nut },
   { match: /tree ?nut|^nut/, icon: Nut },
