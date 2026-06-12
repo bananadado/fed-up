@@ -29,6 +29,16 @@ describe("recipe ingredient helpers", () => {
     expect(formatIngredient({ name: "tomato", quantity: 50, unit: "g", preparation: "chopped" })).toBe("50g chopped tomato");
   });
 
+  test("does not pluralise uncountable names or measurement-unit abbreviations (#251 follow-up)", () => {
+    expect(formatIngredient({ name: "bacon", quantity: 4, unit: "item" })).toBe("4 bacon");
+    expect(formatIngredient({ name: "rice", quantity: 2, unit: "item" })).toBe("2 rice");
+    expect(formatIngredient({ name: "red wine vinegar", quantity: 1.5, unit: "tbsp" })).toBe("1.5 tbsp red wine vinegar");
+    expect(formatIngredient({ name: "salt", quantity: 2, unit: "tsp" })).toBe("2 tsp salt");
+    // count nouns still pluralise normally
+    expect(formatIngredient({ name: "egg", quantity: 3, unit: "item" })).toBe("3 eggs");
+    expect(formatIngredient({ name: "scallions", quantity: 3, unit: "item", preparation: "chopped" })).toBe("3 chopped scallions");
+  });
+
   test("sanitises structured ingredient drafts for OpenFoodFacts matching", () => {
     expect(
       sanitiseIngredientDrafts([

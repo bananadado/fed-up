@@ -338,7 +338,21 @@ export function formatIngredient(ingredient: RecipeIngredient | string) {
   return `${quantity} ${pluraliseUnit(ingredient.unit, ingredient.quantity)} ${preparation}${ingredient.name}`;
 }
 
+// Mass/uncountable food nouns that read wrong when pluralised ("4 bacons").
+const UNCOUNTABLE_INGREDIENT_NAMES = new Set([
+  "bacon", "beef", "pork", "chicken", "lamb", "fish", "tuna", "salmon", "ham",
+  "rice", "pasta", "couscous", "bread", "flour", "sugar", "salt", "pepper",
+  "butter", "oil", "water", "milk", "cream", "cheese", "yoghurt", "yogurt",
+  "honey", "jam", "garlic", "ginger", "spinach", "broccoli", "cauliflower",
+  "cabbage", "lettuce", "celery", "sweetcorn", "corn", "hummus", "tofu",
+  "mayonnaise", "ketchup", "mustard", "stock", "broth", "wine", "vinegar",
+]);
+
+// Measurement-unit abbreviations are invariant: "2 tbsp", not "2 tbsps".
+const INVARIANT_UNITS = new Set(["tbsp", "tsp", "g", "kg", "ml", "l", "oz", "lb", "fl oz"]);
+
 function pluraliseIngredientName(name: string) {
+  if (UNCOUNTABLE_INGREDIENT_NAMES.has(name.toLowerCase())) return name;
   if (name.endsWith("s")) return name;
   if (name.endsWith("y")) return `${name.slice(0, -1)}ies`;
   return `${name}s`;
@@ -346,6 +360,7 @@ function pluraliseIngredientName(name: string) {
 
 function pluraliseUnit(unit: string, quantity: number): string {
   if (quantity === 1) return unit;
+  if (INVARIANT_UNITS.has(unit)) return unit;
   if (unit.endsWith("s")) return unit;
   if (unit.endsWith("ch") || unit.endsWith("sh")) return `${unit}es`;
   return `${unit}s`;
