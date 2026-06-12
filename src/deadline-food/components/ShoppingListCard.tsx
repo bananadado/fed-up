@@ -112,7 +112,6 @@ export function ShoppingListCard({
   showEstimatedCost?: boolean;
 }) {
   const [copied, setCopied] = useState(false);
-  const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => readStoredCheckedItems(storageKey, items));
   const outstandingItems = useMemo(() => items.filter((item) => !checkedItems[shoppingItemKey(item)]), [checkedItems, items]);
   const listText = useMemo(() => formatShoppingList(outstandingItems), [outstandingItems]);
@@ -130,9 +129,7 @@ export function ShoppingListCard({
 
     await writeClipboardText(listText);
     onCopy?.();
-    const count = outstandingItems.length;
     setCopied(true);
-    setCopyMessage(`Copied ${count} item${count === 1 ? "" : "s"} — paste into a note or your supermarket's search box.`);
     window.setTimeout(() => setCopied(false), 1800);
   }
 
