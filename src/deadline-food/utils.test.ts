@@ -38,6 +38,58 @@ describe("keyIngredients", () => {
     const ingredients = [serving("a"), serving("b"), serving("c"), serving("d"), serving("e")];
     expect(keyIngredients("A B Dish", ingredients, 3)).toBe("a, b, c");
   });
+
+  test("excludes base pantry staples like sunflower oil (issue #249)", () => {
+    const ingredients = [
+      serving("sunflower oil"),
+      serving("chicken"),
+      serving("paprika"),
+      serving("rice"),
+    ];
+    expect(keyIngredients("Spiced Chicken", ingredients, 5)).toBe("chicken, paprika, rice");
+  });
+
+  test("fills freed slots with the next significant ingredients", () => {
+    // oil and salt would otherwise occupy two of the three slots
+    const ingredients = [
+      serving("olive oil"),
+      serving("salt"),
+      serving("tomato"),
+      serving("basil"),
+      serving("garlic"),
+    ];
+    expect(keyIngredients("Tomato Salad", ingredients, 3)).toBe("tomato, basil, garlic");
+  });
+
+  test("excludes salt, pepper, water, flour and sugar variants", () => {
+    const ingredients = [
+      serving("sea salt"),
+      serving("black pepper"),
+      serving("water"),
+      serving("self-raising flour"),
+      serving("caster sugar"),
+      serving("apple"),
+      serving("cinnamon"),
+    ];
+    expect(keyIngredients("Apple Treat", ingredients, 5)).toBe("apple, cinnamon");
+  });
+
+  test("keeps non-staple condiments such as soy sauce", () => {
+    const ingredients = [serving("vegetable oil"), serving("soy sauce"), serving("tofu")];
+    expect(keyIngredients("Glazed Tofu", ingredients, 5)).toBe("tofu, soy sauce");
+  });
+
+  test("keeps ingredients that merely share a modifier word (e.g. 'ground beef')", () => {
+    // "ground" is a staple modifier, but only excludes when paired with a
+    // staple noun like "pepper" — "beef"/"almonds" are real ingredients.
+    const ingredients = [serving("ground beef"), serving("ground almonds"), serving("salt")];
+    expect(keyIngredients("Beef Bake", ingredients, 5)).toBe("ground beef, ground almonds");
+  });
+
+  test("keeps staples when a recipe is made only of staples", () => {
+    const ingredients = [serving("sunflower oil"), serving("salt")];
+    expect(keyIngredients("Seasoned Oil", ingredients, 5)).toBe("sunflower oil, salt");
+  });
 });
 
 describe("sourceUrl", () => {

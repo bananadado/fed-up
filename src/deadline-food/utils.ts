@@ -139,16 +139,62 @@ const NAME_STOPWORDS = new Set([
   "to", "from", "by", "&", "style", "based",
 ]);
 
+// Base pantry staples (oils, salt, pepper, water, flour, sugar). These are
+// assumed on hand and don't characterise a dish, so they are excluded from
+// key-ingredient selection (issue #249, e.g. "sunflower oil").
+const PANTRY_STAPLE_NOUNS = new Set([
+  "oil", "salt", "pepper", "water", "flour", "sugar",
+]);
+// Modifiers that qualify a staple noun without changing that it's a staple,
+// e.g. "sunflower oil", "sea salt", "self-raising flour", "caster sugar".
+const PANTRY_STAPLE_MODIFIERS = new Set([
+  "sunflower", "vegetable", "olive", "extra", "virgin", "sesame", "coconut",
+  "rapeseed", "canola", "groundnut", "peanut", "sea", "table", "kosher",
+  "black", "white", "ground", "cracked", "caster", "granulated", "icing",
+  "plain", "self", "raising", "all", "purpose", "cold", "warm", "boiling",
+]);
+
+/**
+ * True when an ingredient is a base pantry staple — every word is either a
+ * staple noun (oil, salt, …) or a recognised modifier, and at least one is a
+ * staple noun. This keeps "soy sauce" or "lemon juice" out while catching
+ * "sunflower oil", "black pepper", "all-purpose flour", etc.
+ */
+function isPantryStaple(name: string): boolean {
+  const words = name
+    .toLowerCase()
+    .replace(/[^a-z\s]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (words.length === 0) return false;
+
+  return (
+    words.some((w) => PANTRY_STAPLE_NOUNS.has(w)) &&
+    words.every(
+      (w) => PANTRY_STAPLE_NOUNS.has(w) || PANTRY_STAPLE_MODIFIERS.has(w),
+    )
+  );
+}
+
 /**
  * Returns the top `limit` key ingredients for a named dish, ranked so that
  * ingredients mentioned in the dish name appear first. Ingredients with no
- * name-word match fall back to their original list order.
+ * name-word match fall back to their original list order. Base pantry staples
+ * (oils, salt, pepper, water, flour, sugar) are excluded so the slots go to
+ * ingredients that actually characterise the dish; if a recipe is *only*
+ * staples they are kept so we never show an empty list.
  */
 export function keyIngredients(
   name: string,
   ingredients: RecipeIngredient[],
   limit = 5,
 ): string {
+  const significant = ingredients.filter(
+    (ingredient) => !isPantryStaple(ingredientName(ingredient)),
+  );
+  const pool = significant.length > 0 ? significant : ingredients;
+
   const titleWords = name
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, " ")
@@ -156,10 +202,10 @@ export function keyIngredients(
     .filter((w) => w.length > 1 && !NAME_STOPWORDS.has(w));
 
   if (titleWords.length === 0) {
-    return ingredientNames(ingredients, limit);
+    return ingredientNames(pool, limit);
   }
 
-  const scored = ingredients.map((ingredient, index) => {
+  const scored = pool.map((ingredient, index) => {
     const ingName = ingredientName(ingredient).toLowerCase();
     const score = titleWords.filter((w) => ingName.includes(w)).length;
     return { ingredient, score, index };
