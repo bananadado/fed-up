@@ -6,6 +6,7 @@ export type MeasurableIngredient = {
 
 export type ParsedIngredientMeasure = MeasurableIngredient & {
   originalMeasure: string;
+  preparation?: string;
 };
 
 const GRAMS_PER_OUNCE = 28.3495;
@@ -173,6 +174,26 @@ function normalizeText(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+// TheMealDB frequently writes amounts with Unicode vulgar fractions
+// ("1 ½ tbsp", "½ cup"). Expand them to ASCII ("1 1/2", "1/2") so the numeric
+// parsers below understand them instead of dropping the fraction and the unit.
+const VULGAR_FRACTIONS: Record<string, string> = {
+  "¼": "1/4", "½": "1/2", "¾": "3/4",
+  "⅓": "1/3", "⅔": "2/3",
+  "⅕": "1/5", "⅖": "2/5", "⅗": "3/5", "⅘": "4/5",
+  "⅙": "1/6", "⅚": "5/6",
+  "⅐": "1/7", "⅛": "1/8", "⅜": "3/8", "⅝": "5/8", "⅞": "7/8",
+  "⅑": "1/9", "⅒": "1/10",
+};
+const VULGAR_FRACTION_CLASS = `[${Object.keys(VULGAR_FRACTIONS).join("")}]`;
+
+export function expandVulgarFractions(value: string): string {
+  return value
+    // Split a whole number stuck to a fraction so "1½" matches "1 1/2".
+    .replace(new RegExp(`(\\d)\\s*(${VULGAR_FRACTION_CLASS})`, "g"), "$1 $2")
+    .replace(new RegExp(VULGAR_FRACTION_CLASS, "g"), (ch) => VULGAR_FRACTIONS[ch] ?? ch);
+}
+
 export function normalizeIngredientUnit(unit: string): string {
   const normalized = normalizeText(unit).replace(/\.$/, "");
   const alias = UNIT_ALIASES.get(normalized);
@@ -190,8 +211,39 @@ export function normalizeIngredientUnit(unit: string): string {
   return normalized;
 }
 
+// Preparation words that can trail (or stand in for) the unit in a measure,
+// e.g. "3 chopped", "1 clove peeled crushed", "2 tbsp finely chopped". Kept in
+// sync with the display-side vocab (src/deadline-food/unitConversion.ts and
+// ingredients.ts) plus the common adverbs TheMealDB uses. Extracting these into
+// a `preparation` field keeps the unit clean so the app renders "3 chopped
+// scallions" rather than treating "chopped" as a unit ("3 servings chopped …").
+const MEASURE_PREPARATION_WORDS = new Set([
+  "chopped", "sliced", "diced", "grated", "minced", "mashed", "pressed",
+  "peeled", "crushed", "beaten", "melted", "softened", "shredded", "cubed",
+  "drained", "rinsed", "cooked", "raw", "toasted", "roasted", "fresh", "dried",
+  "frozen", "tinned", "canned", "whole", "halved", "quartered", "trimmed",
+  "deseeded", "seeded", "zested", "juiced", "boneless", "skinless",
+  // adverbs that modify a following prep word
+  "finely", "freshly", "roughly", "thinly", "coarsely", "lightly",
+]);
+
+/** Separate trailing/standalone preparation words from the unit portion of a
+ *  measure. Returns the cleaned unit (defaulting to a count when only prep words
+ *  remain) and the joined preparation, or null prep when there is none. */
+function splitUnitAndPreparation(rawUnit: string): { unit: string; preparation?: string } {
+  const tokens = rawUnit.split(/\s+/).filter(Boolean);
+  const prepTokens = tokens.filter((t) => MEASURE_PREPARATION_WORDS.has(t));
+  if (prepTokens.length === 0) {
+    return { unit: normalizeIngredientUnit(rawUnit || "item") };
+  }
+  const unitTokens = tokens.filter((t) => !MEASURE_PREPARATION_WORDS.has(t));
+  // No real unit left (e.g. "3 chopped") → it's a count of whole items.
+  const unit = unitTokens.length > 0 ? normalizeIngredientUnit(unitTokens.join(" ")) : "item";
+  return { unit, preparation: prepTokens.join(" ") };
+}
+
 export function parseQuantity(raw: string): number {
-  const trimmed = raw.trim();
+  const trimmed = expandVulgarFractions(raw.trim());
   const mixed = trimmed.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
   if (mixed) {
     const whole = Number(mixed[1]);
@@ -258,7 +310,7 @@ export function gramsForIngredient(ingredient: MeasurableIngredient): number {
 }
 
 export function parseMeasureToIngredient(name: string, measure: string): ParsedIngredientMeasure {
-  const normalizedMeasure = normalizeText(measure);
+  const normalizedMeasure = expandVulgarFractions(normalizeText(measure));
   if (
     !normalizedMeasure ||
     normalizedMeasure === "to taste" ||
@@ -272,8 +324,12 @@ export function parseMeasureToIngredient(name: string, measure: string): ParsedI
     return { name, quantity: 1, unit: "pinch", originalMeasure: measure };
   }
 
+  // Order matters: try mixed numbers ("1 1/2") and bare fractions ("1/2")
+  // before a plain integer/decimal. Otherwise the leading "\d+" branch matches
+  // just the "1" of "1/2 cup", swallowing the "/2" and the unit — turning
+  // "1/2 cup" into "1 item" instead of "0.5 cup".
   const match = normalizedMeasure.match(
-    /^(\d+(?:\.\d+)?(?:\s+\d+\s*\/\s*\d+)?|\d+\s*\/\s*\d+)\s*([a-z. ]+)?/,
+    /^(\d+\s+\d+\s*\/\s*\d+|\d+\s*\/\s*\d+|\d+(?:\.\d+)?)\s*([a-z. ]+)?/,
   );
 
   if (!match) {
@@ -282,12 +338,13 @@ export function parseMeasureToIngredient(name: string, measure: string): ParsedI
 
   const quantity = parseQuantity(match[1] ?? "1");
   const rawUnit = (match[2] ?? "").trim();
-  const normalizedUnit = normalizeIngredientUnit(rawUnit || "item");
+  const { unit, preparation } = splitUnitAndPreparation(rawUnit);
 
   return {
     name,
     quantity,
-    unit: normalizedUnit,
+    unit,
     originalMeasure: measure,
+    ...(preparation ? { preparation } : {}),
   };
 }
