@@ -4,6 +4,10 @@ from collections.abc import Iterable
 
 
 TAG_ALIASES = {
+    # Canonical (singular) allergen/tag keys used for matching. Display layers
+    # may pluralize these (e.g. the frontend shows "peanuts"); matching stays on
+    # the canonical form so a user's "Peanuts" still filters a recipe's "peanut".
+    "peanuts": "peanut",
     "eggs": "egg",
 }
 

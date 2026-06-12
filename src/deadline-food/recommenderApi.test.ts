@@ -93,7 +93,7 @@ describe("recommender API helpers", () => {
 
     expect(requestBodies[0]).toMatchObject({
       id: "session-1",
-      allergens: ["gluten", "peanuts"],
+      allergens: ["gluten", "peanut"],
       dislikes: ["spicy food"],
       likes: ["high-protein meals"],
     });

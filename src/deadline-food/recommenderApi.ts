@@ -71,7 +71,11 @@ function cookingAbility(ability: string): string {
   return ability || "basic";
 }
 
+// Canonical (singular) keys used for recommender matching. Display layers
+// pluralize where appropriate (see ALLERGEN_DISPLAY in AllergenTag) — keep
+// matching on the canonical form so "Peanuts" still filters a "peanut" recipe.
 const recommenderTagAliases: Record<string, string> = {
+  peanuts: "peanut",
   eggs: "egg",
 };
 
