@@ -1063,11 +1063,20 @@ async function enrichRecommendedRecipes(body: unknown): Promise<unknown> {
   const uniqueIds = [...new Set(recipeIds)];
   const snapshots = await firestore.getAll(...uniqueIds.map((id) => recipesRef.doc(id)));
   const photosByRecipeId = new Map<string, string>();
+  // Servings is canonical recipe metadata the recommender doesn't store, so
+  // hydrate it from Firestore here (issue #189) rather than round-tripping it
+  // through pgvector — same approach as photoUrl above.
+  const servingsByRecipeId = new Map<string, number>();
 
   snapshots.forEach((snapshot) => {
+    if (!snapshot.exists) return;
     const photoUrl = snapshot.data()?.photoUrl;
-    if (snapshot.exists && typeof photoUrl === "string" && photoUrl.trim()) {
+    if (typeof photoUrl === "string" && photoUrl.trim()) {
       photosByRecipeId.set(snapshot.id, photoUrl);
+    }
+    const servings = snapshot.data()?.servings;
+    if (typeof servings === "number" && Number.isFinite(servings)) {
+      servingsByRecipeId.set(snapshot.id, servings);
     }
   });
 
@@ -1076,8 +1085,9 @@ async function enrichRecommendedRecipes(body: unknown): Promise<unknown> {
     const recipe = asRecord(scoredRecipe?.recipe);
     const recipeId = typeof recipe?.id === "string" ? recipe.id : "";
     const photoUrl = photosByRecipeId.get(recipeId);
+    const servings = servingsByRecipeId.get(recipeId);
 
-    if (!scoredRecipe || !recipe || !photoUrl) {
+    if (!scoredRecipe || !recipe || (photoUrl === undefined && servings === undefined)) {
       return item;
     }
 
@@ -1085,7 +1095,8 @@ async function enrichRecommendedRecipes(body: unknown): Promise<unknown> {
       ...scoredRecipe,
       recipe: {
         ...recipe,
-        photoUrl,
+        ...(photoUrl !== undefined ? {photoUrl} : {}),
+        ...(servings !== undefined ? {servings} : {}),
       },
     };
   });
@@ -1337,6 +1348,7 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
 
   const avgStress = days.reduce((sum, d) => sum + d.stress, 0) / (days.length || 1);
   const fillAlloc: AutoPlan.AllocatorMeal[] = [];
+  const fillIds: string[] = [];
   if (userId) {
     const fill = await callRecommenderJson("/recommend", {
       user_id: userId,
@@ -1353,9 +1365,25 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
         if (!id || excludedIds.has(id) || mealsById.has(id)) continue;
         const meal = recommenderRecipeToMeal(recipe);
         mealsById.set(id, meal);
+        fillIds.push(id);
         fillAlloc.push(mealToAllocator(meal));
       }
     }
+  }
+
+  // The recommender doesn't store servings, so hydrate it from the canonical
+  // Firestore docs onto the recommender-fill meals (issue #189) — mirrors
+  // enrichRecommendedRecipes. Saved recipes and the appRecipes fallback already
+  // carry servings, so only the fill meals need patching.
+  if (fillIds.length > 0) {
+    const snapshots = await firestore.getAll(...fillIds.map((id) => recipesRef.doc(id)));
+    snapshots.forEach((snapshot) => {
+      const servings = snapshot.data()?.servings;
+      const meal = mealsById.get(snapshot.id);
+      if (meal && typeof servings === "number" && Number.isFinite(servings)) {
+        mealsById.set(snapshot.id, {...meal, servings});
+      }
+    });
   }
 
   // Deterministic final fallback: if the user has few/no saved recipes and the
