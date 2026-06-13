@@ -1,5 +1,5 @@
 import { ChevronDown, Clock3, Flame, Heart, Layers, RefreshCcw, ShoppingBag, ShoppingBasket, Sparkles, Soup, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import { mealSlots } from "../data";
@@ -10,6 +10,7 @@ import { ShoppingListCard } from "../components/ShoppingListCard";
 import { AppButton, Badge } from "../components/primitives";
 import { SwapModal, slotLabels } from "../components/SwapModal";
 import { SHOPPING_SCOPE_DAYS, groceryVendorById, groceryVendors, ingredientsFromPlan, scopePlanEntries, type ShoppingScope } from "../shopping";
+import { formatStoreDistance } from "../location";
 import { getMealById, mealById, money } from "../utils";
 import { mealHealthSignals } from "../healthSignals";
 import type { TrackEvent } from "../analytics";
@@ -106,7 +107,19 @@ export function PlanScreen({
     } catch { /* sessionStorage unavailable */ }
     return false;
   });
-  const [shoppingVendorId, setShoppingVendorId] = useState(groceryVendors[0].id);
+  // Default to the nearest big supermarket derived from the postcode (issue
+  // #272), falling back to the first vendor when no location is known.
+  const [shoppingVendorId, setShoppingVendorId] = useState(prefs.homeVendorId ?? groceryVendors[0].id);
+  // Adopt a later-resolving nearest store only until the user picks a vendor.
+  const vendorTouchedRef = useRef(false);
+  useEffect(() => {
+    if (!vendorTouchedRef.current && prefs.homeVendorId) {
+      setShoppingVendorId(prefs.homeVendorId);
+    }
+  }, [prefs.homeVendorId]);
+  const nearestStoreHint = prefs.nearestStore
+    ? `Nearest big supermarket near you: ${prefs.nearestStore.name} (~${formatStoreDistance(prefs.nearestStore.distanceMeters)}) — illustrative.`
+    : undefined;
   const [shoppingScope, setShoppingScope] = useState<ShoppingScope>(() => {
     try {
       return window.localStorage.getItem("deadline-food:plan-shopping-scope") === "all" ? "all" : "week";
@@ -453,7 +466,8 @@ export function PlanScreen({
                 showEstimatedCost
                 selectedVendor={groceryVendorById(shoppingVendorId)}
                 vendors={groceryVendors}
-                onSelectVendor={setShoppingVendorId}
+                nearestStoreHint={nearestStoreHint}
+                onSelectVendor={(vendorId) => { vendorTouchedRef.current = true; setShoppingVendorId(vendorId); }}
                 onOpenIngredient={(ingredient) => {
                   track("vendor_shopping_item_opened", { ingredient, vendor: shoppingVendorId, source: "plan" });
                   window.open(groceryVendorById(shoppingVendorId).searchUrl(ingredient), "_blank", "noopener");

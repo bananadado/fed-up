@@ -28,6 +28,7 @@ import {
   syncRecommenderUser,
   type RecipeState,
 } from "./recommenderApi";
+import { fetchNearbyStores } from "./location";
 import { isVerified, mealById } from "./utils";
 import { recipeShareToken, shareIdForRecipe } from "./recipeShare";
 import { computePlanSignature, generateAutoPlan } from "./autoPlanApi";
@@ -766,6 +767,51 @@ export function DeadlineFoodApp() {
 
   const autoPlanAttemptRef = useRef<string | null>(null);
 
+  // Resolve the nearest big supermarket from the postcode (issue #272) and store
+  // the derived vendor/store/location on prefs. Debounced and keyed only on the
+  // postcode so writing the derived fields back never re-triggers the lookup.
+  useEffect(() => {
+    const postcode = prefs.postcode.trim();
+    const controller = new AbortController();
+
+    const timer = window.setTimeout(() => {
+      if (!postcode) {
+        // Postcode cleared: drop any stale derived location so the shopping list
+        // reverts to its generic default.
+        setPrefs((prev) => (prev.homeVendorId || prev.nearestStore || prev.geo
+          ? { ...prev, homeVendorId: undefined, nearestStore: undefined, geo: undefined }
+          : prev));
+        return;
+      }
+
+      fetchNearbyStores(postcode, controller.signal)
+        .then((result) => {
+          if (!result.ok) return;
+          setPrefs((prev) => {
+            const geo = { latitude: result.location.latitude, longitude: result.location.longitude, ...(result.location.region ? { region: result.location.region } : {}) };
+            return {
+              ...prev,
+              homeVendorId: result.nearestVendorId,
+              nearestStore: { name: result.nearestStore.name, vendorId: result.nearestStore.vendorId, distanceMeters: result.nearestStore.distanceMeters },
+              geo,
+            };
+          });
+          track("nearby_store_resolved", { vendor: result.nearestVendorId });
+        })
+        .catch((error) => {
+          if (!controller.signal.aborted) {
+            console.warn("Nearby store lookup failed.", error);
+          }
+        });
+    }, 600);
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefs.postcode]);
+
   const completeOnboardingAfterAccountCreated = useCallback(() => {
     autoPlanAttemptRef.current = null;
     enableSessionPersistence();
@@ -1310,7 +1356,7 @@ export function DeadlineFoodApp() {
       {activeScreen === "plan" && <PlanScreen prefs={prefs} plan={plan} setPlan={setPlan} customRecipes={customRecipes} discoverSaved={discoverSaved} setScreen={navigateScreen} onSelectMeal={openRecipe} planStale={planStale} planGenerated={planGeneratedAt !== undefined} regenerating={planGenerating} onRegenerate={regeneratePlan} regenMode={prefs.planRegenMode} openDiscover={openDiscover} track={track} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} sessionId={sessionId} deadlines={deadlines} />}
       {activeScreen === "recipes" && <RecipesHubScreen customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} discoverRejected={discoverRejected} setDiscoverRejected={setDiscoverRejected} discoverReviewedRecipeIds={discoverReviewedRecipeIds} setDiscoverReviewedRecipeIds={setDiscoverReviewedRecipeIds} discoverRecommendationState={discoverRecommendationState} setDiscoverRecommendationState={setDiscoverRecommendationState} requestRecommendations={requestDiscoverRecommendations} prefs={prefs} deadlines={deadlines} sessionId={sessionId} onSelectMeal={openRecipe} onAddToPlan={openAddToPlan} discoverContext={discoverContext} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} />}
       {activeScreen === "settings" && <SettingsScreen prefs={prefs} setPrefs={setPrefs} setScreen={navigateScreen} calendarProvider={calendarProvider} setCalendarProvider={setCalendarProvider} setDeadlines={setDeadlines} calendarEvents={calendarEvents} setCalendarEvents={setCalendarEvents} icsSubscriptions={icsSubscriptions} setIcsSubscriptions={setIcsSubscriptions} calendarTokens={calendarTokens} setCalendarTokens={setCalendarTokens} sessionId={sessionId} account={account} accountMessage={accountMessage} accountMessageTone={accountMessageTone} accountBusy={accountBusy} onConnectAccount={connectAccount} onSendEmailMagicLink={sendEmailMagicLink} onLogout={logoutAccount} onDeleteAccount={deleteAccount} track={track} />}
-      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} sharedRecipe={sharedRecipe} account={account} sharedRecipeStatus={sharedRecipeStatus} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} unitSystem={prefs.unitSystem} />}
+      {activeScreen === "recipe-detail" && <RecipeDetailScreen key={selectedMealId} mealId={selectedMealId} customRecipes={customRecipes} setCustomRecipes={setCustomRecipes} discoverSaved={discoverSaved} setDiscoverSaved={setDiscoverSaved} sharedRecipe={sharedRecipe} account={account} sharedRecipeStatus={sharedRecipeStatus} setScreen={navigateScreen} backTo={previousScreen} onSelectMeal={openRecipe} deletedRecipeIds={deletedRecipeIds} unpublishedRecipeIds={unpublishedRecipeIds} track={track} unitSystem={prefs.unitSystem} defaultVendorId={prefs.homeVendorId} />}
     </Shell>
   );
 }

@@ -157,6 +157,12 @@ const server = serve({
       },
     },
 
+    "/api/deadline-food/stores/nearby": {
+      async POST(req) {
+        return proxyToFirebaseFunction("deadlineFoodNearbyStores", req);
+      },
+    },
+
     "/api/deadline-food/recipes": {
       async GET(req) {
         return proxyToFirebaseFunction("deadlineFoodRecipes", req);

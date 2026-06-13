@@ -29,6 +29,7 @@ const sections = [
     title: "How we use information",
     body: [
       "We use your information to create and maintain your meal plan, adapt cooking effort around deadline pressure, filter for dietary requirements and allergens, suggest campus or nearby fallback options, save session state, improve recommendations, debug reliability issues and measure aggregate product usage.",
+      "If you provide a postcode, we look it up to find the nearest big supermarket and default your shopping list to it. The lookup happens on our server using third-party geocoding and map data; your raw postcode is not shared with analytics or stored in event logs.",
       "We do not sell personal information. We do not use your calendar, allergy, dietary or location preference data for advertising.",
     ],
   },

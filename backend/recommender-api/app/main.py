@@ -78,9 +78,35 @@ async def _ensure_verified_column():
         log_event(logging.INFO, "migration_applied", migration="recipes_verified")
 
 
+async def _ensure_user_location_columns():
+    """Idempotent startup migration for the user location columns (issue #272).
+
+    Like the recipes.verified migration, init.sql only runs on a fresh data
+    directory, so existing deployments need these added on boot. No-ops once the
+    columns exist.
+    """
+    if engine.dialect.name != "postgresql":
+        return  # SQLite test backend declares the columns in its own schema
+    async with engine.begin() as conn:
+        exists = await conn.scalar(text(
+            "SELECT 1 FROM information_schema.columns "
+            "WHERE table_name = 'users' AND column_name = 'latitude'"
+        ))
+        if exists:
+            return
+        await conn.execute(text(
+            "ALTER TABLE users "
+            "ADD COLUMN latitude DOUBLE PRECISION, "
+            "ADD COLUMN longitude DOUBLE PRECISION, "
+            "ADD COLUMN region TEXT"
+        ))
+        log_event(logging.INFO, "migration_applied", migration="users_location")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await _ensure_verified_column()
+    await _ensure_user_location_columns()
     from .embeddings import get_model
     log_event(logging.INFO, "model_load_started")
     get_model()
@@ -237,15 +263,19 @@ async def create_user(user: UserIn, db: AsyncSession = Depends(get_db)):
     await db.execute(
         text("""
             INSERT INTO users (id, cooking_ability, kitchen_access, budget_pence, max_time_minutes,
-                dietary_tags, allergens, dislikes, likes, university, postcode)
+                dietary_tags, allergens, dislikes, likes, university, postcode,
+                latitude, longitude, region)
             VALUES (:id, :cooking_ability, :kitchen_access, :budget_pence, :max_time_minutes,
-                :dietary_tags, :allergens, :dislikes, :likes, :university, :postcode)
+                :dietary_tags, :allergens, :dislikes, :likes, :university, :postcode,
+                :latitude, :longitude, :region)
             ON CONFLICT (id) DO UPDATE SET
                 cooking_ability = EXCLUDED.cooking_ability, kitchen_access = EXCLUDED.kitchen_access,
                 budget_pence = EXCLUDED.budget_pence, max_time_minutes = EXCLUDED.max_time_minutes,
                 dietary_tags = EXCLUDED.dietary_tags, allergens = EXCLUDED.allergens,
                 dislikes = EXCLUDED.dislikes, likes = EXCLUDED.likes,
                 university = EXCLUDED.university, postcode = EXCLUDED.postcode,
+                latitude = EXCLUDED.latitude, longitude = EXCLUDED.longitude,
+                region = EXCLUDED.region,
                 updated_at = now()
         """),
         d,

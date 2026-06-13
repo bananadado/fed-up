@@ -1,7 +1,9 @@
 import type { CalendarEvent, CalendarProvider, Deadline, Meal, PlanEntry, Preferences } from "./types";
+import { groceryVendors } from "./shopping";
 
 export const ANONYMOUS_SESSION_STORAGE_KEY = "deadlineFoodAnonymousSessionId";
-export const SESSION_SETTINGS_VERSION = 4;
+// v5 adds derived location fields (homeVendorId/nearestStore/geo, issue #272).
+export const SESSION_SETTINGS_VERSION = 5;
 export const SESSION_RETENTION_DAYS = 90;
 export const PRIVACY_POLICY_VERSION = "2026-06-09";
 export const PRIVACY_POLICY_URL = "/privacy-policy";
@@ -59,12 +61,24 @@ export type SessionSettings = {
  */
 export function normalizePreferences(raw: Preferences): Preferences {
   const horizon = Number.isFinite(raw.planningHorizonDays) ? raw.planningHorizonDays : 21;
+  // Drop a derived vendor we no longer ship so the shopping list never defaults
+  // to a missing chain; the lookup will repopulate it on the next postcode sync.
+  const homeVendorId =
+    raw.homeVendorId && groceryVendors.some((vendor) => vendor.id === raw.homeVendorId)
+      ? raw.homeVendorId
+      : undefined;
+  const nearestStore =
+    raw.nearestStore && homeVendorId && raw.nearestStore.vendorId === homeVendorId
+      ? raw.nearestStore
+      : undefined;
   return {
     ...raw,
     planningHorizonDays: Math.min(28, Math.max(1, Math.round(horizon))),
     planRegenMode: raw.planRegenMode === "auto" ? "auto" : "prompt",
     unitSystem: raw.unitSystem === "imperial" ? "imperial" : "metric",
     prepReminderTime: /^\d{1,2}:\d{2}$/.test(raw.prepReminderTime ?? "") ? raw.prepReminderTime : "22:00",
+    homeVendorId,
+    nearestStore,
   };
 }
 

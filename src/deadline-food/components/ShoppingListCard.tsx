@@ -84,6 +84,7 @@ export function ShoppingListCard({
   items,
   selectedVendor,
   vendors,
+  nearestStoreHint,
   onSelectVendor,
   onOpenIngredient,
   onCopy,
@@ -99,6 +100,8 @@ export function ShoppingListCard({
   items: ShoppingItem[];
   selectedVendor: GroceryVendor;
   vendors: GroceryVendor[];
+  /** Illustrative hint naming the nearest big supermarket to the user's postcode. */
+  nearestStoreHint?: string;
   onSelectVendor: (vendorId: string) => void;
   onOpenIngredient: (ingredient: string) => void;
   onCopy?: () => void;
@@ -212,6 +215,9 @@ export function ShoppingListCard({
           options={vendors.map((vendor) => ({ label: vendor.label, value: vendor.id }))}
           onChange={onSelectVendor}
         />
+        {nearestStoreHint && (
+          <p className="mt-1.5 text-xs text-stone-500">{nearestStoreHint}</p>
+        )}
       </div>
 
       <div className="mt-4 grid gap-2">

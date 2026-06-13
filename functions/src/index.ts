@@ -42,6 +42,7 @@ const recipeReviewsRef = firestore.collection("recipeReviews");
 const anonymousSessionsRef = firestore.collection("anonymousSessions");
 const accountSessionsRef = firestore.collection("accountSessions");
 const openFoodFactsCacheRef = firestore.collection("openFoodFactsNutritionCache");
+const nearbyStoresCacheRef = firestore.collection("nearbyStoresCache");
 const anonymousSessionIdPattern = /^[A-Za-z0-9_-]{16,80}$/;
 const recipeIdPattern = /^[A-Za-z0-9_-]{1,80}$/;
 // Public, URL-safe share slug derived deterministically from the canonical
@@ -68,9 +69,9 @@ function shareIdForRecipe(recipeId: string): string {
 }
 const sessionRetentionDays = 90;
 const sessionRetentionMs = sessionRetentionDays * 24 * 60 * 60 * 1000;
-const sessionSettingsVersion = 4;
+const sessionSettingsVersion = 5;
 // Versions whose payloads we can read & migrate forward to the current schema.
-const supportedSessionSettingsVersions = new Set([1, 2, 3, 4]);
+const supportedSessionSettingsVersions = new Set([1, 2, 3, 4, 5]);
 const privacyPolicyVersion = "2026-06-09";
 const privacyPolicyUrl = "/privacy-policy";
 const publicHttpOptions = {cors: true, invoker: "public"} as const;
@@ -125,6 +126,11 @@ const usdaMaxAttempts = 6;
 const openFoodFactsCacheTtlMs = 24 * 60 * 60 * 1000;
 const openFoodFactsMissingCacheTtlMs = 60 * 60 * 1000;
 const openFoodFactsLockTtlMs = 45 * 1000;
+// Nearby-store lookups are geographically stable, so cache results for several
+// days. A postcode that resolves to no usable store is cached for a shorter
+// window so a transient Overpass blip clears itself.
+const nearbyStoresCacheTtlMs = 7 * 24 * 60 * 60 * 1000;
+const nearbyStoresMissingCacheTtlMs = 6 * 60 * 60 * 1000;
 
 type AppData = typeof deadlineBootstrap;
 type UnknownRecord = Record<string, unknown>;
@@ -257,6 +263,9 @@ type SessionSettings = {
     availableIngredients: RecipeIngredient[];
     planningHorizonDays: number;
     planRegenMode: "prompt" | "auto";
+    homeVendorId?: string;
+    nearestStore?: {name: string; vendorId: string; distanceMeters: number};
+    geo?: {latitude: number; longitude: number; region?: string};
   };
   deadlines: {
     id: string;
@@ -819,6 +828,53 @@ function normalizeRecipeIngredientList(value: unknown, maxItems = 30): RecipeIng
     .slice(0, maxItems);
 }
 
+// Derived location fields (issue #272). The frontend recomputes these from the
+// postcode, so we only need to bound and round-trip them; an out-of-range value
+// is dropped rather than rejecting the whole save.
+function normalizeLocationPreferences(
+  preferences: UnknownRecord,
+): Partial<SessionSettings["preferences"]> {
+  const out: Partial<SessionSettings["preferences"]> = {};
+
+  if (typeof preferences.homeVendorId === "string" && preferences.homeVendorId.trim()) {
+    out.homeVendorId = preferences.homeVendorId.trim().slice(0, 40);
+  }
+
+  const nearestStore = asRecord(preferences.nearestStore);
+  if (
+    nearestStore &&
+    typeof nearestStore.name === "string" &&
+    typeof nearestStore.vendorId === "string" &&
+    typeof nearestStore.distanceMeters === "number" &&
+    Number.isFinite(nearestStore.distanceMeters)
+  ) {
+    out.nearestStore = {
+      name: nearestStore.name.slice(0, 120),
+      vendorId: nearestStore.vendorId.slice(0, 40),
+      distanceMeters: Math.max(0, Math.round(nearestStore.distanceMeters)),
+    };
+  }
+
+  const geo = asRecord(preferences.geo);
+  if (
+    geo &&
+    typeof geo.latitude === "number" &&
+    Number.isFinite(geo.latitude) &&
+    Math.abs(geo.latitude) <= 90 &&
+    typeof geo.longitude === "number" &&
+    Number.isFinite(geo.longitude) &&
+    Math.abs(geo.longitude) <= 180
+  ) {
+    out.geo = {
+      latitude: geo.latitude,
+      longitude: geo.longitude,
+      ...(typeof geo.region === "string" && geo.region.trim() ? {region: geo.region.trim().slice(0, 80)} : {}),
+    };
+  }
+
+  return out;
+}
+
 function normalizeSessionSettings(value: unknown): SessionSettings {
   const settings = asRecord(value);
 
@@ -857,6 +913,7 @@ function normalizeSessionSettings(value: unknown): SessionSettings {
       availableIngredients: normalizeRecipeIngredientList(preferences.availableIngredients),
       planningHorizonDays: Math.round(boundedNumber(preferences.planningHorizonDays, 21, 1, 28)),
       planRegenMode: preferences.planRegenMode === "auto" ? "auto" : "prompt",
+      ...normalizeLocationPreferences(preferences),
     },
     deadlines: Array.isArray(settings.deadlines) ?
       settings.deadlines
@@ -2246,6 +2303,264 @@ export const deadlineFoodNutrition = onRequest(nutritionHttpOptions, async (requ
     response.status(500).json({error: "Nutrition data could not be loaded"});
   }
 });
+
+// --- Nearby supermarket lookup (issue #272) ---------------------------------
+//
+// A postcode collected at onboarding is geocoded (postcodes.io) and the nearest
+// physical store of each big-supermarket chain we support is found via the
+// OpenStreetMap Overpass API. The frontend uses the nearest chain as the
+// shopping-list default. Results are framed as illustrative, and the raw
+// postcode never leaves this function (only coarse region + derived vendor are
+// returned and logged).
+
+type NearbyStore = {
+  vendorId: string;
+  name: string;
+  distanceMeters: number;
+  lat: number;
+  lng: number;
+};
+
+type NearbyStoresResult = {
+  ok: true;
+  nearestVendorId: string;
+  nearestStore: NearbyStore;
+  stores: Array<{vendorId: string; name: string; distanceMeters: number}>;
+  location: {latitude: number; longitude: number; region: string | null; adminDistrict: string | null};
+};
+
+// OSM brand/name → our grocery vendor ids (must match groceryVendors in
+// src/deadline-food/shopping.ts). Ocado is delivery-only, so it never matches a
+// physical store. Ordered most-specific first so "Tesco Express" resolves before
+// a bare "Tesco" substring check would.
+const supermarketBrandMatchers: Array<{vendorId: string; test: RegExp}> = [
+  {vendorId: "sainsburys", test: /sainsbury/i},
+  {vendorId: "morrisons", test: /morrison/i},
+  {vendorId: "waitrose", test: /waitrose/i},
+  {vendorId: "iceland", test: /\biceland\b/i},
+  {vendorId: "coop", test: /co-?op|co-?operative/i},
+  {vendorId: "asda", test: /\basda\b/i},
+  {vendorId: "tesco", test: /\btesco\b/i},
+];
+
+function matchSupermarketVendor(tags: Record<string, unknown>): string | null {
+  const haystack = [tags.brand, tags.name, tags["operator"]]
+    .filter((value): value is string => typeof value === "string")
+    .join(" ");
+  if (!haystack.trim()) return null;
+  for (const matcher of supermarketBrandMatchers) {
+    if (matcher.test.test(haystack)) return matcher.vendorId;
+  }
+  return null;
+}
+
+function normalizePostcodeKey(postcode: string): string {
+  return postcode.trim().toUpperCase().replace(/\s+/g, "");
+}
+
+function nearbyStoresCacheDocId(postcodeKey: string): string {
+  return Buffer.from(postcodeKey).toString("base64url");
+}
+
+function haversineMeters(aLat: number, aLng: number, bLat: number, bLng: number): number {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const earthRadius = 6_371_000;
+  const dLat = toRad(bLat - aLat);
+  const dLng = toRad(bLng - aLng);
+  const lat1 = toRad(aLat);
+  const lat2 = toRad(bLat);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 2 * earthRadius * Math.asin(Math.sqrt(h));
+}
+
+type GeocodedPostcode = {
+  latitude: number;
+  longitude: number;
+  region: string | null;
+  adminDistrict: string | null;
+};
+
+async function geocodePostcode(postcode: string): Promise<GeocodedPostcode | null> {
+  const url = new URL(
+    `https://api.postcodes.io/postcodes/${encodeURIComponent(postcode.trim())}`,
+  );
+  const upstream = await fetch(url, {
+    headers: {"Accept": "application/json"},
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!upstream.ok) {
+    return null;
+  }
+  const payload = asRecord(await upstream.json());
+  const result = asRecord(payload?.result);
+  const latitude = result?.latitude;
+  const longitude = result?.longitude;
+  if (typeof latitude !== "number" || typeof longitude !== "number") {
+    return null;
+  }
+  return {
+    latitude,
+    longitude,
+    region: typeof result?.region === "string" ? result.region : null,
+    adminDistrict: typeof result?.admin_district === "string" ? result.admin_district : null,
+  };
+}
+
+// Find the nearest physical store of each supported chain within `radiusMeters`
+// of the geocoded point, via the Overpass API. Returns the per-chain nearest
+// store list ordered by distance.
+async function findNearestStores(
+  latitude: number,
+  longitude: number,
+  radiusMeters: number,
+): Promise<NearbyStore[]> {
+  const query = `[out:json][timeout:20];
+(
+  node["shop"="supermarket"](around:${radiusMeters},${latitude},${longitude});
+  way["shop"="supermarket"](around:${radiusMeters},${latitude},${longitude});
+);
+out center tags;`;
+  const upstream = await fetch("https://overpass-api.de/api/interpreter", {
+    method: "POST",
+    headers: {"Content-Type": "application/x-www-form-urlencoded"},
+    body: `data=${encodeURIComponent(query)}`,
+    signal: AbortSignal.timeout(25_000),
+  });
+  if (!upstream.ok) {
+    throw new Error(`Overpass responded ${upstream.status}`);
+  }
+  const payload = asRecord(await upstream.json());
+  const elements = Array.isArray(payload?.elements) ? payload.elements : [];
+
+  const nearestByVendor = new Map<string, NearbyStore>();
+  for (const element of elements) {
+    const record = asRecord(element);
+    const tags = asRecord(record?.tags) ?? {};
+    const vendorId = matchSupermarketVendor(tags);
+    if (!vendorId) continue;
+
+    const center = asRecord(record?.center);
+    const lat = typeof record?.lat === "number" ? record.lat : (typeof center?.lat === "number" ? center.lat : null);
+    const lng = typeof record?.lon === "number" ? record.lon : (typeof center?.lon === "number" ? center.lon : null);
+    if (lat === null || lng === null) continue;
+
+    const distanceMeters = haversineMeters(latitude, longitude, lat, lng);
+    const name = typeof tags.name === "string" ? tags.name : (typeof tags.brand === "string" ? tags.brand : vendorId);
+    const existing = nearestByVendor.get(vendorId);
+    if (!existing || distanceMeters < existing.distanceMeters) {
+      nearestByVendor.set(vendorId, {vendorId, name, distanceMeters, lat, lng});
+    }
+  }
+
+  return [...nearestByVendor.values()].sort((a, b) => a.distanceMeters - b.distanceMeters);
+}
+
+async function readNearbyStoresCache(
+  postcodeKey: string,
+): Promise<NearbyStoresResult | null | undefined> {
+  const snapshot = await nearbyStoresCacheRef.doc(nearbyStoresCacheDocId(postcodeKey)).get();
+  if (!snapshot.exists) {
+    return undefined;
+  }
+  const data = snapshot.data();
+  const expiresAt = timestampMillis(data?.expiresAt);
+  if (expiresAt === null || expiresAt <= Date.now()) {
+    return undefined;
+  }
+  // `result` is null for a negative (no-store) cache entry.
+  return (data?.result as NearbyStoresResult | null) ?? null;
+}
+
+async function cacheNearbyStores(
+  postcodeKey: string,
+  result: NearbyStoresResult | null,
+): Promise<void> {
+  const ttlMs = result === null ? nearbyStoresMissingCacheTtlMs : nearbyStoresCacheTtlMs;
+  await nearbyStoresCacheRef.doc(nearbyStoresCacheDocId(postcodeKey)).set({
+    postcodeKey,
+    result,
+    expiresAt: Timestamp.fromMillis(Date.now() + ttlMs),
+    updatedAt: FieldValue.serverTimestamp(),
+  });
+}
+
+async function resolveNearbyStores(postcode: string): Promise<NearbyStoresResult | null> {
+  const geocoded = await geocodePostcode(postcode);
+  if (!geocoded) {
+    return null;
+  }
+
+  // Try a tight radius first (dense urban areas), widening once if nothing
+  // nearby matches a chain we support.
+  let stores = await findNearestStores(geocoded.latitude, geocoded.longitude, 3000);
+  if (stores.length === 0) {
+    stores = await findNearestStores(geocoded.latitude, geocoded.longitude, 8000);
+  }
+  const nearestStore = stores[0];
+  if (!nearestStore) {
+    return null;
+  }
+
+  return {
+    ok: true,
+    nearestVendorId: nearestStore.vendorId,
+    nearestStore,
+    stores: stores.map(({vendorId, name, distanceMeters}) => ({vendorId, name, distanceMeters})),
+    location: {
+      latitude: geocoded.latitude,
+      longitude: geocoded.longitude,
+      region: geocoded.region,
+      adminDistrict: geocoded.adminDistrict,
+    },
+  };
+}
+
+export const deadlineFoodNearbyStores = onRequest(
+  {...publicHttpOptions, timeoutSeconds: 60},
+  async (request, response) => {
+    if (rejectUnsupportedNutritionMethod(request, response)) return;
+
+    try {
+      const body = readRequestBody(request);
+      const postcode = typeof body?.postcode === "string" ? body.postcode.trim() : "";
+      // UK postcodes are 5–8 chars including the space; reject anything wildly
+      // off before spending an upstream call.
+      if (postcode.length < 5 || postcode.length > 8) {
+        response.set("Cache-Control", "private, max-age=0, no-store");
+        response.status(200).json({ok: false});
+        return;
+      }
+
+      const postcodeKey = normalizePostcodeKey(postcode);
+      const cached = await readNearbyStoresCache(postcodeKey);
+      if (cached !== undefined) {
+        response.set("Cache-Control", "private, max-age=0, no-store");
+        response.status(200).json(cached ?? {ok: false});
+        return;
+      }
+
+      let result: NearbyStoresResult | null = null;
+      try {
+        result = await resolveNearbyStores(postcode);
+        await cacheNearbyStores(postcodeKey, result);
+      } catch (error) {
+        // Never log the raw postcode — only the coarse outward area.
+        logWarn("Nearby stores lookup failed", {
+          outwardCode: postcodeKey.slice(0, Math.max(0, postcodeKey.length - 3)),
+          error: String(error instanceof Error ? error.message : error),
+        });
+      }
+
+      response.set("Cache-Control", "private, max-age=0, no-store");
+      response.status(200).json(result ?? {ok: false});
+    } catch (error) {
+      logError("Deadline food nearby stores function failed", error);
+      response.status(500).json({error: "Nearby stores could not be loaded"});
+    }
+  },
+);
 
 // Loads a real account's uid-keyed session. On the very first load for an
 // account (no stored record yet) it adopts the anonymous session the request

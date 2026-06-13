@@ -117,6 +117,15 @@ export type Preferences = {
   unitSystem: "metric" | "imperial";
   /** Time of day (HH:MM) to schedule evening prep reminders, e.g. "22:00". */
   prepReminderTime: string;
+  /**
+   * Nearest big-supermarket chain derived from {@link postcode} (issue #272),
+   * used as the shopping-list default. Undefined until a postcode resolves.
+   */
+  homeVendorId?: string;
+  /** Nearest physical store for the illustrative shopping-list hint. */
+  nearestStore?: { name: string; vendorId: string; distanceMeters: number };
+  /** Coarse geocoded location forwarded to the recommender as a signal. */
+  geo?: { latitude: number; longitude: number; region?: string };
 };
 
 export type DiscoverRecommendationStatus = "idle" | "loading" | "ready" | "exhausted";

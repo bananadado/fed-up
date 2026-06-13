@@ -44,6 +44,10 @@ CREATE TABLE IF NOT EXISTS users (
     likes TEXT[] NOT NULL DEFAULT '{}',
     university TEXT,
     postcode TEXT,
+    -- Coarse geocoded location derived from the postcode (issue #272)
+    latitude DOUBLE PRECISION,
+    longitude DOUBLE PRECISION,
+    region TEXT,
     -- Ability profile (derived from behavior)
     knife_skill REAL NOT NULL DEFAULT 0.5,
     multi_tasking REAL NOT NULL DEFAULT 0.5,

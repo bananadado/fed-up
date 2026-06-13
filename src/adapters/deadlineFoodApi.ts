@@ -9,7 +9,7 @@ declare const __BUN_PUBLIC_FIREBASE_FUNCTIONS_REGION__: string | undefined;
 const DEFAULT_FIREBASE_PROJECT_ID = "drp03-50059";
 const DEFAULT_FIREBASE_FUNCTIONS_REGION = "europe-west2";
 
-export type DeadlineEndpoint = "bootstrap" | "meals" | "scenario" | "session" | "nutrition";
+export type DeadlineEndpoint = "bootstrap" | "meals" | "scenario" | "session" | "nutrition" | "nearbyStores";
 
 const firebaseFunctionNames: Record<DeadlineEndpoint, string> = {
   bootstrap: "deadlineFoodBootstrap",
@@ -17,6 +17,7 @@ const firebaseFunctionNames: Record<DeadlineEndpoint, string> = {
   scenario: "deadlineFoodScenario",
   session: "deadlineFoodSession",
   nutrition: "deadlineFoodNutrition",
+  nearbyStores: "deadlineFoodNearbyStores",
 };
 
 const localApiPaths: Record<DeadlineEndpoint, string> = {
@@ -25,6 +26,7 @@ const localApiPaths: Record<DeadlineEndpoint, string> = {
   scenario: "/api/deadline-food/scenario",
   session: "/api/deadline-food/session",
   nutrition: "/api/deadline-food/nutrition/openfoodfacts",
+  nearbyStores: "/api/deadline-food/stores/nearby",
 };
 
 function readRuntimeEnv(key: string): string | undefined {

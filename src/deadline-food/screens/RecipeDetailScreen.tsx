@@ -83,6 +83,7 @@ export function RecipeDetailScreen({
   unpublishedRecipeIds,
   track,
   unitSystem = "metric",
+  defaultVendorId,
 }: {
   mealId: string;
   customRecipes: Meal[];
@@ -106,6 +107,9 @@ export function RecipeDetailScreen({
   unpublishedRecipeIds: Set<string>;
   track: TrackEvent;
   unitSystem?: "metric" | "imperial";
+  /** Nearest big supermarket derived from the postcode (issue #272); defaults the
+   * ingredient-search vendor. Falls back to the first vendor when unknown. */
+  defaultVendorId?: string;
 }) {
   const meal = mealById(mealId, customRecipes, sharedRecipe ? [sharedRecipe] : []);
   const [review, setReview] = useState({ author: "You", rating: 5, comment: "" });
@@ -141,7 +145,7 @@ export function RecipeDetailScreen({
   const isLoggedIn = account.configured && !!account.uid && !account.isAnonymous;
   const isOwn = isRecipeOwnedBy(meal, account.uid);
   const isSaved = isOwn || discoverSaved.some((r) => r.id === mealId);
-  const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
+  const [selectedVendorId, setSelectedVendorId] = useState(defaultVendorId ?? groceryVendors[0].id);
   // Reviews are owned by Firestore (issue #123): global and persistent, not part
   // of the local meal/session state.
   const [reviews, setReviews] = useState<RecipeReview[]>([]);

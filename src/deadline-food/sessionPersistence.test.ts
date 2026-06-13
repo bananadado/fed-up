@@ -11,6 +11,7 @@ import {
   PRIVACY_POLICY_URL,
   PRIVACY_POLICY_VERSION,
   SESSION_SETTINGS_VERSION,
+  normalizePreferences,
   restoreSessionPlan,
 } from "./sessionPersistence";
 
@@ -38,6 +39,41 @@ describe("anonymous app session persistence", () => {
     expect(settings.onboarded).toBe(true);
     expect(settings.discoverReviewedRecipeIds).toEqual(["m1", "m2"]);
     expect(settings.privacyConsent).toEqual(privacyConsent);
+  });
+
+  test("keeps a derived nearest-store vendor that still ships", () => {
+    const normalized = normalizePreferences({
+      ...initialPreferences,
+      homeVendorId: "sainsburys",
+      nearestStore: { name: "Sainsbury's Local", vendorId: "sainsburys", distanceMeters: 420 },
+      geo: { latitude: 51.5, longitude: -0.17, region: "London" },
+    });
+
+    expect(normalized.homeVendorId).toBe("sainsburys");
+    expect(normalized.nearestStore).toEqual({ name: "Sainsbury's Local", vendorId: "sainsburys", distanceMeters: 420 });
+    expect(normalized.geo).toEqual({ latitude: 51.5, longitude: -0.17, region: "London" });
+  });
+
+  test("drops a derived vendor we no longer ship and its stale store", () => {
+    const normalized = normalizePreferences({
+      ...initialPreferences,
+      homeVendorId: "defunct-mart",
+      nearestStore: { name: "Defunct Mart", vendorId: "defunct-mart", distanceMeters: 100 },
+    });
+
+    expect(normalized.homeVendorId).toBeUndefined();
+    expect(normalized.nearestStore).toBeUndefined();
+  });
+
+  test("drops a nearest store whose vendor no longer matches the home vendor", () => {
+    const normalized = normalizePreferences({
+      ...initialPreferences,
+      homeVendorId: "tesco",
+      nearestStore: { name: "Old Asda", vendorId: "asda", distanceMeters: 100 },
+    });
+
+    expect(normalized.homeVendorId).toBe("tesco");
+    expect(normalized.nearestStore).toBeUndefined();
   });
 
   test("records current privacy consent metadata", () => {

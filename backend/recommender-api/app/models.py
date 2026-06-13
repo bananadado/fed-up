@@ -69,6 +69,11 @@ class UserIn(BaseModel):
     likes: list[str] = []
     university: str | None = None
     postcode: str | None = None
+    # Coarse geocoded location derived from the postcode (issue #272). Stored as a
+    # location signal; not yet used in ranking.
+    latitude: float | None = None
+    longitude: float | None = None
+    region: str | None = None
 
     @field_validator("dietary_tags", "allergens", "dislikes", "likes", mode="before")
     @classmethod
