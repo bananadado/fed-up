@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>drp03 — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 2944 nodes, 5467 edges, 172 communities. Commit: 25e832b</p>
+<p class="subtitle">Generated from graphify knowledge graph: 2944 nodes, 5467 edges, 172 communities. Commit: 1d1badb</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -74,8 +74,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#community-0">Community 0</a>
     <a href="#community-1">Community 1</a>
     <a href="#community-16">Community 16</a>
-    <a href="#community-43">Community 43</a>
     <a href="#community-37">Community 37</a>
+    <a href="#community-43">Community 43</a>
     <a href="#community-22">Community 22</a>
     <a href="#community-24">Community 24</a>
     <a href="#other">Other</a>
@@ -100,7 +100,7 @@ flowchart LR
     class INGEST_CACHE_UPDATE_FF457338 module;
     SERVE_API_35EC8E86("Serving API<br/><small>359 nodes</small>")
     class SERVE_API_35EC8E86 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>790 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>800 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
     COMMUNITY_0_B056AD3D("Community 0<br/><small>95 nodes</small>")
     class COMMUNITY_0_B056AD3D module;
@@ -108,28 +108,28 @@ flowchart LR
     class COMMUNITY_1_3073A0DB module;
     COMMUNITY_16_BD3EE841("Community 16<br/><small>44 nodes</small>")
     class COMMUNITY_16_BD3EE841 module;
-    COMMUNITY_43_5DF3A0B0("Community 43<br/><small>37 nodes</small>")
-    class COMMUNITY_43_5DF3A0B0 module;
-    COMMUNITY_37_489F9468("Community 37<br/><small>36 nodes</small>")
+    COMMUNITY_37_489F9468("Community 37<br/><small>38 nodes</small>")
     class COMMUNITY_37_489F9468 module;
+    COMMUNITY_43_5DF3A0B0("Community 43<br/><small>36 nodes</small>")
+    class COMMUNITY_43_5DF3A0B0 module;
     COMMUNITY_22_65038249("Community 22<br/><small>34 nodes</small>")
     class COMMUNITY_22_65038249 module;
     COMMUNITY_24_ECF60D36("Community 24<br/><small>32 nodes</small>")
     class COMMUNITY_24_ECF60D36 module;
-    OTHER_D0941E68("Other<br/><small>773 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>762 nodes</small>")
     class OTHER_D0941E68 module;
-    TESTS_FIXTURES_B84B1DCC -->|imports x108| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x90| TESTS_FIXTURES_B84B1DCC
+    TESTS_FIXTURES_B84B1DCC -->|imports x96| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x77| TESTS_FIXTURES_B84B1DCC
     COMMUNITY_1_3073A0DB -->|contains x65| OTHER_D0941E68
     COMMUNITY_0_B056AD3D -->|contains x61| OTHER_D0941E68
-    TESTS_FIXTURES_B84B1DCC -->|imports x59| COMMUNITY_43_5DF3A0B0
-    TESTS_FIXTURES_B84B1DCC -->|imports x33| COMMUNITY_37_489F9468
+    TESTS_FIXTURES_B84B1DCC -->|imports x55| COMMUNITY_43_5DF3A0B0
     COMMUNITY_37_489F9468 -->|imports x32| SERVE_API_35EC8E86
+    TESTS_FIXTURES_B84B1DCC -->|imports x32| COMMUNITY_37_489F9468
     CLI_SKILLS_9964CBB8 -->|contains x25| OTHER_D0941E68
-    COMMUNITY_43_5DF3A0B0 -->|imports x21| TESTS_FIXTURES_B84B1DCC
+    COMMUNITY_37_489F9468 -->|imports x23| TESTS_FIXTURES_B84B1DCC
     TESTS_FIXTURES_B84B1DCC -->|imports x20| SERVE_API_35EC8E86
-    COMMUNITY_37_489F9468 -->|imports x19| TESTS_FIXTURES_B84B1DCC
     COMMUNITY_16_BD3EE841 -->|imports x16| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x16| COMMUNITY_43_5DF3A0B0
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,7 +146,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>238</td><td><code>29, 35, 47, 55, 57, 62, 66, 67, 70, 83, 94, 98, 99, 121, 146, 150, 157</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>39</td><td><code>20, 135</code></td></tr><tr><td>Outputs &amp; Docs</td><td>28</td><td><code>46, 122</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>169</td><td><code>25, 45, 54, 56, 58, 80, 85, 112, 130, 131, 132, 148, 151</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>179</td><td><code>15, 21, 36, 53, 63, 73, 65</code></td></tr><tr><td>Serving API</td><td>359</td><td><code>2, 7, 11, 13, 14, 40, 48, 51, 93, 154</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>790</td><td><code>4, 3, 5, 6, 12, 28, 19, 23, 33, 26, 27, 39, 44, 17, 34, 52, 60, 68, 72, 149, 168, 169, 75, 77, 86, 95, 96, 123, 125, 134</code></td></tr><tr><td>Community 0</td><td>95</td><td><code>0</code></td></tr><tr><td>Community 1</td><td>91</td><td><code>1</code></td></tr><tr><td>Community 16</td><td>44</td><td><code>16</code></td></tr><tr><td>Community 43</td><td>37</td><td><code>43</code></td></tr><tr><td>Community 37</td><td>36</td><td><code>37</code></td></tr><tr><td>Community 22</td><td>34</td><td><code>22</code></td></tr><tr><td>Community 24</td><td>32</td><td><code>24</code></td></tr><tr><td>Other</td><td>773</td><td><code>32, 30, 9, 31, 10, 38, 8, 41, 42, 18, 49, 50, 59, 61, 64, 69, 71, 74, 76, 78, 79, 81, 170, 84, 90, 87, 88, 89, 91, 92, 82, 97, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 113, 171, 114, 115, 116, 117, 118, 119, 120, 124, 126, 127, 128, 129, 133, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 147, 152, 153, 155, 156, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167</code></td></tr>
+      <tr><td>Graph Build</td><td>238</td><td><code>29, 35, 47, 55, 57, 62, 66, 67, 70, 83, 94, 98, 99, 121, 146, 150, 157</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>39</td><td><code>20, 135</code></td></tr><tr><td>Outputs &amp; Docs</td><td>28</td><td><code>46, 122</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>169</td><td><code>25, 45, 54, 56, 58, 80, 85, 112, 130, 131, 132, 148, 151, 91</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>179</td><td><code>15, 21, 36, 53, 63, 73, 65</code></td></tr><tr><td>Serving API</td><td>359</td><td><code>2, 7, 11, 13, 14, 40, 48, 51, 93, 154</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>800</td><td><code>4, 3, 5, 6, 12, 28, 19, 17, 23, 33, 26, 27, 39, 44, 34, 52, 60, 68, 72, 149, 168, 169, 75, 77, 86, 95, 96, 123, 125, 134</code></td></tr><tr><td>Community 0</td><td>95</td><td><code>0</code></td></tr><tr><td>Community 1</td><td>91</td><td><code>1</code></td></tr><tr><td>Community 16</td><td>44</td><td><code>16</code></td></tr><tr><td>Community 37</td><td>38</td><td><code>37</code></td></tr><tr><td>Community 43</td><td>36</td><td><code>43</code></td></tr><tr><td>Community 22</td><td>34</td><td><code>22</code></td></tr><tr><td>Community 24</td><td>32</td><td><code>24</code></td></tr><tr><td>Other</td><td>762</td><td><code>32, 30, 9, 31, 10, 38, 8, 41, 42, 18, 49, 50, 59, 61, 64, 69, 71, 74, 76, 78, 79, 81, 84, 90, 170, 87, 88, 89, 92, 82, 97, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 113, 171, 114, 115, 116, 117, 118, 119, 120, 124, 126, 127, 128, 129, 133, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 147, 152, 153, 155, 156, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -2251,12 +2251,12 @@ flowchart LR
 
 <!-- ====== 8. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">8. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around deadline, food, test, home, mostly in drp03/doc/DEVELOPMENT_AND_TESTING.md, src/deadline-food/accountAuth.ts, recommender-api/tests/test_recommend_unit.py. This section covers 790 nodes and 1558 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around deadline, food, test, home, mostly in drp03/doc/DEVELOPMENT_AND_TESTING.md, src/deadline-food/accountAuth.ts, recommender-api/tests/test_recommend_unit.py. This section covers 800 nodes and 1609 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (790 nodes, 1558 edges)
+    %% Section: Tests &amp; Fixtures (800 nodes, 1609 edges)
     subgraph tests_fixtures_recommender_api_app_context_py_a28e41e7["recommender-api/app/context.py"]
         app_context_event_type_c86f1a17("event_type()<br/><small>recommender-api/app/context.py</small>")
         app_context_extract_context_e036a2f0("extract_context()<br/><small>recommender-api/app/context.py</small>")
@@ -2297,7 +2297,7 @@ flowchart LR
     src_deadline_food_deadlinefoodapp_tsx_271a67e1 -->|imports| src_deadline_food_utils_ts_0b841d6f
     src_deadline_food_utils_ts_0b841d6f -->|imports| deadline_food_ingredients_formatingredient_efaa2621
     src_deadline_food_utils_ts_0b841d6f -->|imports| src_deadline_food_types_ts_7fe1fb7a
-    %% Omitted for readability: 772 nodes, 0 edges
+    %% Omitted for readability: 782 nodes, 0 edges
     class app_context_event_type_c86f1a17 function;
     class app_context_extract_context_e036a2f0 function;
     class app_context_normalize_event_c6e3d7d7 function;
@@ -2382,7 +2382,7 @@ flowchart LR
   <td><code>utils.ts</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small></td>
-  <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br>+18 more</td>
+  <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br>+19 more</td>
   <td>Module file in src/deadline-food/utils.ts.</td>
 </tr>
 <tr>
@@ -2502,7 +2502,7 @@ flowchart LR
   <td><code>types.ts</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>healthSignals.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.test.ts</small><br>+3 more</td>
-  <td><code>advancePrep.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.test.ts</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br>+21 more</td>
+  <td><code>advancePrep.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.test.ts</small><br><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/deadline-food/autoPlanApi.ts</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br>+22 more</td>
   <td>Module file in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
@@ -2523,14 +2523,22 @@ flowchart LR
 </tr>
 <tr>
   <td>24</td>
-  <td><code>Meal</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
+  <td><code>NutritionSource</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
-  <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>healthSignals.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.test.ts</small><br>+3 more</td>
-  <td><code>advancePrep.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.test.ts</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br>+10 more</td>
-  <td>Meal node in src/deadline-food/types.ts.</td>
+  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>NutritionSource node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
   <td>25</td>
+  <td><code>Meal</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>healthSignals.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/healthSignals.test.ts</small><br>+3 more</td>
+  <td><code>advancePrep.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.test.ts</small><br><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/deadline-food/autoPlanApi.ts</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br>+11 more</td>
+  <td>Meal node in src/deadline-food/types.ts.</td>
+</tr>
+<tr>
+  <td>26</td>
   <td><code>PlanMeal</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -2538,23 +2546,23 @@ flowchart LR
   <td>PlanMeal node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>27</td>
   <td><code>PlanEntry</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>advancePrep.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.ts</small><br><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>sessionPersistence.ts</code><br><small style="color:var(--muted)">src/deadline-food/sessionPersistence.ts</small></td>
-  <td><code>advancePrep.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.test.ts</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br>+7 more</td>
+  <td><code>advancePrep.test.ts</code><br><small style="color:var(--muted)">src/deadline-food/advancePrep.test.ts</small><br><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/deadline-food/autoPlanApi.ts</small><br><code>BudgetCard.tsx</code><br><small style="color:var(--muted)">deadline-food/components/BudgetCard.tsx</small><br>+8 more</td>
   <td>PlanEntry node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>28</td>
   <td><code>Deadline</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>recommenderApi.ts</code><br><small style="color:var(--muted)">src/deadline-food/recommenderApi.ts</small><br><code>sessionPersistence.ts</code><br><small style="color:var(--muted)">src/deadline-food/sessionPersistence.ts</small><br>+1 more</td>
-  <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/Dashboard.tsx</small><br><code>data.ts</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small><br>+9 more</td>
+  <td><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/deadline-food/autoPlanApi.ts</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/Dashboard.tsx</small><br>+10 more</td>
   <td>Deadline node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>29</td>
   <td><code>PlanRegenMode</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -2562,20 +2570,12 @@ flowchart LR
   <td>PlanRegenMode node in src/deadline-food/types.ts.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>30</td>
   <td><code>Preferences</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>DeadlineFoodApp.tsx</code><br><small style="color:var(--muted)">src/deadline-food/DeadlineFoodApp.tsx</small><br><code>recommenderApi.ts</code><br><small style="color:var(--muted)">src/deadline-food/recommenderApi.ts</small><br><code>sessionPersistence.ts</code><br><small style="color:var(--muted)">src/deadline-food/sessionPersistence.ts</small></td>
-  <td><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/Dashboard.tsx</small><br><code>data.ts</code><br><small style="color:var(--muted)">src/deadline-food/data.ts</small><br>+6 more</td>
+  <td><code>autoPlanApi.ts</code><br><small style="color:var(--muted)">src/deadline-food/autoPlanApi.ts</small><br><code>CalendarScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/CalendarScreen.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/Dashboard.tsx</small><br>+7 more</td>
   <td>Preferences node in src/deadline-food/types.ts.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>DiscoverRecommendationStatus</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>DiscoverRecommendationStatus node in src/deadline-food/types.ts.</td>
 </tr>
 </table>
 
@@ -2596,7 +2596,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x637, imports x363, calls x286, imports x141. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x647, imports x388, calls x288, imports x149. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3615,394 +3615,40 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 12. Community 43 ====== -->
-<h2 id="community-43">12. Community 43</h2>
-<p>Community 43 groups implementation around deadline, food, components, recipeeditortsx, mostly in deadline-food/components/RecipeEditor.tsx, deadline-food/screens/RecipeDetailScreen.tsx, deadline-food/components/AllergenTag.tsx. This section covers 37 nodes and 53 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 12. Community 37 ====== -->
+<h2 id="community-37">12. Community 37</h2>
+<p>Community 37 groups implementation around components, deadline, food, selecttsx, mostly in components/ui/select.tsx, deadline-food/components/primitives.tsx, components/ui/card.tsx. This section covers 38 nodes and 94 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 43 (37 nodes, 53 edges)
-    subgraph community_43_deadline_food_components_RecipeEdit_385b0348["deadline-food/components/RecipeEditor.tsx"]
-        components_recipeeditor_recipeeditor_a8b0a280("RecipeEditor()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
-        components_recipeeditor_defaultform_32e8d31d("defaultForm()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
-        components_recipeeditor_parseportionnote_4be7fa0c("parsePortionNote()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
-        components_recipeeditor_mealtoform_32f8cce3("mealToForm()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
-        components_recipeeditor_positivenumber_b2401f1c("positiveNumber()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
-        src_deadline_food_components_recipeeditor_tsx_4fbb8db8("RecipeEditor.tsx")
-    end
-    subgraph community_43_deadline_food_screens_RecipeDetailS_1b37ed9d["deadline-food/screens/RecipeDetailScreen.tsx"]
-        screens_recipedetailscreen_recipedetailscreen_25b53988("RecipeDetailScreen()<br/><small>deadline-food/screens/RecipeDetailScreen.tsx</small>")
-        screens_recipedetailscreen_ratinglabel_d7f7bd41("ratingLabel()<br/><small>deadline-food/screens/RecipeDetailScreen.tsx</small>")
-        screens_recipedetailscreen_backlabel_8afbb211("backLabel()<br/><small>deadline-food/screens/RecipeDetailScreen.tsx</small>")
-        src_deadline_food_screens_recipedetailscreen_tsx_6ee79456("RecipeDetailScreen.tsx")
-    end
-    subgraph community_43_deadline_food_components_AllergenTa_bb175c60["deadline-food/components/AllergenTag.tsx"]
-        components_allergentag_allergenicon_9fe09730("allergenIcon()<br/><small>deadline-food/components/AllergenTag.tsx</small>")
-        components_allergentag_allergentag_fd625157("AllergenTag()<br/><small>deadline-food/components/AllergenTag.tsx</small>")
-    end
-    subgraph community_43_src_deadline_food_ingredients_ts_9d3f2f8b["src/deadline-food/ingredients.ts"]
-        deadline_food_ingredients_createingredientdraft_71412198("createIngredientDraft()<br/><small>src/deadline-food/ingredients.ts</small>")
-        deadline_food_ingredients_scaleingredients_edb3a8dd("scaleIngredients()<br/><small>src/deadline-food/ingredients.ts</small>")
-    end
-    src_deadline_food_components_confirmdialog_tsx_0f6462f2("ConfirmDialog.tsx")
-    screens_planscreen_planscreen_84e89dc0("PlanScreen()<br/><small>deadline-food/screens/PlanScreen.tsx</small>")
-    deadline_food_shopping_groceryvendorbyid_5b0221f0("groceryVendorById()<br/><small>src/deadline-food/shopping.ts</small>")
-    deadline_food_utils_nutritionsourcesummary_114c89ab("nutritionSourceSummary()<br/><small>src/deadline-food/utils.ts</small>")
-    deadline_food_utils_nutritionsourcesummary_114c89ab -->|calls| components_recipeeditor_recipeeditor_a8b0a280
-    deadline_food_utils_nutritionsourcesummary_114c89ab -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
-    deadline_food_ingredients_createingredientdraft_71412198 -->|calls| components_recipeeditor_defaultform_32e8d31d
-    deadline_food_ingredients_scaleingredients_edb3a8dd -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
-    deadline_food_shopping_groceryvendorbyid_5b0221f0 -->|calls| screens_planscreen_planscreen_84e89dc0
-    deadline_food_shopping_groceryvendorbyid_5b0221f0 -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
-    components_recipeeditor_parseportionnote_4be7fa0c -->|calls| components_recipeeditor_mealtoform_32f8cce3
-    components_recipeeditor_positivenumber_b2401f1c -->|calls| components_recipeeditor_recipeeditor_a8b0a280
-    components_allergentag_allergenicon_9fe09730 -->|calls| components_allergentag_allergentag_fd625157
-    screens_recipedetailscreen_ratinglabel_d7f7bd41 -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
-    screens_recipedetailscreen_backlabel_8afbb211 -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
-    deadline_food_utils_nutritionsourcesummary_114c89ab -->|imports| src_deadline_food_components_recipeeditor_tsx_4fbb8db8
-    deadline_food_utils_nutritionsourcesummary_114c89ab -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
-    deadline_food_ingredients_createingredientdraft_71412198 -->|imports| src_deadline_food_components_recipeeditor_tsx_4fbb8db8
-    deadline_food_ingredients_scaleingredients_edb3a8dd -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
-    deadline_food_shopping_groceryvendorbyid_5b0221f0 -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
-    src_deadline_food_components_confirmdialog_tsx_0f6462f2 -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
-    src_deadline_food_components_recipeeditor_tsx_4fbb8db8 -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
-    components_recipeeditor_recipeeditor_a8b0a280 -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
-    components_allergentag_allergentag_fd625157 -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
-    %% Omitted for readability: 19 nodes, 0 edges
-    class components_recipeeditor_recipeeditor_a8b0a280 ui;
-    class components_recipeeditor_defaultform_32e8d31d ui;
-    class components_recipeeditor_parseportionnote_4be7fa0c ui;
-    class components_recipeeditor_mealtoform_32f8cce3 ui;
-    class components_recipeeditor_positivenumber_b2401f1c ui;
-    class src_deadline_food_components_recipeeditor_tsx_4fbb8db8 ui;
-    class screens_recipedetailscreen_recipedetailscreen_25b53988 ui;
-    class screens_recipedetailscreen_ratinglabel_d7f7bd41 ui;
-    class screens_recipedetailscreen_backlabel_8afbb211 ui;
-    class src_deadline_food_screens_recipedetailscreen_tsx_6ee79456 ui;
-    class components_allergentag_allergenicon_9fe09730 ui;
-    class components_allergentag_allergentag_fd625157 ui;
-    class deadline_food_ingredients_createingredientdraft_71412198 function;
-    class deadline_food_ingredients_scaleingredients_edb3a8dd function;
-    class src_deadline_food_components_confirmdialog_tsx_0f6462f2 ui;
-    class screens_planscreen_planscreen_84e89dc0 ui;
-    class deadline_food_shopping_groceryvendorbyid_5b0221f0 function;
-    class deadline_food_utils_nutritionsourcesummary_114c89ab function;
-    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
-    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
-    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
-    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
-    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
-    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
-    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
-    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
-    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
-</div>
-
-<h3>Call Details</h3>
-<table class="call-table">
-<tr>
-  <th style="width:5%">#</th>
-  <th style="width:28%">Node</th>
-  <th style="width:10%">Type</th>
-  <th style="width:17%">Caller</th>
-  <th style="width:20%">Callees</th>
-  <th style="width:20%">Description</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>nutritionSourceSummary()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>RecipeDetailScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small><br><code>RecipeEditor()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small><br>+1 more</td>
-  <td>nutritionSourceSummary() node in src/deadline-food/utils.ts.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>NutritionSource</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>RecipeEditor.tsx</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td>NutritionSource node in src/deadline-food/types.ts.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>RecipeReview</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>RecipeReview node in src/deadline-food/types.ts.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>createIngredientDraft()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>defaultForm()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small><br><code>RecipeEditor.tsx</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td>createIngredientDraft() node in src/deadline-food/ingredients.ts.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>scaleIngredients()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>RecipeDetailScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>scaleIngredients() node in src/deadline-food/ingredients.ts.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>groceryVendors</code><br><small style="color:var(--muted)">src/deadline-food/shopping.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>groceryVendors node in src/deadline-food/shopping.ts.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>groceryVendorById()</code><br><small style="color:var(--muted)">src/deadline-food/shopping.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>PlanScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/PlanScreen.tsx</small><br><code>RecipeDetailScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>groceryVendorById() node in src/deadline-food/shopping.ts.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>ConfirmDialog.tsx</code><br><small style="color:var(--muted)">deadline-food/components/ConfirmDialog.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>AppButton()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>Module file in deadline-food/components/ConfirmDialog.tsx.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>ConfirmDialog()</code><br><small style="color:var(--muted)">deadline-food/components/ConfirmDialog.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>ConfirmDialog() node in deadline-food/components/ConfirmDialog.tsx.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>RecipeEditor.tsx</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>createIngredientDraft()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small><br><code>NutritionSource</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small><br><code>nutritionSourceSummary()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
-  <td><code>AppButton()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>Module file in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>MEAL_SLOT_OPTIONS</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>MEAL_SLOT_OPTIONS node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>MEAL_SLOT_SET</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>MEAL_SLOT_SET node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>formatPortionNote()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>formatPortionNote() node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>parsePortionNote()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>mealToForm()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td>parsePortionNote() node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>TAG_OPTIONS</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>TAG_OPTIONS node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>EditorForm</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>EditorForm node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>RecipeEditorOutput</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>RecipeEditorOutput node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>mealToForm()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>parsePortionNote()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>mealToForm() node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>defaultForm()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>createIngredientDraft()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>defaultForm() node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>splitList()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>splitList() node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>positiveNumber()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>RecipeEditor()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td>positiveNumber() node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>TagEditor()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>TagEditor() node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>RecipeEditor()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>nutritionSourceSummary()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small><br><code>positiveNumber()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>RecipeEditor() node in deadline-food/components/RecipeEditor.tsx.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>AllergenTag.tsx</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>Module file in deadline-food/components/AllergenTag.tsx.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>ALLERGEN_DISPLAY</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>ALLERGEN_DISPLAY node in deadline-food/components/AllergenTag.tsx.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>ALLERGEN_ICONS</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>ALLERGEN_ICONS node in deadline-food/components/AllergenTag.tsx.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>allergenIcon()</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>AllergenTag()</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
-  <td>allergenIcon() node in deadline-food/components/AllergenTag.tsx.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>AllergenTag()</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>allergenIcon()</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
-  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>AllergenTag() node in deadline-food/components/AllergenTag.tsx.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>AppButton()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>ConfirmDialog.tsx</code><br><small style="color:var(--muted)">deadline-food/components/ConfirmDialog.tsx</small><br><code>RecipeEditor.tsx</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
-  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
-  <td>AppButton() node in deadline-food/components/primitives.tsx.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>PlanScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/PlanScreen.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>groceryVendorById()</code><br><small style="color:var(--muted)">src/deadline-food/shopping.ts</small></td>
-  <td>No direct outbound edge</td>
-  <td>PlanScreen() node in deadline-food/screens/PlanScreen.tsx.</td>
-</tr>
-</table>
-
-<div class="grid">
-  <div class="card">
-    <h4>Key Files</h4>
-    <table style="width:100%;font-size:0.85rem;">
-      <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>deadline-food/components/RecipeEditor.tsx</code></td><td>14 nodes</td></tr>
-<tr><td><code>deadline-food/screens/RecipeDetailScreen.tsx</code></td><td>7 nodes</td></tr>
-<tr><td><code>deadline-food/components/AllergenTag.tsx</code></td><td>5 nodes</td></tr>
-<tr><td><code>deadline-food/components/ConfirmDialog.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/deadline-food/ingredients.ts</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/deadline-food/shopping.ts</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/deadline-food/types.ts</code></td><td>2 nodes</td></tr>
-<tr><td><code>deadline-food/components/primitives.tsx</code></td><td>1 nodes</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x24, imports x15, calls x11, imports x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
-  </div>
-</div>
-<hr>
-
-<!-- ====== 13. Community 37 ====== -->
-<h2 id="community-37">13. Community 37</h2>
-<p>Community 37 groups implementation around components, selecttsx, deadline, food, mostly in components/ui/select.tsx, deadline-food/components/primitives.tsx, components/ui/card.tsx. This section covers 36 nodes and 90 internal edges; the diagram shows only representative relationships to stay readable.</p>
-
-<div class="mermaid">
-%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
-flowchart LR
-    %% Section: Community 37 (36 nodes, 90 edges)
+    %% Section: Community 37 (38 nodes, 94 edges)
     subgraph community_37_components_ui_select_tsx_03cc38ba["components/ui/select.tsx"]
         ui_select_selectcontent_0e8c3125("SelectContent()<br/><small>components/ui/select.tsx</small>")
         ui_select_selectitem_6d771bd5("SelectItem()<br/><small>components/ui/select.tsx</small>")
         ui_select_selectlabel_5e9f580d("SelectLabel()<br/><small>components/ui/select.tsx</small>")
         ui_select_selectscrolldownbutton_86f5b0fc("SelectScrollDownButton()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectscrollupbutton_603e1a1a("SelectScrollUpButton()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectseparator_f89fbdcb("SelectSeparator()<br/><small>components/ui/select.tsx</small>")
     end
     subgraph community_37_components_ui_card_tsx_894d1423["components/ui/card.tsx"]
         ui_card_cardaction_a1a717ff("CardAction()<br/><small>components/ui/card.tsx</small>")
         ui_card_carddescription_40d0a254("CardDescription()<br/><small>components/ui/card.tsx</small>")
         ui_card_cardfooter_2f80e30f("CardFooter()<br/><small>components/ui/card.tsx</small>")
     end
+    subgraph community_37_deadline_food_components_primitives_633181a3["deadline-food/components/primitives.tsx"]
+        src_deadline_food_components_primitives_tsx_ab3a258d("primitives.tsx")
+        components_primitives_field_80de4fc0("Field()<br/><small>deadline-food/components/primitives.tsx</small>")
+        components_primitives_selectfield_18905dd2("SelectField()<br/><small>deadline-food/components/primitives.tsx</small>")
+    end
     ui_input_input_54fb3925("Input()<br/><small>components/ui/input.tsx</small>")
     ui_label_label_def6cab4("Label()<br/><small>components/ui/label.tsx</small>")
     src_deadline_food_components_ingredienteditor_ts_2cf2a7c7("IngredientEditor.tsx")
     src_deadline_food_components_universityfield_tsx_c777c3a2("UniversityField.tsx")
-    src_deadline_food_components_primitives_tsx_ab3a258d("primitives.tsx")
     screens_onboarding_preferencesection_5c73c125("PreferenceSection()<br/><small>deadline-food/screens/Onboarding.tsx</small>")
     src_apitester_tsx_e67681e5("APITester.tsx")
     lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
     src_pages_deadlinesetuppage_tsx_e932c009("DeadlineSetupPage.tsx")
+    components_primitives_field_80de4fc0 -->|calls| lib_utils_cn_b8743bb6
+    components_primitives_selectfield_18905dd2 -->|calls| lib_utils_cn_b8743bb6
     screens_onboarding_preferencesection_5c73c125 -->|calls| lib_utils_cn_b8743bb6
     lib_utils_cn_b8743bb6 -->|calls| ui_card_cardaction_a1a717ff
     lib_utils_cn_b8743bb6 -->|calls| ui_card_carddescription_40d0a254
@@ -4013,8 +3659,6 @@ flowchart LR
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectitem_6d771bd5
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectlabel_5e9f580d
     lib_utils_cn_b8743bb6 -->|calls| ui_select_selectscrolldownbutton_86f5b0fc
-    lib_utils_cn_b8743bb6 -->|calls| ui_select_selectscrollupbutton_603e1a1a
-    lib_utils_cn_b8743bb6 -->|calls| ui_select_selectseparator_f89fbdcb
     src_apitester_tsx_e67681e5 -->|imports| ui_input_input_54fb3925
     src_apitester_tsx_e67681e5 -->|imports| ui_label_label_def6cab4
     src_apitester_tsx_e67681e5 -->|imports| ui_select_selectcontent_0e8c3125
@@ -4027,21 +3671,21 @@ flowchart LR
     src_deadline_food_components_universityfield_tsx_c777c3a2 -->|imports| ui_label_label_def6cab4
     src_deadline_food_components_primitives_tsx_ab3a258d -->|imports| lib_utils_cn_b8743bb6
     src_deadline_food_components_primitives_tsx_ab3a258d -->|imports| ui_input_input_54fb3925
-    %% Omitted for readability: 18 nodes, 7 edges
+    %% Omitted for readability: 20 nodes, 7 edges
     class ui_select_selectcontent_0e8c3125 ui;
     class ui_select_selectitem_6d771bd5 ui;
     class ui_select_selectlabel_5e9f580d ui;
     class ui_select_selectscrolldownbutton_86f5b0fc ui;
-    class ui_select_selectscrollupbutton_603e1a1a ui;
-    class ui_select_selectseparator_f89fbdcb ui;
     class ui_card_cardaction_a1a717ff ui;
     class ui_card_carddescription_40d0a254 ui;
     class ui_card_cardfooter_2f80e30f ui;
+    class src_deadline_food_components_primitives_tsx_ab3a258d ui;
+    class components_primitives_field_80de4fc0 ui;
+    class components_primitives_selectfield_18905dd2 ui;
     class ui_input_input_54fb3925 ui;
     class ui_label_label_def6cab4 ui;
     class src_deadline_food_components_ingredienteditor_ts_2cf2a7c7 ui;
     class src_deadline_food_components_universityfield_tsx_c777c3a2 ui;
-    class src_deadline_food_components_primitives_tsx_ab3a258d ui;
     class screens_onboarding_preferencesection_5c73c125 ui;
     class src_apitester_tsx_e67681e5 test;
     class lib_utils_cn_b8743bb6 function;
@@ -4157,6 +3801,22 @@ flowchart LR
 </tr>
 <tr>
   <td>12</td>
+  <td><code>Field()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>Field() node in deadline-food/components/primitives.tsx.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>SelectField()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>SelectField() node in deadline-food/components/primitives.tsx.</td>
+</tr>
+<tr>
+  <td>14</td>
   <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">deadline-food/screens/Onboarding.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4164,7 +3824,7 @@ flowchart LR
   <td>PreferenceSection() node in deadline-food/screens/Onboarding.tsx.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>15</td>
   <td><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br><code>UniversityField.tsx</code><br><small style="color:var(--muted)">deadline-food/components/UniversityField.tsx</small></td>
@@ -4172,15 +3832,15 @@ flowchart LR
   <td>Module file in src/lib/utils.ts.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>16</td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>PreferenceSection()</code><br><small style="color:var(--muted)">deadline-food/screens/Onboarding.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br><code>UniversityField.tsx</code><br><small style="color:var(--muted)">deadline-food/components/UniversityField.tsx</small></td>
+  <td><code>Field()</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br><code>PreferenceSection()</code><br><small style="color:var(--muted)">deadline-food/screens/Onboarding.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small><br>+2 more</td>
   <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+14 more</td>
   <td>cn() node in src/lib/utils.ts.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>17</td>
   <td><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4188,7 +3848,7 @@ flowchart LR
   <td>Module file in src/pages/DeadlineSetupPage.tsx.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>18</td>
   <td><code>toggleValue()</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4196,7 +3856,7 @@ flowchart LR
   <td>toggleValue() node in src/pages/DeadlineSetupPage.tsx.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>19</td>
   <td><code>textarea.tsx</code><br><small style="color:var(--muted)">components/ui/textarea.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4204,7 +3864,7 @@ flowchart LR
   <td>Module file in components/ui/textarea.tsx.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>20</td>
   <td><code>Textarea()</code><br><small style="color:var(--muted)">components/ui/textarea.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4212,7 +3872,7 @@ flowchart LR
   <td>Textarea() node in components/ui/textarea.tsx.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>21</td>
   <td><code>label.tsx</code><br><small style="color:var(--muted)">components/ui/label.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+4 more</td>
@@ -4220,7 +3880,7 @@ flowchart LR
   <td>Module file in components/ui/label.tsx.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>22</td>
   <td><code>Label()</code><br><small style="color:var(--muted)">components/ui/label.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+3 more</td>
@@ -4228,7 +3888,7 @@ flowchart LR
   <td>Label() node in components/ui/label.tsx.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>23</td>
   <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+4 more</td>
@@ -4236,7 +3896,7 @@ flowchart LR
   <td>Module file in components/ui/input.tsx.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>24</td>
   <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+3 more</td>
@@ -4244,7 +3904,7 @@ flowchart LR
   <td>Input() node in components/ui/input.tsx.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>25</td>
   <td><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4252,7 +3912,7 @@ flowchart LR
   <td>CardDescription() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>26</td>
   <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4260,7 +3920,7 @@ flowchart LR
   <td>CardAction() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>27</td>
   <td><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
@@ -4268,7 +3928,7 @@ flowchart LR
   <td>CardFooter() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>28</td>
   <td><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+2 more</td>
@@ -4276,7 +3936,7 @@ flowchart LR
   <td>Module file in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>29</td>
   <td><code>Select()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
@@ -4284,28 +3944,12 @@ flowchart LR
   <td>Select() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>30</td>
   <td><code>SelectGroup()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>SelectGroup() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>SelectValue()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br><code>primitives.tsx</code><br><small style="color:var(--muted)">deadline-food/components/primitives.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>SelectValue() node in components/ui/select.tsx.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>SelectTrigger()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>APITester.tsx</code><br><small style="color:var(--muted)">src/APITester.tsx</small><br><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>DeadlineSetupPage.tsx</code><br><small style="color:var(--muted)">src/pages/DeadlineSetupPage.tsx</small><br>+1 more</td>
-  <td>No direct outbound edge</td>
-  <td>SelectTrigger() node in components/ui/select.tsx.</td>
 </tr>
 </table>
 
@@ -4315,7 +3959,7 @@ flowchart LR
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
       <tr><td><code>components/ui/select.tsx</code></td><td>11 nodes</td></tr>
-<tr><td><code>deadline-food/components/primitives.tsx</code></td><td>6 nodes</td></tr>
+<tr><td><code>deadline-food/components/primitives.tsx</code></td><td>8 nodes</td></tr>
 <tr><td><code>components/ui/card.tsx</code></td><td>3 nodes</td></tr>
 <tr><td><code>src/APITester.tsx</code></td><td>2 nodes</td></tr>
 <tr><td><code>components/ui/input.tsx</code></td><td>2 nodes</td></tr>
@@ -4326,7 +3970,367 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x33, contains x22, imports x21, calls x14. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x33, contains x24, imports x21, calls x16. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 13. Community 43 ====== -->
+<h2 id="community-43">13. Community 43</h2>
+<p>Community 43 groups implementation around deadline, food, components, recipeeditortsx, mostly in deadline-food/components/RecipeEditor.tsx, deadline-food/screens/RecipeDetailScreen.tsx, deadline-food/components/AllergenTag.tsx. This section covers 36 nodes and 52 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Community 43 (36 nodes, 52 edges)
+    subgraph community_43_deadline_food_components_RecipeEdit_385b0348["deadline-food/components/RecipeEditor.tsx"]
+        components_recipeeditor_recipeeditor_a8b0a280("RecipeEditor()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
+        components_recipeeditor_defaultform_32e8d31d("defaultForm()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
+        components_recipeeditor_mealtoform_32f8cce3("mealToForm()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
+        components_recipeeditor_parseportionnote_4be7fa0c("parsePortionNote()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
+        components_recipeeditor_positivenumber_b2401f1c("positiveNumber()<br/><small>deadline-food/components/RecipeEditor.tsx</small>")
+        src_deadline_food_components_recipeeditor_tsx_4fbb8db8("RecipeEditor.tsx")
+    end
+    subgraph community_43_deadline_food_screens_RecipeDetailS_1b37ed9d["deadline-food/screens/RecipeDetailScreen.tsx"]
+        screens_recipedetailscreen_recipedetailscreen_25b53988("RecipeDetailScreen()<br/><small>deadline-food/screens/RecipeDetailScreen.tsx</small>")
+        screens_recipedetailscreen_ratinglabel_d7f7bd41("ratingLabel()<br/><small>deadline-food/screens/RecipeDetailScreen.tsx</small>")
+        screens_recipedetailscreen_backlabel_8afbb211("backLabel()<br/><small>deadline-food/screens/RecipeDetailScreen.tsx</small>")
+        src_deadline_food_screens_recipedetailscreen_tsx_6ee79456("RecipeDetailScreen.tsx")
+    end
+    subgraph community_43_src_deadline_food_ingredients_ts_9d3f2f8b["src/deadline-food/ingredients.ts"]
+        deadline_food_ingredients_createingredientdraft_71412198("createIngredientDraft()<br/><small>src/deadline-food/ingredients.ts</small>")
+        deadline_food_ingredients_scaleingredients_edb3a8dd("scaleIngredients()<br/><small>src/deadline-food/ingredients.ts</small>")
+        deadline_food_ingredients_ingredientdraftsfromin_0cf2e3dc("ingredientDraftsFromIngredients()<br/><small>src/deadline-food/ingredients.ts</small>")
+    end
+    subgraph community_43_deadline_food_components_AllergenTa_bb175c60["deadline-food/components/AllergenTag.tsx"]
+        components_allergentag_allergenicon_9fe09730("allergenIcon()<br/><small>deadline-food/components/AllergenTag.tsx</small>")
+        components_allergentag_allergentag_fd625157("AllergenTag()<br/><small>deadline-food/components/AllergenTag.tsx</small>")
+    end
+    screens_planscreen_planscreen_84e89dc0("PlanScreen()<br/><small>deadline-food/screens/PlanScreen.tsx</small>")
+    deadline_food_shopping_groceryvendorbyid_5b0221f0("groceryVendorById()<br/><small>src/deadline-food/shopping.ts</small>")
+    deadline_food_utils_nutritionsourcesummary_114c89ab("nutritionSourceSummary()<br/><small>src/deadline-food/utils.ts</small>")
+    deadline_food_utils_nutritionsourcesummary_114c89ab -->|calls| components_recipeeditor_recipeeditor_a8b0a280
+    deadline_food_utils_nutritionsourcesummary_114c89ab -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
+    deadline_food_ingredients_createingredientdraft_71412198 -->|calls| components_recipeeditor_defaultform_32e8d31d
+    deadline_food_ingredients_createingredientdraft_71412198 -->|calls| deadline_food_ingredients_ingredientdraftsfromin_0cf2e3dc
+    deadline_food_ingredients_ingredientdraftsfromin_0cf2e3dc -->|calls| components_recipeeditor_mealtoform_32f8cce3
+    deadline_food_ingredients_scaleingredients_edb3a8dd -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
+    deadline_food_shopping_groceryvendorbyid_5b0221f0 -->|calls| screens_planscreen_planscreen_84e89dc0
+    deadline_food_shopping_groceryvendorbyid_5b0221f0 -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
+    components_recipeeditor_parseportionnote_4be7fa0c -->|calls| components_recipeeditor_mealtoform_32f8cce3
+    components_recipeeditor_positivenumber_b2401f1c -->|calls| components_recipeeditor_recipeeditor_a8b0a280
+    components_allergentag_allergenicon_9fe09730 -->|calls| components_allergentag_allergentag_fd625157
+    screens_recipedetailscreen_ratinglabel_d7f7bd41 -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
+    screens_recipedetailscreen_backlabel_8afbb211 -->|calls| screens_recipedetailscreen_recipedetailscreen_25b53988
+    deadline_food_utils_nutritionsourcesummary_114c89ab -->|imports| src_deadline_food_components_recipeeditor_tsx_4fbb8db8
+    deadline_food_utils_nutritionsourcesummary_114c89ab -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
+    deadline_food_ingredients_createingredientdraft_71412198 -->|imports| src_deadline_food_components_recipeeditor_tsx_4fbb8db8
+    deadline_food_ingredients_ingredientdraftsfromin_0cf2e3dc -->|imports| src_deadline_food_components_recipeeditor_tsx_4fbb8db8
+    deadline_food_ingredients_scaleingredients_edb3a8dd -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
+    deadline_food_shopping_groceryvendorbyid_5b0221f0 -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
+    src_deadline_food_components_recipeeditor_tsx_4fbb8db8 -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
+    components_recipeeditor_recipeeditor_a8b0a280 -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
+    components_allergentag_allergentag_fd625157 -->|imports| src_deadline_food_screens_recipedetailscreen_tsx_6ee79456
+    %% Omitted for readability: 18 nodes, 0 edges
+    class components_recipeeditor_recipeeditor_a8b0a280 ui;
+    class components_recipeeditor_defaultform_32e8d31d ui;
+    class components_recipeeditor_mealtoform_32f8cce3 ui;
+    class components_recipeeditor_parseportionnote_4be7fa0c ui;
+    class components_recipeeditor_positivenumber_b2401f1c ui;
+    class src_deadline_food_components_recipeeditor_tsx_4fbb8db8 ui;
+    class screens_recipedetailscreen_recipedetailscreen_25b53988 ui;
+    class screens_recipedetailscreen_ratinglabel_d7f7bd41 ui;
+    class screens_recipedetailscreen_backlabel_8afbb211 ui;
+    class src_deadline_food_screens_recipedetailscreen_tsx_6ee79456 ui;
+    class deadline_food_ingredients_createingredientdraft_71412198 function;
+    class deadline_food_ingredients_scaleingredients_edb3a8dd function;
+    class deadline_food_ingredients_ingredientdraftsfromin_0cf2e3dc function;
+    class components_allergentag_allergenicon_9fe09730 ui;
+    class components_allergentag_allergentag_fd625157 ui;
+    class screens_planscreen_planscreen_84e89dc0 ui;
+    class deadline_food_shopping_groceryvendorbyid_5b0221f0 function;
+    class deadline_food_utils_nutritionsourcesummary_114c89ab function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>nutritionSourceSummary()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>RecipeDetailScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small><br><code>RecipeEditor()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small><br>+1 more</td>
+  <td>nutritionSourceSummary() node in src/deadline-food/utils.ts.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>RecipeReview</code><br><small style="color:var(--muted)">src/deadline-food/types.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>RecipeReview node in src/deadline-food/types.ts.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>createIngredientDraft()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>defaultForm()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small><br><code>ingredientDraftsFromIngredients()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small><br><code>RecipeEditor.tsx</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td>createIngredientDraft() node in src/deadline-food/ingredients.ts.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>ingredientDraftsFromIngredients()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>createIngredientDraft()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small></td>
+  <td><code>mealToForm()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small><br><code>RecipeEditor.tsx</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td>ingredientDraftsFromIngredients() node in src/deadline-food/ingredients.ts.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>scaleIngredients()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>RecipeDetailScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>scaleIngredients() node in src/deadline-food/ingredients.ts.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>groceryVendors</code><br><small style="color:var(--muted)">src/deadline-food/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>groceryVendors node in src/deadline-food/shopping.ts.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>groceryVendorById()</code><br><small style="color:var(--muted)">src/deadline-food/shopping.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>PlanScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/PlanScreen.tsx</small><br><code>RecipeDetailScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small><br><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>groceryVendorById() node in src/deadline-food/shopping.ts.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>ConfirmDialog.tsx</code><br><small style="color:var(--muted)">deadline-food/components/ConfirmDialog.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>Module file in deadline-food/components/ConfirmDialog.tsx.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>ConfirmDialog()</code><br><small style="color:var(--muted)">deadline-food/components/ConfirmDialog.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>ConfirmDialog() node in deadline-food/components/ConfirmDialog.tsx.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>RecipeEditor.tsx</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>createIngredientDraft()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small><br><code>ingredientDraftsFromIngredients()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small><br><code>nutritionSourceSummary()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small></td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>Module file in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>MEAL_SLOT_OPTIONS</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>MEAL_SLOT_OPTIONS node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>MEAL_SLOT_SET</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>MEAL_SLOT_SET node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>formatPortionNote()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>formatPortionNote() node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>parsePortionNote()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>mealToForm()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td>parsePortionNote() node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>TAG_OPTIONS</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>TAG_OPTIONS node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>EditorForm</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>EditorForm node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>RecipeEditorOutput</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>RecipeEditorOutput node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>mealToForm()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>ingredientDraftsFromIngredients()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small><br><code>parsePortionNote()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>mealToForm() node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>defaultForm()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>createIngredientDraft()</code><br><small style="color:var(--muted)">src/deadline-food/ingredients.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>defaultForm() node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>splitList()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>splitList() node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>positiveNumber()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>RecipeEditor()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td>positiveNumber() node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>TagEditor()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>TagEditor() node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>RecipeEditor()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>nutritionSourceSummary()</code><br><small style="color:var(--muted)">src/deadline-food/utils.ts</small><br><code>positiveNumber()</code><br><small style="color:var(--muted)">deadline-food/components/RecipeEditor.tsx</small></td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>RecipeEditor() node in deadline-food/components/RecipeEditor.tsx.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>AllergenTag.tsx</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>Module file in deadline-food/components/AllergenTag.tsx.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>ALLERGEN_DISPLAY</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>ALLERGEN_DISPLAY node in deadline-food/components/AllergenTag.tsx.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>ALLERGEN_ICONS</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>ALLERGEN_ICONS node in deadline-food/components/AllergenTag.tsx.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>allergenIcon()</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>AllergenTag()</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
+  <td>allergenIcon() node in deadline-food/components/AllergenTag.tsx.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>AllergenTag()</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>allergenIcon()</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small></td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td>AllergenTag() node in deadline-food/components/AllergenTag.tsx.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>PlanScreen()</code><br><small style="color:var(--muted)">deadline-food/screens/PlanScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>groceryVendorById()</code><br><small style="color:var(--muted)">src/deadline-food/shopping.ts</small></td>
+  <td>No direct outbound edge</td>
+  <td>PlanScreen() node in deadline-food/screens/PlanScreen.tsx.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>RecipeDetailScreen.tsx</code><br><small style="color:var(--muted)">deadline-food/screens/RecipeDetailScreen.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>AllergenTag()</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small><br><code>AllergenTag.tsx</code><br><small style="color:var(--muted)">deadline-food/components/AllergenTag.tsx</small><br><code>ConfirmDialog()</code><br><small style="color:var(--muted)">deadline-food/components/ConfirmDialog.tsx</small><br>+9 more</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in deadline-food/screens/RecipeDetailScreen.tsx.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>deadline-food/components/RecipeEditor.tsx</code></td><td>14 nodes</td></tr>
+<tr><td><code>deadline-food/screens/RecipeDetailScreen.tsx</code></td><td>7 nodes</td></tr>
+<tr><td><code>deadline-food/components/AllergenTag.tsx</code></td><td>5 nodes</td></tr>
+<tr><td><code>src/deadline-food/ingredients.ts</code></td><td>3 nodes</td></tr>
+<tr><td><code>deadline-food/components/ConfirmDialog.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/deadline-food/shopping.ts</code></td><td>2 nodes</td></tr>
+<tr><td><code>deadline-food/screens/PlanScreen.tsx</code></td><td>1 nodes</td></tr>
+<tr><td><code>src/deadline-food/types.ts</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x24, calls x13, imports x12, imports x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4995,12 +4999,12 @@ flowchart LR
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around home, kolesniii, drp03, uni, mostly in uni/drp03/FED_UP_SPEC.md, functions/lib/index.js, functions/src/index.ts. This section covers 773 nodes and 1042 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around home, kolesniii, drp03, uni, mostly in uni/drp03/FED_UP_SPEC.md, functions/lib/index.js, functions/src/index.ts. This section covers 762 nodes and 1020 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (773 nodes, 1042 edges)
+    %% Section: Other (762 nodes, 1020 edges)
     subgraph other_functions_lib_index_js_c34dee45["functions/lib/index.js"]
         lib_index_asrecord_ee234b0f("asRecord()<br/><small>functions/lib/index.js</small>")
         lib_index_boundedstring_8bbbb209("boundedString()<br/><small>functions/lib/index.js</small>")
@@ -5038,7 +5042,7 @@ flowchart LR
     lib_index_torecommenderrecipepayload_89013296 -->|calls| lib_index_asrecord_ee234b0f
     lib_index_asrecord_ee234b0f -->|calls| lib_index_handleautoplan_a81d5f18
     lib_index_boundedstring_8bbbb209 -->|calls| lib_index_handleautoplan_a81d5f18
-    %% Omitted for readability: 755 nodes, 0 edges
+    %% Omitted for readability: 744 nodes, 0 edges
     class lib_index_asrecord_ee234b0f function;
     class lib_index_boundedstring_8bbbb209 function;
     class lib_index_cyrb53_4bdb4d93 function;
@@ -5337,7 +5341,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x546, calls x387, imports x73, imports x29. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x539, calls x385, imports x65, imports x24. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5367,7 +5371,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>drp03 — Architecture Documentation</p>
-  <p>Generated: 2026-06-12 23:33 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-12 23:48 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

@@ -1,7 +1,7 @@
 # Graph Report - drp03  (2026-06-13)
 
 ## Corpus Check
-- 245 files · ~394,189 words
+- 245 files · ~394,573 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `25e832bd`
+- Built from commit: `1d1badb0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -220,11 +220,11 @@ Nodes (78): Shared-key verification for requests forwarded by Firebase Functions
 
 ### Community 3 - "Community 3"
 Cohesion: 0.06
-Nodes (55): icsSubscriptionHints, GoogleIcon(), MicrosoftIcon(), IngredientEditor(), ChoiceGroup(), Field(), SelectField(), UniversityField() (+47 more)
+Nodes (53): icsSubscriptionHints, GoogleIcon(), MicrosoftIcon(), IngredientEditor(), AppButton(), ChoiceGroup(), UniversityField(), AccountMessageTone (+45 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.07
-Nodes (51): BudgetCard(), entryTotal(), MealThumbnail(), MealThumbnailProps, Badge(), ShoppingListCard(), allSlots, mealTypeIcon (+43 more)
+Nodes (52): BudgetCard(), entryTotal(), MealThumbnail(), MealThumbnailProps, Badge(), ShoppingListCard(), allSlots, mealTypeIcon (+44 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.06
@@ -275,8 +275,8 @@ Cohesion: 0.12
 Nodes (24): formatIngredient(), ingredientKey(), recipeIngredients(), KitchenAccess, MealOption, MealType, PlannedMeal, RecipeDetails (+16 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.16
-Nodes (13): ClassifiedEvent, DailyContext, DeadlineContextResponse, deadlinesFromContext(), fetchDeadlineContext(), requestDeadlineContext(), resolveDeadlinesFromEvents(), context (+5 more)
+Cohesion: 0.12
+Nodes (21): ClassifiedEvent, ContextEventInput, DailyContext, DeadlineContextResponse, deadlinesFromContext(), deadlineToContextEvent(), fetchDeadlineContext(), requestDeadlineContext() (+13 more)
 
 ### Community 18 - "Community 18"
 Cohesion: 0.15
@@ -355,8 +355,8 @@ Cohesion: 0.13
 Nodes (19): initFirebase(), IngredientNutritionEstimate, authHeaders(), bulkUpsertRecipes(), listRecipes(), RecipeOut, recommenderUrl(), RecipeIn (+11 more)
 
 ### Community 37 - "Community 37"
-Cohesion: 0.14
-Nodes (22): appButtonClasses, AppButtonVariant, badgeTones, sanitiseNumericInput(), Tone, cn(), PreferenceSection(), CardAction() (+14 more)
+Cohesion: 0.13
+Nodes (24): appButtonClasses, AppButtonVariant, badgeTones, Field(), sanitiseNumericInput(), SelectField(), Tone, cn() (+16 more)
 
 ### Community 38 - "Community 38"
 Cohesion: 0.12
@@ -380,7 +380,7 @@ Nodes (25): asRecord(), boundedNumber(), boundedString(), boundedStringList(), n
 
 ### Community 43 - "Community 43"
 Cohesion: 0.08
-Nodes (29): ALLERGEN_DISPLAY, ALLERGEN_ICONS, allergenIcon(), AllergenTag(), ConfirmDialog(), AppButton(), defaultForm(), EditorForm (+21 more)
+Nodes (28): ALLERGEN_DISPLAY, ALLERGEN_ICONS, allergenIcon(), AllergenTag(), ConfirmDialog(), defaultForm(), EditorForm, formatPortionNote() (+20 more)
 
 ### Community 44 - "Community 44"
 Cohesion: 0.08
@@ -423,8 +423,8 @@ Cohesion: 0.13
 Nodes (19): NutritionProvider, OpenFoodFactsProduct, ResolvedProduct, resolveIngredientProduct(), ResolveOptions, deaccent(), FDC_BASE_URL, FDC_DATA_TYPES (+11 more)
 
 ### Community 54 - "Community 54"
-Cohesion: 0.08
-Nodes (24): code:bash (mkdir -p graphify-out), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash (# Detect the correct Python interpreter (handles uv tool, pi), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c ") (+16 more)
+Cohesion: 0.10
+Nodes (21): code:bash (mkdir -p graphify-out), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash (# Detect the correct Python interpreter (handles uv tool, pi), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c ") (+13 more)
 
 ### Community 55 - "Community 55"
 Cohesion: 0.10
@@ -571,8 +571,8 @@ Cohesion: 0.24
 Nodes (11): firebaseFunctionUrl(), calendarGoogleExchangeUrl(), calendarOutlookExchangeUrl(), deadlineContextUrl(), exchangeCodeOnServer(), GoogleExchangeResult, importGoogleCalendar(), isGoogleConfigured() (+3 more)
 
 ### Community 91 - "Community 91"
-Cohesion: 0.25
-Nodes (7): ContextEventInput, deadlineToContextEvent(), AutoPlanResponse, computePlanSignature(), contextEvents(), generateAutoPlan(), GenerateAutoPlanInput
+Cohesion: 0.67
+Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), Step 6 - Generate Obsidian vault (opt-in) + HTML
 
 ### Community 94 - "Community 94"
 Cohesion: 0.22
@@ -795,8 +795,8 @@ Cohesion: 0.18
 Nodes (12): sortByPreferredFallback(), constraints, expectedTotal, plan, ranked, rescued, tightPlan, vegetarianPlan (+4 more)
 
 ### Community 170 - "Community 170"
-Cohesion: 0.26
-Nodes (7): importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), calendarFetchIcsUrl(), parseICSText(), unfoldLines(), CalendarEvent
+Cohesion: 0.27
+Nodes (6): importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), calendarFetchIcsUrl(), parseICSText(), unfoldLines()
 
 ### Community 171 - "Community 171"
 Cohesion: 0.47

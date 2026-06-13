@@ -526,8 +526,27 @@ function PrepReminderSuggestions({
     Object.fromEntries(suggestions.map((s) => [s.meal.id, prepReminderTime])),
   );
   const [exported, setExported] = useState<Record<string, "ics" | "google">>({});
+  const [dismissed, setDismissed] = useState<Set<string>>(() => {
+    try {
+      const saved = sessionStorage.getItem("deadlineFood:prepDismissed");
+      if (saved) return new Set(JSON.parse(saved) as string[]);
+    } catch { /* sessionStorage unavailable */ }
+    return new Set();
+  });
 
-  if (suggestions.length === 0) return null;
+  useEffect(() => {
+    try {
+      sessionStorage.setItem("deadlineFood:prepDismissed", JSON.stringify([...dismissed]));
+    } catch { /* sessionStorage unavailable */ }
+  }, [dismissed]);
+
+  function dismiss(mealId: string) {
+    setDismissed((prev) => new Set(prev).add(mealId));
+    track("prep_reminder_dismissed", { meal_id: mealId });
+  }
+
+  const visible = suggestions.filter((s) => !dismissed.has(s.meal.id));
+  if (visible.length === 0) return null;
 
   function buildPrepBlock(s: PrepSuggestion): CookingCalendarBlock {
     return {
@@ -567,7 +586,7 @@ function PrepReminderSuggestions({
         </div>
       </div>
       <div className="space-y-4">
-        {suggestions.map((s) => (
+        {visible.map((s) => (
           <div key={s.meal.id} className="rounded-lg border border-stone-200 bg-stone-50 p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -577,6 +596,14 @@ function PrepReminderSuggestions({
                 </p>
                 <p className="mt-0.5 text-xs text-stone-500">{s.prep.reason} · planned {s.entry.day}</p>
               </div>
+              <button
+                type="button"
+                onClick={() => dismiss(s.meal.id)}
+                aria-label="Dismiss reminder"
+                className="-mr-1 -mt-1 shrink-0 rounded-md p-1 text-stone-400 transition hover:bg-stone-200 hover:text-stone-600"
+              >
+                <X size={16} />
+              </button>
             </div>
             <div className="mt-3 flex flex-wrap items-end gap-3">
               <label className="block">
@@ -663,7 +690,11 @@ export function CalendarScreen({
     return null;
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
-  const prepSuggestions = useMemo(() => getPrepSuggestions(plan, customRecipes), [plan, customRecipes]);
+  const todayIso = toLocalIso(new Date());
+  const prepSuggestions = useMemo(
+    () => getPrepSuggestions(plan, customRecipes, todayIso),
+    [plan, customRecipes, todayIso],
+  );
 
   useEffect(() => {
     try {

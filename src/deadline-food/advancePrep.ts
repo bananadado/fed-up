@@ -56,10 +56,17 @@ export type PrepSuggestion = {
   reminderDateIso: string | null;
 };
 
-/** Returns unique advance-prep suggestions from the plan (one per meal). */
+/**
+ * Returns unique advance-prep suggestions from the plan (one per meal).
+ *
+ * When `todayIso` (`YYYY-MM-DD`) is supplied, reminders whose evening-before
+ * date has already passed are dropped — and because the skip happens before the
+ * meal is marked seen, a later occurrence of the same meal can still surface.
+ */
 export function getPrepSuggestions(
   plan: PlanEntry[],
   customRecipes: Meal[],
+  todayIso?: string,
 ): PrepSuggestion[] {
   const seen = new Set<string>();
   const suggestions: PrepSuggestion[] = [];
@@ -70,7 +77,6 @@ export function getPrepSuggestions(
       const meal = getMealById(planMeal.mealId, customRecipes);
       const prep = detectAdvancePrep(meal);
       if (!prep) continue;
-      seen.add(planMeal.mealId);
 
       let reminderDateIso: string | null = null;
       if (entry.dateIso) {
@@ -78,6 +84,11 @@ export function getPrepSuggestions(
         d.setDate(d.getDate() - 1);
         reminderDateIso = d.toISOString().slice(0, 10);
       }
+
+      // Drop reminders whose prep evening has already passed. Skip without
+      // marking seen so a later planned date of the same meal can still match.
+      if (todayIso && reminderDateIso && reminderDateIso < todayIso) continue;
+      seen.add(planMeal.mealId);
 
       suggestions.push({ meal, entry, prep, reminderDateIso });
     }

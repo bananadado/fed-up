@@ -136,6 +136,63 @@ describe("getPrepSuggestions", () => {
     expect(suggestions[0]!.reminderDateIso).toBe("2026-06-12");
   });
 
+  test("drops reminders whose evening-before date has passed", () => {
+    const meal = makeMeal({
+      id: "barramundi",
+      instructions: ["Marinate the fish in Moroccan spices."],
+    });
+    const plan: PlanEntry[] = [
+      {
+        day: "Fri 12 Jun",
+        dateIso: "2026-06-12", // reminder = 2026-06-11
+        context: "",
+        meals: [{ slot: "dinner", mealId: "barramundi" }],
+      },
+    ];
+    // Today is the 13th: the 11th reminder is in the past.
+    expect(getPrepSuggestions(plan, [meal], "2026-06-13")).toHaveLength(0);
+  });
+
+  test("keeps a reminder due today (boundary)", () => {
+    const meal = makeMeal({
+      id: "chickpeas",
+      instructions: ["Soak the chickpeas for 8 hours."],
+    });
+    const plan: PlanEntry[] = [
+      {
+        day: "Sun 14 Jun",
+        dateIso: "2026-06-14", // reminder = 2026-06-13
+        context: "",
+        meals: [{ slot: "dinner", mealId: "chickpeas" }],
+      },
+    ];
+    expect(getPrepSuggestions(plan, [meal], "2026-06-13")).toHaveLength(1);
+  });
+
+  test("surfaces a later occurrence when an earlier one has expired", () => {
+    const meal = makeMeal({
+      id: "chickpeas",
+      instructions: ["Soak the chickpeas for 8 hours."],
+    });
+    const plan: PlanEntry[] = [
+      {
+        day: "Fri 12 Jun",
+        dateIso: "2026-06-12", // reminder 2026-06-11 — past
+        context: "",
+        meals: [{ slot: "dinner", mealId: "chickpeas" }],
+      },
+      {
+        day: "Tue 16 Jun",
+        dateIso: "2026-06-16", // reminder 2026-06-15 — future
+        context: "",
+        meals: [{ slot: "dinner", mealId: "chickpeas" }],
+      },
+    ];
+    const suggestions = getPrepSuggestions(plan, [meal], "2026-06-13");
+    expect(suggestions).toHaveLength(1);
+    expect(suggestions[0]!.reminderDateIso).toBe("2026-06-15");
+  });
+
   test("omits meals with no advance prep", () => {
     const meal = makeMeal({
       id: "plain",
