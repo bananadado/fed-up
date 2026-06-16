@@ -191,12 +191,7 @@ export function IngredientEditor({
 
   return (
     <div>
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold">Ingredients{required && <span className="ml-1 text-red-500">*</span>}</p>
-        <AppButton type="button" variant="secondary" className="px-3 py-2" onClick={() => onChange([...ingredients, createIngredientDraft()])}>
-          <Plus size={15} /> Add
-        </AppButton>
-      </div>
+      <p className="text-sm font-semibold">Ingredients{required && <span className="ml-1 text-red-500">*</span>}</p>
       <div className="mt-3 space-y-3">
         {ingredients.length === 0 && (
           <p className="select-none px-1 py-2 text-sm italic text-stone-400">
@@ -272,6 +267,14 @@ export function IngredientEditor({
             </div>
           </div>
         ))}
+        <AppButton
+          type="button"
+          variant="secondary"
+          className="w-full justify-center"
+          onClick={() => onChange([...ingredients, createIngredientDraft()])}
+        >
+          <Plus size={15} /> Add ingredient
+        </AppButton>
       </div>
     </div>
   );
