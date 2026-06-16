@@ -1,16 +1,16 @@
 # Graph Report - drp03  (2026-06-16)
 
 ## Corpus Check
-- 243 files · ~390,592 words
+- 242 files · ~394,602 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2920 nodes · 5352 edges · 166 communities (151 shown, 15 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 86 edges (avg confidence: 0.8)
+- 3086 nodes · 5950 edges · 178 communities (163 shown, 15 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 86 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a87d5281`
+- Built from commit: `36b3ceb8`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -168,77 +168,88 @@
 - [[_COMMUNITY_Community 150|Community 150]]
 - [[_COMMUNITY_Community 151|Community 151]]
 - [[_COMMUNITY_Community 152|Community 152]]
+- [[_COMMUNITY_Community 153|Community 153]]
 - [[_COMMUNITY_Community 155|Community 155]]
 - [[_COMMUNITY_Community 156|Community 156]]
 - [[_COMMUNITY_Community 157|Community 157]]
 - [[_COMMUNITY_Community 158|Community 158]]
 - [[_COMMUNITY_Community 165|Community 165]]
+- [[_COMMUNITY_Community 166|Community 166]]
+- [[_COMMUNITY_Community 167|Community 167]]
+- [[_COMMUNITY_Community 168|Community 168]]
+- [[_COMMUNITY_Community 169|Community 169]]
+- [[_COMMUNITY_Community 170|Community 170]]
+- [[_COMMUNITY_Community 171|Community 171]]
+- [[_COMMUNITY_Community 172|Community 172]]
+- [[_COMMUNITY_Community 173|Community 173]]
+- [[_COMMUNITY_Community 174|Community 174]]
+- [[_COMMUNITY_Community 175|Community 175]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `cn()` - 50 edges
-2. `Fed Up — Product and Implementation Specification` - 41 edges
-3. `scripts` - 29 edges
-4. `MealOption` - 24 edges
-5. `Meal` - 24 edges
-6. `sample_recipe()` - 24 edges
-7. `_seed_user()` - 22 edges
-8. `compilerOptions` - 20 edges
-9. `Card()` - 20 edges
-10. `recommend()` - 20 edges
+1. `cn()` - 48 edges
+2. `Fed Up — Product and Implementation Specification` - 42 edges
+3. `scripts` - 30 edges
+4. `recommend()` - 25 edges
+5. `sample_recipe()` - 25 edges
+6. `MealOption` - 24 edges
+7. `Meal` - 24 edges
+8. `_seed_user()` - 23 edges
+9. `compilerOptions` - 21 edges
+10. `Card()` - 20 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `test_embed_unembedded_recipes_job()` --calls--> `embed_unembedded_recipes()`  [INFERRED]
-  /home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py → backend/recommender-api/app/jobs.py
-- `test_embed_unembedded_recipes_noop_when_all_embedded()` --calls--> `embed_unembedded_recipes()`  [INFERRED]
-  /home/leo/DRP/drp03/backend/recommender-api/tests/test_recipes_api.py → backend/recommender-api/app/jobs.py
-- `get_recommendations()` --calls--> `recommend()`  [INFERRED]
-  /home/leo/DRP/drp03/backend/recommender-api/app/main.py → backend/recommender-api/app/recommend.py
-- `_stage1_filter_and_retrieve()` --calls--> `canonical_tags()`  [INFERRED]
-  backend/recommender-api/app/recommend.py → /home/leo/DRP/drp03/backend/recommender-api/app/normalization.py
-- `create_recipe()` --calls--> `score_difficulty()`  [INFERRED]
-  /home/leo/DRP/drp03/backend/recommender-api/app/main.py → backend/recommender-api/app/difficulty.py
+- `proposalForProduct()` --calls--> `findIngredientPriceRecord()`  [EXTRACTED]
+  scripts/import-tesco-prices.ts → src/domain/ingredientCosting.ts
+- `parsePackageGrams()` --calls--> `gramsForIngredient()`  [EXTRACTED]
+  scripts/import-tesco-prices.ts → src/domain/ingredientMeasurements.ts
+- `parsePackageGrams()` --calls--> `parseMeasureToIngredient()`  [EXTRACTED]
+  scripts/import-tesco-prices.ts → src/domain/ingredientMeasurements.ts
+- `correctedIngredients()` --calls--> `parseMeasureToIngredient()`  [EXTRACTED]
+  scripts/patch-ingredient-measures.ts → src/domain/ingredientMeasurements.ts
+- `parseMeasureToIngredient()` --calls--> `parseMeasureToIngredient()`  [EXTRACTED]
+  scripts/ingest/sources/themealdb.ts → src/domain/ingredientMeasurements.ts
 
-## Communities (166 total, 15 thin omitted)
+## Communities (178 total, 15 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.02
-Nodes (78): accountSessionsRef, allowedPhotoMimeTypes, anonymousSessionsRef, AppData, appDataRef, CalendarEvent, calendarFetchIcs, calendarGoogleExchange (+70 more)
+Nodes (88): anonymousSessionsRef, estimateIngredientNutrition(), firestore, gramsForIngredient(), nutritionHttpOptions, openFoodFactsCacheRef, publicHttpOptions, roundMacro() (+80 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.02
 Nodes (75): accountRef, accountSessionsRef, allEvents, allowedPhotoMimeTypes, anonymousSessionsRef, app_1, appData_1, appDataRef (+67 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.05
-Nodes (81): Shared-key verification for requests forwarded by Firebase Functions., Reject application API calls that were not forwarded by a trusted function., verify_cloud_function(), embed_single(), embed_texts(), get_model(), Qualitative bucket for prep time.      Synthesized natural-language descriptions, Build the natural-language description that gets embedded.      Deliberately emp (+73 more)
+Cohesion: 0.12
+Nodes (37): bulk_create_recipes(), create_recipe(), create_user(), delete_recipe(), _ensure_verified_column(), get_recipe(), get_recommendations(), get_user() (+29 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.06
-Nodes (72): appNodeEnv(), configuredBackend(), DeadlineEndpoint, deadlineFoodEndpointUrl(), fetchCanonicalScenario(), fetchDeadlineBootstrap(), fetchSeededMeals(), firebaseFunctionNames (+64 more)
+Nodes (52): assertEmailBelongsToExistingAccount(), checkDeadlineFoodMicrosoftRedirectResult(), completeDeadlineFoodEmailLinkSignIn(), currentEmailLink(), describeExistingAccountConflict(), EmailLinkCompletion, EmailMagicLinkIntent, ensureDeadlineFoodAuthUser() (+44 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.07
-Nodes (49): BudgetCard(), entryTotal(), MealThumbnail(), MealThumbnailProps, Shell(), ShoppingListCard(), allSlots, mealTypeIcon (+41 more)
+Nodes (47): BudgetCard(), entryTotal(), MealThumbnail(), MealThumbnailProps, SCOPE_OPTIONS, ShoppingListCard(), allSlots, mealTypeIcon (+39 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.09
-Nodes (41): icsSubscriptionHints, GoogleIcon(), MicrosoftIcon(), IngredientEditor(), AppButton(), appButtonClasses, AppButtonVariant, badgeTones (+33 more)
+Cohesion: 0.15
+Nodes (22): appButtonClasses, AppButtonVariant, badgeTones, Field(), SelectField(), Tone, cn(), CardAction() (+14 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.07
-Nodes (57): _clamp(), classify_event(), classify_events(), _cosine(), daily_context(), _embedding_classify(), _event_duration_hours(), event_type() (+49 more)
+Cohesion: 0.09
+Nodes (61): _clamp(), classify_event(), classify_events(), _cosine(), daily_context(), _embedding_classify(), _event_duration_hours(), event_type() (+53 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.08
-Nodes (56): behavioural_profile(), _clamp(), derive_ability_profile(), onboarding_priors(), Derive an explicit cooking-ability & preference profile for a user (issue #59)., Profile implied purely by likes/dislikes.      Uses a symmetric formulation per, Blend onboarding priors with behavioural signal.      The behavioural weight gro, Baseline profile from onboarding answers only. (+48 more)
+Cohesion: 0.16
+Nodes (34): behavioural_profile(), _clamp(), derive_ability_profile(), onboarding_priors(), Derive an explicit cooking-ability & preference profile for a user (issue #59)., Profile implied purely by likes/dislikes.      Uses a symmetric formulation per, Blend onboarding priors with behavioural signal.      The behavioural weight gro, Baseline profile from onboarding answers only. (+26 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.10
-Nodes (27): seededMeals, canonicalConstraints, deadlineBootstrap, productMeta, formatIngredient(), ingredientKey(), recipeIngredients(), MealOption (+19 more)
+Cohesion: 0.13
+Nodes (23): formatIngredient(), ingredientKey(), recipeIngredients(), KitchenAccess, MealOption, MealType, PlannedMeal, RecipeDetails (+15 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.08
-Nodes (31): ALLERGEN_DISPLAY, ALLERGEN_ICONS, allergenIcon(), AllergenTag(), ConfirmDialog(), Badge(), RecipeEditorOutput, scaleIngredients() (+23 more)
+Cohesion: 0.09
+Nodes (27): ALLERGEN_DISPLAY, ALLERGEN_ICONS, allergenIcon(), AllergenTag(), ConfirmDialog(), AppButton(), Badge(), RecipeEditorOutput (+19 more)
 
 ### Community 10 - "Community 10"
 Cohesion: 0.04
@@ -249,7 +260,7 @@ Cohesion: 0.04
 Nodes (44): App calls local API but you expected Firebase, Backend Deployment, Build, CI Pipeline, code:sh (bun install), code:sh (bun run test:unit), code:sh (bun test src/deadline-food/shopping.test.ts), code:sh (bun run test:domain) (+36 more)
 
 ### Community 12 - "Community 12"
-Cohesion: 0.05
+Cohesion: 0.04
 Nodes (43): `anonymousSessions/{sessionId}`, `appData/deadlineFood`, Backend Change Checklist, Backend Deploy, Backend Security Notes, code:rules (match /{document=**} {), code:ts ({), code:ts ({) (+35 more)
 
 ### Community 13 - "Community 13"
@@ -261,40 +272,40 @@ Cohesion: 0.07
 Nodes (39): acceptCookieBanner(), acceptCookieBannerCdp(), args, baseUrl, BrowserName, CdpClient, cdpEvaluate(), cdpGoto() (+31 more)
 
 ### Community 15 - "Community 15"
-Cohesion: 0.06
-Nodes (31): ANIMAL_ALLERGENS, ANIMAL_INGREDIENT_PATTERNS, buildPlan(), canonicalTag(), canonicalTags(), DAIRY_ALLERGENS, DAIRY_INGREDIENT_PATTERNS, GLUTEN_INGREDIENT_PATTERNS (+23 more)
+Cohesion: 0.09
+Nodes (20): ANIMAL_ALLERGENS, ANIMAL_INGREDIENT_PATTERNS, buildPlan(), canonicalTag(), canonicalTags(), DAIRY_ALLERGENS, DAIRY_INGREDIENT_PATTERNS, GLUTEN_INGREDIENT_PATTERNS (+12 more)
 
 ### Community 16 - "Community 16"
-Cohesion: 0.08
-Nodes (31): AdvancePrepInfo, detectAdvancePrep(), getPrepSuggestions(), PrepSuggestion, requiresSoaking(), meal, plan, suggestions (+23 more)
+Cohesion: 0.12
+Nodes (21): cookingEffortReason(), workloadLabel(), workloadScore(), CalendarScreen(), DayCell, dayLabel(), DeadlineEditPanel(), FormErrors (+13 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.09
-Nodes (27): DeadlineFoodApp(), DiscoverRecommendationRequest, isAppScreen(), onboardingScreens, replaceScreenUrl(), screenFromLocation(), screens, urlForScreen() (+19 more)
+Cohesion: 0.33
+Nodes (7): screenFromLocation(), cyrb53(), recipeShareToken(), recipeShareUrl(), shareIdForRecipe(), a, b
 
 ### Community 18 - "Community 18"
-Cohesion: 0.09
-Nodes (32): currentItemKeys(), readStoredCheckedItems(), SCOPE_OPTIONS, writeStoredCheckedItems(), headNoun(), isUncountableFood(), pluraliseFoodName(), pluraliseIngredientName() (+24 more)
+Cohesion: 0.11
+Nodes (21): currentItemKeys(), readStoredCheckedItems(), writeStoredCheckedItems(), INGREDIENT_DENSITY_G_PER_ML, ALL_PREP_WORDS, ALWAYS_AVAILABLE, COUNT_LIKE_UNITS, countHint() (+13 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.07
-Nodes (18): float, int, str, _candidates(), _profile(), Unit tests for the reactive recommendation engine internals (issue #61).  These, With temperature on, the tail slots should include candidates that would     nev, A user more capable than the recipe requires is not penalised. (+10 more)
+Cohesion: 0.10
+Nodes (38): float, int, str, float, int, str, _candidates(), _profile() (+30 more)
 
 ### Community 20 - "Community 20"
-Cohesion: 0.16
-Nodes (34): Any, float, int, object, Request, str, bucket_difficulty(), bucket_prep() (+26 more)
+Cohesion: 0.14
+Nodes (45): Any, Shared-key verification for requests forwarded by Firebase Functions., Reject application API calls that were not forwarded by a trusted function., verify_cloud_function(), float, int, object, Request (+37 more)
 
 ### Community 21 - "Community 21"
 Cohesion: 0.10
 Nodes (32): ALLERGEN_KEYWORDS, CATEGORY_FALLBACK_MINUTES, CATEGORY_NUTRITION, CUISINE_FLAVORS, DEFAULT_NUTRITION, detectAllergens(), detectDietaryTags(), detectSuitabilityTags() (+24 more)
 
 ### Community 22 - "Community 22"
-Cohesion: 0.09
-Nodes (29): createDeadlineModeCommands(), DeadlineModeAction, DeadlineModeCommands, DeadlineModeInternalAction, deadlineModeReducer(), DeadlineModeState, initialDeadlineModeState, withEvent() (+21 more)
+Cohesion: 0.11
+Nodes (20): createDeadlineModeCommands(), DeadlineModeAction, DeadlineModeCommands, DeadlineModeInternalAction, deadlineModeReducer(), DeadlineModeState, initialDeadlineModeState, withEvent() (+12 more)
 
 ### Community 23 - "Community 23"
-Cohesion: 0.08
-Nodes (28): allergens, calendarProviders, cookingAbilities, defaultDeadlines, dietary, dislikes, initialPlan, initialPreferences (+20 more)
+Cohesion: 0.05
+Nodes (76): GoogleIcon(), MicrosoftIcon(), ChoiceGroup(), Shell(), AccountMessageTone, AccountProviderId, AccountSummary, EmailMagicLinkOptions (+68 more)
 
 ### Community 24 - "Community 24"
 Cohesion: 0.06
@@ -313,20 +324,20 @@ Cohesion: 0.06
 Nodes (30): AI Agent Playbook, Choosing The Correct Frontend Surface, code:sh (bun run lint), code:sh (bun run lint), code:sh (bun run lint), code:sh (bun run test:domain), code:sh (bun run firebase:data), code:sh (bun run verify) (+22 more)
 
 ### Community 28 - "Community 28"
-Cohesion: 0.09
-Nodes (24): acronymFor(), defaultUniversitySuggestions, fuzzyRatio(), getUniversitySuggestions(), levenshteinDistance(), normalizeSearchText(), scoreCandidate(), stopWords (+16 more)
+Cohesion: 0.06
+Nodes (27): anonymousSessionsRef, estimateIngredientNutrition(), firestore, gramsForIngredient(), nutritionHttpOptions, openFoodFactsCacheRef, publicHttpOptions, servingGrams (+19 more)
 
 ### Community 29 - "Community 29"
-Cohesion: 0.19
-Nodes (27): Endpoint tests for the reactive recommendation engine (issue #61).  Drives ``POS, Under crunch, an easy recipe should out-rank an ambitious one for a     beginner, A swipe_right recomputes the user's taste embedding, after which the     candida, _recommend(), _seed_recipe(), _seed_user(), test_allergens_are_hard_filtered(), test_capitalized_allergens_are_normalized() (+19 more)
+Cohesion: 0.05
+Nodes (74): float, str, float, str, client(), _cosine(), fake_embed_single(), fake_embed_texts() (+66 more)
 
 ### Community 30 - "Community 30"
-Cohesion: 0.12
-Nodes (20): sample_recipe(), sample_user(), Endpoint tests for recipe ingestion, retrieval and the embedding job (issue #60), test_bulk_create_recipes(), test_create_recipe_computes_difficulty_and_embedding_text(), test_create_recipe_is_idempotent_upsert(), test_get_recipe_roundtrip(), test_list_recipes_sorted_by_name() (+12 more)
+Cohesion: 0.26
+Nodes (28): _ability_match(), _ability_profile(), _apply_exploration(), _as_vector(), _blend_weights(), _budget_score(), _collaborative_scores(), _cosine_sim() (+20 more)
 
 ### Community 31 - "Community 31"
 Cohesion: 0.17
-Nodes (27): canCook(), canPrepareBase(), createPlannedMealId(), dayLabels, formatDayLabel(), formatMealSlotLabel(), formatPlanItemLabel(), getContextTags() (+19 more)
+Nodes (28): canCook(), canPrepareBase(), createPlannedMealId(), dayLabels, formatDayLabel(), formatMealSlotLabel(), formatPlanItemLabel(), getContextTags() (+20 more)
 
 ### Community 32 - "Community 32"
 Cohesion: 0.07
@@ -337,7 +348,7 @@ Cohesion: 0.07
 Nodes (27): Active App Data Model, Active App Helpers, Active App Navigation, Active App Screens, Active App State, Active Components, Active Frontend, Analytics (+19 more)
 
 ### Community 34 - "Community 34"
-Cohesion: 0.07
+Cohesion: 0.09
 Nodes (26): dependencies, firebase-admin, firebase-functions, @google-cloud/functions-framework, devDependencies, eslint, eslint-config-google, eslint-plugin-import (+18 more)
 
 ### Community 35 - "Community 35"
@@ -346,7 +357,7 @@ Nodes (18): initFirebase(), IngredientNutritionEstimate, authHeaders(), bulkUpse
 
 ### Community 36 - "Community 36"
 Cohesion: 0.11
-Nodes (25): clamp(), countableUnits, formatQuantityForInput(), INGREDIENT_DENSITY_G_PER_ML, ingredientAliases, ingredientOptions, ingredientPreparations, ingredientSearchTerm() (+17 more)
+Nodes (24): clamp(), countableUnits, formatQuantityForInput(), ingredientAliases, ingredientOptions, ingredientPreparations, ingredientSearchTerm(), ingredientToDraft() (+16 more)
 
 ### Community 37 - "Community 37"
 Cohesion: 0.12
@@ -357,8 +368,8 @@ Cohesion: 0.08
 Nodes (24): Active Surface: App, Architectural Risk Areas, Architecture, Backend Surfaces, Browser Entry, Build Architecture, code:sh (bun --hot src/index.ts), code:html (<script type="module" src="./frontend.tsx" async></script>) (+16 more)
 
 ### Community 39 - "Community 39"
-Cohesion: 0.15
-Nodes (25): asRecord(), boundedNumber(), boundedString(), boundedStringList(), callRecommenderJson(), canonicalRecommenderTags(), clampStoredRecipeNumbers(), handleAutoPlan() (+17 more)
+Cohesion: 0.16
+Nodes (32): asRecord(), boundedNumber(), boundedString(), boundedStringList(), normalizeDeadline(), normalizeRecipeList(), readRequestBody(), asRecord() (+24 more)
 
 ### Community 40 - "Community 40"
 Cohesion: 0.15
@@ -377,8 +388,8 @@ Cohesion: 0.08
 Nodes (23): 1. Active App (what users see), 2. Dormant React Router Slice (not mounted), Anonymous Session Persistence, API Endpoints (Frontend), Backend, CI/Deployment, code:sh (bun install                  # install dependencies), code:sh (bun run lint                 # ESLint) (+15 more)
 
 ### Community 44 - "Community 44"
-Cohesion: 0.08
-Nodes (24): code:bash (mkdir -p graphify-out), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash (# Detect the correct Python interpreter (handles uv tool, pi), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c ") (+16 more)
+Cohesion: 0.10
+Nodes (21): code:bash (mkdir -p graphify-out), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash (# Detect the correct Python interpreter (handles uv tool, pi), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c ") (+13 more)
 
 ### Community 45 - "Community 45"
 Cohesion: 0.09
@@ -405,11 +416,11 @@ Cohesion: 0.17
 Nodes (17): CalendarEventIn, ContextRequest, Ingredient, InteractionIn, Nutrition, RecipeIn, RecipeOut, RecommendRequest (+9 more)
 
 ### Community 51 - "Community 51"
-Cohesion: 0.14
-Nodes (14): ClassifiedEvent, ContextEventInput, DailyContext, deadlineToContextEvent(), calendarEventsToDeadlines(), eventDisplayFields, isFutureEvent(), CalendarEvent (+6 more)
+Cohesion: 0.11
+Nodes (25): ClassifiedEvent, ContextEventInput, DailyContext, DeadlineContextResponse, deadlineContextUrl(), deadlinesFromContext(), deadlineToContextEvent(), fetchDeadlineContext() (+17 more)
 
 ### Community 52 - "Community 52"
-Cohesion: 0.10
+Cohesion: 0.16
 Nodes (19): annotations, list, editable, fiscalYearStartMonth, graphTooltip, links, panels, refresh (+11 more)
 
 ### Community 53 - "Community 53"
@@ -421,8 +432,8 @@ Cohesion: 0.10
 Nodes (19): emulators, firestore, functions, singleProjectMode, storage, ui, firestore, database (+11 more)
 
 ### Community 55 - "Community 55"
-Cohesion: 0.10
-Nodes (18): scopePlanEntries(), apple, flour, flourItems, items, large, meal, mealA (+10 more)
+Cohesion: 0.08
+Nodes (25): headNoun(), isUncountableFood(), aggregateIngredients(), estimateShoppingListCost(), formatShoppingList(), ingredientsFromPlan(), scopePlanEntries(), shoppingItemLabel() (+17 more)
 
 ### Community 56 - "Community 56"
 Cohesion: 0.20
@@ -433,8 +444,8 @@ Cohesion: 0.17
 Nodes (18): COUNT_UNIT_DEFAULT_GRAMS, expandVulgarFractions(), gramsForIngredientUnit(), MeasurableIngredient, MEASURE_PREPARATION_WORDS, normalizeIngredientUnit(), normalizeText(), ParsedIngredientMeasure (+10 more)
 
 ### Community 58 - "Community 58"
-Cohesion: 0.11
-Nodes (18): 0. Instructions to the Coding Agent, 11. Information Architecture and Routes, 12. Screen-Level UI Requirements, 18. Validation and Edge Cases, 20. Analytics / Evaluation Instrumentation — App Level, 22. MVP Scope: What Must Be Built First, 25. Canonical Seed Scenario for Development and Testing, 26. Suggested Build Order for Codex (+10 more)
+Cohesion: 0.09
+Nodes (21): 0. Instructions to the Coding Agent, 11. Information Architecture and Routes, 12.1 Landing / activation screen, 12. Screen-Level UI Requirements, 18. Validation and Edge Cases, 20. Analytics / Evaluation Instrumentation — App Level, 22. MVP Scope: What Must Be Built First, 25. Canonical Seed Scenario for Development and Testing (+13 more)
 
 ### Community 59 - "Community 59"
 Cohesion: 0.12
@@ -445,7 +456,7 @@ Cohesion: 0.15
 Nodes (13): FirestoreMeal, Ingredient, Nutrition, RecipeIn, args, categoryFilter, initFirebase(), isDryRun (+5 more)
 
 ### Community 61 - "Community 61"
-Cohesion: 0.11
+Cohesion: 0.14
 Nodes (17): aliases, components, hooks, lib, ui, utils, iconLibrary, rsc (+9 more)
 
 ### Community 62 - "Community 62"
@@ -457,11 +468,11 @@ Cohesion: 0.15
 Nodes (15): args, FirestoreDoc, Ingredient, initFirebase(), isDryRun, main(), option(), Recipe (+7 more)
 
 ### Community 64 - "Community 64"
-Cohesion: 0.16
-Nodes (14): Field(), defaultForm(), EditorForm, formatPortionNote(), MEAL_SLOT_OPTIONS, MEAL_SLOT_SET, mealToForm(), parsePortionNote() (+6 more)
+Cohesion: 0.13
+Nodes (18): IngredientEditor(), sanitiseNumericInput(), defaultForm(), EditorForm, formatPortionNote(), MEAL_SLOT_OPTIONS, MEAL_SLOT_SET, mealToForm() (+10 more)
 
 ### Community 65 - "Community 65"
-Cohesion: 0.12
+Cohesion: 0.11
 Nodes (16): code:block1 (/graphify                                             # full), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash (python3 -m graphify.watch INPUT_PATH --debounce 3), code:bash (graphify hook install    # install), code:bash (graphify claude install), code:bash (graphify claude uninstall  # remove the section), For --cluster-only (+8 more)
 
 ### Community 66 - "Community 66"
@@ -477,24 +488,24 @@ Cohesion: 0.12
 Nodes (15): Active App, Active App Screen Summary, Backend Summary, Canonical MVP From The Spec, code:tsx (export function App() {), Core Product Behaviours, Current Implementation Snapshot, Current Quality Gates (+7 more)
 
 ### Community 69 - "Community 69"
-Cohesion: 0.12
+Cohesion: 0.14
 Nodes (15): compileOnSave, compilerOptions, esModuleInterop, module, moduleResolution, noImplicitReturns, noUnusedLocals, outDir (+7 more)
 
 ### Community 70 - "Community 70"
 Cohesion: 0.19
-Nodes (11): float, str, client(), _cosine(), fake_embed_single(), fake_embed_texts(), _parse_vector(), Shared test fixtures for the recommender API.  The suite never touches a real Po (+3 more)
+Nodes (20): appNodeEnv(), configuredBackend(), DeadlineEndpoint, deadlineFoodEndpointUrl(), fetchCanonicalScenario(), fetchDeadlineBootstrap(), fetchSeededMeals(), firebaseFunctionNames (+12 more)
 
 ### Community 71 - "Community 71"
-Cohesion: 0.21
-Nodes (9): firebaseFunctionUrl(), importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), calendarFetchIcsUrl(), calendarGoogleExchangeUrl(), parseICSText(), unfoldLines() (+1 more)
+Cohesion: 0.24
+Nodes (7): icsSubscriptionHints, importFromSubscriptionUrl(), isSubscriptionUrl(), normalizeWebcalUrl(), calendarFetchIcsUrl(), parseICSText(), unfoldLines()
 
 ### Community 72 - "Community 72"
-Cohesion: 0.13
+Cohesion: 0.12
 Nodes (14): code:sh (bun install), code:sh (bun run firebase:dev), code:sh (bun run firebase:deploy), Critical Implementation Reality, Current Active User Flow, Current Backend Summary, Known Gaps And Cautions, One Sentence (+6 more)
 
 ### Community 73 - "Community 73"
-Cohesion: 0.19
-Nodes (9): strategyLabels, KitchenAccess, MealSlot, MealType, PlannedMeal, PlanningConstraints, PlanStrategy, RankedStrategy (+1 more)
+Cohesion: 0.26
+Nodes (20): _compute_taste_embedding(), embed_unembedded_recipes(), _parse_embedding(), Recompute a user's taste embedding *and* ability profile (issue #59).      Pulls, recompute_all_user_embeddings(), recompute_all_user_profiles(), recompute_co_likes(), recompute_trending() (+12 more)
 
 ### Community 74 - "Community 74"
 Cohesion: 0.17
@@ -505,16 +516,16 @@ Cohesion: 0.14
 Nodes (13): Atomic Progress, Autonomous Software Engineering Agent, Communication, Context Usage, Core Principles, Failure Handling, Idempotency, Merge Requests (+5 more)
 
 ### Community 76 - "Community 76"
-Cohesion: 0.23
-Nodes (12): score_difficulty(), float, Tests for the heuristic recipe difficulty scorer., test_case_insensitive_technique_matching(), test_fallback_meal_type_reduces_difficulty(), test_legacy_keys_steps_and_type_are_supported(), test_longer_prep_increases_difficulty(), test_more_ingredients_increase_difficulty() (+4 more)
+Cohesion: 0.24
+Nodes (13): score_difficulty(), float, float, Tests for the heuristic recipe difficulty scorer., test_case_insensitive_technique_matching(), test_fallback_meal_type_reduces_difficulty(), test_legacy_keys_steps_and_type_are_supported(), test_longer_prep_increases_difficulty() (+5 more)
 
 ### Community 77 - "Community 77"
-Cohesion: 0.16
-Nodes (9): DeadlineContextResponse, deadlineContextUrl(), deadlinesFromContext(), fetchDeadlineContext(), requestDeadlineContext(), resolveDeadlinesFromEvents(), context, deadlines (+1 more)
+Cohesion: 0.31
+Nodes (12): Build the natural-language description that gets embedded.      Deliberately emp, synthesize_recipe_text(), Tests for recipe embedding text synthesis (issue #60).  Recipes are embedded fro, test_meal_type_is_described_in_words(), test_synthesis_filters_blank_ingredient_names(), test_synthesis_handles_string_ingredients(), test_synthesis_includes_core_signals(), test_synthesis_includes_time_descriptor_and_minutes() (+4 more)
 
 ### Community 78 - "Community 78"
-Cohesion: 0.19
-Nodes (14): cacheOpenFoodFactsProduct(), deaccent(), fdcNutrientValue(), fdcToProduct(), fetchUsdaProductForIngredient(), findNutritionProductForIngredient(), normalizeIngredientKey(), openFoodFactsCacheDocId() (+6 more)
+Cohesion: 0.13
+Nodes (22): cacheOpenFoodFactsProduct(), normalizeIngredientKey(), openFoodFactsCacheDocId(), parseCachedProduct(), readOpenFoodFactsCachedProduct(), sleep(), timestampMillis(), tryAcquireOpenFoodFactsCacheLock() (+14 more)
 
 ### Community 79 - "Community 79"
 Cohesion: 0.19
@@ -541,12 +552,12 @@ Cohesion: 0.15
 Nodes (13): code:block10 (You are a graphify extraction subagent. Read the files liste), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:block8 (spawn_agent(agent_type="worker", message="Your task is to pe) (+5 more)
 
 ### Community 85 - "Community 85"
-Cohesion: 0.17
-Nodes (5): accountSessions, anonymousSessions, firebaseFunctionsBaseUrl, publicEnvKeys, server
+Cohesion: 0.11
+Nodes (14): seededMeals, canonicalConstraints, deadlineBootstrap, productMeta, DeadlineBootstrap, ProductMeta, appRecipes, outdir (+6 more)
 
 ### Community 86 - "Community 86"
-Cohesion: 0.24
-Nodes (5): FakeSession, Interprets the SQL the API issues against in-memory dicts., test_embed_unembedded_recipes_job(), test_embed_unembedded_recipes_noop_when_all_embedded(), test_recompute_profile_missing_user()
+Cohesion: 0.29
+Nodes (13): AnonymousSessionResponse, authHeaders(), clearStoredAnonymousSessionId(), deleteAccountProfile(), getOrCreateAnonymousSessionId(), loadAnonymousSessionSettings(), readJson(), readStoredSessionId() (+5 more)
 
 ### Community 87 - "Community 87"
 Cohesion: 0.27
@@ -557,20 +568,24 @@ Cohesion: 0.22
 Nodes (8): tescoIngredientPriceTable, curatedIngredientPriceTable, IngredientPriceRecord, IngredientPriceSource, ingredientPriceTable, SEEDED_SOURCE, seededIngredientPriceTable, usableTescoIngredientPriceTable
 
 ### Community 89 - "Community 89"
-Cohesion: 0.20
+Cohesion: 0.18
 Nodes (9): Anonymous session storage, bun-react-tailwind-shadcn-template, code:bash (bun install), code:bash (bun dev), code:bash (bun start), code:bash (bun run verify), code:bash (FIREBASE_PROJECT_ID=your-firebase-project-id), code:bash (PROJECT_ID=your-firebase-project-id) (+1 more)
 
 ### Community 90 - "Community 90"
 Cohesion: 0.22
 Nodes (10): accountSessionDocId(), accountSessionHandle(), data, getAppData(), handleAccountSessionDelete(), handleAccountSessionGet(), readRecipeReviews(), seedAppData() (+2 more)
 
+### Community 91 - "Community 91"
+Cohesion: 0.18
+Nodes (12): sortByPreferredFallback(), constraints, expectedTotal, plan, ranked, rescued, tightPlan, vegetarianPlan (+4 more)
+
 ### Community 92 - "Community 92"
-Cohesion: 0.36
-Nodes (8): calendarOutlookExchangeUrl(), base64UrlEncode(), exchangeCodeOnServer(), generatePKCE(), importOutlookCalendar(), isOutlookConfigured(), OutlookExchangeResult, waitForPopupRedirect()
+Cohesion: 0.29
+Nodes (10): firebaseFunctionUrl(), calendarGoogleExchangeUrl(), calendarOutlookExchangeUrl(), base64UrlEncode(), exchangeCodeOnServer(), generatePKCE(), importOutlookCalendar(), isOutlookConfigured() (+2 more)
 
 ### Community 93 - "Community 93"
-Cohesion: 0.39
-Nodes (7): exchangeCodeOnServer(), GoogleExchangeResult, importGoogleCalendar(), isGoogleConfigured(), loadGIS(), requestCode(), Window
+Cohesion: 0.29
+Nodes (11): embed_single(), embed_texts(), get_model(), Qualitative bucket for prep time.      Synthesized natural-language descriptions, time_descriptor(), float, int, str (+3 more)
 
 ### Community 94 - "Community 94"
 Cohesion: 0.22
@@ -581,19 +596,19 @@ Cohesion: 0.22
 Nodes (8): completedIngredients, failures, generatedAt, ingredientSource, path, type, products, source
 
 ### Community 97 - "Community 97"
-Cohesion: 0.22
-Nodes (8): formatIngredient(), parseIngredients(), pluraliseUnit(), [flour], ingredients, [salt], [sugar], describe()
+Cohesion: 0.18
+Nodes (10): formatIngredient(), parseIngredients(), pluraliseFoodName(), pluraliseIngredientName(), pluraliseUnit(), [flour], ingredients, [salt] (+2 more)
 
 ### Community 98 - "Community 98"
-Cohesion: 0.28
-Nodes (4): _payload(), Endpoint tests for the deadline/context extraction API (issue #65)., test_context_deadlines_returns_deadlines_and_days(), test_context_deadlines_stress_present_for_each_day()
+Cohesion: 0.40
+Nodes (8): _payload(), Endpoint tests for the deadline/context extraction API (issue #65)., test_context_deadlines_defaults_today_when_omitted(), test_context_deadlines_empty_events(), test_context_deadlines_rejects_out_of_range_horizon(), test_context_deadlines_requires_event_start(), test_context_deadlines_returns_deadlines_and_days(), test_context_deadlines_stress_present_for_each_day()
 
 ### Community 99 - "Community 99"
 Cohesion: 0.25
 Nodes (7): Agent Workflow, Branch Naming, Commit Format, Discovery, Merge Request Format, Pipeline Handling, Retry Limit
 
 ### Community 100 - "Community 100"
-Cohesion: 0.25
+Cohesion: 0.36
 Nodes (7): buildCommand, git, deploymentEnabled, installCommand, outputDirectory, rewrites, $schema
 
 ### Community 101 - "Community 101"
@@ -633,8 +648,8 @@ Cohesion: 0.47
 Nodes (6): cyrb53(), ensureRecipesSeeded(), ensureShareIds(), listRecipes(), recipeByShareId(), shareIdForRecipe()
 
 ### Community 110 - "Community 110"
-Cohesion: 0.40
-Nodes (6): accountSessionHandle(), accountSessionDocId(), handleAccountSessionDelete(), handleAccountSessionGet(), sendSessionJson(), timestampToIso()
+Cohesion: 0.29
+Nodes (8): accountSessionHandle(), sendSessionJson(), timestampToIso(), accountSessionDocId(), handleAccountSessionDelete(), handleAccountSessionGet(), sendSessionJson(), timestampToIso()
 
 ### Community 111 - "Community 111"
 Cohesion: 0.33
@@ -645,8 +660,12 @@ Cohesion: 0.47
 Nodes (6): cyrb53(), ensureRecipesSeeded(), ensureShareIds(), listRecipes(), recipeByShareId(), shareIdForRecipe()
 
 ### Community 114 - "Community 114"
-Cohesion: 0.40
+Cohesion: 0.38
 Nodes (3): BaseHTTPRequestHandler, get_gpu_metrics(), Handler
+
+### Community 115 - "Community 115"
+Cohesion: 0.53
+Nodes (4): Request verification tests for the Firebase Functions boundary., test_application_endpoint_rejects_missing_cloud_function_key(), test_application_endpoint_rejects_wrong_cloud_function_key(), test_health_does_not_require_cloud_function_key()
 
 ### Community 116 - "Community 116"
 Cohesion: 0.40
@@ -677,11 +696,11 @@ Cohesion: 0.40
 Nodes (5): 7.3 Flow C — View the Weekly Plan, Interaction requirements, Purpose, Required plan content, Required plan summary
 
 ### Community 123 - "Community 123"
-Cohesion: 0.40
+Cohesion: 0.33
 Nodes (4): Enabled PostHog Features, Instrumented Events, Journey Dimensions, PostHog setup report
 
 ### Community 124 - "Community 124"
-Cohesion: 0.40
+Cohesion: 0.53
 Nodes (4): name, private, type, version
 
 ### Community 125 - "Community 125"
@@ -716,13 +735,17 @@ Nodes (4): code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(c
 Cohesion: 0.50
 Nodes (4): code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -m graphify save-result), For /graphify explain
 
+### Community 133 - "Community 133"
+Cohesion: 0.70
+Nodes (3): firebase-local-dev.sh script, cleanup(), has_nvidia_docker()
+
 ### Community 134 - "Community 134"
 Cohesion: 0.50
 Nodes (4): enrichRecommendedRecipes(), proxyRecommenderRecommendations(), proxyRecommenderRequest(), rejectUnsupportedRecommenderMethod()
 
 ### Community 137 - "Community 137"
-Cohesion: 0.67
-Nodes (3): 12.1 Landing / activation screen, Must include, Suggested copy
+Cohesion: 0.17
+Nodes (11): auth_provider_x509_cert_url, auth_uri, client_email, client_id, client_x509_cert_url, private_key, private_key_id, project_id (+3 more)
 
 ### Community 138 - "Community 138"
 Cohesion: 0.67
@@ -765,32 +788,64 @@ Cohesion: 0.67
 Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block27 (Graph complete. Outputs in PATH_TO_DIR/graphify-out/), Step 9 - Save manifest, update cost tracker, clean up, and report
 
 ### Community 149 - "Community 149"
-Cohesion: 0.67
-Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:block4 (Corpus: X files · ~Y words), Step 2 - Detect files
+Cohesion: 0.25
+Nodes (9): asRecord(), boundedNumber(), boundedString(), boundedStringList(), normalizeDeadline(), normalizeRecipeList(), parseCachedProduct(), readRequestBody() (+1 more)
 
 ### Community 150 - "Community 150"
 Cohesion: 0.67
 Nodes (3): requestHeader(), requireRecipeOwnerAccount(), verifiedAccount()
 
+### Community 166 - "Community 166"
+Cohesion: 0.22
+Nodes (9): normalizeIngredientKey(), sleep(), compactOpenFoodFactsProduct(), fetchOpenFoodFactsProductForIngredient(), fetchOpenFoodFactsProducts(), openFoodFactsCategoryTerms(), toCategoryTag(), uniqueTerms() (+1 more)
+
+### Community 167 - "Community 167"
+Cohesion: 0.33
+Nodes (5): AutoPlanResponse, computePlanSignature(), contextEvents(), generateAutoPlan(), GenerateAutoPlanInput
+
+### Community 168 - "Community 168"
+Cohesion: 0.60
+Nodes (5): fetchRecipeReviews(), readJson(), RecipeReviewsResult, reviewsUrl(), submitRecipeReview()
+
+### Community 169 - "Community 169"
+Cohesion: 0.53
+Nodes (6): cacheOpenFoodFactsProduct(), openFoodFactsCacheDocId(), readOpenFoodFactsCachedProduct(), timestampMillis(), tryAcquireOpenFoodFactsCacheLock(), findOpenFoodFactsProductForIngredient()
+
+### Community 170 - "Community 170"
+Cohesion: 0.67
+Nodes (3): context_deadlines(), Extract academic deadlines and per-day cooking-pressure context (#65).      Pure, ContextRequest
+
+### Community 171 - "Community 171"
+Cohesion: 0.67
+Nodes (3): code:bash ($(cat graphify-out/.graphify_python) -c "), code:bash ($(cat graphify-out/.graphify_python) -c "), Step 6 - Generate Obsidian vault (opt-in) + HTML
+
+### Community 172 - "Community 172"
+Cohesion: 0.67
+Nodes (3): code:bash (python3 -m graphify.serve graphify-out/graph.json), code:json ({), Step 7d - MCP server (only if --mcp flag)
+
+### Community 173 - "Community 173"
+Cohesion: 0.67
+Nodes (3): data, getPrototypeData(), seedPrototypeData()
+
 ## Knowledge Gaps
-- **1136 isolated node(s):** `$schema`, `buildCommand`, `installCommand`, `outputDirectory`, `deploymentEnabled` (+1131 more)
+- **1133 isolated node(s):** `chromiumLaunchOptions`, `lib`, `target`, `module`, `moduleDetection` (+1128 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `RecipeIngredient` connect `Community 4` to `Community 64`, `Community 3`, `Community 36`, `Community 8`, `Community 73`, `Community 46`, `Community 18`, `Community 87`, `Community 56`, `Community 26`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `RecipeIngredient` connect `Community 4` to `Community 64`, `Community 36`, `Community 70`, `Community 8`, `Community 46`, `Community 18`, `Community 23`, `Community 87`, `Community 56`, `Community 26`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Why does `gramsForIngredient()` connect `Community 56` to `Community 57`, `Community 37`, `Community 62`, `Community 87`?**
-  _High betweenness centrality (0.010) - this node is a cross-community bridge._
-- **Why does `recompute_user_profile()` connect `Community 2` to `Community 30`, `Community 86`, `Community 7`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **What connects `$schema`, `buildCommand`, `installCommand` to the rest of the system?**
-  _1188 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **Why does `datetime` connect `Community 6` to `Community 2`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **What connects `chromiumLaunchOptions`, `lib`, `target` to the rest of the system?**
+  _1170 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.0219484882418813 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.018822393822393823 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.022466422466422466 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.05034199726402189 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1166429587482219 - nodes in this community are weakly interconnected._

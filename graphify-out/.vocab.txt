@@ -84,6 +84,7 @@ avoid
 away
 back
 backend
+backup
 badge
 balance
 band
@@ -206,6 +207,7 @@ closed
 cloud
 cloudflare
 cloudflared
+clove
 clsx
 cluster
 code
@@ -266,6 +268,7 @@ copy
 core
 corpus
 correct
+corrected
 cors
 cosine
 cost
@@ -320,6 +323,7 @@ deliberately
 demands
 demonstration
 denied
+density
 dependencies
 deploy
 deployment
@@ -424,6 +428,7 @@ enrich
 ensure
 enter
 entities
+entries
 entry
 entrypoints
 env
@@ -454,6 +459,7 @@ execute
 execution
 existing
 exotic
+expand
 expected
 expensive
 experience
@@ -530,6 +536,7 @@ format
 formulation
 forwarded
 fraction
+fractions
 framework
 free
 fresh
@@ -582,6 +589,7 @@ gru
 guidance
 guide
 halal
+half
 halls
 handle
 handler
@@ -592,6 +600,7 @@ hard
 has
 hash
 have
+head
 header
 headers
 health
@@ -678,6 +687,7 @@ interop
 interpreter
 interprets
 into
+invariant
 invariants
 invoked
 invoker
@@ -706,6 +716,7 @@ label
 labels
 landing
 language
+large
 late
 later
 launch
@@ -757,6 +768,7 @@ lunch
 macro
 magic
 main
+make
 makes
 management
 manifest
@@ -805,6 +817,7 @@ modal
 mode
 model
 models
+modifiers
 module
 money
 monotonic
@@ -847,6 +860,8 @@ normalized
 not
 note
 notes
+noun
+nouns
 now
 number
 numbers
@@ -896,6 +911,7 @@ pad
 page
 panel
 panels
+pantry
 parallel
 parameters
 params
@@ -907,6 +923,7 @@ part
 parts
 past
 pasta
+patch
 path
 paths
 pattern
@@ -945,6 +962,7 @@ playwright
 plugin
 plural
 pluralise
+plurals
 point
 points
 policy
@@ -1014,6 +1032,7 @@ qty
 qualitative
 quality
 quantity
+quarter
 query
 quick
 radix
@@ -1075,6 +1094,7 @@ remove
 removes
 repeat
 replace
+replacer
 report
 repository
 representation
@@ -1113,6 +1133,7 @@ rice
 right
 risk
 roll
+rollback
 root
 round
 roundtrip
@@ -1143,6 +1164,7 @@ scenario
 scheduler
 schema
 scope
+scoped
 score
 scored
 scorer
@@ -1194,6 +1216,7 @@ shell
 shift
 shifts
 shopping
+short
 should
 sided
 sign
@@ -1222,6 +1245,7 @@ smoke
 smoky
 snack
 snapshot
+soaking
 social
 software
 solution
@@ -1244,6 +1268,7 @@ stage
 stakeholders
 stamp
 standard
+staple
 star
 start
 startup
@@ -1273,6 +1298,7 @@ structural
 structure
 structured
 stub
+stuck
 student
 study
 style
@@ -1347,6 +1373,7 @@ themealdb
 then
 these
 this
+three
 threshold
 thumbnail
 tiers
@@ -1360,6 +1387,7 @@ timezone
 timkolesnichenko
 title
 titles
+tmdb
 today
 toggle
 token
@@ -1408,6 +1436,7 @@ uid
 unchanged
 unchecked
 uncommon
+uncountable
 undated
 under
 unembedded
@@ -1467,6 +1496,7 @@ verified
 verify
 version
 versions
+ves
 via
 video
 view
@@ -1474,9 +1504,11 @@ views
 visual
 visualiser
 volume
+vulgar
 wait
 warning
 watch
+water
 webcal
 week
 weekly
