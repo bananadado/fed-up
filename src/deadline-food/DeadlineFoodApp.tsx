@@ -1150,8 +1150,15 @@ export function DeadlineFoodApp() {
     setSelectedMealId(mealId);
     setSharedRecipe(null);
     setSharedRecipeStatus("idle");
-    // Deep-linkable, shareable URL keyed by the recipe's public share slug (#213).
-    navigateScreen("recipe-detail", `/#/recipe/${shareIdForRecipe(mealId)}`);
+    const recipeUrl = `/#/recipe/${shareIdForRecipe(mealId)}`;
+    if (screen === "recipe-detail") {
+      // navigateScreen early-returns when the screen is unchanged, so the URL
+      // would stay pointing at the old recipe. Push it directly so the
+      // deep-link resolver doesn't revert selectedMealId back to the prior recipe.
+      window.history.pushState({ screen: "recipe-detail" }, "", recipeUrl);
+    } else {
+      navigateScreen("recipe-detail", recipeUrl);
+    }
   }
 
   // Resolve a `#/recipe/<shareId>` deep link: prefer a locally-known recipe,
