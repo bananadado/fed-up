@@ -103,8 +103,6 @@ export type Preferences = {
   budget: number;
   kitchen: string;
   cookingAbility: string;
-  postcode: string;
-  university: string;
   dietary: string[];
   allergens: string[];
   dislikes: string[];

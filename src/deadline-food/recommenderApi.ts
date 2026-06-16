@@ -139,8 +139,6 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences,
       allergens: normalizeRecommenderTags(prefs.allergens),
       dislikes: normalizeRecommenderTags(prefs.dislikes),
       likes: normalizeRecommenderTags(prefs.likes),
-      university: prefs.university || null,
-      postcode: prefs.postcode || null,
     }),
     signal,
   });

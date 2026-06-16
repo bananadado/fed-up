@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
-import { AppButton, ChoiceGroup, Field, SelectField } from "../components/primitives";
-import { UniversityField } from "../components/UniversityField";
+import { AppButton, ChoiceGroup, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
@@ -297,12 +296,6 @@ export function SettingsScreen({
               />
             </div>
           </label>
-          <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("settings_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
-          <UniversityField
-            label="Your university"
-            value={prefs.university}
-            onChange={(university) => { track("settings_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
-          />
           <SelectField
             label="Cooking ability"
             value={prefs.cookingAbility}
@@ -310,22 +303,6 @@ export function SettingsScreen({
             options={cookingAbilities.map((ability) => ({ value: ability.id, label: `${ability.name} - ${ability.description}` }))}
             placeholder="Select cooking ability"
           />
-        </div>
-        <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4 text-sm leading-6 text-stone-600">
-          <p className="font-semibold text-stone-900">Location and privacy</p>
-          <p className="mt-1">
-            University is used for campus meal context. Postcode can be a broad area or campus postcode; it helps estimate nearby shop and fallback options.
-          </p>
-          <button
-            type="button"
-            onClick={() => {
-              track("privacy_policy_opened", { source: "settings_location" });
-              setScreen("privacy-policy");
-            }}
-            className="mt-2 font-semibold text-emerald-700 underline underline-offset-4"
-          >
-            View Privacy Policy
-          </button>
         </div>
         <div className="mt-6 grid gap-5 sm:grid-cols-2">
           <div>

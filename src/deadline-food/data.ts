@@ -1,6 +1,4 @@
 import type { CalendarProvider, Deadline, Meal, MealSlot, PlanEntry, Preferences } from "./types";
-export { universities } from "./universities";
-
 export const calendarProviders: { id: CalendarProvider; name: string; hint: string; recommended: boolean }[] = [
   { id: "google", name: "Google Calendar", hint: "Sign in or paste a subscription link", recommended: true },
   { id: "outlook", name: "Outlook Calendar", hint: "Sign in or paste a subscription link", recommended: false },
@@ -371,8 +369,6 @@ export const initialPreferences: Preferences = {
   budget: 48,
   kitchen: "",
   cookingAbility: "",
-  postcode: "",
-  university: "",
   dietary: [],
   allergens: [],
   dislikes: [],

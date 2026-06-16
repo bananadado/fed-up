@@ -44,8 +44,6 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await expect(page.getByRole("heading", { name: /what works for you/i })).toBeVisible();
   await page.getByLabel("Kitchen access").click();
   await page.getByRole("option", { name: "Full kitchen" }).click();
-  await page.getByLabel("Your university").click();
-  await page.getByRole("option", { name: "Imperial College London" }).click();
   await expect(page.getByRole("heading", { name: /planning priorities/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /keep costs low/i })).toBeVisible();
   const policyPagePromise = page.context().waitForEvent("page");
