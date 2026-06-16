@@ -4,8 +4,9 @@ import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateActio
 import { Card } from "@/components/ui/card";
 import type { Deadline, DiscoverRecommendationState, DiscoverRecommendationTrigger, Meal, MealSlot, Preferences } from "../types";
 import { AppButton, Badge } from "../components/primitives";
+import { AllergenTag } from "../components/AllergenTag";
 import { formatCookingLimit, isVerified, money, keyIngredients, sourceUrl } from "../utils";
-import { mealHealthSignals } from "../healthSignals";
+import { mealHealthSignals, qualitativeTags } from "../healthSignals";
 import type { TrackEvent } from "../analytics";
 import { recordRecommenderInteraction } from "../recommenderApi";
 
@@ -110,8 +111,20 @@ export function DiscoverScreen({
   track: TrackEvent;
 }) {
   // Verified-only by default so the community feed is opt-in and the recipe
-  // list isn't diluted with unverified content (#213).
-  const [verifiedOnly, setVerifiedOnly] = useState(true);
+  // list isn't diluted with unverified content (#213). Persisted across
+  // navigation so opening a recipe and going Back keeps the chosen tab (#275),
+  // mirroring how RecipesHubScreen persists its outer tab.
+  const [verifiedOnly, setVerifiedOnly] = useState<boolean>(() => {
+    try {
+      const stored = sessionStorage.getItem("deadlineFood:discoverVerifiedOnly");
+      if (stored === "false") return false;
+      if (stored === "true") return true;
+    } catch { /* ignore */ }
+    return true;
+  });
+  useEffect(() => {
+    try { sessionStorage.setItem("deadlineFood:discoverVerifiedOnly", String(verifiedOnly)); } catch { /* ignore */ }
+  }, [verifiedOnly]);
   const waitingForFirstCardRef = useRef(false);
   const firstCardMetricKeyRef = useRef("");
   const recommendationContextKey = useMemo(
@@ -307,16 +320,23 @@ export function DiscoverScreen({
                   {current.mealSlots.map((slot) => (
                     <Badge key={`slot-${slot}`}>{slot.charAt(0).toUpperCase() + slot.slice(1)}</Badge>
                   ))}
-                  {current.tags.map((tag) => (
+                  {qualitativeTags(current).map((tag) => (
                     <Badge key={`tag-${tag}`} tone="green">{tag}</Badge>
                   ))}
                   {mealHealthSignals(current).map((signal) => (
                     <Badge key={`health-${signal}`} tone="blue">{signal}</Badge>
                   ))}
-                  {current.allergens.map((allergen) => (
-                    <Badge key={`allergen-${allergen}`} tone="rose">{allergen}</Badge>
-                  ))}
                 </div>
+                {current.allergens.length > 0 ? (
+                  <div className="mt-4">
+                    <p className="text-xs font-semibold uppercase text-stone-500">Allergens</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {current.allergens.map((allergen) => (
+                        <AllergenTag key={`allergen-${allergen}`} allergen={allergen} />
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
                 <div className="mt-6 grid grid-cols-2 gap-3">
                   <AppButton type="button" variant="secondary" className="h-14 justify-center text-stone-600" onClick={() => decideCurrentRecipe(false)}>
                     <ThumbsDown size={18} /> Pass

@@ -44,8 +44,6 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await expect(page.getByRole("heading", { name: /what works for you/i })).toBeVisible();
   await page.getByLabel("Kitchen access").click();
   await page.getByRole("option", { name: "Full kitchen" }).click();
-  await page.getByLabel("Your university").click();
-  await page.getByRole("option", { name: "Imperial College London" }).click();
   await expect(page.getByRole("heading", { name: /planning priorities/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /keep costs low/i })).toBeVisible();
   const policyPagePromise = page.context().waitForEvent("page");
@@ -109,11 +107,11 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await page.getByLabel("Ingredient").first().fill("beans");
   await page.getByLabel("Amount").first().fill("100");
   await page.getByLabel("Unit").first().selectOption("g");
-  await page.getByRole("button", { name: /^add$/i }).click();
+  await page.getByRole("button", { name: /^add ingredient$/i }).click();
   await page.getByLabel("Ingredient").nth(1).fill("wrap");
   await page.getByLabel("Amount").nth(1).fill("1");
   await page.getByLabel("Unit").nth(1).selectOption("wrap");
-  await page.getByRole("button", { name: /^add$/i }).click();
+  await page.getByRole("button", { name: /^add ingredient$/i }).click();
   await page.getByLabel("Ingredient").nth(2).fill("tomato");
   await page.getByLabel("Amount").nth(2).fill("50");
   await page.getByLabel("Unit").nth(2).selectOption("g");

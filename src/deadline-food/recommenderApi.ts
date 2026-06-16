@@ -11,6 +11,7 @@ type RecommenderRecipe = {
   meal_slots: string[];
   price_pence: number;
   prep_minutes: number;
+  servings?: number;
   dietary_tags: string[];
   allergens: string[];
   suitability_tags: string[];
@@ -70,6 +71,9 @@ function cookingAbility(ability: string): string {
   return ability || "basic";
 }
 
+// Canonical (singular) keys used for recommender matching. Display layers
+// pluralize where appropriate (see ALLERGEN_DISPLAY in AllergenTag) — keep
+// matching on the canonical form so "Peanuts" still filters a "peanut" recipe.
 const recommenderTagAliases: Record<string, string> = {
   peanuts: "peanut",
   eggs: "egg",
@@ -135,8 +139,6 @@ export async function syncRecommenderUser(sessionId: string, prefs: Preferences,
       allergens: normalizeRecommenderTags(prefs.allergens),
       dislikes: normalizeRecommenderTags(prefs.dislikes),
       likes: normalizeRecommenderTags(prefs.likes),
-      university: prefs.university || null,
-      postcode: prefs.postcode || null,
     }),
     signal,
   });
@@ -201,6 +203,7 @@ export function toMeal(recipe: RecommenderRecipe): Meal {
     ),
     time: recipe.prep_minutes,
     price: recipe.price_pence / 100,
+    ...(typeof recipe.servings === "number" ? { servings: recipe.servings } : {}),
     tags: [...new Set([...recipe.dietary_tags, ...recipe.suitability_tags])],
     allergens: recipe.allergens,
     ingredients: recipe.ingredients,

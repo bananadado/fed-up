@@ -13,6 +13,36 @@ describe("normalizeIngredientUnit", () => {
     expect(tbsp.quantity).toBeCloseTo(59.1, 0);
   });
 
+  test("converts cup-based liquids (water) to ml in metric mode (#251)", () => {
+    const water = normalizeIngredientUnit({ name: "water", quantity: 1, unit: "cup" }, "metric");
+    expect(water.unit).toBe("ml");
+    expect(water.quantity).toBeCloseTo(236.6, 0);
+  });
+
+  test("keeps cup-based water in cups in imperial mode (#251)", () => {
+    const water = normalizeIngredientUnit({ name: "water", quantity: 2, unit: "cup" }, "imperial");
+    expect(water.unit).toBe("cup");
+    expect(water.quantity).toBe(2);
+  });
+
+  test("converts cup-variant units (descriptor suffix) to ml in metric mode (#251)", () => {
+    // Raw/recommender measures can leave a trailing descriptor on the unit
+    // (e.g. "cup boiling", "cups warm"). These must still convert, otherwise
+    // they render as cups under both unit settings.
+    for (const unit of ["cup boiling", "cups warm", "cup, divided", "cups (cold)"]) {
+      const result = normalizeIngredientUnit({ name: "water", quantity: 1, unit }, "metric");
+      expect(result.unit).toBe("ml");
+      expect(result.quantity).toBeCloseTo(236.6, 0);
+    }
+  });
+
+  test("keeps cup-variant units as cups in imperial mode (#251)", () => {
+    for (const unit of ["cup boiling", "cups warm", "cup, divided"]) {
+      const result = normalizeIngredientUnit({ name: "water", quantity: 1, unit }, "imperial");
+      expect(result.unit).toBe("cup");
+    }
+  });
+
   test("converts g to oz in imperial mode", () => {
     const result = normalizeIngredientUnit({ name: "flour", quantity: 100, unit: "g" }, "imperial");
     expect(result.unit).toBe("oz");

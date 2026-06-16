@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
-import { aggregateIngredients, formatShoppingList, groceryVendorById, ingredientsFromPlan, shoppingItemKey, shoppingItemLabel } from "./shopping";
+import { aggregateIngredients, estimateShoppingListCost, formatShoppingList, groceryVendorById, ingredientsFromPlan, scopePlanEntries, shoppingItemKey, shoppingItemLabel } from "./shopping";
+import type { PlanEntry } from "./types";
 
 describe("shopping helpers", () => {
   test("aggregates duplicate ingredients case-insensitively", () => {
@@ -17,7 +18,7 @@ describe("shopping helpers", () => {
     ])).toBe("berries\noats x2");
   });
 
-  test("aggregates structured ingredients by canonical name and unit", () => {
+  test("aggregates structured ingredients, merging count into weight via per-item weight", () => {
     const items = aggregateIngredients([
       { name: "tomato", quantity: 100, unit: "g", preparation: "chopped" },
       { name: "tomato", quantity: 50, unit: "g", preparation: "sliced" },
@@ -25,13 +26,75 @@ describe("shopping helpers", () => {
       { name: "pepper", quantity: 0.5, unit: "cup", preparation: "frozen" },
     ]);
 
+    // The serving-count tomato folds into the gram total using tomato's known
+    // per-item weight (123g): 100 + 50 + 123 = 273g, one row instead of two.
     expect(items).toEqual([
-      { name: "frozen pepper", count: 1, quantity: 0.5, unit: "cup" },
-      { name: "tomato", count: 2, quantity: 150, unit: "g" },
-      { name: "tomato", count: 1, quantity: 1, unit: "serving" },
+      { name: "frozen pepper", count: 1, quantity: 118.3, unit: "ml" },
+      { name: "tomato", count: 3, quantity: 273, unit: "g" },
     ]);
-    expect(items.map(shoppingItemLabel)).toEqual(["0.5 cups frozen pepper", "150g tomato", "tomato"]);
-    expect(formatShoppingList(items)).toBe("0.5 cups frozen pepper\n150g tomato\ntomato");
+    expect(items.map(shoppingItemLabel)).toEqual(["118.3ml frozen pepper", "273g tomato"]);
+    expect(formatShoppingList(items)).toBe("118.3ml frozen pepper\n273g tomato");
+  });
+
+  test("merges count-like unit variants of the same ingredient (#251 follow-up)", () => {
+    // item / serving / whole are interchangeable "one whole unit" measures.
+    const items = aggregateIngredients([
+      { name: "cabbage", quantity: 2, unit: "item" },
+      { name: "cabbage", quantity: 0.5, unit: "serving" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.quantity).toBe(2.5);
+    expect(shoppingItemLabel(items[0]!)).toBe("2.5 cabbages");
+  });
+
+  test("merges a counted produce item with its weighed form (#251 follow-up)", () => {
+    // carrot has a known per-item weight (80g): 17 count → 1360g, + 907 = 2267g.
+    const items = aggregateIngredients([
+      { name: "carrots", quantity: 17, unit: "item" },
+      { name: "carrot", quantity: 907, unit: "g" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.unit).toBe("kg");
+    expect(items[0]?.quantity).toBe(2.27);
+  });
+
+  test("merges irregular plural / singular forms (bay leaf) (#251 follow-up)", () => {
+    const items = aggregateIngredients([
+      { name: "bay leaves", quantity: 2, unit: "item" },
+      { name: "bay leaf", quantity: 4, unit: "item" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(shoppingItemLabel(items[0]!)).toBe("6 bay leaves");
+  });
+
+  test("merges volume and weight of the same ingredient via density (#251 follow-up)", () => {
+    // flour density ≈ 0.53 g/ml: 2700ml → 1431g, + 590g = 2021g.
+    const items = aggregateIngredients([
+      { name: "flour", quantity: 2.7, unit: "l" },
+      { name: "flour", quantity: 590, unit: "g" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(items[0]?.unit).toBe("kg");
+    expect(items[0]?.quantity).toBeCloseTo(2.02, 1);
+  });
+
+  test("drops a vague count of an uncountable food when a measured amount exists (#251 follow-up)", () => {
+    const items = aggregateIngredients([
+      { name: "oil", quantity: 369.7, unit: "ml" },
+      { name: "oil", quantity: 1, unit: "serving" },
+      { name: "oil", quantity: 1, unit: "serving" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(shoppingItemLabel(items[0]!)).toBe("369.7ml oil");
+  });
+
+  test("shows an uncountable food with no measured amount as a bare name (#251 follow-up)", () => {
+    const items = aggregateIngredients([
+      { name: "plain flour", quantity: 1, unit: "serving" },
+      { name: "plain flour", quantity: 1, unit: "serving" },
+    ]);
+    expect(items).toHaveLength(1);
+    expect(shoppingItemLabel(items[0]!)).toBe("plain flour");
   });
 
   test("normalises shopping item keys for checklist state", () => {
@@ -226,6 +289,61 @@ describe("shopping helpers", () => {
     expect(items[0]?.quantity).toBe(500);
   });
 
+  test("merges unit aliases and compatible mass units onto one line", () => {
+    const items = aggregateIngredients([
+      { name: "flour", quantity: 1, unit: "cups" },
+      { name: "flour", quantity: 4, unit: "tbsp" },
+      { name: "sugar", quantity: 100, unit: "g" },
+      { name: "sugar", quantity: 2, unit: "oz" },
+    ]);
+    expect(items.filter((i) => i.name === "flour")).toHaveLength(1);
+    expect(items.filter((i) => i.name === "sugar")).toHaveLength(1);
+    const sugar = items.find((i) => i.name === "sugar");
+    expect(sugar?.unit).toBe("g");
+    expect(sugar?.quantity).toBe(156.7); // 100g + 2oz (56.7g)
+  });
+
+  test("keeps mass and volume of the same ingredient on separate lines (unsafe to convert)", () => {
+    const items = aggregateIngredients([
+      { name: "parsley", quantity: 100, unit: "g" },
+      { name: "parsley", quantity: 0.5, unit: "cup" },
+    ]);
+    expect(items).toHaveLength(2);
+    expect(items.some((i) => i.unit === "g")).toBe(true);
+    expect(items.some((i) => i.unit === "ml")).toBe(true);
+  });
+
+  test("merges compatible units in imperial mode and displays imperial units", () => {
+    const mealA = {
+      id: "imp-a",
+      name: "Imp A",
+      type: "cook" as const,
+      mealSlots: ["lunch" as const],
+      time: 15,
+      price: 2,
+      tags: [],
+      ingredients: [{ name: "flour", quantity: 1, unit: "cup" }],
+      allergens: [],
+      nutrition: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+      rating: 0,
+      reviews: [],
+      instructions: [],
+      source: "",
+      note: "",
+      image: "",
+    };
+    const mealB = { ...mealA, id: "imp-b", ingredients: [{ name: "flour", quantity: 2, unit: "tbsp" }] };
+    const plan = [
+      { day: "Mon", context: "Test", meals: [{ slot: "lunch" as const, mealId: "imp-a" }] },
+      { day: "Tue", context: "Test", meals: [{ slot: "lunch" as const, mealId: "imp-b" }] },
+    ];
+
+    const flour = ingredientsFromPlan(plan, [mealA, mealB], [], "imperial").filter((i) => i.name === "flour");
+    expect(flour).toHaveLength(1);
+    expect(flour[0]?.unit).toBe("cup");
+    expect(flour[0]?.quantity).toBeCloseTo(1.13, 1);
+  });
+
   test("merges descriptor-unit and prep-unit onion variants via ingredientsFromPlan", () => {
     const meal = {
       id: "onion-meal",
@@ -273,5 +391,47 @@ describe("shopping helpers", () => {
     expect(groceryVendorById("tesco").searchUrl("chia seeds")).toBe(
       "https://www.tesco.com/groceries/en-GB/search?query=chia%20seeds&inputType=free+text",
     );
+  });
+});
+
+describe("shopping scope", () => {
+  const day = (n: number): PlanEntry => ({ day: `Day ${n}`, context: "", meals: [] });
+  const plan = Array.from({ length: 10 }, (_, i) => day(i + 1));
+
+  test("week scope keeps the first 7 day entries", () => {
+    const scoped = scopePlanEntries(plan, "week");
+    expect(scoped).toHaveLength(7);
+    expect(scoped[0]?.day).toBe("Day 1");
+    expect(scoped[6]?.day).toBe("Day 7");
+  });
+
+  test("all scope keeps the full plan", () => {
+    expect(scopePlanEntries(plan, "all")).toHaveLength(10);
+  });
+
+  test("week scope tolerates plans shorter than the horizon", () => {
+    const short = plan.slice(0, 3);
+    expect(scopePlanEntries(short, "week")).toHaveLength(3);
+  });
+});
+
+describe("estimateShoppingListCost", () => {
+  test("returns 0 for an empty list", () => {
+    expect(estimateShoppingListCost([])).toBe(0);
+  });
+
+  test("sums per-item estimates in pounds and grows with the list", () => {
+    const small = estimateShoppingListCost([{ name: "rice", count: 1, quantity: 500, unit: "g" }]);
+    const large = estimateShoppingListCost([
+      { name: "rice", count: 1, quantity: 500, unit: "g" },
+      { name: "chicken breast", count: 1, quantity: 600, unit: "g" },
+    ]);
+    expect(small).toBeGreaterThan(0);
+    expect(large).toBeGreaterThan(small);
+    expect(Number(large.toFixed(2))).toBe(large);
+  });
+
+  test("estimates count-only items via a generic measure", () => {
+    expect(estimateShoppingListCost([{ name: "onion", count: 3 }])).toBeGreaterThan(0);
   });
 });

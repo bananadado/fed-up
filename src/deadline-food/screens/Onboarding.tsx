@@ -8,8 +8,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { allergens, calendarProviders, cookingAbilities, dietary, dislikes, likes, sourceOptions } from "../data";
 import type { CalendarEvent, CalendarProvider, Deadline, Preferences, Screen } from "../types";
-import { AppButton, Badge, ChoiceGroup, Field, SelectField } from "../components/primitives";
-import { UniversityField } from "../components/UniversityField";
+import { AppButton, Badge, ChoiceGroup, SelectField } from "../components/primitives";
 import { formatCookingLimit } from "../utils";
 import { IngredientEditor } from "../components/IngredientEditor";
 import { ingredientDraftsFromIngredients, sanitiseIngredientDrafts, type IngredientDraft } from "../ingredients";
@@ -607,15 +606,10 @@ export function Onboarding({
                 </div>
                 <div>
                   <h3 id="step2-skip-title" className="text-lg font-bold text-stone-950">
-                    {!prefs.kitchen && !prefs.university ? "Skip kitchen access and university?" : !prefs.kitchen ? "Skip kitchen access?" : "Skip university?"}
+                    Skip kitchen access?
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-stone-600">
-                    {!prefs.kitchen && !prefs.university
-                      ? "Kitchen access and university help us suggest meals that fit your actual setup and find campus fallback options."
-                      : !prefs.kitchen
-                        ? "Kitchen access helps us avoid suggesting recipes you can't make where you are."
-                        : "Your university helps us find campus meal fallbacks near you."
-                    }{" "}You can set {!prefs.kitchen && !prefs.university ? "them" : "it"} any time in Settings.
+                    Kitchen access helps us avoid suggesting recipes you can't make where you are.{" "}You can set it any time in Settings.
                   </p>
                 </div>
               </div>
@@ -819,32 +813,8 @@ export function Onboarding({
                     error={step2Attempted && !prefs.kitchen}
                     errorMessage="Please select your kitchen access"
                   />
-                  <UniversityField
-                    label="Your university"
-                    value={prefs.university}
-                    onChange={(university) => { track("onboarding_preference_changed", { field: "university", value: university }); setPrefs({ ...prefs, university }); }}
-                    required
-                    error={step2Attempted && !prefs.university}
-                    errorMessage="Please select your university"
-                  />
-                  <Field label="Location (postcode)" value={prefs.postcode} onChange={(postcode) => setPrefs({ ...prefs, postcode })} onBlur={() => track("onboarding_preference_changed", { field: "postcode" })} placeholder="e.g. SW7 2AZ" />
                 </div>
               </PreferenceSection>
-            </div>
-            <div className="mt-3 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">
-              <p className="font-semibold">Why we ask for university and area</p>
-              <p className="mt-1">
-                University helps suggest campus fallback meals. Postcode is used as a general area signal for nearby shops and can be replaced with a broad campus postcode.
-              </p>
-              <a
-                href={PRIVACY_POLICY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => track("privacy_policy_opened", { source: "onboarding_location" })}
-                className="mt-2 inline-flex items-center gap-1 rounded-md px-2 py-1 font-semibold underline underline-offset-4 transition hover:bg-emerald-100 hover:text-emerald-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2"
-              >
-                View Privacy Policy <ExternalLink size={14} />
-              </a>
             </div>
             <div className="mt-4 divide-y divide-stone-200 rounded-lg border border-stone-200 px-4 sm:px-5">
               <PreferenceSection
@@ -948,7 +918,7 @@ export function Onboarding({
                     track("privacy_policy_consent_missing", { source: "onboarding_step2_continue" });
                     return;
                   }
-                  if (!prefs.kitchen || !prefs.university) {
+                  if (!prefs.kitchen) {
                     setStep2Attempted(true);
                     setShowStep2SkipConfirm(true);
                     return;

@@ -2,9 +2,16 @@ import { ClipboardCheck, ClipboardList, ExternalLink, ShoppingBasket } from "luc
 import { useMemo, useState } from "react";
 
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { AppButton, SelectField } from "./primitives";
-import type { GroceryVendor, ShoppingItem } from "../shopping";
-import { countHint, formatShoppingList, shoppingItemKey, shoppingItemLabel } from "../shopping";
+import type { GroceryVendor, ShoppingItem, ShoppingScope } from "../shopping";
+import { countHint, estimateShoppingListCost, formatShoppingList, shoppingItemKey, shoppingItemLabel } from "../shopping";
+import { money } from "../utils";
+
+const SCOPE_OPTIONS: { value: ShoppingScope; label: string }[] = [
+  { value: "week", label: "Next 7 days" },
+  { value: "all", label: "Full plan" },
+];
 
 async function writeClipboardText(value: string) {
   if (navigator.clipboard) {
@@ -83,6 +90,9 @@ export function ShoppingListCard({
   onToggleItem,
   storageKey,
   compact = false,
+  scope,
+  onScopeChange,
+  showEstimatedCost = false,
 }: {
   title: string;
   description: string;
@@ -95,13 +105,22 @@ export function ShoppingListCard({
   onToggleItem?: (ingredient: string, checked: boolean, checkedCount: number, itemCount: number) => void;
   storageKey?: string;
   compact?: boolean;
+  /** Current time-range scope. Pass with {@link onScopeChange} to show the toggle. */
+  scope?: ShoppingScope;
+  onScopeChange?: (scope: ShoppingScope) => void;
+  /** Show an illustrative estimated total for the listed items. */
+  showEstimatedCost?: boolean;
 }) {
   const [copied, setCopied] = useState(false);
-  const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => readStoredCheckedItems(storageKey, items));
   const outstandingItems = useMemo(() => items.filter((item) => !checkedItems[shoppingItemKey(item)]), [checkedItems, items]);
   const listText = useMemo(() => formatShoppingList(outstandingItems), [outstandingItems]);
   const checkedCount = items.length - outstandingItems.length;
+  const estimatedCost = useMemo(
+    () => (showEstimatedCost ? estimateShoppingListCost(items) : null),
+    [showEstimatedCost, items],
+  );
+  const showScopeToggle = Boolean(scope && onScopeChange);
 
   async function copyList() {
     if (!listText) {
@@ -110,9 +129,7 @@ export function ShoppingListCard({
 
     await writeClipboardText(listText);
     onCopy?.();
-    const count = outstandingItems.length;
     setCopied(true);
-    setCopyMessage(`Copied ${count} item${count === 1 ? "" : "s"} — paste into a note or your supermarket's search box.`);
     window.setTimeout(() => setCopied(false), 1800);
   }
 
@@ -147,6 +164,46 @@ export function ShoppingListCard({
           )}
         </div>
       </div>
+
+      <div className="mt-4 flex items-end justify-between gap-3">
+        <div className="min-w-0">
+          {showScopeToggle && (
+            <>
+              <span className="mb-1.5 block text-sm font-medium text-stone-700">Shopping for</span>
+              <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50 p-0.5" role="group" aria-label="Shopping list time range">
+                {SCOPE_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    aria-pressed={scope === option.value}
+                    onClick={() => onScopeChange?.(option.value)}
+                    className={cn(
+                      "rounded-md px-3 py-1.5 text-sm font-medium transition",
+                      scope === option.value ? "bg-white text-emerald-800 shadow-sm" : "text-stone-500 hover:text-stone-700",
+                    )}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+        <AppButton type="button" variant="secondary" className="shrink-0" onClick={copyList} disabled={!listText}>
+          {copied ? <ClipboardCheck size={16} /> : <ClipboardList size={16} />}
+          {copied ? "Copied" : "Copy list"}
+        </AppButton>
+      </div>
+
+      {estimatedCost !== null && items.length > 0 && (
+        <div className="mt-4 flex items-baseline justify-between rounded-lg bg-emerald-50 px-3 py-2.5">
+          <span className="text-sm font-medium text-emerald-900">Estimated total</span>
+          <span className="text-right">
+            <span className="text-lg font-bold text-emerald-800">{money(estimatedCost)}</span>
+            <span className="ml-1.5 text-xs text-emerald-700">illustrative</span>
+          </span>
+        </div>
+      )}
 
       <div className="mt-4">
         <SelectField
@@ -193,20 +250,6 @@ export function ShoppingListCard({
             </AppButton>
           </div>
         ))}
-      </div>
-
-      <div className="mt-4 space-y-1.5">
-        <div className="flex flex-wrap gap-2">
-          <AppButton type="button" variant="secondary" onClick={copyList} disabled={!listText}>
-            {copied ? <ClipboardCheck size={16} /> : <ClipboardList size={16} />}
-            {copied ? "Copied" : "Copy list"}
-          </AppButton>
-        </div>
-        {copyMessage ? (
-          <p className="text-xs font-medium text-emerald-700" aria-live="polite">{copyMessage}</p>
-        ) : (
-          <p className="text-xs text-stone-500">Copies your remaining items as text to paste into a note or a supermarket app.</p>
-        )}
       </div>
     </Card>
   );

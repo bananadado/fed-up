@@ -22,9 +22,27 @@ const UNIT_ALIASES: Record<string, string> = {
   medium: "serving", large: "serving", small: "serving", whole: "serving",
 };
 
-function canonicalizeUnit(unit: string): string {
-  const normalized = unit.trim().toLowerCase();
-  return UNIT_ALIASES[normalized] ?? normalized;
+export function canonicalizeUnit(unit: string): string {
+  const normalized = unit.trim().toLowerCase().replace(/\s+/g, " ");
+  const alias = UNIT_ALIASES[normalized];
+  if (alias) return alias;
+
+  // Recognise known measurement units even when a descriptor trails the unit
+  // word (e.g. "cup boiling", "cups warm", "cup, divided"). These variants are
+  // common for liquids like water in raw/recommender measures and would
+  // otherwise fall through unconverted — showing as cups under both the g/ml
+  // and oz/cup settings. Mirrors the ingest-side normalisation in
+  // src/domain/ingredientMeasurements.ts. The leading prep-word case (e.g.
+  // "cloves crushed") is already handled earlier by splitCompoundUnit.
+  if (/\bfl\.?\s*oz\b/.test(normalized)) return "fl oz";
+  if (/\b(cups?)\b/.test(normalized)) return "cup";
+  if (/\b(tbsps?|tablespoons?)\b/.test(normalized)) return "tbsp";
+  if (/\b(tsps?|teaspoons?)\b/.test(normalized)) return "tsp";
+  if (/\b(qts?|quarts?)\b/.test(normalized)) return "qt";
+  if (/^(millilitres?|milliliters?|ml)\b/.test(normalized)) return "ml";
+  if (/^(litres?|liters?|l)\b/.test(normalized)) return "l";
+
+  return normalized;
 }
 
 const VOLUME_UNITS = new Set(["ml", "l", "tsp", "tbsp", "cup", "fl oz", "qt"]);
@@ -62,6 +80,46 @@ function imperialMassDisplay(oz: number): { quantity: number; unit: string } {
   return oz >= 16
     ? { quantity: round(oz / 16, 2), unit: "lb" }
     : { quantity: round(oz, 1), unit: "oz" };
+}
+
+export type UnitDimension = "mass" | "volume" | "count";
+
+// Full conversion tables to each dimension's metric base. Unlike TO_G / TO_ML
+// these include the base units themselves so *any* compatible unit can be summed
+// against another (g+oz, cup+tbsp), not just promoted (g→kg).
+const MASS_TO_G_BASE: Record<string, number> = { g: 1, kg: 1000, oz: 28.35, lb: 453.592, pinch: 0.3 };
+const VOLUME_TO_ML_BASE: Record<string, number> = {
+  ml: 1, l: 1000, tsp: 4.929, tbsp: 14.787, cup: 236.588, "fl oz": 29.574, qt: 946.353,
+};
+
+/** Physical dimension of a unit — decides which quantities may be safely summed. */
+export function unitDimension(unit: string): UnitDimension {
+  const u = canonicalizeUnit(unit);
+  if (u in MASS_TO_G_BASE) return "mass";
+  if (u in VOLUME_TO_ML_BASE) return "volume";
+  return "count";
+}
+
+/** Quantity in the dimension's metric base (g for mass, ml for volume; unchanged for count). */
+export function toBaseQuantity(quantity: number, unit: string): number {
+  const u = canonicalizeUnit(unit);
+  return quantity * (MASS_TO_G_BASE[u] ?? VOLUME_TO_ML_BASE[u] ?? 1);
+}
+
+/** Render a summed base-unit quantity back to a human-friendly unit for the chosen system. */
+export function displayFromBase(
+  baseQuantity: number,
+  dimension: "mass" | "volume",
+  unitSystem: "metric" | "imperial",
+): { quantity: number; unit: string } {
+  if (dimension === "mass") {
+    return unitSystem === "imperial"
+      ? imperialMassDisplay(baseQuantity * 0.035274)
+      : metricMassDisplay(baseQuantity);
+  }
+  return unitSystem === "imperial"
+    ? imperialVolumeDisplay(baseQuantity * 0.033814)
+    : metricVolumeDisplay(baseQuantity);
 }
 
 function parseEmbeddedQty(s: string): number {

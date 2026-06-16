@@ -16,6 +16,16 @@ export function mealHealthSignals(meal: Meal): string[] {
   return [...new Set(signals)].slice(0, 3);
 }
 
+/**
+ * Qualitative tags to render alongside computed nutrition signals. A tag whose
+ * label also surfaces as a computed signal (e.g. "high protein") is dropped here
+ * so it isn't rendered twice — the data-derived signal wins (#247).
+ */
+export function qualitativeTags(meal: Meal): string[] {
+  const signals = new Set(mealHealthSignals(meal).map((s) => s.toLowerCase()));
+  return meal.tags.filter((tag) => !signals.has(tag.trim().toLowerCase()));
+}
+
 export function weeklyBalanceSummary(plan: PlanEntry[], customRecipes: Meal[]): string {
   const meals = plan.flatMap((entry) => entry.meals.map((meal) => getMealById(meal.mealId, customRecipes)));
   const proteinMeals = meals.filter((meal) => meal.nutrition.protein / (meal.servings ?? 1) >= 20).length;
