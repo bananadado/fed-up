@@ -1,4 +1,4 @@
-import { Camera, Plus, RefreshCcw, X } from "lucide-react";
+import { AlertCircle, Camera, Plus, RefreshCcw, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { uploadRecipePhoto } from "@/adapters/deadlineFoodApi";
 
@@ -346,6 +346,7 @@ export function RecipeEditor({
 }) {
   const [form, setForm] = useState<EditorForm>(() => (meal ? mealToForm(meal) : defaultForm()));
   const [attempted, setAttempted] = useState(false);
+  const [initialSnapshot] = useState(() => JSON.stringify(meal ? mealToForm(meal) : defaultForm()));
   const [nutritionLoading, setNutritionLoading] = useState(false);
   const [nutritionStatus, setNutritionStatus] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -355,6 +356,8 @@ export function RecipeEditor({
   const autoNutritionTimerRef = useRef<number | null>(null);
   const prevIngredientKeyRef = useRef("");
   const cancelFetchRef = useRef<{ cancelled: boolean } | null>(null);
+
+  const isDirty = JSON.stringify(form) !== initialSnapshot || photoFile !== null;
 
   const ingredients = sanitiseIngredientDrafts(form.ingredients);
   const servings = positiveNumber(Number(form.servings), 1);
@@ -593,6 +596,17 @@ export function RecipeEditor({
         className={`${hasHeader ? "mt-5 " : ""}space-y-4`}
         onSubmit={handleSubmit}
       >
+        {mode === "edit" && isDirty && (
+          <div className="sticky top-16 z-10 -mx-1 flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 shadow-sm">
+            <p className="flex items-center gap-2 text-sm font-medium text-amber-900">
+              <AlertCircle size={16} className="shrink-0" />
+              You have unsaved changes
+            </p>
+            <AppButton type="submit" className="shrink-0" disabled={uploading}>
+              {uploading ? "Uploading…" : "Save recipe"}
+            </AppButton>
+          </div>
+        )}
         <label className="relative inline-block cursor-pointer">
           <div className="h-36 w-48 overflow-hidden rounded-lg bg-emerald-50 shadow-inner">
             {displayedPhoto ? (
@@ -834,7 +848,7 @@ export function RecipeEditor({
 
         <AppButton
           type="submit"
-          className={mode === "create" ? `${attempted && hasErrors ? "mt-3" : "mt-6"} w-full` : ""}
+          className={`${attempted && hasErrors ? "mt-3" : "mt-6"} w-full`}
           disabled={uploading}
         >
           {uploading
