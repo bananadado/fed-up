@@ -138,7 +138,6 @@ export function RecipeDetailScreen({
     };
   }, []);
 
-  const isLoggedIn = account.configured && !!account.uid && !account.isAnonymous;
   const isOwn = isRecipeOwnedBy(meal, account.uid);
   const isSaved = isOwn || discoverSaved.some((r) => r.id === mealId);
   const [selectedVendorId, setSelectedVendorId] = useState(groceryVendors[0].id);
@@ -241,13 +240,7 @@ export function RecipeDetailScreen({
   }
 
   function handlePublish() {
-    // Publishing requires a signed-in account so the recipe can be owned (#213).
-    if (!isLoggedIn) {
-      track("custom_recipe_publish_signin_prompt", { meal_id: selectedMeal.id });
-      setScreen("settings");
-      return;
-    }
-    // Stamp the owner locally too so the owner keeps control of the recipe and it
+    // Stamp the owner locally so the owner keeps control of the recipe and it
     // persists in the session library; the backend re-derives ownerUid from the token.
     saveMeal({ ...selectedMeal, published: true, ownerUid: account.uid ?? undefined });
     track("custom_recipe_published", { meal_id: selectedMeal.id });
@@ -421,15 +414,9 @@ export function RecipeDetailScreen({
               <Pencil size={16} /> Edit recipe
             </AppButton>
             {isOwn && !selectedMeal.published && (
-              isLoggedIn ? (
-                <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={() => setConfirmPublish(true)}>
-                  Publish recipe
-                </AppButton>
-              ) : (
-                <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={handlePublish}>
-                  Sign in to publish
-                </AppButton>
-              )
+              <AppButton variant="secondary" className="text-emerald-700 border-emerald-200 hover:bg-emerald-50" onClick={() => setConfirmPublish(true)}>
+                Publish recipe
+              </AppButton>
             )}
             {isOwn && selectedMeal.published && (
               <AppButton variant="secondary" className="text-stone-500" onClick={() => setConfirmUnpublish(true)}>

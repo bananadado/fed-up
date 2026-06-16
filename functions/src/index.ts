@@ -2018,9 +2018,9 @@ async function removeRecipeFromRecommender(recipeId: string): Promise<void> {
   });
 }
 
-// Resolve the signed-in account for a recipe mutation. Publishing/owning a
-// recipe requires a real (non-anonymous) account (#213 follow-up); on failure
-// this writes the response and returns null so the caller can just return.
+// Resolve the signed-in account for a recipe mutation. Any Firebase account
+// (including anonymous) may publish; on failure this writes the response and
+// returns null so the caller can just return.
 async function requireRecipeOwnerAccount(
   request: HttpRequest,
   response: HttpResponse,
@@ -2032,8 +2032,8 @@ async function requireRecipeOwnerAccount(
     response.status(401).json({error: "A valid sign-in token is required"});
     return null;
   }
-  if (account === null || account.isAnonymous) {
-    response.status(401).json({error: "Sign in to manage published recipes"});
+  if (account === null) {
+    response.status(401).json({error: "A sign-in token is required to publish recipes"});
     return null;
   }
   return account;
