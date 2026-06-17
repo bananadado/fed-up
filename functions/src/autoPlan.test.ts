@@ -237,7 +237,7 @@ describe("buildPlan", () => {
     expect(dinners.every((m) => m.mealId === "dinner-only")).toBe(true);
   });
 
-  it("allocates from the canonical catalogue when recommender and saved recipes are absent", () => {
+  it("leaves the plan empty when no saved, recommender, or generated recipes exist", () => {
     const plan = buildPlan({
       days: Array.from({ length: 7 }, (_, i) =>
         day({ date: `2026-06-${String(i + 1).padStart(2, "0")}`, stress: 0.3 }),
@@ -247,7 +247,7 @@ describe("buildPlan", () => {
       weeklyBudgetPence: 4800,
     });
 
-    expect(plan.flatMap((entry) => entry.meals)).toHaveLength(21);
+    expect(plan.flatMap((entry) => entry.meals)).toEqual([]);
   });
 
   it("does not keep choosing the same relaxed-day batch cook when alternatives exist", () => {
@@ -293,14 +293,8 @@ describe("buildPlan", () => {
   });
 });
 
-describe("canonical recipe seed", () => {
-  it("carries a numeric servings on every recipe (#189)", () => {
-    // Servings is the canonical auto-plan fallback source; the generator must not
-    // drop it from the seed (regenerate via `bun run firebase:data`).
-    expect(appRecipes.length).toBeGreaterThan(0);
-    for (const recipe of appRecipes) {
-      expect(typeof recipe.servings).toBe("number");
-      expect(Number.isFinite(recipe.servings) && recipe.servings > 0).toBe(true);
-    }
+describe("generated recipe seed", () => {
+  it("does not ship bundled app recipe fallbacks", () => {
+    expect(appRecipes).toEqual([]);
   });
 });

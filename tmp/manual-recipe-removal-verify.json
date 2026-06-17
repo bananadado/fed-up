@@ -1,0 +1,594 @@
+{
+  "generatedAt": "2026-06-16T16:20:40.021Z",
+  "mode": "dry-run",
+  "recommenderUrl": "https://recommender.timkolesnichenko.me",
+  "counts": {
+    "recommender": 545,
+    "firestore": 545,
+    "combined": 545,
+    "outOfScope": 64,
+    "candidates": 0,
+    "keptByOverride": 0,
+    "manualRemovals": 14
+  },
+  "candidates": [],
+  "outOfScope": [
+    {
+      "id": "m11",
+      "name": "Banana oat breakfast pot",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m5",
+      "name": "Bean & salad wrap",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m7",
+      "name": "Chicken rice bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m6",
+      "name": "Falafel grain bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m3",
+      "name": "Ginger tofu noodles",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-chicken-burrito-bowl",
+      "name": "Healthy takeaway chicken burrito bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-egg-avocado-protein-pot",
+      "name": "Healthy takeaway egg avocado protein pot",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-falafel-salad-box",
+      "name": "Healthy takeaway falafel salad box",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-greek-salad-pitta",
+      "name": "Healthy takeaway greek salad pitta",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-grilled-chicken-salad-bowl",
+      "name": "Healthy takeaway grilled chicken salad bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-lentil-soup-roll",
+      "name": "Healthy takeaway lentil soup roll",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-lighter-tofu-katsu-rice",
+      "name": "Healthy takeaway lighter tofu katsu rice",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-mediterranean-chicken-wrap",
+      "name": "Healthy takeaway mediterranean chicken wrap",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-miso-edamame-sushi",
+      "name": "Healthy takeaway miso edamame sushi",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-prawn-noodle-salad",
+      "name": "Healthy takeaway prawn noodle salad",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-salmon-poke-bowl",
+      "name": "Healthy takeaway salmon poke bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-teriyaki-tofu-rice",
+      "name": "Healthy takeaway teriyaki tofu rice",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-tofu-buddha-bowl",
+      "name": "Healthy takeaway tofu buddha bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-tuna-sushi-set",
+      "name": "Healthy takeaway tuna sushi set",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-turkey-protein-box",
+      "name": "Healthy takeaway turkey protein box",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-vegan-burrito-bowl",
+      "name": "Healthy takeaway vegan burrito bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-takeaway-bibimbap-veg-egg",
+      "name": "Healthy takeaway vegetable bibimbap egg",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-568-chicken-rice-box",
+      "name": "Imperial 568 chicken rice box",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-568-veggie-burger-salad",
+      "name": "Imperial 568 veggie burger salad",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-business-school-grain-pot",
+      "name": "Imperial Business School grain pot",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-chemistry-soup-sandwich",
+      "name": "Imperial Chemistry Cafe soup and sandwich",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-city-guilds-hot-lunch",
+      "name": "Imperial City and Guilds hot lunch",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-eastside-jacket-potato-beans",
+      "name": "Imperial Eastside jacket potato beans",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-feast-hot-lunch-bowl",
+      "name": "Imperial Feast hot lunch bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-kokoro-sushi-curry-bowl",
+      "name": "Imperial Kokoro sushi curry bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-library-chicken-shawarma-wrap",
+      "name": "Imperial Library Cafe chicken shawarma wrap",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-library-turkey-salad-box",
+      "name": "Imperial Library Cafe turkey salad box",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-lumen-breakfast-pot",
+      "name": "Imperial Lumen breakfast yoghurt pot",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-neo-pizza-salad-slice",
+      "name": "Imperial Neo Pizza slice and salad",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-plantworks-vegan-lunch-box",
+      "name": "Imperial Plantworks vegan lunch box",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-queens-tower-chana-rice",
+      "name": "Imperial Queen's Tower chana rice",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-rasa-malaysian-rice-bowl",
+      "name": "Imperial Rasa Malaysian rice bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-rasa-vegetable-laksa",
+      "name": "Imperial Rasa vegetable laksa",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-rsm-pasta-pot",
+      "name": "Imperial RSM pasta pot",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-imperial-scr-salad-bar-plate",
+      "name": "Imperial SCR salad bar plate",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m4",
+      "name": "Lentil pesto pasta pot",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m8",
+      "name": "Microwave lentil dhal & rice",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m9",
+      "name": "Overnight oat jar",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-bean-chilli-rice",
+      "name": "Ready meal bean chilli rice",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-chicken-caesar-wrap",
+      "name": "Ready meal chicken caesar wrap",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-chicken-fajita-bowl",
+      "name": "Ready meal chicken fajita bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-chicken-tikka-rice",
+      "name": "Ready meal chicken tikka rice",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-cottage-pie-veg",
+      "name": "Ready meal cottage pie with veg",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-egg-protein-snack-box",
+      "name": "Ready meal egg protein snack box",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-falafel-hummus-mezze",
+      "name": "Ready meal falafel hummus mezze",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-lentil-dhal-rice",
+      "name": "Ready meal lentil dhal rice",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-mediterranean-grain-bowl",
+      "name": "Ready meal mediterranean grain bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-miso-noodle-bowl",
+      "name": "Ready meal miso noodle bowl",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-salmon-teriyaki-rice",
+      "name": "Ready meal salmon teriyaki rice",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-spinach-ricotta-tortelloni",
+      "name": "Ready meal spinach ricotta tortelloni",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-sweet-potato-coconut-curry",
+      "name": "Ready meal sweet potato coconut curry",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-tuna-pasta-salad",
+      "name": "Ready meal tuna pasta salad",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-turkey-meatballs-pasta",
+      "name": "Ready meal turkey meatballs pasta",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "fallback-ready-vegetable-lasagne",
+      "name": "Ready meal vegetable lasagne",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m1",
+      "name": "Roast veg & chickpea traybake",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m10",
+      "name": "Scrambled egg toast",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "custom-1781626689003",
+      "name": "Steven's banana",
+      "reason": "user-owned recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m2",
+      "name": "Traybake hummus wrap",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    },
+    {
+      "id": "m12",
+      "name": "Yoghurt fruit granola cup",
+      "reason": "non-TheMealDB recipe",
+      "stores": [
+        "recommender",
+        "firestore"
+      ]
+    }
+  ],
+  "keptByOverride": []
+}

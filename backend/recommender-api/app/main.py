@@ -222,11 +222,15 @@ async def get_recipe(recipe_id: str, db: AsyncSession = Depends(get_db)):
 
 @app.delete("/recipes/{recipe_id}", status_code=204)
 async def delete_recipe(recipe_id: str, db: AsyncSession = Depends(get_db)):
-    await db.execute(text("DELETE FROM interactions WHERE recipe_id = :rid"), {"rid": recipe_id})
-    result = await db.execute(text("DELETE FROM recipes WHERE id = :rid"), {"rid": recipe_id})
-    await db.commit()
-    if result.rowcount == 0:
+    existing = await db.execute(text("SELECT id FROM recipes WHERE id = :rid"), {"rid": recipe_id})
+    if not existing.mappings().first():
         raise HTTPException(404, "Recipe not found")
+
+    await db.execute(text("DELETE FROM interactions WHERE recipe_id = :rid"), {"rid": recipe_id})
+    await db.execute(text("DELETE FROM co_likes WHERE recipe_a = :rid OR recipe_b = :rid"), {"rid": recipe_id})
+    await db.execute(text("DELETE FROM trending WHERE recipe_id = :rid"), {"rid": recipe_id})
+    await db.execute(text("DELETE FROM recipes WHERE id = :rid"), {"rid": recipe_id})
+    await db.commit()
 
 
 # ── Users ───────────────────────────────────────────────────────────────────

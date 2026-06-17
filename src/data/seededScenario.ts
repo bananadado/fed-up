@@ -1,5 +1,4 @@
 import type { DeadlineBootstrap, PlanningConstraints, ProductMeta } from "@/domain/types";
-import { seededMeals } from "./seededMeals";
 
 export const canonicalConstraints: PlanningConstraints = {
   budgetPence: 2400,
@@ -19,7 +18,7 @@ export const productMeta: ProductMeta = {
 };
 
 export const deadlineBootstrap: DeadlineBootstrap = {
-  meals: seededMeals,
+  meals: [],
   canonicalConstraints,
   app: productMeta,
 };

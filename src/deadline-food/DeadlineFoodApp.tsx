@@ -179,7 +179,7 @@ export function DeadlineFoodApp() {
   const [icsSubscriptions, setIcsSubscriptions] = useState<IcsSubscription[]>([]);
   const [calendarTokens, setCalendarTokens] = useState<CalendarToken[]>([]);
   const [privacyConsent, setPrivacyConsentState] = useState<PrivacyConsent | undefined>(undefined);
-  const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "m1");
+  const [selectedMealId, setSelectedMealId] = useState(initialPlan[0]?.meals[0]?.mealId ?? "");
   // A recipe fetched from a `#/recipe/<shareId>` deep link that the viewer does
   // not already have locally (e.g. a friend's shared community recipe) (#213).
   const [sharedRecipe, setSharedRecipe] = useState<Meal | null>(null);

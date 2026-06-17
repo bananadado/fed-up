@@ -181,6 +181,19 @@ export function generatePlan(
   strategy: PlanStrategy,
   meals: MealOption[],
 ): WeeklyPlan {
+  if (meals.length === 0) {
+    return {
+      id: `${strategy}-${constraints.budgetPence}-${constraints.deadlineDays.join("-")}-empty`,
+      strategy,
+      constraints,
+      days: [],
+      totalCostPence: 0,
+      budgetPence: constraints.budgetPence,
+      totalPrepMinutes: 0,
+      explanation: "No meals are available for planning.",
+    };
+  }
+
   const days =
     strategy === "prep-once"
       ? buildPrepOncePlan(constraints, meals)
