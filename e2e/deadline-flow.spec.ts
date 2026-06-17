@@ -1,21 +1,160 @@
 import { expect, test } from "@playwright/test";
-import { defaultDeadlines, initialPlan, initialPreferences, seedMeals } from "../src/deadline-food/data";
+import { initialPreferences } from "../src/deadline-food/data";
 import {
   ANONYMOUS_SESSION_STORAGE_KEY,
   createPrivacyConsent,
   createSessionSettings,
 } from "../src/deadline-food/sessionPersistence";
+import type { Deadline, Meal, PlanEntry } from "../src/deadline-food/types";
 
 const acceptedPrivacyConsent = createPrivacyConsent(new Date("2026-06-09T12:00:00.000Z"));
+const e2eDeadlines: Deadline[] = [
+  {
+    id: "e2e-d1",
+    title: "Algorithms coursework",
+    date: "Wed 3 Jun",
+    time: "16:00",
+    intensity: "High",
+    eventType: "academic",
+    effortHours: 8,
+    urgency: "high",
+    confirmed: true,
+    rawDate: "2026-06-03",
+  },
+  {
+    id: "e2e-d2",
+    title: "Design review",
+    date: "Thu 4 Jun",
+    time: "10:00",
+    intensity: "Medium",
+    eventType: "academic",
+    effortHours: 4,
+    urgency: "medium",
+    confirmed: true,
+    rawDate: "2026-06-04",
+  },
+  {
+    id: "e2e-d3",
+    title: "Databases quiz",
+    date: "Fri 5 Jun",
+    time: "09:00",
+    intensity: "High",
+    eventType: "academic",
+    effortHours: 5,
+    urgency: "high",
+    confirmed: true,
+    rawDate: "2026-06-05",
+  },
+];
+const e2eMeals: Meal[] = [
+  {
+    id: "e2e-oats",
+    name: "E2E oat jar",
+    type: "cook",
+    mealSlots: ["breakfast"],
+    time: 5,
+    price: 1.15,
+    servings: 1,
+    tags: ["breakfast", "quick"],
+    ingredients: [{ name: "oats", quantity: 50, unit: "g" }],
+    allergens: ["gluten"],
+    nutrition: { calories: 390, protein: 13, carbs: 58, fat: 11 },
+    rating: 0,
+    reviews: [],
+    instructions: ["Mix oats with milk.", "Chill until breakfast."],
+    source: "E2E fixture",
+    note: "",
+    image: "test",
+  },
+  {
+    id: "e2e-toast",
+    name: "E2E toast",
+    type: "cook",
+    mealSlots: ["breakfast"],
+    time: 6,
+    price: 1.35,
+    servings: 1,
+    tags: ["breakfast"],
+    ingredients: [{ name: "bread", quantity: 2, unit: "slice" }],
+    allergens: ["gluten"],
+    nutrition: { calories: 420, protein: 16, carbs: 52, fat: 15 },
+    rating: 0,
+    reviews: [],
+    instructions: ["Toast the bread.", "Top and serve."],
+    source: "E2E fixture",
+    note: "",
+    image: "test",
+  },
+  {
+    id: "e2e-wrap",
+    name: "E2E hummus wrap",
+    type: "fallback",
+    mealSlots: ["lunch", "dinner"],
+    time: 4,
+    price: 1.95,
+    servings: 1,
+    tags: ["quick"],
+    ingredients: [{ name: "wrap", quantity: 1, unit: "wrap" }],
+    allergens: ["gluten", "sesame"],
+    nutrition: { calories: 430, protein: 15, carbs: 58, fat: 15 },
+    rating: 0,
+    reviews: [],
+    instructions: ["Fill the wrap.", "Roll tightly."],
+    source: "E2E fixture",
+    note: "",
+    image: "test",
+  },
+  {
+    id: "e2e-bowl",
+    name: "E2E rice bowl",
+    type: "fallback",
+    mealSlots: ["lunch", "dinner"],
+    time: 5,
+    price: 2.4,
+    servings: 1,
+    tags: ["quick"],
+    ingredients: [{ name: "rice", quantity: 180, unit: "g" }],
+    allergens: [],
+    nutrition: { calories: 520, protein: 18, carbs: 84, fat: 9 },
+    rating: 0,
+    reviews: [],
+    instructions: ["Warm the rice.", "Add toppings."],
+    source: "E2E fixture",
+    note: "",
+    image: "test",
+  },
+];
+const e2ePlan: PlanEntry[] = [
+  {
+    day: "Mon 1 Jun",
+    dateIso: "2026-06-01",
+    context: "E2E fixture day",
+    meals: [
+      { slot: "breakfast", mealId: "e2e-oats" },
+      { slot: "lunch", mealId: "e2e-wrap" },
+      { slot: "dinner", mealId: "e2e-bowl" },
+    ],
+  },
+  {
+    day: "Tue 2 Jun",
+    dateIso: "2026-06-02",
+    context: "E2E fixture day",
+    meals: [
+      { slot: "breakfast", mealId: "e2e-toast" },
+      { slot: "lunch", mealId: "e2e-bowl" },
+      { slot: "dinner", mealId: "e2e-wrap" },
+    ],
+  },
+];
 
 test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }) => {
-  // Auto-planning regenerates the plan after onboarding; pin it to the seed plan
-  // so this flow stays deterministic regardless of recommender availability.
+  // Auto-planning regenerates the plan after onboarding; pin it to local test
+  // fixtures so this flow stays deterministic regardless of recommender state.
   await page.route("**/api/deadline-food/auto-plan**", async (route) => {
     await route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify({ plan: initialPlan, meals: [], generatedAt: "2026-06-01T00:00:00.000Z" }),
+      body: JSON.stringify({ plan: e2ePlan, meals: e2eMeals, generatedAt: "2026-06-01T00:00:00.000Z" }),
     });
   });
 
@@ -74,12 +213,12 @@ test("Fed Up flow can onboard, rescue a meal, and add a recipe", async ({ page }
   await page.getByRole("button", { name: /view full plan/i }).click();
 
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
-  await page.getByRole("button", { name: /overnight oat jar/i }).first().click();
-  await expect(page.getByRole("heading", { name: /overnight oat jar/i })).toBeVisible();
+  await page.getByRole("button", { name: /e2e oat jar/i }).first().click();
+  await expect(page.getByRole("heading", { name: /e2e oat jar/i })).toBeVisible();
   await page.getByRole("button", { name: /go back to plan/i }).click();
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
-  await page.getByRole("button", { name: /overnight oat jar/i }).first().click();
-  await expect(page.getByRole("heading", { name: /overnight oat jar/i })).toBeVisible();
+  await page.getByRole("button", { name: /e2e oat jar/i }).first().click();
+  await expect(page.getByRole("heading", { name: /e2e oat jar/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /ingredients/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /method/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /nutrition/i })).toBeVisible();
@@ -139,7 +278,7 @@ test("returning users land on dashboard, not the landing or onboarding page", as
       sessionId,
       settings: createSessionSettings({
         preferences: initialPreferences,
-        deadlines: defaultDeadlines,
+        deadlines: e2eDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
         privacyConsent: acceptedPrivacyConsent,
@@ -176,7 +315,7 @@ test("stale onboarding URL resumes returning users at the dashboard", async ({ p
       sessionId,
       settings: createSessionSettings({
         preferences: initialPreferences,
-        deadlines: defaultDeadlines,
+        deadlines: e2eDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
         privacyConsent: acceptedPrivacyConsent,
@@ -205,7 +344,7 @@ test("direct app deep link without a session returns to landing instead of orpha
   await expect(page.locator("header")).toHaveCount(0);
 });
 
-test("direct plan refresh restores nav and seeded timetable for returning users with empty persisted plan", async ({ page }) => {
+test("direct plan refresh restores nav and mocked timetable for returning users with empty persisted plan", async ({ page }) => {
   const sessionId = "empty-plan-session-39";
 
   await page.request.put("/api/deadline-food/session", {
@@ -213,7 +352,7 @@ test("direct plan refresh restores nav and seeded timetable for returning users 
       sessionId,
       settings: createSessionSettings({
         preferences: initialPreferences,
-        deadlines: defaultDeadlines,
+        deadlines: e2eDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
         plan: [],
@@ -233,7 +372,7 @@ test("direct plan refresh restores nav and seeded timetable for returning users 
     await route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify({ plan: initialPlan, meals: [], generatedAt: "2026-06-01T00:00:00.000Z" }),
+      body: JSON.stringify({ plan: e2ePlan, meals: e2eMeals, generatedAt: "2026-06-01T00:00:00.000Z" }),
     });
   });
 
@@ -241,7 +380,7 @@ test("direct plan refresh restores nav and seeded timetable for returning users 
 
   await expect(page.getByRole("heading", { name: /planned meals/i })).toBeVisible();
   await expect(page.locator("header")).toBeVisible();
-  await expect(page.getByRole("button", { name: /overnight oat jar/i }).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: /e2e oat jar/i }).first()).toBeVisible();
 });
 
 test("dashboard meal cards have swap action that opens the swap modal", async ({ page }) => {
@@ -252,10 +391,10 @@ test("dashboard meal cards have swap action that opens the swap modal", async ({
       sessionId,
       settings: createSessionSettings({
         preferences: initialPreferences,
-        deadlines: defaultDeadlines,
+        deadlines: e2eDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
-        discoverSaved: seedMeals,
+        discoverSaved: e2eMeals,
         privacyConsent: acceptedPrivacyConsent,
       }),
     },
@@ -279,7 +418,7 @@ test("dashboard meal cards have swap action that opens the swap modal", async ({
     await route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify({ plan: initialPlan, meals: [], generatedAt: "2026-06-01T00:00:00.000Z" }),
+      body: JSON.stringify({ plan: e2ePlan, meals: e2eMeals, generatedAt: "2026-06-01T00:00:00.000Z" }),
     });
   });
 
@@ -349,7 +488,7 @@ test("auto-planning generates a multi-week plan and flags it stale when settings
       sessionId,
       settings: createSessionSettings({
         preferences: initialPreferences,
-        deadlines: defaultDeadlines,
+        deadlines: e2eDeadlines,
         selectedSources: ["budget", "bbc", "own", "campus"],
         onboarded: true,
         privacyConsent: acceptedPrivacyConsent,

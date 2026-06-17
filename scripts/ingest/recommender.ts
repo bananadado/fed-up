@@ -41,6 +41,18 @@ export async function listRecipes(baseUrl: string): Promise<RecipeOut[]> {
   return (await res.json()) as RecipeOut[];
 }
 
+/** Delete one recipe from the recommender. A missing row is already clean. */
+export async function deleteRecipe(baseUrl: string, recipeId: string): Promise<"deleted" | "missing"> {
+  const res = await fetch(`${baseUrl}/recipes/${encodeURIComponent(recipeId)}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
+  if (res.status === 204) return "deleted";
+  if (res.status === 404) return "missing";
+  const body = await res.text().catch(() => "");
+  throw new Error(`Recommender DELETE /recipes/${recipeId} failed ${res.status}: ${body}`);
+}
+
 /** Upsert recipes in chunks. `onProgress` reports cumulative written count. */
 export async function bulkUpsertRecipes(
   baseUrl: string,

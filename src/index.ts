@@ -1,7 +1,6 @@
 import { serve } from "bun";
 import index from "./index.html";
 import { deadlineBootstrap } from "./data/seededScenario";
-import { seededMeals } from "./data/seededMeals";
 
 const sessionRetentionDays = 90;
 const anonymousSessions = new Map<string, { settings: unknown; updatedAt: string; expiresAt: string }>();
@@ -141,7 +140,7 @@ const server = serve({
 
     "/api/deadline-food/meals": {
       async GET() {
-        return Response.json(seededMeals);
+        return Response.json([]);
       },
     },
 

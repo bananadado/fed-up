@@ -1,15 +1,13 @@
 import { firebaseFunctionUrl } from "@/adapters/deadlineFoodApi";
 
-import { seedMeals } from "./data";
 import type { Meal, MealSlot, RecipeIngredient } from "./types";
 
 // Recipe content is canonical in Firestore (issue #123). The catalogue is
-// hydrated once at bootstrap via `fetchRecipeCatalogue`; until then it falls back
-// to the bundled seeds so synchronous lookups (mealById/getMealById) always
-// resolve. Reviews/rating are owned by the recipeReviews collection, not the
-// recipe doc, so they default to empty here.
+// hydrated once at bootstrap via `fetchRecipeCatalogue`. Reviews/rating are
+// owned by the recipeReviews collection, not the recipe doc, so they default to
+// empty here.
 
-let catalogue: Meal[] = seedMeals;
+let catalogue: Meal[] = [];
 
 // Meals placed in an auto-generated plan (issue #66) that may not be in the
 // hydrated catalogue — e.g. recommender gap-fill recipes. Registered so the
@@ -22,7 +20,7 @@ export function getRecipeCatalogue(): Meal[] {
 }
 
 export function setRecipeCatalogue(recipes: Meal[]): void {
-  catalogue = recipes.length > 0 ? recipes : seedMeals;
+  catalogue = recipes;
 }
 
 export function registerPlanMeals(meals: Meal[]): void {

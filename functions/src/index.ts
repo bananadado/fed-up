@@ -26,7 +26,6 @@ import {
   deadlineBootstrap,
   productMeta,
   appRecipes,
-  seededMeals,
 } from "./generated/appData";
 
 initializeApp();
@@ -328,7 +327,7 @@ async function getAppData(): Promise<AppData> {
   const data = snapshot.data();
 
   return {
-    meals: Array.isArray(data?.meals) ? data.meals : seededMeals,
+    meals: [],
     canonicalConstraints:
       typeof data?.canonicalConstraints === "object" ?
         data.canonicalConstraints :
@@ -374,6 +373,7 @@ function rejectUnsupportedReviewMethod(request: HttpRequest, response: HttpRespo
 async function ensureRecipesSeeded(): Promise<void> {
   const existing = await recipesRef.limit(1).get();
   if (!existing.empty) return;
+  if (appRecipes.length === 0) return;
 
   const batch = firestore.batch();
   for (const recipe of appRecipes) {
@@ -1386,8 +1386,9 @@ async function handleAutoPlan(request: HttpRequest, response: HttpResponse): Pro
     });
   }
 
-  // Deterministic final fallback: if the user has few/no saved recipes and the
-  // recommender is empty or unavailable, still plan from the canonical catalogue.
+  // Deterministic final fallback: if a generated recipe catalogue is present,
+  // use it after saved and recommender recipes. Production builds intentionally
+  // ship this empty so bundled seed recipes are not reintroduced.
   const fallbackAlloc: AutoPlan.AllocatorMeal[] = [];
   for (const recipe of appRecipes) {
     const meal = recipe as unknown as UnknownRecord;

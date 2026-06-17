@@ -20,6 +20,7 @@
     "patch:measures": "bun scripts/patch-ingredient-measures.ts",
     "backup:recipes": "bun scripts/backup-recipes.ts",
     "rollback:recipes": "bun scripts/rollback-recipes.ts",
+    "cleanup:recipes": "bun scripts/cleanup-recipes.ts",
     "prices:fetch-tesco": "bun scripts/fetch-tesco-prices.ts",
     "prices:import-tesco": "bun scripts/import-tesco-prices.ts",
     "prices:recalc": "bun scripts/recalc-prices.ts",

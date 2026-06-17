@@ -68,6 +68,37 @@ def test_get_recipe_404(client):
     assert client.get("/recipes/missing").status_code == 404
 
 
+def test_delete_recipe_clears_derived_tables(client):
+    client.post("/recipes", json=sample_recipe(id="target", name="Target"))
+    client.post("/recipes", json=sample_recipe(id="other", name="Other"))
+    client.fake_session.store["interactions"].append(
+        {"user_id": "u1", "recipe_id": "target", "action": "swipe_right"}
+    )
+    client.fake_session.store["interactions"].append(
+        {"user_id": "u1", "recipe_id": "other", "action": "swipe_right"}
+    )
+    client.fake_session.store["co_likes"].append(
+        {"recipe_a": "target", "recipe_b": "other", "weight": 3.0}
+    )
+    client.fake_session.store["co_likes"].append(
+        {"recipe_a": "other", "recipe_b": "target", "weight": 2.0}
+    )
+    client.fake_session.store["trending"]["target"] = 10.0
+    client.fake_session.store["trending"]["other"] = 4.0
+
+    resp = client.delete("/recipes/target")
+
+    assert resp.status_code == 204
+    assert "target" not in client.fake_session.store["recipes"]
+    assert all(item["recipe_id"] != "target" for item in client.fake_session.store["interactions"])
+    assert all(
+        item["recipe_a"] != "target" and item["recipe_b"] != "target"
+        for item in client.fake_session.store["co_likes"]
+    )
+    assert "target" not in client.fake_session.store["trending"]
+    assert "other" in client.fake_session.store["recipes"]
+
+
 def test_recipe_verified_defaults_false_and_roundtrips(client):
     # Curated content is explicitly verified; user uploads default to false (#213).
     client.post("/recipes", json=sample_recipe(id="seed", name="Seed", verified=True))

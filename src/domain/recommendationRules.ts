@@ -46,6 +46,8 @@ function preferenceScore(strategy: PlanStrategy, constraints: PlanningConstraint
 }
 
 export function rankStrategies(constraints: PlanningConstraints, meals: MealOption[]): RankedStrategy[] {
+  if (meals.length === 0) return [];
+
   const strategies: PlanStrategy[] = ["prep-once", "mixed", "no-cook-rescue"];
   const ranked = strategies
     .map(strategy => {

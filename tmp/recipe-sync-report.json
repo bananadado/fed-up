@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-06-17T10:27:35.245Z",
+  "mode": "apply",
+  "recommenderUrl": "https://recommender.timkolesnichenko.me",
+  "includeUnpublished": false,
+  "counts": {
+    "firestore": 543,
+    "firestoreCompared": 543,
+    "firestoreUnpublishedExcluded": 0,
+    "recommender": 543,
+    "firestoreOnly": 0,
+    "recommenderOnly": 0,
+    "deletesPlanned": 0
+  },
+  "firestoreOnly": [],
+  "recommenderOnly": []
+}

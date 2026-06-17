@@ -156,6 +156,29 @@ class FakeSession:
                         user[col] = params[key]
             return FakeResult()
 
+        if low.startswith("delete from interactions"):
+            rid = params.get("rid")
+            self.store["interactions"] = [
+                item for item in self.store["interactions"] if item.get("recipe_id") != rid
+            ]
+            return FakeResult()
+
+        if low.startswith("delete from co_likes"):
+            rid = params.get("rid")
+            self.store["co_likes"] = [
+                item for item in self.store["co_likes"]
+                if item.get("recipe_a") != rid and item.get("recipe_b") != rid
+            ]
+            return FakeResult()
+
+        if low.startswith("delete from trending"):
+            self.store["trending"].pop(params.get("rid"), None)
+            return FakeResult()
+
+        if low.startswith("delete from recipes"):
+            self.store["recipes"].pop(params.get("rid"), None)
+            return FakeResult()
+
         # ── /recommend pipeline ──
         if "as sim from recipes" in low:
             return FakeResult(rows=self._recommend_candidates(params))
